@@ -1,0 +1,11 @@
+D:\TFS2010\Research\Lelala\定期評量成績單\bin\Debug\Test.dll
+D:\TFS2010\Research\Lelala\定期評量成績單\bin\Debug\Test.pdb
+D:\TFS2010\Research\Lelala\定期評量成績單\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\TFS2010\Research\Lelala\定期評量成績單\obj\x86\Debug\定期評量成績單.CloneConfigure.resources
+D:\TFS2010\Research\Lelala\定期評量成績單\obj\x86\Debug\定期評量成績單.ConfigForm.resources
+D:\TFS2010\Research\Lelala\定期評量成績單\obj\x86\Debug\定期評量成績單.NewConfigure.resources
+D:\TFS2010\Research\Lelala\定期評量成績單\obj\x86\Debug\定期評量成績單.Properties.Resources.resources
+D:\TFS2010\Research\Lelala\定期評量成績單\obj\x86\Debug\GenerateResource.read.1.tlog
+D:\TFS2010\Research\Lelala\定期評量成績單\obj\x86\Debug\GenerateResource.write.1.tlog
+D:\TFS2010\Research\Lelala\定期評量成績單\obj\x86\Debug\Test.dll
+D:\TFS2010\Research\Lelala\定期評量成績單\obj\x86\Debug\Test.pdb

@@ -1,0 +1,49 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace SHStaticRank2.Data
+{
+    public class Utility
+    {
+        /// <summary>
+        /// 四捨五入到小數下二位(先不捨)
+        /// </summary>
+        /// <param name="score"></param>
+        /// <returns></returns>
+        public static decimal ParseD2(decimal score)
+        {
+            return score;
+            //return Math.Round(score, 2, MidpointRounding.AwayFromZero);
+        }
+
+        /// <summary>
+        /// 取得排名百分比：名次減一除母數後取左邊第一個整數
+        /// </summary>
+        /// <param name="rank"></param>
+        /// <param name="total"></param>
+        /// <returns></returns>
+        public static int ParseRankPercent(int rank, int total)
+        {
+            int retVal = 0;
+            if (total > 0 && rank >0)
+            {
+            decimal rr = (decimal)(rank-1);
+            decimal tt = (decimal)total;
+
+            
+                decimal xR = Math.Round(rr * 100 / total, 0);
+                decimal x = rr * 100 / total + 1;
+
+                if (xR == x)
+                    retVal = (int)xR;
+                else
+                    retVal = (int)x;
+
+                //retVal = (int)(Math.Floor((rr * 100) / tt));
+            }
+            return retVal;
+        }
+    }
+}

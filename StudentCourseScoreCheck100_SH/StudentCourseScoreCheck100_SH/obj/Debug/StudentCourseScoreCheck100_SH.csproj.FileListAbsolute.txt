@@ -1,0 +1,8 @@
+D:\TFS2010\ischoolteam\ischool_Senior with FISCA\Modules\StudentCourseScoreCheck100_SH\StudentCourseScoreCheck100_SH\bin\Debug\StudentCourseScoreCheck100_SH.dll
+D:\TFS2010\ischoolteam\ischool_Senior with FISCA\Modules\StudentCourseScoreCheck100_SH\StudentCourseScoreCheck100_SH\bin\Debug\StudentCourseScoreCheck100_SH.pdb
+D:\TFS2010\ischoolteam\ischool_Senior with FISCA\Modules\StudentCourseScoreCheck100_SH\StudentCourseScoreCheck100_SH\obj\Debug\ResolveAssemblyReference.cache
+D:\TFS2010\ischoolteam\ischool_Senior with FISCA\Modules\StudentCourseScoreCheck100_SH\StudentCourseScoreCheck100_SH\obj\Debug\StudentCourseScoreCheck100_SH.StudentCourseScoreForm.resources
+D:\TFS2010\ischoolteam\ischool_Senior with FISCA\Modules\StudentCourseScoreCheck100_SH\StudentCourseScoreCheck100_SH\obj\Debug\GenerateResource.read.1.tlog
+D:\TFS2010\ischoolteam\ischool_Senior with FISCA\Modules\StudentCourseScoreCheck100_SH\StudentCourseScoreCheck100_SH\obj\Debug\GenerateResource.write.1.tlog
+D:\TFS2010\ischoolteam\ischool_Senior with FISCA\Modules\StudentCourseScoreCheck100_SH\StudentCourseScoreCheck100_SH\obj\Debug\StudentCourseScoreCheck100_SH.dll
+D:\TFS2010\ischoolteam\ischool_Senior with FISCA\Modules\StudentCourseScoreCheck100_SH\StudentCourseScoreCheck100_SH\obj\Debug\StudentCourseScoreCheck100_SH.pdb

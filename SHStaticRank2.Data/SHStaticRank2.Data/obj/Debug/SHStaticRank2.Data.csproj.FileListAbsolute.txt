@@ -1,0 +1,11 @@
+D:\TFS2010\Research\chuntai\SHStaticRank2.Data\SHStaticRank2.Data\bin\Debug\SHStaticRank2.Data.dll
+D:\TFS2010\Research\chuntai\SHStaticRank2.Data\SHStaticRank2.Data\bin\Debug\SHStaticRank2.Data.pdb
+D:\TFS2010\Research\chuntai\SHStaticRank2.Data\SHStaticRank2.Data\obj\Debug\ResolveAssemblyReference.cache
+D:\TFS2010\Research\chuntai\SHStaticRank2.Data\SHStaticRank2.Data\obj\Debug\SHStaticRank2.Data.CalcMutilSemeSubjectStatucRank.resources
+D:\TFS2010\Research\chuntai\SHStaticRank2.Data\SHStaticRank2.Data\obj\Debug\SHStaticRank2.Data.CloneConfigure.resources
+D:\TFS2010\Research\chuntai\SHStaticRank2.Data\SHStaticRank2.Data\obj\Debug\SHStaticRank2.Data.NewConfigure.resources
+D:\TFS2010\Research\chuntai\SHStaticRank2.Data\SHStaticRank2.Data\obj\Debug\SHStaticRank2.Data.Properties.Resources.resources
+D:\TFS2010\Research\chuntai\SHStaticRank2.Data\SHStaticRank2.Data\obj\Debug\GenerateResource.read.1.tlog
+D:\TFS2010\Research\chuntai\SHStaticRank2.Data\SHStaticRank2.Data\obj\Debug\GenerateResource.write.1.tlog
+D:\TFS2010\Research\chuntai\SHStaticRank2.Data\SHStaticRank2.Data\obj\Debug\SHStaticRank2.Data.dll
+D:\TFS2010\Research\chuntai\SHStaticRank2.Data\SHStaticRank2.Data\obj\Debug\SHStaticRank2.Data.pdb

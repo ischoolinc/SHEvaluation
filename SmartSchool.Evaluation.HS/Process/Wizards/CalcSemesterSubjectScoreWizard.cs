@@ -207,22 +207,80 @@ namespace SmartSchool.Evaluation.Process.Wizards
                                         historyElement = history;
                                     }
                                 }
+
+                                // 小郭, 2013/12/26
+                                string className = string.Empty;
+                                string deptName = string.Empty;
+                                string seatNo = string.Empty;
+                                string teacherName = string.Empty;
+
+                                if (stu.RefClass != null)
+                                {
+                                    className = stu.RefClass.ClassName;
+                                    deptName = stu.RefClass.Department;
+                                    if (stu.RefClass.RefTeacher != null)
+                                        teacherName = stu.RefClass.RefTeacher.TeacherName;
+                                }
+                                seatNo = stu.SeatNo;
+
                                 if ( historyElement == null )
                                 {
                                     historyElement = semesterHistory.OwnerDocument.CreateElement("History");
                                     historyElement.SetAttribute("SchoolYear", "" + schoolyear);
                                     historyElement.SetAttribute("Semester", "" + semester);
                                     historyElement.SetAttribute("GradeYear", "" + gyear);
+                                    // 小郭, 2013/12/26
+                                    historyElement.SetAttribute("ClassName", className);
+                                    historyElement.SetAttribute("DeptName", deptName);
+                                    historyElement.SetAttribute("SeatNo", seatNo);
+                                    historyElement.SetAttribute("Teacher", teacherName);
+
                                     semesterHistory.AppendChild(historyElement);
                                     editList.Add(stu);
                                 }
                                 else
                                 {
+                                    #region 判斷那些欄位需要更新
+                                    bool isRevised = false; // 小郭, 2013/12/26
                                     if ( historyElement.GetAttribute("GradeYear") != "" + gyear )
                                     {
                                         historyElement.SetAttribute("GradeYear", "" + gyear);
-                                        editList.Add(stu);
+                                        // editList.Add(stu);
+                                        isRevised = true;
                                     }
+
+                                    // 小郭, 2013/12/26
+                                    if (!string.IsNullOrEmpty(className) &&
+                                            historyElement.GetAttribute("ClassName") != className)
+                                    {
+                                        historyElement.SetAttribute("ClassName", className);
+                                        isRevised = true;
+                                    }
+
+                                    if (!string.IsNullOrEmpty(deptName) &&
+                                            historyElement.GetAttribute("DeptName") != deptName)
+                                    {
+                                        historyElement.SetAttribute("DeptName", deptName);
+                                        isRevised = true;
+                                    }
+
+                                    if (!string.IsNullOrEmpty(seatNo) &&
+                                            historyElement.GetAttribute("SeatNo") != seatNo)
+                                    {
+                                        historyElement.SetAttribute("SeatNo", seatNo);
+                                        isRevised = true;
+                                    }
+
+                                    if (!string.IsNullOrEmpty(teacherName) &&
+                                            historyElement.GetAttribute("Teacher") != teacherName)
+                                    {
+                                        historyElement.SetAttribute("Teacher", teacherName);
+                                        isRevised = true;
+                                    }
+
+                                    if (isRevised == true)
+                                        editList.Add(stu);
+                                    #endregion 判斷那些欄位需要更新
                                 }
                             }
                         }

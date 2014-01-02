@@ -9,3 +9,13 @@ D:\TFS2010\Research\chuntai\SHStaticRank2.Data\SHStaticRank2.Data\obj\Debug\Gene
 D:\TFS2010\Research\chuntai\SHStaticRank2.Data\SHStaticRank2.Data\obj\Debug\GenerateResource.write.1.tlog
 D:\TFS2010\Research\chuntai\SHStaticRank2.Data\SHStaticRank2.Data\obj\Debug\SHStaticRank2.Data.dll
 D:\TFS2010\Research\chuntai\SHStaticRank2.Data\SHStaticRank2.Data\obj\Debug\SHStaticRank2.Data.pdb
+C:\iSchool_Dev\SourceCode\SHEvaluation\SHStaticRank2.Data\SHStaticRank2.Data\bin\Debug\SHStaticRank2.Data.dll
+C:\iSchool_Dev\SourceCode\SHEvaluation\SHStaticRank2.Data\SHStaticRank2.Data\bin\Debug\SHStaticRank2.Data.pdb
+C:\iSchool_Dev\SourceCode\SHEvaluation\SHStaticRank2.Data\SHStaticRank2.Data\obj\Debug\SHStaticRank2.Data.csprojResolveAssemblyReference.cache
+C:\iSchool_Dev\SourceCode\SHEvaluation\SHStaticRank2.Data\SHStaticRank2.Data\obj\Debug\SHStaticRank2.Data.CalcMutilSemeSubjectStatucRank.resources
+C:\iSchool_Dev\SourceCode\SHEvaluation\SHStaticRank2.Data\SHStaticRank2.Data\obj\Debug\SHStaticRank2.Data.CloneConfigure.resources
+C:\iSchool_Dev\SourceCode\SHEvaluation\SHStaticRank2.Data\SHStaticRank2.Data\obj\Debug\SHStaticRank2.Data.NewConfigure.resources
+C:\iSchool_Dev\SourceCode\SHEvaluation\SHStaticRank2.Data\SHStaticRank2.Data\obj\Debug\SHStaticRank2.Data.Properties.Resources.resources
+C:\iSchool_Dev\SourceCode\SHEvaluation\SHStaticRank2.Data\SHStaticRank2.Data\obj\Debug\SHStaticRank2.Data.csproj.GenerateResource.Cache
+C:\iSchool_Dev\SourceCode\SHEvaluation\SHStaticRank2.Data\SHStaticRank2.Data\obj\Debug\SHStaticRank2.Data.dll
+C:\iSchool_Dev\SourceCode\SHEvaluation\SHStaticRank2.Data\SHStaticRank2.Data\obj\Debug\SHStaticRank2.Data.pdb

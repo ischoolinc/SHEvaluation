@@ -36,6 +36,10 @@ namespace SHStaticRank2.Data
         
         private List<Configure> _Configures = new List<SHStaticRank2.Data.Configure>();
 
+        // 用來紀錄那個ListView有沒有勾選"部訂必修專業科目"或"部訂必修實習科目"
+        // Key: ListView's name, Value: ListViewItem's index
+        private Dictionary<string, int> _SpecialListViewItem = new Dictionary<string,int>();
+
         public CalcMutilSemeSubjectStatucRank()
         {
             _TagConfigRecords = K12.Data.TagConfig.SelectByCategory(TagCategory.Student);           
@@ -100,6 +104,18 @@ namespace SHStaticRank2.Data
                 cboTagRank1.Items.Add(s);
                 cboTagRank2.Items.Add(s);
             }
+
+            // 處理ListView中item選取的事件
+            lvwSubjectPri.ItemChecked += ListViewItemChecked;
+            lvwSubjectPri.ItemCheck += ListViewItemCheck;
+            lvwSubjectOrd1.ItemChecked += ListViewItemChecked;
+            lvwSubjectOrd1.ItemCheck += ListViewItemCheck;
+            lvwSubjectOrd2.ItemChecked += ListViewItemChecked;
+            lvwSubjectOrd2.ItemCheck += ListViewItemCheck;
+            // 用來紀錄那個ListView有沒有勾選"部訂必修專業科目"或"部訂必修實習科目"
+            _SpecialListViewItem.Add("lvwSubjectPri", int.MinValue);
+            _SpecialListViewItem.Add("lvwSubjectOrd1", int.MinValue);
+            _SpecialListViewItem.Add("lvwSubjectOrd2", int.MinValue);
         }
 
         void _bgWorker4_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -180,7 +196,20 @@ namespace SHStaticRank2.Data
         }    
 
         private void RunWorkerCompleted()
-        {         
+        {
+            // 新增"部訂必修專業科目"及"部訂必修實習科目"選項
+            ListViewItem lvItem = new ListViewItem();
+            lvItem.Text = "部訂必修專業科目";
+            lvwSubjectPri.Items.Add(lvItem.Clone() as ListViewItem);
+            lvwSubjectOrd1.Items.Add(lvItem.Clone() as ListViewItem);
+            lvwSubjectOrd2.Items.Add(lvItem.Clone() as ListViewItem);
+
+            lvItem = new ListViewItem();
+            lvItem.Text = "部訂必修實習科目";
+            lvwSubjectPri.Items.Add(lvItem.Clone() as ListViewItem);
+            lvwSubjectOrd1.Items.Add(lvItem.Clone() as ListViewItem);
+            lvwSubjectOrd2.Items.Add(lvItem.Clone() as ListViewItem);
+            
             foreach (string str in SubjectNameList)
             {
                 ListViewItem lv1 = new ListViewItem();
@@ -800,143 +829,191 @@ namespace SHStaticRank2.Data
             if (_NewCboConfigName != cboConfigure.Text)
                 chkGrade1.Checked = chkGrade2.Checked = chkGrade3.Checked = chkGrade4.Checked = false;
 
-                if (cboConfigure.SelectedIndex == cboConfigure.Items.Count - 1)
+            // 初始化, 並宣告temp用來暫存使用者有沒有勾選"部訂必修專業科目"或"部訂必修實習科目"
+            Dictionary<string, int> tmpSpecialListViewItem = new Dictionary<string, int>();
+            foreach (string key in _SpecialListViewItem.Keys.ToList<string>())
+            {
+                _SpecialListViewItem[key] = int.MinValue;
+                tmpSpecialListViewItem.Add(key, int.MinValue);
+            }
+
+            if (cboConfigure.SelectedIndex == cboConfigure.Items.Count - 1)
+            {
+                //新增
+                btnSaveConfig.Enabled = buttonX1.Enabled = false;
+                NewConfigure dialog = new NewConfigure();
+
+                List<string> nameList = new List<string>();
+                foreach (Configure cf in _Configures)
+                    nameList.Add(cf.Name);
+
+                dialog.SetNameList(nameList);
+
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    //新增
-                    btnSaveConfig.Enabled = buttonX1.Enabled = false;
-                    NewConfigure dialog = new NewConfigure();
-
-                    List<string> nameList = new List<string>();
-                    foreach(Configure cf in _Configures)
-                        nameList.Add(cf.Name);
-
-                    dialog.SetNameList(nameList);
-
-                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    {
-                        Configure = new Configure();
-                        Configure.Name = dialog.ConfigName;
-                        Configure.Template = dialog.Template;
-                        Configure.SubjectLimit = dialog.SubjectLimit;
-                        Configure.SortGradeYear = "三年級";
-                        _Configures.Add(Configure);
-                        cboConfigure.Items.Insert(cboConfigure.SelectedIndex, Configure);
-                        cboConfigure.SelectedIndex = cboConfigure.SelectedIndex - 1;
-                        Configure.Encode();
-                        Configure.Save();
-                    }
-                    else
-                    {
-                        cboConfigure.SelectedIndex = -1;
-                    }
+                    Configure = new Configure();
+                    Configure.Name = dialog.ConfigName;
+                    Configure.Template = dialog.Template;
+                    Configure.SubjectLimit = dialog.SubjectLimit;
+                    Configure.SortGradeYear = "三年級";
+                    _Configures.Add(Configure);
+                    cboConfigure.Items.Insert(cboConfigure.SelectedIndex, Configure);
+                    cboConfigure.SelectedIndex = cboConfigure.SelectedIndex - 1;
+                    Configure.Encode();
+                    Configure.Save();
                 }
                 else
                 {
-                    if (cboConfigure.SelectedIndex >= 0)
+                    cboConfigure.SelectedIndex = -1;
+                }
+            }
+            else
+            {
+                if (cboConfigure.SelectedIndex >= 0)
+                {
+                    btnSaveConfig.Enabled = buttonX1.Enabled = true;
+                    Configure = _Configures[cboConfigure.SelectedIndex];
+                    if (Configure.Template == null)
+                        Configure.Decode();
+                    cboRankRilter.Text = Configure.RankFilterTagName;
+                    foreach (ListViewItem item in lvwSubjectPri.Items)
                     {
-                        btnSaveConfig.Enabled = buttonX1.Enabled = true;
-                        Configure = _Configures[cboConfigure.SelectedIndex];
-                        if (Configure.Template == null)
-                            Configure.Decode();
-
-                        cboRankRilter.Text = Configure.RankFilterTagName;
-                        foreach (ListViewItem item in lvwSubjectPri.Items)
+                        // 這兩個特殊選項, 需要最後勾選, 不然會造成其他正常選項無法勾選, 以及太早上色
+                        if (item.Text == "部訂必修專業科目" || item.Text == "部訂必修實習科目")
                         {
+                            if (Configure.PrintSubjectList.Contains(item.Text))
+                            {
+                                // 先用temp存起來, 不然其他正常選項無法勾選
+                                tmpSpecialListViewItem["lvwSubjectPri"] = item.Index;
+                            }
+                        }
+                        else
                             item.Checked = Configure.PrintSubjectList.Contains(item.Text);
-                        }
-                        cboTagRank1.Text = Configure.TagRank1TagName;
-                        foreach (ListViewItem item in lvwSubjectOrd1.Items)
-                        {
-                            item.Checked = Configure.TagRank1SubjectList.Contains(item.Text);
-                        }
-                        cboTagRank2.Text = Configure.TagRank2TagName;
-                        foreach (ListViewItem item in lvwSubjectOrd2.Items)
-                        {
-                            item.Checked = Configure.TagRank2SubjectList.Contains(item.Text);
-                        }
-
-                        foreach (ListViewItem item in lvwSubjectOrd2.Items)
-                        {
-                            item.Checked = Configure.TagRank2SubjectList.Contains(item.Text);
-                        }
-
-
-                        chk計算學業成績排名.Checked = Configure.WithCalSemesterScoreRank;
-
-                        if (chkGrade1.Checked == false && chkGrade2.Checked == false && chkGrade3.Checked == false && chkGrade4.Checked == false)
-                        {
-                            if (chkGrade1.Text == Configure.SortGradeYear)
-                                chkGrade1.Checked = true;
-
-                            if (chkGrade2.Text == Configure.SortGradeYear)
-                                chkGrade2.Checked = true;
-
-                            if (chkGrade3.Text == Configure.SortGradeYear)
-                                chkGrade3.Checked = true;
-
-                            if (chkGrade4.Text == Configure.SortGradeYear)
-                                chkGrade4.Checked = true;
-
-                        }
-                        // 成績年級學期
-                        if (Configure.RankFilterGradeSemeterList != null)
-                            foreach (Control cr in gpGradeSemester.Controls)
-                            {
-                                CheckBoxX cb = cr as CheckBoxX;
-                                if (cb != null)
-                                    cb.Checked = Configure.RankFilterGradeSemeterList.Contains(cb.Text);
-
-                            }
-
-                        // 採計成績
-                        if (Configure.RankFilterUseScoreList != null)
-                            foreach (Control cr in gpUseScore.Controls)
-                            {
-                                CheckBoxX cb = cr as CheckBoxX;
-                                if (cb != null)
-                                    cb.Checked = Configure.RankFilterUseScoreList.Contains(cb.Text);
-
-                            }
                     }
-                    else
+                    cboTagRank1.Text = Configure.TagRank1TagName;
+                    foreach (ListViewItem item in lvwSubjectOrd1.Items)
                     {
-                        Configure = null;
-                        chkGrade1.Checked = true;
-                        cboRankRilter.SelectedIndex = -1;
-                        cboTagRank1.SelectedIndex = -1;
-                        cboTagRank2.SelectedIndex = -1;
-                        foreach (ListViewItem item in lvwSubjectPri.Items)
+                        // 這兩個特殊選項, 需要最後勾選, 不然會造成其他正常選項無法勾選, 以及太早上色
+                        if (item.Text == "部訂必修專業科目" || item.Text == "部訂必修實習科目")
                         {
-                            item.Checked = false;
+                            if (Configure.TagRank1SubjectList.Contains(item.Text))
+                            {
+                                // 先用temp存起來, 不然其他正常選項無法勾選
+                                tmpSpecialListViewItem["lvwSubjectOrd1"] = item.Index;
+                            }
                         }
-                        foreach (ListViewItem item in lvwSubjectOrd1.Items)
+                        else
+                            item.Checked = Configure.TagRank1SubjectList.Contains(item.Text);
+                    }
+                    cboTagRank2.Text = Configure.TagRank2TagName;
+                    foreach (ListViewItem item in lvwSubjectOrd2.Items)
+                    {
+                        // 這兩個特殊選項, 需要最後勾選, 不然會造成其他正常選項無法勾選, 以及太早上色
+                        if (item.Text == "部訂必修專業科目" || item.Text == "部訂必修實習科目")
                         {
-                            item.Checked = false;
+                            if (Configure.TagRank2SubjectList.Contains(item.Text))
+                            {
+                                // 先用temp存起來, 不然其他正常選項無法勾選
+                                tmpSpecialListViewItem["lvwSubjectOrd2"] = item.Index;
+                            }
                         }
-                        foreach (ListViewItem item in lvwSubjectOrd2.Items)
-                        {
-                            item.Checked = false;
-                        }
+                        else
+                            item.Checked = Configure.TagRank2SubjectList.Contains(item.Text);
+                    }
 
+                    // 勾選特殊選項, 讓其他選項無法勾選, 以及上色
+                    if (tmpSpecialListViewItem["lvwSubjectPri"] >= 0)
+                    {
+                        _SpecialListViewItem["lvwSubjectPri"] = tmpSpecialListViewItem["lvwSubjectPri"];
+                        lvwSubjectPri.Items[_SpecialListViewItem["lvwSubjectPri"]].Checked = true;
+                    }
+                    if (tmpSpecialListViewItem["lvwSubjectOrd1"] >= 0)
+                    {
+                        _SpecialListViewItem["lvwSubjectOrd1"] = tmpSpecialListViewItem["lvwSubjectOrd1"];
+                        lvwSubjectOrd1.Items[_SpecialListViewItem["lvwSubjectOrd1"]].Checked = true;
+                    }
+                    if (tmpSpecialListViewItem["lvwSubjectOrd2"] >= 0)
+                    {
+                        _SpecialListViewItem["lvwSubjectOrd2"] = tmpSpecialListViewItem["lvwSubjectOrd2"];
+                        lvwSubjectOrd2.Items[_SpecialListViewItem["lvwSubjectOrd2"]].Checked = true;
+                    }
+
+                    chk計算學業成績排名.Checked = Configure.WithCalSemesterScoreRank;
+
+                    if (chkGrade1.Checked == false && chkGrade2.Checked == false && chkGrade3.Checked == false && chkGrade4.Checked == false)
+                    {
+                        if (chkGrade1.Text == Configure.SortGradeYear)
+                            chkGrade1.Checked = true;
+
+                        if (chkGrade2.Text == Configure.SortGradeYear)
+                            chkGrade2.Checked = true;
+
+                        if (chkGrade3.Text == Configure.SortGradeYear)
+                            chkGrade3.Checked = true;
+
+                        if (chkGrade4.Text == Configure.SortGradeYear)
+                            chkGrade4.Checked = true;
+
+                    }
+                    // 成績年級學期
+                    if (Configure.RankFilterGradeSemeterList != null)
                         foreach (Control cr in gpGradeSemester.Controls)
                         {
                             CheckBoxX cb = cr as CheckBoxX;
                             if (cb != null)
-                                cb.Checked = false;
+                                cb.Checked = Configure.RankFilterGradeSemeterList.Contains(cb.Text);
 
                         }
 
-                        // 採計成績                    
+                    // 採計成績
+                    if (Configure.RankFilterUseScoreList != null)
                         foreach (Control cr in gpUseScore.Controls)
                         {
                             CheckBoxX cb = cr as CheckBoxX;
                             if (cb != null)
-                                cb.Checked = false;
+                                cb.Checked = Configure.RankFilterUseScoreList.Contains(cb.Text);
 
                         }
+                }
+                else
+                {
+                    Configure = null;
+                    chkGrade1.Checked = true;
+                    cboRankRilter.SelectedIndex = -1;
+                    cboTagRank1.SelectedIndex = -1;
+                    cboTagRank2.SelectedIndex = -1;
+                    foreach (ListViewItem item in lvwSubjectPri.Items)
+                    {
+                        item.Checked = false;
+                    }
+                    foreach (ListViewItem item in lvwSubjectOrd1.Items)
+                    {
+                        item.Checked = false;
+                    }
+                    foreach (ListViewItem item in lvwSubjectOrd2.Items)
+                    {
+                        item.Checked = false;
+                    }
+
+                    foreach (Control cr in gpGradeSemester.Controls)
+                    {
+                        CheckBoxX cb = cr as CheckBoxX;
+                        if (cb != null)
+                            cb.Checked = false;
+
+                    }
+
+                    // 採計成績                    
+                    foreach (Control cr in gpUseScore.Controls)
+                    {
+                        CheckBoxX cb = cr as CheckBoxX;
+                        if (cb != null)
+                            cb.Checked = false;
+
                     }
                 }
-                _NewCboConfigName = cboConfigure.Text;
+            }
+            _NewCboConfigName = cboConfigure.Text;
         }
 
         private void cboConfigure_SelectedIndexChanged(object sender, EventArgs e)
@@ -947,29 +1024,130 @@ namespace SHStaticRank2.Data
         private void btnCopy1_Click(object sender, EventArgs e)
         {
             List<string> selNameList = new List<string>();
+            int itemIndex = int.MinValue;
+
             foreach (ListViewItem lvi in lvwSubjectPri.Items)
                 if (lvi.Checked)
                     selNameList.Add(lvi.Text);
 
             foreach (ListViewItem lvi in lvwSubjectOrd1.Items)
+            {
                 if(selNameList.Contains(lvi.Text))
-                    lvi.Checked=true;
+                {
+                    // 這兩個特殊選項, 需要最後勾選, 不然會造成其他正常選項無法勾選, 以及太早上色
+                    if (lvi.Text == "部訂必修專業科目" || lvi.Text == "部訂必修實習科目")
+                        itemIndex = lvi.Index;
+                    else
+                        lvi.Checked=true;
+                }
                 else
-                    lvi.Checked = false;            
+                    lvi.Checked = false;
+            }
+
+            // 勾選特殊選項, 讓其他選項無法勾選, 以及上色
+            if (itemIndex >= 0)
+            {
+                _SpecialListViewItem["lvwSubjectOrd1"] = itemIndex;
+                lvwSubjectOrd1.Items[itemIndex].Checked = true;
+            }
+            else
+            {
+                _SpecialListViewItem["lvwSubjectOrd1"] = int.MinValue;
+            }
         }
 
         private void buttonX2_Click(object sender, EventArgs e)
         {
             List<string> selNameList = new List<string>();
+            int itemIndex = int.MinValue;
             foreach (ListViewItem lvi in lvwSubjectPri.Items)
                 if (lvi.Checked)
                     selNameList.Add(lvi.Text);
 
             foreach (ListViewItem lvi in lvwSubjectOrd2.Items)
                 if (selNameList.Contains(lvi.Text))
-                    lvi.Checked = true;
+                {
+                    // 這兩個特殊選項, 需要最後勾選, 不然會造成其他正常選項無法勾選, 以及太早上色
+                    if (lvi.Text == "部訂必修專業科目" || lvi.Text == "部訂必修實習科目")
+                        itemIndex = lvi.Index;
+                    else
+                        lvi.Checked=true;
+                }
                 else
-                    lvi.Checked = false;            
-        }      
+                    lvi.Checked = false;
+
+            // 勾選特殊選項, 讓其他選項無法勾選, 以及上色
+            if (itemIndex >= 0)
+            {
+                _SpecialListViewItem["lvwSubjectOrd2"] = itemIndex;
+                lvwSubjectOrd2.Items[itemIndex].Checked = true;
+            }
+            else
+            {
+                _SpecialListViewItem["lvwSubjectOrd2"] = int.MinValue;
+            }         
+        }
+
+        #region ListView的事件
+        /// <summary>
+        /// 假如有勾選"部訂必修專業科目"或"部訂必修實習科目", 不可改變勾選的結果
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void ListViewItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            string listViewName = (sender as ListView).Name;
+            if ((_SpecialListViewItem[listViewName] >= 0) &&
+                (_SpecialListViewItem[listViewName] != e.Index))
+            {
+                e.NewValue = e.CurrentValue;
+            }
+        }
+        /// <summary>
+        /// 處理勾選"部訂必修專業科目"或"部訂必修實習科目"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void ListViewItemChecked(object sender, ItemCheckedEventArgs e)
+        {
+            ListView listView = sender as ListView;
+            string listViewName = listView.Name;
+
+            if (e.Item.Text == "部訂必修專業科目" || e.Item.Text == "部訂必修實習科目")
+            {
+                if (e.Item.Checked == true)
+                {
+                    if (_SpecialListViewItem[listViewName] < 0)
+                    {
+                        _SpecialListViewItem[listViewName] = e.Item.Index;
+                    }
+                }
+                else
+                {
+                    if (_SpecialListViewItem[listViewName] == e.Item.Index)
+                    {
+                        _SpecialListViewItem[listViewName] = int.MinValue;
+                    }
+                }
+            }
+
+            // 幫選項上顏色
+            foreach (ListViewItem item in listView.Items)
+            {
+                if (_SpecialListViewItem[listViewName] < 0)
+                {
+                    item.ForeColor = Color.Black;
+                }
+                else
+                {
+                    if (_SpecialListViewItem[listViewName] == item.Index)
+                        item.ForeColor = Color.Black;
+                    else
+                        item.ForeColor = Color.Gray;
+                }
+            }
+        }
+        #endregion ListView的事件
+
     }
 }

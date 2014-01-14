@@ -42,14 +42,16 @@ namespace SmartSchool.Evaluation
             button.Enable = CurrentUser.Acl["Button0830"].Executable;
             button["成績計算規則"].Click += delegate 
             {
-                new ConfigurationForm(new ScoreCalcConfiguration()).ShowDialog();
+                // new ConfigurationForm(new ScoreCalcConfiguration()).ShowDialog();
+                (new FrmScoreCalcConfiguration()).ShowDialog();
             };
 
             button.Enable = CurrentUser.Acl["Button0860"].Executable;
             button["班級課程規劃表"].BeginGroup = true;
             button["班級課程規劃表"].Click += delegate
             {
-                new ConfigurationForm(new GraduationPlanConfiguration()).ShowDialog();
+                //new ConfigurationForm(new GraduationPlanConfiguration()).ShowDialog();
+                (new FrmGraduationPlanConfiguration()).ShowDialog();
             };
 
             button.Enable = CurrentUser.Acl["Button0870"].Executable;
@@ -62,13 +64,15 @@ namespace SmartSchool.Evaluation
             button["學程科目表"].BeginGroup = true;
             button["學程科目表"].Click += delegate
             {
-                new ConfigurationForm(new SubjectTableConfiguration("學程科目表")).ShowDialog();
+                //new ConfigurationForm(new SubjectTableConfiguration("學程科目表")).ShowDialog();
+                (new FrmSubjectTableConfiguration("學程科目表")).ShowDialog();
             };
 
             button.Enable = CurrentUser.Acl["Button0840"].Executable;
             button["自訂畢業應修及格科目表"].Click += delegate
             {
-                new ConfigurationForm(new SubjectTableConfiguration("核心科目表")).ShowDialog();
+                //new ConfigurationForm(new SubjectTableConfiguration("核心科目表")).ShowDialog();
+                (new FrmSubjectTableConfiguration("核心科目表")).ShowDialog();
             };
 
 

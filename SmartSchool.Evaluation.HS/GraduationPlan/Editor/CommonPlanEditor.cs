@@ -206,8 +206,15 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
 
         public System.Xml.XmlElement GetSource()
         {
+            return GetSource(string.Empty);
+        }
+        public System.Xml.XmlElement GetSource(string schoolYear)
+        {
             XmlDocument doc = new XmlDocument();
             doc.LoadXml("<GraduationPlan/>");
+            if (!string.IsNullOrEmpty(schoolYear))
+                doc.DocumentElement.SetAttribute("SchoolYear", "" + schoolYear);
+
             int rowIndex = 0;
             //掃每一列資料
             foreach (DataGridViewRow row in dataGridViewX1.Rows)

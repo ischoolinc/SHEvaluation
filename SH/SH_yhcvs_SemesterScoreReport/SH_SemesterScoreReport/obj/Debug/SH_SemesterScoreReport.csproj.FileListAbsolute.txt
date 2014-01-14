@@ -1,0 +1,11 @@
+D:\TFS2010\Research\chuntai\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\bin\Debug\SH_yhcvs_SemesterScoreReport.dll
+D:\TFS2010\Research\chuntai\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\bin\Debug\SH_yhcvs_SemesterScoreReport.pdb
+D:\TFS2010\Research\chuntai\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\ResolveAssemblyReference.cache
+D:\TFS2010\Research\chuntai\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_SemesterScoreReport.CloneConfigure.resources
+D:\TFS2010\Research\chuntai\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_SemesterScoreReport.ConfigForm.resources
+D:\TFS2010\Research\chuntai\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_SemesterScoreReport.NewConfigure.resources
+D:\TFS2010\Research\chuntai\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_SemesterScoreReport.Properties.Resources.resources
+D:\TFS2010\Research\chuntai\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\GenerateResource.read.1.tlog
+D:\TFS2010\Research\chuntai\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\GenerateResource.write.1.tlog
+D:\TFS2010\Research\chuntai\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_yhcvs_SemesterScoreReport.dll
+D:\TFS2010\Research\chuntai\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_yhcvs_SemesterScoreReport.pdb

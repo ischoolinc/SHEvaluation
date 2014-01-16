@@ -176,6 +176,8 @@
     <Content Include="library\SHSchool.Data.xml" />
     <Content Include="library\SmartSchool.Customization.Data.dll" />
     <Content Include="library\SmartSchool.Customization.Data.xml" />
+    <Content Include="library\SmartSchool.Evaluation.HS.dll" />
+    <Content Include="library\SmartSchool.Evaluation.HS.pdb" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\個人學期成績單樣板%28高中%29.doc" />

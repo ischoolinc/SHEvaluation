@@ -81,6 +81,9 @@ namespace SmartSchool.Evaluation
         private string _Catalog;
         private XmlElement _Content;
 
+        private readonly string _SchoolYear;
+        private readonly string _TrimName;
+
         public SubjectTableItem(XmlElement subjectTableElement)
         {
             DSXmlHelper helper=new DSXmlHelper(subjectTableElement);
@@ -88,10 +91,29 @@ namespace SmartSchool.Evaluation
             _Name = helper.GetText("Name");
             _Catalog = helper.GetText("Catalog");
             _Content = helper.GetElement("Content");
+
+            _SchoolYear = string.Empty;
+            foreach (XmlElement node in _Content.ChildNodes)
+            {
+                if (node.Name == "SubjectTableContent")
+                {
+                    _SchoolYear = node.HasAttribute("SchoolYear") ? node.GetAttribute("SchoolYear") : string.Empty;
+                    break;
+                }
+            }
+
+            _TrimName = _Name;
+            if (!string.IsNullOrEmpty(_SchoolYear))
+            {
+                _TrimName = _Name.TrimStart(_SchoolYear.ToCharArray());
+            }
+
         }
 
         public string ID { get { return _ID; } }
         public string Name { get { return _Name; } }
+        public string SchoolYear { get { return _SchoolYear; } }
+        public string TrimName { get { return _TrimName; } }
         public string Catalog { get { return _Catalog; } }
         public XmlElement Content { get { return _Content; } }
 

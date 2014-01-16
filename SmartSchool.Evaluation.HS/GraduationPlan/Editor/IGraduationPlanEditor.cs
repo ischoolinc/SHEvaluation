@@ -9,6 +9,7 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
     {
         void SetSource(XmlElement source);
         XmlElement GetSource();
+        XmlElement GetSource(string schoolYear);
         bool IsDirty { get;}
         event EventHandler IsDirtyChanged;
         bool IsValidated

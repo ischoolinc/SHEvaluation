@@ -648,8 +648,19 @@ namespace SmartSchool.Evaluation.Configuration
         /// <returns></returns>
         public XmlElement GetSource()
         {
+            return GetSource(string.Empty);
+        }
+        /// <summary>
+        /// 取得設定資料
+        /// </summary>
+        /// <returns></returns>
+        public XmlElement GetSource(string schoolYear)
+        {
             XmlDocument doc = new XmlDocument();
             doc.LoadXml("<ScoreCalcRule/>");
+            if (!string.IsNullOrEmpty(schoolYear))
+                doc.DocumentElement.SetAttribute("SchoolYear", "" + schoolYear);
+
             #region 學期科目成績屬性採計方式
             XmlElement element = doc.CreateElement("學期科目成績屬性採計方式");
             element.InnerText = radioButton16.Checked ? "以課程規劃表內容為準" : "以實際學期科目成績內容為準";

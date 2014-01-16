@@ -11,6 +11,9 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
         private readonly string _ID;
         private readonly string _Name;
         private readonly XmlElement _ScoreCalcRuleElement;
+
+        private readonly string _SchoolYear;
+        private readonly string _TrimName;
         //private readonly bool _DefinedSubjectInfoByGPlan;
 
         internal ScoreCalcRuleInfo(XmlElement scrElement)
@@ -18,6 +21,13 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
             _ID = scrElement.GetAttribute("ID");
             _Name = scrElement.SelectSingleNode("Name").InnerText;
             _ScoreCalcRuleElement = (XmlElement)scrElement.SelectSingleNode("Content/ScoreCalcRule");
+            
+            _SchoolYear = _ScoreCalcRuleElement.HasAttribute("SchoolYear") ? _ScoreCalcRuleElement.GetAttribute("SchoolYear") : string.Empty;
+            _TrimName = _Name;
+            if (!string.IsNullOrEmpty(_SchoolYear))
+            {
+                _TrimName = _Name.TrimStart(_SchoolYear.ToCharArray());
+            }
             //_DefinedSubjectInfoByGPlan = false;
             //if (_ScoreCalcRuleElement.SelectSingleNode("學分及修課資訊採計方式") == null || ((XmlElement)_ScoreCalcRuleElement.SelectSingleNode("學分及修課資訊採計方式")).GetAttribute("由課程規劃表取得") == "True")
             //    _DefinedSubjectInfoByGPlan = true;
@@ -25,6 +35,8 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
 
         public string ID { get { return _ID; } }
         public string Name { get { return _Name; } }
+        public string SchoolYear { get { return _SchoolYear; } }
+        public string TrimName { get { return _TrimName; } }
         //public bool DefinedSubjectInfoByGPlan{get { return _DefinedSubjectInfoByGPlan; }}
         public XmlElement ScoreCalcRuleElement
         {

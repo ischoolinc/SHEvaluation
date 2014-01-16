@@ -13,15 +13,27 @@ namespace SmartSchool.Evaluation.GraduationPlan
         private readonly string _Name;
         private readonly XmlElement _GraduationPlanElement;
 
+        private readonly string _SchoolYear;
+        private readonly string _TrimName;
+
         internal GraduationPlanInfo(XmlElement gPlanElement)
         {
             _ID = gPlanElement.GetAttribute("ID");
             _Name = gPlanElement.SelectSingleNode("Name").InnerText;
             _GraduationPlanElement = (XmlElement)gPlanElement.SelectSingleNode("Content/GraduationPlan");
+
+            _SchoolYear = _GraduationPlanElement.HasAttribute("SchoolYear") ? _GraduationPlanElement.GetAttribute("SchoolYear") : string.Empty;
+            _TrimName = _Name;
+            if (!string.IsNullOrEmpty(_SchoolYear))
+            {
+                _TrimName = _Name.TrimStart(_SchoolYear.ToCharArray());
+            }
         }
 
         public string ID { get { return _ID; } }
         public string Name { get { return _Name; } }
+        public string SchoolYear { get { return _SchoolYear; } }
+        public string TrimName { get { return _TrimName; } }
         public XmlElement GraduationPlanElement
         {
             get

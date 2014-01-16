@@ -166,6 +166,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AngelDemonComputer.cs" />
+    <Compile Include="Configuration\FrmGraduationPlanConfiguration.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Configuration\FrmGraduationPlanConfiguration.Designer.cs">
+      <DependentUpon>FrmGraduationPlanConfiguration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\FrmReviseRuleName.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Configuration\FrmReviseRuleName.Designer.cs">
+      <DependentUpon>FrmReviseRuleName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\FrmScoreCalcConfiguration.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Configuration\FrmScoreCalcConfiguration.Designer.cs">
+      <DependentUpon>FrmScoreCalcConfiguration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\FrmSubjectTableConfiguration.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Configuration\FrmSubjectTableConfiguration.Designer.cs">
+      <DependentUpon>FrmSubjectTableConfiguration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Configuration\MoralConductEditors\AppraiseRuleEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -695,6 +719,8 @@
     <Content Include="Library\SmartSchool.Customization.PlugIn.xml" />
     <Content Include="Library\SmartSchool.ExceptionHandler.dll" />
     <Content Include="Library\SmartSchool.ExceptionHandler.pdb" />
+    <None Include="Resources\classroom_64.ico" />
+    <None Include="Resources\elementary_school_64.ico" />
     <Content Include="Resources\ExportScoreImage.png" />
     <Content Include="Resources\ImportScoreImage.png" />
     <None Include="Resources\subject_64.png" />
@@ -725,6 +751,18 @@
     <None Include="Resources\隨堂重修清單.xls" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Configuration\FrmGraduationPlanConfiguration.resx">
+      <DependentUpon>FrmGraduationPlanConfiguration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuration\FrmReviseRuleName.resx">
+      <DependentUpon>FrmReviseRuleName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuration\FrmScoreCalcConfiguration.resx">
+      <DependentUpon>FrmScoreCalcConfiguration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuration\FrmSubjectTableConfiguration.resx">
+      <DependentUpon>FrmSubjectTableConfiguration.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Configuration\MoralConductEditors\AppraiseRuleEditor.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AppraiseRuleEditor.cs</DependentUpon>

@@ -23,6 +23,9 @@ namespace SmartSchool.Evaluation.Configuration
             _BKWGraduationPlanLoader.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_BKWGraduationPlanLoader_RunWorkerCompleted);
             _BKWGraduationPlanLoader.DoWork += new DoWorkEventHandler(_BKWGraduationPlanLoader_DoWork);
             _BKWGraduationPlanLoader.RunWorkerAsync();
+
+            // 預設為目前的學年度
+            iiSchoolYear.Text = K12.Data.School.DefaultSchoolYear;
         }
 
         private void _BKWGraduationPlanLoader_DoWork(object sender, DoWorkEventArgs e)
@@ -52,12 +55,17 @@ namespace SmartSchool.Evaluation.Configuration
         {
             if (textBoxX1.Text != "")
             {
-                AddGraduationPlan.Insert(textBoxX1.Text, _CopyElement);
-                this.Close();
+                _CopyElement = ReviseXmlContent(_CopyElement, iiSchoolYear.Value);
+                string ruleName = (iiSchoolYear.Value > 0 ? "" + iiSchoolYear.Value : "") + textBoxX1.Text;
+
+                AddGraduationPlan.Insert(ruleName, _CopyElement);
                 EventHub.Instance.InvokGraduationPlanInserted();
+                FrmGraduationPlanConfiguration.SetAdvTreeExpandStatus(iiSchoolYear.Value.ToString(), true);
                 //GraduationPlanManager.Instance.LoadGraduationPlan(true);
                 //if (GraduationPlanManager.Instance.Visible == false)
                 //    GraduationPlanManager.Instance.ShowDialog();
+                this.DialogResult = System.Windows.Forms.DialogResult.OK;
+                this.Close();
             }
             else
                 this.Close();
@@ -70,28 +78,100 @@ namespace SmartSchool.Evaluation.Configuration
             else
             {
                 _CopyElement = (XmlElement)((ComboItem)comboBoxEx1.SelectedItem).Tag;
+
+                if (_CopyElement != null && _CopyElement.HasAttribute("SchoolYear"))
+                {
+                    // 把學年度設定為欲複製的學年度
+                    iiSchoolYear.Text = _CopyElement.GetAttribute("SchoolYear");
+                }
             }
         }
 
         private void textBoxX1_TextChanged(object sender, EventArgs e)
         {
-            errorProvider1.SetError(textBoxX1, "");
-            buttonX1.Enabled = true;
-            if ( textBoxX1.Text == "" )
+            CheckPass();
+        }
+
+        private void iiSchoolYear_ValueChanged(object sender, EventArgs e)
+        {
+            CheckPass();
+        }
+
+        /// <summary>
+        /// 修改XML的內容
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="schoolYear"></param>
+        /// <returns></returns>
+        private XmlElement ReviseXmlContent(XmlElement content, int schoolYear)
+        {
+            if (schoolYear > 0)
             {
-                errorProvider1.SetError(textBoxX1, "不可空白。");
+                if (content == null)
+                {
+                    content = new XmlDocument().CreateElement("GraduationPlan");
+                }
+
+                content.RemoveAttribute("SchoolYear");
+                content.SetAttribute("SchoolYear", schoolYear.ToString());
+            }
+            else
+            {
+                if (content != null)
+                {
+                    content.RemoveAttribute("SchoolYear");
+                }
+            }
+            return content;
+        }
+
+        /// <summary>
+        /// 驗證資料
+        /// </summary>
+        private void CheckPass()
+        {
+            errorProvider1.Clear();
+            if (textBoxX1.Text == "")
+            {
+                SetError("不可空白。");
                 buttonX1.Enabled = false;
                 return;
             }
-            foreach ( GraduationPlanInfo gPlan in SmartSchool.Evaluation.GraduationPlan.GraduationPlan.Instance.Items )
+
+            string ruleName = (iiSchoolYear.Value > 0 ? "" + iiSchoolYear.Value : "") + textBoxX1.Text;
+
+            if (CheckRuleNameDup(ruleName) == true)
             {
-                if ( gPlan.Name == textBoxX1.Text )
+                SetError("名稱不可重複。");
+                buttonX1.Enabled = false;
+                return;
+            }
+            buttonX1.Enabled = true;
+        }
+
+        private void SetError(string errMsg)
+        {
+            this.errorProvider1.Clear();
+            this.errorProvider1.SetIconPadding(this.textBoxX1, -18);
+
+            this.errorProvider1.SetError(this.textBoxX1, errMsg);
+        }
+
+        /// <summary>
+        /// 檢查名稱是否重複
+        /// </summary>
+        /// <param name="ruleName"></param>
+        /// <returns></returns>
+        private bool CheckRuleNameDup(string newRuleName)
+        {
+            foreach (GraduationPlanInfo gPlan in SmartSchool.Evaluation.GraduationPlan.GraduationPlan.Instance.Items)
+            {
+                if (gPlan.Name == newRuleName)
                 {
-                    errorProvider1.SetError(textBoxX1, "名稱不可重複。");
-                    buttonX1.Enabled = false;
-                    return;
+                    return true;
                 }
             }
+            return false;
         }
     }
 }

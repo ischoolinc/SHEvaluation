@@ -915,7 +915,7 @@ namespace SHStaticRank2.Data
                                 #region 分析學生所屬類別
                                 List<string> cat1List = new List<string>(), cat2List = new List<string>();
                                 //不排名的學生移出list
-                                List<StudentRecord> notRankList = new List<StudentRecord>();
+                                //List<StudentRecord> notRankList = new List<StudentRecord>();
                                 foreach (var studentRec in studentList)
                                 {
                                     if (!cat1Dict.ContainsKey(studentRec.StudentID))
@@ -928,11 +928,11 @@ namespace SHStaticRank2.Data
                                     {
                                         if (tag.SubCategory == "")
                                         {
-                                            if (setting.NotRankTag != "" && setting.NotRankTag == tag.Name)
-                                            {
-                                                notRankList.Add(studentRec);
-                                                break;
-                                            }
+                                            //if (setting.NotRankTag != "" && setting.NotRankTag == tag.Name)
+                                            //{
+                                            //    notRankList.Add(studentRec);
+                                            //    break;
+                                            //}
                                             if (setting.Rank1Tag != "" && setting.Rank1Tag == tag.Name)
                                             {
                                                 if (!studentRec.Fields.ContainsKey("tag1"))
@@ -948,11 +948,11 @@ namespace SHStaticRank2.Data
                                         }
                                         else
                                         {
-                                            if (setting.NotRankTag != "" && setting.NotRankTag == "[" + tag.Name + "]")
-                                            {
-                                                notRankList.Add(studentRec);
-                                                break;
-                                            }
+                                            //if (setting.NotRankTag != "" && setting.NotRankTag == "[" + tag.Name + "]")
+                                            //{
+                                            //    notRankList.Add(studentRec);
+                                            //    break;
+                                            //}
                                             if (setting.Rank1Tag != "" && setting.Rank1Tag == "[" + tag.Name + "]")
                                             {
                                                 if (!studentRec.Fields.ContainsKey("tag1"))
@@ -969,10 +969,10 @@ namespace SHStaticRank2.Data
                                     }
                                 }
                                 //不排名的學生直接移出list
-                                foreach (var r in notRankList)
-                                {
-                                    studentList.Remove(r);
-                                }
+                                //foreach (var r in notRankList)
+                                //{
+                                //    studentList.Remove(r);
+                                //}
 
                                 // 比對學生類別與類別一、二
                                 foreach (StudentRecord studRec in studentList)
@@ -993,7 +993,7 @@ namespace SHStaticRank2.Data
 
                                 #endregion
                                 //取得學生學期科目成績
-                                accessHelper.StudentHelper.FillSemesterSubjectScore(true, studentList);
+                                //accessHelper.StudentHelper.FillSemesterSubjectScore(true, studentList);
                                 if (setting.計算學業成績排名)
                                 {
                                     accessHelper.StudentHelper.FillSemesterEntryScore(true, studentList);
@@ -2786,9 +2786,10 @@ namespace SHStaticRank2.Data
                                     // 處理科目原始成績加權平均
                                     #region 處理科目原始成績加權平均
                                     string key5_name = "科目原始成績加權平均";
+                                    string key7_name = "篩選科目原始成績加權平均";
                                     for (int g = 1; g <= 4; g++)
                                     {
-                                        string key5 = "";
+                                        string key5 = "", key7 = "";
                                         string gsS = "";
                                         for (int s = 1; s <= 2; s++)
                                         {
@@ -2801,9 +2802,13 @@ namespace SHStaticRank2.Data
                                             if (g == 4 && s == 1) gsS = "四上";
                                             if (g == 4 && s == 2) gsS = "四下";
                                             key5 = studentID + gsS + key5_name;
+                                            key7 = studentID + gsS + key7_name;
 
                                             if (!selectScore.ContainsKey(key5))
                                                 selectScore.Add(key5, new studScore());
+
+                                            if (!selectScore.ContainsKey(key7))
+                                                selectScore.Add(key7, new studScore());
 
                                             foreach (var subjectScore in studentRec.SemesterSubjectScoreList)
                                             {
@@ -2812,7 +2817,7 @@ namespace SHStaticRank2.Data
                                                     decimal score = 0, Sscore;
                                                     if (decimal.TryParse(subjectScore.Detail.GetAttribute("原始成績"), out Sscore))
                                                         score = Sscore;
-
+                                                    #region 處理科目原始成績
                                                     if (selectScore.ContainsKey(key5))
                                                     {
                                                         // 總分
@@ -2844,9 +2849,49 @@ namespace SHStaticRank2.Data
                                                         // 學分加總
                                                         selectScore[key5].sumCreditC2 += subjectScore.Credit;
                                                     }
+                                                    #endregion 處理科目原始成績
+
+                                                    #region 處理篩選科目原始成績
+                                                    if (selectScore.ContainsKey(key7))
+                                                    {
+                                                        // 假如是使用者勾選的科目
+                                                        if (IsNeededSubject(subjectScore, _ListViewName.lvwSubjectPri, setting.useSubjectPrintList))
+                                                        {
+                                                            // 總分
+                                                            selectScore[key7].sumScore += score;
+                                                            // 加總
+                                                            selectScore[key7].sumScoreA += (score * subjectScore.Credit);
+                                                            // 筆數
+                                                            selectScore[key7].subjCount++;
+                                                            // 學分加總
+                                                            selectScore[key7].sumCredit += subjectScore.Credit;
+
+                                                            // 類別一處理
+                                                            // 總分
+                                                            selectScore[key7].sumScoreC1 += score;
+                                                            // 總分加權
+                                                            selectScore[key7].sumScoreAC1 += (score * subjectScore.Credit);
+                                                            // 筆數
+                                                            selectScore[key7].subjCountC1++;
+                                                            // 學分加總
+                                                            selectScore[key7].sumCreditC1 += subjectScore.Credit;
+
+                                                            // 類別二處理
+                                                            // 總分
+                                                            selectScore[key7].sumScoreC2 += score;
+                                                            // 總分加權
+                                                            selectScore[key7].sumScoreAC2 += (score * subjectScore.Credit);
+                                                            // 筆數
+                                                            selectScore[key7].subjCountC2++;
+                                                            // 學分加總
+                                                            selectScore[key7].sumCreditC2 += subjectScore.Credit;
+                                                        }
+                                                    }
+                                                    #endregion 處理篩選科目原始成績
                                                 }
                                             }
 
+                                            #region 處理科目原始成績
                                             if (selectScore.ContainsKey(key5))
                                             {
                                                 if (selectScore[key5].subjCount > 0)
@@ -2911,6 +2956,73 @@ namespace SHStaticRank2.Data
                                                     rankStudents[key5_1].Add(studentID);
                                                 }
                                             }
+                                            #endregion 處理科目原始成績
+
+                                            #region 處理篩選科目原始成績
+                                            if (selectScore.ContainsKey(key7))
+                                            {
+                                                // 平均
+                                                if (selectScore[key7].subjCount > 0)
+                                                    selectScore[key7].avgScore = (decimal)(selectScore[key7].sumScore / selectScore[key7].subjCount);
+                                                // 加權平均
+                                                if (selectScore[key7].sumCredit > 0)
+                                                    selectScore[key7].avgScoreA = (decimal)(selectScore[key7].sumScoreA / selectScore[key7].sumCredit);
+
+                                                // 平均(類別一)
+                                                if (selectScore[key7].subjCountC1 > 0)
+                                                    selectScore[key7].avgScoreC1 = (decimal)(selectScore[key7].sumScoreC1 / selectScore[key7].subjCountC1);
+                                                // 加權平均(類別一)
+                                                if (selectScore[key7].sumCreditC1 > 0)
+                                                    selectScore[key7].avgScoreAC1 = (decimal)(selectScore[key7].sumScoreAC1 / selectScore[key7].sumCreditC1);
+
+                                                // 平均(類別二)
+                                                if (selectScore[key7].subjCountC2 > 0)
+                                                    selectScore[key7].avgScoreC2 = (decimal)(selectScore[key7].sumScoreC2 / selectScore[key7].subjCountC2);
+                                                // 加權平均(類別二)
+                                                if (selectScore[key7].sumCreditC2 > 0)
+                                                    selectScore[key7].avgScoreAC2 = (decimal)(selectScore[key7].sumScoreAC2 / selectScore[key7].sumCreditC2);
+                                            }
+
+                                            if (selectScore.ContainsKey(key7))
+                                            {
+                                                // 篩選科目原始成績加權平均班排名
+                                                string key7_1 = gsS + "篩選科目原始成績加權平均班排名" + studentRec.RefClass.ClassID;
+                                                if (!ranks.ContainsKey(key7_1)) ranks.Add(key7_1, new List<decimal>());
+                                                if (!rankStudents.ContainsKey(key7_1)) rankStudents.Add(key7_1, new List<string>());
+                                                ranks[key7_1].Add(selectScore[key7].avgScoreA);
+                                                rankStudents[key7_1].Add(studentID);
+
+                                                //各科目科排名
+                                                key7_1 = gsS + "篩選科目原始成績加權平均科排名" + studentRec.Department + "^^^" + gradeyear;
+                                                if (!ranks.ContainsKey(key7_1)) ranks.Add(key7_1, new List<decimal>());
+                                                if (!rankStudents.ContainsKey(key7_1)) rankStudents.Add(key7_1, new List<string>());
+                                                ranks[key7_1].Add(selectScore[key7].avgScoreA);
+                                                rankStudents[key7_1].Add(studentID);
+
+                                                key7_1 = gsS + "篩選科目原始成績加權平均校排名" + gradeyear;
+                                                if (!ranks.ContainsKey(key7_1)) ranks.Add(key7_1, new List<decimal>());
+                                                if (!rankStudents.ContainsKey(key7_1)) rankStudents.Add(key7_1, new List<string>());
+                                                ranks[key7_1].Add(selectScore[key7].avgScoreA);
+                                                rankStudents[key7_1].Add(studentID);
+
+                                                if (studentRec.Fields.ContainsKey("tag1"))
+                                                {
+                                                    key7_1 = gsS + "篩選科目原始成績加權平均類別一" + studentRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                    if (!ranks.ContainsKey(key7_1)) ranks.Add(key7_1, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key7_1)) rankStudents.Add(key7_1, new List<string>());
+                                                    ranks[key7_1].Add(selectScore[key7].avgScoreAC1);
+                                                    rankStudents[key7_1].Add(studentID);
+                                                }
+                                                if (studentRec.Fields.ContainsKey("tag2"))
+                                                {
+                                                    key7_1 = gsS + "篩選科目原始成績加權平均類別二" + studentRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                    if (!ranks.ContainsKey(key7_1)) ranks.Add(key7_1, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key7_1)) rankStudents.Add(key7_1, new List<string>());
+                                                    ranks[key7_1].Add(selectScore[key7].avgScoreAC2);
+                                                    rankStudents[key7_1].Add(studentID);
+                                                }
+                                            }
+                                            #endregion 處理篩選科目原始成績
                                         }
 
                                     } //
@@ -2919,11 +3031,16 @@ namespace SHStaticRank2.Data
                                     // 處理科目原始成績加權平均平均
                                     #region 處理科目原始成績加權平均平均
                                     string key6_name = "科目原始成績加權平均平均";
+                                    string key8_name = "篩選科目原始成績加權平均平均";
 
                                     string key6 = studentID + key6_name;
+                                    string key8 = studentID + key8_name;
 
                                     if (!selectScore.ContainsKey(key6))
                                         selectScore.Add(key6, new studScore());
+
+                                    if (!selectScore.ContainsKey(key8))
+                                        selectScore.Add(key8, new studScore());
 
                                     foreach (var subjectScore in studentRec.SemesterSubjectScoreList)
                                     {
@@ -2931,6 +3048,7 @@ namespace SHStaticRank2.Data
                                         if (decimal.TryParse(subjectScore.Detail.GetAttribute("原始成績"), out Sscore))
                                             score = Sscore;
 
+                                        #region 處理科目原始成績
                                         if (selectScore.ContainsKey(key6))
                                         {
                                             // 總分
@@ -2962,8 +3080,47 @@ namespace SHStaticRank2.Data
                                             // 學分加總
                                             selectScore[key6].sumCreditC2 += subjectScore.Credit;
                                         }
+                                        #endregion 處理科目原始成績
+
+                                        #region 處理篩選科目原始成績
+                                        if (selectScore.ContainsKey(key8))
+                                        {
+                                            if (IsNeededSubject(subjectScore, _ListViewName.lvwSubjectPri, setting.useSubjectPrintList))
+                                            {
+                                                // 總分
+                                                selectScore[key8].sumScore += score;
+                                                // 加總
+                                                selectScore[key8].sumScoreA += (score * subjectScore.Credit);
+                                                // 筆數
+                                                selectScore[key8].subjCount++;
+                                                // 學分加總
+                                                selectScore[key8].sumCredit += subjectScore.Credit;
+
+                                                // 類別一處理
+                                                // 總分
+                                                selectScore[key8].sumScoreC1 += score;
+                                                // 總分加權
+                                                selectScore[key8].sumScoreAC1 += (score * subjectScore.Credit);
+                                                // 筆數
+                                                selectScore[key8].subjCountC1++;
+                                                // 學分加總
+                                                selectScore[key8].sumCreditC1 += subjectScore.Credit;
+
+                                                // 類別二處理
+                                                // 總分
+                                                selectScore[key8].sumScoreC2 += score;
+                                                // 總分加權
+                                                selectScore[key8].sumScoreAC2 += (score * subjectScore.Credit);
+                                                // 筆數
+                                                selectScore[key8].subjCountC2++;
+                                                // 學分加總
+                                                selectScore[key8].sumCreditC2 += subjectScore.Credit;
+                                            }
+                                        }
+                                        #endregion 處理篩選科目原始成績
                                     }
 
+                                    #region 處理科目原始成績
                                     if (selectScore.ContainsKey(key6))
                                     {
                                         if (selectScore[key6].subjCount > 0)
@@ -3028,6 +3185,73 @@ namespace SHStaticRank2.Data
                                             rankStudents[key6_1].Add(studentID);
                                         }
                                     } //
+                                    #endregion 處理科目原始成績
+
+                                    #region 處理篩選科目原始成績
+                                    if (selectScore.ContainsKey(key8))
+                                    {
+                                        // 平均
+                                        if (selectScore[key8].subjCount > 0)
+                                            selectScore[key8].avgScore = (decimal)(selectScore[key8].sumScore / selectScore[key8].subjCount);
+                                        // 加權平均
+                                        if (selectScore[key8].sumCredit > 0)
+                                            selectScore[key8].avgScoreA = (decimal)(selectScore[key8].sumScoreA / selectScore[key8].sumCredit);
+
+                                        // 平均(類別一)
+                                        if (selectScore[key8].subjCountC1 > 0)
+                                            selectScore[key8].avgScoreC1 = (decimal)(selectScore[key8].sumScoreC1 / selectScore[key8].subjCountC1);
+                                        // 加權平均(類別一)
+                                        if (selectScore[key8].sumCreditC1 > 0)
+                                            selectScore[key8].avgScoreAC1 = (decimal)(selectScore[key8].sumScoreAC1 / selectScore[key8].sumCreditC1);
+
+                                        // 平均(類別二)
+                                        if (selectScore[key8].subjCountC2 > 0)
+                                            selectScore[key8].avgScoreC2 = (decimal)(selectScore[key8].sumScoreC2 / selectScore[key8].subjCountC2);
+                                        // 加權平均(類別二)
+                                        if (selectScore[key8].sumCreditC2 > 0)
+                                            selectScore[key8].avgScoreAC2 = (decimal)(selectScore[key8].sumScoreAC2 / selectScore[key8].sumCreditC2);
+                                    }
+
+                                    if (selectScore.ContainsKey(key8))
+                                    {
+                                        // 篩選科目原始成績加權平均平均班排名
+                                        string key8_1 = "篩選科目原始成績加權平均平均班排名" + studentRec.RefClass.ClassID;
+                                        if (!ranks.ContainsKey(key8_1)) ranks.Add(key8_1, new List<decimal>());
+                                        if (!rankStudents.ContainsKey(key8_1)) rankStudents.Add(key8_1, new List<string>());
+                                        ranks[key8_1].Add(selectScore[key8].avgScoreA);
+                                        rankStudents[key8_1].Add(studentID);
+
+                                        //各科目科排名
+                                        key8_1 = "篩選科目原始成績加權平均平均科排名" + studentRec.Department + "^^^" + gradeyear;
+                                        if (!ranks.ContainsKey(key8_1)) ranks.Add(key8_1, new List<decimal>());
+                                        if (!rankStudents.ContainsKey(key8_1)) rankStudents.Add(key8_1, new List<string>());
+                                        ranks[key8_1].Add(selectScore[key8].avgScoreA);
+                                        rankStudents[key8_1].Add(studentID);
+
+                                        key8_1 = "篩選科目原始成績加權平均平均校排名" + gradeyear;
+                                        if (!ranks.ContainsKey(key8_1)) ranks.Add(key8_1, new List<decimal>());
+                                        if (!rankStudents.ContainsKey(key8_1)) rankStudents.Add(key8_1, new List<string>());
+                                        ranks[key8_1].Add(selectScore[key8].avgScoreA);
+                                        rankStudents[key8_1].Add(studentID);
+
+                                        if (studentRec.Fields.ContainsKey("tag1"))
+                                        {
+                                            key8_1 = "篩選科目原始成績加權平均平均類別一" + studentRec.Fields["tag1"] + "^^^" + gradeyear;
+                                            if (!ranks.ContainsKey(key8_1)) ranks.Add(key8_1, new List<decimal>());
+                                            if (!rankStudents.ContainsKey(key8_1)) rankStudents.Add(key8_1, new List<string>());
+                                            ranks[key8_1].Add(selectScore[key8].avgScoreAC1);
+                                            rankStudents[key8_1].Add(studentID);
+                                        }
+                                        if (studentRec.Fields.ContainsKey("tag2"))
+                                        {
+                                            key8_1 = "篩選科目原始成績加權平均平均類別二" + studentRec.Fields["tag2"] + "^^^" + gradeyear;
+                                            if (!ranks.ContainsKey(key8_1)) ranks.Add(key8_1, new List<decimal>());
+                                            if (!rankStudents.ContainsKey(key8_1)) rankStudents.Add(key8_1, new List<string>());
+                                            ranks[key8_1].Add(selectScore[key8].avgScoreAC2);
+                                            rankStudents[key8_1].Add(studentID);
+                                        }
+                                    }
+                                    #endregion 處理篩選科目原始成績
                                     #endregion 處理科目原始成績加權平均平均
 
                                 }
@@ -4451,6 +4675,25 @@ namespace SHStaticRank2.Data
                                             _table.Columns.Add(str + "科目原始成績加權平均類別二排名");
                                             _table.Columns.Add(str + "科目原始成績加權平均類別二排名母數");
                                             _table.Columns.Add(str + "科目原始成績加權平均類別二排名百分比");
+
+                                            _table.Columns.Add(str + "篩選科目原始成績加權平均");
+                                            _table.Columns.Add(str + "篩選科目原始成績加權平均班排名");
+                                            _table.Columns.Add(str + "篩選科目原始成績加權平均班排名母數");
+                                            _table.Columns.Add(str + "篩選科目原始成績加權平均班排名百分比");
+                                            _table.Columns.Add(str + "篩選科目原始成績加權平均科排名");
+                                            _table.Columns.Add(str + "篩選科目原始成績加權平均科排名母數");
+                                            _table.Columns.Add(str + "篩選科目原始成績加權平均科排名百分比");
+                                            _table.Columns.Add(str + "篩選科目原始成績加權平均校排名");
+                                            _table.Columns.Add(str + "篩選科目原始成績加權平均校排名母數");
+                                            _table.Columns.Add(str + "篩選科目原始成績加權平均校排名百分比");
+                                            _table.Columns.Add(str + "篩選科目原始成績加權平均類別一");
+                                            _table.Columns.Add(str + "篩選科目原始成績加權平均類別一排名");
+                                            _table.Columns.Add(str + "篩選科目原始成績加權平均類別一排名母數");
+                                            _table.Columns.Add(str + "篩選科目原始成績加權平均類別一排名百分比");
+                                            _table.Columns.Add(str + "篩選科目原始成績加權平均類別二");
+                                            _table.Columns.Add(str + "篩選科目原始成績加權平均類別二排名");
+                                            _table.Columns.Add(str + "篩選科目原始成績加權平均類別二排名母數");
+                                            _table.Columns.Add(str + "篩選科目原始成績加權平均類別二排名百分比");
                                         }
                                     }
 
@@ -4473,6 +4716,25 @@ namespace SHStaticRank2.Data
                                     _table.Columns.Add("科目原始成績加權平均平均類別二排名");
                                     _table.Columns.Add("科目原始成績加權平均平均類別二排名母數");
                                     _table.Columns.Add("科目原始成績加權平均平均類別二排名百分比");
+
+                                    _table.Columns.Add("篩選科目原始成績加權平均平均");
+                                    _table.Columns.Add("篩選科目原始成績加權平均平均班排名");
+                                    _table.Columns.Add("篩選科目原始成績加權平均平均班排名母數");
+                                    _table.Columns.Add("篩選科目原始成績加權平均平均班排名百分比");
+                                    _table.Columns.Add("篩選科目原始成績加權平均平均科排名");
+                                    _table.Columns.Add("篩選科目原始成績加權平均平均科排名母數");
+                                    _table.Columns.Add("篩選科目原始成績加權平均平均科排名百分比");
+                                    _table.Columns.Add("篩選科目原始成績加權平均平均校排名");
+                                    _table.Columns.Add("篩選科目原始成績加權平均平均校排名母數");
+                                    _table.Columns.Add("篩選科目原始成績加權平均平均校排名百分比");
+                                    _table.Columns.Add("篩選科目原始成績加權平均平均類別一");
+                                    _table.Columns.Add("篩選科目原始成績加權平均平均類別一排名");
+                                    _table.Columns.Add("篩選科目原始成績加權平均平均類別一排名母數");
+                                    _table.Columns.Add("篩選科目原始成績加權平均平均類別一排名百分比");
+                                    _table.Columns.Add("篩選科目原始成績加權平均平均類別二");
+                                    _table.Columns.Add("篩選科目原始成績加權平均平均類別二排名");
+                                    _table.Columns.Add("篩選科目原始成績加權平均平均類別二排名母數");
+                                    _table.Columns.Add("篩選科目原始成績加權平均平均類別二排名百分比");
 
                                     // 動態科目類
                                     int subjCot = setting.useSubjectPrintList.Count;
@@ -5861,9 +6123,10 @@ namespace SHStaticRank2.Data
                                             // 處理科目原始成績加權平均
                                             #region 處理科目原始成績加權平均
                                             string key5_name = "科目原始成績加權平均";
+                                            string key7_name = "篩選科目原始成績加權平均";
                                             for (int g = 1; g <= 4; g++)
                                             {
-                                                string key5 = "";
+                                                string key5 = "", key7 = "";
                                                 string gsS = "";
                                                 for (int s = 1; s <= 2; s++)
                                                 {
@@ -5876,9 +6139,12 @@ namespace SHStaticRank2.Data
                                                     if (g == 4 && s == 1) gsS = "四上";
                                                     if (g == 4 && s == 2) gsS = "四下";
                                                     key5 = studRec.StudentID + gsS + key5_name;
+                                                    key7 = studRec.StudentID + gsS + key7_name;
 
                                                     string id5 = studRec.StudentID + gsS + key5_name;
+                                                    string id7 = studRec.StudentID + gsS + key7_name;
 
+                                                    #region 處理科目原始成績
                                                     if (selectScore.ContainsKey(id5))
                                                     {
 
@@ -5935,6 +6201,67 @@ namespace SHStaticRank2.Data
                                                             }
                                                         }
                                                     }
+                                                    #endregion 處理科目原始成績
+
+                                                    #region 處理篩選科目原始成績
+                                                    if (selectScore.ContainsKey(id7))
+                                                    {
+                                                        row[gsS + "篩選科目原始成績加權平均"] = Utility.ParseD2(selectScore[id7].avgScoreA);
+
+                                                        string key7a = gsS + "篩選科目原始成績加權平均班排名" + studRec.RefClass.ClassID;
+                                                        if (ranks.ContainsKey(key7a))
+                                                        {
+                                                            int rr = ranks[key7a].IndexOf(selectScore[id7].avgScoreA) + 1;
+                                                            row[gsS + "篩選科目原始成績加權平均班排名"] = rr;
+                                                            row[gsS + "篩選科目原始成績加權平均班排名母數"] = ranks[key7a].Count;
+                                                            row[gsS + "篩選科目原始成績加權平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key7a].Count);
+                                                        }
+
+                                                        key7a = gsS + "篩選科目原始成績加權平均科排名" + studRec.Department + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key7a))
+                                                        {
+                                                            int rr = ranks[key7a].IndexOf(selectScore[id7].avgScoreA) + 1;
+                                                            row[gsS + "篩選科目原始成績加權平均科排名"] = rr;
+                                                            row[gsS + "篩選科目原始成績加權平均科排名母數"] = ranks[key7a].Count;
+                                                            row[gsS + "篩選科目原始成績加權平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key7a].Count);
+                                                        }
+
+                                                        key7a = gsS + "篩選科目原始成績加權平均校排名" + gradeyear;
+                                                        if (ranks.ContainsKey(key7a))
+                                                        {
+                                                            int rr = ranks[key7a].IndexOf(selectScore[id7].avgScoreA) + 1;
+                                                            row[gsS + "篩選科目原始成績加權平均校排名"] = rr;
+                                                            row[gsS + "篩選科目原始成績加權平均校排名母數"] = ranks[key7a].Count;
+                                                            row[gsS + "篩選科目原始成績加權平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key7a].Count);
+                                                        }
+
+                                                        if (studRec.Fields.ContainsKey("tag1"))
+                                                        {
+                                                            key7a = gsS + "篩選科目原始成績加權平均類別一" + studRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                            if (ranks.ContainsKey(key7a))
+                                                            {
+                                                                int rr = ranks[key7a].IndexOf(selectScore[id7].avgScoreAC1) + 1;
+                                                                row[gsS + "篩選科目原始成績加權平均類別一"] = Utility.ParseD2(selectScore[id7].avgScoreAC1);
+                                                                row[gsS + "篩選科目原始成績加權平均類別一排名"] = rr;
+                                                                row[gsS + "篩選科目原始成績加權平均類別一排名母數"] = ranks[key7a].Count;
+                                                                row[gsS + "篩選科目原始成績加權平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key7a].Count);
+                                                            }
+                                                        }
+
+                                                        if (studRec.Fields.ContainsKey("tag2"))
+                                                        {
+                                                            key7a = gsS + "篩選科目原始成績加權平均類別二" + studRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                            if (ranks.ContainsKey(key7a))
+                                                            {
+                                                                int rr = ranks[key7a].IndexOf(selectScore[id7].avgScoreAC2) + 1;
+                                                                row[gsS + "篩選科目原始成績加權平均類別二"] = Utility.ParseD2(selectScore[id7].avgScoreAC2);
+                                                                row[gsS + "篩選科目原始成績加權平均類別二排名"] = rr;
+                                                                row[gsS + "篩選科目原始成績加權平均類別二排名母數"] = ranks[key7a].Count;
+                                                                row[gsS + "篩選科目原始成績加權平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key7a].Count);
+                                                            }
+                                                        }
+                                                    }
+                                                    #endregion 處理篩選科目原始成績
                                                 }
                                             }
                                             #endregion 處理科目原始成績加權平均
@@ -5942,10 +6269,14 @@ namespace SHStaticRank2.Data
                                             // 處理科目原始成績加權平均平均
                                             #region 處理科目原始成績加權平均平均
                                             string key6_name = "科目原始成績加權平均平均";
+                                            string key8_name = "篩選科目原始成績加權平均平均";
                                             string key6 = studRec.StudentID + key6_name;
+                                            string key8 = studRec.StudentID + key8_name;
 
                                             string id6 = studRec.StudentID + key6_name;
+                                            string id8 = studRec.StudentID + key8_name;
 
+                                            #region 處理科目原始成績
                                             if (selectScore.ContainsKey(id6))
                                             {
 
@@ -6002,6 +6333,66 @@ namespace SHStaticRank2.Data
                                                     }
                                                 }
                                             }
+                                            #endregion 處理科目原始成績
+
+                                            #region 處理篩選科目原始成績
+                                            if (selectScore.ContainsKey(id8))
+                                            {
+
+                                                row["篩選科目原始成績加權平均平均"] = Utility.ParseD2(selectScore[id8].avgScoreA);
+                                                string key8a = "篩選科目原始成績加權平均平均班排名" + studRec.RefClass.ClassID;
+                                                if (ranks.ContainsKey(key8a))
+                                                {
+                                                    int rr = ranks[key8a].IndexOf(selectScore[id8].avgScoreA) + 1;
+                                                    row["篩選科目原始成績加權平均平均班排名"] = rr;
+                                                    row["篩選科目原始成績加權平均平均班排名母數"] = ranks[key8a].Count;
+                                                    row["篩選科目原始成績加權平均平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key8a].Count);
+                                                }
+
+                                                key8a = "篩選科目原始成績加權平均平均科排名" + studRec.Department + "^^^" + gradeyear;
+                                                if (ranks.ContainsKey(key8a))
+                                                {
+                                                    int rr = ranks[key8a].IndexOf(selectScore[id8].avgScoreA) + 1;
+                                                    row["篩選科目原始成績加權平均平均科排名"] = rr;
+                                                    row["篩選科目原始成績加權平均平均科排名母數"] = ranks[key8a].Count;
+                                                    row["篩選科目原始成績加權平均平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key8a].Count);
+                                                }
+
+                                                key8a = "篩選科目原始成績加權平均平均校排名" + gradeyear;
+                                                if (ranks.ContainsKey(key8a))
+                                                {
+                                                    int rr = ranks[key8a].IndexOf(selectScore[id8].avgScoreA) + 1;
+                                                    row["篩選科目原始成績加權平均平均校排名"] = rr;
+                                                    row["篩選科目原始成績加權平均平均校排名母數"] = ranks[key8a].Count;
+                                                    row["篩選科目原始成績加權平均平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key8a].Count);
+                                                }
+                                                if (studRec.Fields.ContainsKey("tag1"))
+                                                {
+                                                    key8a = "篩選科目原始成績加權平均平均類別一" + studRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key8a))
+                                                    {
+                                                        int rr = ranks[key8a].IndexOf(selectScore[id8].avgScoreAC1) + 1;
+                                                        row["篩選科目原始成績加權平均平均類別一"] = Utility.ParseD2(selectScore[id8].avgScoreAC1);
+                                                        row["篩選科目原始成績加權平均平均類別一排名"] = rr;
+                                                        row["篩選科目原始成績加權平均平均類別一排名母數"] = ranks[key8a].Count;
+                                                        row["篩選科目原始成績加權平均平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key8a].Count);
+                                                    }
+                                                }
+
+                                                if (studRec.Fields.ContainsKey("tag2"))
+                                                {
+                                                    key8a = "篩選科目原始成績加權平均平均類別二" + studRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key8a))
+                                                    {
+                                                        int rr = ranks[key8a].IndexOf(selectScore[id8].avgScoreAC2) + 1;
+                                                        row["篩選科目原始成績加權平均平均類別二"] = Utility.ParseD2(selectScore[id8].avgScoreAC2);
+                                                        row["篩選科目原始成績加權平均平均類別二排名"] = rr;
+                                                        row["篩選科目原始成績加權平均平均類別二排名母數"] = ranks[key8a].Count;
+                                                        row["篩選科目原始成績加權平均平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key8a].Count);
+                                                    }
+                                                }
+                                            }
+                                            #endregion 處理篩選科目原始成績
                                             #endregion 處理科目原始成績加權平均平均
 
 
@@ -6110,6 +6501,7 @@ namespace SHStaticRank2.Data
             bool retValue = false;
             _SpecialListViewItem.Clear();
 
+            // 檢查勾選科目
             if (setting.useSubjectPrintList.Contains(specialItem1))
             {
                 _SpecialListViewItem.Add(_ListViewName.lvwSubjectPri, specialItem1);
@@ -6120,6 +6512,8 @@ namespace SHStaticRank2.Data
                 _SpecialListViewItem.Add(_ListViewName.lvwSubjectPri, specialItem2);
                 retValue = true;
             }
+
+            // 檢查類別一勾選科目
             if (!string.IsNullOrEmpty(setting.Rank1Tag))
             {
                 if (setting.useSubjecOrder1List.Contains(specialItem1))
@@ -6134,6 +6528,7 @@ namespace SHStaticRank2.Data
                 }
             }
 
+            // 檢查類別二勾選科目
             if (!string.IsNullOrEmpty(setting.Rank2Tag))
             {
                 if (setting.useSubjecOrder2List.Contains(specialItem1))
@@ -6169,7 +6564,7 @@ namespace SHStaticRank2.Data
             #region 取得要排名的學生
             foreach (string gradeYear in gradeyearStudents.Keys)
             {
-                List<StudentRecord> studentList = new List<StudentRecord>(gradeyearStudents[gradeYear]);
+                List<StudentRecord> studentList = gradeyearStudents[gradeYear];
                 List<StudentRecord> notRankList = new List<StudentRecord>();
                 // 取得不排名的學生跟類別1,2的學生
                 #region 取得不排名的學生
@@ -6336,5 +6731,26 @@ namespace SHStaticRank2.Data
 
             return false;
         }
+
+        /// <summary>
+        /// 先判斷是否為勾選的科目名稱, 假如有勾選"部訂必修專業科目"或"部訂必修實習科目", 則再判斷是否為指定科目
+        /// </summary>
+        /// <param name="subjectScore"></param>
+        /// <param name="listViewName"></param>
+        /// <param name="subjectList"></param>
+        /// <returns></returns>
+        private static bool IsNeededSubject(SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo subjectScore, _ListViewName listViewName, List<string> subjectList)
+        {
+            foreach (string subjectName in subjectList)
+            {
+                if (IsNeededSubject(subjectScore, listViewName, subjectName) == true)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        
     }
 }

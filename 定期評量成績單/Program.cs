@@ -327,6 +327,15 @@ namespace 定期評量成績單
                 Exception exc = null;
                 bkw.RunWorkerCompleted += delegate
                 {
+                    //#region 將 DataTable 內合併欄位產生出來
+                    //StreamWriter sw = new StreamWriter(Application.StartupPath + "\\定期評量成績單合併欄位.txt");
+                    //foreach (DataColumn dc in table.Columns)
+                    //    sw.WriteLine(dc.Caption);
+
+                    //sw.Close();
+                    //#endregion
+
+
                     System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 個人評量成績單產生 E");
                     string err = "下列學生因成績項目超過樣板支援上限，\n超出部分科目成績無法印出，建議調整樣板內容。";
                     if (overflowRecords.Count > 0)

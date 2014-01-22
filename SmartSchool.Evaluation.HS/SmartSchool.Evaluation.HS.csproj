@@ -569,6 +569,7 @@
     <Compile Include="Reports\MultiSemesterScore\Forms\MultiSemesterScoreForm.Designer.cs">
       <DependentUpon>MultiSemesterScoreForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reports\Resit\NotReachStandardList.cs" />
     <Compile Include="Reports\Resit\ResitListByStudent.cs" />
     <Compile Include="Reports\Resit\ResitListBySubject.cs" />
     <Compile Include="Reports\Resit\ResitScoreImport.cs" />

@@ -29,9 +29,13 @@ namespace SmartSchool.Evaluation.Process
             buttonItem89["補考名單-依科目"].Click += new System.EventHandler(this.buttonItem2_Click);
             buttonItem89["補考名單-依學生"].Click += new System.EventHandler(this.buttonItem1_Click);
             buttonItem89["補考成績匯入表"].Click += new System.EventHandler(this.buttonItem3_Click);
+            buttonItem89["未達補考標準名單"].Click += new System.EventHandler(this.buttonItem4_Click);
 
             buttonItem89.Enable = CurrentUser.Acl["Button0690"].Executable;
         }
+
+        
+
         public override string ProcessTabName
         {
             get
@@ -53,6 +57,11 @@ namespace SmartSchool.Evaluation.Process
         private void buttonItem3_Click(object sender, EventArgs e)
         {
             new ResitScoreImport();
+        }
+
+        private void buttonItem4_Click(object sender, EventArgs e)
+        {
+            new NotReachStandardList();
         }
     }
 }

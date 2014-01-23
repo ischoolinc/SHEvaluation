@@ -915,7 +915,7 @@ namespace SHStaticRank2.Data
                                 #region 分析學生所屬類別
                                 List<string> cat1List = new List<string>(), cat2List = new List<string>();
                                 //不排名的學生移出list
-                                //List<StudentRecord> notRankList = new List<StudentRecord>();
+                                List<StudentRecord> notRankList = new List<StudentRecord>();
                                 foreach (var studentRec in studentList)
                                 {
                                     if (!cat1Dict.ContainsKey(studentRec.StudentID))
@@ -928,11 +928,11 @@ namespace SHStaticRank2.Data
                                     {
                                         if (tag.SubCategory == "")
                                         {
-                                            //if (setting.NotRankTag != "" && setting.NotRankTag == tag.Name)
-                                            //{
-                                            //    notRankList.Add(studentRec);
-                                            //    break;
-                                            //}
+                                            if (setting.NotRankTag != "" && setting.NotRankTag == tag.Name)
+                                            {
+                                                notRankList.Add(studentRec);
+                                                break;
+                                            }
                                             if (setting.Rank1Tag != "" && setting.Rank1Tag == tag.Name)
                                             {
                                                 if (!studentRec.Fields.ContainsKey("tag1"))
@@ -948,11 +948,11 @@ namespace SHStaticRank2.Data
                                         }
                                         else
                                         {
-                                            //if (setting.NotRankTag != "" && setting.NotRankTag == "[" + tag.Name + "]")
-                                            //{
-                                            //    notRankList.Add(studentRec);
-                                            //    break;
-                                            //}
+                                            if (setting.NotRankTag != "" && setting.NotRankTag == "[" + tag.Name + "]")
+                                            {
+                                                notRankList.Add(studentRec);
+                                                break;
+                                            }
                                             if (setting.Rank1Tag != "" && setting.Rank1Tag == "[" + tag.Name + "]")
                                             {
                                                 if (!studentRec.Fields.ContainsKey("tag1"))
@@ -969,10 +969,10 @@ namespace SHStaticRank2.Data
                                     }
                                 }
                                 //不排名的學生直接移出list
-                                //foreach (var r in notRankList)
-                                //{
-                                //    studentList.Remove(r);
-                                //}
+                                foreach (var r in notRankList)
+                                {
+                                    studentList.Remove(r);
+                                }
 
                                 // 比對學生類別與類別一、二
                                 foreach (StudentRecord studRec in studentList)

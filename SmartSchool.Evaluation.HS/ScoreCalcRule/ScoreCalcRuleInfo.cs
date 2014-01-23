@@ -26,7 +26,8 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
             _TrimName = _Name;
             if (!string.IsNullOrEmpty(_SchoolYear))
             {
-                _TrimName = _Name.TrimStart(_SchoolYear.ToCharArray());
+                //_TrimName = _Name.TrimStart(_SchoolYear.ToCharArray());
+                _TrimName = _Name.Substring(_SchoolYear.Length);
             }
             //_DefinedSubjectInfoByGPlan = false;
             //if (_ScoreCalcRuleElement.SelectSingleNode("學分及修課資訊採計方式") == null || ((XmlElement)_ScoreCalcRuleElement.SelectSingleNode("學分及修課資訊採計方式")).GetAttribute("由課程規劃表取得") == "True")

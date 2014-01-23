@@ -26,7 +26,8 @@ namespace SmartSchool.Evaluation.GraduationPlan
             _TrimName = _Name;
             if (!string.IsNullOrEmpty(_SchoolYear))
             {
-                _TrimName = _Name.TrimStart(_SchoolYear.ToCharArray());
+                //_TrimName = _Name.TrimStart(_SchoolYear.ToCharArray());
+                _TrimName = _Name.Substring(_SchoolYear.Length);
             }
         }
 

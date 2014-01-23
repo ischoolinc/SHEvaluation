@@ -15,6 +15,11 @@ namespace SmartSchool.Evaluation
     public class WearyDogComputer
     {
         /// <summary>
+        /// 異常課程提示清單
+        /// </summary>
+        public List<string> _WarningList;
+
+        /// <summary>
         /// 進位方式
         /// </summary>
         public enum RoundMode { 四捨五入, 無條件進位, 無條件捨去 }
@@ -430,6 +435,22 @@ namespace SmartSchool.Evaluation
                                 int sy = schoolyear, se = semester;
                                 if (!insertSemesterSubjectScoreList.ContainsKey(sy) || !insertSemesterSubjectScoreList[sy].ContainsKey(se) || !insertSemesterSubjectScoreList[sy][se].ContainsKey(key))
                                 {
+                                    //允許的分項類別清單
+                                    List<string> entrys = new List<string>(new string[] { "學業", "體育", "國防通識", "健康與護理", "實習科目", "專業科目" });
+
+                                    //科目名稱空白或分項類別有錯誤時執行
+                                    if (string.IsNullOrEmpty(sacRecord.Subject) || !entrys.Contains(sacRecord.Entry))
+                                    {
+                                        //_WarningList為空就先建立
+                                        if (_WarningList == null) _WarningList = new List<string>();
+                                        //_WarningList不存在此課程名稱才加入
+                                        if (!_WarningList.Contains(sacRecord.CourseName))
+                                        {
+                                            _WarningList.Add(sacRecord.CourseName);
+                                        }
+                                        continue;
+                                    }
+
                                     #region 加入新的資料
                                     XmlElement newScoreInfo = doc.CreateElement("Subject");
                                     newScoreInfo.SetAttribute("不計學分", sacRecord.NotIncludedInCredit ? "是" : "否");
@@ -845,6 +866,7 @@ namespace SmartSchool.Evaluation
                 }
                 var.Fields.Add("SemesterSubjectCalcScore", semesterSubjectCalcScoreElement);
             }
+
             return _ErrorList;
         }
 

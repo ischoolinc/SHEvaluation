@@ -307,6 +307,18 @@ namespace SmartSchool.Evaluation.Process.Wizards
                 else
                     bkw.ReportProgress((int)((computedStudents * 100.0) / maxStudents), errormessages);
             }
+
+            //異常課程提示清單
+            if (computer._WarningList != null && computer._WarningList.Count > 0)
+            {
+                string str = "下列課程的科目名稱或分項類別有錯誤,故不列入計算\r\n";
+                foreach (string s in computer._WarningList)
+                {
+                    str += s + "\r\n";
+                }
+                MessageBox.Show(str);
+            }
+
             if (allPass)
                 e.Result = selectedStudents;
             else

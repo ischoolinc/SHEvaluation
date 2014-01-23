@@ -341,6 +341,7 @@ namespace SHStaticRank2.Data
                             int scc = 1;
 
                             // 假如有勾選"部訂必修專業科目"或"部訂必修實習科目", 需要更動勾選的科目
+                            bool hasSemesterScore = false;
                             if (CheckListViewItem(setting) == true)
                             {
                                 List<StudentRecord> studentRankList = new List<StudentRecord>();// 排除不排名學生
@@ -352,6 +353,7 @@ namespace SHStaticRank2.Data
 
                                 // 取得學生學期科目成績
                                 accessHelper.StudentHelper.FillSemesterSubjectScore(true, studentRankList);
+                                hasSemesterScore = true;
 
                                 // 更動勾選的科目
                                 ReNewSelectedSubject(setting, studentRankList, studentTag1List, studentTag2List);
@@ -992,8 +994,11 @@ namespace SHStaticRank2.Data
                                 }
 
                                 #endregion
-                                //取得學生學期科目成績
-                                //accessHelper.StudentHelper.FillSemesterSubjectScore(true, studentList);
+                                if (hasSemesterScore == false)
+                                {
+                                    //取得學生學期科目成績
+                                    accessHelper.StudentHelper.FillSemesterSubjectScore(true, studentList);
+                                }
                                 if (setting.計算學業成績排名)
                                 {
                                     accessHelper.StudentHelper.FillSemesterEntryScore(true, studentList);

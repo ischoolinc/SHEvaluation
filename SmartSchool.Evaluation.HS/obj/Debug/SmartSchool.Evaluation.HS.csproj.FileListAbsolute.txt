@@ -1,6 +1,5 @@
 D:\GitHub2\SHEvaluation\SHEvaluation\SmartSchool.Evaluation.HS\bin\debug\SmartSchool.Evaluation.HS.dll
 D:\GitHub2\SHEvaluation\SHEvaluation\SmartSchool.Evaluation.HS\bin\debug\SmartSchool.Evaluation.HS.pdb
-D:\GitHub2\SHEvaluation\SHEvaluation\SmartSchool.Evaluation.HS\obj\Debug\SmartSchool.Evaluation.HS.csprojResolveAssemblyReference.cache
 D:\GitHub2\SHEvaluation\SHEvaluation\SmartSchool.Evaluation.HS\obj\Debug\SmartSchool.Evaluation.Configuration.FrmGraduationPlanConfiguration.resources
 D:\GitHub2\SHEvaluation\SHEvaluation\SmartSchool.Evaluation.HS\obj\Debug\SmartSchool.Evaluation.Configuration.FrmReviseRuleName.resources
 D:\GitHub2\SHEvaluation\SHEvaluation\SmartSchool.Evaluation.HS\obj\Debug\SmartSchool.Evaluation.Configuration.FrmScoreCalcConfiguration.resources
@@ -71,3 +70,4 @@ D:\GitHub2\SHEvaluation\SHEvaluation\SmartSchool.Evaluation.HS\obj\Debug\SmartSc
 D:\GitHub2\SHEvaluation\SHEvaluation\SmartSchool.Evaluation.HS\obj\Debug\SmartSchool.Evaluation.HS.csproj.GenerateResource.Cache
 D:\GitHub2\SHEvaluation\SHEvaluation\SmartSchool.Evaluation.HS\obj\Debug\SmartSchool.Evaluation.HS.dll
 D:\GitHub2\SHEvaluation\SHEvaluation\SmartSchool.Evaluation.HS\obj\Debug\SmartSchool.Evaluation.HS.pdb
+D:\GitHub2\SHEvaluation\SHEvaluation\SmartSchool.Evaluation.HS\obj\Debug\SmartSchool.Evaluation.HS.csprojResolveAssemblyReference.cache

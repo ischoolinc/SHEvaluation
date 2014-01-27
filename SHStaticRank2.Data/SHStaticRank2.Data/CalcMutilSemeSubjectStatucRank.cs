@@ -315,19 +315,6 @@ namespace SHStaticRank2.Data
 
         private void CalcSemeSubjectStatucRank_Load(object sender, EventArgs e)
         {
-          
-            MessageBox.Show(
-@"功能說明：
-本功能以原有固定功能為基礎，加上類別篩選及類組排名。
-排名完將會顯示排名細節，此資料目前暫不儲存，請自行留存。
-1.排名對象為目前為該年級，扣除標註有不排名類別以及非一般狀態學生(非在選取的學期中就讀該年級的學生)。
-2.計算過程中所有學生年級、班級、所屬類別等皆以目前的狀態進行計算，不會因為選取以前的學年度而往回推。
-3.排名所採用的分數為勾選成績項目中選最高值。
-4.若勾選'僅預覽，不儲存結果'項目，排名資料將不會寫入資料庫，僅有排名細節供預覽用。
-5.科目排名工作表內最多放入6個科目排名資料。
-6.學業分項成績計算：學業、體育、健康與護理、國防通識、實習科目
-");
-
             chkGrade1.Checked = true;
             //_bgWorker1.RunWorkerAsync();
             _Configures = _AccessHelper.Select<Configure>();

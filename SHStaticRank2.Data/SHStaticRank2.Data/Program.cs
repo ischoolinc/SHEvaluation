@@ -18,6 +18,7 @@ namespace SHStaticRank2.Data
              * 2.加入OneClassCompleted事件,處理非word merge情況
              * 3.properties下合併欄位總表接口
              * 4.public FolderName
+             * 5.加入"類別一分類",類別二分類至 merge table
              */
             FISCA.Permission.Catalog cat = FISCA.Permission.RoleAclSource.Instance["教務作業"]["功能按鈕"];
             cat.Add(new FISCA.Permission.RibbonFeature("SHSchool.SHStaticRank2.Data", "計算固定排名(測試版)"));
@@ -41,10 +42,6 @@ namespace SHStaticRank2.Data
                 conf.ShowDialog();
                 if (conf.DialogResult == System.Windows.Forms.DialogResult.OK)
                 {
-                    CalcMutilSemeSubjectRank.OneClassCompleted += delegate
-                    {
-                        Console.Write(CalcMutilSemeSubjectRank._table);
-                    };
                     CalcMutilSemeSubjectRank.Setup(conf.Setting);
                 }
             };

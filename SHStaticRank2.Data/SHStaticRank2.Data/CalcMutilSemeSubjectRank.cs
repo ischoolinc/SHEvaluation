@@ -4355,6 +4355,8 @@ namespace SHStaticRank2.Data
                             _table.Columns.Add("座號");
                             _table.Columns.Add("學號");
                             _table.Columns.Add("姓名");
+                            _table.Columns.Add("類別一分類");
+                            _table.Columns.Add("類別二分類");
                             _table.Columns.Add("一年級學年度");
                             _table.Columns.Add("二年級學年度");
                             _table.Columns.Add("三年級學年度");
@@ -4829,6 +4831,8 @@ namespace SHStaticRank2.Data
                                     row["學號"] = studRec.StudentNumber;
                                     row["姓名"] = studRec.StudentName;
                                     row["科別"] = studRec.Department;
+                                    row["類別一分類"] = (cat1Dict.ContainsKey(studRec.StudentID))?cat1Dict[studRec.StudentID]:"";
+                                    row["類別二分類"] = (cat2Dict.ContainsKey(studRec.StudentID)) ? cat2Dict[studRec.StudentID] : "";
                                     row["一年級學年度"] = "";
                                     row["二年級學年度"] = "";
                                     row["三年級學年度"] = "";
@@ -6388,6 +6392,7 @@ namespace SHStaticRank2.Data
                             } // data row
 
 
+                            OneClassCompleted();
                             List<string> fields = new List<string>(docTemplate.MailMerge.GetFieldNames());
                             List<string> rmColumns = new List<string>();
 
@@ -6413,7 +6418,6 @@ namespace SHStaticRank2.Data
                             doc.MailMerge.RemoveEmptyParagraphs = true;
                             doc.MailMerge.DeleteFields();
 
-                            OneClassCompleted();
                             _table.Clear();
 
                             //_WordDocDict.Add(className, doc);

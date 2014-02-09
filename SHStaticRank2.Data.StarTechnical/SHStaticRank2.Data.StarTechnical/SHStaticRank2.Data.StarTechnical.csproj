@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{078FDC88-7F06-47D3-A677-A16F91F44F3D}</ProjectGuid>
+    <ProjectGuid>{009272C9-5216-403D-8DA0-4D491FF2872A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SHStaticRank2.Data.StarTechnical</RootNamespace>
@@ -52,10 +52,6 @@
     </Reference>
     <Reference Include="FISCA.Authentication">
       <HintPath>..\..\..\Library\FISCA.Authentication.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="FISCA.Core">
-      <HintPath>..\..\..\Library\FISCA.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="FISCA.Data">
@@ -149,6 +145,52 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\高中多學期學生成績證明書.doc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Library\Aspose.Cells.dll" />
+    <Content Include="Library\Aspose.Cells.xml" />
+    <Content Include="Library\Aspose.Words.dll" />
+    <Content Include="Library\Aspose.Words.xml" />
+    <Content Include="Library\Campus.Report.dll" />
+    <Content Include="Library\Campus.Report.pdb" />
+    <Content Include="Library\DevComponents.DotNetBar2.dll" />
+    <Content Include="Library\DevComponents.DotNetBar2.xml" />
+    <Content Include="Library\FISCA.Authentication.dll" />
+    <Content Include="Library\FISCA.Authentication.pdb" />
+    <Content Include="Library\FISCA.Authentication.xml" />
+    <Content Include="Library\FISCA.Data.dll" />
+    <Content Include="Library\FISCA.Data.pdb" />
+    <Content Include="Library\FISCA.Data.xml" />
+    <Content Include="Library\FISCA.dll" />
+    <Content Include="Library\FISCA.DSAClient.dll" />
+    <Content Include="Library\FISCA.DSAClient.pdb" />
+    <Content Include="Library\FISCA.DSAClient.xml" />
+    <Content Include="Library\FISCA.DSAUtil.dll" />
+    <Content Include="Library\FISCA.DSAUtil.pdb" />
+    <Content Include="Library\FISCA.DSAUtil.xml" />
+    <Content Include="Library\FISCA.LogAgent.dll" />
+    <Content Include="Library\FISCA.LogAgent.pdb" />
+    <Content Include="Library\FISCA.LogAgent.xml" />
+    <Content Include="Library\FISCA.pdb" />
+    <Content Include="Library\FISCA.Permission.dll" />
+    <Content Include="Library\FISCA.Permission.pdb" />
+    <Content Include="Library\FISCA.Permission.xml" />
+    <Content Include="Library\FISCA.Presentation.dll" />
+    <Content Include="Library\FISCA.Presentation.pdb" />
+    <Content Include="Library\FISCA.Presentation.xml" />
+    <Content Include="Library\FISCA.UDT.dll" />
+    <Content Include="Library\FISCA.UDT.pdb" />
+    <Content Include="Library\FISCA.UDT.xml" />
+    <Content Include="Library\FISCA.xml" />
+    <Content Include="Library\K12.Data.dll" />
+    <Content Include="Library\K12.Data.pdb" />
+    <Content Include="Library\K12.Data.xml" />
+    <Content Include="Library\SHStaticRank2.Data.dll" />
+    <Content Include="Library\SHStaticRank2.Data.pdb" />
+    <Content Include="Library\SmartSchool.Core.dll" />
+    <Content Include="Library\SmartSchool.Core.pdb" />
+    <Content Include="Library\SmartSchool.Customization.Data.dll" />
+    <Content Include="Library\SmartSchool.Customization.Data.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -8,14 +8,13 @@ namespace SHStaticRank2.Data
     public class Utility
     {
         /// <summary>
-        /// 四捨五入到小數下二位(先不捨)
+        /// 四捨五入到小數下二位
         /// </summary>
         /// <param name="score"></param>
         /// <returns></returns>
         public static decimal ParseD2(decimal score)
         {
-            return score;
-            //return Math.Round(score, 2, MidpointRounding.AwayFromZero);
+            return Math.Round(score, 2, MidpointRounding.AwayFromZero);
         }
 
         /// <summary>
@@ -27,19 +26,21 @@ namespace SHStaticRank2.Data
         public static int ParseRankPercent(int rank, int total)
         {
             int retVal = 0;
-            if (total > 0 && rank >0)
+            if (total > 0 && rank > 0)
             {
-            decimal rr = (decimal)(rank-1);
-            decimal tt = (decimal)total;
+                return (int)(Math.Floor(((decimal)rank - 1) * 100m / (decimal)total) + 1);
 
-            
-                decimal xR = Math.Round(rr * 100 / total, 0);
-                decimal x = rr * 100 / total + 1;
+                //decimal rr = (decimal)(rank - 1);
+                //decimal tt = (decimal)total;
 
-                if (xR == x)
-                    retVal = (int)xR;
-                else
-                    retVal = (int)x;
+
+                //decimal xR = Math.Round(rr * 100 / total, 0);
+                //decimal x = rr * 100 / total + 1;
+
+                //if (xR == x)
+                //    retVal = (int)xR;
+                //else
+                //    retVal = (int)x;
 
                 //retVal = (int)(Math.Floor((rr * 100) / tt));
             }

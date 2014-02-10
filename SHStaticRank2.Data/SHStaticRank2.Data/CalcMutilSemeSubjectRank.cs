@@ -6432,8 +6432,8 @@ namespace SHStaticRank2.Data
                                 }
                             } // data row
 
-
-                            OneClassCompleted();
+                            if (OneClassCompleted != null)
+                                OneClassCompleted();
                             //List<string> fields = new List<string>(docTemplate.MailMerge.GetFieldNames());
                             //List<string> rmColumns = new List<string>();
 
@@ -6518,6 +6518,11 @@ namespace SHStaticRank2.Data
         static void MailMerge_MergeImageField(object sender, Aspose.Words.Reporting.MergeImageFieldEventArgs e)
         {
 
+        }
+
+        public static Document getMergeTable()
+        {
+            return new Document(new MemoryStream(Properties.Resources.合併欄位總表));
         }
     }
 }

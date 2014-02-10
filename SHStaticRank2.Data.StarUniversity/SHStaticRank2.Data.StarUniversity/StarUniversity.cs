@@ -88,7 +88,7 @@ FROM xpath_table( 'id',
 									INNER JOIN class ON student.ref_class_id = class.id 
 									WHERE student.status=1 AND class.grade_year = 3 )'
 				) 
-AS tmp(id int, subject varchar(20))";
+AS tmp(id int, subject varchar(200))";
             DataTable dt = qh.Select(strSQ);
             foreach (DataRow dr in dt.Rows)
                 SubjectNameList.Add(dr[0].ToString());

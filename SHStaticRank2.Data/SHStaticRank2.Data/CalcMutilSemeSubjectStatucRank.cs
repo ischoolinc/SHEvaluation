@@ -36,7 +36,7 @@ namespace SHStaticRank2.Data
         
         private List<Configure> _Configures = new List<SHStaticRank2.Data.Configure>();
 
-        // 用來紀錄那個ListView有沒有勾選"部訂必修專業科目"或"部訂必修實習科目"
+        // 用來紀錄那個ListView有沒有勾選"部訂必修專業及實習科目"
         // Key: ListView's name, Value: ListViewItem's index
         private Dictionary<string, int> _SpecialListViewItem = new Dictionary<string,int>();
 
@@ -112,7 +112,7 @@ namespace SHStaticRank2.Data
             lvwSubjectOrd1.ItemCheck += ListViewItemCheck;
             lvwSubjectOrd2.ItemChecked += ListViewItemChecked;
             lvwSubjectOrd2.ItemCheck += ListViewItemCheck;
-            // 用來紀錄那個ListView有沒有勾選"部訂必修專業科目"或"部訂必修實習科目"
+            // 用來紀錄那個ListView有沒有勾選"部訂必修專業及實習科目"
             _SpecialListViewItem.Add("lvwSubjectPri", int.MinValue);
             _SpecialListViewItem.Add("lvwSubjectOrd1", int.MinValue);
             _SpecialListViewItem.Add("lvwSubjectOrd2", int.MinValue);
@@ -197,15 +197,9 @@ namespace SHStaticRank2.Data
 
         private void RunWorkerCompleted()
         {
-            // 新增"部訂必修專業科目"及"部訂必修實習科目"選項
+            // 新增"部訂必修專業及實習科目"選項
             ListViewItem lvItem = new ListViewItem();
-            lvItem.Text = "部訂必修專業科目";
-            lvwSubjectPri.Items.Add(lvItem.Clone() as ListViewItem);
-            lvwSubjectOrd1.Items.Add(lvItem.Clone() as ListViewItem);
-            lvwSubjectOrd2.Items.Add(lvItem.Clone() as ListViewItem);
-
-            lvItem = new ListViewItem();
-            lvItem.Text = "部訂必修實習科目";
+            lvItem.Text = "部訂必修專業及實習科目";
             lvwSubjectPri.Items.Add(lvItem.Clone() as ListViewItem);
             lvwSubjectOrd1.Items.Add(lvItem.Clone() as ListViewItem);
             lvwSubjectOrd2.Items.Add(lvItem.Clone() as ListViewItem);
@@ -270,26 +264,45 @@ namespace SHStaticRank2.Data
             if (chkGrade4.Checked)
                 grList.Add("4");
 
-            // 狀態一般學生編號
-            List<string> studIDList = new List<string>();
+
+
             QueryHelper qh = new QueryHelper();
 
-            string strSQ = "select student.id from student inner join class on student.ref_class_id=class.id where student.status=1 and class.grade_year in(" + string.Join(",", grList.ToArray()) + ");";
+            string strSQ = @"SELECT DISTINCT tmp.subject
+FROM xpath_table( 'id',
+	'''<root>''||score_info||''</root>''',
+	'sems_subj_score',
+	'/root/SemesterSubjectScoreInfo/Subject/@科目',
+	'ref_student_id IN ( 
+        select student.id from student inner join class on student.ref_class_id=class.id where student.status=1 and class.grade_year in(" + string.Join(",", grList.ToArray()) + @")
+    )'
+) 
+AS tmp(id int, subject varchar(200))";
             DataTable dt = qh.Select(strSQ);
             foreach (DataRow dr in dt.Rows)
-                studIDList.Add(dr[0].ToString());
+                SubjectNameList.Add(dr[0].ToString());
 
-            // 學期科目名稱列表          
-            SubjectNameList.Clear();
-            List<K12.Data.SemesterScoreRecord> scoreList = K12.Data.SemesterScore.SelectByStudentIDs(studIDList);
-            foreach (K12.Data.SemesterScoreRecord sRec in scoreList)
-            {
-                foreach (string str in sRec.Subjects.Keys)
-                {
-                    if (!SubjectNameList.Contains(str))
-                        SubjectNameList.Add(str);
-                }
-            }
+            // 狀態一般學生編號
+            //List<string> studIDList = new List<string>();
+            //QueryHelper qh = new QueryHelper();
+
+            //string strSQ = "select student.id from student inner join class on student.ref_class_id=class.id where student.status=1 and class.grade_year in(" + string.Join(",", grList.ToArray()) + ");";
+            //DataTable dt = qh.Select(strSQ);
+            //foreach (DataRow dr in dt.Rows)
+            //    studIDList.Add(dr[0].ToString());
+
+            //// 學期科目名稱列表          
+            //SubjectNameList.Clear();
+
+            //List<K12.Data.SemesterScoreRecord> scoreList = K12.Data.SemesterScore.SelectByStudentIDs(studIDList);
+            //foreach (K12.Data.SemesterScoreRecord sRec in scoreList)
+            //{
+            //    foreach (string str in sRec.Subjects.Keys)
+            //    {
+            //        if (!SubjectNameList.Contains(str))
+            //            SubjectNameList.Add(str);
+            //    }
+            //}
         }
 
         private void P2()
@@ -816,7 +829,7 @@ namespace SHStaticRank2.Data
             if (_NewCboConfigName != cboConfigure.Text)
                 chkGrade1.Checked = chkGrade2.Checked = chkGrade3.Checked = chkGrade4.Checked = false;
 
-            // 初始化, 並宣告temp用來暫存使用者有沒有勾選"部訂必修專業科目"或"部訂必修實習科目"
+            // 初始化, 並宣告temp用來暫存使用者有沒有勾選"部訂必修專業及實習科目"
             Dictionary<string, int> tmpSpecialListViewItem = new Dictionary<string, int>();
             foreach (string key in _SpecialListViewItem.Keys.ToList<string>())
             {
@@ -865,8 +878,8 @@ namespace SHStaticRank2.Data
                     cboRankRilter.Text = Configure.RankFilterTagName;
                     foreach (ListViewItem item in lvwSubjectPri.Items)
                     {
-                        // 這兩個特殊選項, 需要最後勾選, 不然會造成其他正常選項無法勾選, 以及太早上色
-                        if (item.Text == "部訂必修專業科目" || item.Text == "部訂必修實習科目")
+                        // 這個特殊選項, 需要最後勾選, 不然會造成其他正常選項無法勾選, 以及太早上色
+                        if (item.Text == "部訂必修專業及實習科目")
                         {
                             if (Configure.PrintSubjectList.Contains(item.Text))
                             {
@@ -880,8 +893,8 @@ namespace SHStaticRank2.Data
                     cboTagRank1.Text = Configure.TagRank1TagName;
                     foreach (ListViewItem item in lvwSubjectOrd1.Items)
                     {
-                        // 這兩個特殊選項, 需要最後勾選, 不然會造成其他正常選項無法勾選, 以及太早上色
-                        if (item.Text == "部訂必修專業科目" || item.Text == "部訂必修實習科目")
+                        // 這個特殊選項, 需要最後勾選, 不然會造成其他正常選項無法勾選, 以及太早上色
+                        if (item.Text == "部訂必修專業及實習科目")
                         {
                             if (Configure.TagRank1SubjectList.Contains(item.Text))
                             {
@@ -895,8 +908,8 @@ namespace SHStaticRank2.Data
                     cboTagRank2.Text = Configure.TagRank2TagName;
                     foreach (ListViewItem item in lvwSubjectOrd2.Items)
                     {
-                        // 這兩個特殊選項, 需要最後勾選, 不然會造成其他正常選項無法勾選, 以及太早上色
-                        if (item.Text == "部訂必修專業科目" || item.Text == "部訂必修實習科目")
+                        // 這個特殊選項, 需要最後勾選, 不然會造成其他正常選項無法勾選, 以及太早上色
+                        if (item.Text == "部訂必修專業及實習科目")
                         {
                             if (Configure.TagRank2SubjectList.Contains(item.Text))
                             {
@@ -1021,8 +1034,8 @@ namespace SHStaticRank2.Data
             {
                 if(selNameList.Contains(lvi.Text))
                 {
-                    // 這兩個特殊選項, 需要最後勾選, 不然會造成其他正常選項無法勾選, 以及太早上色
-                    if (lvi.Text == "部訂必修專業科目" || lvi.Text == "部訂必修實習科目")
+                    // 這個特殊選項, 需要最後勾選, 不然會造成其他正常選項無法勾選, 以及太早上色
+                    if (lvi.Text == "部訂必修專業及實習科目")
                         itemIndex = lvi.Index;
                     else
                         lvi.Checked=true;
@@ -1055,7 +1068,7 @@ namespace SHStaticRank2.Data
                 if (selNameList.Contains(lvi.Text))
                 {
                     // 這兩個特殊選項, 需要最後勾選, 不然會造成其他正常選項無法勾選, 以及太早上色
-                    if (lvi.Text == "部訂必修專業科目" || lvi.Text == "部訂必修實習科目")
+                    if (lvi.Text == "部訂必修專業及實習科目")
                         itemIndex = lvi.Index;
                     else
                         lvi.Checked=true;
@@ -1077,7 +1090,7 @@ namespace SHStaticRank2.Data
 
         #region ListView的事件
         /// <summary>
-        /// 假如有勾選"部訂必修專業科目"或"部訂必修實習科目", 不可改變勾選的結果
+        /// 假如有勾選"部訂必修專業及實習科目", 不可改變勾選的結果
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1091,7 +1104,7 @@ namespace SHStaticRank2.Data
             }
         }
         /// <summary>
-        /// 處理勾選"部訂必修專業科目"或"部訂必修實習科目"
+        /// 處理勾選"部訂必修專業及實習科目"
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1100,7 +1113,7 @@ namespace SHStaticRank2.Data
             ListView listView = sender as ListView;
             string listViewName = listView.Name;
 
-            if (e.Item.Text == "部訂必修專業科目" || e.Item.Text == "部訂必修實習科目")
+            if (e.Item.Text == "部訂必修專業及實習科目")
             {
                 if (e.Item.Checked == true)
                 {

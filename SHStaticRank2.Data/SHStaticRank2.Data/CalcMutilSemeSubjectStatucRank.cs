@@ -264,7 +264,8 @@ namespace SHStaticRank2.Data
             if (chkGrade4.Checked)
                 grList.Add("4");
 
-
+            // 學期科目名稱列表   
+            SubjectNameList.Clear();
 
             QueryHelper qh = new QueryHelper();
 

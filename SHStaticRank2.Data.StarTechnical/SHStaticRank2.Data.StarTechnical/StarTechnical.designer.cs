@@ -328,7 +328,7 @@
             this.Controls.Add(this.groupPanel3);
             this.DoubleBuffered = true;
             this.Name = "StarTechnical";
-            this.Text = "技職繁星成績單";
+            this.Text = "103學年度技職繁星成績單";
             this.groupPanel3.ResumeLayout(false);
             this.groupPanel3.PerformLayout();
             this.groupPanel2.ResumeLayout(false);

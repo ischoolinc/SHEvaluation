@@ -18,7 +18,7 @@ namespace SHStaticRank2.Data.StarTechnical
             FISCA.Permission.Catalog cat = FISCA.Permission.RoleAclSource.Instance["教務作業"]["功能按鈕"];
             cat.Add(new FISCA.Permission.RibbonFeature("SHSchool.SHStaticRank2.Data", "計算固定排名(測試版)"));
 
-            var button = FISCA.Presentation.MotherForm.RibbonBarItems["教務作業", "批次作業/檢視"]["成績作業"]["計算固定排名(測試版)"]["計算多學期成績固定排名(技職繁星)"];
+            var button = FISCA.Presentation.MotherForm.RibbonBarItems["教務作業", "批次作業/檢視"]["成績作業"]["計算固定排名(測試版)"]["計算多學期成績固定排名(103學年度技職繁星)"];
             button.Enable = FISCA.Permission.UserAcl.Current["SHSchool.SHStaticRank2.Data"].Executable;
             button.Click += delegate
             {
@@ -43,11 +43,13 @@ namespace SHStaticRank2.Data.StarTechnical
                         Dictionary<string, MapRecord> dmr;
                         try
                         {
-                            dmr = _AccessHelper.Select<MapRecord>().ToDictionary(x => x.student_tag, x => x);
+                            dmr = _AccessHelper.Select<MapRecord>()
+                                .FindAll(delegate(MapRecord mr){return !string.IsNullOrWhiteSpace(mr.student_tag);})
+                                .ToDictionary(x => x.student_tag, x => x);
                         }
                         catch (Exception)
                         {
-                            dmr = new Dictionary<string, MapRecord>();
+                            return;
                         }
 
                         int seq;
@@ -112,7 +114,7 @@ namespace SHStaticRank2.Data.StarTechnical
                                     ws.Cells[seq, 6].PutValue("" + student["班級"]);//7.班級名稱
                                     ws.Cells[seq, 7].PutValue("" + student["學業原始平均科排名"]);//8.平均科排名
                                     ws.Cells[seq, 8].PutValue("" + student["學業原始平均類別一排名"]);//9.學業平均成績群名次
-                                    ws.Cells[seq, 9].PutValue("" + student["學業實習科目平均類別一排名"]);//10.專業及實習平均成績群名次
+                                    ws.Cells[seq, 9].PutValue("" + student["篩選科目原始成績加權平均平均類別二排名"]);//10.專業及實習平均成績群名次
                                     for (int i = 1; i <= subjectLimit; i++)
                                     {
                                         switch ("" + student["科目名稱" + i])

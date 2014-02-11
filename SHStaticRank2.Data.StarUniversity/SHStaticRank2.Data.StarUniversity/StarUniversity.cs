@@ -143,7 +143,7 @@ AS tmp(id int, subject varchar(200))";
             Configure.Rank2Tag = cboTagRank2.Text;
             Configure.RankFilterTagName = cboRankRilter.Text;
             if ( Configure.Template == null )
-                Configure.Template = new Document(new MemoryStream(Properties.Resources.高中多學期學生成績證明書));
+                Configure.Template = new Document(new MemoryStream(Properties.Resources.多學期成績單_大學4學期));
             DialogResult = System.Windows.Forms.DialogResult.OK;
             //Configure.Save();
             this.Close();
@@ -195,7 +195,7 @@ AS tmp(id int, subject varchar(200))";
                     {
                         //document.Save(sd.FileName, Aspose.Words.SaveFormat.Doc);
                         System.IO.FileStream stream = new FileStream(sd.FileName, FileMode.Create, FileAccess.Write);
-                        stream.Write(Properties.Resources.高中多學期學生成績證明書, 0, Properties.Resources.高中多學期學生成績證明書.Length);
+                        stream.Write(Properties.Resources.多學期成績單_大學4學期, 0, Properties.Resources.多學期成績單_大學4學期.Length);
                         stream.Flush();
                         stream.Close();
 

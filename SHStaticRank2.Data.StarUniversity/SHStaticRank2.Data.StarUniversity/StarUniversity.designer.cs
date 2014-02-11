@@ -413,7 +413,7 @@
             this.Controls.Add(this.groupPanel3);
             this.DoubleBuffered = true;
             this.Name = "StarUniversity";
-            this.Text = "大學繁星成績單";
+            this.Text = "103學年度大學繁星成績單";
             this.groupPanel3.ResumeLayout(false);
             this.groupPanel3.PerformLayout();
             this.groupPanel2.ResumeLayout(false);

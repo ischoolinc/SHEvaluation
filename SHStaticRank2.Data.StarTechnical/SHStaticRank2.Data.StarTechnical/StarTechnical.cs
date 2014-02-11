@@ -69,6 +69,17 @@ namespace SHStaticRank2.Data.StarTechnical
         }
         private void buttonX1_Click(object sender, EventArgs e)
         {
+            #region 若未設定對應表呈現提示並取消
+            List<MapRecord> _MapRecords = _AccessHelper.Select<MapRecord>().FindAll(delegate(MapRecord mr)
+            {
+                return !string.IsNullOrWhiteSpace(mr.student_tag);
+            });
+            if (_MapRecords.Count == 0)
+            {
+                MsgBox.Show("請先設定學生類別與群別學制代碼對應");
+                return;
+            }
+            #endregion
             buttonX1.Enabled = false;
             FISCA.LogAgent.ApplicationLog.Log("成績", "計算", "計算技職繁星多學期成績單。");
             #region 固定的setting
@@ -115,8 +126,8 @@ AS tmp(id int, subject varchar(200))";
             {
                 Configure.useSubjectPrintList.Add(SubjectName);
                 Configure.useSubjecOrder1List.Add(SubjectName);
-                Configure.useSubjecOrder2List.Add(SubjectName);
             }
+            Configure.useSubjecOrder2List.Add("部訂必修專業及實習科目");
             Configure.Name = "多學期成績單(技職繁星)";
             Configure.SortGradeYear = "三年級";
 
@@ -133,9 +144,10 @@ AS tmp(id int, subject varchar(200))";
             #endregion                
             Configure.NotRankTag = cboRankRilter.Text;
             Configure.Rank1Tag = cboTagRank1.Text;
-            Configure.RankFilterTagName = cboRankRilter.Text;
+            Configure.Rank2Tag = cboTagRank1.Text; //與類別排名1相同
+            //Configure.RankFilterTagName = cboRankRilter.Text;
             if (Configure.Template == null)
-                Configure.Template = new Document(new MemoryStream(Properties.Resources.高中多學期學生成績證明書));
+                Configure.Template = new Document(new MemoryStream(Properties.Resources.多學期成績單_技職5學期));
             DialogResult = System.Windows.Forms.DialogResult.OK;
             //Configure.Save();
             this.Close();
@@ -191,7 +203,7 @@ AS tmp(id int, subject varchar(200))";
                     {
                         //document.Save(sd.FileName, Aspose.Words.SaveFormat.Doc);
                         System.IO.FileStream stream = new FileStream(sd.FileName, FileMode.Create, FileAccess.Write);
-                        stream.Write(Properties.Resources.高中多學期學生成績證明書, 0, Properties.Resources.高中多學期學生成績證明書.Length);
+                        stream.Write(Properties.Resources.多學期成績單_技職5學期, 0, Properties.Resources.多學期成績單_技職5學期.Length);
                         stream.Flush();
                         stream.Close();
 

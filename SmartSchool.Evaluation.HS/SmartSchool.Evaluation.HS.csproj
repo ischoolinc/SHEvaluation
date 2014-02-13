@@ -583,6 +583,7 @@
       <DependentUpon>RetakeSelectSemesterForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Reports\Retake\RetakeWithCourseList.cs" />
+    <Compile Include="Reports\Retake\XMLEncoding.cs" />
     <Compile Include="Reports\SelectSemesterForm.cs">
       <SubType>Form</SubType>
     </Compile>

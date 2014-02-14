@@ -7,3 +7,5 @@ C:\Users\lelala\Documents\GitHub\SHEvaluation\SHStaticRank2.Data.StarTechnical\S
 C:\Users\lelala\Documents\GitHub\SHEvaluation\SHStaticRank2.Data.StarTechnical\SHStaticRank2.Data.StarTechnical\obj\Debug\SHStaticRank2.Data.StarTechnical.csproj.GenerateResource.Cache
 C:\Users\lelala\Documents\GitHub\SHEvaluation\SHStaticRank2.Data.StarTechnical\SHStaticRank2.Data.StarTechnical\obj\Debug\SHStaticRank2.Data.StarTechnical.dll
 C:\Users\lelala\Documents\GitHub\SHEvaluation\SHStaticRank2.Data.StarTechnical\SHStaticRank2.Data.StarTechnical\obj\Debug\SHStaticRank2.Data.StarTechnical.pdb
+C:\Users\lelala\Documents\GitHub\SHEvaluation\SHStaticRank2.Data.StarTechnical\SHStaticRank2.Data.StarTechnical\bin\Debug\SHStaticRank2.Data.StarTechnical.dll
+C:\Users\lelala\Documents\GitHub\SHEvaluation\SHStaticRank2.Data.StarTechnical\SHStaticRank2.Data.StarTechnical\bin\Debug\SHStaticRank2.Data.StarTechnical.pdb

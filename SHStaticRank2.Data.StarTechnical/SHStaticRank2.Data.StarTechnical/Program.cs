@@ -175,19 +175,22 @@ namespace SHStaticRank2.Data.StarTechnical
                                         ws.Cells[0, 5].PutValue("科(組)、學程名稱");
                                         ws.Cells[0, 6].PutValue("班級名稱");
 
-                                        ws.Cells[0, 7].PutValue("學業原始平均成績");
-                                        ws.Cells[0, 8].PutValue("學業平均成績科(組)、學程名次");
-                                        ws.Cells[0, 9].PutValue("學業平均成績群名次");
+                                        ws.Cells[0, 7].PutValue("類別一分類");
+                                        ws.Cells[0, 8].PutValue("類別二分類");
 
-                                        ws.Cells[0, 10].PutValue("專業及實習科目平均成績");
-                                        ws.Cells[0, 11].PutValue("專業及實習科目平均成績群名次");
+                                        ws.Cells[0, 9].PutValue("學業原始平均成績");
+                                        ws.Cells[0, 10].PutValue("學業平均成績科(組)、學程名次");
+                                        ws.Cells[0, 11].PutValue("學業平均成績群名次");
 
-                                        ws.Cells[0, 12].PutValue("英文科平均成績");
-                                        ws.Cells[0, 13].PutValue("英文平均成績群名次");
-                                        ws.Cells[0, 14].PutValue("國文科平均成績");
-                                        ws.Cells[0, 15].PutValue("國文平均成績群名次");
-                                        ws.Cells[0, 16].PutValue("數學科平均成績");
-                                        ws.Cells[0, 17].PutValue("數學平均成績群名次");
+                                        ws.Cells[0, 12].PutValue("專業及實習科目平均成績");
+                                        ws.Cells[0, 13].PutValue("專業及實習科目平均成績群名次");
+
+                                        ws.Cells[0, 14].PutValue("英文科平均成績");
+                                        ws.Cells[0, 15].PutValue("英文平均成績群名次");
+                                        ws.Cells[0, 16].PutValue("國文科平均成績");
+                                        ws.Cells[0, 17].PutValue("國文平均成績群名次");
+                                        ws.Cells[0, 18].PutValue("數學科平均成績");
+                                        ws.Cells[0, 19].PutValue("數學平均成績群名次");
                                         #endregion
                                         wbCheck.Add(group_code, wb);
                                     }
@@ -204,27 +207,30 @@ namespace SHStaticRank2.Data.StarTechnical
                                     ws.Cells[seq, 5].PutValue("" + student["科別"]);//6.科(組),學程名稱
                                     ws.Cells[seq, 6].PutValue("" + student["班級"]);//7.班級名稱
 
-                                    ws.Cells[seq, 7].PutValue("" + student["學業原始平均"]);//學業原始平均成績
-                                    ws.Cells[seq, 8].PutValue("" + student["學業原始平均科排名"]);//8.平均科排名
-                                    ws.Cells[seq, 9].PutValue("" + student["學業原始平均類別一排名"]);//9.學業平均成績群名次
+                                    ws.Cells[seq, 7].PutValue("" + student["類別一分類"]);
+                                    ws.Cells[seq, 8].PutValue("" + student["類別二分類"]);
 
-                                    ws.Cells[seq, 10].PutValue("" + student["篩選科目原始成績加權平均平均"]);//專業及實習平均成績
-                                    ws.Cells[seq, 11].PutValue("" + student["篩選科目原始成績加權平均平均類別二排名"]);//10.專業及實習平均成績群名次
+                                    ws.Cells[seq, 9].PutValue("" + student["學業原始平均"]);//學業原始平均成績
+                                    ws.Cells[seq, 10].PutValue("" + student["學業原始平均科排名"]);//8.平均科排名
+                                    ws.Cells[seq, 11].PutValue("" + student["學業原始平均類別一排名"]);//9.學業平均成績群名次
+
+                                    ws.Cells[seq, 12].PutValue("" + student["篩選科目原始成績加權平均平均"]);//專業及實習平均成績
+                                    ws.Cells[seq, 13].PutValue("" + student["篩選科目原始成績加權平均平均類別二排名"]);//10.專業及實習平均成績群名次
                                     for (int i = 1; i <= subjectLimit; i++)
                                     {
                                         switch ("" + student["科目名稱" + i])
                                         {
                                             case "英文":
-                                                ws.Cells[seq, 12].PutValue("" + student["科目平均" + i]);//英文平均成績
-                                                ws.Cells[seq, 13].PutValue("" + student["科目平均類別一排名" + i]);//11.英文平均成績群名次
+                                                ws.Cells[seq, 14].PutValue("" + student["科目平均" + i]);//英文平均成績
+                                                ws.Cells[seq, 15].PutValue("" + student["科目平均類別一排名" + i]);//11.英文平均成績群名次
                                                 break;
                                             case "國文":
-                                                ws.Cells[seq, 14].PutValue("" + student["科目平均" + i]);//國文平均成績
-                                                ws.Cells[seq, 15].PutValue("" + student["科目平均類別一排名" + i]);//12.國文平均成績群名次
+                                                ws.Cells[seq, 16].PutValue("" + student["科目平均" + i]);//國文平均成績
+                                                ws.Cells[seq, 17].PutValue("" + student["科目平均類別一排名" + i]);//12.國文平均成績群名次
                                                 break;
                                             case "數學":
-                                                ws.Cells[seq, 16].PutValue("" + student["科目平均" + i]);//數學平均成績
-                                                ws.Cells[seq, 17].PutValue("" + student["科目平均類別一排名" + i]);//13.數學平均群名次
+                                                ws.Cells[seq, 18].PutValue("" + student["科目平均" + i]);//數學平均成績
+                                                ws.Cells[seq, 19].PutValue("" + student["科目平均類別一排名" + i]);//13.數學平均群名次
                                                 break;
                                             default:
                                                 break;

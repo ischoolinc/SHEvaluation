@@ -13,6 +13,7 @@ using System.Drawing;
 using SmartSchool.Common;
 using SmartSchool.Evaluation.Reports.Retake;
 using FISCA.Presentation;
+using System.Xml.Linq;
 
 namespace SmartSchool.Evaluation.Reports
 {
@@ -220,6 +221,9 @@ namespace SmartSchool.Evaluation.Reports
                             string credit = XMLEncoding.Encoding(subjectScoreElement.GetAttribute("開課學分數"));
 
                             string subject = "<subject 科目='" + subjectName + "' 科目級別='" + leavel + "' 學分數='" + credit + "' />";
+
+                            //string subject = "<subject 科目='" + subjectScoreElement.GetAttribute("科目") + "' 科目級別='" + subjectScoreElement.GetAttribute("科目級別") + "' 學分數='" + subjectScoreElement.GetAttribute("開課學分數") + "' />";
+
                             if (subjectScoreElement.GetAttribute("是否取得學分") == "是" || studentPassedList.Contains(subject))//如果該科目有取得學分獲該科目在其他學期已取得學分
                             {
                                 //加入已取得學分科目清單

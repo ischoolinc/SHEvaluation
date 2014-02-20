@@ -8,3 +8,15 @@ C:\Users\huangwc\Desktop\github\SHEvaluation\SHStaticRank2.Data.StarUniversity\S
 C:\Users\huangwc\Desktop\github\SHEvaluation\SHStaticRank2.Data.StarUniversity\SHStaticRank2.Data.StarUniversity\obj\Debug\SHStaticRank2.Data.StarUniversity.pdb
 C:\Users\huangwc\Desktop\ischool desktop\addmodules\SHStaticRank2.Data.StarUniversity\SHStaticRank2.Data.StarUniversity.dll
 C:\Users\huangwc\Desktop\ischool desktop\addmodules\SHStaticRank2.Data.StarUniversity\SHStaticRank2.Data.StarUniversity.pdb
+C:\Users\lelala\Documents\ischool desktop\addmodules\SHStaticRank2.Data.StarUniversity\SHStaticRank2.Data.StarUniversity.dll
+C:\Users\lelala\Documents\ischool desktop\addmodules\SHStaticRank2.Data.StarUniversity\SHStaticRank2.Data.StarUniversity.pdb
+C:\Users\lelala\Documents\GitHub\SHEvaluation\SHStaticRank2.Data.StarUniversity\SHStaticRank2.Data.StarUniversity\obj\Debug\SHStaticRank2.Data.StarUniversity.csprojResolveAssemblyReference.cache
+C:\Users\lelala\Documents\GitHub\SHEvaluation\SHStaticRank2.Data.StarUniversity\SHStaticRank2.Data.StarUniversity\obj\Debug\SHStaticRank2.Data.StarUniversity.Properties.Resources.resources
+C:\Users\lelala\Documents\GitHub\SHEvaluation\SHStaticRank2.Data.StarUniversity\SHStaticRank2.Data.StarUniversity\obj\Debug\SHStaticRank2.Data.StarUniversity.StarUniversity.resources
+C:\Users\lelala\Documents\GitHub\SHEvaluation\SHStaticRank2.Data.StarUniversity\SHStaticRank2.Data.StarUniversity\obj\Debug\SHStaticRank2.Data.StarUniversity.csproj.GenerateResource.Cache
+C:\Users\lelala\Documents\GitHub\SHEvaluation\SHStaticRank2.Data.StarUniversity\SHStaticRank2.Data.StarUniversity\obj\Debug\SHStaticRank2.Data.StarUniversity.dll
+C:\Users\lelala\Documents\GitHub\SHEvaluation\SHStaticRank2.Data.StarUniversity\SHStaticRank2.Data.StarUniversity\obj\Debug\SHStaticRank2.Data.StarUniversity.pdb
+C:\Users\lelala\Documents\GitHub\SHEvaluation\SHStaticRank2.Data.StarUniversity\SHStaticRank2.Data.StarUniversity\bin\Debug\SHStaticRank2.Data.StarUniversity.dll
+C:\Users\lelala\Documents\GitHub\SHEvaluation\SHStaticRank2.Data.StarUniversity\SHStaticRank2.Data.StarUniversity\bin\Debug\SHStaticRank2.Data.StarUniversity.pdb
+C:\Users\lelala\Documents\GitHub\SHEvaluation\SHStaticRank2.Data.StarUniversity\SHStaticRank2.Data.StarUniversity\bin\Debug\SHStaticRank2.Data.dll
+C:\Users\lelala\Documents\GitHub\SHEvaluation\SHStaticRank2.Data.StarUniversity\SHStaticRank2.Data.StarUniversity\bin\Debug\SHStaticRank2.Data.pdb

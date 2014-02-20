@@ -175,6 +175,7 @@
     <Content Include="Library\K12.Data.pdb" />
     <Content Include="Library\K12.Data.xml" />
     <Content Include="Library\SHStaticRank2.Data.dll" />
+    <Content Include="Library\SHStaticRank2.Data.pdb" />
     <Content Include="Library\SmartSchool.Core.dll" />
     <Content Include="Library\SmartSchool.Core.pdb" />
     <Content Include="Library\SmartSchool.Customization.Data.dll" />

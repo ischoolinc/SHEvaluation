@@ -2632,34 +2632,66 @@ namespace SHStaticRank2.Data
                                             {
                                                 score = Sscore;
                                                 #region 處理科目原始成績
-                                                // 總分
-                                                selectScore[key5].sumScore += score;
-                                                // 加總
-                                                selectScore[key5].sumScoreA += (score * subjectScore.Credit);
-                                                // 筆數
-                                                selectScore[key5].subjCount++;
-                                                // 學分加總
-                                                selectScore[key5].sumCredit += subjectScore.Credit;
-
+                                                // 假如是使用者勾選的科目
+                                                if (setting.useSubjectPrintList.Contains(subjectScore.Subject)
+                                                    && (
+                                                        replace部訂必修專業及實習科目 == false ||
+                                                        (
+                                                            subjectScore.Detail.GetAttribute("修課校部訂") == "部訂"
+                                                            && subjectScore.Require == true
+                                                            && (subjectScore.Detail.GetAttribute("開課分項類別") == "專業科目" || subjectScore.Detail.GetAttribute("開課分項類別") == "實習科目"))
+                                                        )
+                                                    )
+                                                {
+                                                    // 總分
+                                                    selectScore[key5].sumScore += score;
+                                                    // 加總
+                                                    selectScore[key5].sumScoreA += (score * subjectScore.Credit);
+                                                    // 筆數
+                                                    selectScore[key5].subjCount++;
+                                                    // 學分加總
+                                                    selectScore[key5].sumCredit += subjectScore.Credit;
+                                                }
                                                 // 類別一處理
-                                                // 總分
-                                                selectScore[key5].sumScoreC1 += score;
-                                                // 總分加權
-                                                selectScore[key5].sumScoreAC1 += (score * subjectScore.Credit);
-                                                // 筆數
-                                                selectScore[key5].subjCountC1++;
-                                                // 學分加總
-                                                selectScore[key5].sumCreditC1 += subjectScore.Credit;
-
+                                                if (setting.useSubjecOrder1List.Contains(subjectScore.Subject)
+                                                    && (
+                                                        replaceTag1部訂必修專業及實習科目 == false ||
+                                                        (
+                                                            subjectScore.Detail.GetAttribute("修課校部訂") == "部訂"
+                                                            && subjectScore.Require == true
+                                                            && (subjectScore.Detail.GetAttribute("開課分項類別") == "專業科目" || subjectScore.Detail.GetAttribute("開課分項類別") == "實習科目"))
+                                                        )
+                                                    )
+                                                {
+                                                    // 總分
+                                                    selectScore[key5].sumScoreC1 += score;
+                                                    // 總分加權
+                                                    selectScore[key5].sumScoreAC1 += (score * subjectScore.Credit);
+                                                    // 筆數
+                                                    selectScore[key5].subjCountC1++;
+                                                    // 學分加總
+                                                    selectScore[key5].sumCreditC1 += subjectScore.Credit;
+                                                }
                                                 // 類別二處理
-                                                // 總分
-                                                selectScore[key5].sumScoreC2 += score;
-                                                // 總分加權
-                                                selectScore[key5].sumScoreAC2 += (score * subjectScore.Credit);
-                                                // 筆數
-                                                selectScore[key5].subjCountC2++;
-                                                // 學分加總
-                                                selectScore[key5].sumCreditC2 += subjectScore.Credit;
+                                                if (setting.useSubjecOrder2List.Contains(subjectScore.Subject)
+                                                    && (
+                                                        replaceTag2部訂必修專業及實習科目 == false ||
+                                                        (
+                                                            subjectScore.Detail.GetAttribute("修課校部訂") == "部訂"
+                                                            && subjectScore.Require == true
+                                                            && (subjectScore.Detail.GetAttribute("開課分項類別") == "專業科目" || subjectScore.Detail.GetAttribute("開課分項類別") == "實習科目"))
+                                                        )
+                                                    )
+                                                {
+                                                    // 總分
+                                                    selectScore[key5].sumScoreC2 += score;
+                                                    // 總分加權
+                                                    selectScore[key5].sumScoreAC2 += (score * subjectScore.Credit);
+                                                    // 筆數
+                                                    selectScore[key5].subjCountC2++;
+                                                    // 學分加總
+                                                    selectScore[key5].sumCreditC2 += subjectScore.Credit;
+                                                }
                                                 #endregion 處理科目原始成績
 
                                                 #region 處理篩選科目原始成績
@@ -2882,34 +2914,66 @@ namespace SHStaticRank2.Data
                                     #region 處理科目原始成績
                                     if (selectScore.ContainsKey(key6))
                                     {
-                                        // 總分
-                                        selectScore[key6].sumScore += score;
-                                        // 加總
-                                        selectScore[key6].sumScoreA += (score * subjectScore.Credit);
-                                        // 筆數
-                                        selectScore[key6].subjCount++;
-                                        // 學分加總
-                                        selectScore[key6].sumCredit += subjectScore.Credit;
-
+                                        //列印科目
+                                        if (setting.useSubjectPrintList.Contains(subjectScore.Subject)
+                                            && (
+                                                replace部訂必修專業及實習科目 == false ||
+                                                (
+                                                    subjectScore.Detail.GetAttribute("修課校部訂") == "部訂"
+                                                    && subjectScore.Require == true
+                                                    && (subjectScore.Detail.GetAttribute("開課分項類別") == "專業科目" || subjectScore.Detail.GetAttribute("開課分項類別") == "實習科目"))
+                                                )
+                                            )
+                                        {
+                                            // 總分
+                                            selectScore[key6].sumScore += score;
+                                            // 加總
+                                            selectScore[key6].sumScoreA += (score * subjectScore.Credit);
+                                            // 筆數
+                                            selectScore[key6].subjCount++;
+                                            // 學分加總
+                                            selectScore[key6].sumCredit += subjectScore.Credit;
+                                        }
                                         // 類別一處理
-                                        // 總分
-                                        selectScore[key6].sumScoreC1 += score;
-                                        // 總分加權
-                                        selectScore[key6].sumScoreAC1 += (score * subjectScore.Credit);
-                                        // 筆數
-                                        selectScore[key6].subjCountC1++;
-                                        // 學分加總
-                                        selectScore[key6].sumCreditC1 += subjectScore.Credit;
-
+                                        if (setting.useSubjecOrder1List.Contains(subjectScore.Subject)
+                                            && (
+                                                replaceTag1部訂必修專業及實習科目 == false ||
+                                                (
+                                                    subjectScore.Detail.GetAttribute("修課校部訂") == "部訂"
+                                                    && subjectScore.Require == true
+                                                    && (subjectScore.Detail.GetAttribute("開課分項類別") == "專業科目" || subjectScore.Detail.GetAttribute("開課分項類別") == "實習科目"))
+                                                )
+                                            )
+                                        {
+                                            // 總分
+                                            selectScore[key6].sumScoreC1 += score;
+                                            // 總分加權
+                                            selectScore[key6].sumScoreAC1 += (score * subjectScore.Credit);
+                                            // 筆數
+                                            selectScore[key6].subjCountC1++;
+                                            // 學分加總
+                                            selectScore[key6].sumCreditC1 += subjectScore.Credit;
+                                        }
                                         // 類別二處理
-                                        // 總分
-                                        selectScore[key6].sumScoreC2 += score;
-                                        // 總分加權
-                                        selectScore[key6].sumScoreAC2 += (score * subjectScore.Credit);
-                                        // 筆數
-                                        selectScore[key6].subjCountC2++;
-                                        // 學分加總
-                                        selectScore[key6].sumCreditC2 += subjectScore.Credit;
+                                        if (setting.useSubjecOrder2List.Contains(subjectScore.Subject)
+                                            && (
+                                                replaceTag2部訂必修專業及實習科目 == false ||
+                                                (
+                                                    subjectScore.Detail.GetAttribute("修課校部訂") == "部訂"
+                                                    && subjectScore.Require == true
+                                                    && (subjectScore.Detail.GetAttribute("開課分項類別") == "專業科目" || subjectScore.Detail.GetAttribute("開課分項類別") == "實習科目"))
+                                                )
+                                            )
+                                        {
+                                            // 總分
+                                            selectScore[key6].sumScoreC2 += score;
+                                            // 總分加權
+                                            selectScore[key6].sumScoreAC2 += (score * subjectScore.Credit);
+                                            // 筆數
+                                            selectScore[key6].subjCountC2++;
+                                            // 學分加總
+                                            selectScore[key6].sumCreditC2 += subjectScore.Credit;
+                                        }
                                     }
                                     #endregion 處理科目原始成績
 
@@ -4881,54 +4945,54 @@ namespace SHStaticRank2.Data
                                             }
 
                                             if (selectScore[id].gsScore11.HasValue)
-                                                row["一上科目成績" + subjIndex] = Utility.ParseD2(selectScore[id].gsScore11.Value);
+                                                row["一上科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore11.Value);
                                             if (selectScore[id].gsCredit11.HasValue)
-                                                row["一上科目學分數" + subjIndex] = Utility.ParseD2(selectScore[id].gsCredit11.Value);
+                                                row["一上科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit11.Value);
                                             if (selectScore[id].gsScore12.HasValue)
-                                                row["一下科目成績" + subjIndex] = Utility.ParseD2(selectScore[id].gsScore12.Value);
+                                                row["一下科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore12.Value);
 
                                             if (selectScore[id].gsCredit12.HasValue)
-                                                row["一下科目學分數" + subjIndex] = Utility.ParseD2(selectScore[id].gsCredit12.Value);
+                                                row["一下科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit12.Value);
                                             if (selectScore[id].gsScore21.HasValue)
-                                                row["二上科目成績" + subjIndex] = Utility.ParseD2(selectScore[id].gsScore21.Value);
+                                                row["二上科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore21.Value);
 
                                             if (selectScore[id].gsCredit21.HasValue)
-                                                row["二上科目學分數" + subjIndex] = Utility.ParseD2(selectScore[id].gsCredit21.Value);
+                                                row["二上科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit21.Value);
 
                                             if (selectScore[id].gsScore22.HasValue)
-                                                row["二下科目成績" + subjIndex] = Utility.ParseD2(selectScore[id].gsScore22.Value);
+                                                row["二下科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore22.Value);
 
                                             if (selectScore[id].gsCredit22.HasValue)
-                                                row["二下科目學分數" + subjIndex] = Utility.ParseD2(selectScore[id].gsCredit22.Value);
+                                                row["二下科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit22.Value);
 
                                             if (selectScore[id].gsScore31.HasValue)
-                                                row["三上科目成績" + subjIndex] = Utility.ParseD2(selectScore[id].gsScore31.Value);
+                                                row["三上科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore31.Value);
 
                                             if (selectScore[id].gsCredit31.HasValue)
-                                                row["三上科目學分數" + subjIndex] = Utility.ParseD2(selectScore[id].gsCredit31.Value);
+                                                row["三上科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit31.Value);
 
                                             if (selectScore[id].gsScore32.HasValue)
-                                                row["三下科目成績" + subjIndex] = Utility.ParseD2(selectScore[id].gsScore32.Value);
+                                                row["三下科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore32.Value);
 
                                             if (selectScore[id].gsCredit32.HasValue)
-                                                row["三下科目學分數" + subjIndex] = Utility.ParseD2(selectScore[id].gsCredit32.Value);
+                                                row["三下科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit32.Value);
 
                                             if (selectScore[id].gsScore41.HasValue)
-                                                row["四上科目成績" + subjIndex] = Utility.ParseD2(selectScore[id].gsScore41.Value);
+                                                row["四上科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore41.Value);
 
                                             if (selectScore[id].gsCredit41.HasValue)
-                                                row["四上科目學分數" + subjIndex] = Utility.ParseD2(selectScore[id].gsCredit41.Value);
+                                                row["四上科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit41.Value);
 
                                             if (selectScore[id].gsScore42.HasValue)
-                                                row["四下科目成績" + subjIndex] = Utility.ParseD2(selectScore[id].gsScore42.Value);
+                                                row["四下科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore42.Value);
 
                                             if (selectScore[id].gsCredit42.HasValue)
-                                                row["四下科目學分數" + subjIndex] = Utility.ParseD2(selectScore[id].gsCredit42.Value);
+                                                row["四下科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit42.Value);
 
-                                            row["科目平均" + subjIndex] = Utility.ParseD2(selectScore[id].avgScore);
-                                            row["科目總分" + subjIndex] = Utility.ParseD2(selectScore[id].sumScore);
-                                            row["科目加權平均" + subjIndex] = Utility.ParseD2(selectScore[id].avgScoreA);
-                                            row["科目加權總分" + subjIndex] = Utility.ParseD2(selectScore[id].sumScoreA);
+                                            row["科目平均" + subjIndex] = Utility.NoRound(selectScore[id].avgScore);
+                                            row["科目總分" + subjIndex] = Utility.NoRound(selectScore[id].sumScore);
+                                            row["科目加權平均" + subjIndex] = Utility.NoRound(selectScore[id].avgScoreA);
+                                            row["科目加權總分" + subjIndex] = Utility.NoRound(selectScore[id].sumScoreA);
 
                                             if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                             {
@@ -5173,31 +5237,31 @@ namespace SHStaticRank2.Data
                                         if (selectScore.ContainsKey(id1))
                                         {
                                             if (selectScore[id1].gsScore11.HasValue)
-                                                row["一上學業成績"] = Utility.ParseD2(selectScore[id1].gsScore11.Value);
+                                                row["一上學業成績"] = Utility.NoRound(selectScore[id1].gsScore11.Value);
 
                                             if (selectScore[id1].gsScore12.HasValue)
-                                                row["一下學業成績"] = Utility.ParseD2(selectScore[id1].gsScore12.Value);
+                                                row["一下學業成績"] = Utility.NoRound(selectScore[id1].gsScore12.Value);
 
                                             if (selectScore[id1].gsScore21.HasValue)
-                                                row["二上學業成績"] = Utility.ParseD2(selectScore[id1].gsScore21.Value);
+                                                row["二上學業成績"] = Utility.NoRound(selectScore[id1].gsScore21.Value);
 
                                             if (selectScore[id1].gsScore22.HasValue)
-                                                row["二下學業成績"] = Utility.ParseD2(selectScore[id1].gsScore22.Value);
+                                                row["二下學業成績"] = Utility.NoRound(selectScore[id1].gsScore22.Value);
 
                                             if (selectScore[id1].gsScore31.HasValue)
-                                                row["三上學業成績"] = Utility.ParseD2(selectScore[id1].gsScore31.Value);
+                                                row["三上學業成績"] = Utility.NoRound(selectScore[id1].gsScore31.Value);
 
                                             if (selectScore[id1].gsScore32.HasValue)
-                                                row["三下學業成績"] = Utility.ParseD2(selectScore[id1].gsScore32.Value);
+                                                row["三下學業成績"] = Utility.NoRound(selectScore[id1].gsScore32.Value);
 
                                             if (selectScore[id1].gsScore41.HasValue)
-                                                row["四上學業成績"] = Utility.ParseD2(selectScore[id1].gsScore41.Value);
+                                                row["四上學業成績"] = Utility.NoRound(selectScore[id1].gsScore41.Value);
 
                                             if (selectScore[id1].gsScore42.HasValue)
-                                                row["四下學業成績"] = Utility.ParseD2(selectScore[id1].gsScore42.Value);
+                                                row["四下學業成績"] = Utility.NoRound(selectScore[id1].gsScore42.Value);
 
 
-                                            row["學業平均"] = Utility.ParseD2(selectScore[id1].avgScore);
+                                            row["學業平均"] = Utility.NoRound(selectScore[id1].avgScore);
                                             if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                             {
                                                 string key2 = "學業成績平均班排名" + studRec.RefClass.ClassID + "^^^";
@@ -5251,7 +5315,7 @@ namespace SHStaticRank2.Data
                                                     }
                                                 }
                                             }
-                                            row["學業總分"] = Utility.ParseD2(selectScore[id1].sumScore);
+                                            row["學業總分"] = Utility.NoRound(selectScore[id1].sumScore);
                                             if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                             {
                                                 string key1 = "學業成績總分班排名" + studRec.RefClass.ClassID + "^^^";
@@ -5304,31 +5368,31 @@ namespace SHStaticRank2.Data
                                         if (selectScore.ContainsKey(id1_5))
                                         {
                                             if (selectScore[id1_5].gsScore11.HasValue)
-                                                row["一上學業原始成績"] = Utility.ParseD2(selectScore[id1_5].gsScore11.Value);
+                                                row["一上學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore11.Value);
 
                                             if (selectScore[id1_5].gsScore12.HasValue)
-                                                row["一下學業原始成績"] = Utility.ParseD2(selectScore[id1_5].gsScore12.Value);
+                                                row["一下學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore12.Value);
 
                                             if (selectScore[id1_5].gsScore21.HasValue)
-                                                row["二上學業原始成績"] = Utility.ParseD2(selectScore[id1_5].gsScore21.Value);
+                                                row["二上學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore21.Value);
 
                                             if (selectScore[id1_5].gsScore22.HasValue)
-                                                row["二下學業原始成績"] = Utility.ParseD2(selectScore[id1_5].gsScore22.Value);
+                                                row["二下學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore22.Value);
 
                                             if (selectScore[id1_5].gsScore31.HasValue)
-                                                row["三上學業原始成績"] = Utility.ParseD2(selectScore[id1_5].gsScore31.Value);
+                                                row["三上學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore31.Value);
 
                                             if (selectScore[id1_5].gsScore32.HasValue)
-                                                row["三下學業原始成績"] = Utility.ParseD2(selectScore[id1_5].gsScore32.Value);
+                                                row["三下學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore32.Value);
 
                                             if (selectScore[id1_5].gsScore41.HasValue)
-                                                row["四上學業原始成績"] = Utility.ParseD2(selectScore[id1_5].gsScore41.Value);
+                                                row["四上學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore41.Value);
 
                                             if (selectScore[id1_5].gsScore42.HasValue)
-                                                row["四下學業原始成績"] = Utility.ParseD2(selectScore[id1_5].gsScore42.Value);
+                                                row["四下學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore42.Value);
 
 
-                                            row["學業原始平均"] = Utility.ParseD2(selectScore[id1_5].avgScore);
+                                            row["學業原始平均"] = Utility.NoRound(selectScore[id1_5].avgScore);
                                             if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                             {
                                                 string key2 = "學業原始成績平均班排名" + studRec.RefClass.ClassID + "^^^";
@@ -5382,7 +5446,7 @@ namespace SHStaticRank2.Data
                                                     }
                                                 }
                                             }
-                                            row["學業原始總分"] = Utility.ParseD2(selectScore[id1_5].sumScore);
+                                            row["學業原始總分"] = Utility.NoRound(selectScore[id1_5].sumScore);
                                             if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                             {
                                                 string key1 = "學業原始成績總分班排名" + studRec.RefClass.ClassID + "^^^";
@@ -5435,31 +5499,31 @@ namespace SHStaticRank2.Data
                                         if (selectScore.ContainsKey(id1_1))
                                         {
                                             if (selectScore[id1_1].gsScore11.HasValue)
-                                                row["一上學業體育成績"] = Utility.ParseD2(selectScore[id1_1].gsScore11.Value);
+                                                row["一上學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore11.Value);
 
                                             if (selectScore[id1_1].gsScore12.HasValue)
-                                                row["一下學業體育成績"] = Utility.ParseD2(selectScore[id1_1].gsScore12.Value);
+                                                row["一下學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore12.Value);
 
                                             if (selectScore[id1_1].gsScore21.HasValue)
-                                                row["二上學業體育成績"] = Utility.ParseD2(selectScore[id1_1].gsScore21.Value);
+                                                row["二上學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore21.Value);
 
                                             if (selectScore[id1_1].gsScore22.HasValue)
-                                                row["二下學業體育成績"] = Utility.ParseD2(selectScore[id1_1].gsScore22.Value);
+                                                row["二下學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore22.Value);
 
                                             if (selectScore[id1_1].gsScore31.HasValue)
-                                                row["三上學業體育成績"] = Utility.ParseD2(selectScore[id1_1].gsScore31.Value);
+                                                row["三上學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore31.Value);
 
                                             if (selectScore[id1_1].gsScore32.HasValue)
-                                                row["三下學業體育成績"] = Utility.ParseD2(selectScore[id1_1].gsScore32.Value);
+                                                row["三下學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore32.Value);
 
                                             if (selectScore[id1_1].gsScore41.HasValue)
-                                                row["四上學業體育成績"] = Utility.ParseD2(selectScore[id1_1].gsScore41.Value);
+                                                row["四上學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore41.Value);
 
                                             if (selectScore[id1_1].gsScore42.HasValue)
-                                                row["四下學業體育成績"] = Utility.ParseD2(selectScore[id1_1].gsScore42.Value);
+                                                row["四下學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore42.Value);
 
 
-                                            row["學業體育平均"] = Utility.ParseD2(selectScore[id1_1].avgScore);
+                                            row["學業體育平均"] = Utility.NoRound(selectScore[id1_1].avgScore);
                                             if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                             {
                                                 string key2 = "學業體育成績平均班排名" + studRec.RefClass.ClassID + "^^^";
@@ -5513,7 +5577,7 @@ namespace SHStaticRank2.Data
                                                     }
                                                 }
                                             }
-                                            row["學業體育總分"] = Utility.ParseD2(selectScore[id1_1].sumScore);
+                                            row["學業體育總分"] = Utility.NoRound(selectScore[id1_1].sumScore);
                                             if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                             {
                                                 string key1 = "學業體育成績總分班排名" + studRec.RefClass.ClassID + "^^^";
@@ -5566,31 +5630,31 @@ namespace SHStaticRank2.Data
                                         if (selectScore.ContainsKey(id1_2))
                                         {
                                             if (selectScore[id1_2].gsScore11.HasValue)
-                                                row["一上學業健康與護理成績"] = Utility.ParseD2(selectScore[id1_2].gsScore11.Value);
+                                                row["一上學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore11.Value);
 
                                             if (selectScore[id1_2].gsScore12.HasValue)
-                                                row["一下學業健康與護理成績"] = Utility.ParseD2(selectScore[id1_2].gsScore12.Value);
+                                                row["一下學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore12.Value);
 
                                             if (selectScore[id1_2].gsScore21.HasValue)
-                                                row["二上學業健康與護理成績"] = Utility.ParseD2(selectScore[id1_2].gsScore21.Value);
+                                                row["二上學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore21.Value);
 
                                             if (selectScore[id1_2].gsScore22.HasValue)
-                                                row["二下學業健康與護理成績"] = Utility.ParseD2(selectScore[id1_2].gsScore22.Value);
+                                                row["二下學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore22.Value);
 
                                             if (selectScore[id1_2].gsScore31.HasValue)
-                                                row["三上學業健康與護理成績"] = Utility.ParseD2(selectScore[id1_2].gsScore31.Value);
+                                                row["三上學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore31.Value);
 
                                             if (selectScore[id1_2].gsScore32.HasValue)
-                                                row["三下學業健康與護理成績"] = Utility.ParseD2(selectScore[id1_2].gsScore32.Value);
+                                                row["三下學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore32.Value);
 
                                             if (selectScore[id1_2].gsScore41.HasValue)
-                                                row["四上學業健康與護理成績"] = Utility.ParseD2(selectScore[id1_2].gsScore41.Value);
+                                                row["四上學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore41.Value);
 
                                             if (selectScore[id1_2].gsScore42.HasValue)
-                                                row["四下學業健康與護理成績"] = Utility.ParseD2(selectScore[id1_2].gsScore42.Value);
+                                                row["四下學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore42.Value);
 
 
-                                            row["學業健康與護理平均"] = Utility.ParseD2(selectScore[id1_2].avgScore);
+                                            row["學業健康與護理平均"] = Utility.NoRound(selectScore[id1_2].avgScore);
                                             if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                             {
                                                 string key2 = "學業健康與護理成績平均班排名" + studRec.RefClass.ClassID + "^^^";
@@ -5644,7 +5708,7 @@ namespace SHStaticRank2.Data
                                                     }
                                                 }
                                             }
-                                            row["學業健康與護理總分"] = Utility.ParseD2(selectScore[id1_2].sumScore);
+                                            row["學業健康與護理總分"] = Utility.NoRound(selectScore[id1_2].sumScore);
                                             if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                             {
                                                 string key1 = "學業健康與護理成績總分班排名" + studRec.RefClass.ClassID + "^^^";
@@ -5697,31 +5761,31 @@ namespace SHStaticRank2.Data
                                         if (selectScore.ContainsKey(id1_3))
                                         {
                                             if (selectScore[id1_3].gsScore11.HasValue)
-                                                row["一上學業國防通識成績"] = Utility.ParseD2(selectScore[id1_3].gsScore11.Value);
+                                                row["一上學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore11.Value);
 
                                             if (selectScore[id1_3].gsScore12.HasValue)
-                                                row["一下學業國防通識成績"] = Utility.ParseD2(selectScore[id1_3].gsScore12.Value);
+                                                row["一下學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore12.Value);
 
                                             if (selectScore[id1_3].gsScore21.HasValue)
-                                                row["二上學業國防通識成績"] = Utility.ParseD2(selectScore[id1_3].gsScore21.Value);
+                                                row["二上學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore21.Value);
 
                                             if (selectScore[id1_3].gsScore22.HasValue)
-                                                row["二下學業國防通識成績"] = Utility.ParseD2(selectScore[id1_3].gsScore22.Value);
+                                                row["二下學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore22.Value);
 
                                             if (selectScore[id1_3].gsScore31.HasValue)
-                                                row["三上學業國防通識成績"] = Utility.ParseD2(selectScore[id1_3].gsScore31.Value);
+                                                row["三上學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore31.Value);
 
                                             if (selectScore[id1_3].gsScore32.HasValue)
-                                                row["三下學業國防通識成績"] = Utility.ParseD2(selectScore[id1_3].gsScore32.Value);
+                                                row["三下學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore32.Value);
 
                                             if (selectScore[id1_3].gsScore41.HasValue)
-                                                row["四上學業國防通識成績"] = Utility.ParseD2(selectScore[id1_3].gsScore41.Value);
+                                                row["四上學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore41.Value);
 
                                             if (selectScore[id1_3].gsScore42.HasValue)
-                                                row["四下學業國防通識成績"] = Utility.ParseD2(selectScore[id1_3].gsScore42.Value);
+                                                row["四下學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore42.Value);
 
 
-                                            row["學業國防通識平均"] = Utility.ParseD2(selectScore[id1_3].avgScore);
+                                            row["學業國防通識平均"] = Utility.NoRound(selectScore[id1_3].avgScore);
                                             if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                             {
                                                 string key2 = "學業國防通識成績平均班排名" + studRec.RefClass.ClassID + "^^^";
@@ -5775,7 +5839,7 @@ namespace SHStaticRank2.Data
                                                     }
                                                 }
                                             }
-                                            row["學業國防通識總分"] = Utility.ParseD2(selectScore[id1_3].sumScore);
+                                            row["學業國防通識總分"] = Utility.NoRound(selectScore[id1_3].sumScore);
                                             if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                             {
                                                 string key1 = "學業國防通識成績總分班排名" + studRec.RefClass.ClassID + "^^^";
@@ -5828,31 +5892,31 @@ namespace SHStaticRank2.Data
                                         if (selectScore.ContainsKey(id1_4))
                                         {
                                             if (selectScore[id1_4].gsScore11.HasValue)
-                                                row["一上學業實習科目成績"] = Utility.ParseD2(selectScore[id1_4].gsScore11.Value);
+                                                row["一上學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore11.Value);
 
                                             if (selectScore[id1_4].gsScore12.HasValue)
-                                                row["一下學業實習科目成績"] = Utility.ParseD2(selectScore[id1_4].gsScore12.Value);
+                                                row["一下學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore12.Value);
 
                                             if (selectScore[id1_4].gsScore21.HasValue)
-                                                row["二上學業實習科目成績"] = Utility.ParseD2(selectScore[id1_4].gsScore21.Value);
+                                                row["二上學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore21.Value);
 
                                             if (selectScore[id1_4].gsScore22.HasValue)
-                                                row["二下學業實習科目成績"] = Utility.ParseD2(selectScore[id1_4].gsScore22.Value);
+                                                row["二下學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore22.Value);
 
                                             if (selectScore[id1_4].gsScore31.HasValue)
-                                                row["三上學業實習科目成績"] = Utility.ParseD2(selectScore[id1_4].gsScore31.Value);
+                                                row["三上學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore31.Value);
 
                                             if (selectScore[id1_4].gsScore32.HasValue)
-                                                row["三下學業實習科目成績"] = Utility.ParseD2(selectScore[id1_4].gsScore32.Value);
+                                                row["三下學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore32.Value);
 
                                             if (selectScore[id1_4].gsScore41.HasValue)
-                                                row["四上學業實習科目成績"] = Utility.ParseD2(selectScore[id1_4].gsScore41.Value);
+                                                row["四上學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore41.Value);
 
                                             if (selectScore[id1_4].gsScore42.HasValue)
-                                                row["四下學業實習科目成績"] = Utility.ParseD2(selectScore[id1_4].gsScore42.Value);
+                                                row["四下學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore42.Value);
 
 
-                                            row["學業實習科目平均"] = Utility.ParseD2(selectScore[id1_4].avgScore);
+                                            row["學業實習科目平均"] = Utility.NoRound(selectScore[id1_4].avgScore);
                                             if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                             {
                                                 string key2 = "學業實習科目成績平均班排名" + studRec.RefClass.ClassID + "^^^";
@@ -5906,7 +5970,7 @@ namespace SHStaticRank2.Data
                                                     }
                                                 }
                                             }
-                                            row["學業實習科目總分"] = Utility.ParseD2(selectScore[id1_4].sumScore);
+                                            row["學業實習科目總分"] = Utility.NoRound(selectScore[id1_4].sumScore);
                                             if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                             {
                                                 string key1 = "學業實習科目成績總分班排名" + studRec.RefClass.ClassID + "^^^";
@@ -5959,7 +6023,7 @@ namespace SHStaticRank2.Data
                                     if (selectScore.ContainsKey(id2))
                                     {
 
-                                        row["總計加權平均"] = Utility.ParseD2(selectScore[id2].avgScoreA);
+                                        row["總計加權平均"] = Utility.NoRound(selectScore[id2].avgScoreA);
                                         if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                         {
                                             string key4 = "總計加權平均班排名" + studRec.RefClass.ClassID;
@@ -5982,7 +6046,7 @@ namespace SHStaticRank2.Data
                                             {
                                                 if (ranks.ContainsKey(key4))
                                                 {
-                                                    row["總計加權平均類別一"] = Utility.ParseD2(selectScore[id2].avgScoreAC1);
+                                                    row["總計加權平均類別一"] = Utility.NoRound(selectScore[id2].avgScoreAC1);
                                                     row["總計加權平均類別一排名"] = ranks[key4].IndexOf(selectScore[id2].avgScoreAC1) + 1;
                                                     row["總計加權平均類別一排名母數"] = ranks[key4].Count;
                                                 }
@@ -5999,7 +6063,7 @@ namespace SHStaticRank2.Data
                                             }
                                         }
 
-                                        row["總計加權總分"] = Utility.ParseD2(selectScore[id2].sumScoreA);
+                                        row["總計加權總分"] = Utility.NoRound(selectScore[id2].sumScoreA);
 
                                         if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                         {
@@ -6029,7 +6093,7 @@ namespace SHStaticRank2.Data
                                                 key2 = "總計加權總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
                                                 if (ranks.ContainsKey(key2))
                                                 {
-                                                    row["總計加權總分類別一"] = Utility.ParseD2(selectScore[id2].sumScoreAC1);
+                                                    row["總計加權總分類別一"] = Utility.NoRound(selectScore[id2].sumScoreAC1);
                                                     row["總計加權總分類別一排名"] = ranks[key2].IndexOf(selectScore[id2].sumScoreAC1) + 1; ;
                                                     row["總計加權總分類別一排名母數"] = ranks[key2].Count;
                                                 }
@@ -6040,14 +6104,14 @@ namespace SHStaticRank2.Data
                                                 key2 = "總計加權總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
                                                 if (ranks.ContainsKey(key2))
                                                 {
-                                                    row["總計加權總分類別二"] = Utility.ParseD2(selectScore[id2].sumScoreAC2);
+                                                    row["總計加權總分類別二"] = Utility.NoRound(selectScore[id2].sumScoreAC2);
                                                     row["總計加權總分類別二排名"] = ranks[key2].IndexOf(selectScore[id2].sumScoreAC2) + 1; ;
                                                     row["總計加權總分類別二排名母數"] = ranks[key2].Count;
                                                 }
                                             }
                                         }
 
-                                        row["總計平均"] = Utility.ParseD2(selectScore[id2].avgScore);
+                                        row["總計平均"] = Utility.NoRound(selectScore[id2].avgScore);
                                         if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                         {
                                             string key3 = "總計平均班排名" + studRec.RefClass.ClassID;
@@ -6076,7 +6140,7 @@ namespace SHStaticRank2.Data
                                                 key3 = "總計平均類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
                                                 if (ranks.ContainsKey(key3))
                                                 {
-                                                    row["總計平均類別一"] = Utility.ParseD2(selectScore[id2].avgScoreC1);
+                                                    row["總計平均類別一"] = Utility.NoRound(selectScore[id2].avgScoreC1);
                                                     row["總計平均類別一排名"] = ranks[key3].IndexOf(selectScore[id2].avgScoreC1) + 1;
                                                     row["總計平均類別一排名母數"] = ranks[key3].Count;
                                                 }
@@ -6087,13 +6151,13 @@ namespace SHStaticRank2.Data
                                                 key3 = "總計平均類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
                                                 if (ranks.ContainsKey(key3))
                                                 {
-                                                    row["總計平均類別二"] = Utility.ParseD2(selectScore[id2].avgScoreC2);
+                                                    row["總計平均類別二"] = Utility.NoRound(selectScore[id2].avgScoreC2);
                                                     row["總計平均類別二排名"] = ranks[key3].IndexOf(selectScore[id2].avgScoreC2) + 1;
                                                     row["總計平均類別二排名母數"] = ranks[key3].Count;
                                                 }
                                             }
                                         }
-                                        row["總計總分"] = Utility.ParseD2(selectScore[id2].sumScore);
+                                        row["總計總分"] = Utility.NoRound(selectScore[id2].sumScore);
                                         if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                         {
                                             string key1 = "總計總分班排名" + studRec.RefClass.ClassID;
@@ -6122,7 +6186,7 @@ namespace SHStaticRank2.Data
                                                 key1 = "總計總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
                                                 if (ranks.ContainsKey(key1))
                                                 {
-                                                    row["總計總分類別一"] = Utility.ParseD2(selectScore[id2].sumScoreC1);
+                                                    row["總計總分類別一"] = Utility.NoRound(selectScore[id2].sumScoreC1);
                                                     row["總計總分類別一排名"] = ranks[key1].IndexOf(selectScore[id2].sumScoreC1) + 1;
                                                     row["總計總分類別一排名母數"] = ranks[key1].Count;
                                                 }
@@ -6132,7 +6196,7 @@ namespace SHStaticRank2.Data
                                                 key1 = "總計總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
                                                 if (ranks.ContainsKey(key1))
                                                 {
-                                                    row["總計總分類別二"] = Utility.ParseD2(selectScore[id2].sumScoreC2);
+                                                    row["總計總分類別二"] = Utility.NoRound(selectScore[id2].sumScoreC2);
                                                     row["總計總分類別二排名"] = ranks[key1].IndexOf(selectScore[id2].sumScoreC2) + 1;
                                                     row["總計總分類別二排名母數"] = ranks[key1].Count;
                                                 }
@@ -6168,7 +6232,7 @@ namespace SHStaticRank2.Data
                                             #region 處理科目原始成績
                                             if (selectScore.ContainsKey(id5))
                                             {
-                                                row[gsS + "科目原始成績加權平均"] = Utility.ParseD2(selectScore[id5].avgScoreA);
+                                                row[gsS + "科目原始成績加權平均"] = Utility.NoRound(selectScore[id5].avgScoreA);
                                                 if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                                 {
                                                     string key5a = gsS + "科目原始成績加權平均班排名" + studRec.RefClass.ClassID;
@@ -6203,7 +6267,7 @@ namespace SHStaticRank2.Data
                                                         if (ranks.ContainsKey(key5a))
                                                         {
                                                             int rr = ranks[key5a].IndexOf(selectScore[id5].avgScoreAC1) + 1;
-                                                            row[gsS + "科目原始成績加權平均類別一"] = Utility.ParseD2(selectScore[id5].avgScoreAC1);
+                                                            row[gsS + "科目原始成績加權平均類別一"] = Utility.NoRound(selectScore[id5].avgScoreAC1);
                                                             row[gsS + "科目原始成績加權平均類別一排名"] = rr;
                                                             row[gsS + "科目原始成績加權平均類別一排名母數"] = ranks[key5a].Count;
                                                             row[gsS + "科目原始成績加權平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key5a].Count);
@@ -6216,7 +6280,7 @@ namespace SHStaticRank2.Data
                                                         if (ranks.ContainsKey(key5a))
                                                         {
                                                             int rr = ranks[key5a].IndexOf(selectScore[id5].avgScoreAC2) + 1;
-                                                            row[gsS + "科目原始成績加權平均類別二"] = Utility.ParseD2(selectScore[id5].avgScoreAC2);
+                                                            row[gsS + "科目原始成績加權平均類別二"] = Utility.NoRound(selectScore[id5].avgScoreAC2);
                                                             row[gsS + "科目原始成績加權平均類別二排名"] = rr;
                                                             row[gsS + "科目原始成績加權平均類別二排名母數"] = ranks[key5a].Count;
                                                             row[gsS + "科目原始成績加權平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key5a].Count);
@@ -6229,7 +6293,7 @@ namespace SHStaticRank2.Data
                                             #region 處理篩選科目原始成績
                                             if (selectScore.ContainsKey(id7))
                                             {
-                                                row[gsS + "篩選科目原始成績加權平均"] = Utility.ParseD2(selectScore[id7].avgScoreA);
+                                                row[gsS + "篩選科目原始成績加權平均"] = Utility.NoRound(selectScore[id7].avgScoreA);
 
                                                 if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                                 {
@@ -6266,7 +6330,7 @@ namespace SHStaticRank2.Data
                                                         if (ranks.ContainsKey(key7a))
                                                         {
                                                             int rr = ranks[key7a].IndexOf(selectScore[id7].avgScoreAC1) + 1;
-                                                            row[gsS + "篩選科目原始成績加權平均類別一"] = Utility.ParseD2(selectScore[id7].avgScoreAC1);
+                                                            row[gsS + "篩選科目原始成績加權平均類別一"] = Utility.NoRound(selectScore[id7].avgScoreAC1);
                                                             row[gsS + "篩選科目原始成績加權平均類別一排名"] = rr;
                                                             row[gsS + "篩選科目原始成績加權平均類別一排名母數"] = ranks[key7a].Count;
                                                             row[gsS + "篩選科目原始成績加權平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key7a].Count);
@@ -6279,7 +6343,7 @@ namespace SHStaticRank2.Data
                                                         if (ranks.ContainsKey(key7a))
                                                         {
                                                             int rr = ranks[key7a].IndexOf(selectScore[id7].avgScoreAC2) + 1;
-                                                            row[gsS + "篩選科目原始成績加權平均類別二"] = Utility.ParseD2(selectScore[id7].avgScoreAC2);
+                                                            row[gsS + "篩選科目原始成績加權平均類別二"] = Utility.NoRound(selectScore[id7].avgScoreAC2);
                                                             row[gsS + "篩選科目原始成績加權平均類別二排名"] = rr;
                                                             row[gsS + "篩選科目原始成績加權平均類別二排名母數"] = ranks[key7a].Count;
                                                             row[gsS + "篩選科目原始成績加權平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key7a].Count);
@@ -6306,7 +6370,7 @@ namespace SHStaticRank2.Data
                                     if (selectScore.ContainsKey(id6))
                                     {
 
-                                        row["科目原始成績加權平均平均"] = Utility.ParseD2(selectScore[id6].avgScoreA);
+                                        row["科目原始成績加權平均平均"] = Utility.NoRound(selectScore[id6].avgScoreA);
                                         if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                         {
                                             string key6a = "科目原始成績加權平均平均班排名" + studRec.RefClass.ClassID;
@@ -6341,7 +6405,7 @@ namespace SHStaticRank2.Data
                                                 if (ranks.ContainsKey(key6a))
                                                 {
                                                     int rr = ranks[key6a].IndexOf(selectScore[id6].avgScoreAC1) + 1;
-                                                    row["科目原始成績加權平均平均類別一"] = Utility.ParseD2(selectScore[id6].avgScoreAC1);
+                                                    row["科目原始成績加權平均平均類別一"] = Utility.NoRound(selectScore[id6].avgScoreAC1);
                                                     row["科目原始成績加權平均平均類別一排名"] = rr;
                                                     row["科目原始成績加權平均平均類別一排名母數"] = ranks[key6a].Count;
                                                     row["科目原始成績加權平均平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key6a].Count);
@@ -6354,7 +6418,7 @@ namespace SHStaticRank2.Data
                                                 if (ranks.ContainsKey(key6a))
                                                 {
                                                     int rr = ranks[key6a].IndexOf(selectScore[id6].avgScoreAC2) + 1;
-                                                    row["科目原始成績加權平均平均類別二"] = Utility.ParseD2(selectScore[id6].avgScoreAC2);
+                                                    row["科目原始成績加權平均平均類別二"] = Utility.NoRound(selectScore[id6].avgScoreAC2);
                                                     row["科目原始成績加權平均平均類別二排名"] = rr;
                                                     row["科目原始成績加權平均平均類別二排名母數"] = ranks[key6a].Count;
                                                     row["科目原始成績加權平均平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key6a].Count);
@@ -6367,7 +6431,7 @@ namespace SHStaticRank2.Data
                                     #region 處理篩選科目原始成績
                                     if (selectScore.ContainsKey(id8))
                                     {
-                                        row["篩選科目原始成績加權平均平均"] = Utility.ParseD2(selectScore[id8].avgScoreA);
+                                        row["篩選科目原始成績加權平均平均"] = Utility.NoRound(selectScore[id8].avgScoreA);
                                         if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                         {
                                             string key8a = "篩選科目原始成績加權平均平均班排名" + studRec.RefClass.ClassID;
@@ -6402,7 +6466,7 @@ namespace SHStaticRank2.Data
                                                 if (ranks.ContainsKey(key8a))
                                                 {
                                                     int rr = ranks[key8a].IndexOf(selectScore[id8].avgScoreAC1) + 1;
-                                                    row["篩選科目原始成績加權平均平均類別一"] = Utility.ParseD2(selectScore[id8].avgScoreAC1);
+                                                    row["篩選科目原始成績加權平均平均類別一"] = Utility.NoRound(selectScore[id8].avgScoreAC1);
                                                     row["篩選科目原始成績加權平均平均類別一排名"] = rr;
                                                     row["篩選科目原始成績加權平均平均類別一排名母數"] = ranks[key8a].Count;
                                                     row["篩選科目原始成績加權平均平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key8a].Count);
@@ -6415,7 +6479,7 @@ namespace SHStaticRank2.Data
                                                 if (ranks.ContainsKey(key8a))
                                                 {
                                                     int rr = ranks[key8a].IndexOf(selectScore[id8].avgScoreAC2) + 1;
-                                                    row["篩選科目原始成績加權平均平均類別二"] = Utility.ParseD2(selectScore[id8].avgScoreAC2);
+                                                    row["篩選科目原始成績加權平均平均類別二"] = Utility.NoRound(selectScore[id8].avgScoreAC2);
                                                     row["篩選科目原始成績加權平均平均類別二排名"] = rr;
                                                     row["篩選科目原始成績加權平均平均類別二排名母數"] = ranks[key8a].Count;
                                                     row["篩選科目原始成績加權平均平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key8a].Count);

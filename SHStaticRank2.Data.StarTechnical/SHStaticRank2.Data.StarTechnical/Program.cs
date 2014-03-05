@@ -15,8 +15,8 @@ namespace SHStaticRank2.Data.StarTechnical
         [FISCA.MainMethod]
         public static void Main()
         {
-            FISCA.Permission.Catalog cat = FISCA.Permission.RoleAclSource.Instance["教務作業"]["功能按鈕"];
-            cat.Add(new FISCA.Permission.RibbonFeature("SHSchool.SHStaticRank2.Data", "計算固定排名(測試版)"));
+            //FISCA.Permission.Catalog cat = FISCA.Permission.RoleAclSource.Instance["教務作業"]["功能按鈕"];
+            //cat.Add(new FISCA.Permission.RibbonFeature("SHSchool.SHStaticRank2.Data", "計算固定排名(測試版)"));
 
             var button = FISCA.Presentation.MotherForm.RibbonBarItems["教務作業", "批次作業/檢視"]["成績作業"]["計算固定排名(測試版)"]["計算多學期成績固定排名(103學年度技職繁星)"];
             button.Enable = FISCA.Permission.UserAcl.Current["SHSchool.SHStaticRank2.Data"].Executable;
@@ -214,7 +214,7 @@ namespace SHStaticRank2.Data.StarTechnical
                                     ws.Cells[seq, 10].PutValue("" + student["學業原始平均科排名"]);//8.平均科排名
                                     ws.Cells[seq, 11].PutValue("" + student["學業原始平均類別一排名"]);//9.學業平均成績群名次
 
-                                    ws.Cells[seq, 12].PutValue("" + student["篩選科目原始成績加權平均平均"]);//專業及實習平均成績
+                                    ws.Cells[seq, 12].PutValue("" + student["篩選科目原始成績加權平均平均類別二"]);//專業及實習平均成績
                                     ws.Cells[seq, 13].PutValue("" + student["篩選科目原始成績加權平均平均類別二排名"]);//10.專業及實習平均成績群名次
                                     for (int i = 1; i <= subjectLimit; i++)
                                     {

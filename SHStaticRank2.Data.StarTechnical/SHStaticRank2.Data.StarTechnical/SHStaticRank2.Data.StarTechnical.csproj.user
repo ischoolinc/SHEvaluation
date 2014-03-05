@@ -4,4 +4,7 @@
     <StartAction>Project</StartAction>
     <StartProgram>C:\Users\ChiaHu\Desktop\huangwc_desktop\ischool desktop\ischooldiag.exe</StartProgram>
   </PropertyGroup>
+  <PropertyGroup>
+    <ProjectView>ProjectFiles</ProjectView>
+  </PropertyGroup>
 </Project>

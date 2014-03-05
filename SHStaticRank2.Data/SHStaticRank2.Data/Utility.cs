@@ -8,6 +8,16 @@ namespace SHStaticRank2.Data
     public class Utility
     {
         /// <summary>
+        /// 不處理進位(word合併欄位中自行處理)
+        /// </summary>
+        /// <param name="score"></param>
+        /// <returns></returns>
+        public static decimal NoRound(decimal score)
+        {
+            return score;
+        }
+
+        /// <summary>
         /// 四捨五入到小數下二位
         /// </summary>
         /// <param name="score"></param>

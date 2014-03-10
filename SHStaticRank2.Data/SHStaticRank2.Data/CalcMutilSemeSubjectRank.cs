@@ -14,19 +14,21 @@ namespace SHStaticRank2.Data
         public delegate void OneClassCompleteDelegate();
         public static event OneClassCompleteDelegate OneClassCompleted;
         public static DataTable _table = new DataTable();
-
-        // 計算學生科目數
-        static Dictionary<string, int> _studSubjCountDict = new Dictionary<string, int>();
-        static Dictionary<string, string> _studNameDict = new Dictionary<string, string>();
-        static Dictionary<string, Aspose.Words.Document> _WordDocDict = new Dictionary<string, Aspose.Words.Document>();
-        static Dictionary<string, Aspose.Cells.Workbook> _ExcelCellDict = new Dictionary<string, Aspose.Cells.Workbook>();
-        static List<memoText> _memoText = new List<memoText>();
-        static List<string> _PPSubjNameList = new List<string>();
-
         public static string FolderName = "";
 
         public static void Setup(SHStaticRank2.Data.Configure setting)
         {
+
+            // 計算學生科目數
+            Dictionary<string, List<string>> _studSubjCountDict = new Dictionary<string, List<string>>();
+            Dictionary<string, string> _studNameDict = new Dictionary<string, string>();
+            Dictionary<string, Aspose.Words.Document> _WordDocDict = new Dictionary<string, Aspose.Words.Document>();
+            Dictionary<string, Aspose.Cells.Workbook> _ExcelCellDict = new Dictionary<string, Aspose.Cells.Workbook>();
+            List<memoText> _memoText = new List<memoText>();
+            List<string> _PPSubjNameList = new List<string>();
+
+
+
             AccessHelper accessHelper = new AccessHelper();
             UpdateHelper updateHelper = new UpdateHelper();
             Dictionary<string, List<StudentRecord>> gradeyearStudents = new Dictionary<string, List<StudentRecord>>();
@@ -43,9 +45,9 @@ namespace SHStaticRank2.Data
                 // 檢查學生科目數是否超過樣板可容納數
                 List<string> ErrorStudIDList = new List<string>();
 
-                foreach (KeyValuePair<string, int> data in _studSubjCountDict)
+                foreach (KeyValuePair<string, List<string>> data in _studSubjCountDict)
                 {
-                    if (data.Value > setting.SubjectLimit)
+                    if (data.Value.Count > setting.SubjectLimit)
                         ErrorStudIDList.Add(data.Key);
                 }
 
@@ -853,9 +855,9 @@ namespace SHStaticRank2.Data
                                     {
                                         // 計算學生科目數
                                         if (!_studSubjCountDict.ContainsKey(studentID))
-                                            _studSubjCountDict.Add(studentID, 0);
-
-                                        _studSubjCountDict[studentID]++;
+                                            _studSubjCountDict.Add(studentID, new List<string>());
+                                        if (!_studSubjCountDict[studentID].Contains(subjectScore.Subject))
+                                            _studSubjCountDict[studentID].Add(subjectScore.Subject);
 
                                         chkHasSubjectName = true;
                                         if (!selectScore.ContainsKey(subjKey))
@@ -4244,9 +4246,9 @@ namespace SHStaticRank2.Data
                         #region Save Excl
                         #region 處理超過樣版支援名單
                         int overflowCount = 1;
-                        foreach (KeyValuePair<string, int> data in _studSubjCountDict)
+                        foreach (KeyValuePair<string, List<string>> data in _studSubjCountDict)
                         {
-                            if (data.Value > setting.SubjectLimit)
+                            if (data.Value.Count > setting.SubjectLimit)
                             {
                                 string errName = "學生科目數超出範本科目數清單";
                                 if (!_ExcelCellDict.ContainsKey(errName))

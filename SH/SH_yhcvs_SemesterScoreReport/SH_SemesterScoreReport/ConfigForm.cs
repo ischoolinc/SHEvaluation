@@ -257,8 +257,8 @@ namespace SH_SemesterScoreReport
                         Configure.Decode();
                     if (!cboSchoolYear.Items.Contains(Configure.SchoolYear))
                         cboSchoolYear.Items.Add(Configure.SchoolYear);
-                    cboSchoolYear.Text = Configure.SchoolYear;
-                    cboSemester.Text = Configure.Semester;
+                    cboSchoolYear.Text = _DefalutSchoolYear;
+                    cboSemester.Text = _DefaultSemester;
                     if (Configure.ExamRecord != null)
                     {
                         foreach (var item in cboExam.Items)

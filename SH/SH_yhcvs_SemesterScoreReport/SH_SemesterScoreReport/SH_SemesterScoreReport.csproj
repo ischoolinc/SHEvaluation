@@ -99,8 +99,12 @@
       <HintPath>library\SmartSchool.Customization.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SmartSchool.ErrorReporting">
+      <HintPath>library\SmartSchool.ErrorReporting.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="SmartSchool.Evaluation.HS">
-      <HintPath>..\..\..\..\..\ischoolteam\ischool_Senior with FISCA\SmartSchool.Evaluation.HS\bin\debug\SmartSchool.Evaluation.HS.dll</HintPath>
+      <HintPath>library\SmartSchool.Evaluation.HS.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />

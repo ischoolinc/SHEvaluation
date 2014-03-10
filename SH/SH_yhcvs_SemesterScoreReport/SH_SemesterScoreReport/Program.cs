@@ -83,8 +83,6 @@ namespace SH_SemesterScoreReport
 
         static void Program_Click(object sender_, EventArgs e_)
         {
-
-
             AccessHelper helper = new AccessHelper();
             List<StudentRecord> lista = helper.StudentHelper.GetSelectedStudent();
             
@@ -404,6 +402,7 @@ namespace SH_SemesterScoreReport
 
                 //宣告產生的報表
                 Aspose.Words.Document document = new Aspose.Words.Document();
+
                 //用一個BackgroundWorker包起來
                 System.ComponentModel.BackgroundWorker bkw = new System.ComponentModel.BackgroundWorker();
                 bkw.WorkerReportsProgress = true;
@@ -427,52 +426,106 @@ namespace SH_SemesterScoreReport
                     }
                     #region 儲存檔案
                     string inputReportName = "個人學期成績單";
-                    string reportName = inputReportName;
-
-                    string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");
-                    if (!Directory.Exists(path))
-                        Directory.CreateDirectory(path);
-                    path = Path.Combine(path, reportName + ".doc");
-
-                    if (File.Exists(path))
+                    System.Windows.Forms.FolderBrowserDialog folder = new System.Windows.Forms.FolderBrowserDialog();
+                    folder.Description = "請選擇目的資料夾";
+                    if (folder.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        int i = 1;
-                        while (true)
+                        string folderPath = folder.SelectedPath;
+                        Dictionary<string, List<int>> _ClassDic = new Dictionary<string, List<int>>();
+
+                        int index = 0;
+                        foreach (DataRow row in table.Rows)
                         {
-                            string newPath = Path.GetDirectoryName(path) + "\\" + Path.GetFileNameWithoutExtension(path) + (i++) + Path.GetExtension(path);
-                            if (!File.Exists(newPath))
+                            string className = row["班級"].ToString();
+                            if (!_ClassDic.ContainsKey(className))
                             {
-                                path = newPath;
-                                break;
+                                _ClassDic.Add(className, new List<int>());
                             }
+                            _ClassDic[className].Add(index);
+                            index++;
+                        }
+
+                        try
+                        {
+                            Aspose.Words.Document temp = new Aspose.Words.Document();
+                            temp = conf.Template;
+                            DataTable dt = table.Clone();
+                            List<DataRow> list = new List<DataRow>();
+                            foreach (string className in _ClassDic.Keys)
+                            {
+                                foreach (int idx in _ClassDic[className])
+                                {
+                                    list.Add(table.Rows[idx]);
+                                    //dt.ImportRow(table.Rows[idx]);
+                                }
+
+                                list.Sort(DataSort);
+                                foreach (DataRow row in list)
+                                {
+                                    dt.ImportRow(row);
+                                }
+
+                                document = temp.Clone();
+                                document.MailMerge.Execute(dt);
+                                document.Save(folderPath + "\\" + inputReportName + "_" + className + ".doc", Aspose.Words.SaveFormat.Doc);
+                                dt.Clear();
+                                list.Clear();
+                            }
+                            System.Diagnostics.Process.Start(folderPath);
+                        }
+                        catch(Exception ex)
+                        {
+                            SmartSchool.ErrorReporting.ErrorMessgae errormsg = new SmartSchool.ErrorReporting.ErrorMessgae(ex);
+                            FISCA.Presentation.Controls.MsgBox.Show("指定路徑無法存取。", "建立檔案失敗", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                            return;
                         }
                     }
+                    //string reportName = inputReportName;
 
-                    try
-                    {
-                        document.Save(path, Aspose.Words.SaveFormat.Doc);
-                        System.Diagnostics.Process.Start(path);
-                    }
-                    catch
-                    {
-                        System.Windows.Forms.SaveFileDialog sd = new System.Windows.Forms.SaveFileDialog();
-                        sd.Title = "另存新檔";
-                        sd.FileName = reportName + ".doc";
-                        sd.Filter = "Excel檔案 (*.doc)|*.doc|所有檔案 (*.*)|*.*";
-                        if (sd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                        {
-                            try
-                            {
-                                document.Save(sd.FileName, Aspose.Words.SaveFormat.Doc);
+                    //string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");
+                    //if (!Directory.Exists(path))
+                    //    Directory.CreateDirectory(path);
+                    //path = Path.Combine(path, reportName + ".doc");
 
-                            }
-                            catch
-                            {
-                                FISCA.Presentation.Controls.MsgBox.Show("指定路徑無法存取。", "建立檔案失敗", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                                return;
-                            }
-                        }
-                    }
+                    //if (File.Exists(path))
+                    //{
+                    //    int i = 1;
+                    //    while (true)
+                    //    {
+                    //        string newPath = Path.GetDirectoryName(path) + "\\" + Path.GetFileNameWithoutExtension(path) + (i++) + Path.GetExtension(path);
+                    //        if (!File.Exists(newPath))
+                    //        {
+                    //            path = newPath;
+                    //            break;
+                    //        }
+                    //    }
+                    //}
+
+                    //try
+                    //{
+                    //    document.Save(path, Aspose.Words.SaveFormat.Doc);
+                    //    System.Diagnostics.Process.Start(path);
+                    //}
+                    //catch
+                    //{
+                    //    System.Windows.Forms.SaveFileDialog sd = new System.Windows.Forms.SaveFileDialog();
+                    //    sd.Title = "另存新檔";
+                    //    sd.FileName = reportName + ".doc";
+                    //    sd.Filter = "Excel檔案 (*.doc)|*.doc|所有檔案 (*.*)|*.*";
+                    //    if (sd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    //    {
+                    //        try
+                    //        {
+                    //            document.Save(sd.FileName, Aspose.Words.SaveFormat.Doc);
+
+                    //        }
+                    //        catch
+                    //        {
+                    //            FISCA.Presentation.Controls.MsgBox.Show("指定路徑無法存取。", "建立檔案失敗", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                    //            return;
+                    //        }
+                    //    }
+                    //}
                     #endregion
                     FISCA.Presentation.MotherForm.SetStatusBarMessage("期末成績單產生完成。", 100);
                     if (overflowRecords.Count > 0)
@@ -3498,8 +3551,8 @@ namespace SH_SemesterScoreReport
                             data["導師評語"] = @"""" + data["導師評語"].ToString() + @"""";
                             _dtEpost.Rows.Add(data);
                         }
-                        document = conf.Template;
-                        document.MailMerge.Execute(table);
+                        //document = conf.Template;
+                        //document.MailMerge.Execute(table);
                     }
                     catch (Exception exception)
                     {
@@ -3508,6 +3561,14 @@ namespace SH_SemesterScoreReport
                 };
                 bkw.RunWorkerAsync();
             }
+        }
+
+        private static int DataSort(DataRow x, DataRow y)
+        {
+            string xx = x["座號"].ToString().PadLeft(3, '0');
+            string yy = y["座號"].ToString().PadLeft(3, '0');
+
+            return xx.CompareTo(yy);
         }
     }
 }

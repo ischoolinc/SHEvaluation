@@ -25,6 +25,7 @@ namespace SH_yhcvs_ExamScore_epost
 
         // 學生清單暫存
         private static Aspose.Cells.Workbook _wbStudentList;
+
         static DataTable _dtEpost = new DataTable();
 
         private static string GetNumber(decimal? p)
@@ -110,7 +111,7 @@ namespace SH_yhcvs_ExamScore_epost
                 table.Columns.Add("母親");
                 table.Columns.Add("科別名稱");
                 table.Columns.Add("試別");
-                
+
                 table.Columns.Add("收件人");
                 table.Columns.Add("學年度");
                 table.Columns.Add("學期");
@@ -276,9 +277,9 @@ namespace SH_yhcvs_ExamScore_epost
                 table.Columns.Add("結束日期");
 
                 // 先固定8個
-                for(int i=1;i<=8;i++)
-                    table.Columns.Add("學習服務區間時數"+i);
-                
+                for (int i = 1; i <= 8; i++)
+                    table.Columns.Add("學習服務區間時數" + i);
+
                 table.Columns.Add("大功區間統計");
                 table.Columns.Add("小功區間統計");
                 table.Columns.Add("嘉獎區間統計");
@@ -289,7 +290,7 @@ namespace SH_yhcvs_ExamScore_epost
 
                 // 動態新增缺曠統計，使用模式一般_曠課、一般_事假..
                 foreach (string name in Utility.GetATMappingKey())
-                    table.Columns.Add("區間"+name);                                
+                    table.Columns.Add("區間" + name);
 
                 // 動態資料新增
                 for (int atIdx = 1; atIdx <= conf.AttendanceDetailLimit; atIdx++)
@@ -299,7 +300,7 @@ namespace SH_yhcvs_ExamScore_epost
                     table.Columns.Add("缺曠區間明細內容" + atIdx);
                     table.Columns.Add("缺曠區間明細C" + atIdx);
                 }
-                
+
                 // 獎懲區間明細 A:日期,B:類別支數,C:事由
                 for (int atIdx = 1; atIdx <= conf.DisciplineDetailLimit; atIdx++)
                 {
@@ -318,6 +319,7 @@ namespace SH_yhcvs_ExamScore_epost
                 #endregion
                 //宣告產生的報表
                 Aspose.Words.Document document = new Aspose.Words.Document();
+
                 //用一個BackgroundWorker包起來
                 System.ComponentModel.BackgroundWorker bkw = new System.ComponentModel.BackgroundWorker();
                 bkw.WorkerReportsProgress = true;
@@ -341,58 +343,87 @@ namespace SH_yhcvs_ExamScore_epost
                     }
                     #region 儲存檔案
                     string inputReportName = "個人評量成績單";
-                    string reportName = inputReportName;
-
-                    string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");
-                    if (!Directory.Exists(path))
-                        Directory.CreateDirectory(path);
-                    path = Path.Combine(path, reportName + ".doc");
-
-                    if (File.Exists(path))
+                    //string reportName = inputReportName + ".doc";
+                    System.Windows.Forms.FolderBrowserDialog folder = new System.Windows.Forms.FolderBrowserDialog();
+                    folder.Description = "請選擇目的資料夾";
+                    if (folder.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        int i = 1;
-                        while (true)
+                        string folderPath = folder.SelectedPath;
+                        Dictionary<string, List<int>> _ClassDic = new Dictionary<string, List<int>>();
+
+                        int index = 0;
+                        foreach (DataRow row in table.Rows)
                         {
-                            string newPath = Path.GetDirectoryName(path) + "\\" + Path.GetFileNameWithoutExtension(path) + (i++) + Path.GetExtension(path);
-                            if (!File.Exists(newPath))
+                            string className = row["班級"].ToString();
+                            if (!_ClassDic.ContainsKey(className))
                             {
-                                path = newPath;
-                                break;
+                                _ClassDic.Add(className, new List<int>());
                             }
+                            _ClassDic[className].Add(index);
+                            index++;
+                        }
+
+                        try
+                        {
+                            Aspose.Words.Document temp = new Aspose.Words.Document();
+                            temp = conf.Template;
+                            DataTable dt = table.Clone();
+                            List<DataRow> list = new List<DataRow>();
+                            foreach (string className in _ClassDic.Keys)
+                            {
+                                foreach (int idx in _ClassDic[className])
+                                {
+                                    list.Add(table.Rows[idx]);
+                                    //dt.ImportRow(table.Rows[idx]);
+                                }
+
+                                list.Sort(DataSort);
+                                foreach (DataRow row in list)
+                                {
+                                    dt.ImportRow(row);
+                                }
+
+                                document = temp.Clone();
+                                document.MailMerge.Execute(dt);
+                                document.Save(folderPath + "\\" + inputReportName + "_" + className + ".doc", Aspose.Words.SaveFormat.Doc);
+                                dt.Clear();
+                                list.Clear();
+                            }
+                            System.Diagnostics.Process.Start(folderPath);
+                        }
+                        catch (Exception ex)
+                        {
+                            SmartSchool.ErrorReporting.ErrorMessgae errormsg = new SmartSchool.ErrorReporting.ErrorMessgae(ex);
+                            FISCA.Presentation.Controls.MsgBox.Show("指定路徑無法存取。", "建立檔案失敗", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                            return;
                         }
                     }
 
-                    try
-                    {
-                        document.Save(path, Aspose.Words.SaveFormat.Doc);
-                        System.Diagnostics.Process.Start(path);
-                    }
-                    catch
-                    {
-                        System.Windows.Forms.SaveFileDialog sd = new System.Windows.Forms.SaveFileDialog();
-                        sd.Title = "另存新檔";
-                        sd.FileName = reportName + ".doc";
-                        sd.Filter = "Word檔案 (*.doc)|*.doc|所有檔案 (*.*)|*.*";
-                        if (sd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                        {
-                            try
-                            {
-                                document.Save(sd.FileName, Aspose.Words.SaveFormat.Doc);
+                    //string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");
+                    //if (!Directory.Exists(path))
+                    //    Directory.CreateDirectory(path);
+                    //path = Path.Combine(path, reportName);
 
-                            }
-                            catch
-                            {
-                                FISCA.Presentation.Controls.MsgBox.Show("指定路徑無法存取。", "建立檔案失敗", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                                return;
-                            }
-                        }
-                    }
+                    //if (File.Exists(path))
+                    //{
+                    //    int i = 1;
+                    //    while (true)
+                    //    {
+                    //        string newPath = Path.GetDirectoryName(path) + "\\" + Path.GetFileNameWithoutExtension(path) + (i++) + Path.GetExtension(path);
+                    //        if (!File.Exists(newPath))
+                    //        {
+                    //            path = newPath;
+                    //            break;
+                    //        }
+                    //    }
+                    //}
+
                     #endregion
 
                     // 檢查是否需要產生學生清單
                     if (form.GetisExportStudentList())
                     {
-                        string ExportReportName = "個人評量成績單(學生清單)";
+                        string ExportReportName = "個人評量成績單(學生清單).xls";
 
                         string pathxls = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");
                         if (!Directory.Exists(pathxls))
@@ -415,7 +446,7 @@ namespace SH_yhcvs_ExamScore_epost
 
                         try
                         {
-                            _wbStudentList.Save(pathxls,Aspose.Cells.FileFormatType.Excel2003);
+                            _wbStudentList.Save(pathxls, Aspose.Cells.FileFormatType.Excel97To2003);
                             System.Diagnostics.Process.Start(pathxls);
                         }
                         catch
@@ -428,8 +459,7 @@ namespace SH_yhcvs_ExamScore_epost
                             {
                                 try
                                 {
-                                    _wbStudentList.Save(sd.FileName, Aspose.Cells.FileFormatType.Excel2003);
-                                    
+                                    _wbStudentList.Save(sd.FileName, Aspose.Cells.FileFormatType.Excel97To2003);
 
                                 }
                                 catch
@@ -451,13 +481,13 @@ namespace SH_yhcvs_ExamScore_epost
 
                     // 產生 EPost
                     bool chkEpost = false;
-                    if(bool.TryParse(conf.isExportEPost,out chkEpost))
+                    if (bool.TryParse(conf.isExportEPost, out chkEpost))
                     {
                         if (chkEpost)
                         {
                             // 檢查是否產生 Excel
                             Aspose.Cells.Workbook wb = new Aspose.Cells.Workbook();
-                            Utility.CompletedXlsCsv("個人評量成績單epost", _dtEpost);                        
+                            Utility.CompletedXlsCsv("個人評量成績單epost", _dtEpost);
                         }
                     }
 
@@ -640,10 +670,10 @@ namespace SH_yhcvs_ExamScore_epost
                         eKeyValDict.Add("座號", "座號");
                         eKeyValDict.Add("姓名", "姓名");
                         eKeyValDict.Add("加權總分", "加權總分");
-                        eKeyValDict.Add("加權平均", "加權平均");                        
+                        eKeyValDict.Add("加權平均", "加權平均");
                         eKeyValDict.Add("加權平均班均標", "班級加權平均");
                         eKeyValDict.Add("加權總分班排名", "加權總分班排名");
-                        eKeyValDict.Add("加權總分科排名", "加權總分科排名");                        
+                        eKeyValDict.Add("加權總分科排名", "加權總分科排名");
                         eKeyValDict.Add("加權平均科均標", "科加權平均");
                         //eKeyValDict.Add("類別1加權總分排名", "加權總分類組排名");
                         eKeyValDict.Add("類別1加權平均排名", "加權平均類組排名");
@@ -683,7 +713,7 @@ namespace SH_yhcvs_ExamScore_epost
                                     table.Columns.Add(attendanceKey);
                                 }
 
-                                string attendanceKey2 ="區間"+ pt + "_" + absence.Name;
+                                string attendanceKey2 = "區間" + pt + "_" + absence.Name;
                                 if (!table.Columns.Contains(attendanceKey))
                                 {
                                     table.Columns.Add(attendanceKey2);
@@ -1287,11 +1317,11 @@ namespace SH_yhcvs_ExamScore_epost
 
                         // 取得暫存資料 學習服務區間時數
                         Dictionary<string, Dictionary<string, decimal>> ServiceLearningByDateDict = Utility.GetServiceLearningByDate(StudIDList, form.GetBeginDate(), form.GetEndDate());
-                        Dictionary<string,List<DataRow>> ServiceLearningDetailByDateDict=Utility.GetServiceLearningDetailByDate(StudIDList, form.GetBeginDate(), form.GetEndDate());
+                        Dictionary<string, List<DataRow>> ServiceLearningDetailByDateDict = Utility.GetServiceLearningDetailByDate(StudIDList, form.GetBeginDate(), form.GetEndDate());
 
                         // 取得缺曠
                         Dictionary<string, Dictionary<string, int>> AttendanceCountDict = Utility.GetAttendanceCountByDate(StudRecList, form.GetBeginDate(), form.GetEndDate());
-                        Dictionary<string,List<K12.Data.AttendanceRecord>> AttendanceDetailDict =Utility.GetAttendanceDetailByDate(StudRecList, form.GetBeginDate(), form.GetEndDate());
+                        Dictionary<string, List<K12.Data.AttendanceRecord>> AttendanceDetailDict = Utility.GetAttendanceDetailByDate(StudRecList, form.GetBeginDate(), form.GetEndDate());
 
                         // 取得獎懲
                         Dictionary<string, Dictionary<string, int>> DisciplineCountDict = Utility.GetDisciplineCountByDate(StudIDList, form.GetBeginDate(), form.GetEndDate());
@@ -1299,11 +1329,11 @@ namespace SH_yhcvs_ExamScore_epost
 
                         List<K12.Data.PeriodMappingInfo> PeriodMappingList = K12.Data.PeriodMapping.SelectAll();
                         // 節次>類別
-                        Dictionary<string,string> PeriodMappingDict = new Dictionary<string,string> ();
-                        foreach(K12.Data.PeriodMappingInfo rec in PeriodMappingList)
+                        Dictionary<string, string> PeriodMappingDict = new Dictionary<string, string>();
+                        foreach (K12.Data.PeriodMappingInfo rec in PeriodMappingList)
                         {
-                        if(!PeriodMappingDict.ContainsKey(rec.Name))
-                        PeriodMappingDict.Add(rec.Name,rec.Type);
+                            if (!PeriodMappingDict.ContainsKey(rec.Name))
+                                PeriodMappingDict.Add(rec.Name, rec.Type);
                         }
 
                         // 其它epost
@@ -1332,7 +1362,7 @@ namespace SH_yhcvs_ExamScore_epost
                             string studentID = stuRec.StudentID;
                             string gradeYear = (stuRec.RefClass == null ? "" : "" + stuRec.RefClass.GradeYear);
                             DataRow row = table.NewRow();
-                            
+
                             // 這區段是新增功能資料
                             // 畫面上開始結束日期
                             row["開始日期"] = form.GetBeginDate().ToShortDateString();
@@ -1344,7 +1374,7 @@ namespace SH_yhcvs_ExamScore_epost
                                 int idx = 1;
                                 foreach (KeyValuePair<string, decimal> data in ServiceLearningByDateDict[studentID])
                                 {
-                                    row["學習服務區間時數"+idx] = data.Key+" 時數："+data.Value;
+                                    row["學習服務區間時數" + idx] = data.Key + " 時數：" + data.Value;
                                     idx++;
                                 }
                             }
@@ -1367,18 +1397,18 @@ namespace SH_yhcvs_ExamScore_epost
                                                 row["留校察看區間"] = "是";
                                             else
                                                 row["留校察看區間"] = "";
-                                                break;
+                                            break;
                                     }
                                 }
                             }
 
                             // 處理缺曠區間統計
                             if (AttendanceCountDict.ContainsKey(studentID))
-                            {                                
+                            {
                                 foreach (KeyValuePair<string, int> data in AttendanceCountDict[studentID])
                                 {
                                     if (table.Columns.Contains(data.Key))
-                                        row[data.Key] = data.Value;                                    
+                                        row[data.Key] = data.Value;
                                 }
                             }
 
@@ -1386,27 +1416,27 @@ namespace SH_yhcvs_ExamScore_epost
                             if (AttendanceDetailDict.ContainsKey(studentID))
                             {
                                 int idx = 1;
-                                    foreach (K12.Data.AttendanceRecord rec in AttendanceDetailDict[studentID])
+                                foreach (K12.Data.AttendanceRecord rec in AttendanceDetailDict[studentID])
+                                {
+
+                                    foreach (K12.Data.AttendancePeriod per in rec.PeriodDetail)
                                     {
-
-                                        foreach (K12.Data.AttendancePeriod per in rec.PeriodDetail)
+                                        if (PeriodMappingDict.ContainsKey(per.Period))
                                         {
-                                            if (PeriodMappingDict.ContainsKey(per.Period))
+                                            if (idx <= conf.AttendanceDetailLimit)
                                             {
-                                                if (idx <= conf.AttendanceDetailLimit)
-                                                {
 
-                                                    row["缺曠區間明細日期" + idx] = rec.OccurDate.ToShortDateString();
-                                                    row["缺曠區間明細內容" + idx] = PeriodMappingDict[per.Period] + ":" + per.AbsenceType + " (節次：" + per.Period + ")";
-                                                    //row["缺曠區間明細C" + idx] = rec.                                        
-                                                    idx++;
-                                                }
+                                                row["缺曠區間明細日期" + idx] = rec.OccurDate.ToShortDateString();
+                                                row["缺曠區間明細內容" + idx] = PeriodMappingDict[per.Period] + ":" + per.AbsenceType + " (節次：" + per.Period + ")";
+                                                //row["缺曠區間明細C" + idx] = rec.                                        
+                                                idx++;
                                             }
                                         }
-
                                     }
-                                
-                            
+
+                                }
+
+
                             }
 
                             // 處理獎懲區間明細
@@ -1414,77 +1444,77 @@ namespace SH_yhcvs_ExamScore_epost
                             {
                                 int idx = 1;
 
-                                    foreach (K12.Data.DisciplineRecord data in DisciplinedetailDict[studentID])
+                                foreach (K12.Data.DisciplineRecord data in DisciplinedetailDict[studentID])
+                                {
+                                    if (idx <= conf.DisciplineDetailLimit)
                                     {
-                                        if (idx <= conf.DisciplineDetailLimit)
+                                        // 獎懲區間明細 A:日期,B:類別支數,C:事由
+                                        row["獎懲區間明細日期" + idx] = data.OccurDate.ToShortDateString();
+
+                                        List<string> strTypeList = new List<string>();
+                                        if (data.MeritFlag == "1")
                                         {
-                                            // 獎懲區間明細 A:日期,B:類別支數,C:事由
-                                            row["獎懲區間明細日期" + idx] = data.OccurDate.ToShortDateString();
+                                            if (data.MeritA.HasValue)
+                                                strTypeList.Add("大功：" + data.MeritA.Value);
 
-                                            List<string> strTypeList = new List<string>();
-                                            if (data.MeritFlag == "1")
-                                            {
-                                                if (data.MeritA.HasValue)
-                                                    strTypeList.Add("大功：" + data.MeritA.Value);
+                                            if (data.MeritB.HasValue)
+                                                strTypeList.Add("小功：" + data.MeritB.Value);
 
-                                                if (data.MeritB.HasValue)
-                                                    strTypeList.Add("小功：" + data.MeritB.Value);
+                                            if (data.MeritC.HasValue)
+                                                strTypeList.Add("嘉獎：" + data.MeritC.Value);
 
-                                                if (data.MeritC.HasValue)
-                                                    strTypeList.Add("嘉獎：" + data.MeritC.Value);
-
-                                            }
-                                            if (data.MeritFlag == "0")
-                                            {
-                                                if (data.Cleared != "是")
-                                                {
-                                                    if (data.DemeritA.HasValue)
-                                                        strTypeList.Add("大過：" + data.DemeritA.Value);
-
-                                                    if (data.DemeritB.HasValue)
-                                                        strTypeList.Add("小過：" + data.DemeritB.Value);
-
-                                                    if (data.DemeritC.HasValue)
-                                                        strTypeList.Add("警告：" + data.DemeritC.Value);
-                                                }
-                                            }
-                                            if (data.MeritFlag == "2")
-                                                strTypeList.Add("留校察看：是");
-
-                                            row["獎懲區間明細類別支數" + idx] = string.Join(",", strTypeList.ToArray());
-                                            row["獎懲區間明細事由" + idx] = data.Reason;
-                                            idx++;
                                         }
+                                        if (data.MeritFlag == "0")
+                                        {
+                                            if (data.Cleared != "是")
+                                            {
+                                                if (data.DemeritA.HasValue)
+                                                    strTypeList.Add("大過：" + data.DemeritA.Value);
+
+                                                if (data.DemeritB.HasValue)
+                                                    strTypeList.Add("小過：" + data.DemeritB.Value);
+
+                                                if (data.DemeritC.HasValue)
+                                                    strTypeList.Add("警告：" + data.DemeritC.Value);
+                                            }
+                                        }
+                                        if (data.MeritFlag == "2")
+                                            strTypeList.Add("留校察看：是");
+
+                                        row["獎懲區間明細類別支數" + idx] = string.Join(",", strTypeList.ToArray());
+                                        row["獎懲區間明細事由" + idx] = data.Reason;
+                                        idx++;
                                     }
-                             
+                                }
+
                             }
 
                             // 處理學習服務
                             if (ServiceLearningDetailByDateDict.ContainsKey(studentID))
                             {
                                 int idx = 1;
-                                    foreach (DataRow dr in ServiceLearningDetailByDateDict[studentID])
+                                foreach (DataRow dr in ServiceLearningDetailByDateDict[studentID])
+                                {
+                                    if (idx <= conf.ServiceLearningDetailLimit)
                                     {
-                                        if (idx <= conf.ServiceLearningDetailLimit)
-                                        {
-                                            //  學習服務區間明細 A:日期,B:內容,C:時數
-                                            DateTime dt;
-                                            decimal hr;
-                                            string cont = dr["reason"].ToString();
+                                        //  學習服務區間明細 A:日期,B:內容,C:時數
+                                        DateTime dt;
+                                        decimal hr;
+                                        string cont = dr["reason"].ToString();
 
-                                            if (DateTime.TryParse(dr["occur_date"].ToString(), out dt))
-                                                row["學習服務區間明細日期" + idx] = dt.ToShortDateString();
-                                            else
-                                                row["學習服務區間明細日期" + idx] = "";
-                                            row["學習服務區間明細內容" + idx] = cont;
+                                        if (DateTime.TryParse(dr["occur_date"].ToString(), out dt))
+                                            row["學習服務區間明細日期" + idx] = dt.ToShortDateString();
+                                        else
+                                            row["學習服務區間明細日期" + idx] = "";
+                                        row["學習服務區間明細內容" + idx] = cont;
 
-                                            if (decimal.TryParse(dr["hours"].ToString(), out hr))
-                                                row["學習服務區間明細時數" + idx] = hr;
-                                            else
-                                                row["學習服務區間明細時數" + idx] = "";
-                                            idx++;
-                                        }
-                                    }                                                            
+                                        if (decimal.TryParse(dr["hours"].ToString(), out hr))
+                                            row["學習服務區間明細時數" + idx] = hr;
+                                        else
+                                            row["學習服務區間明細時數" + idx] = "";
+                                        idx++;
+                                    }
+                                }
                             }
 
                             #region 基本資料
@@ -2816,7 +2846,7 @@ namespace SH_yhcvs_ExamScore_epost
                         // 收集學生清單資料並產生學生清單
                         _wbStudentList = new Aspose.Cells.Workbook();
                         _wbStudentList.Open(new MemoryStream(Properties.Resources.個人學期成績單_學生清單_));
-                        
+
                         int rowIdx = 1;
                         foreach (DataRow dr in table.Rows)
                         {
@@ -2838,7 +2868,7 @@ namespace SH_yhcvs_ExamScore_epost
                             string studID = dr["學生系統編號"].ToString();
                             int grYear;
                             int.TryParse(dr["學生班級年級"].ToString(), out grYear);
-                           
+
                             // POSTALADDRESS
                             string address = dr["收件人地址"].ToString();
                             string zip1 = dr["通訊地址郵遞區號"].ToString() + " ";
@@ -2888,8 +2918,8 @@ namespace SH_yhcvs_ExamScore_epost
                             //data["導師評語"] = @"""" + data["導師評語"].ToString() + @"""";
                             _dtEpost.Rows.Add(data);
                         }
-                        document = conf.Template;
-                        document.MailMerge.Execute(table);
+                        //document = conf.Template;
+                        //document.MailMerge.Execute(table);
                     }
                     catch (Exception exception)
                     {
@@ -2900,6 +2930,13 @@ namespace SH_yhcvs_ExamScore_epost
             }
         }
 
+        private static int DataSort(DataRow x, DataRow y)
+        {
+            string xx = x["座號"].ToString().PadLeft(3, '0');
+            string yy = y["座號"].ToString().PadLeft(3, '0');
+
+            return xx.CompareTo(yy);
+        }
 
         internal static void CreateFieldTemplate()
         {
@@ -2907,7 +2944,7 @@ namespace SH_yhcvs_ExamScore_epost
             Aspose.Words.Document doc = new Aspose.Words.Document(new System.IO.MemoryStream(Properties.Resources.Template));
             Aspose.Words.DocumentBuilder builder = new Aspose.Words.DocumentBuilder(doc);
             int maxNum = 30;
-            
+
             #region 科目學期學年評量成績
             builder.Writeln("成績");
             builder.StartTable();

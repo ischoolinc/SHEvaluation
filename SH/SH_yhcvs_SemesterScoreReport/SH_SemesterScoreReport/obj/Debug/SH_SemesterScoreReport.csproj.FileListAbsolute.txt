@@ -9,3 +9,13 @@ D:\TFS2010\Research\chuntai\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreRepo
 D:\TFS2010\Research\chuntai\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\GenerateResource.write.1.tlog
 D:\TFS2010\Research\chuntai\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_yhcvs_SemesterScoreReport.dll
 D:\TFS2010\Research\chuntai\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_yhcvs_SemesterScoreReport.pdb
+D:\GitHub2\SHEvaluation\SHEvaluation\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\bin\Debug\SH_yhcvs_SemesterScoreReport.dll
+D:\GitHub2\SHEvaluation\SHEvaluation\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\bin\Debug\SH_yhcvs_SemesterScoreReport.pdb
+D:\GitHub2\SHEvaluation\SHEvaluation\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_SemesterScoreReport.csprojResolveAssemblyReference.cache
+D:\GitHub2\SHEvaluation\SHEvaluation\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_SemesterScoreReport.CloneConfigure.resources
+D:\GitHub2\SHEvaluation\SHEvaluation\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_SemesterScoreReport.ConfigForm.resources
+D:\GitHub2\SHEvaluation\SHEvaluation\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_SemesterScoreReport.NewConfigure.resources
+D:\GitHub2\SHEvaluation\SHEvaluation\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_SemesterScoreReport.Properties.Resources.resources
+D:\GitHub2\SHEvaluation\SHEvaluation\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_SemesterScoreReport.csproj.GenerateResource.Cache
+D:\GitHub2\SHEvaluation\SHEvaluation\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_yhcvs_SemesterScoreReport.dll
+D:\GitHub2\SHEvaluation\SHEvaluation\SH\SH_yhcvs_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_yhcvs_SemesterScoreReport.pdb

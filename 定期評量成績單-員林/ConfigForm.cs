@@ -321,8 +321,10 @@ namespace SH_yhcvs_ExamScore_epost
                         Configure.Decode();
                     if (!cboSchoolYear.Items.Contains(Configure.SchoolYear))
                         cboSchoolYear.Items.Add(Configure.SchoolYear);
-                    cboSchoolYear.Text = Configure.SchoolYear;
-                    cboSemester.Text = Configure.Semester;
+                    //cboSchoolYear.Text = Configure.SchoolYear;
+                    //cboSemester.Text = Configure.Semester;
+                    cboSchoolYear.Text = _DefalutSchoolYear;
+                    cboSemester.Text = _DefaultSemester;
                     if (Configure.ExamRecord != null)
                     {
                         foreach (var item in cboExam.Items)

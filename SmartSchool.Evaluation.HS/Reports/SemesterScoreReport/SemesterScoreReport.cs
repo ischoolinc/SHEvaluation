@@ -22,12 +22,16 @@ namespace SmartSchool.Evaluation.Reports
         private BackgroundWorker _BGWSemesterScoreReport;
         private Dictionary<string, decimal> _degreeList = null; //等第List
 
+        // 錯誤訊息
+        StringBuilder _ErrorMessage;
         private enum Entity { Student, Class }
 
         public SemesterScoreReport()
         {
             string reportName = "學期成績單";
             string path = "成績相關報表";
+
+            _ErrorMessage = new StringBuilder();
 
             button = new SecureButtonAdapter("Report0050");
             button.Text = reportName;
@@ -217,6 +221,7 @@ namespace SmartSchool.Evaluation.Reports
             SemesterScoreReportForm form = new SemesterScoreReportForm();
             if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                _ErrorMessage.Clear();
                 _BGWSemesterScoreReport = new BackgroundWorker();
                 _BGWSemesterScoreReport.WorkerReportsProgress = true;
                 _BGWSemesterScoreReport.DoWork += new DoWorkEventHandler(_BGWSemesterScoreReport_DoWork);
@@ -231,6 +236,7 @@ namespace SmartSchool.Evaluation.Reports
             SemesterScoreReportForm form = new SemesterScoreReportForm();
             if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                _ErrorMessage.Clear();
                 _BGWSemesterScoreReport = new BackgroundWorker();
                 _BGWSemesterScoreReport.WorkerReportsProgress = true;
                 _BGWSemesterScoreReport.DoWork += new DoWorkEventHandler(_BGWSemesterScoreReport_DoWork);
@@ -242,6 +248,11 @@ namespace SmartSchool.Evaluation.Reports
 
         void _BGWSemesterScoreReport_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            // 當有錯誤訊息
+            if (_ErrorMessage.Length > 0)
+            {
+                FISCA.Presentation.Controls.MsgBox.Show(_ErrorMessage.ToString());
+            }
             button.SetBarMessage("學期成績單產生完成");
             Completed("學期成績單", (Document)e.Result);
         }
@@ -472,7 +483,7 @@ namespace SmartSchool.Evaluation.Reports
                 //    }
                 //}
 
-                mergeKeyValue.Add("科目成績起始位置", new object[] { subjectScore, resitSign, repeatSign });
+                mergeKeyValue.Add("科目成績起始位置", new object[] { subjectScore, resitSign, repeatSign,var });
                 //mergeKeyValue.Add("取得學分數", "學期" + (schoolyearscore ? "/學年" : "") + "取得學分數");
                 //mergeKeyValue.Add("名次", "");
                 //mergeKeyValue.Add("學分數", thisSemesterTotalCredit.ToString());
@@ -587,6 +598,7 @@ namespace SmartSchool.Evaluation.Reports
                 Dictionary<SemesterSubjectScoreInfo, Dictionary<string, string>> subjectScore = (Dictionary<SemesterSubjectScoreInfo, Dictionary<string, string>>)objectValue[0];
                 string resitSign = (string)objectValue[1];
                 string repeatSign = (string)objectValue[2];
+                StudentRecord studRec = (StudentRecord)objectValue[3];
 
                 DocumentBuilder builder = new DocumentBuilder(e.Document);
                 builder.MoveToField(e.Field, false);
@@ -596,46 +608,70 @@ namespace SmartSchool.Evaluation.Reports
                 int SSRowNumber = SSTable.Rows.Count - 1;
                 int SSTableRowIndex = 1;
                 int SSTableColIndex = 0;
+                int MaxSubjectCount = SSRowNumber * 2;
 
-                List<SemesterSubjectScoreInfo> sortList = new List<SemesterSubjectScoreInfo>();
-                sortList.AddRange(subjectScore.Keys);
-                sortList.Sort(SortBySemesterSubjectScoreInfo);
-
-                foreach (SemesterSubjectScoreInfo info in sortList)
-                {
-                    Runs runs = SSTable.Rows[SSTableRowIndex].Cells[SSTableColIndex].Paragraphs[0].Runs;
-                    runs.Add(new Run(e.Document));
-                    runs[runs.Count - 1].Text = subjectScore[info]["科目"] + ((string.IsNullOrEmpty(subjectScore[info]["級別"])) ? "" : (" (" + subjectScore[info]["級別"] + ")"));
-                    runs[runs.Count - 1].Font.Size = 10;
-                    runs[runs.Count - 1].Font.Name = "新細明體";
-
-                    SSTable.Rows[SSTableRowIndex].Cells[SSTableColIndex + 1].Paragraphs[0].Runs.Add(new Run(e.Document, subjectScore[info]["必修"] + subjectScore[info]["學分"]));
-                    SSTable.Rows[SSTableRowIndex].Cells[SSTableColIndex + 1].Paragraphs[0].Runs[0].Font.Size = 10;
-                    SSTable.Rows[SSTableRowIndex].Cells[SSTableColIndex + 2].Paragraphs[0].Runs.Add(new Run(e.Document, subjectScore[info]["分數"]));
-                    SSTable.Rows[SSTableRowIndex].Cells[SSTableColIndex + 2].Paragraphs[0].Runs[0].Font.Size = 10;
-
-                    int colshift = 0;
-                    string re = "";
-                    if (subjectScore[info].ContainsKey("補考"))
+                try
+                {                    
+                    // 當科目數超過範本可存放數，不列入處理
+                    if (subjectScore.Keys.Count > MaxSubjectCount)
                     {
-                        if (subjectScore[info]["補考"] == "是")
-                            re = resitSign;
-                        else if (subjectScore[info]["補考"] == "否")
-                            re = repeatSign;
+                        if (_ErrorMessage.Length < 1)
+                        {
+                            _ErrorMessage.AppendLine("產生資料發生錯誤：學生成績科目數超過範本可顯示科目數:"+MaxSubjectCount+" ，請調整範本科目數後再列印");
+                        }
+
+                        string className = "";
+                        if (studRec.RefClass != null)
+                            className = studRec.RefClass.ClassName;
+                        string ErrMsg = "學號：" + studRec.StudentNumber + ",班級：" + className + "座號：" + studRec.SeatNo + ",姓名：" + studRec.StudentName + ", 學生成績科目數：" + subjectScore.Keys.Count;
+                        _ErrorMessage.AppendLine(ErrMsg);
                     }
-
-                    SSTable.Rows[SSTableRowIndex].Cells[SSTableColIndex + 3 + colshift].Paragraphs[0].Runs.Add(new Run(e.Document, re));
-                    SSTable.Rows[SSTableRowIndex].Cells[SSTableColIndex + 3 + colshift].Paragraphs[0].Runs[0].Font.Size = 10;
-
-                    SSTableRowIndex++;
-                    if (SSTableRowIndex > SSRowNumber)
+                    else
                     {
-                        SSTableRowIndex = 1;
-                        SSTableColIndex += 4;
+                        List<SemesterSubjectScoreInfo> sortList = new List<SemesterSubjectScoreInfo>();
+                        sortList.AddRange(subjectScore.Keys);
+                        sortList.Sort(SortBySemesterSubjectScoreInfo);
+
+                        foreach (SemesterSubjectScoreInfo info in sortList)
+                        {
+                            Runs runs = SSTable.Rows[SSTableRowIndex].Cells[SSTableColIndex].Paragraphs[0].Runs;
+                            runs.Add(new Run(e.Document));
+                            runs[runs.Count - 1].Text = subjectScore[info]["科目"] + ((string.IsNullOrEmpty(subjectScore[info]["級別"])) ? "" : (" (" + subjectScore[info]["級別"] + ")"));
+                            runs[runs.Count - 1].Font.Size = 10;
+                            runs[runs.Count - 1].Font.Name = "新細明體";
+
+                            SSTable.Rows[SSTableRowIndex].Cells[SSTableColIndex + 1].Paragraphs[0].Runs.Add(new Run(e.Document, subjectScore[info]["必修"] + subjectScore[info]["學分"]));
+                            SSTable.Rows[SSTableRowIndex].Cells[SSTableColIndex + 1].Paragraphs[0].Runs[0].Font.Size = 10;
+                            SSTable.Rows[SSTableRowIndex].Cells[SSTableColIndex + 2].Paragraphs[0].Runs.Add(new Run(e.Document, subjectScore[info]["分數"]));
+                            SSTable.Rows[SSTableRowIndex].Cells[SSTableColIndex + 2].Paragraphs[0].Runs[0].Font.Size = 10;
+
+                            int colshift = 0;
+                            string re = "";
+                            if (subjectScore[info].ContainsKey("補考"))
+                            {
+                                if (subjectScore[info]["補考"] == "是")
+                                    re = resitSign;
+                                else if (subjectScore[info]["補考"] == "否")
+                                    re = repeatSign;
+                            }
+
+                            SSTable.Rows[SSTableRowIndex].Cells[SSTableColIndex + 3 + colshift].Paragraphs[0].Runs.Add(new Run(e.Document, re));
+                            SSTable.Rows[SSTableRowIndex].Cells[SSTableColIndex + 3 + colshift].Paragraphs[0].Runs[0].Font.Size = 10;
+
+                            SSTableRowIndex++;
+                            if (SSTableRowIndex > SSRowNumber)
+                            {
+                                SSTableRowIndex = 1;
+                                SSTableColIndex += 4;
+                            }
+                        }                        
                     }
+                    e.Text = string.Empty;
                 }
-
-                e.Text = string.Empty;
+                catch (Exception ex)
+                {
+                    SmartSchool.ExceptionHandler.BugReporter.ReportException(ex,true);                
+                }
             }
 
             #endregion

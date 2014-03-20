@@ -327,7 +327,7 @@ namespace SmartSchool.Evaluation.Configuration
                     tryParseBool = true;
                     bool.TryParse(element.GetAttribute("計算成績"), out tryParseBool);
                     checkBoxX1.Checked = tryParseBool;
-                    tryParseBool = false;
+                    tryParseBool = true;
                     bool.TryParse(element.GetAttribute("併入學期學業成績"), out tryParseBool);
                     checkBoxX8.Checked = tryParseBool;
                 }
@@ -339,7 +339,7 @@ namespace SmartSchool.Evaluation.Configuration
                     tryParseBool = true;
                     bool.TryParse(element.GetAttribute("計算成績"), out tryParseBool);
                     checkBoxX2.Checked = tryParseBool;
-                    tryParseBool = false;
+                    tryParseBool = true;
                     bool.TryParse(element.GetAttribute("併入學期學業成績"), out tryParseBool);
                     checkBoxX11.Checked = tryParseBool;
                 }
@@ -351,7 +351,7 @@ namespace SmartSchool.Evaluation.Configuration
                     tryParseBool = true;
                     bool.TryParse(element.GetAttribute("計算成績"), out tryParseBool);
                     checkBoxX3.Checked = tryParseBool;
-                    tryParseBool = false;
+                    tryParseBool = true;
                     bool.TryParse(element.GetAttribute("併入學期學業成績"), out tryParseBool);
                     checkBoxX13.Checked = tryParseBool;
                 }
@@ -363,7 +363,7 @@ namespace SmartSchool.Evaluation.Configuration
                     tryParseBool = true;
                     bool.TryParse(element.GetAttribute("計算成績"), out tryParseBool);
                     checkBoxX4.Checked = tryParseBool;
-                    tryParseBool = false;
+                    tryParseBool = true;
                     bool.TryParse(element.GetAttribute("併入學期學業成績"), out tryParseBool);
                     checkBoxX15.Checked = tryParseBool;
                 }
@@ -375,7 +375,7 @@ namespace SmartSchool.Evaluation.Configuration
                     tryParseBool = true;
                     bool.TryParse(element.GetAttribute("計算成績"), out tryParseBool);
                     checkBoxX12.Checked = tryParseBool;
-                    tryParseBool = false;
+                    tryParseBool = true;
                     bool.TryParse(element.GetAttribute("併入學期學業成績"), out tryParseBool);
                     checkBoxX10.Checked = tryParseBool;
                 }

@@ -35,57 +35,6 @@
             this.labelItem1 = new DevComponents.DotNetBar.LabelItem();
             this.panelEx1 = new DevComponents.DotNetBar.PanelEx();
             this.tabControl1 = new DevComponents.DotNetBar.TabControl();
-            this.tabControlPanel6 = new DevComponents.DotNetBar.TabControlPanel();
-            this.cardPanelEx3 = new SmartSchool.Common.CardPanelEx();
-            this.groupPanel15 = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.radioButton15 = new System.Windows.Forms.RadioButton();
-            this.radioButton16 = new System.Windows.Forms.RadioButton();
-            this.groupPanel12 = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.groupPanel24 = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.radioButton22 = new System.Windows.Forms.RadioButton();
-            this.radioButton32 = new System.Windows.Forms.RadioButton();
-            this.labelX23 = new DevComponents.DotNetBar.LabelX();
-            this.radioButton24 = new System.Windows.Forms.RadioButton();
-            this.radioButton23 = new System.Windows.Forms.RadioButton();
-            this.labelX14 = new DevComponents.DotNetBar.LabelX();
-            this.groupPanel21 = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.groupPanel22 = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.labelX27 = new DevComponents.DotNetBar.LabelX();
-            this.checkBoxX9 = new DevComponents.DotNetBar.Controls.CheckBoxX();
-            this.labelX24 = new DevComponents.DotNetBar.LabelX();
-            this.checkBoxX7 = new DevComponents.DotNetBar.Controls.CheckBoxX();
-            this.groupPanel25 = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.radioButton28 = new System.Windows.Forms.RadioButton();
-            this.radioButton33 = new System.Windows.Forms.RadioButton();
-            this.labelX28 = new DevComponents.DotNetBar.LabelX();
-            this.groupPanel5 = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.cmbProfessionalSubjectTable = new DevComponents.DotNetBar.Controls.ComboBoxEx();
-            this.labelX26 = new DevComponents.DotNetBar.LabelX();
-            this.labelX13 = new DevComponents.DotNetBar.LabelX();
-            this.listView1 = new SmartSchool.Common.ListViewEX();
-            this.groupPanel16 = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.labelX25 = new DevComponents.DotNetBar.LabelX();
-            this.groupPanel23 = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.radioButton17 = new System.Windows.Forms.RadioButton();
-            this.radioButton18 = new System.Windows.Forms.RadioButton();
-            this.labelX22 = new DevComponents.DotNetBar.LabelX();
-            this.checkBoxX6 = new DevComponents.DotNetBar.Controls.CheckBoxX();
-            this.groupPanel13 = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.labelX29 = new DevComponents.DotNetBar.LabelX();
-            this.textBoxX2 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.labelX12 = new DevComponents.DotNetBar.LabelX();
-            this.labelX17 = new DevComponents.DotNetBar.LabelX();
-            this.labelX11 = new DevComponents.DotNetBar.LabelX();
-            this.labelX18 = new DevComponents.DotNetBar.LabelX();
-            this.labelX16 = new DevComponents.DotNetBar.LabelX();
-            this.labelX10 = new DevComponents.DotNetBar.LabelX();
-            this.textBoxX1 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.textBoxX11 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.textBoxX8 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.textBoxX10 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.textBoxX6 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.textBoxX7 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.tabItem6 = new DevComponents.DotNetBar.TabItem(this.components);
             this.tabControlPanel4 = new DevComponents.DotNetBar.TabControlPanel();
             this.cardPanelEx1 = new SmartSchool.Common.CardPanelEx();
             this.groupPanel1 = new DevComponents.DotNetBar.Controls.GroupPanel();
@@ -182,6 +131,58 @@
             this.radioButton20 = new System.Windows.Forms.RadioButton();
             this.radioButton19 = new System.Windows.Forms.RadioButton();
             this.tabItem4 = new DevComponents.DotNetBar.TabItem(this.components);
+            this.tabControlPanel6 = new DevComponents.DotNetBar.TabControlPanel();
+            this.cardPanelEx3 = new SmartSchool.Common.CardPanelEx();
+            this.groupPanel15 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.radioButton15 = new System.Windows.Forms.RadioButton();
+            this.radioButton16 = new System.Windows.Forms.RadioButton();
+            this.groupPanel12 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.groupPanel24 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.radioButton22 = new System.Windows.Forms.RadioButton();
+            this.radioButton32 = new System.Windows.Forms.RadioButton();
+            this.labelX23 = new DevComponents.DotNetBar.LabelX();
+            this.radioButton24 = new System.Windows.Forms.RadioButton();
+            this.radioButton23 = new System.Windows.Forms.RadioButton();
+            this.labelX14 = new DevComponents.DotNetBar.LabelX();
+            this.groupPanel21 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.groupPanel22 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.labelX27 = new DevComponents.DotNetBar.LabelX();
+            this.checkBoxX9 = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.labelX24 = new DevComponents.DotNetBar.LabelX();
+            this.checkBoxX7 = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.groupPanel25 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.radioButton28 = new System.Windows.Forms.RadioButton();
+            this.radioButton33 = new System.Windows.Forms.RadioButton();
+            this.labelX28 = new DevComponents.DotNetBar.LabelX();
+            this.groupPanel5 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.cmbProfessionalSubjectTable = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.labelX26 = new DevComponents.DotNetBar.LabelX();
+            this.labelX13 = new DevComponents.DotNetBar.LabelX();
+            this.listView1 = new SmartSchool.Common.ListViewEX();
+            this.groupPanel16 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.labelX25 = new DevComponents.DotNetBar.LabelX();
+            this.groupPanel23 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.radioButton17 = new System.Windows.Forms.RadioButton();
+            this.radioButton18 = new System.Windows.Forms.RadioButton();
+            this.labelX22 = new DevComponents.DotNetBar.LabelX();
+            this.checkBoxX6 = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.groupPanel13 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.checkBoxX20 = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.labelX29 = new DevComponents.DotNetBar.LabelX();
+            this.textBoxX2 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.labelX12 = new DevComponents.DotNetBar.LabelX();
+            this.labelX17 = new DevComponents.DotNetBar.LabelX();
+            this.labelX11 = new DevComponents.DotNetBar.LabelX();
+            this.labelX18 = new DevComponents.DotNetBar.LabelX();
+            this.labelX16 = new DevComponents.DotNetBar.LabelX();
+            this.labelX10 = new DevComponents.DotNetBar.LabelX();
+            this.textBoxX1 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.textBoxX11 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.textBoxX8 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.textBoxX10 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.textBoxX6 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.textBoxX7 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.tabItem6 = new DevComponents.DotNetBar.TabItem(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -194,22 +195,9 @@
             this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.checkBoxX20 = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.panelEx1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).BeginInit();
             this.tabControl1.SuspendLayout();
-            this.tabControlPanel6.SuspendLayout();
-            this.cardPanelEx3.SuspendLayout();
-            this.groupPanel15.SuspendLayout();
-            this.groupPanel12.SuspendLayout();
-            this.groupPanel24.SuspendLayout();
-            this.groupPanel21.SuspendLayout();
-            this.groupPanel22.SuspendLayout();
-            this.groupPanel25.SuspendLayout();
-            this.groupPanel5.SuspendLayout();
-            this.groupPanel16.SuspendLayout();
-            this.groupPanel23.SuspendLayout();
-            this.groupPanel13.SuspendLayout();
             this.tabControlPanel4.SuspendLayout();
             this.cardPanelEx1.SuspendLayout();
             this.groupPanel1.SuspendLayout();
@@ -240,6 +228,18 @@
             this.groupPanel14.SuspendLayout();
             this.groupPanel18.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
+            this.tabControlPanel6.SuspendLayout();
+            this.cardPanelEx3.SuspendLayout();
+            this.groupPanel15.SuspendLayout();
+            this.groupPanel12.SuspendLayout();
+            this.groupPanel24.SuspendLayout();
+            this.groupPanel21.SuspendLayout();
+            this.groupPanel22.SuspendLayout();
+            this.groupPanel25.SuspendLayout();
+            this.groupPanel5.SuspendLayout();
+            this.groupPanel16.SuspendLayout();
+            this.groupPanel23.SuspendLayout();
+            this.groupPanel13.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -315,1043 +315,6 @@
             this.tabControl1.Tabs.Add(this.tabItem4);
             this.tabControl1.Tabs.Add(this.tabItem6);
             this.tabControl1.Text = "tabControl1";
-            // 
-            // tabControlPanel6
-            // 
-            this.tabControlPanel6.Controls.Add(this.cardPanelEx3);
-            this.tabControlPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlPanel6.Location = new System.Drawing.Point(0, 28);
-            this.tabControlPanel6.Name = "tabControlPanel6";
-            this.tabControlPanel6.Padding = new System.Windows.Forms.Padding(1);
-            this.tabControlPanel6.Size = new System.Drawing.Size(1002, 682);
-            this.tabControlPanel6.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(253)))), ((int)(((byte)(254)))));
-            this.tabControlPanel6.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(157)))), ((int)(((byte)(188)))), ((int)(((byte)(227)))));
-            this.tabControlPanel6.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
-            this.tabControlPanel6.Style.BorderColor.Color = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(165)))), ((int)(((byte)(199)))));
-            this.tabControlPanel6.Style.BorderSide = ((DevComponents.DotNetBar.eBorderSide)(((DevComponents.DotNetBar.eBorderSide.Left | DevComponents.DotNetBar.eBorderSide.Right) 
-            | DevComponents.DotNetBar.eBorderSide.Bottom)));
-            this.tabControlPanel6.Style.GradientAngle = 90;
-            this.tabControlPanel6.TabIndex = 6;
-            this.tabControlPanel6.TabItem = this.tabItem6;
-            // 
-            // cardPanelEx3
-            // 
-            this.cardPanelEx3.AutoScroll = true;
-            this.cardPanelEx3.CanvasColor = System.Drawing.SystemColors.Control;
-            this.cardPanelEx3.CardWidth = 644;
-            this.cardPanelEx3.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.cardPanelEx3.Controls.Add(this.groupPanel15);
-            this.cardPanelEx3.Controls.Add(this.groupPanel12);
-            this.cardPanelEx3.Controls.Add(this.groupPanel21);
-            this.cardPanelEx3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cardPanelEx3.Location = new System.Drawing.Point(1, 1);
-            this.cardPanelEx3.MinWidth = 10;
-            this.cardPanelEx3.Name = "cardPanelEx3";
-            this.cardPanelEx3.Size = new System.Drawing.Size(1000, 680);
-            this.cardPanelEx3.Style.Alignment = System.Drawing.StringAlignment.Center;
-            this.cardPanelEx3.Style.BackColor1.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.cardPanelEx3.Style.BackColor2.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.cardPanelEx3.Style.BorderColor.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.cardPanelEx3.Style.ForeColor.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.cardPanelEx3.Style.GradientAngle = 90;
-            this.cardPanelEx3.TabIndex = 13;
-            // 
-            // groupPanel15
-            // 
-            this.groupPanel15.BackColor = System.Drawing.Color.Transparent;
-            this.groupPanel15.CanvasColor = System.Drawing.SystemColors.Control;
-            this.groupPanel15.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.groupPanel15.Controls.Add(this.radioButton15);
-            this.groupPanel15.Controls.Add(this.radioButton16);
-            this.groupPanel15.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupPanel15.Location = new System.Drawing.Point(167, 10);
-            this.groupPanel15.Name = "groupPanel15";
-            this.groupPanel15.Size = new System.Drawing.Size(644, 61);
-            // 
-            // 
-            // 
-            this.groupPanel15.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.groupPanel15.Style.BackColorGradientAngle = 90;
-            this.groupPanel15.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.groupPanel15.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel15.Style.BorderBottomWidth = 1;
-            this.groupPanel15.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.groupPanel15.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel15.Style.BorderLeftWidth = 1;
-            this.groupPanel15.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel15.Style.BorderRightWidth = 1;
-            this.groupPanel15.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel15.Style.BorderTopWidth = 1;
-            this.groupPanel15.Style.Class = "";
-            this.groupPanel15.Style.CornerDiameter = 4;
-            this.groupPanel15.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
-            this.groupPanel15.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.groupPanel15.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
-            // 
-            // 
-            // 
-            this.groupPanel15.StyleMouseDown.Class = "";
-            this.groupPanel15.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            // 
-            // 
-            // 
-            this.groupPanel15.StyleMouseOver.Class = "";
-            this.groupPanel15.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.groupPanel15.TabIndex = 0;
-            this.groupPanel15.Text = "學期科目成績屬性採計方式(學分數、必選修、校部訂....)";
-            // 
-            // radioButton15
-            // 
-            this.radioButton15.AutoSize = true;
-            this.radioButton15.BackColor = System.Drawing.Color.Transparent;
-            this.radioButton15.Location = new System.Drawing.Point(228, 7);
-            this.radioButton15.Name = "radioButton15";
-            this.radioButton15.Size = new System.Drawing.Size(195, 21);
-            this.radioButton15.TabIndex = 1;
-            this.radioButton15.Text = "以實際學期科目成績內容為準";
-            this.radioButton15.UseVisualStyleBackColor = false;
-            this.radioButton15.CheckedChanged += new System.EventHandler(this.radioButton16_CheckedChanged);
-            // 
-            // radioButton16
-            // 
-            this.radioButton16.AutoSize = true;
-            this.radioButton16.BackColor = System.Drawing.Color.Transparent;
-            this.radioButton16.Checked = true;
-            this.radioButton16.Location = new System.Drawing.Point(31, 7);
-            this.radioButton16.Name = "radioButton16";
-            this.radioButton16.Size = new System.Drawing.Size(156, 21);
-            this.radioButton16.TabIndex = 0;
-            this.radioButton16.TabStop = true;
-            this.radioButton16.Text = "以課程規劃表內容為準";
-            this.radioButton16.UseVisualStyleBackColor = false;
-            this.radioButton16.CheckedChanged += new System.EventHandler(this.radioButton16_CheckedChanged);
-            // 
-            // groupPanel12
-            // 
-            this.groupPanel12.BackColor = System.Drawing.Color.Transparent;
-            this.groupPanel12.CanvasColor = System.Drawing.SystemColors.Control;
-            this.groupPanel12.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.groupPanel12.Controls.Add(this.groupPanel24);
-            this.groupPanel12.Controls.Add(this.radioButton24);
-            this.groupPanel12.Controls.Add(this.radioButton23);
-            this.groupPanel12.Controls.Add(this.labelX14);
-            this.groupPanel12.Location = new System.Drawing.Point(167, 81);
-            this.groupPanel12.Name = "groupPanel12";
-            this.groupPanel12.Size = new System.Drawing.Size(644, 61);
-            // 
-            // 
-            // 
-            this.groupPanel12.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.groupPanel12.Style.BackColorGradientAngle = 90;
-            this.groupPanel12.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.groupPanel12.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel12.Style.BorderBottomWidth = 1;
-            this.groupPanel12.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.groupPanel12.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel12.Style.BorderLeftWidth = 1;
-            this.groupPanel12.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel12.Style.BorderRightWidth = 1;
-            this.groupPanel12.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel12.Style.BorderTopWidth = 1;
-            this.groupPanel12.Style.Class = "";
-            this.groupPanel12.Style.CornerDiameter = 4;
-            this.groupPanel12.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
-            this.groupPanel12.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.groupPanel12.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
-            // 
-            // 
-            // 
-            this.groupPanel12.StyleMouseDown.Class = "";
-            this.groupPanel12.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            // 
-            // 
-            // 
-            this.groupPanel12.StyleMouseOver.Class = "";
-            this.groupPanel12.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.groupPanel12.TabIndex = 1;
-            this.groupPanel12.Text = "畢業成績計算規則";
-            // 
-            // groupPanel24
-            // 
-            this.groupPanel24.BackColor = System.Drawing.Color.Transparent;
-            this.groupPanel24.CanvasColor = System.Drawing.SystemColors.Control;
-            this.groupPanel24.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.groupPanel24.Controls.Add(this.radioButton22);
-            this.groupPanel24.Controls.Add(this.radioButton32);
-            this.groupPanel24.Controls.Add(this.labelX23);
-            this.groupPanel24.Location = new System.Drawing.Point(175, 524);
-            this.groupPanel24.Name = "groupPanel24";
-            this.groupPanel24.Size = new System.Drawing.Size(644, 61);
-            // 
-            // 
-            // 
-            this.groupPanel24.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.groupPanel24.Style.BackColorGradientAngle = 90;
-            this.groupPanel24.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.groupPanel24.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel24.Style.BorderBottomWidth = 1;
-            this.groupPanel24.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.groupPanel24.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel24.Style.BorderLeftWidth = 1;
-            this.groupPanel24.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel24.Style.BorderRightWidth = 1;
-            this.groupPanel24.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel24.Style.BorderTopWidth = 1;
-            this.groupPanel24.Style.Class = "";
-            this.groupPanel24.Style.CornerDiameter = 4;
-            this.groupPanel24.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
-            this.groupPanel24.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.groupPanel24.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
-            // 
-            // 
-            // 
-            this.groupPanel24.StyleMouseDown.Class = "";
-            this.groupPanel24.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            // 
-            // 
-            // 
-            this.groupPanel24.StyleMouseOver.Class = "";
-            this.groupPanel24.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.groupPanel24.TabIndex = 2;
-            this.groupPanel24.Text = "畢業成績計算規則";
-            // 
-            // radioButton22
-            // 
-            this.radioButton22.AutoSize = true;
-            this.radioButton22.BackColor = System.Drawing.Color.Transparent;
-            this.radioButton22.Checked = true;
-            this.radioButton22.Location = new System.Drawing.Point(289, 6);
-            this.radioButton22.Name = "radioButton22";
-            this.radioButton22.Size = new System.Drawing.Size(130, 21);
-            this.radioButton22.TabIndex = 1;
-            this.radioButton22.TabStop = true;
-            this.radioButton22.Text = "學期分項成績平均";
-            this.radioButton22.UseVisualStyleBackColor = false;
-            // 
-            // radioButton32
-            // 
-            this.radioButton32.AutoSize = true;
-            this.radioButton32.BackColor = System.Drawing.Color.Transparent;
-            this.radioButton32.Location = new System.Drawing.Point(151, 6);
-            this.radioButton32.Name = "radioButton32";
-            this.radioButton32.Size = new System.Drawing.Size(130, 21);
-            this.radioButton32.TabIndex = 0;
-            this.radioButton32.Text = "學期科目成績加權";
-            this.radioButton32.UseVisualStyleBackColor = false;
-            // 
-            // labelX23
-            // 
-            this.labelX23.AutoSize = true;
-            this.labelX23.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX23.BackgroundStyle.Class = "";
-            this.labelX23.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX23.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelX23.Location = new System.Drawing.Point(29, 7);
-            this.labelX23.Name = "labelX23";
-            this.labelX23.Size = new System.Drawing.Size(114, 21);
-            this.labelX23.TabIndex = 0;
-            this.labelX23.Text = "學業成績計算方式";
-            // 
-            // radioButton24
-            // 
-            this.radioButton24.AutoSize = true;
-            this.radioButton24.BackColor = System.Drawing.Color.Transparent;
-            this.radioButton24.Checked = true;
-            this.radioButton24.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.radioButton24.Location = new System.Drawing.Point(317, 8);
-            this.radioButton24.Name = "radioButton24";
-            this.radioButton24.Size = new System.Drawing.Size(130, 21);
-            this.radioButton24.TabIndex = 1;
-            this.radioButton24.TabStop = true;
-            this.radioButton24.Text = "學期分項成績平均";
-            this.radioButton24.UseVisualStyleBackColor = false;
-            // 
-            // radioButton23
-            // 
-            this.radioButton23.AutoSize = true;
-            this.radioButton23.BackColor = System.Drawing.Color.Transparent;
-            this.radioButton23.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.radioButton23.Location = new System.Drawing.Point(179, 8);
-            this.radioButton23.Name = "radioButton23";
-            this.radioButton23.Size = new System.Drawing.Size(130, 21);
-            this.radioButton23.TabIndex = 0;
-            this.radioButton23.Text = "學期科目成績加權";
-            this.radioButton23.UseVisualStyleBackColor = false;
-            // 
-            // labelX14
-            // 
-            this.labelX14.AutoSize = true;
-            this.labelX14.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX14.BackgroundStyle.Class = "";
-            this.labelX14.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX14.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelX14.Location = new System.Drawing.Point(48, 9);
-            this.labelX14.Name = "labelX14";
-            this.labelX14.Size = new System.Drawing.Size(127, 21);
-            this.labelX14.TabIndex = 0;
-            this.labelX14.Text = "學業成績計算方式：";
-            // 
-            // groupPanel21
-            // 
-            this.groupPanel21.BackColor = System.Drawing.Color.Transparent;
-            this.groupPanel21.CanvasColor = System.Drawing.SystemColors.Control;
-            this.groupPanel21.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.groupPanel21.Controls.Add(this.groupPanel22);
-            this.groupPanel21.Controls.Add(this.groupPanel5);
-            this.groupPanel21.Controls.Add(this.groupPanel16);
-            this.groupPanel21.Controls.Add(this.groupPanel13);
-            this.groupPanel21.Location = new System.Drawing.Point(167, 152);
-            this.groupPanel21.Name = "groupPanel21";
-            this.groupPanel21.Size = new System.Drawing.Size(644, 549);
-            // 
-            // 
-            // 
-            this.groupPanel21.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.groupPanel21.Style.BackColorGradientAngle = 90;
-            this.groupPanel21.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.groupPanel21.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel21.Style.BorderBottomWidth = 1;
-            this.groupPanel21.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.groupPanel21.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel21.Style.BorderLeftWidth = 1;
-            this.groupPanel21.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel21.Style.BorderRightWidth = 1;
-            this.groupPanel21.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel21.Style.BorderTopWidth = 1;
-            this.groupPanel21.Style.Class = "";
-            this.groupPanel21.Style.CornerDiameter = 4;
-            this.groupPanel21.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
-            this.groupPanel21.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.groupPanel21.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
-            // 
-            // 
-            // 
-            this.groupPanel21.StyleMouseDown.Class = "";
-            this.groupPanel21.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            // 
-            // 
-            // 
-            this.groupPanel21.StyleMouseOver.Class = "";
-            this.groupPanel21.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.groupPanel21.TabIndex = 2;
-            this.groupPanel21.Text = "畢業資格審查規則";
-            // 
-            // groupPanel22
-            // 
-            this.groupPanel22.BackColor = System.Drawing.Color.Transparent;
-            this.groupPanel22.CanvasColor = System.Drawing.SystemColors.Control;
-            this.groupPanel22.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.groupPanel22.Controls.Add(this.labelX27);
-            this.groupPanel22.Controls.Add(this.checkBoxX9);
-            this.groupPanel22.Controls.Add(this.labelX24);
-            this.groupPanel22.Controls.Add(this.checkBoxX7);
-            this.groupPanel22.Controls.Add(this.groupPanel25);
-            this.groupPanel22.DrawTitleBox = false;
-            this.groupPanel22.Location = new System.Drawing.Point(15, 238);
-            this.groupPanel22.Name = "groupPanel22";
-            this.groupPanel22.Size = new System.Drawing.Size(608, 82);
-            // 
-            // 
-            // 
-            this.groupPanel22.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.groupPanel22.Style.BackColorGradientAngle = 90;
-            this.groupPanel22.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.groupPanel22.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel22.Style.BorderBottomWidth = 1;
-            this.groupPanel22.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.groupPanel22.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel22.Style.BorderLeftWidth = 1;
-            this.groupPanel22.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel22.Style.BorderRightWidth = 1;
-            this.groupPanel22.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel22.Style.BorderTopWidth = 1;
-            this.groupPanel22.Style.Class = "";
-            this.groupPanel22.Style.CornerDiameter = 4;
-            this.groupPanel22.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
-            this.groupPanel22.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.groupPanel22.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
-            // 
-            // 
-            // 
-            this.groupPanel22.StyleMouseDown.Class = "";
-            this.groupPanel22.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            // 
-            // 
-            // 
-            this.groupPanel22.StyleMouseOver.Class = "";
-            this.groupPanel22.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.groupPanel22.TabIndex = 3;
-            this.groupPanel22.Text = "其他成績判斷規則";
-            // 
-            // labelX27
-            // 
-            this.labelX27.AutoSize = true;
-            this.labelX27.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX27.BackgroundStyle.Class = "";
-            this.labelX27.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX27.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelX27.Location = new System.Drawing.Point(54, 30);
-            this.labelX27.Name = "labelX27";
-            this.labelX27.Size = new System.Drawing.Size(101, 21);
-            this.labelX27.TabIndex = 6;
-            this.labelX27.Text = "修習科目判斷：";
-            // 
-            // checkBoxX9
-            // 
-            this.checkBoxX9.AutoSize = true;
-            // 
-            // 
-            // 
-            this.checkBoxX9.BackgroundStyle.Class = "";
-            this.checkBoxX9.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.checkBoxX9.Location = new System.Drawing.Point(159, 30);
-            this.checkBoxX9.Name = "checkBoxX9";
-            this.checkBoxX9.Size = new System.Drawing.Size(241, 21);
-            this.checkBoxX9.TabIndex = 5;
-            this.checkBoxX9.Text = "必需修滿課程規劃表中所列必修課程";
-            // 
-            // labelX24
-            // 
-            this.labelX24.AutoSize = true;
-            this.labelX24.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX24.BackgroundStyle.Class = "";
-            this.labelX24.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX24.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelX24.Location = new System.Drawing.Point(28, 3);
-            this.labelX24.Name = "labelX24";
-            this.labelX24.Size = new System.Drawing.Size(127, 21);
-            this.labelX24.TabIndex = 6;
-            this.labelX24.Text = "學年學業成績判斷：";
-            // 
-            // checkBoxX7
-            // 
-            this.checkBoxX7.AutoSize = true;
-            // 
-            // 
-            // 
-            this.checkBoxX7.BackgroundStyle.Class = "";
-            this.checkBoxX7.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.checkBoxX7.Location = new System.Drawing.Point(159, 3);
-            this.checkBoxX7.Name = "checkBoxX7";
-            this.checkBoxX7.Size = new System.Drawing.Size(214, 21);
-            this.checkBoxX7.TabIndex = 5;
-            this.checkBoxX7.Text = "各學年學年學業分項成績皆及格";
-            // 
-            // groupPanel25
-            // 
-            this.groupPanel25.BackColor = System.Drawing.Color.Transparent;
-            this.groupPanel25.CanvasColor = System.Drawing.SystemColors.Control;
-            this.groupPanel25.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.groupPanel25.Controls.Add(this.radioButton28);
-            this.groupPanel25.Controls.Add(this.radioButton33);
-            this.groupPanel25.Controls.Add(this.labelX28);
-            this.groupPanel25.Location = new System.Drawing.Point(175, 524);
-            this.groupPanel25.Name = "groupPanel25";
-            this.groupPanel25.Size = new System.Drawing.Size(644, 61);
-            // 
-            // 
-            // 
-            this.groupPanel25.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.groupPanel25.Style.BackColorGradientAngle = 90;
-            this.groupPanel25.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.groupPanel25.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel25.Style.BorderBottomWidth = 1;
-            this.groupPanel25.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.groupPanel25.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel25.Style.BorderLeftWidth = 1;
-            this.groupPanel25.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel25.Style.BorderRightWidth = 1;
-            this.groupPanel25.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel25.Style.BorderTopWidth = 1;
-            this.groupPanel25.Style.Class = "";
-            this.groupPanel25.Style.CornerDiameter = 4;
-            this.groupPanel25.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
-            this.groupPanel25.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.groupPanel25.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
-            // 
-            // 
-            // 
-            this.groupPanel25.StyleMouseDown.Class = "";
-            this.groupPanel25.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            // 
-            // 
-            // 
-            this.groupPanel25.StyleMouseOver.Class = "";
-            this.groupPanel25.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.groupPanel25.TabIndex = 2;
-            this.groupPanel25.Text = "畢業成績計算規則";
-            // 
-            // radioButton28
-            // 
-            this.radioButton28.AutoSize = true;
-            this.radioButton28.BackColor = System.Drawing.Color.Transparent;
-            this.radioButton28.Checked = true;
-            this.radioButton28.Location = new System.Drawing.Point(289, 6);
-            this.radioButton28.Name = "radioButton28";
-            this.radioButton28.Size = new System.Drawing.Size(130, 21);
-            this.radioButton28.TabIndex = 1;
-            this.radioButton28.TabStop = true;
-            this.radioButton28.Text = "學期分項成績平均";
-            this.radioButton28.UseVisualStyleBackColor = false;
-            // 
-            // radioButton33
-            // 
-            this.radioButton33.AutoSize = true;
-            this.radioButton33.BackColor = System.Drawing.Color.Transparent;
-            this.radioButton33.Location = new System.Drawing.Point(151, 6);
-            this.radioButton33.Name = "radioButton33";
-            this.radioButton33.Size = new System.Drawing.Size(130, 21);
-            this.radioButton33.TabIndex = 0;
-            this.radioButton33.Text = "學期科目成績加權";
-            this.radioButton33.UseVisualStyleBackColor = false;
-            // 
-            // labelX28
-            // 
-            this.labelX28.AutoSize = true;
-            this.labelX28.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX28.BackgroundStyle.Class = "";
-            this.labelX28.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX28.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelX28.Location = new System.Drawing.Point(29, 7);
-            this.labelX28.Name = "labelX28";
-            this.labelX28.Size = new System.Drawing.Size(114, 21);
-            this.labelX28.TabIndex = 0;
-            this.labelX28.Text = "學業成績計算方式";
-            // 
-            // groupPanel5
-            // 
-            this.groupPanel5.BackColor = System.Drawing.Color.Transparent;
-            this.groupPanel5.CanvasColor = System.Drawing.SystemColors.Control;
-            this.groupPanel5.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.groupPanel5.Controls.Add(this.cmbProfessionalSubjectTable);
-            this.groupPanel5.Controls.Add(this.labelX26);
-            this.groupPanel5.Controls.Add(this.labelX13);
-            this.groupPanel5.Controls.Add(this.listView1);
-            this.groupPanel5.DrawTitleBox = false;
-            this.groupPanel5.Location = new System.Drawing.Point(15, 328);
-            this.groupPanel5.Name = "groupPanel5";
-            this.groupPanel5.Size = new System.Drawing.Size(608, 185);
-            // 
-            // 
-            // 
-            this.groupPanel5.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.groupPanel5.Style.BackColorGradientAngle = 90;
-            this.groupPanel5.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.groupPanel5.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel5.Style.BorderBottomWidth = 1;
-            this.groupPanel5.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.groupPanel5.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel5.Style.BorderLeftWidth = 1;
-            this.groupPanel5.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel5.Style.BorderRightWidth = 1;
-            this.groupPanel5.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel5.Style.BorderTopWidth = 1;
-            this.groupPanel5.Style.Class = "";
-            this.groupPanel5.Style.CornerDiameter = 4;
-            this.groupPanel5.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
-            this.groupPanel5.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.groupPanel5.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
-            // 
-            // 
-            // 
-            this.groupPanel5.StyleMouseDown.Class = "";
-            this.groupPanel5.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            // 
-            // 
-            // 
-            this.groupPanel5.StyleMouseOver.Class = "";
-            this.groupPanel5.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.groupPanel5.TabIndex = 2;
-            this.groupPanel5.Text = "自訂畢業應修及格科目表";
-            // 
-            // cmbProfessionalSubjectTable
-            // 
-            this.cmbProfessionalSubjectTable.DisplayMember = "Text";
-            this.cmbProfessionalSubjectTable.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbProfessionalSubjectTable.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbProfessionalSubjectTable.FormattingEnabled = true;
-            this.cmbProfessionalSubjectTable.ItemHeight = 19;
-            this.cmbProfessionalSubjectTable.Location = new System.Drawing.Point(182, 130);
-            this.cmbProfessionalSubjectTable.Name = "cmbProfessionalSubjectTable";
-            this.cmbProfessionalSubjectTable.Size = new System.Drawing.Size(121, 25);
-            this.cmbProfessionalSubjectTable.TabIndex = 5;
-            // 
-            // labelX26
-            // 
-            this.labelX26.AutoSize = true;
-            this.labelX26.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX26.BackgroundStyle.Class = "";
-            this.labelX26.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX26.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelX26.Location = new System.Drawing.Point(9, 132);
-            this.labelX26.Name = "labelX26";
-            this.labelX26.Size = new System.Drawing.Size(167, 21);
-            this.labelX26.TabIndex = 4;
-            this.labelX26.Text = "列印學籍表用專業科目表：";
-            // 
-            // labelX13
-            // 
-            this.labelX13.AutoSize = true;
-            // 
-            // 
-            // 
-            this.labelX13.BackgroundStyle.Class = "";
-            this.labelX13.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX13.Location = new System.Drawing.Point(13, 3);
-            this.labelX13.Name = "labelX13";
-            this.labelX13.Size = new System.Drawing.Size(301, 21);
-            this.labelX13.TabIndex = 1;
-            this.labelX13.Text = "必需通過下列勾選科目表中的修習及取得學分規定";
-            // 
-            // listView1
-            // 
-            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            // 
-            // 
-            // 
-            this.listView1.Border.Class = "ListViewBorder";
-            this.listView1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.listView1.CheckBoxes = true;
-            this.listView1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(11, 30);
-            this.listView1.Name = "listView1";
-            this.listView1.ShowGroups = false;
-            this.listView1.Size = new System.Drawing.Size(586, 122);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.List;
-            // 
-            // groupPanel16
-            // 
-            this.groupPanel16.BackColor = System.Drawing.Color.Transparent;
-            this.groupPanel16.CanvasColor = System.Drawing.SystemColors.Control;
-            this.groupPanel16.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.groupPanel16.Controls.Add(this.labelX25);
-            this.groupPanel16.Controls.Add(this.groupPanel23);
-            this.groupPanel16.Controls.Add(this.checkBoxX6);
-            this.groupPanel16.DrawTitleBox = false;
-            this.groupPanel16.Location = new System.Drawing.Point(15, 169);
-            this.groupPanel16.Name = "groupPanel16";
-            this.groupPanel16.Size = new System.Drawing.Size(608, 61);
-            // 
-            // 
-            // 
-            this.groupPanel16.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.groupPanel16.Style.BackColorGradientAngle = 90;
-            this.groupPanel16.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.groupPanel16.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel16.Style.BorderBottomWidth = 1;
-            this.groupPanel16.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.groupPanel16.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel16.Style.BorderLeftWidth = 1;
-            this.groupPanel16.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel16.Style.BorderRightWidth = 1;
-            this.groupPanel16.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel16.Style.BorderTopWidth = 1;
-            this.groupPanel16.Style.Class = "";
-            this.groupPanel16.Style.CornerDiameter = 4;
-            this.groupPanel16.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
-            this.groupPanel16.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.groupPanel16.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
-            // 
-            // 
-            // 
-            this.groupPanel16.StyleMouseDown.Class = "";
-            this.groupPanel16.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            // 
-            // 
-            // 
-            this.groupPanel16.StyleMouseOver.Class = "";
-            this.groupPanel16.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.groupPanel16.TabIndex = 1;
-            this.groupPanel16.Text = "德行畢業判斷規則";
-            // 
-            // labelX25
-            // 
-            this.labelX25.AutoSize = true;
-            this.labelX25.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX25.BackgroundStyle.Class = "";
-            this.labelX25.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX25.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelX25.Location = new System.Drawing.Point(54, 7);
-            this.labelX25.Name = "labelX25";
-            this.labelX25.Size = new System.Drawing.Size(101, 21);
-            this.labelX25.TabIndex = 5;
-            this.labelX25.Text = "德行畢業判斷：";
-            // 
-            // groupPanel23
-            // 
-            this.groupPanel23.BackColor = System.Drawing.Color.Transparent;
-            this.groupPanel23.CanvasColor = System.Drawing.SystemColors.Control;
-            this.groupPanel23.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.groupPanel23.Controls.Add(this.radioButton17);
-            this.groupPanel23.Controls.Add(this.radioButton18);
-            this.groupPanel23.Controls.Add(this.labelX22);
-            this.groupPanel23.Location = new System.Drawing.Point(175, 524);
-            this.groupPanel23.Name = "groupPanel23";
-            this.groupPanel23.Size = new System.Drawing.Size(644, 61);
-            // 
-            // 
-            // 
-            this.groupPanel23.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.groupPanel23.Style.BackColorGradientAngle = 90;
-            this.groupPanel23.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.groupPanel23.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel23.Style.BorderBottomWidth = 1;
-            this.groupPanel23.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.groupPanel23.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel23.Style.BorderLeftWidth = 1;
-            this.groupPanel23.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel23.Style.BorderRightWidth = 1;
-            this.groupPanel23.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel23.Style.BorderTopWidth = 1;
-            this.groupPanel23.Style.Class = "";
-            this.groupPanel23.Style.CornerDiameter = 4;
-            this.groupPanel23.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
-            this.groupPanel23.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.groupPanel23.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
-            // 
-            // 
-            // 
-            this.groupPanel23.StyleMouseDown.Class = "";
-            this.groupPanel23.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            // 
-            // 
-            // 
-            this.groupPanel23.StyleMouseOver.Class = "";
-            this.groupPanel23.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.groupPanel23.TabIndex = 2;
-            this.groupPanel23.Text = "畢業成績計算規則";
-            // 
-            // radioButton17
-            // 
-            this.radioButton17.AutoSize = true;
-            this.radioButton17.BackColor = System.Drawing.Color.Transparent;
-            this.radioButton17.Checked = true;
-            this.radioButton17.Location = new System.Drawing.Point(289, 6);
-            this.radioButton17.Name = "radioButton17";
-            this.radioButton17.Size = new System.Drawing.Size(130, 21);
-            this.radioButton17.TabIndex = 1;
-            this.radioButton17.TabStop = true;
-            this.radioButton17.Text = "學期分項成績平均";
-            this.radioButton17.UseVisualStyleBackColor = false;
-            // 
-            // radioButton18
-            // 
-            this.radioButton18.AutoSize = true;
-            this.radioButton18.BackColor = System.Drawing.Color.Transparent;
-            this.radioButton18.Location = new System.Drawing.Point(151, 6);
-            this.radioButton18.Name = "radioButton18";
-            this.radioButton18.Size = new System.Drawing.Size(130, 21);
-            this.radioButton18.TabIndex = 0;
-            this.radioButton18.Text = "學期科目成績加權";
-            this.radioButton18.UseVisualStyleBackColor = false;
-            // 
-            // labelX22
-            // 
-            this.labelX22.AutoSize = true;
-            this.labelX22.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX22.BackgroundStyle.Class = "";
-            this.labelX22.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX22.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelX22.Location = new System.Drawing.Point(29, 7);
-            this.labelX22.Name = "labelX22";
-            this.labelX22.Size = new System.Drawing.Size(114, 21);
-            this.labelX22.TabIndex = 0;
-            this.labelX22.Text = "學業成績計算方式";
-            // 
-            // checkBoxX6
-            // 
-            this.checkBoxX6.AutoSize = true;
-            // 
-            // 
-            // 
-            this.checkBoxX6.BackgroundStyle.Class = "";
-            this.checkBoxX6.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.checkBoxX6.Location = new System.Drawing.Point(159, 7);
-            this.checkBoxX6.Name = "checkBoxX6";
-            this.checkBoxX6.Size = new System.Drawing.Size(147, 21);
-            this.checkBoxX6.TabIndex = 0;
-            this.checkBoxX6.Text = "功過相抵未滿三大過";
-            // 
-            // groupPanel13
-            // 
-            this.groupPanel13.BackColor = System.Drawing.Color.Transparent;
-            this.groupPanel13.CanvasColor = System.Drawing.SystemColors.Control;
-            this.groupPanel13.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.groupPanel13.Controls.Add(this.checkBoxX20);
-            this.groupPanel13.Controls.Add(this.labelX29);
-            this.groupPanel13.Controls.Add(this.textBoxX2);
-            this.groupPanel13.Controls.Add(this.labelX12);
-            this.groupPanel13.Controls.Add(this.labelX17);
-            this.groupPanel13.Controls.Add(this.labelX11);
-            this.groupPanel13.Controls.Add(this.labelX18);
-            this.groupPanel13.Controls.Add(this.labelX16);
-            this.groupPanel13.Controls.Add(this.labelX10);
-            this.groupPanel13.Controls.Add(this.textBoxX1);
-            this.groupPanel13.Controls.Add(this.textBoxX11);
-            this.groupPanel13.Controls.Add(this.textBoxX8);
-            this.groupPanel13.Controls.Add(this.textBoxX10);
-            this.groupPanel13.Controls.Add(this.textBoxX6);
-            this.groupPanel13.Controls.Add(this.textBoxX7);
-            this.groupPanel13.DrawTitleBox = false;
-            this.groupPanel13.Location = new System.Drawing.Point(15, 6);
-            this.groupPanel13.Name = "groupPanel13";
-            this.groupPanel13.Size = new System.Drawing.Size(608, 157);
-            // 
-            // 
-            // 
-            this.groupPanel13.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.groupPanel13.Style.BackColorGradientAngle = 90;
-            this.groupPanel13.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.groupPanel13.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel13.Style.BorderBottomWidth = 1;
-            this.groupPanel13.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.groupPanel13.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel13.Style.BorderLeftWidth = 1;
-            this.groupPanel13.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel13.Style.BorderRightWidth = 1;
-            this.groupPanel13.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel13.Style.BorderTopWidth = 1;
-            this.groupPanel13.Style.Class = "";
-            this.groupPanel13.Style.CornerDiameter = 4;
-            this.groupPanel13.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
-            this.groupPanel13.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.groupPanel13.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
-            // 
-            // 
-            // 
-            this.groupPanel13.StyleMouseDown.Class = "";
-            this.groupPanel13.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            // 
-            // 
-            // 
-            this.groupPanel13.StyleMouseOver.Class = "";
-            this.groupPanel13.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.groupPanel13.TabIndex = 0;
-            this.groupPanel13.Text = "畢業學分數";
-            // 
-            // labelX29
-            // 
-            this.labelX29.AutoSize = true;
-            // 
-            // 
-            // 
-            this.labelX29.BackgroundStyle.Class = "";
-            this.labelX29.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX29.Location = new System.Drawing.Point(29, 93);
-            this.labelX29.Name = "labelX29";
-            this.labelX29.Size = new System.Drawing.Size(127, 21);
-            this.labelX29.TabIndex = 5;
-            this.labelX29.Text = "專業及實習總學分數";
-            // 
-            // textBoxX2
-            // 
-            // 
-            // 
-            // 
-            this.textBoxX2.Border.Class = "TextBoxBorder";
-            this.textBoxX2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX2.Location = new System.Drawing.Point(159, 90);
-            this.textBoxX2.Name = "textBoxX2";
-            this.textBoxX2.Size = new System.Drawing.Size(63, 25);
-            this.textBoxX2.TabIndex = 6;
-            this.textBoxX2.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
-            // 
-            // labelX12
-            // 
-            this.labelX12.AutoSize = true;
-            // 
-            // 
-            // 
-            this.labelX12.BackgroundStyle.Class = "";
-            this.labelX12.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX12.Location = new System.Drawing.Point(29, 64);
-            this.labelX12.Name = "labelX12";
-            this.labelX12.Size = new System.Drawing.Size(74, 21);
-            this.labelX12.TabIndex = 3;
-            this.labelX12.Text = "實習學分數";
-            // 
-            // labelX17
-            // 
-            this.labelX17.AutoSize = true;
-            // 
-            // 
-            // 
-            this.labelX17.BackgroundStyle.Class = "";
-            this.labelX17.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX17.Location = new System.Drawing.Point(290, 64);
-            this.labelX17.Name = "labelX17";
-            this.labelX17.Size = new System.Drawing.Size(101, 21);
-            this.labelX17.TabIndex = 3;
-            this.labelX17.Text = "校訂必修學分數";
-            // 
-            // labelX11
-            // 
-            this.labelX11.AutoSize = true;
-            // 
-            // 
-            // 
-            this.labelX11.BackgroundStyle.Class = "";
-            this.labelX11.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX11.Location = new System.Drawing.Point(290, 35);
-            this.labelX11.Name = "labelX11";
-            this.labelX11.Size = new System.Drawing.Size(101, 21);
-            this.labelX11.TabIndex = 3;
-            this.labelX11.Text = "部訂必修學分數";
-            // 
-            // labelX18
-            // 
-            this.labelX18.AutoSize = true;
-            // 
-            // 
-            // 
-            this.labelX18.BackgroundStyle.Class = "";
-            this.labelX18.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX18.Location = new System.Drawing.Point(290, 6);
-            this.labelX18.Name = "labelX18";
-            this.labelX18.Size = new System.Drawing.Size(74, 21);
-            this.labelX18.TabIndex = 3;
-            this.labelX18.Text = "必修學分數";
-            // 
-            // labelX16
-            // 
-            this.labelX16.AutoSize = true;
-            // 
-            // 
-            // 
-            this.labelX16.BackgroundStyle.Class = "";
-            this.labelX16.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX16.Location = new System.Drawing.Point(29, 35);
-            this.labelX16.Name = "labelX16";
-            this.labelX16.Size = new System.Drawing.Size(74, 21);
-            this.labelX16.TabIndex = 3;
-            this.labelX16.Text = "選修學分數";
-            // 
-            // labelX10
-            // 
-            this.labelX10.AutoSize = true;
-            // 
-            // 
-            // 
-            this.labelX10.BackgroundStyle.Class = "";
-            this.labelX10.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX10.Location = new System.Drawing.Point(29, 6);
-            this.labelX10.Name = "labelX10";
-            this.labelX10.Size = new System.Drawing.Size(60, 21);
-            this.labelX10.TabIndex = 3;
-            this.labelX10.Text = "總學分數";
-            // 
-            // textBoxX1
-            // 
-            // 
-            // 
-            // 
-            this.textBoxX1.Border.Class = "TextBoxBorder";
-            this.textBoxX1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX1.Location = new System.Drawing.Point(420, 3);
-            this.textBoxX1.Name = "textBoxX1";
-            this.textBoxX1.Size = new System.Drawing.Size(63, 25);
-            this.textBoxX1.TabIndex = 1;
-            this.textBoxX1.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
-            // 
-            // textBoxX11
-            // 
-            // 
-            // 
-            // 
-            this.textBoxX11.Border.Class = "TextBoxBorder";
-            this.textBoxX11.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX11.Location = new System.Drawing.Point(159, 61);
-            this.textBoxX11.Name = "textBoxX11";
-            this.textBoxX11.Size = new System.Drawing.Size(63, 25);
-            this.textBoxX11.TabIndex = 4;
-            this.textBoxX11.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
-            // 
-            // textBoxX8
-            // 
-            // 
-            // 
-            // 
-            this.textBoxX8.Border.Class = "TextBoxBorder";
-            this.textBoxX8.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX8.Location = new System.Drawing.Point(159, 32);
-            this.textBoxX8.Name = "textBoxX8";
-            this.textBoxX8.Size = new System.Drawing.Size(63, 25);
-            this.textBoxX8.TabIndex = 1;
-            this.textBoxX8.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
-            // 
-            // textBoxX10
-            // 
-            // 
-            // 
-            // 
-            this.textBoxX10.Border.Class = "TextBoxBorder";
-            this.textBoxX10.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX10.Location = new System.Drawing.Point(420, 61);
-            this.textBoxX10.Name = "textBoxX10";
-            this.textBoxX10.Size = new System.Drawing.Size(63, 25);
-            this.textBoxX10.TabIndex = 3;
-            this.textBoxX10.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
-            // 
-            // textBoxX6
-            // 
-            // 
-            // 
-            // 
-            this.textBoxX6.Border.Class = "TextBoxBorder";
-            this.textBoxX6.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX6.Location = new System.Drawing.Point(159, 3);
-            this.textBoxX6.Name = "textBoxX6";
-            this.textBoxX6.Size = new System.Drawing.Size(63, 25);
-            this.textBoxX6.TabIndex = 0;
-            this.textBoxX6.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
-            // 
-            // textBoxX7
-            // 
-            // 
-            // 
-            // 
-            this.textBoxX7.Border.Class = "TextBoxBorder";
-            this.textBoxX7.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX7.Location = new System.Drawing.Point(420, 32);
-            this.textBoxX7.Name = "textBoxX7";
-            this.textBoxX7.Size = new System.Drawing.Size(63, 25);
-            this.textBoxX7.TabIndex = 2;
-            this.textBoxX7.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
-            // 
-            // tabItem6
-            // 
-            this.tabItem6.AttachedControl = this.tabControlPanel6;
-            this.tabItem6.Name = "tabItem6";
-            this.tabItem6.Text = "畢業成績計算規則";
             // 
             // tabControlPanel4
             // 
@@ -2509,6 +1472,9 @@
             // 
             this.checkBoxX10.BackgroundStyle.Class = "";
             this.checkBoxX10.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX10.Checked = true;
+            this.checkBoxX10.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxX10.CheckValue = "Y";
             this.checkBoxX10.Location = new System.Drawing.Point(5, 30);
             this.checkBoxX10.Name = "checkBoxX10";
             this.checkBoxX10.Size = new System.Drawing.Size(134, 21);
@@ -2585,6 +1551,9 @@
             // 
             this.checkBoxX15.BackgroundStyle.Class = "";
             this.checkBoxX15.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX15.Checked = true;
+            this.checkBoxX15.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxX15.CheckValue = "Y";
             this.checkBoxX15.Location = new System.Drawing.Point(5, 30);
             this.checkBoxX15.Name = "checkBoxX15";
             this.checkBoxX15.Size = new System.Drawing.Size(134, 21);
@@ -2661,6 +1630,9 @@
             // 
             this.checkBoxX13.BackgroundStyle.Class = "";
             this.checkBoxX13.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX13.Checked = true;
+            this.checkBoxX13.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxX13.CheckValue = "Y";
             this.checkBoxX13.Location = new System.Drawing.Point(5, 30);
             this.checkBoxX13.Name = "checkBoxX13";
             this.checkBoxX13.Size = new System.Drawing.Size(134, 21);
@@ -2737,6 +1709,9 @@
             // 
             this.checkBoxX11.BackgroundStyle.Class = "";
             this.checkBoxX11.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX11.Checked = true;
+            this.checkBoxX11.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxX11.CheckValue = "Y";
             this.checkBoxX11.Location = new System.Drawing.Point(5, 30);
             this.checkBoxX11.Name = "checkBoxX11";
             this.checkBoxX11.Size = new System.Drawing.Size(134, 21);
@@ -2813,6 +1788,9 @@
             // 
             this.checkBoxX8.BackgroundStyle.Class = "";
             this.checkBoxX8.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX8.Checked = true;
+            this.checkBoxX8.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxX8.CheckValue = "Y";
             this.checkBoxX8.Location = new System.Drawing.Point(5, 30);
             this.checkBoxX8.Name = "checkBoxX8";
             this.checkBoxX8.Size = new System.Drawing.Size(134, 21);
@@ -3130,6 +2108,1060 @@
             this.tabItem4.Name = "tabItem4";
             this.tabItem4.Text = "成績計算規則";
             // 
+            // tabControlPanel6
+            // 
+            this.tabControlPanel6.Controls.Add(this.cardPanelEx3);
+            this.tabControlPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlPanel6.Location = new System.Drawing.Point(0, 28);
+            this.tabControlPanel6.Name = "tabControlPanel6";
+            this.tabControlPanel6.Padding = new System.Windows.Forms.Padding(1);
+            this.tabControlPanel6.Size = new System.Drawing.Size(1002, 682);
+            this.tabControlPanel6.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(253)))), ((int)(((byte)(254)))));
+            this.tabControlPanel6.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(157)))), ((int)(((byte)(188)))), ((int)(((byte)(227)))));
+            this.tabControlPanel6.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
+            this.tabControlPanel6.Style.BorderColor.Color = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(165)))), ((int)(((byte)(199)))));
+            this.tabControlPanel6.Style.BorderSide = ((DevComponents.DotNetBar.eBorderSide)(((DevComponents.DotNetBar.eBorderSide.Left | DevComponents.DotNetBar.eBorderSide.Right) 
+            | DevComponents.DotNetBar.eBorderSide.Bottom)));
+            this.tabControlPanel6.Style.GradientAngle = 90;
+            this.tabControlPanel6.TabIndex = 6;
+            this.tabControlPanel6.TabItem = this.tabItem6;
+            // 
+            // cardPanelEx3
+            // 
+            this.cardPanelEx3.AutoScroll = true;
+            this.cardPanelEx3.CanvasColor = System.Drawing.SystemColors.Control;
+            this.cardPanelEx3.CardWidth = 644;
+            this.cardPanelEx3.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.cardPanelEx3.Controls.Add(this.groupPanel15);
+            this.cardPanelEx3.Controls.Add(this.groupPanel12);
+            this.cardPanelEx3.Controls.Add(this.groupPanel21);
+            this.cardPanelEx3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cardPanelEx3.Location = new System.Drawing.Point(1, 1);
+            this.cardPanelEx3.MinWidth = 10;
+            this.cardPanelEx3.Name = "cardPanelEx3";
+            this.cardPanelEx3.Size = new System.Drawing.Size(1000, 680);
+            this.cardPanelEx3.Style.Alignment = System.Drawing.StringAlignment.Center;
+            this.cardPanelEx3.Style.BackColor1.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.cardPanelEx3.Style.BackColor2.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.cardPanelEx3.Style.BorderColor.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.cardPanelEx3.Style.ForeColor.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.cardPanelEx3.Style.GradientAngle = 90;
+            this.cardPanelEx3.TabIndex = 13;
+            // 
+            // groupPanel15
+            // 
+            this.groupPanel15.BackColor = System.Drawing.Color.Transparent;
+            this.groupPanel15.CanvasColor = System.Drawing.SystemColors.Control;
+            this.groupPanel15.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel15.Controls.Add(this.radioButton15);
+            this.groupPanel15.Controls.Add(this.radioButton16);
+            this.groupPanel15.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupPanel15.Location = new System.Drawing.Point(167, 10);
+            this.groupPanel15.Name = "groupPanel15";
+            this.groupPanel15.Size = new System.Drawing.Size(644, 61);
+            // 
+            // 
+            // 
+            this.groupPanel15.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.groupPanel15.Style.BackColorGradientAngle = 90;
+            this.groupPanel15.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.groupPanel15.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel15.Style.BorderBottomWidth = 1;
+            this.groupPanel15.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.groupPanel15.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel15.Style.BorderLeftWidth = 1;
+            this.groupPanel15.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel15.Style.BorderRightWidth = 1;
+            this.groupPanel15.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel15.Style.BorderTopWidth = 1;
+            this.groupPanel15.Style.Class = "";
+            this.groupPanel15.Style.CornerDiameter = 4;
+            this.groupPanel15.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.groupPanel15.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.groupPanel15.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.groupPanel15.StyleMouseDown.Class = "";
+            this.groupPanel15.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.groupPanel15.StyleMouseOver.Class = "";
+            this.groupPanel15.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.groupPanel15.TabIndex = 0;
+            this.groupPanel15.Text = "學期科目成績屬性採計方式(學分數、必選修、校部訂....)";
+            // 
+            // radioButton15
+            // 
+            this.radioButton15.AutoSize = true;
+            this.radioButton15.BackColor = System.Drawing.Color.Transparent;
+            this.radioButton15.Location = new System.Drawing.Point(228, 7);
+            this.radioButton15.Name = "radioButton15";
+            this.radioButton15.Size = new System.Drawing.Size(195, 21);
+            this.radioButton15.TabIndex = 1;
+            this.radioButton15.Text = "以實際學期科目成績內容為準";
+            this.radioButton15.UseVisualStyleBackColor = false;
+            this.radioButton15.CheckedChanged += new System.EventHandler(this.radioButton16_CheckedChanged);
+            // 
+            // radioButton16
+            // 
+            this.radioButton16.AutoSize = true;
+            this.radioButton16.BackColor = System.Drawing.Color.Transparent;
+            this.radioButton16.Checked = true;
+            this.radioButton16.Location = new System.Drawing.Point(31, 7);
+            this.radioButton16.Name = "radioButton16";
+            this.radioButton16.Size = new System.Drawing.Size(156, 21);
+            this.radioButton16.TabIndex = 0;
+            this.radioButton16.TabStop = true;
+            this.radioButton16.Text = "以課程規劃表內容為準";
+            this.radioButton16.UseVisualStyleBackColor = false;
+            this.radioButton16.CheckedChanged += new System.EventHandler(this.radioButton16_CheckedChanged);
+            // 
+            // groupPanel12
+            // 
+            this.groupPanel12.BackColor = System.Drawing.Color.Transparent;
+            this.groupPanel12.CanvasColor = System.Drawing.SystemColors.Control;
+            this.groupPanel12.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel12.Controls.Add(this.groupPanel24);
+            this.groupPanel12.Controls.Add(this.radioButton24);
+            this.groupPanel12.Controls.Add(this.radioButton23);
+            this.groupPanel12.Controls.Add(this.labelX14);
+            this.groupPanel12.Location = new System.Drawing.Point(167, 81);
+            this.groupPanel12.Name = "groupPanel12";
+            this.groupPanel12.Size = new System.Drawing.Size(644, 61);
+            // 
+            // 
+            // 
+            this.groupPanel12.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.groupPanel12.Style.BackColorGradientAngle = 90;
+            this.groupPanel12.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.groupPanel12.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel12.Style.BorderBottomWidth = 1;
+            this.groupPanel12.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.groupPanel12.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel12.Style.BorderLeftWidth = 1;
+            this.groupPanel12.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel12.Style.BorderRightWidth = 1;
+            this.groupPanel12.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel12.Style.BorderTopWidth = 1;
+            this.groupPanel12.Style.Class = "";
+            this.groupPanel12.Style.CornerDiameter = 4;
+            this.groupPanel12.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.groupPanel12.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.groupPanel12.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.groupPanel12.StyleMouseDown.Class = "";
+            this.groupPanel12.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.groupPanel12.StyleMouseOver.Class = "";
+            this.groupPanel12.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.groupPanel12.TabIndex = 1;
+            this.groupPanel12.Text = "畢業成績計算規則";
+            // 
+            // groupPanel24
+            // 
+            this.groupPanel24.BackColor = System.Drawing.Color.Transparent;
+            this.groupPanel24.CanvasColor = System.Drawing.SystemColors.Control;
+            this.groupPanel24.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel24.Controls.Add(this.radioButton22);
+            this.groupPanel24.Controls.Add(this.radioButton32);
+            this.groupPanel24.Controls.Add(this.labelX23);
+            this.groupPanel24.Location = new System.Drawing.Point(175, 524);
+            this.groupPanel24.Name = "groupPanel24";
+            this.groupPanel24.Size = new System.Drawing.Size(644, 61);
+            // 
+            // 
+            // 
+            this.groupPanel24.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.groupPanel24.Style.BackColorGradientAngle = 90;
+            this.groupPanel24.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.groupPanel24.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel24.Style.BorderBottomWidth = 1;
+            this.groupPanel24.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.groupPanel24.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel24.Style.BorderLeftWidth = 1;
+            this.groupPanel24.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel24.Style.BorderRightWidth = 1;
+            this.groupPanel24.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel24.Style.BorderTopWidth = 1;
+            this.groupPanel24.Style.Class = "";
+            this.groupPanel24.Style.CornerDiameter = 4;
+            this.groupPanel24.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.groupPanel24.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.groupPanel24.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.groupPanel24.StyleMouseDown.Class = "";
+            this.groupPanel24.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.groupPanel24.StyleMouseOver.Class = "";
+            this.groupPanel24.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.groupPanel24.TabIndex = 2;
+            this.groupPanel24.Text = "畢業成績計算規則";
+            // 
+            // radioButton22
+            // 
+            this.radioButton22.AutoSize = true;
+            this.radioButton22.BackColor = System.Drawing.Color.Transparent;
+            this.radioButton22.Checked = true;
+            this.radioButton22.Location = new System.Drawing.Point(289, 6);
+            this.radioButton22.Name = "radioButton22";
+            this.radioButton22.Size = new System.Drawing.Size(130, 21);
+            this.radioButton22.TabIndex = 1;
+            this.radioButton22.TabStop = true;
+            this.radioButton22.Text = "學期分項成績平均";
+            this.radioButton22.UseVisualStyleBackColor = false;
+            // 
+            // radioButton32
+            // 
+            this.radioButton32.AutoSize = true;
+            this.radioButton32.BackColor = System.Drawing.Color.Transparent;
+            this.radioButton32.Location = new System.Drawing.Point(151, 6);
+            this.radioButton32.Name = "radioButton32";
+            this.radioButton32.Size = new System.Drawing.Size(130, 21);
+            this.radioButton32.TabIndex = 0;
+            this.radioButton32.Text = "學期科目成績加權";
+            this.radioButton32.UseVisualStyleBackColor = false;
+            // 
+            // labelX23
+            // 
+            this.labelX23.AutoSize = true;
+            this.labelX23.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX23.BackgroundStyle.Class = "";
+            this.labelX23.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX23.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.labelX23.Location = new System.Drawing.Point(29, 7);
+            this.labelX23.Name = "labelX23";
+            this.labelX23.Size = new System.Drawing.Size(114, 21);
+            this.labelX23.TabIndex = 0;
+            this.labelX23.Text = "學業成績計算方式";
+            // 
+            // radioButton24
+            // 
+            this.radioButton24.AutoSize = true;
+            this.radioButton24.BackColor = System.Drawing.Color.Transparent;
+            this.radioButton24.Checked = true;
+            this.radioButton24.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.radioButton24.Location = new System.Drawing.Point(317, 8);
+            this.radioButton24.Name = "radioButton24";
+            this.radioButton24.Size = new System.Drawing.Size(130, 21);
+            this.radioButton24.TabIndex = 1;
+            this.radioButton24.TabStop = true;
+            this.radioButton24.Text = "學期分項成績平均";
+            this.radioButton24.UseVisualStyleBackColor = false;
+            // 
+            // radioButton23
+            // 
+            this.radioButton23.AutoSize = true;
+            this.radioButton23.BackColor = System.Drawing.Color.Transparent;
+            this.radioButton23.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.radioButton23.Location = new System.Drawing.Point(179, 8);
+            this.radioButton23.Name = "radioButton23";
+            this.radioButton23.Size = new System.Drawing.Size(130, 21);
+            this.radioButton23.TabIndex = 0;
+            this.radioButton23.Text = "學期科目成績加權";
+            this.radioButton23.UseVisualStyleBackColor = false;
+            // 
+            // labelX14
+            // 
+            this.labelX14.AutoSize = true;
+            this.labelX14.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX14.BackgroundStyle.Class = "";
+            this.labelX14.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX14.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.labelX14.Location = new System.Drawing.Point(48, 9);
+            this.labelX14.Name = "labelX14";
+            this.labelX14.Size = new System.Drawing.Size(127, 21);
+            this.labelX14.TabIndex = 0;
+            this.labelX14.Text = "學業成績計算方式：";
+            // 
+            // groupPanel21
+            // 
+            this.groupPanel21.BackColor = System.Drawing.Color.Transparent;
+            this.groupPanel21.CanvasColor = System.Drawing.SystemColors.Control;
+            this.groupPanel21.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel21.Controls.Add(this.groupPanel22);
+            this.groupPanel21.Controls.Add(this.groupPanel5);
+            this.groupPanel21.Controls.Add(this.groupPanel16);
+            this.groupPanel21.Controls.Add(this.groupPanel13);
+            this.groupPanel21.Location = new System.Drawing.Point(167, 152);
+            this.groupPanel21.Name = "groupPanel21";
+            this.groupPanel21.Size = new System.Drawing.Size(644, 549);
+            // 
+            // 
+            // 
+            this.groupPanel21.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.groupPanel21.Style.BackColorGradientAngle = 90;
+            this.groupPanel21.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.groupPanel21.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel21.Style.BorderBottomWidth = 1;
+            this.groupPanel21.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.groupPanel21.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel21.Style.BorderLeftWidth = 1;
+            this.groupPanel21.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel21.Style.BorderRightWidth = 1;
+            this.groupPanel21.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel21.Style.BorderTopWidth = 1;
+            this.groupPanel21.Style.Class = "";
+            this.groupPanel21.Style.CornerDiameter = 4;
+            this.groupPanel21.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.groupPanel21.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.groupPanel21.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.groupPanel21.StyleMouseDown.Class = "";
+            this.groupPanel21.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.groupPanel21.StyleMouseOver.Class = "";
+            this.groupPanel21.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.groupPanel21.TabIndex = 2;
+            this.groupPanel21.Text = "畢業資格審查規則";
+            // 
+            // groupPanel22
+            // 
+            this.groupPanel22.BackColor = System.Drawing.Color.Transparent;
+            this.groupPanel22.CanvasColor = System.Drawing.SystemColors.Control;
+            this.groupPanel22.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel22.Controls.Add(this.labelX27);
+            this.groupPanel22.Controls.Add(this.checkBoxX9);
+            this.groupPanel22.Controls.Add(this.labelX24);
+            this.groupPanel22.Controls.Add(this.checkBoxX7);
+            this.groupPanel22.Controls.Add(this.groupPanel25);
+            this.groupPanel22.DrawTitleBox = false;
+            this.groupPanel22.Location = new System.Drawing.Point(15, 238);
+            this.groupPanel22.Name = "groupPanel22";
+            this.groupPanel22.Size = new System.Drawing.Size(608, 82);
+            // 
+            // 
+            // 
+            this.groupPanel22.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.groupPanel22.Style.BackColorGradientAngle = 90;
+            this.groupPanel22.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.groupPanel22.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel22.Style.BorderBottomWidth = 1;
+            this.groupPanel22.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.groupPanel22.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel22.Style.BorderLeftWidth = 1;
+            this.groupPanel22.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel22.Style.BorderRightWidth = 1;
+            this.groupPanel22.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel22.Style.BorderTopWidth = 1;
+            this.groupPanel22.Style.Class = "";
+            this.groupPanel22.Style.CornerDiameter = 4;
+            this.groupPanel22.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.groupPanel22.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.groupPanel22.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.groupPanel22.StyleMouseDown.Class = "";
+            this.groupPanel22.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.groupPanel22.StyleMouseOver.Class = "";
+            this.groupPanel22.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.groupPanel22.TabIndex = 3;
+            this.groupPanel22.Text = "其他成績判斷規則";
+            // 
+            // labelX27
+            // 
+            this.labelX27.AutoSize = true;
+            this.labelX27.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX27.BackgroundStyle.Class = "";
+            this.labelX27.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX27.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.labelX27.Location = new System.Drawing.Point(54, 30);
+            this.labelX27.Name = "labelX27";
+            this.labelX27.Size = new System.Drawing.Size(101, 21);
+            this.labelX27.TabIndex = 6;
+            this.labelX27.Text = "修習科目判斷：";
+            // 
+            // checkBoxX9
+            // 
+            this.checkBoxX9.AutoSize = true;
+            // 
+            // 
+            // 
+            this.checkBoxX9.BackgroundStyle.Class = "";
+            this.checkBoxX9.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX9.Location = new System.Drawing.Point(159, 30);
+            this.checkBoxX9.Name = "checkBoxX9";
+            this.checkBoxX9.Size = new System.Drawing.Size(241, 21);
+            this.checkBoxX9.TabIndex = 5;
+            this.checkBoxX9.Text = "必需修滿課程規劃表中所列必修課程";
+            // 
+            // labelX24
+            // 
+            this.labelX24.AutoSize = true;
+            this.labelX24.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX24.BackgroundStyle.Class = "";
+            this.labelX24.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX24.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.labelX24.Location = new System.Drawing.Point(28, 3);
+            this.labelX24.Name = "labelX24";
+            this.labelX24.Size = new System.Drawing.Size(127, 21);
+            this.labelX24.TabIndex = 6;
+            this.labelX24.Text = "學年學業成績判斷：";
+            // 
+            // checkBoxX7
+            // 
+            this.checkBoxX7.AutoSize = true;
+            // 
+            // 
+            // 
+            this.checkBoxX7.BackgroundStyle.Class = "";
+            this.checkBoxX7.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX7.Location = new System.Drawing.Point(159, 3);
+            this.checkBoxX7.Name = "checkBoxX7";
+            this.checkBoxX7.Size = new System.Drawing.Size(214, 21);
+            this.checkBoxX7.TabIndex = 5;
+            this.checkBoxX7.Text = "各學年學年學業分項成績皆及格";
+            // 
+            // groupPanel25
+            // 
+            this.groupPanel25.BackColor = System.Drawing.Color.Transparent;
+            this.groupPanel25.CanvasColor = System.Drawing.SystemColors.Control;
+            this.groupPanel25.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel25.Controls.Add(this.radioButton28);
+            this.groupPanel25.Controls.Add(this.radioButton33);
+            this.groupPanel25.Controls.Add(this.labelX28);
+            this.groupPanel25.Location = new System.Drawing.Point(175, 524);
+            this.groupPanel25.Name = "groupPanel25";
+            this.groupPanel25.Size = new System.Drawing.Size(644, 61);
+            // 
+            // 
+            // 
+            this.groupPanel25.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.groupPanel25.Style.BackColorGradientAngle = 90;
+            this.groupPanel25.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.groupPanel25.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel25.Style.BorderBottomWidth = 1;
+            this.groupPanel25.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.groupPanel25.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel25.Style.BorderLeftWidth = 1;
+            this.groupPanel25.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel25.Style.BorderRightWidth = 1;
+            this.groupPanel25.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel25.Style.BorderTopWidth = 1;
+            this.groupPanel25.Style.Class = "";
+            this.groupPanel25.Style.CornerDiameter = 4;
+            this.groupPanel25.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.groupPanel25.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.groupPanel25.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.groupPanel25.StyleMouseDown.Class = "";
+            this.groupPanel25.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.groupPanel25.StyleMouseOver.Class = "";
+            this.groupPanel25.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.groupPanel25.TabIndex = 2;
+            this.groupPanel25.Text = "畢業成績計算規則";
+            // 
+            // radioButton28
+            // 
+            this.radioButton28.AutoSize = true;
+            this.radioButton28.BackColor = System.Drawing.Color.Transparent;
+            this.radioButton28.Checked = true;
+            this.radioButton28.Location = new System.Drawing.Point(289, 6);
+            this.radioButton28.Name = "radioButton28";
+            this.radioButton28.Size = new System.Drawing.Size(130, 21);
+            this.radioButton28.TabIndex = 1;
+            this.radioButton28.TabStop = true;
+            this.radioButton28.Text = "學期分項成績平均";
+            this.radioButton28.UseVisualStyleBackColor = false;
+            // 
+            // radioButton33
+            // 
+            this.radioButton33.AutoSize = true;
+            this.radioButton33.BackColor = System.Drawing.Color.Transparent;
+            this.radioButton33.Location = new System.Drawing.Point(151, 6);
+            this.radioButton33.Name = "radioButton33";
+            this.radioButton33.Size = new System.Drawing.Size(130, 21);
+            this.radioButton33.TabIndex = 0;
+            this.radioButton33.Text = "學期科目成績加權";
+            this.radioButton33.UseVisualStyleBackColor = false;
+            // 
+            // labelX28
+            // 
+            this.labelX28.AutoSize = true;
+            this.labelX28.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX28.BackgroundStyle.Class = "";
+            this.labelX28.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX28.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.labelX28.Location = new System.Drawing.Point(29, 7);
+            this.labelX28.Name = "labelX28";
+            this.labelX28.Size = new System.Drawing.Size(114, 21);
+            this.labelX28.TabIndex = 0;
+            this.labelX28.Text = "學業成績計算方式";
+            // 
+            // groupPanel5
+            // 
+            this.groupPanel5.BackColor = System.Drawing.Color.Transparent;
+            this.groupPanel5.CanvasColor = System.Drawing.SystemColors.Control;
+            this.groupPanel5.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel5.Controls.Add(this.cmbProfessionalSubjectTable);
+            this.groupPanel5.Controls.Add(this.labelX26);
+            this.groupPanel5.Controls.Add(this.labelX13);
+            this.groupPanel5.Controls.Add(this.listView1);
+            this.groupPanel5.DrawTitleBox = false;
+            this.groupPanel5.Location = new System.Drawing.Point(15, 328);
+            this.groupPanel5.Name = "groupPanel5";
+            this.groupPanel5.Size = new System.Drawing.Size(608, 185);
+            // 
+            // 
+            // 
+            this.groupPanel5.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.groupPanel5.Style.BackColorGradientAngle = 90;
+            this.groupPanel5.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.groupPanel5.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel5.Style.BorderBottomWidth = 1;
+            this.groupPanel5.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.groupPanel5.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel5.Style.BorderLeftWidth = 1;
+            this.groupPanel5.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel5.Style.BorderRightWidth = 1;
+            this.groupPanel5.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel5.Style.BorderTopWidth = 1;
+            this.groupPanel5.Style.Class = "";
+            this.groupPanel5.Style.CornerDiameter = 4;
+            this.groupPanel5.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.groupPanel5.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.groupPanel5.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.groupPanel5.StyleMouseDown.Class = "";
+            this.groupPanel5.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.groupPanel5.StyleMouseOver.Class = "";
+            this.groupPanel5.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.groupPanel5.TabIndex = 2;
+            this.groupPanel5.Text = "自訂畢業應修及格科目表";
+            // 
+            // cmbProfessionalSubjectTable
+            // 
+            this.cmbProfessionalSubjectTable.DisplayMember = "Text";
+            this.cmbProfessionalSubjectTable.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbProfessionalSubjectTable.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbProfessionalSubjectTable.FormattingEnabled = true;
+            this.cmbProfessionalSubjectTable.ItemHeight = 19;
+            this.cmbProfessionalSubjectTable.Location = new System.Drawing.Point(182, 130);
+            this.cmbProfessionalSubjectTable.Name = "cmbProfessionalSubjectTable";
+            this.cmbProfessionalSubjectTable.Size = new System.Drawing.Size(121, 25);
+            this.cmbProfessionalSubjectTable.TabIndex = 5;
+            // 
+            // labelX26
+            // 
+            this.labelX26.AutoSize = true;
+            this.labelX26.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX26.BackgroundStyle.Class = "";
+            this.labelX26.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX26.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.labelX26.Location = new System.Drawing.Point(9, 132);
+            this.labelX26.Name = "labelX26";
+            this.labelX26.Size = new System.Drawing.Size(167, 21);
+            this.labelX26.TabIndex = 4;
+            this.labelX26.Text = "列印學籍表用專業科目表：";
+            // 
+            // labelX13
+            // 
+            this.labelX13.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX13.BackgroundStyle.Class = "";
+            this.labelX13.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX13.Location = new System.Drawing.Point(13, 3);
+            this.labelX13.Name = "labelX13";
+            this.labelX13.Size = new System.Drawing.Size(301, 21);
+            this.labelX13.TabIndex = 1;
+            this.labelX13.Text = "必需通過下列勾選科目表中的修習及取得學分規定";
+            // 
+            // listView1
+            // 
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            // 
+            // 
+            // 
+            this.listView1.Border.Class = "ListViewBorder";
+            this.listView1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.listView1.CheckBoxes = true;
+            this.listView1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.listView1.HideSelection = false;
+            this.listView1.Location = new System.Drawing.Point(11, 30);
+            this.listView1.Name = "listView1";
+            this.listView1.ShowGroups = false;
+            this.listView1.Size = new System.Drawing.Size(586, 122);
+            this.listView1.TabIndex = 0;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.List;
+            // 
+            // groupPanel16
+            // 
+            this.groupPanel16.BackColor = System.Drawing.Color.Transparent;
+            this.groupPanel16.CanvasColor = System.Drawing.SystemColors.Control;
+            this.groupPanel16.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel16.Controls.Add(this.labelX25);
+            this.groupPanel16.Controls.Add(this.groupPanel23);
+            this.groupPanel16.Controls.Add(this.checkBoxX6);
+            this.groupPanel16.DrawTitleBox = false;
+            this.groupPanel16.Location = new System.Drawing.Point(15, 169);
+            this.groupPanel16.Name = "groupPanel16";
+            this.groupPanel16.Size = new System.Drawing.Size(608, 61);
+            // 
+            // 
+            // 
+            this.groupPanel16.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.groupPanel16.Style.BackColorGradientAngle = 90;
+            this.groupPanel16.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.groupPanel16.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel16.Style.BorderBottomWidth = 1;
+            this.groupPanel16.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.groupPanel16.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel16.Style.BorderLeftWidth = 1;
+            this.groupPanel16.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel16.Style.BorderRightWidth = 1;
+            this.groupPanel16.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel16.Style.BorderTopWidth = 1;
+            this.groupPanel16.Style.Class = "";
+            this.groupPanel16.Style.CornerDiameter = 4;
+            this.groupPanel16.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.groupPanel16.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.groupPanel16.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.groupPanel16.StyleMouseDown.Class = "";
+            this.groupPanel16.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.groupPanel16.StyleMouseOver.Class = "";
+            this.groupPanel16.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.groupPanel16.TabIndex = 1;
+            this.groupPanel16.Text = "德行畢業判斷規則";
+            // 
+            // labelX25
+            // 
+            this.labelX25.AutoSize = true;
+            this.labelX25.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX25.BackgroundStyle.Class = "";
+            this.labelX25.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX25.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.labelX25.Location = new System.Drawing.Point(54, 7);
+            this.labelX25.Name = "labelX25";
+            this.labelX25.Size = new System.Drawing.Size(101, 21);
+            this.labelX25.TabIndex = 5;
+            this.labelX25.Text = "德行畢業判斷：";
+            // 
+            // groupPanel23
+            // 
+            this.groupPanel23.BackColor = System.Drawing.Color.Transparent;
+            this.groupPanel23.CanvasColor = System.Drawing.SystemColors.Control;
+            this.groupPanel23.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel23.Controls.Add(this.radioButton17);
+            this.groupPanel23.Controls.Add(this.radioButton18);
+            this.groupPanel23.Controls.Add(this.labelX22);
+            this.groupPanel23.Location = new System.Drawing.Point(175, 524);
+            this.groupPanel23.Name = "groupPanel23";
+            this.groupPanel23.Size = new System.Drawing.Size(644, 61);
+            // 
+            // 
+            // 
+            this.groupPanel23.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.groupPanel23.Style.BackColorGradientAngle = 90;
+            this.groupPanel23.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.groupPanel23.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel23.Style.BorderBottomWidth = 1;
+            this.groupPanel23.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.groupPanel23.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel23.Style.BorderLeftWidth = 1;
+            this.groupPanel23.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel23.Style.BorderRightWidth = 1;
+            this.groupPanel23.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel23.Style.BorderTopWidth = 1;
+            this.groupPanel23.Style.Class = "";
+            this.groupPanel23.Style.CornerDiameter = 4;
+            this.groupPanel23.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.groupPanel23.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.groupPanel23.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.groupPanel23.StyleMouseDown.Class = "";
+            this.groupPanel23.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.groupPanel23.StyleMouseOver.Class = "";
+            this.groupPanel23.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.groupPanel23.TabIndex = 2;
+            this.groupPanel23.Text = "畢業成績計算規則";
+            // 
+            // radioButton17
+            // 
+            this.radioButton17.AutoSize = true;
+            this.radioButton17.BackColor = System.Drawing.Color.Transparent;
+            this.radioButton17.Checked = true;
+            this.radioButton17.Location = new System.Drawing.Point(289, 6);
+            this.radioButton17.Name = "radioButton17";
+            this.radioButton17.Size = new System.Drawing.Size(130, 21);
+            this.radioButton17.TabIndex = 1;
+            this.radioButton17.TabStop = true;
+            this.radioButton17.Text = "學期分項成績平均";
+            this.radioButton17.UseVisualStyleBackColor = false;
+            // 
+            // radioButton18
+            // 
+            this.radioButton18.AutoSize = true;
+            this.radioButton18.BackColor = System.Drawing.Color.Transparent;
+            this.radioButton18.Location = new System.Drawing.Point(151, 6);
+            this.radioButton18.Name = "radioButton18";
+            this.radioButton18.Size = new System.Drawing.Size(130, 21);
+            this.radioButton18.TabIndex = 0;
+            this.radioButton18.Text = "學期科目成績加權";
+            this.radioButton18.UseVisualStyleBackColor = false;
+            // 
+            // labelX22
+            // 
+            this.labelX22.AutoSize = true;
+            this.labelX22.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX22.BackgroundStyle.Class = "";
+            this.labelX22.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX22.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.labelX22.Location = new System.Drawing.Point(29, 7);
+            this.labelX22.Name = "labelX22";
+            this.labelX22.Size = new System.Drawing.Size(114, 21);
+            this.labelX22.TabIndex = 0;
+            this.labelX22.Text = "學業成績計算方式";
+            // 
+            // checkBoxX6
+            // 
+            this.checkBoxX6.AutoSize = true;
+            // 
+            // 
+            // 
+            this.checkBoxX6.BackgroundStyle.Class = "";
+            this.checkBoxX6.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX6.Location = new System.Drawing.Point(159, 7);
+            this.checkBoxX6.Name = "checkBoxX6";
+            this.checkBoxX6.Size = new System.Drawing.Size(147, 21);
+            this.checkBoxX6.TabIndex = 0;
+            this.checkBoxX6.Text = "功過相抵未滿三大過";
+            // 
+            // groupPanel13
+            // 
+            this.groupPanel13.BackColor = System.Drawing.Color.Transparent;
+            this.groupPanel13.CanvasColor = System.Drawing.SystemColors.Control;
+            this.groupPanel13.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel13.Controls.Add(this.checkBoxX20);
+            this.groupPanel13.Controls.Add(this.labelX29);
+            this.groupPanel13.Controls.Add(this.textBoxX2);
+            this.groupPanel13.Controls.Add(this.labelX12);
+            this.groupPanel13.Controls.Add(this.labelX17);
+            this.groupPanel13.Controls.Add(this.labelX11);
+            this.groupPanel13.Controls.Add(this.labelX18);
+            this.groupPanel13.Controls.Add(this.labelX16);
+            this.groupPanel13.Controls.Add(this.labelX10);
+            this.groupPanel13.Controls.Add(this.textBoxX1);
+            this.groupPanel13.Controls.Add(this.textBoxX11);
+            this.groupPanel13.Controls.Add(this.textBoxX8);
+            this.groupPanel13.Controls.Add(this.textBoxX10);
+            this.groupPanel13.Controls.Add(this.textBoxX6);
+            this.groupPanel13.Controls.Add(this.textBoxX7);
+            this.groupPanel13.DrawTitleBox = false;
+            this.groupPanel13.Location = new System.Drawing.Point(15, 6);
+            this.groupPanel13.Name = "groupPanel13";
+            this.groupPanel13.Size = new System.Drawing.Size(608, 157);
+            // 
+            // 
+            // 
+            this.groupPanel13.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.groupPanel13.Style.BackColorGradientAngle = 90;
+            this.groupPanel13.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.groupPanel13.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel13.Style.BorderBottomWidth = 1;
+            this.groupPanel13.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.groupPanel13.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel13.Style.BorderLeftWidth = 1;
+            this.groupPanel13.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel13.Style.BorderRightWidth = 1;
+            this.groupPanel13.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel13.Style.BorderTopWidth = 1;
+            this.groupPanel13.Style.Class = "";
+            this.groupPanel13.Style.CornerDiameter = 4;
+            this.groupPanel13.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.groupPanel13.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.groupPanel13.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.groupPanel13.StyleMouseDown.Class = "";
+            this.groupPanel13.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.groupPanel13.StyleMouseOver.Class = "";
+            this.groupPanel13.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.groupPanel13.TabIndex = 0;
+            this.groupPanel13.Text = "畢業學分數";
+            // 
+            // checkBoxX20
+            // 
+            this.checkBoxX20.AutoSize = true;
+            // 
+            // 
+            // 
+            this.checkBoxX20.BackgroundStyle.Class = "";
+            this.checkBoxX20.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX20.Checked = true;
+            this.checkBoxX20.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxX20.CheckValue = "Y";
+            this.checkBoxX20.Location = new System.Drawing.Point(290, 93);
+            this.checkBoxX20.Name = "checkBoxX20";
+            this.checkBoxX20.Size = new System.Drawing.Size(174, 21);
+            this.checkBoxX20.TabIndex = 7;
+            this.checkBoxX20.Text = "同一科目級別不重複採計";
+            // 
+            // labelX29
+            // 
+            this.labelX29.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX29.BackgroundStyle.Class = "";
+            this.labelX29.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX29.Location = new System.Drawing.Point(29, 93);
+            this.labelX29.Name = "labelX29";
+            this.labelX29.Size = new System.Drawing.Size(127, 21);
+            this.labelX29.TabIndex = 5;
+            this.labelX29.Text = "專業及實習總學分數";
+            // 
+            // textBoxX2
+            // 
+            // 
+            // 
+            // 
+            this.textBoxX2.Border.Class = "TextBoxBorder";
+            this.textBoxX2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX2.Location = new System.Drawing.Point(159, 90);
+            this.textBoxX2.Name = "textBoxX2";
+            this.textBoxX2.Size = new System.Drawing.Size(63, 25);
+            this.textBoxX2.TabIndex = 6;
+            this.textBoxX2.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
+            // 
+            // labelX12
+            // 
+            this.labelX12.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX12.BackgroundStyle.Class = "";
+            this.labelX12.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX12.Location = new System.Drawing.Point(29, 64);
+            this.labelX12.Name = "labelX12";
+            this.labelX12.Size = new System.Drawing.Size(74, 21);
+            this.labelX12.TabIndex = 3;
+            this.labelX12.Text = "實習學分數";
+            // 
+            // labelX17
+            // 
+            this.labelX17.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX17.BackgroundStyle.Class = "";
+            this.labelX17.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX17.Location = new System.Drawing.Point(290, 64);
+            this.labelX17.Name = "labelX17";
+            this.labelX17.Size = new System.Drawing.Size(101, 21);
+            this.labelX17.TabIndex = 3;
+            this.labelX17.Text = "校訂必修學分數";
+            // 
+            // labelX11
+            // 
+            this.labelX11.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX11.BackgroundStyle.Class = "";
+            this.labelX11.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX11.Location = new System.Drawing.Point(290, 35);
+            this.labelX11.Name = "labelX11";
+            this.labelX11.Size = new System.Drawing.Size(101, 21);
+            this.labelX11.TabIndex = 3;
+            this.labelX11.Text = "部訂必修學分數";
+            // 
+            // labelX18
+            // 
+            this.labelX18.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX18.BackgroundStyle.Class = "";
+            this.labelX18.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX18.Location = new System.Drawing.Point(290, 6);
+            this.labelX18.Name = "labelX18";
+            this.labelX18.Size = new System.Drawing.Size(74, 21);
+            this.labelX18.TabIndex = 3;
+            this.labelX18.Text = "必修學分數";
+            // 
+            // labelX16
+            // 
+            this.labelX16.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX16.BackgroundStyle.Class = "";
+            this.labelX16.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX16.Location = new System.Drawing.Point(29, 35);
+            this.labelX16.Name = "labelX16";
+            this.labelX16.Size = new System.Drawing.Size(74, 21);
+            this.labelX16.TabIndex = 3;
+            this.labelX16.Text = "選修學分數";
+            // 
+            // labelX10
+            // 
+            this.labelX10.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX10.BackgroundStyle.Class = "";
+            this.labelX10.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX10.Location = new System.Drawing.Point(29, 6);
+            this.labelX10.Name = "labelX10";
+            this.labelX10.Size = new System.Drawing.Size(60, 21);
+            this.labelX10.TabIndex = 3;
+            this.labelX10.Text = "總學分數";
+            // 
+            // textBoxX1
+            // 
+            // 
+            // 
+            // 
+            this.textBoxX1.Border.Class = "TextBoxBorder";
+            this.textBoxX1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX1.Location = new System.Drawing.Point(420, 3);
+            this.textBoxX1.Name = "textBoxX1";
+            this.textBoxX1.Size = new System.Drawing.Size(63, 25);
+            this.textBoxX1.TabIndex = 1;
+            this.textBoxX1.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
+            // 
+            // textBoxX11
+            // 
+            // 
+            // 
+            // 
+            this.textBoxX11.Border.Class = "TextBoxBorder";
+            this.textBoxX11.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX11.Location = new System.Drawing.Point(159, 61);
+            this.textBoxX11.Name = "textBoxX11";
+            this.textBoxX11.Size = new System.Drawing.Size(63, 25);
+            this.textBoxX11.TabIndex = 4;
+            this.textBoxX11.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
+            // 
+            // textBoxX8
+            // 
+            // 
+            // 
+            // 
+            this.textBoxX8.Border.Class = "TextBoxBorder";
+            this.textBoxX8.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX8.Location = new System.Drawing.Point(159, 32);
+            this.textBoxX8.Name = "textBoxX8";
+            this.textBoxX8.Size = new System.Drawing.Size(63, 25);
+            this.textBoxX8.TabIndex = 1;
+            this.textBoxX8.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
+            // 
+            // textBoxX10
+            // 
+            // 
+            // 
+            // 
+            this.textBoxX10.Border.Class = "TextBoxBorder";
+            this.textBoxX10.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX10.Location = new System.Drawing.Point(420, 61);
+            this.textBoxX10.Name = "textBoxX10";
+            this.textBoxX10.Size = new System.Drawing.Size(63, 25);
+            this.textBoxX10.TabIndex = 3;
+            this.textBoxX10.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
+            // 
+            // textBoxX6
+            // 
+            // 
+            // 
+            // 
+            this.textBoxX6.Border.Class = "TextBoxBorder";
+            this.textBoxX6.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX6.Location = new System.Drawing.Point(159, 3);
+            this.textBoxX6.Name = "textBoxX6";
+            this.textBoxX6.Size = new System.Drawing.Size(63, 25);
+            this.textBoxX6.TabIndex = 0;
+            this.textBoxX6.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
+            // 
+            // textBoxX7
+            // 
+            // 
+            // 
+            // 
+            this.textBoxX7.Border.Class = "TextBoxBorder";
+            this.textBoxX7.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX7.Location = new System.Drawing.Point(420, 32);
+            this.textBoxX7.Name = "textBoxX7";
+            this.textBoxX7.Size = new System.Drawing.Size(63, 25);
+            this.textBoxX7.TabIndex = 2;
+            this.textBoxX7.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
+            // 
+            // tabItem6
+            // 
+            this.tabItem6.AttachedControl = this.tabControlPanel6;
+            this.tabItem6.Name = "tabItem6";
+            this.tabItem6.Text = "畢業成績計算規則";
+            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -3137,19 +3169,19 @@
             this.toolStripMenuItem2});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.ShowImageMargin = false;
-            this.contextMenuStrip1.Size = new System.Drawing.Size(74, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(76, 48);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(73, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(75, 22);
             this.toolStripMenuItem1.Text = "插入";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(73, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(75, 22);
             this.toolStripMenuItem2.Text = "刪除";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
@@ -3216,23 +3248,6 @@
             this.dataGridViewTextBoxColumn9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.dataGridViewTextBoxColumn9.Width = 63;
             // 
-            // checkBoxX20
-            // 
-            this.checkBoxX20.AutoSize = true;
-            // 
-            // 
-            // 
-            this.checkBoxX20.BackgroundStyle.Class = "";
-            this.checkBoxX20.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.checkBoxX20.Checked = true;
-            this.checkBoxX20.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxX20.CheckValue = "Y";
-            this.checkBoxX20.Location = new System.Drawing.Point(290, 93);
-            this.checkBoxX20.Name = "checkBoxX20";
-            this.checkBoxX20.Size = new System.Drawing.Size(174, 21);
-            this.checkBoxX20.TabIndex = 7;
-            this.checkBoxX20.Text = "同一科目級別不重複採計";
-            // 
             // ScoreCalcRuleEditor
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -3245,27 +3260,6 @@
             this.panelEx1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).EndInit();
             this.tabControl1.ResumeLayout(false);
-            this.tabControlPanel6.ResumeLayout(false);
-            this.cardPanelEx3.ResumeLayout(false);
-            this.groupPanel15.ResumeLayout(false);
-            this.groupPanel15.PerformLayout();
-            this.groupPanel12.ResumeLayout(false);
-            this.groupPanel12.PerformLayout();
-            this.groupPanel24.ResumeLayout(false);
-            this.groupPanel24.PerformLayout();
-            this.groupPanel21.ResumeLayout(false);
-            this.groupPanel22.ResumeLayout(false);
-            this.groupPanel22.PerformLayout();
-            this.groupPanel25.ResumeLayout(false);
-            this.groupPanel25.PerformLayout();
-            this.groupPanel5.ResumeLayout(false);
-            this.groupPanel5.PerformLayout();
-            this.groupPanel16.ResumeLayout(false);
-            this.groupPanel16.PerformLayout();
-            this.groupPanel23.ResumeLayout(false);
-            this.groupPanel23.PerformLayout();
-            this.groupPanel13.ResumeLayout(false);
-            this.groupPanel13.PerformLayout();
             this.tabControlPanel4.ResumeLayout(false);
             this.cardPanelEx1.ResumeLayout(false);
             this.groupPanel1.ResumeLayout(false);
@@ -3312,6 +3306,27 @@
             this.groupPanel18.ResumeLayout(false);
             this.groupPanel18.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
+            this.tabControlPanel6.ResumeLayout(false);
+            this.cardPanelEx3.ResumeLayout(false);
+            this.groupPanel15.ResumeLayout(false);
+            this.groupPanel15.PerformLayout();
+            this.groupPanel12.ResumeLayout(false);
+            this.groupPanel12.PerformLayout();
+            this.groupPanel24.ResumeLayout(false);
+            this.groupPanel24.PerformLayout();
+            this.groupPanel21.ResumeLayout(false);
+            this.groupPanel22.ResumeLayout(false);
+            this.groupPanel22.PerformLayout();
+            this.groupPanel25.ResumeLayout(false);
+            this.groupPanel25.PerformLayout();
+            this.groupPanel5.ResumeLayout(false);
+            this.groupPanel5.PerformLayout();
+            this.groupPanel16.ResumeLayout(false);
+            this.groupPanel16.PerformLayout();
+            this.groupPanel23.ResumeLayout(false);
+            this.groupPanel23.PerformLayout();
+            this.groupPanel13.ResumeLayout(false);
+            this.groupPanel13.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 

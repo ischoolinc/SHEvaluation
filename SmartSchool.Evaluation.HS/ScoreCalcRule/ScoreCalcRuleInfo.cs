@@ -91,10 +91,12 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
                     calcEntry.Add(entry, true);
                 else
                     calcEntry.Add(entry, false);
-                if (scoreCalcRule.SelectSingleNode("分項成績計算項目") == null || scoreCalcRule.SelectSingleNode("分項成績計算項目/" + entry) == null || ((XmlElement)scoreCalcRule.SelectSingleNode("分項成績計算項目/" + entry)).GetAttribute("併入學期學業成績") != "True")
-                    calcInStudy.Add(entry, false);
-                else
+
+                // 2014/3/20，修改當沒有勾選 預設併入學期學業成績 ChenCT
+                if (scoreCalcRule.SelectSingleNode("分項成績計算項目") == null || scoreCalcRule.SelectSingleNode("分項成績計算項目/" + entry) == null || ((XmlElement)scoreCalcRule.SelectSingleNode("分項成績計算項目/" + entry)).GetAttribute("併入學期學業成績") == "True")
                     calcInStudy.Add(entry, true);
+                else
+                    calcInStudy.Add(entry, false);
             }
             #endregion
             #region 採計成績欄位

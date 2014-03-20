@@ -204,6 +204,14 @@ namespace SmartSchool.Evaluation.Configuration
 
             #endregion
 
+            #region 新增 分項成績計算項目，併入學期學業成績 預設都勾起, 2014/3/20,ChenCT
+            checkBoxX10.Checked = true; // 專業科目
+            checkBoxX15.Checked = true; // 實習科目
+            checkBoxX8.Checked = true; // 體育
+            checkBoxX13.Checked = true; // 健康與護理
+            checkBoxX11.Checked = true; // 國防通識
+            #endregion
+
             numericUpDown5.Value = 4;
             numericUpDown1.Value = numericUpDown2.Value = numericUpDown3.Value = numericUpDown4.Value = 2;
             comboBoxEx2.SelectedIndex = 1;

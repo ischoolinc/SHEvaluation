@@ -1719,8 +1719,8 @@ namespace SmartSchool.Evaluation
                 int? gradeyear = null;
                 //及格標準<年及,及格標準>
                 Dictionary<int, decimal> applyLimit = new Dictionary<int, decimal>();
-                //0:不登錄，1:60分登錄，2:及格標準登錄
-                int regWay = 0;
+                //0:不登錄，1:60分登錄，2:及格標準登錄，3.不使用學年調整成績
+                int regWay = 3;  // 2014/3/26 ChenCT，因使用者需求調整預設不使用學年調整成績
                 #region 取得成績年級跟計算規則
                 #region 處理計算規則
                 //取得某位學生的成績計算規則

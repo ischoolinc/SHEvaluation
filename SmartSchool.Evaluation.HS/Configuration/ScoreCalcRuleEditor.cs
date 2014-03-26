@@ -212,6 +212,10 @@ namespace SmartSchool.Evaluation.Configuration
             checkBoxX11.Checked = true; // 國防通識
             #endregion
 
+            #region 修改 學年調整成績預設值，不使用學年調整成績(不登錄成績、不修改取得學分),因使用者需求調整 2014/3/26,ChenCT
+            radioButton27.Checked = true; // 不使用學年調整成績(不登錄成績、不修改取得學分)
+            #endregion
+
             numericUpDown5.Value = 4;
             numericUpDown1.Value = numericUpDown2.Value = numericUpDown3.Value = numericUpDown4.Value = 2;
             comboBoxEx2.SelectedIndex = 1;

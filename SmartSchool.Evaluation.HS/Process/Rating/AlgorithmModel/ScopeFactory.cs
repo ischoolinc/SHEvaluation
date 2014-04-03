@@ -34,7 +34,7 @@ namespace SmartSchool.Evaluation.Process.Rating
             if (scopeType == ScopeType.Class)
                 key = eachStudent.RefClassID;
             else if (scopeType == ScopeType.Dept)
-                key = eachStudent.RefDeptID;
+                key = eachStudent.RefDeptID+"_"+eachStudent.GradeYear;
             else if (scopeType == ScopeType.GradeYear)
                 key = eachStudent.GradeYear;
             else

@@ -10,6 +10,7 @@ using SmartSchool.Customization.Data;
 using System.Threading;
 using SmartSchool.Customization.Data.StudentExtension;
 using FISCA.Data;
+using FISCA.Permission;
 
 namespace 定期評量成績單
 {
@@ -20,8 +21,15 @@ namespace 定期評量成績單
         {
             var btn = K12.Presentation.NLDPanels.Student.RibbonBarItems["資料統計"]["報表"]["成績相關報表"]["定期評量成績單(測試版)"];
             btn.Enable = false;
-            K12.Presentation.NLDPanels.Student.SelectedSourceChanged += delegate { btn.Enable = K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0; };
+            K12.Presentation.NLDPanels.Student.SelectedSourceChanged += delegate 
+            {
+                btn.Enable = Permissions.定期評量成績單權限 && (K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0); 
+            };
             btn.Click += new EventHandler(Program_Click);
+
+            //權限設定
+            Catalog permission = RoleAclSource.Instance["學生"]["功能按鈕"];
+            permission.Add(new RibbonFeature(Permissions.定期評量成績單, "定期評量成績單(測試版)"));
         }
 
         // 學生清單暫存

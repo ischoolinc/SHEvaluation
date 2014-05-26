@@ -11,6 +11,8 @@ using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
 using SmartSchool.Customization.PlugIn;
 using SmartSchool.Customization.PlugIn.Report;
+using FISCA.Permission;
+using FISCA.Presentation;
 
 class SchoolYearScoreReportNew
 {
@@ -33,6 +35,19 @@ class SchoolYearScoreReportNew
         this.buttonClass.OnClick += new EventHandler(this.buttonClass_OnClick);
         StudentReport.AddReport(this.buttonStudent);
         ClassReport.AddReport(this.buttonClass);
+
+        string Student = "SHEvaluation.SchoolYearScoreReportNew.Student";
+        string Class = "SHEvaluation.SchoolYearScoreReportNew.Class";
+        RibbonBarItem item1 = FISCA.Presentation.MotherForm.RibbonBarItems["學生", "資料統計"];
+        item1["報表"][reportPath][reportName].Enable = FISCA.Permission.UserAcl.Current[Student].Executable;
+        RibbonBarItem item2 = FISCA.Presentation.MotherForm.RibbonBarItems["班級", "資料統計"];
+        item2["報表"][reportPath][reportName].Enable = FISCA.Permission.UserAcl.Current[Class].Executable;
+
+        //權限設定
+        Catalog permission1 = RoleAclSource.Instance["學生"]["報表"];
+        permission1.Add(new RibbonFeature(Student, reportName));
+        Catalog permission2 = RoleAclSource.Instance["班級"]["報表"];
+        permission2.Add(new RibbonFeature(Class, reportName));
     }
 
     private void bkw_DoWork(object sender, DoWorkEventArgs e)

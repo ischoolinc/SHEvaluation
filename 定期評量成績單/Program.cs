@@ -9,6 +9,8 @@ using System.IO;
 using SmartSchool.Customization.Data;
 using System.Threading;
 using SmartSchool.Customization.Data.StudentExtension;
+using FISCA.Data;
+using FISCA.Permission;
 
 namespace 定期評量成績單
 {
@@ -19,8 +21,15 @@ namespace 定期評量成績單
         {
             var btn = K12.Presentation.NLDPanels.Student.RibbonBarItems["資料統計"]["報表"]["成績相關報表"]["定期評量成績單(測試版)"];
             btn.Enable = false;
-            K12.Presentation.NLDPanels.Student.SelectedSourceChanged += delegate { btn.Enable = K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0; };
+            K12.Presentation.NLDPanels.Student.SelectedSourceChanged += delegate 
+            {
+                btn.Enable = Permissions.定期評量成績單權限 && (K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0); 
+            };
             btn.Click += new EventHandler(Program_Click);
+
+            //權限設定
+            Catalog permission = RoleAclSource.Instance["學生"]["功能按鈕"];
+            permission.Add(new RibbonFeature(Permissions.定期評量成績單, "定期評量成績單(測試版)"));
         }
 
         // 學生清單暫存
@@ -107,6 +116,7 @@ namespace 定期評量成績單
                 table.Columns.Add("母親");
                 table.Columns.Add("科別名稱");
                 table.Columns.Add("試別");
+                table.Columns.Add("家長代碼");
                 
                 table.Columns.Add("收件人");
                 table.Columns.Add("學年度");
@@ -457,6 +467,22 @@ namespace 定期評量成績單
                 };
                 bkw.DoWork += delegate(object sender, System.ComponentModel.DoWorkEventArgs e)
                 {
+                    //取得家長代碼
+                    QueryHelper q = new QueryHelper();
+                    string ids = string.Join("','", selectedStudents);
+
+                    Dictionary<string, string> parentCode = new Dictionary<string, string>();
+
+                   DataTable response = q.Select("SELECT id,parent_code FROM student WHERE id IN ('" + ids + "')");
+                   foreach (DataRow row in response.Rows)
+                   {
+                       string id = row["id"].ToString();
+                       string code = row["parent_code"].ToString();
+
+                       if(!parentCode.ContainsKey(id))
+                           parentCode.Add(id,code);
+                   }
+
                     var studentRecords = accessHelper.StudentHelper.GetStudents(selectedStudents);
                     Dictionary<string, Dictionary<string, Dictionary<string, ExamScoreInfo>>> studentExamSores = new Dictionary<string, Dictionary<string, Dictionary<string, ExamScoreInfo>>>();
                     Dictionary<string, Dictionary<string, ExamScoreInfo>> studentRefExamSores = new Dictionary<string, Dictionary<string, ExamScoreInfo>>();
@@ -1212,7 +1238,7 @@ namespace 定期評量成績單
                             string studentID = stuRec.StudentID;
                             string gradeYear = (stuRec.RefClass == null ? "" : "" + stuRec.RefClass.GradeYear);
                             DataRow row = table.NewRow();
-                            
+
                             // 這區段是新增功能資料
                             // 畫面上開始結束日期
                             row["開始日期"] = form.GetBeginDate().ToShortDateString();
@@ -1376,7 +1402,6 @@ namespace 定期評量成績單
                             row["收件人"] = stuRec.ParentInfo.CustodianName != "" ? stuRec.ParentInfo.CustodianName :
                                                 (stuRec.ParentInfo.FatherName != "" ? stuRec.ParentInfo.FatherName :
                                                     (stuRec.ParentInfo.FatherName != "" ? stuRec.ParentInfo.MotherName : stuRec.StudentName));
-
                             //«通訊地址»«通訊地址郵遞區號»«通訊地址內容»
                             //«戶籍地址»«戶籍地址郵遞區號»«戶籍地址內容»
                             //«監護人»«父親»«母親»«科別名稱»
@@ -1391,6 +1416,7 @@ namespace 定期評量成績單
                             row["母親"] = stuRec.ParentInfo.MotherName;
                             row["科別名稱"] = stuRec.Department;
                             row["試別"] = conf.ExamRecord.Name;
+                            row["家長代碼"] = parentCode.ContainsKey(studentID) ? parentCode[studentID] : "";
 
                             row["學年度"] = conf.SchoolYear;
                             row["學期"] = conf.Semester;

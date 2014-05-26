@@ -24,6 +24,7 @@ using SmartSchool.StudentRelated.RibbonBars.Export;
 using SmartSchool.StudentRelated.RibbonBars.Import;
 using SmartSchool.API.PlugIn.Export;
 using SmartSchool.API.PlugIn.Import;
+using FISCA.Permission;
 
 namespace SmartSchool.Evaluation
 {
@@ -40,7 +41,7 @@ namespace SmartSchool.Evaluation
 
             RibbonBarButton button = MotherForm.RibbonBarItems["教務作業", "基本設定"]["設定"];
             button.Enable = CurrentUser.Acl["Button0830"].Executable;
-            button["成績計算規則"].Click += delegate 
+            button["成績計算規則"].Click += delegate
             {
                 // new ConfigurationForm(new ScoreCalcConfiguration()).ShowDialog();
                 (new FrmScoreCalcConfiguration()).ShowDialog();
@@ -231,7 +232,20 @@ namespace SmartSchool.Evaluation
             new Reports.CreditStatistic.CreditStatistic(); //學分統計表
             new Button1();//成績相關報表/建議重修名單
             new SmartSchool.Evaluation.Process.CreateCourceForClass();
-            SmartSchool.Customization.PlugIn.Report.StudentReport.AddReport(new SmartSchool.Evaluation.Reports.Retake.RetakeWithCourseList());
+            //SmartSchool.Customization.PlugIn.Report.StudentReport.AddReport(new SmartSchool.Evaluation.Reports.Retake.RetakeWithCourseList());
+
+            //隨堂重修課程表
+            string 隨堂重修課程表 = "SmartSchool.Evaluation.Reports.Retake.RetakeWithCourseList";
+            FISCA.Presentation.RibbonBarItem item1 = FISCA.Presentation.MotherForm.RibbonBarItems["學生", "資料統計"];
+            item1["報表"]["重修資料"]["隨堂重修課程表"].Enable = FISCA.Permission.UserAcl.Current[隨堂重修課程表].Executable;
+            item1["報表"]["重修資料"]["隨堂重修課程表"].Click += delegate
+            {
+                SmartSchool.Evaluation.Reports.Retake.RetakeWithCourseList retake = new SmartSchool.Evaluation.Reports.Retake.RetakeWithCourseList();
+                retake.Click();
+            };
+            //權限設定
+            Catalog permission = RoleAclSource.Instance["學生"]["功能按鈕"];
+            permission.Add(new RibbonFeature(隨堂重修課程表, "隨堂重修課程表"));
 
             //載入毛毛蟲
             //SmartSchool.Customization.PlugIn.ExtendedContent.ExtendStudentContent.AddItem(new SemesterScorePalmerworm());
@@ -247,7 +261,7 @@ namespace SmartSchool.Evaluation
 
             foreach (Type type in _type_list)
             {
-                if (!Attribute.IsDefined(type, typeof(FeatureCodeAttribute)) || CurrentUser.Acl[type].Viewable)
+                if (!Attribute.IsDefined(type, typeof(SmartSchool.AccessControl.FeatureCodeAttribute)) || CurrentUser.Acl[type].Viewable)
                 {
                     try
                     {

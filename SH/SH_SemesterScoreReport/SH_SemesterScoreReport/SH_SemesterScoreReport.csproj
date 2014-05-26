@@ -59,6 +59,10 @@
       <HintPath>library\FISCA.DSAUtil.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="FISCA.Permission">
+      <HintPath>library\FISCA.Permission.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="FISCA.Presentation, Version=1.1.0.16, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>library\FISCA.Presentation.dll</HintPath>
@@ -123,6 +127,7 @@
     <Compile Include="NewConfigure.designer.cs">
       <DependentUpon>NewConfigure.cs</DependentUpon>
     </Compile>
+    <Compile Include="Permissions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

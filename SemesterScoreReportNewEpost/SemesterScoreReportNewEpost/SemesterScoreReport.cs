@@ -486,8 +486,10 @@ namespace SemesterScoreReportNewEpost
             Global.dt.Columns.Add("體育");
             Global.dt.Columns.Add("國防通識");
             Global.dt.Columns.Add("成績名次");
-            Global.dt.Columns.Add("取得學分數");
-            Global.dt.Columns.Add("累計學分數");
+            Global.dt.Columns.Add("學期取得學分數");
+            //Global.dt.Columns.Add("累計學分數");
+            Global.dt.Columns.Add("累計取得必修學分");
+            Global.dt.Columns.Add("累計取得選修學分");
             Global.dt.Columns.Add("嘉獎");
             Global.dt.Columns.Add("小功");
             Global.dt.Columns.Add("大功");
@@ -662,6 +664,10 @@ namespace SemesterScoreReportNewEpost
                 int thisSemesterTotalCredit = 0;
                 int thisSchoolYearTotalCredit = 0;
                 int beforeSemesterTotalCredit = 0;
+                // 必修累計
+                int beforeSemesterTotalCreditR1 = 0;
+                // 選修累計
+                int beforeSemesterTotalCreditR2 = 0;
 
                 Dictionary<int, decimal> resitStandard = eachStudent.Fields["補考標準"] as Dictionary<int, decimal>;
 
@@ -704,10 +710,25 @@ namespace SemesterScoreReportNewEpost
                             thisSemesterTotalCredit += info.Credit;
 
                         if (info.SchoolYear < schoolyear)
+                        {
                             beforeSemesterTotalCredit += info.Credit;
+                            // 累計必選修學分數
+                            if (info.Require)
+                                beforeSemesterTotalCreditR1 += info.Credit;
+                            else
+                                beforeSemesterTotalCreditR2 += info.Credit;
+                        }
                         else if (info.SchoolYear == schoolyear && info.Semester <= semester)
+                        {
                             beforeSemesterTotalCredit += info.Credit;
 
+                            // 累計必選修學分數
+                            if (info.Require)
+                                beforeSemesterTotalCreditR1 += info.Credit;
+                            else
+                                beforeSemesterTotalCreditR2 += info.Credit;
+
+                        }
                         if (info.SchoolYear == schoolyear)
                             thisSchoolYearTotalCredit += info.Credit;
                     }
@@ -808,9 +829,16 @@ namespace SemesterScoreReportNewEpost
                 totalCredit.Add("學業成績名次", rating.GetPlace(schoolyear, semester));
                 row["成績名次"] = rating.GetPlace(schoolyear, semester);
                 totalCredit.Add("學期取得學分數", thisSemesterTotalCredit.ToString());
-                row["取得學分數"] = thisSemesterTotalCredit.ToString();
-                totalCredit.Add("累計取得學分數", beforeSemesterTotalCredit.ToString());
-                row["累計學分數"] = beforeSemesterTotalCredit.ToString();
+                row["學期取得學分數"] = thisSemesterTotalCredit.ToString();
+                totalCredit.Add("累計取得必修學分", beforeSemesterTotalCreditR1.ToString());
+                row["累計取得必修學分"] = beforeSemesterTotalCreditR1.ToString();
+                totalCredit.Add("累計取得選修學分", beforeSemesterTotalCreditR2.ToString());
+                row["累計取得選修學分"] = beforeSemesterTotalCreditR2.ToString();
+
+                //totalCredit.Add("累計取得學分數", beforeSemesterTotalCredit.ToString());
+                //row["累計學分數"] = beforeSemesterTotalCredit.ToString();
+
+
                 mergeKeyValue.Add("分項成績起始位置", new object[] { entryScore, totalCredit, over100 });
 
                 #endregion

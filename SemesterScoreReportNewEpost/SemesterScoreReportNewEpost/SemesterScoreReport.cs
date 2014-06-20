@@ -838,6 +838,16 @@ namespace SemesterScoreReportNewEpost
                 //totalCredit.Add("累計取得學分數", beforeSemesterTotalCredit.ToString());
                 //row["累計學分數"] = beforeSemesterTotalCredit.ToString();
 
+                if (!mergeKeyValue.ContainsKey("學期取得學分數"))
+                    mergeKeyValue.Add("學期取得學分數", thisSemesterTotalCredit.ToString());
+
+                if (!mergeKeyValue.ContainsKey("累計取得必修學分"))
+                    mergeKeyValue.Add("累計取得必修學分", beforeSemesterTotalCreditR1.ToString());
+
+                if (!mergeKeyValue.ContainsKey("累計取得選修學分"))
+                    mergeKeyValue.Add("累計取得選修學分", beforeSemesterTotalCreditR2.ToString());
+
+
 
                 mergeKeyValue.Add("分項成績起始位置", new object[] { entryScore, totalCredit, over100 });
 

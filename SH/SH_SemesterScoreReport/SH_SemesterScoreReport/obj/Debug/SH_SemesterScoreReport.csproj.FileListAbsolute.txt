@@ -9,13 +9,10 @@ D:\TFS2010\Research\chuntai\SH\SH_SemesterScoreReport\SH_SemesterScoreReport\obj
 D:\TFS2010\Research\chuntai\SH\SH_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\GenerateResource.write.1.tlog
 D:\TFS2010\Research\chuntai\SH\SH_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_SemesterScoreReport.dll
 D:\TFS2010\Research\chuntai\SH\SH_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_SemesterScoreReport.pdb
-D:\GitProjModules\ischoolDesktop\SHEvaluation\SH\SH_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\ResolveAssemblyReference.cache
 D:\GitProjModules\ischoolDesktop\SHEvaluation\SH\SH_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_SemesterScoreReport.CloneConfigure.resources
 D:\GitProjModules\ischoolDesktop\SHEvaluation\SH\SH_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_SemesterScoreReport.ConfigForm.resources
 D:\GitProjModules\ischoolDesktop\SHEvaluation\SH\SH_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_SemesterScoreReport.NewConfigure.resources
 D:\GitProjModules\ischoolDesktop\SHEvaluation\SH\SH_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_SemesterScoreReport.Properties.Resources.resources
-D:\GitProjModules\ischoolDesktop\SHEvaluation\SH\SH_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\GenerateResource.read.1.tlog
-D:\GitProjModules\ischoolDesktop\SHEvaluation\SH\SH_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\GenerateResource.write.1.tlog
 D:\GitProjModules\ischoolDesktop\SHEvaluation\SH\SH_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_SemesterScoreReport.pdb
 D:\GitProjModules\ischoolDesktop\SHEvaluation\SH\SH_SemesterScoreReport\SH_SemesterScoreReport\bin\Debug\SH_SemesterScoreReport.dll
 D:\GitProjModules\ischoolDesktop\SHEvaluation\SH\SH_SemesterScoreReport\SH_SemesterScoreReport\bin\Debug\SH_SemesterScoreReport.pdb
@@ -30,3 +27,4 @@ D:\GitHub2\高中成績模組\SHEvaluation\SH\SH_SemesterScoreReport\SH_Semester
 D:\GitHub2\高中成績模組\SHEvaluation\SH\SH_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_SemesterScoreReport.csprojResolveAssemblyReference.cache
 D:\GitHub2\高中成績模組\SHEvaluation\SH\SH_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_SemesterScoreReport.dll
 D:\GitHub2\高中成績模組\SHEvaluation\SH\SH_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_SemesterScoreReport.pdb
+D:\GitProjModules\ischoolDesktop\SHEvaluation\SH\SH_SemesterScoreReport\SH_SemesterScoreReport\obj\Debug\SH_SemesterScoreReport.csproj.GenerateResource.Cache

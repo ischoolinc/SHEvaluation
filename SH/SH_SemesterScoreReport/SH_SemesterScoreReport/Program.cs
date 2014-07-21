@@ -82,6 +82,11 @@ namespace SH_SemesterScoreReport
         static Dictionary<string, int> _studPassSumCreditDict1 = new Dictionary<string, int>();
         static Dictionary<string, int> _studPassSumCreditDictAll = new Dictionary<string, int>();
 
+        // 累計取得必修學分
+        static Dictionary<string, int> _studPassSumCreditDictC1 = new Dictionary<string, int>();
+        // 累計取得選修學分
+        static Dictionary<string, int> _studPassSumCreditDictC2 = new Dictionary<string, int>();
+
         static void Program_Click(object sender_, EventArgs e_)
         {
             AccessHelper helper = new AccessHelper();
@@ -135,6 +140,8 @@ namespace SH_SemesterScoreReport
                 table.Columns.Add("定期評量");
                 table.Columns.Add("本學期取得學分數");
                 table.Columns.Add("累計取得學分數");
+                table.Columns.Add("累計取得必修學分");
+                table.Columns.Add("累計取得選修學分");
                 table.Columns.Add("系統學年度");
                 table.Columns.Add("系統學期");
 
@@ -1465,6 +1472,8 @@ namespace SH_SemesterScoreReport
 
                         _studPassSumCreditDict1.Clear();
                         _studPassSumCreditDictAll.Clear();
+                        _studPassSumCreditDictC1.Clear();
+                        _studPassSumCreditDictC2.Clear();
 
                         progressCount = 0;
                         #region 填入資料表
@@ -1477,6 +1486,12 @@ namespace SH_SemesterScoreReport
                             // 累計取得學分數
                             if (!_studPassSumCreditDictAll.ContainsKey(stuRec.StudentID))
                                 _studPassSumCreditDictAll.Add(stuRec.StudentID, 0);
+
+                            if (!_studPassSumCreditDictC1.ContainsKey(stuRec.StudentID))
+                                _studPassSumCreditDictC1.Add(stuRec.StudentID, 0);
+
+                            if (!_studPassSumCreditDictC2.ContainsKey(stuRec.StudentID))
+                                _studPassSumCreditDictC2.Add(stuRec.StudentID, 0);
 
                             string studentID = stuRec.StudentID;
                             string gradeYear = (stuRec.RefClass == null ? "" : "" + stuRec.RefClass.GradeYear);
@@ -1788,12 +1803,21 @@ namespace SH_SemesterScoreReport
 
                                     // 累計取得
                                     if (semesterSubjectScore.Pass)
+                                    {
                                         _studPassSumCreditDictAll[stuRec.StudentID] += semesterSubjectScore.Credit;
+
+                                        if(semesterSubjectScore.Require)
+                                            _studPassSumCreditDictC1[stuRec.StudentID] += semesterSubjectScore.Credit;
+                                        else
+                                            _studPassSumCreditDictC2[stuRec.StudentID] += semesterSubjectScore.Credit;
+                                    }
                                 }                            
                             }
 
                             row["本學期取得學分數"] = _studPassSumCreditDict1[stuRec.StudentID];
                             row["累計取得學分數"] = _studPassSumCreditDictAll[stuRec.StudentID];
+                            row["累計取得必修學分"] = _studPassSumCreditDictC1[stuRec.StudentID];
+                            row["累計取得選修學分"] = _studPassSumCreditDictC2[stuRec.StudentID];
 
                             // 取得學生及格與補考標準
                             // 及格

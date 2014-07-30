@@ -72,6 +72,26 @@ namespace SchoolYearScoreReport
                     if (var.Name == info.Subject)
                     {
                         var.SetInfo(info.Subject, info.Score);
+
+                        string sign = "";
+                        decimal rS1=-1, rS2=-1;
+                        
+                        // 判斷是否來自學年補考或重修
+                        if (decimal.TryParse(info.Detail.GetAttribute("補考成績"), out rS1))
+                        {
+                            if (info.Score == rS1)
+                                sign = this._config.YearResitSign;
+                        }
+
+                        if (decimal.TryParse(info.Detail.GetAttribute("重修成績"), out rS2))
+                        {
+                            if (info.Score == rS2)
+                                sign += this._config.YearRepeatSign;
+                        }
+
+                        // 學年成績標示
+                        var.SetYearScoreSign(sign);
+
                         found = true;
                     }
                 }

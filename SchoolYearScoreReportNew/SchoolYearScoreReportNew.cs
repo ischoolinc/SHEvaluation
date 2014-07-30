@@ -572,8 +572,8 @@ class SchoolYearScoreReportNew
                 }
                 builder.InsertCell().CellFormat.Width = microUnit * 2.0;
                 if (data.SchoolYearScore > 0M)
-                {
-                    builder.Write(data.SchoolYearScore + "");
+                {                    
+                    builder.Write(data.YearScoreSign+data.SchoolYearScore + "");
                 }
                 builder.EndRow();
             }

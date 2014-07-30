@@ -16,6 +16,8 @@ namespace SchoolYearScoreReport
         private int _receive_name;
         private string _repeat_sign;
         private string _resit_sign;
+        private string _year_repeat_sign;
+        private string _year_resit_sign;
         private decimal _school_year = 50M;
         private Dictionary<string, List<string>> _select_types = new Dictionary<string, List<string>>();
         private bool _use_default = true;
@@ -78,6 +80,9 @@ namespace SchoolYearScoreReport
                     this._receive_address = int.Parse(print.GetAttribute("Address"));
                     this._resit_sign = print.GetAttribute("ResitSign");
                     this._repeat_sign = print.GetAttribute("RepeatSign");
+                    this._year_resit_sign = print.GetAttribute("YearResitSign");
+                    this._year_repeat_sign = print.GetAttribute("YearRepeatSign");
+
                     if (!string.IsNullOrEmpty(print.GetAttribute("AllowMoralScoreOver100")))
                     {
                         this._allow_over = bool.Parse(print.GetAttribute("AllowMoralScoreOver100"));
@@ -90,11 +95,15 @@ namespace SchoolYearScoreReport
                     newPrint.SetAttribute("Address", "0");
                     newPrint.SetAttribute("ResitSign", "");
                     newPrint.SetAttribute("RepeatSign", "");
+                    newPrint.SetAttribute("YearResitSign", "");
+                    newPrint.SetAttribute("YearRepeatSign", "");
                     newPrint.SetAttribute("AllowMoralScoreOver100", "False");
                     this._receive_name = 0;
                     this._receive_address = 0;
                     this._resit_sign = "";
                     this._repeat_sign = "";
+                    this._year_resit_sign = "";
+                    this._year_repeat_sign = "";
                     this._allow_over = false;
                     config.AppendChild(newPrint);
                 }
@@ -138,6 +147,8 @@ namespace SchoolYearScoreReport
             print.SetAttribute("Address", this._receive_address.ToString());
             print.SetAttribute("ResitSign", this._resit_sign);
             print.SetAttribute("RepeatSign", this._repeat_sign);
+            print.SetAttribute("YearResitSign", this._year_resit_sign);
+            print.SetAttribute("YearRepeatSign", this._year_repeat_sign);
             print.SetAttribute("AllowMoralScoreOver100", this._allow_over.ToString());
             if (config.SelectSingleNode("Print") == null)
             {
@@ -172,10 +183,12 @@ namespace SchoolYearScoreReport
             this._receive_address = address;
         }
 
-        public void SetSign(string resit, string repeat)
+        public void SetSign(string resit, string repeat, string yearresit, string yearrepeat)
         {
             this._resit_sign = resit;
             this._repeat_sign = repeat;
+            this._year_resit_sign = yearresit;
+            this._year_repeat_sign = yearrepeat;
         }
 
         public void SetTypes(Dictionary<string, List<string>> types)
@@ -247,6 +260,22 @@ namespace SchoolYearScoreReport
             get
             {
                 return this._resit_sign;
+            }
+        }
+
+        public string YearRepeatSign
+        {
+            get
+            {
+                return this._year_repeat_sign;
+            }
+        }
+
+        public string YearResitSign
+        {
+            get
+            {
+                return this._year_resit_sign;
             }
         }
 

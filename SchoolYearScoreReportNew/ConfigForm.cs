@@ -43,6 +43,8 @@ namespace SchoolYearScoreReport
             this.comboBoxEx2.SelectedIndex = this.Config.ReceiveAddressIndex;
             this.textBoxX1.Text = this.Config.ResitSign;
             this.textBoxX2.Text = this.Config.RepeatSign;
+            this.txtSYSa.Text = this.Config.YearResitSign;
+            this.txtSYSb.Text = this.Config.YearRepeatSign;
             this.checkBoxX1.Checked = this.Config.AllowOver;
         }
 
@@ -50,7 +52,7 @@ namespace SchoolYearScoreReport
         {
             this.Config.UseDefault = this.radioButton1.Checked;
             this.Config.SetReceiveInfo(this.comboBoxEx1.SelectedIndex, this.comboBoxEx2.SelectedIndex);
-            this.Config.SetSign(this.textBoxX1.Text, this.textBoxX2.Text);
+            this.Config.SetSign(this.textBoxX1.Text, this.textBoxX2.Text,txtSYSa.Text,txtSYSb.Text);
             this.Config.AllowOver = this.checkBoxX1.Checked;
             this.Config.Save();
             base.DialogResult = DialogResult.OK;
@@ -140,6 +142,11 @@ namespace SchoolYearScoreReport
             {
                 return this._config;
             }
+        }
+
+        private void ConfigForm_Load(object sender, EventArgs e)
+        {
+            this.MaximumSize = this.MinimumSize = this.Size;
         }
 
     }

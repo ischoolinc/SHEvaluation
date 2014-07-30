@@ -88,6 +88,10 @@ namespace SchoolYearScoreReport
             this.comboItem6 = new DevComponents.Editors.ComboItem();
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
             this.labelX5 = new DevComponents.DotNetBar.LabelX();
+            this.labelX6 = new DevComponents.DotNetBar.LabelX();
+            this.labelX7 = new DevComponents.DotNetBar.LabelX();
+            this.txtSYSb = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.txtSYSa = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.groupPanel1.SuspendLayout();
             this.groupPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -222,7 +226,7 @@ namespace SchoolYearScoreReport
             this.buttonX1.BackColor = System.Drawing.Color.Transparent;
             this.buttonX1.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.buttonX1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonX1.Location = new System.Drawing.Point(87, 299);
+            this.buttonX1.Location = new System.Drawing.Point(86, 371);
             this.buttonX1.Name = "buttonX1";
             this.buttonX1.Size = new System.Drawing.Size(65, 23);
             this.buttonX1.TabIndex = 10;
@@ -234,7 +238,7 @@ namespace SchoolYearScoreReport
             this.buttonX2.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.buttonX2.BackColor = System.Drawing.Color.Transparent;
             this.buttonX2.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.buttonX2.Location = new System.Drawing.Point(158, 299);
+            this.buttonX2.Location = new System.Drawing.Point(157, 371);
             this.buttonX2.Name = "buttonX2";
             this.buttonX2.Size = new System.Drawing.Size(65, 23);
             this.buttonX2.TabIndex = 11;
@@ -257,6 +261,10 @@ namespace SchoolYearScoreReport
             this.groupPanel2.BackColor = System.Drawing.Color.Transparent;
             this.groupPanel2.CanvasColor = System.Drawing.SystemColors.Control;
             this.groupPanel2.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel2.Controls.Add(this.labelX6);
+            this.groupPanel2.Controls.Add(this.labelX7);
+            this.groupPanel2.Controls.Add(this.txtSYSb);
+            this.groupPanel2.Controls.Add(this.txtSYSa);
             this.groupPanel2.Controls.Add(this.checkBoxX1);
             this.groupPanel2.Controls.Add(this.labelX4);
             this.groupPanel2.Controls.Add(this.labelX3);
@@ -269,7 +277,7 @@ namespace SchoolYearScoreReport
             this.groupPanel2.Location = new System.Drawing.Point(4, 102);
             this.groupPanel2.Margin = new System.Windows.Forms.Padding(4);
             this.groupPanel2.Name = "groupPanel2";
-            this.groupPanel2.Size = new System.Drawing.Size(219, 190);
+            this.groupPanel2.Size = new System.Drawing.Size(219, 256);
             // 
             // 
             // 
@@ -312,7 +320,7 @@ namespace SchoolYearScoreReport
             // 
             this.checkBoxX1.BackgroundStyle.Class = "";
             this.checkBoxX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.checkBoxX1.Location = new System.Drawing.Point(12, 136);
+            this.checkBoxX1.Location = new System.Drawing.Point(12, 196);
             this.checkBoxX1.Name = "checkBoxX1";
             this.checkBoxX1.Size = new System.Drawing.Size(161, 21);
             this.checkBoxX1.TabIndex = 9;
@@ -456,9 +464,63 @@ namespace SchoolYearScoreReport
             this.labelX5.TabIndex = 0;
             this.labelX5.Text = "收件人";
             // 
+            // labelX6
+            // 
+            this.labelX6.AutoSize = true;
+            this.labelX6.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX6.BackgroundStyle.Class = "";
+            this.labelX6.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX6.Location = new System.Drawing.Point(12, 165);
+            this.labelX6.Name = "labelX6";
+            this.labelX6.Size = new System.Drawing.Size(114, 21);
+            this.labelX6.TabIndex = 10;
+            this.labelX6.Text = "學年重修成績標示";
+            // 
+            // labelX7
+            // 
+            this.labelX7.AutoSize = true;
+            this.labelX7.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX7.BackgroundStyle.Class = "";
+            this.labelX7.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX7.Location = new System.Drawing.Point(12, 134);
+            this.labelX7.Name = "labelX7";
+            this.labelX7.Size = new System.Drawing.Size(114, 21);
+            this.labelX7.TabIndex = 11;
+            this.labelX7.Text = "學年補考成績標示";
+            // 
+            // txtSYSb
+            // 
+            // 
+            // 
+            // 
+            this.txtSYSb.Border.Class = "TextBoxBorder";
+            this.txtSYSb.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtSYSb.Location = new System.Drawing.Point(127, 162);
+            this.txtSYSb.Name = "txtSYSb";
+            this.txtSYSb.Size = new System.Drawing.Size(70, 25);
+            this.txtSYSb.TabIndex = 13;
+            // 
+            // txtSYSa
+            // 
+            // 
+            // 
+            // 
+            this.txtSYSa.Border.Class = "TextBoxBorder";
+            this.txtSYSa.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtSYSa.Location = new System.Drawing.Point(127, 131);
+            this.txtSYSa.Name = "txtSYSa";
+            this.txtSYSa.Size = new System.Drawing.Size(70, 25);
+            this.txtSYSa.TabIndex = 12;
+            // 
             // ConfigForm
             // 
-            this.ClientSize = new System.Drawing.Size(227, 327);
+            this.ClientSize = new System.Drawing.Size(227, 399);
             this.Controls.Add(this.groupPanel2);
             this.Controls.Add(this.buttonX2);
             this.Controls.Add(this.buttonX1);
@@ -467,6 +529,7 @@ namespace SchoolYearScoreReport
             this.Name = "ConfigForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "變更設定";
+            this.Load += new System.EventHandler(this.ConfigForm_Load);
             this.groupPanel1.ResumeLayout(false);
             this.groupPanel1.PerformLayout();
             this.groupPanel2.ResumeLayout(false);
@@ -476,5 +539,10 @@ namespace SchoolYearScoreReport
         }
 
         #endregion
+
+        private LabelX labelX6;
+        private LabelX labelX7;
+        private TextBoxX txtSYSb;
+        private TextBoxX txtSYSa;
     }
 }

@@ -19,6 +19,8 @@ namespace SchoolYearScoreReport
         private decimal _secondScore;
         private string _secondSemesterItem;
         private string _secondSign;
+        private string _yearScoreSign;
+
 
         public void SetInfo(string name, decimal score)
         {
@@ -44,6 +46,7 @@ namespace SchoolYearScoreReport
             this._name = name;
             this._firstSign = "";
             this._secondSign = "";
+            this._yearScoreSign = "";
             if (semester == 1)
             {
                 this._firstCredit = credit;
@@ -113,6 +116,11 @@ namespace SchoolYearScoreReport
             {
                 this._secondSign = sign;
             }
+        }
+
+        public void SetYearScoreSign(string sign)
+        {
+            this._yearScoreSign = sign;
         }
 
         public int FirstCredit
@@ -250,6 +258,11 @@ namespace SchoolYearScoreReport
             {
                 return (" " + this._secondSign);
             }
+        }
+
+        public string YearScoreSign
+        {
+            get { return (" " + this._yearScoreSign); }
         }
     }
 }

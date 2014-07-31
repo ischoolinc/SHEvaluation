@@ -465,6 +465,8 @@ namespace SmartSchool.Evaluation.Process
 
                     // 更新
                     K12.Data.LeaveInfo.Update(LeaveInfoRecordList);
+                    // 同步資料
+                    Student.Instance.SyncAllBackground();
                 }
 
                 if ( errormessages.Count > 0 )

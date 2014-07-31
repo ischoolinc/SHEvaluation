@@ -413,14 +413,21 @@ namespace SmartSchool.Evaluation.Process
                     }
                 }
                 #endregion
+
+                // 在畢業及離校資訊的離校類別加入檢查可已畢業                
+                List<string> studIDList = new List<string>();
+                
                 foreach ( StudentRecord student in var )
                 {
                     #region 整理每個學生未達畢業標準原因
                     XmlElement gradCheckElement = (XmlElement)student.Fields["GradCheck"];
                     int studentID = int.Parse(student.StudentID);
                     //累計未達標準人數
-                    if ( gradCheckElement.SelectNodes("UnPassReson").Count > 0 )
+                    if (gradCheckElement.SelectNodes("UnPassReson").Count > 0)
                         unPassStudentCount++;
+                    else
+                        studIDList.Add(student.StudentID); // 可畢業
+                    
                     foreach ( XmlElement unPassElement in gradCheckElement.SelectNodes("UnPassReson") )
                     {
                         string reson = unPassElement.InnerText;
@@ -447,6 +454,19 @@ namespace SmartSchool.Evaluation.Process
                     #endregion
                 }
                 computedStudents += var.Count;
+
+                // 修改畢業及離校資訊的離校類別
+                if (studIDList.Count > 0 && errormessages.Count==0)
+                {
+                    List<K12.Data.LeaveInfoRecord> LeaveInfoRecordList = K12.Data.LeaveInfo.SelectByStudentIDs(studIDList);
+
+                    foreach (K12.Data.LeaveInfoRecord rec in LeaveInfoRecordList)
+                        rec.Reason = "畢業";
+
+                    // 更新
+                    K12.Data.LeaveInfo.Update(LeaveInfoRecordList);
+                }
+
                 if ( errormessages.Count > 0 )
                     allPass = false;
                 if ( bkw.CancellationPending )

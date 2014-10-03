@@ -26,6 +26,11 @@ namespace 定期評量成績單
         // 結束日期
         private DateTime _EndDate;
 
+        /// <summary>
+        /// 成績校正日期
+        /// </summary>
+        private DateTime _ScoreCurDate;
+
         // 檢查是否產生學生清單
         private bool _isExportStudentList;
 
@@ -197,6 +202,10 @@ namespace 定期評量成績單
             SaveTemplate(null, null);
             _BeginDate = dtBegin.Value;
             _EndDate = dtEnd.Value;
+            if (dtCurDate.IsEmpty)
+                _ScoreCurDate = DateTime.Now;
+            else
+                _ScoreCurDate = dtCurDate.Value;
             _isExportStudentList = ChkExportStudList.Checked;
             this.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.Close();
@@ -218,6 +227,15 @@ namespace 定期評量成績單
         public DateTime GetEndDate()
         {
             return _EndDate;
+        }
+
+        /// <summary>
+        /// 取得畫面上成績校正日期
+        /// </summary>
+        /// <returns></returns>
+        public DateTime GetScoreCurDate()
+        {
+            return _ScoreCurDate;
         }
 
         /// <summary>
@@ -278,7 +296,7 @@ namespace 定期評量成績單
                     Configure.Name = dialog.ConfigName;
                     Configure.Template = dialog.Template;
                     Configure.SubjectLimit = dialog.SubjectLimit;
-                    
+                    Configure.ScoreCurDate = dialog.ScoreCurDate;
                     Configure.DisciplineDetailLimit = dialog.DisciplineDetailLimit;
                     Configure.ServiceLearningDetailLimit = dialog.ServiceLearningDetailLimit;
 
@@ -360,6 +378,11 @@ namespace 定期評量成績單
                     else
                         dtEnd.Value = DateTime.Now;
 
+                    if (Configure.ScoreCurDate != null)
+                        dtCurDate.Value = Configure.ScoreCurDate;
+                    else
+                        dtCurDate.Value = DateTime.Now;
+
                     // 判斷是否產生勾選學生清單
                     bool bo1;
                     if (bool.TryParse(Configure.isExportStudentList, out bo1))
@@ -391,7 +414,7 @@ namespace 定期評量成績單
                         item.Checked = false;
                     }
                     // 開始與結束日期沒有預設值時給當天
-                    dtBegin.Value= dtEnd.Value = DateTime.Now;
+                    dtCurDate.Value= dtBegin.Value= dtEnd.Value = DateTime.Now;
 
                     if (Configure != null)
                     {
@@ -552,6 +575,7 @@ namespace 定期評量成績單
                 conf.SchoolYear = Configure.SchoolYear;
                 conf.Semester = Configure.Semester;
                 conf.SubjectLimit = Configure.SubjectLimit;
+                conf.ScoreCurDate = Configure.ScoreCurDate;
                 conf.TagRank1SubjectList.AddRange(Configure.TagRank1SubjectList);
                 conf.TagRank1TagList.AddRange(Configure.TagRank1TagList);
                 conf.TagRank1TagName = Configure.TagRank1TagName;
@@ -572,6 +596,11 @@ namespace 定期評量成績單
             if (Configure == null) return;
             Configure.SchoolYear = cboSchoolYear.Text;
             Configure.Semester = cboSemester.Text;
+            if (dtCurDate.IsEmpty)
+                Configure.ScoreCurDate = DateTime.Now;
+            else
+                Configure.ScoreCurDate = dtCurDate.Value;
+
             Configure.ExamRecord = ((ExamRecord)cboExam.SelectedItem);
             Configure.RefenceExamRecord = ((ExamRecord)cboRefExam.SelectedItem);
             if (Configure.RefenceExamRecord != null && Configure.RefenceExamRecord.Name == "")
@@ -759,6 +788,11 @@ namespace 定期評量成績單
                     MessageBox.Show("樣板開啟失敗");
                 }
            
+        }
+
+        private void ConfigForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

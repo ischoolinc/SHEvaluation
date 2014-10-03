@@ -131,6 +131,12 @@ namespace 定期評量成績單
         [FISCA.UDT.Field]
         public int ServiceLearningDetailLimit { get; set; }
 
+        /// <summary>
+        /// 成績校正日期
+        /// </summary>
+        [FISCA.UDT.Field]
+        public DateTime ScoreCurDate { get; set; }
+
 
         /// <summary>
         /// 在儲存前，把資料填入儲存欄位中

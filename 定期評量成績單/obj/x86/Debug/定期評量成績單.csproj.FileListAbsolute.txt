@@ -11,13 +11,10 @@ D:\TFS2010\Research\Lelala\定期評量成績單\obj\x86\Debug\Test.dll
 D:\TFS2010\Research\Lelala\定期評量成績單\obj\x86\Debug\Test.pdb
 D:\GitProjModules\ischoolDesktop\SHEvaluation\定期評量成績單\bin\Debug\Test.dll
 D:\GitProjModules\ischoolDesktop\SHEvaluation\定期評量成績單\bin\Debug\Test.pdb
-D:\GitProjModules\ischoolDesktop\SHEvaluation\定期評量成績單\obj\x86\Debug\ResolveAssemblyReference.cache
 D:\GitProjModules\ischoolDesktop\SHEvaluation\定期評量成績單\obj\x86\Debug\定期評量成績單.CloneConfigure.resources
 D:\GitProjModules\ischoolDesktop\SHEvaluation\定期評量成績單\obj\x86\Debug\定期評量成績單.ConfigForm.resources
 D:\GitProjModules\ischoolDesktop\SHEvaluation\定期評量成績單\obj\x86\Debug\定期評量成績單.NewConfigure.resources
 D:\GitProjModules\ischoolDesktop\SHEvaluation\定期評量成績單\obj\x86\Debug\定期評量成績單.Properties.Resources.resources
-D:\GitProjModules\ischoolDesktop\SHEvaluation\定期評量成績單\obj\x86\Debug\GenerateResource.read.1.tlog
-D:\GitProjModules\ischoolDesktop\SHEvaluation\定期評量成績單\obj\x86\Debug\GenerateResource.write.1.tlog
 D:\GitProjModules\ischoolDesktop\SHEvaluation\定期評量成績單\obj\x86\Debug\Test.dll
 D:\GitProjModules\ischoolDesktop\SHEvaluation\定期評量成績單\obj\x86\Debug\Test.pdb
 D:\GitHub2\高中成績模組\SHEvaluation\定期評量成績單\bin\Debug\Test.dll
@@ -30,3 +27,4 @@ D:\GitHub2\高中成績模組\SHEvaluation\定期評量成績單\obj\x86\Debug\�
 D:\GitHub2\高中成績模組\SHEvaluation\定期評量成績單\obj\x86\Debug\定期評量成績單.csproj.GenerateResource.Cache
 D:\GitHub2\高中成績模組\SHEvaluation\定期評量成績單\obj\x86\Debug\Test.dll
 D:\GitHub2\高中成績模組\SHEvaluation\定期評量成績單\obj\x86\Debug\Test.pdb
+D:\GitProjModules\ischoolDesktop\SHEvaluation\定期評量成績單\obj\x86\Debug\定期評量成績單.csproj.GenerateResource.Cache

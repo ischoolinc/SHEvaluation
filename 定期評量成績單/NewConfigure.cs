@@ -19,6 +19,7 @@ namespace 定期評量成績單
         public int DisciplineDetailLimit  { get; private set; }
         public int ServiceLearningDetailLimit { get; private set; }
 
+        public DateTime ScoreCurDate { get ; private set; }
 
         public string ConfigName { get; private set; }
 

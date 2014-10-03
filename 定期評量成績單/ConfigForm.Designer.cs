@@ -45,6 +45,23 @@
             this.btnCancel = new DevComponents.DotNetBar.ButtonX();
             this.panel4 = new System.Windows.Forms.Panel();
             this.tabControl1 = new DevComponents.DotNetBar.TabControl();
+            this.tabControlPanel1 = new DevComponents.DotNetBar.TabControlPanel();
+            this.dtCurDate = new DevComponents.Editors.DateTimeAdv.DateTimeInput();
+            this.labelX17 = new DevComponents.DotNetBar.LabelX();
+            this.circularProgress1 = new DevComponents.DotNetBar.Controls.CircularProgress();
+            this.listViewEx1 = new DevComponents.DotNetBar.Controls.ListViewEx();
+            this.labelX7 = new DevComponents.DotNetBar.LabelX();
+            this.labelX2 = new DevComponents.DotNetBar.LabelX();
+            this.cboExam = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.cboRankRilter = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.labelX4 = new DevComponents.DotNetBar.LabelX();
+            this.labelX3 = new DevComponents.DotNetBar.LabelX();
+            this.cboRefExam = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.cboSemester = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.labelX8 = new DevComponents.DotNetBar.LabelX();
+            this.labelX9 = new DevComponents.DotNetBar.LabelX();
+            this.cboSchoolYear = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.tabItem1 = new DevComponents.DotNetBar.TabItem(this.components);
             this.tabControlPanel3 = new DevComponents.DotNetBar.TabControlPanel();
             this.labelX16 = new DevComponents.DotNetBar.LabelX();
             this.labelX15 = new DevComponents.DotNetBar.LabelX();
@@ -61,28 +78,14 @@
             this.labelX5 = new DevComponents.DotNetBar.LabelX();
             this.cboTagRank2 = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.tabItem2 = new DevComponents.DotNetBar.TabItem(this.components);
-            this.tabControlPanel1 = new DevComponents.DotNetBar.TabControlPanel();
-            this.circularProgress1 = new DevComponents.DotNetBar.Controls.CircularProgress();
-            this.listViewEx1 = new DevComponents.DotNetBar.Controls.ListViewEx();
-            this.labelX7 = new DevComponents.DotNetBar.LabelX();
-            this.labelX2 = new DevComponents.DotNetBar.LabelX();
-            this.cboExam = new DevComponents.DotNetBar.Controls.ComboBoxEx();
-            this.cboRankRilter = new DevComponents.DotNetBar.Controls.ComboBoxEx();
-            this.labelX4 = new DevComponents.DotNetBar.LabelX();
-            this.labelX3 = new DevComponents.DotNetBar.LabelX();
-            this.cboRefExam = new DevComponents.DotNetBar.Controls.ComboBoxEx();
-            this.cboSemester = new DevComponents.DotNetBar.Controls.ComboBoxEx();
-            this.labelX8 = new DevComponents.DotNetBar.LabelX();
-            this.labelX9 = new DevComponents.DotNetBar.LabelX();
-            this.cboSchoolYear = new DevComponents.DotNetBar.Controls.ComboBoxEx();
-            this.tabItem1 = new DevComponents.DotNetBar.TabItem(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).BeginInit();
             this.tabControl1.SuspendLayout();
+            this.tabControlPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtCurDate)).BeginInit();
             this.tabControlPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtEnd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtBegin)).BeginInit();
             this.tabControlPanel2.SuspendLayout();
-            this.tabControlPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // cboTagRank1
@@ -298,12 +301,12 @@
             // 
             this.tabControl1.BackColor = System.Drawing.Color.Transparent;
             this.tabControl1.CanReorderTabs = true;
-            this.tabControl1.Controls.Add(this.tabControlPanel3);
             this.tabControl1.Controls.Add(this.tabControlPanel1);
+            this.tabControl1.Controls.Add(this.tabControlPanel3);
             this.tabControl1.Controls.Add(this.tabControlPanel2);
             this.tabControl1.Location = new System.Drawing.Point(23, 53);
             this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedTabFont = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Bold);
+            this.tabControl1.SelectedTabFont = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Bold);
             this.tabControl1.SelectedTabIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(534, 450);
             this.tabControl1.TabIndex = 14;
@@ -312,6 +315,324 @@
             this.tabControl1.Tabs.Add(this.tabItem2);
             this.tabControl1.Tabs.Add(this.tabItem3);
             this.tabControl1.Text = "tabControl1";
+            // 
+            // tabControlPanel1
+            // 
+            this.tabControlPanel1.Controls.Add(this.dtCurDate);
+            this.tabControlPanel1.Controls.Add(this.labelX17);
+            this.tabControlPanel1.Controls.Add(this.circularProgress1);
+            this.tabControlPanel1.Controls.Add(this.listViewEx1);
+            this.tabControlPanel1.Controls.Add(this.labelX7);
+            this.tabControlPanel1.Controls.Add(this.labelX2);
+            this.tabControlPanel1.Controls.Add(this.cboExam);
+            this.tabControlPanel1.Controls.Add(this.cboRankRilter);
+            this.tabControlPanel1.Controls.Add(this.labelX4);
+            this.tabControlPanel1.Controls.Add(this.labelX3);
+            this.tabControlPanel1.Controls.Add(this.cboRefExam);
+            this.tabControlPanel1.Controls.Add(this.cboSemester);
+            this.tabControlPanel1.Controls.Add(this.labelX8);
+            this.tabControlPanel1.Controls.Add(this.labelX9);
+            this.tabControlPanel1.Controls.Add(this.cboSchoolYear);
+            this.tabControlPanel1.Location = new System.Drawing.Point(0, 29);
+            this.tabControlPanel1.Name = "tabControlPanel1";
+            this.tabControlPanel1.Padding = new System.Windows.Forms.Padding(1);
+            this.tabControlPanel1.Size = new System.Drawing.Size(534, 466);
+            this.tabControlPanel1.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(179)))), ((int)(((byte)(231)))));
+            this.tabControlPanel1.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(237)))), ((int)(((byte)(254)))));
+            this.tabControlPanel1.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
+            this.tabControlPanel1.Style.BorderColor.Color = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(97)))), ((int)(((byte)(156)))));
+            this.tabControlPanel1.Style.BorderSide = ((DevComponents.DotNetBar.eBorderSide)(((DevComponents.DotNetBar.eBorderSide.Left | DevComponents.DotNetBar.eBorderSide.Right) 
+            | DevComponents.DotNetBar.eBorderSide.Bottom)));
+            this.tabControlPanel1.Style.GradientAngle = 90;
+            this.tabControlPanel1.TabIndex = 1;
+            this.tabControlPanel1.TabItem = this.tabItem1;
+            // 
+            // dtCurDate
+            // 
+            // 
+            // 
+            // 
+            this.dtCurDate.BackgroundStyle.Class = "DateTimeInputBackground";
+            this.dtCurDate.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.dtCurDate.ButtonDropDown.Shortcut = DevComponents.DotNetBar.eShortcut.AltDown;
+            this.dtCurDate.ButtonDropDown.Visible = true;
+            this.dtCurDate.IsPopupCalendarOpen = false;
+            this.dtCurDate.Location = new System.Drawing.Point(199, 156);
+            // 
+            // 
+            // 
+            this.dtCurDate.MonthCalendar.AnnuallyMarkedDates = new System.DateTime[0];
+            // 
+            // 
+            // 
+            this.dtCurDate.MonthCalendar.BackgroundStyle.BackColor = System.Drawing.SystemColors.Window;
+            this.dtCurDate.MonthCalendar.BackgroundStyle.Class = "";
+            this.dtCurDate.MonthCalendar.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.dtCurDate.MonthCalendar.ClearButtonVisible = true;
+            // 
+            // 
+            // 
+            this.dtCurDate.MonthCalendar.CommandsBackgroundStyle.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.BarBackground2;
+            this.dtCurDate.MonthCalendar.CommandsBackgroundStyle.BackColorGradientAngle = 90;
+            this.dtCurDate.MonthCalendar.CommandsBackgroundStyle.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.BarBackground;
+            this.dtCurDate.MonthCalendar.CommandsBackgroundStyle.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.dtCurDate.MonthCalendar.CommandsBackgroundStyle.BorderTopColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.BarDockedBorder;
+            this.dtCurDate.MonthCalendar.CommandsBackgroundStyle.BorderTopWidth = 1;
+            this.dtCurDate.MonthCalendar.CommandsBackgroundStyle.Class = "";
+            this.dtCurDate.MonthCalendar.CommandsBackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.dtCurDate.MonthCalendar.DayNames = new string[] {
+        "日",
+        "一",
+        "二",
+        "三",
+        "四",
+        "五",
+        "六"};
+            this.dtCurDate.MonthCalendar.DisplayMonth = new System.DateTime(2014, 10, 1, 0, 0, 0, 0);
+            this.dtCurDate.MonthCalendar.MarkedDates = new System.DateTime[0];
+            this.dtCurDate.MonthCalendar.MonthlyMarkedDates = new System.DateTime[0];
+            // 
+            // 
+            // 
+            this.dtCurDate.MonthCalendar.NavigationBackgroundStyle.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.dtCurDate.MonthCalendar.NavigationBackgroundStyle.BackColorGradientAngle = 90;
+            this.dtCurDate.MonthCalendar.NavigationBackgroundStyle.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.dtCurDate.MonthCalendar.NavigationBackgroundStyle.Class = "";
+            this.dtCurDate.MonthCalendar.NavigationBackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.dtCurDate.MonthCalendar.TodayButtonVisible = true;
+            this.dtCurDate.MonthCalendar.WeeklyMarkedDays = new System.DayOfWeek[0];
+            this.dtCurDate.Name = "dtCurDate";
+            this.dtCurDate.Size = new System.Drawing.Size(161, 25);
+            this.dtCurDate.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.dtCurDate.TabIndex = 16;
+            // 
+            // labelX17
+            // 
+            this.labelX17.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.labelX17.AutoSize = true;
+            this.labelX17.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX17.BackgroundStyle.Class = "";
+            this.labelX17.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX17.Location = new System.Drawing.Point(91, 158);
+            this.labelX17.Name = "labelX17";
+            this.labelX17.Size = new System.Drawing.Size(101, 21);
+            this.labelX17.TabIndex = 15;
+            this.labelX17.Text = "成績校正日期：";
+            // 
+            // circularProgress1
+            // 
+            this.circularProgress1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.circularProgress1.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.circularProgress1.BackgroundStyle.Class = "";
+            this.circularProgress1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.circularProgress1.FocusCuesEnabled = false;
+            this.circularProgress1.Location = new System.Drawing.Point(384, 55);
+            this.circularProgress1.Name = "circularProgress1";
+            this.circularProgress1.ProgressBarType = DevComponents.DotNetBar.eCircularProgressType.Dot;
+            this.circularProgress1.ProgressColor = System.Drawing.Color.LimeGreen;
+            this.circularProgress1.ProgressTextVisible = true;
+            this.circularProgress1.Size = new System.Drawing.Size(66, 62);
+            this.circularProgress1.Style = DevComponents.DotNetBar.eDotNetBarStyle.Windows7;
+            this.circularProgress1.TabIndex = 14;
+            // 
+            // listViewEx1
+            // 
+            this.listViewEx1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            // 
+            // 
+            // 
+            this.listViewEx1.Border.Class = "ListViewBorder";
+            this.listViewEx1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.listViewEx1.CheckBoxes = true;
+            this.listViewEx1.Location = new System.Drawing.Point(84, 214);
+            this.listViewEx1.Name = "listViewEx1";
+            this.listViewEx1.Size = new System.Drawing.Size(366, 191);
+            this.listViewEx1.TabIndex = 8;
+            this.listViewEx1.UseCompatibleStateImageBehavior = false;
+            this.listViewEx1.View = System.Windows.Forms.View.List;
+            // 
+            // labelX7
+            // 
+            this.labelX7.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.labelX7.AutoSize = true;
+            this.labelX7.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX7.BackgroundStyle.Class = "";
+            this.labelX7.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX7.Location = new System.Drawing.Point(132, 18);
+            this.labelX7.Name = "labelX7";
+            this.labelX7.Size = new System.Drawing.Size(60, 21);
+            this.labelX7.TabIndex = 5;
+            this.labelX7.Text = "學年度：";
+            // 
+            // labelX2
+            // 
+            this.labelX2.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.labelX2.AutoSize = true;
+            this.labelX2.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX2.BackgroundStyle.Class = "";
+            this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX2.Location = new System.Drawing.Point(84, 184);
+            this.labelX2.Name = "labelX2";
+            this.labelX2.Size = new System.Drawing.Size(74, 21);
+            this.labelX2.TabIndex = 5;
+            this.labelX2.Text = "列印科目：";
+            // 
+            // cboExam
+            // 
+            this.cboExam.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.cboExam.DisplayMember = "Name";
+            this.cboExam.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboExam.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboExam.FormattingEnabled = true;
+            this.cboExam.ItemHeight = 19;
+            this.cboExam.Location = new System.Drawing.Point(199, 53);
+            this.cboExam.Name = "cboExam";
+            this.cboExam.Size = new System.Drawing.Size(160, 25);
+            this.cboExam.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.cboExam.TabIndex = 5;
+            this.cboExam.ValueMember = "ID";
+            this.cboExam.SelectedIndexChanged += new System.EventHandler(this.ExamChanged);
+            // 
+            // cboRankRilter
+            // 
+            this.cboRankRilter.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.cboRankRilter.DisplayMember = "Text";
+            this.cboRankRilter.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboRankRilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboRankRilter.FormattingEnabled = true;
+            this.cboRankRilter.ItemHeight = 19;
+            this.cboRankRilter.Location = new System.Drawing.Point(199, 121);
+            this.cboRankRilter.Name = "cboRankRilter";
+            this.cboRankRilter.Size = new System.Drawing.Size(160, 25);
+            this.cboRankRilter.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.cboRankRilter.TabIndex = 7;
+            // 
+            // labelX4
+            // 
+            this.labelX4.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.labelX4.AutoSize = true;
+            this.labelX4.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX4.BackgroundStyle.Class = "";
+            this.labelX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX4.Location = new System.Drawing.Point(91, 55);
+            this.labelX4.Name = "labelX4";
+            this.labelX4.Size = new System.Drawing.Size(101, 21);
+            this.labelX4.TabIndex = 5;
+            this.labelX4.Text = "列印成績試別：";
+            // 
+            // labelX3
+            // 
+            this.labelX3.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.labelX3.AutoSize = true;
+            this.labelX3.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX3.BackgroundStyle.Class = "";
+            this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX3.Location = new System.Drawing.Point(78, 123);
+            this.labelX3.Name = "labelX3";
+            this.labelX3.Size = new System.Drawing.Size(114, 21);
+            this.labelX3.TabIndex = 5;
+            this.labelX3.Text = "不排名學生類別：";
+            // 
+            // cboRefExam
+            // 
+            this.cboRefExam.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.cboRefExam.DisplayMember = "Name";
+            this.cboRefExam.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboRefExam.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboRefExam.FormattingEnabled = true;
+            this.cboRefExam.ItemHeight = 19;
+            this.cboRefExam.Location = new System.Drawing.Point(199, 87);
+            this.cboRefExam.Name = "cboRefExam";
+            this.cboRefExam.Size = new System.Drawing.Size(160, 25);
+            this.cboRefExam.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.cboRefExam.TabIndex = 6;
+            this.cboRefExam.ValueMember = "ID";
+            // 
+            // cboSemester
+            // 
+            this.cboSemester.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.cboSemester.DisplayMember = "Text";
+            this.cboSemester.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboSemester.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboSemester.FormattingEnabled = true;
+            this.cboSemester.ItemHeight = 19;
+            this.cboSemester.Location = new System.Drawing.Point(305, 16);
+            this.cboSemester.Name = "cboSemester";
+            this.cboSemester.Size = new System.Drawing.Size(54, 25);
+            this.cboSemester.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.cboSemester.TabIndex = 4;
+            this.cboSemester.TextChanged += new System.EventHandler(this.ExamChanged);
+            // 
+            // labelX8
+            // 
+            this.labelX8.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.labelX8.AutoSize = true;
+            this.labelX8.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX8.BackgroundStyle.Class = "";
+            this.labelX8.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX8.Location = new System.Drawing.Point(91, 89);
+            this.labelX8.Name = "labelX8";
+            this.labelX8.Size = new System.Drawing.Size(101, 21);
+            this.labelX8.TabIndex = 5;
+            this.labelX8.Text = "參考成績試別：";
+            // 
+            // labelX9
+            // 
+            this.labelX9.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.labelX9.AutoSize = true;
+            this.labelX9.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX9.BackgroundStyle.Class = "";
+            this.labelX9.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX9.Location = new System.Drawing.Point(258, 18);
+            this.labelX9.Name = "labelX9";
+            this.labelX9.Size = new System.Drawing.Size(47, 21);
+            this.labelX9.TabIndex = 5;
+            this.labelX9.Text = "學期：";
+            // 
+            // cboSchoolYear
+            // 
+            this.cboSchoolYear.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.cboSchoolYear.DisplayMember = "Text";
+            this.cboSchoolYear.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboSchoolYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboSchoolYear.FormattingEnabled = true;
+            this.cboSchoolYear.ItemHeight = 19;
+            this.cboSchoolYear.Location = new System.Drawing.Point(199, 16);
+            this.cboSchoolYear.Name = "cboSchoolYear";
+            this.cboSchoolYear.Size = new System.Drawing.Size(54, 25);
+            this.cboSchoolYear.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.cboSchoolYear.TabIndex = 3;
+            this.cboSchoolYear.TextChanged += new System.EventHandler(this.ExamChanged);
+            // 
+            // tabItem1
+            // 
+            this.tabItem1.AttachedControl = this.tabControlPanel1;
+            this.tabItem1.Name = "tabItem1";
+            this.tabItem1.Text = "成績";
             // 
             // tabControlPanel3
             // 
@@ -661,247 +982,6 @@
             this.tabItem2.Name = "tabItem2";
             this.tabItem2.Text = "類別排名";
             // 
-            // tabControlPanel1
-            // 
-            this.tabControlPanel1.Controls.Add(this.circularProgress1);
-            this.tabControlPanel1.Controls.Add(this.listViewEx1);
-            this.tabControlPanel1.Controls.Add(this.labelX7);
-            this.tabControlPanel1.Controls.Add(this.labelX2);
-            this.tabControlPanel1.Controls.Add(this.cboExam);
-            this.tabControlPanel1.Controls.Add(this.cboRankRilter);
-            this.tabControlPanel1.Controls.Add(this.labelX4);
-            this.tabControlPanel1.Controls.Add(this.labelX3);
-            this.tabControlPanel1.Controls.Add(this.cboRefExam);
-            this.tabControlPanel1.Controls.Add(this.cboSemester);
-            this.tabControlPanel1.Controls.Add(this.labelX8);
-            this.tabControlPanel1.Controls.Add(this.labelX9);
-            this.tabControlPanel1.Controls.Add(this.cboSchoolYear);
-            this.tabControlPanel1.Location = new System.Drawing.Point(0, 29);
-            this.tabControlPanel1.Name = "tabControlPanel1";
-            this.tabControlPanel1.Padding = new System.Windows.Forms.Padding(1);
-            this.tabControlPanel1.Size = new System.Drawing.Size(534, 466);
-            this.tabControlPanel1.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(179)))), ((int)(((byte)(231)))));
-            this.tabControlPanel1.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(237)))), ((int)(((byte)(254)))));
-            this.tabControlPanel1.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
-            this.tabControlPanel1.Style.BorderColor.Color = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(97)))), ((int)(((byte)(156)))));
-            this.tabControlPanel1.Style.BorderSide = ((DevComponents.DotNetBar.eBorderSide)(((DevComponents.DotNetBar.eBorderSide.Left | DevComponents.DotNetBar.eBorderSide.Right) 
-            | DevComponents.DotNetBar.eBorderSide.Bottom)));
-            this.tabControlPanel1.Style.GradientAngle = 90;
-            this.tabControlPanel1.TabIndex = 1;
-            this.tabControlPanel1.TabItem = this.tabItem1;
-            // 
-            // circularProgress1
-            // 
-            this.circularProgress1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.circularProgress1.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.circularProgress1.BackgroundStyle.Class = "";
-            this.circularProgress1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.circularProgress1.FocusCuesEnabled = false;
-            this.circularProgress1.Location = new System.Drawing.Point(384, 55);
-            this.circularProgress1.Name = "circularProgress1";
-            this.circularProgress1.ProgressBarType = DevComponents.DotNetBar.eCircularProgressType.Dot;
-            this.circularProgress1.ProgressColor = System.Drawing.Color.LimeGreen;
-            this.circularProgress1.ProgressTextVisible = true;
-            this.circularProgress1.Size = new System.Drawing.Size(66, 62);
-            this.circularProgress1.Style = DevComponents.DotNetBar.eDotNetBarStyle.Windows7;
-            this.circularProgress1.TabIndex = 14;
-            // 
-            // listViewEx1
-            // 
-            this.listViewEx1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            // 
-            // 
-            // 
-            this.listViewEx1.Border.Class = "ListViewBorder";
-            this.listViewEx1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.listViewEx1.CheckBoxes = true;
-            this.listViewEx1.Location = new System.Drawing.Point(84, 202);
-            this.listViewEx1.Name = "listViewEx1";
-            this.listViewEx1.Size = new System.Drawing.Size(366, 203);
-            this.listViewEx1.TabIndex = 8;
-            this.listViewEx1.UseCompatibleStateImageBehavior = false;
-            this.listViewEx1.View = System.Windows.Forms.View.List;
-            // 
-            // labelX7
-            // 
-            this.labelX7.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.labelX7.AutoSize = true;
-            this.labelX7.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX7.BackgroundStyle.Class = "";
-            this.labelX7.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX7.Location = new System.Drawing.Point(132, 18);
-            this.labelX7.Name = "labelX7";
-            this.labelX7.Size = new System.Drawing.Size(60, 21);
-            this.labelX7.TabIndex = 5;
-            this.labelX7.Text = "學年度：";
-            // 
-            // labelX2
-            // 
-            this.labelX2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.labelX2.AutoSize = true;
-            this.labelX2.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX2.BackgroundStyle.Class = "";
-            this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(84, 175);
-            this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(74, 21);
-            this.labelX2.TabIndex = 5;
-            this.labelX2.Text = "列印科目：";
-            // 
-            // cboExam
-            // 
-            this.cboExam.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.cboExam.DisplayMember = "Name";
-            this.cboExam.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboExam.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboExam.FormattingEnabled = true;
-            this.cboExam.ItemHeight = 19;
-            this.cboExam.Location = new System.Drawing.Point(199, 55);
-            this.cboExam.Name = "cboExam";
-            this.cboExam.Size = new System.Drawing.Size(160, 25);
-            this.cboExam.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.cboExam.TabIndex = 5;
-            this.cboExam.ValueMember = "ID";
-            this.cboExam.SelectedIndexChanged += new System.EventHandler(this.ExamChanged);
-            // 
-            // cboRankRilter
-            // 
-            this.cboRankRilter.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.cboRankRilter.DisplayMember = "Text";
-            this.cboRankRilter.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboRankRilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboRankRilter.FormattingEnabled = true;
-            this.cboRankRilter.ItemHeight = 19;
-            this.cboRankRilter.Location = new System.Drawing.Point(199, 134);
-            this.cboRankRilter.Name = "cboRankRilter";
-            this.cboRankRilter.Size = new System.Drawing.Size(160, 25);
-            this.cboRankRilter.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.cboRankRilter.TabIndex = 7;
-            // 
-            // labelX4
-            // 
-            this.labelX4.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.labelX4.AutoSize = true;
-            this.labelX4.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX4.BackgroundStyle.Class = "";
-            this.labelX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX4.Location = new System.Drawing.Point(91, 57);
-            this.labelX4.Name = "labelX4";
-            this.labelX4.Size = new System.Drawing.Size(101, 21);
-            this.labelX4.TabIndex = 5;
-            this.labelX4.Text = "列印成績試別：";
-            // 
-            // labelX3
-            // 
-            this.labelX3.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.labelX3.AutoSize = true;
-            this.labelX3.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX3.BackgroundStyle.Class = "";
-            this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX3.Location = new System.Drawing.Point(78, 136);
-            this.labelX3.Name = "labelX3";
-            this.labelX3.Size = new System.Drawing.Size(114, 21);
-            this.labelX3.TabIndex = 5;
-            this.labelX3.Text = "不排名學生類別：";
-            // 
-            // cboRefExam
-            // 
-            this.cboRefExam.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.cboRefExam.DisplayMember = "Name";
-            this.cboRefExam.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboRefExam.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboRefExam.FormattingEnabled = true;
-            this.cboRefExam.ItemHeight = 19;
-            this.cboRefExam.Location = new System.Drawing.Point(199, 94);
-            this.cboRefExam.Name = "cboRefExam";
-            this.cboRefExam.Size = new System.Drawing.Size(160, 25);
-            this.cboRefExam.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.cboRefExam.TabIndex = 6;
-            this.cboRefExam.ValueMember = "ID";
-            // 
-            // cboSemester
-            // 
-            this.cboSemester.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.cboSemester.DisplayMember = "Text";
-            this.cboSemester.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboSemester.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboSemester.FormattingEnabled = true;
-            this.cboSemester.ItemHeight = 19;
-            this.cboSemester.Location = new System.Drawing.Point(305, 16);
-            this.cboSemester.Name = "cboSemester";
-            this.cboSemester.Size = new System.Drawing.Size(54, 25);
-            this.cboSemester.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.cboSemester.TabIndex = 4;
-            this.cboSemester.TextChanged += new System.EventHandler(this.ExamChanged);
-            // 
-            // labelX8
-            // 
-            this.labelX8.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.labelX8.AutoSize = true;
-            this.labelX8.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX8.BackgroundStyle.Class = "";
-            this.labelX8.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX8.Location = new System.Drawing.Point(91, 96);
-            this.labelX8.Name = "labelX8";
-            this.labelX8.Size = new System.Drawing.Size(101, 21);
-            this.labelX8.TabIndex = 5;
-            this.labelX8.Text = "參考成績試別：";
-            // 
-            // labelX9
-            // 
-            this.labelX9.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.labelX9.AutoSize = true;
-            this.labelX9.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX9.BackgroundStyle.Class = "";
-            this.labelX9.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX9.Location = new System.Drawing.Point(258, 18);
-            this.labelX9.Name = "labelX9";
-            this.labelX9.Size = new System.Drawing.Size(47, 21);
-            this.labelX9.TabIndex = 5;
-            this.labelX9.Text = "學期：";
-            // 
-            // cboSchoolYear
-            // 
-            this.cboSchoolYear.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.cboSchoolYear.DisplayMember = "Text";
-            this.cboSchoolYear.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboSchoolYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboSchoolYear.FormattingEnabled = true;
-            this.cboSchoolYear.ItemHeight = 19;
-            this.cboSchoolYear.Location = new System.Drawing.Point(199, 16);
-            this.cboSchoolYear.Name = "cboSchoolYear";
-            this.cboSchoolYear.Size = new System.Drawing.Size(54, 25);
-            this.cboSchoolYear.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.cboSchoolYear.TabIndex = 3;
-            this.cboSchoolYear.TextChanged += new System.EventHandler(this.ExamChanged);
-            // 
-            // tabItem1
-            // 
-            this.tabItem1.AttachedControl = this.tabControlPanel1;
-            this.tabItem1.Name = "tabItem1";
-            this.tabItem1.Text = "成績";
-            // 
             // ConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
@@ -921,16 +1001,18 @@
             this.MaximizeBox = true;
             this.Name = "ConfigForm";
             this.Text = "定期評量成績單";
+            this.Load += new System.EventHandler(this.ConfigForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).EndInit();
             this.tabControl1.ResumeLayout(false);
+            this.tabControlPanel1.ResumeLayout(false);
+            this.tabControlPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtCurDate)).EndInit();
             this.tabControlPanel3.ResumeLayout(false);
             this.tabControlPanel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtEnd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtBegin)).EndInit();
             this.tabControlPanel2.ResumeLayout(false);
             this.tabControlPanel2.PerformLayout();
-            this.tabControlPanel1.ResumeLayout(false);
-            this.tabControlPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -985,6 +1067,8 @@
         private DevComponents.DotNetBar.Controls.CircularProgress circularProgress1;
         private DevComponents.DotNetBar.LabelX labelX15;
         private DevComponents.DotNetBar.LabelX labelX16;
+        private DevComponents.Editors.DateTimeAdv.DateTimeInput dtCurDate;
+        private DevComponents.DotNetBar.LabelX labelX17;
     }
 }
 

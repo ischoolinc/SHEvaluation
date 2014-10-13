@@ -1,8 +1,0 @@
-D:\TFS2010\ischoolteam\ischool_Senior with FISCA\Modules\SHCourseScoreInputStatus\SHCourseScoreInputStatus\bin\Debug\SHCourseScoreInputStatus.dll
-D:\TFS2010\ischoolteam\ischool_Senior with FISCA\Modules\SHCourseScoreInputStatus\SHCourseScoreInputStatus\bin\Debug\SHCourseScoreInputStatus.pdb
-D:\TFS2010\ischoolteam\ischool_Senior with FISCA\Modules\SHCourseScoreInputStatus\SHCourseScoreInputStatus\obj\Debug\ResolveAssemblyReference.cache
-D:\TFS2010\ischoolteam\ischool_Senior with FISCA\Modules\SHCourseScoreInputStatus\SHCourseScoreInputStatus\obj\Debug\SHCourseScoreInputStatus.CourseScoreInputForm.resources
-D:\TFS2010\ischoolteam\ischool_Senior with FISCA\Modules\SHCourseScoreInputStatus\SHCourseScoreInputStatus\obj\Debug\GenerateResource.read.1.tlog
-D:\TFS2010\ischoolteam\ischool_Senior with FISCA\Modules\SHCourseScoreInputStatus\SHCourseScoreInputStatus\obj\Debug\GenerateResource.write.1.tlog
-D:\TFS2010\ischoolteam\ischool_Senior with FISCA\Modules\SHCourseScoreInputStatus\SHCourseScoreInputStatus\obj\Debug\SHCourseScoreInputStatus.dll
-D:\TFS2010\ischoolteam\ischool_Senior with FISCA\Modules\SHCourseScoreInputStatus\SHCourseScoreInputStatus\obj\Debug\SHCourseScoreInputStatus.pdb

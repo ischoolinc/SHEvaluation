@@ -6,7 +6,6 @@ using FISCA.DSAUtil;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
 using SmartSchool.Evaluation.WearyDogComputerHelper;
-using System.Data;
 
 namespace SmartSchool.Evaluation
 {
@@ -875,32 +874,6 @@ namespace SmartSchool.Evaluation
             }
 
             return _ErrorList;
-        }
-
-        /// <summary>
-        /// 繞過過時的核心功能
-        /// 自己取得本學期的學分數內容
-        /// 2014/10/2 - dylan
-        /// </summary>
-        private Dictionary<string, decimal> GetSchoolYearSemester(int schoolyear, int semester)
-        {
-            Dictionary<string, decimal> dic = new Dictionary<string, decimal>();
-            FISCA.Data.QueryHelper _Q = new FISCA.Data.QueryHelper();
-            DataTable dt = _Q.Select(string.Format("select id,credit from course where school_year={0} and semester={1}", "" + schoolyear, "" + semester));
-            foreach (DataRow row in dt.Rows)
-            {
-                string id = "" + row["id"];
-                decimal credit;
-                if (decimal.TryParse("" + row["credit"], out credit))
-                {
-                    if (!dic.ContainsKey(id))
-                    {
-                        dic.Add(id, credit);
-                    }
-                }
-            }
-            return dic;
-
         }
 
         /// <summary>

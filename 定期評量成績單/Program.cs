@@ -245,6 +245,12 @@ namespace 定期評量成績單
                     table.Columns.Add("警告統計");
                     table.Columns.Add("留校察看");
 
+                    table.Columns.Add("成績校正年");
+                    table.Columns.Add("成績校正月");
+                    table.Columns.Add("成績校正日");
+                    table.Columns.Add("成績校正民國年");
+                    table.Columns.Add("成績校正日期");
+
                     #region 瘋狂的組距及分析
                     table.Columns.Add("總分班高標"); table.Columns.Add("總分科高標"); table.Columns.Add("總分校高標"); table.Columns.Add("平均班高標"); table.Columns.Add("平均科高標"); table.Columns.Add("平均校高標"); table.Columns.Add("加權總分班高標"); table.Columns.Add("加權總分科高標"); table.Columns.Add("加權總分校高標"); table.Columns.Add("加權平均班高標"); table.Columns.Add("加權平均科高標"); table.Columns.Add("加權平均校高標"); table.Columns.Add("類1總分高標"); table.Columns.Add("類1平均高標"); table.Columns.Add("類1加權總分高標"); table.Columns.Add("類1加權平均高標"); table.Columns.Add("類2總分高標"); table.Columns.Add("類2平均高標"); table.Columns.Add("類2加權總分高標"); table.Columns.Add("類2加權平均高標");
                     table.Columns.Add("總分班均標"); table.Columns.Add("總分科均標"); table.Columns.Add("總分校均標"); table.Columns.Add("平均班均標"); table.Columns.Add("平均科均標"); table.Columns.Add("平均校均標"); table.Columns.Add("加權總分班均標"); table.Columns.Add("加權總分科均標"); table.Columns.Add("加權總分校均標"); table.Columns.Add("加權平均班均標"); table.Columns.Add("加權平均科均標"); table.Columns.Add("加權平均校均標"); table.Columns.Add("類1總分均標"); table.Columns.Add("類1平均均標"); table.Columns.Add("類1加權總分均標"); table.Columns.Add("類1加權平均均標"); table.Columns.Add("類2總分均標"); table.Columns.Add("類2平均均標"); table.Columns.Add("類2加權總分均標"); table.Columns.Add("類2加權平均均標");
@@ -1428,6 +1434,16 @@ namespace 定期評量成績單
                                    row["學號"] = stuRec.StudentNumber;
                                    row["姓名"] = stuRec.StudentName;
                                    row["定期評量"] = conf.ExamRecord.Name;
+
+                                   if (conf.ScoreCurDate != null)
+                                   {
+                                   row["成績校正年"] = conf.ScoreCurDate.Year;
+                                   row["成績校正月"] = conf.ScoreCurDate.Month;
+                                   row["成績校正日"] = conf.ScoreCurDate.Day;
+                                   row["成績校正民國年"] = (conf.ScoreCurDate.Year - 1911);
+                                   row["成績校正日期"] = conf.ScoreCurDate.ToShortDateString();
+                                   }
+
                                    #endregion
                                    #region 成績資料
                                    #region 各科成績資料

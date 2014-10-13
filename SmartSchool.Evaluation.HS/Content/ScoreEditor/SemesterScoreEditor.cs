@@ -849,8 +849,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             foreach (int i in new int[] { 2, 3 })
             {
                 row.Cells[i].ErrorText = "";
-                int x = 0;
-                if ("" + row.Cells[i].Value != "" && !int.TryParse("" + row.Cells[i].Value, out x))
+                decimal x = 0;
+                if ("" + row.Cells[i].Value != "" && !decimal.TryParse("" + row.Cells[i].Value, out x))
                 {
                     validatePass &= false;
                     row.Cells[i].ErrorText = "必須輸入整數數字";

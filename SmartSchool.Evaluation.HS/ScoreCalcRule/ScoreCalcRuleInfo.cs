@@ -16,6 +16,10 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
         private readonly string _TrimName;
         //private readonly bool _DefinedSubjectInfoByGPlan;
 
+        /// <summary>
+        /// 成績計算規則
+        /// </summary>
+        /// <param name="scrElement"></param>
         internal ScoreCalcRuleInfo(XmlElement scrElement)
         {
             _ID = scrElement.GetAttribute("ID");
@@ -49,7 +53,7 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
 
         public XmlElement CalculateSemesterEntryScore(XmlElement semesterSubjectScore)
         {
-            Dictionary<string, int> entryCreditCount = new Dictionary<string, int>();
+             Dictionary<string, decimal> entryCreditCount = new Dictionary<string, decimal>();
             Dictionary<string, List<decimal>> entrySubjectScores = new Dictionary<string, List<decimal>>();
             Dictionary<string, decimal> entryDividend = new Dictionary<string, decimal>();
             Dictionary<string, bool> calcEntry = new Dictionary<string, bool>();
@@ -123,8 +127,8 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
                     continue;
                 #region 分項類別跟學分數
                 string entry = subjectElement.GetAttribute("開課分項類別");
-                int credit = 0;
-                int.TryParse(subjectElement.GetAttribute("開課學分數"), out credit);
+                decimal credit = 0;
+                decimal.TryParse(subjectElement.GetAttribute("開課學分數"), out credit);
                 #endregion
                 decimal maxScore = 0;
                 decimal original = 0;

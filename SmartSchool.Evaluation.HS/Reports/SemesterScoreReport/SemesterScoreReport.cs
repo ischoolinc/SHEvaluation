@@ -415,9 +415,9 @@ namespace SmartSchool.Evaluation.Reports
                 #region 科目成績
 
                 Dictionary<SemesterSubjectScoreInfo, Dictionary<string, string>> subjectScore = new Dictionary<SemesterSubjectScoreInfo, Dictionary<string, string>>();
-                int thisSemesterTotalCredit = 0;
-                int thisSchoolYearTotalCredit = 0;
-                int beforeSemesterTotalCredit = 0;
+                decimal thisSemesterTotalCredit = 0;
+                decimal thisSchoolYearTotalCredit = 0;
+                decimal beforeSemesterTotalCredit = 0;
 
                 Dictionary<int, decimal> resitStandard = var.Fields["補考標準"] as Dictionary<int, decimal>;
 
@@ -437,7 +437,7 @@ namespace SmartSchool.Evaluation.Reports
 
                         subjectScore[info].Add("科目", info.Subject);
                         subjectScore[info].Add("級別", (string.IsNullOrEmpty(info.Level) ? "" : GetNumber(int.Parse(info.Level))));
-                        subjectScore[info].Add("學分", info.Credit.ToString());
+                        subjectScore[info].Add("學分", info.CreditDec().ToString());
                         subjectScore[info].Add("分數", noScore ? info.Score.ToString() : "");
                         subjectScore[info].Add("必修", ((info.Require) ? "必" : "選"));
 
@@ -454,15 +454,15 @@ namespace SmartSchool.Evaluation.Reports
                     if (info.Pass)
                     {
                         if (info.SchoolYear == schoolyear && info.Semester == semester)
-                            thisSemesterTotalCredit += info.Credit;
+                            thisSemesterTotalCredit += info.CreditDec();
 
                         if (info.SchoolYear < schoolyear)
-                            beforeSemesterTotalCredit += info.Credit;
+                            beforeSemesterTotalCredit += info.CreditDec();
                         else if (info.SchoolYear == schoolyear && info.Semester <= semester)
-                            beforeSemesterTotalCredit += info.Credit;
+                            beforeSemesterTotalCredit += info.CreditDec();
 
                         if (info.SchoolYear == schoolyear)
-                            thisSchoolYearTotalCredit += info.Credit;
+                            thisSchoolYearTotalCredit += info.CreditDec();
                     }
                 }
 

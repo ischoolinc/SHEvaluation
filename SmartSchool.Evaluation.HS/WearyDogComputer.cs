@@ -6,6 +6,7 @@ using FISCA.DSAUtil;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
 using SmartSchool.Evaluation.WearyDogComputerHelper;
+using System.Data;
 
 namespace SmartSchool.Evaluation
 {
@@ -78,6 +79,7 @@ namespace SmartSchool.Evaluation
             accesshelper.StudentHelper.FillAttendCourse(schoolyear, semester, students);
             //抓學生歷年學期科目成績
             accesshelper.StudentHelper.FillSemesterSubjectScore(false, students);
+
             foreach (StudentRecord var in students)
             {
                 //成績年級
@@ -372,6 +374,8 @@ namespace SmartSchool.Evaluation
                                     //修改成績
                                     XmlElement updateScoreElement = updateScoreInfo.Detail;
                                     #region 重新填入課程資料
+
+
                                     updateScoreElement.SetAttribute("不計學分", sacRecord.NotIncludedInCredit ? "是" : "否");
                                     updateScoreElement.SetAttribute("不需評分", sacRecord.NotIncludedInCalc ? "是" : "否");
                                     updateScoreElement.SetAttribute("修課必選修", sacRecord.Required ? "必修" : "選修");
@@ -379,7 +383,10 @@ namespace SmartSchool.Evaluation
                                     updateScoreElement.SetAttribute("科目", sacRecord.Subject);
                                     updateScoreElement.SetAttribute("科目級別", sacRecord.SubjectLevel);
                                     updateScoreElement.SetAttribute("開課分項類別", sacRecord.Entry);
-                                    updateScoreElement.SetAttribute("開課學分數", "" + sacRecord.Credit);
+
+                                    updateScoreElement.SetAttribute("開課學分數", "" + sacRecord.CreditDec());
+
+
                                     #endregion
                                     updateScoreElement.SetAttribute("原始成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
                                     //做取得學分判斷
@@ -868,6 +875,32 @@ namespace SmartSchool.Evaluation
             }
 
             return _ErrorList;
+        }
+
+        /// <summary>
+        /// 繞過過時的核心功能
+        /// 自己取得本學期的學分數內容
+        /// 2014/10/2 - dylan
+        /// </summary>
+        private Dictionary<string, decimal> GetSchoolYearSemester(int schoolyear, int semester)
+        {
+            Dictionary<string, decimal> dic = new Dictionary<string, decimal>();
+            FISCA.Data.QueryHelper _Q = new FISCA.Data.QueryHelper();
+            DataTable dt = _Q.Select(string.Format("select id,credit from course where school_year={0} and semester={1}", "" + schoolyear, "" + semester));
+            foreach (DataRow row in dt.Rows)
+            {
+                string id = "" + row["id"];
+                decimal credit;
+                if (decimal.TryParse("" + row["credit"], out credit))
+                {
+                    if (!dic.ContainsKey(id))
+                    {
+                        dic.Add(id, credit);
+                    }
+                }
+            }
+            return dic;
+
         }
 
         /// <summary>

@@ -56,6 +56,11 @@
       <HintPath>library\FISCA.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="FISCA.Data, Version=1.0.0.3, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>library\FISCA.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="FISCA.Presentation, Version=1.1.0.16, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>library\FISCA.Presentation.dll</HintPath>
@@ -79,6 +84,11 @@
     <Reference Include="SHSchool.Data, Version=1.8.0.4, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>library\SHSchool.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SmartSchool.Core, Version=1.0.4.6, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>library\SmartSchool.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SmartSchool.Customization.Data, Version=1.3.0.1, Culture=neutral, processorArchitecture=MSIL">
@@ -155,6 +165,9 @@
     <Content Include="library\Aspose.Words.xml" />
     <Content Include="library\DevComponents.DotNetBar2.dll" />
     <Content Include="library\DevComponents.DotNetBar2.xml" />
+    <Content Include="library\FISCA.Data.dll" />
+    <Content Include="library\FISCA.Data.pdb" />
+    <Content Include="library\FISCA.Data.xml" />
     <Content Include="library\FISCA.dll" />
     <Content Include="library\FISCA.pdb" />
     <Content Include="library\FISCA.Presentation.dll" />
@@ -172,6 +185,8 @@
     <Content Include="library\SHSchool.Data.dll" />
     <Content Include="library\SHSchool.Data.pdb" />
     <Content Include="library\SHSchool.Data.xml" />
+    <Content Include="library\SmartSchool.Core.dll" />
+    <Content Include="library\SmartSchool.Core.pdb" />
     <Content Include="library\SmartSchool.Customization.Data.dll" />
     <Content Include="library\SmartSchool.Customization.Data.xml" />
   </ItemGroup>

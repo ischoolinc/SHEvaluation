@@ -43,8 +43,8 @@ namespace SmartSchool.Evaluation.Configuration
                 XmlElement element = (XmlElement)value.SelectSingleNode("SubjectTableContent");
                 if ( element != null )
                 {
-                    int integer;
-
+                     decimal integer;
+                     int CoreInteger;
                     //學程科目表 (2011/4/21修改)
                     if (_ProgramTable) 
                     {
@@ -54,10 +54,10 @@ namespace SmartSchool.Evaluation.Configuration
                         //if (int.TryParse(element.GetAttribute("CoreCount"), out integer))
                         //    integerInput2.Value = integer;
 
-                        if (int.TryParse(element.GetAttribute("CreditCount"), out integer))
+                        if (decimal.TryParse(element.GetAttribute("CreditCount"), out integer))
                             textBoxX1.Text = ""+integer;
-                        if (int.TryParse(element.GetAttribute("CoreCount"), out integer))
-                            textBoxX2.Text = ""+integer;
+                        if (int.TryParse(element.GetAttribute("CoreCount"), out CoreInteger))
+                             textBoxX2.Text = "" + CoreInteger;
                     }
                     //核心科目表 (2011/4/21 修改)
                     else 
@@ -68,9 +68,9 @@ namespace SmartSchool.Evaluation.Configuration
                         //if (int.TryParse(element.GetAttribute("CreditCount"), out integer))
                         //    integerInput2.Value = integer;
 
-                        if (int.TryParse(element.GetAttribute("AttendCount"), out integer))
-                            textBoxX1.Text = ""+integer;
-                        if (int.TryParse(element.GetAttribute("CreditCount"), out integer))
+                         if (int.TryParse(element.GetAttribute("AttendCount"), out CoreInteger))
+                              textBoxX1.Text = "" + CoreInteger;
+                        if (decimal.TryParse(element.GetAttribute("CreditCount"), out integer))
                             textBoxX2.Text = ""+integer;
                     }
 

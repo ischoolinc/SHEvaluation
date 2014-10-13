@@ -9,6 +9,7 @@ using System.IO;
 using SmartSchool.Customization.Data;
 using System.Threading;
 using SmartSchool.Customization.Data.StudentExtension;
+using SmartSchool;
 
 namespace SH_yhcvs_ExamScore_epost
 {
@@ -1606,7 +1607,7 @@ namespace SH_yhcvs_ExamScore_epost
                                                         decimal level;
                                                         subjectNumber = decimal.TryParse(sceTakeRecord.SubjectLevel, out level) ? (decimal?)level : null;
                                                         row["科目名稱" + subjectIndex] = sceTakeRecord.Subject + GetNumber(subjectNumber);
-                                                        row["學分數" + subjectIndex] = sceTakeRecord.Credit;
+                                                        row["學分數" + subjectIndex] = sceTakeRecord.CreditDec();
                                                         row["科目成績" + subjectIndex] = sceTakeRecord.SpecialCase == "" ? ("" + sceTakeRecord.ExamScore) : sceTakeRecord.SpecialCase;
                                                         #region 班排名及落點分析
                                                         if (stuRec.RefClass != null)
@@ -1845,7 +1846,7 @@ namespace SH_yhcvs_ExamScore_epost
                                                             decimal level;
                                                             subjectNumber = decimal.TryParse(courseRec.SubjectLevel, out level) ? (decimal?)level : null;
                                                             row["科目名稱" + subjectIndex] = courseRec.Subject + GetNumber(subjectNumber);
-                                                            row["學分數" + subjectIndex] = courseRec.Credit;
+                                                            row["學分數" + subjectIndex] = courseRec.CreditDec();
                                                             row["科目成績" + subjectIndex] = "未輸入";
                                                         }
                                                     }

@@ -159,10 +159,10 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
             Dictionary<string, decimal> entryCalcScores = new Dictionary<string, decimal>();
 
             //學年科目成績的學分數
-            Dictionary<string, int> subjectCreditCount = new Dictionary<string, int>();
+            Dictionary<string, decimal> subjectCreditCount = new Dictionary<string, decimal>();
 
             //各個分項成績的學分數
-            Dictionary<string, int> entryCreditCount = new Dictionary<string, int>();
+            Dictionary<string, decimal> entryCreditCount = new Dictionary<string, decimal>();
 
             //學年科目成績的各個科目成績列表
             Dictionary<string, List<decimal>> entrySubjectScores = new Dictionary<string, List<decimal>>();
@@ -175,7 +175,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
             {
                 if (!subjectCreditCount.ContainsKey(score.Subject))
                     subjectCreditCount.Add(score.Subject, 0);
-                subjectCreditCount[score.Subject] += score.Credit;
+                subjectCreditCount[score.Subject] += score.CreditDec();
             }
             #endregion
 
@@ -218,8 +218,8 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                     //    continue;
                     #region 分項類別跟學分數
                     //string entry = subjectNode.Detail.GetAttribute("開課分項類別");
-                    //int credit = subjectNode.Credit;
-                    int credit = subjectCreditCount.ContainsKey(subjectNode.Subject)?subjectCreditCount[subjectNode.Subject]:0 ;
+                     //int credit = subjectNode.CreditDec();
+                    decimal credit = subjectCreditCount.ContainsKey(subjectNode.Subject)?subjectCreditCount[subjectNode.Subject]:0 ;
                     #endregion
                     decimal maxScore = subjectNode.Score;
                     #region 取得最高分數

@@ -5,7 +5,7 @@ namespace SchoolYearScoreReport
 
     internal class ScoreData
     {
-        private int _firstCredit;
+        private decimal _firstCredit;
         private string _firstRequire;
         private decimal _firstScore;
         private string _firstSemesterItem;
@@ -14,7 +14,7 @@ namespace SchoolYearScoreReport
         private string _name;
         private string _schoolYearItem;
         private decimal _schoolYearScore;
-        private int _secondCredit;
+        private decimal _secondCredit;
         private string _secondRequire;
         private decimal _secondScore;
         private string _secondSemesterItem;
@@ -41,7 +41,7 @@ namespace SchoolYearScoreReport
             }
         }
 
-        public void SetInfo(string name, int semester, bool require, int credit, decimal score)
+        public void SetInfo(string name, int semester, bool require, decimal credit, decimal score)
         {
             this._name = name;
             this._firstSign = "";
@@ -123,7 +123,7 @@ namespace SchoolYearScoreReport
             this._yearScoreSign = sign;
         }
 
-        public int FirstCredit
+        public decimal FirstCredit
         {
             get
             {
@@ -216,7 +216,7 @@ namespace SchoolYearScoreReport
             }
         }
 
-        public int SecondCredit
+        public decimal SecondCredit
         {
             get
             {

@@ -341,14 +341,14 @@ namespace SmartSchool.Evaluation.Reports
                     {
                         if (info.Detail.GetAttribute("達補考標準") == "是")
                         {
-                            string sl = info.Subject + "_" + info.Level + "_" + info.Credit;
+                            string sl = info.Subject + "_" + info.Level + "_" + info.CreditDec();
 
                             if (!subjectInfo.ContainsKey(sl))
                             {
                                 subjectInfo.Add(sl, new Dictionary<string, string>());
                                 subjectInfo[sl].Add("科目", info.Subject);
                                 subjectInfo[sl].Add("級別", info.Level);
-                                subjectInfo[sl].Add("學分", info.Credit.ToString());
+                                subjectInfo[sl].Add("學分", info.CreditDec().ToString());
                             }
 
                             if (!subjectStudentList.ContainsKey(sl))

@@ -304,10 +304,10 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
             #region 數字欄位輸入格式檢察
             if ((e.ColumnIndex == _StartLevelIndex || (e.ColumnIndex >= _CreditStartIndex && e.ColumnIndex < _CreditStartIndex + 8)) && "" + e.FormattedValue!= "")
             {
-                int i = 0;
-                if (!int.TryParse(e.FormattedValue.ToString(), out i))
+                decimal i = 0;
+                if (!decimal.TryParse(e.FormattedValue.ToString(), out i))
                 {
-                    cell.ErrorText = "必須輸入數字";
+                    cell.ErrorText = "必須輸入學分數";
                 }
             }
             #endregion
@@ -324,13 +324,13 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
                 #region 若是正輸入的欄位則用驗證值檢查否則用欄位上的值檢察
                 for (int i = 0; i < 8; i++)
                 {
-                    int x = 0;
-                    if (i + _CreditStartIndex == e.ColumnIndex && (int.TryParse(e.FormattedValue.ToString(), out x)))
+                    decimal x = 0;
+                    if (i + _CreditStartIndex == e.ColumnIndex && (decimal.TryParse(e.FormattedValue.ToString(), out x)))
                     {
                         pass = true;
                         break;
                     }
-                    else if (int.TryParse("" + dataGridViewX1.Rows[e.RowIndex].Cells[i + _CreditStartIndex].FormattedValue, out x))
+                    else if (decimal.TryParse("" + dataGridViewX1.Rows[e.RowIndex].Cells[i + _CreditStartIndex].FormattedValue, out x))
                     {
                         pass = true;
                         break;
@@ -602,7 +602,7 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
                 {
                     rowIndex++;
                     //記錄每個級別所包含的學分數
-                    List<int> Credits = new List<int>();
+                    List<decimal> Credits = new List<decimal>();
                     //記錄每個級別所包含的學期
                     List<int> Semesters = new List<int>();
                     //記錄每個級別所包含的學年度
@@ -617,7 +617,7 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
                         {
                             ////壘計課程級別並記錄學分數學期年級
                             //countLevel++;
-                            Credits.Add(int.Parse("" + row.Cells[i].Value));
+                            Credits.Add(decimal.Parse("" + row.Cells[i].Value));
                             Semesters.Add((i - _CreditStartIndex+2) % 2 + 1);
                             GradeYears.Add((i - _CreditStartIndex+2) / 2);
                         }
@@ -825,8 +825,8 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
                         #region 若是正輸入的欄位則用驗證值檢查否則用欄位上的值檢察
                         for (int i = 0; i < 8; i++)
                         {
-                            int x = 0;
-                            if (int.TryParse(""+row.Cells[i + _CreditStartIndex].FormattedValue, out x))
+                            decimal x = 0;
+                            if (decimal.TryParse("" + row.Cells[i + _CreditStartIndex].FormattedValue, out x))
                             {
                                 pass = true;
                                 break;

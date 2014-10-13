@@ -1117,8 +1117,8 @@ namespace SmartSchool.Evaluation.Configuration
                 }
                 else
                 {
-                    int i;
-                    if (int.TryParse(txtCredit.Text, out i))
+                    decimal i;
+                    if (decimal.TryParse(txtCredit.Text, out i))
                     {
                         //輸入是數字
                         if (i < 0)

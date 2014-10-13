@@ -285,7 +285,7 @@ namespace SmartSchool.Evaluation.Reports
                             int level;
                             if(int.TryParse(info.Level, out level))
                                 levelString = GetNumber(level);
-                            string credit = info.Credit.ToString();
+                            string credit = info.CreditDec().ToString();
                             string score = info.Detail.GetAttribute("原始成績");
                             string limit = info.Detail.GetAttribute("補考標準");
 

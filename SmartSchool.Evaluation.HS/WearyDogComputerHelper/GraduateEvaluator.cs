@@ -593,7 +593,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                         else
                         {
                             #region 直接使用科目成績上的屬性
-                            subjectScore.Detail.SetAttribute("畢業採計-學分數", "" + subjectScore.Credit);
+                            subjectScore.Detail.SetAttribute("畢業採計-學分數", "" + subjectScore.CreditDec());
                             subjectScore.Detail.SetAttribute("畢業採計-分項類別", subjectScore.Detail.GetAttribute("開課分項類別"));
                             subjectScore.Detail.SetAttribute("畢業採計-必選修", subjectScore.Require ? "必修" : "選修");
                             subjectScore.Detail.SetAttribute("畢業採計-校部訂", subjectScore.Detail.GetAttribute("修課校部訂"));
@@ -623,19 +623,19 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
 
                                 if (Uncounted)
                                 {
-                                    get總學分數 += subjectScore.Credit;
+                                    get總學分數 += subjectScore.CreditDec();
                                     if (subjectScore.Require && subjectScore.Detail.GetAttribute("修課校部訂") == "校訂")
-                                        get校訂必修學分數 += subjectScore.Credit;
+                                         get校訂必修學分數 += subjectScore.CreditDec();
                                     if (!subjectScore.Require)
-                                        get選修學分數 += subjectScore.Credit;
+                                         get選修學分數 += subjectScore.CreditDec();
                                     if (subjectScore.Detail.GetAttribute("開課分項類別") == "實習科目")
-                                        get實習學分數 += subjectScore.Credit;
+                                         get實習學分數 += subjectScore.CreditDec();
                                     if (subjectScore.Detail.GetAttribute("開課分項類別") == "專業科目")
-                                        get專業學分數 += subjectScore.Credit;
+                                         get專業學分數 += subjectScore.CreditDec();
                                     if (subjectScore.Require && subjectScore.Detail.GetAttribute("修課校部訂") == "部訂")
-                                        get部訂必修學分數 += subjectScore.Credit;
+                                         get部訂必修學分數 += subjectScore.CreditDec();
                                     if (subjectScore.Require)
-                                        get必修學分數 += subjectScore.Credit;
+                                         get必修學分數 += subjectScore.CreditDec();
                                 }
                             }
                             else
@@ -765,10 +765,10 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                         if (subjectScore.Detail.GetAttribute("不計學分") == "是")
                                             continue;
 
-                                        attendCredits += subjectScore.Credit;
+                                        attendCredits += subjectScore.CreditDec();
 
                                         if (subjectScore.Pass)
-                                            passCredits += subjectScore.Credit;
+                                             passCredits += subjectScore.CreditDec();
                                         #endregion
                                     }
                                 }
@@ -1436,17 +1436,17 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
 
                                 if (Uncounted)
                                 {
-                                    get總學分數 += subjectScore.Credit;
+                                     get總學分數 += subjectScore.CreditDec();
                                     if (subjectScore.Require && subjectScore.Detail.GetAttribute("修課校部訂") == "校訂")
-                                        get校訂必修學分數 += subjectScore.Credit;
+                                         get校訂必修學分數 += subjectScore.CreditDec();
                                     if (!subjectScore.Require)
-                                        get選修學分數 += subjectScore.Credit;
+                                         get選修學分數 += subjectScore.CreditDec();
                                     if (subjectScore.Detail.GetAttribute("開課分項類別") == "實習科目")
-                                        get實習學分數 += subjectScore.Credit;
+                                         get實習學分數 += subjectScore.CreditDec();
                                     if (subjectScore.Require && subjectScore.Detail.GetAttribute("修課校部訂") == "部訂")
-                                        get部訂必修學分數 += subjectScore.Credit;
+                                         get部訂必修學分數 += subjectScore.CreditDec();
                                     if (subjectScore.Require)
-                                        get必修學分數 += subjectScore.Credit;
+                                         get必修學分數 += subjectScore.CreditDec();
                                 }
                                 #endregion
                             }
@@ -1563,10 +1563,10 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                         if (subjectScore.Detail.GetAttribute("不計學分") == "是")
                                             continue;
 
-                                        attendCredits += subjectScore.Credit;
+                                        attendCredits += subjectScore.CreditDec();
 
                                         if (subjectScore.Pass)
-                                            passCredits += subjectScore.Credit;
+                                             passCredits += subjectScore.CreditDec();
                                         #endregion
                                     }
                                 }

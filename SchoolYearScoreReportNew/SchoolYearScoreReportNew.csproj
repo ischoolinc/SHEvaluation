@@ -76,7 +76,12 @@
       <HintPath>library\SmartSchool.Common.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="SmartSchool.Customization.Data, Version=1.3.0.1, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SmartSchool.Core, Version=1.0.4.6, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>library\SmartSchool.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SmartSchool.Customization.Data, Version=1.3.0.3, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>library\SmartSchool.Customization.Data.dll</HintPath>
       <Private>False</Private>
@@ -174,8 +179,13 @@
     <Content Include="library\SmartSchool.Common.dll" />
     <Content Include="library\SmartSchool.Common.pdb" />
     <Content Include="library\SmartSchool.Common.xml" />
+    <Content Include="library\SmartSchool.Core.dll" />
+    <Content Include="library\SmartSchool.Core.pdb" />
     <Content Include="library\SmartSchool.Customization.Data.dll" />
-    <Content Include="library\SmartSchool.Customization.Data.xml" />
+    <Content Include="library\SmartSchool.Customization.Data.pdb" />
+    <Content Include="library\SmartSchool.Customization.Data.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="library\SmartSchool.Customization.PlugIn.dll" />
     <Content Include="library\SmartSchool.Customization.PlugIn.xml" />
   </ItemGroup>

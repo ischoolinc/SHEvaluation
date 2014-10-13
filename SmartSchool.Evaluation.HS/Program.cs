@@ -700,6 +700,8 @@ namespace SmartSchool.Evaluation
 
         }
 
+        #region 過時程式碼
+
         //static void SystemProvider_GetField(object sender, SmartSchool.API.Provider.GetSystemFieldEventArgs e)
         //{
         //    switch ( e.FieldName )
@@ -1107,7 +1109,10 @@ namespace SmartSchool.Evaluation
         //                #endregion
         //        }
         //    }
-        //}
+        //} 
+        #endregion
+
+
 
         class Button1 : ButtonAdapter, IFeature
         {

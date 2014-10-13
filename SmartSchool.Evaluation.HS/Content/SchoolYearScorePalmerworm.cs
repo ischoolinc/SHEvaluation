@@ -90,16 +90,16 @@ namespace SmartSchool.Evaluation.Content
 
             WaitingPicVisible = false;
             Dictionary<string, string[]> EntryScore = new Dictionary<string, string[]>();
-            Dictionary<string, int> Credit = new Dictionary<string, int>();
+            Dictionary<string, decimal> Credit = new Dictionary<string, decimal>();
             foreach (XmlElement var in _SubjectResponse.GetContent().GetElements("SemesterSubjectScore"))
             {
                 #region 統計取得學分數
                 string schoolyear = var.SelectSingleNode("SchoolYear").InnerText;
                 string gradeyear = var.SelectSingleNode("GradeYear").InnerText;
-                int creditCount = 0;
+                decimal creditCount = 0;
                 foreach (XmlNode cnode in var.SelectNodes("ScoreInfo/SemesterSubjectScoreInfo/Subject"))
                 {
-                    int credit = int.Parse(cnode.SelectSingleNode("@開課學分數").InnerText);
+                    decimal credit = decimal.Parse(cnode.SelectSingleNode("@開課學分數").InnerText);
                     bool getCredit = cnode.SelectSingleNode("@是否取得學分").InnerText == "是";
                     bool notIncludedInCredit = cnode.SelectSingleNode("@不計學分").InnerText == "是";
                     if (getCredit && !notIncludedInCredit)

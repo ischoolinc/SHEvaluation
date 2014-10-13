@@ -353,7 +353,7 @@ namespace SmartSchool.Evaluation.Reports
                 aInfo.Add("科目級別", info.Level);
                 aInfo.Add("學年度", info.SchoolYear.ToString());
                 aInfo.Add("學期", info.Semester.ToString());
-                aInfo.Add("學分數", info.Credit.ToString());
+                aInfo.Add("學分數", info.CreditDec().ToString());
                 aInfo.Add("成績年級", info.GradeYear.ToString());
                 aInfo.Add("必選修", info.Require ? "必修" : "選修");
                 aInfo.Add("校部訂", info.Detail.HasAttribute("修課校部訂") ? info.Detail.GetAttribute("修課校部訂") : "");

@@ -411,8 +411,8 @@ namespace SmartSchool.Evaluation.Reports
                             //string header = info.Subject + levelString + "_" + (info.Require ? "必 " : "選 ") + "_" + info.Credit;
                             //string creditHeader = (info.Require ? "必 " : "選 ") + info.Credit;
 
-                            string header = info.Subject + levelString + "_" + info.Credit;
-                            string creditHeader = info.Credit.ToString();
+                            string header = info.Subject + levelString + "_" + info.CreditDec();
+                            string creditHeader = info.CreditDec().ToString();
 
                             if (!subjectHeader.Contains(header))
                             {
@@ -480,10 +480,10 @@ namespace SmartSchool.Evaluation.Reports
                     ws.Cells[rowIndex, 1].PutValue(student.SeatNo);
                     ws.Cells[rowIndex, 2].PutValue(student.StudentName);
 
-                    int shouldGetCredit = 0;
-                    int gotCredit = 0;
-                    int shouldGetTotalCredit = 0;
-                    int gotTotalCredit = 0;
+                    decimal shouldGetCredit = 0;
+                    decimal gotCredit = 0;
+                    decimal shouldGetTotalCredit = 0;
+                    decimal gotTotalCredit = 0;
 
                     foreach (SemesterSubjectScoreInfo info in student.SemesterSubjectScoreList)
                     {
@@ -493,9 +493,9 @@ namespace SmartSchool.Evaluation.Reports
 
                         if (info.SchoolYear == schoolyear && info.Semester == semester)
                         {                            
-                            shouldGetCredit += info.Credit;
+                            shouldGetCredit += info.CreditDec();
                             if (info.Pass)
-                                gotCredit += info.Credit;
+                                 gotCredit += info.CreditDec();
 
                             int level;
                             string levelString = "";
@@ -504,7 +504,7 @@ namespace SmartSchool.Evaluation.Reports
 
                             //之前
                             //string key = info.Subject + levelString + "_" + (info.Require ? "必 " : "選 ") + "_" + info.Credit;
-                            string key = info.Subject + levelString + "_" + info.Credit;
+                            string key = info.Subject + levelString + "_" + info.CreditDec();
 
                             if (columnIndexTable.ContainsKey(key))
                             {
@@ -513,9 +513,9 @@ namespace SmartSchool.Evaluation.Reports
                             }
                         }
 
-                        shouldGetTotalCredit += info.Credit;
+                        shouldGetTotalCredit += info.CreditDec();
                         if (info.Pass)
-                            gotTotalCredit += info.Credit;
+                            gotTotalCredit += info.CreditDec();
                     }
 
                     foreach (SemesterEntryScoreInfo info in student.SemesterEntryScoreList)

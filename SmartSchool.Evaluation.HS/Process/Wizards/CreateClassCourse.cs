@@ -71,6 +71,17 @@ namespace SmartSchool.Evaluation.Process.Wizards
             buttonX1.Enabled = !_errors.HasError;
         }
 
+        private void checkIsdecimal(object sender, EventArgs e)
+        {
+            decimal input;
+            TextBox txtbox = (TextBox)sender;
+            if (txtbox.Text != "" && (!decimal.TryParse(txtbox.Text, out input) || input < 0))
+                _errors.SetError(txtbox, "必需輸入學分數。");
+            else
+                _errors.SetError(txtbox, "");
+            buttonX1.Enabled = !_errors.HasError;
+        }
+
         private void txtSubject_TextChanged(object sender, EventArgs e)
         {
             if (txtSubject.Text == "")

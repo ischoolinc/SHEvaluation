@@ -90,7 +90,7 @@ namespace SmartSchool.Evaluation.Content
 
             WaitingPicVisible = false;
             Dictionary<string, string[]> EntryScore = new Dictionary<string, string[]>();
-            Dictionary<string, int> Credit = new Dictionary<string, int>();
+            Dictionary<string, decimal> Credit = new Dictionary<string, decimal>();
             Dictionary<string, string> GradeYear = new Dictionary<string, string>();
             Dictionary<string, string> GradeYearError = new Dictionary<string, string>();
             foreach (XmlElement var in _SubjectResponse.GetContent().GetElements("SemesterSubjectScore"))
@@ -98,10 +98,10 @@ namespace SmartSchool.Evaluation.Content
                 string schoolyear = var.SelectSingleNode("SchoolYear").InnerText;
                 string semester = var.SelectSingleNode("Semester").InnerText;
                 string gradeyear = var.SelectSingleNode("GradeYear").InnerText;
-                int creditCount = 0;
+                decimal creditCount = 0;
                 foreach (XmlElement cnode in var.SelectNodes("ScoreInfo/SemesterSubjectScoreInfo/Subject"))
                 {
-                    int credit = int.Parse(cnode.GetAttribute("開課學分數"));
+                    decimal credit = decimal.Parse(cnode.GetAttribute("開課學分數"));
                     bool getCredit = cnode.GetAttribute("是否取得學分") == "是";
                     bool notIncludedInCredit = cnode.GetAttribute("不計學分") == "是";
 

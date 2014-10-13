@@ -61,9 +61,14 @@
             // 
             this.labelX1.AutoSize = true;
             this.labelX1.BackColor = System.Drawing.Color.Transparent;
-            this.labelX1.Location = new System.Drawing.Point(8, 41);
+            // 
+            // 
+            // 
+            this.labelX1.BackgroundStyle.Class = "";
+            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX1.Location = new System.Drawing.Point(21, 41);
             this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(47, 19);
+            this.labelX1.Size = new System.Drawing.Size(47, 21);
             this.labelX1.TabIndex = 0;
             this.labelX1.Text = "科目：";
             // 
@@ -71,9 +76,14 @@
             // 
             this.labelX2.AutoSize = true;
             this.labelX2.BackColor = System.Drawing.Color.Transparent;
-            this.labelX2.Location = new System.Drawing.Point(175, 41);
+            // 
+            // 
+            // 
+            this.labelX2.BackgroundStyle.Class = "";
+            this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX2.Location = new System.Drawing.Point(235, 41);
             this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(47, 19);
+            this.labelX2.Size = new System.Drawing.Size(47, 21);
             this.labelX2.TabIndex = 0;
             this.labelX2.Text = "級別：";
             // 
@@ -83,9 +93,10 @@
             // 
             // 
             this.txtSubject.Border.Class = "TextBoxBorder";
-            this.txtSubject.Location = new System.Drawing.Point(55, 38);
+            this.txtSubject.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtSubject.Location = new System.Drawing.Point(74, 39);
             this.txtSubject.Name = "txtSubject";
-            this.txtSubject.Size = new System.Drawing.Size(100, 25);
+            this.txtSubject.Size = new System.Drawing.Size(125, 25);
             this.txtSubject.TabIndex = 2;
             this.txtSubject.TextChanged += new System.EventHandler(this.txtSubject_TextChanged);
             // 
@@ -95,9 +106,10 @@
             // 
             // 
             this.txtLevel.Border.Class = "TextBoxBorder";
-            this.txtLevel.Location = new System.Drawing.Point(222, 38);
+            this.txtLevel.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtLevel.Location = new System.Drawing.Point(288, 39);
             this.txtLevel.Name = "txtLevel";
-            this.txtLevel.Size = new System.Drawing.Size(41, 25);
+            this.txtLevel.Size = new System.Drawing.Size(125, 25);
             this.txtLevel.TabIndex = 3;
             this.txtLevel.TextChanged += new System.EventHandler(this.checkIsInteger);
             // 
@@ -105,9 +117,14 @@
             // 
             this.labelX13.AutoSize = true;
             this.labelX13.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX13.BackgroundStyle.Class = "";
+            this.labelX13.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX13.Location = new System.Drawing.Point(8, 103);
             this.labelX13.Name = "labelX13";
-            this.labelX13.Size = new System.Drawing.Size(60, 19);
+            this.labelX13.Size = new System.Drawing.Size(60, 21);
             this.labelX13.TabIndex = 25;
             this.labelX13.Text = "校部訂：";
             // 
@@ -115,9 +132,14 @@
             // 
             this.labelX8.AutoSize = true;
             this.labelX8.BackColor = System.Drawing.Color.Transparent;
-            this.labelX8.Location = new System.Drawing.Point(158, 103);
+            // 
+            // 
+            // 
+            this.labelX8.BackgroundStyle.Class = "";
+            this.labelX8.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX8.Location = new System.Drawing.Point(222, 103);
             this.labelX8.Name = "labelX8";
-            this.labelX8.Size = new System.Drawing.Size(60, 19);
+            this.labelX8.Size = new System.Drawing.Size(60, 21);
             this.labelX8.TabIndex = 30;
             this.labelX8.Text = "必選修：";
             // 
@@ -125,9 +147,14 @@
             // 
             this.labelX11.AutoSize = true;
             this.labelX11.BackColor = System.Drawing.Color.Transparent;
-            this.labelX11.Location = new System.Drawing.Point(109, 72);
+            // 
+            // 
+            // 
+            this.labelX11.BackgroundStyle.Class = "";
+            this.labelX11.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX11.Location = new System.Drawing.Point(208, 72);
             this.labelX11.Name = "labelX11";
-            this.labelX11.Size = new System.Drawing.Size(74, 19);
+            this.labelX11.Size = new System.Drawing.Size(74, 21);
             this.labelX11.TabIndex = 22;
             this.labelX11.Text = "分項類別：";
             // 
@@ -140,7 +167,7 @@
             this.cboEntry.Items.AddRange(new object[] {
             this.comboItem15,
             this.comboItem16});
-            this.cboEntry.Location = new System.Drawing.Point(184, 69);
+            this.cboEntry.Location = new System.Drawing.Point(288, 70);
             this.cboEntry.MaxDropDownItems = 6;
             this.cboEntry.Name = "cboEntry";
             this.cboEntry.Size = new System.Drawing.Size(125, 25);
@@ -165,10 +192,10 @@
             this.cboRequiredBy.Items.AddRange(new object[] {
             this.comboItem24,
             this.comboItem25});
-            this.cboRequiredBy.Location = new System.Drawing.Point(69, 100);
+            this.cboRequiredBy.Location = new System.Drawing.Point(74, 101);
             this.cboRequiredBy.MaxDropDownItems = 6;
             this.cboRequiredBy.Name = "cboRequiredBy";
-            this.cboRequiredBy.Size = new System.Drawing.Size(90, 25);
+            this.cboRequiredBy.Size = new System.Drawing.Size(125, 25);
             this.cboRequiredBy.TabIndex = 6;
             this.cboRequiredBy.Tag = "ForceValidate";
             this.cboRequiredBy.TextChanged += new System.EventHandler(this.checkInItem);
@@ -190,10 +217,10 @@
             this.cboRequired.Items.AddRange(new object[] {
             this.comboItem21,
             this.comboItem20});
-            this.cboRequired.Location = new System.Drawing.Point(219, 100);
+            this.cboRequired.Location = new System.Drawing.Point(288, 101);
             this.cboRequired.MaxDropDownItems = 6;
             this.cboRequired.Name = "cboRequired";
-            this.cboRequired.Size = new System.Drawing.Size(90, 25);
+            this.cboRequired.Size = new System.Drawing.Size(125, 25);
             this.cboRequired.TabIndex = 7;
             this.cboRequired.Tag = "ForceValidate";
             this.cboRequired.TextChanged += new System.EventHandler(this.checkInItem);
@@ -210,9 +237,14 @@
             // 
             this.labelX7.AutoSize = true;
             this.labelX7.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX7.BackgroundStyle.Class = "";
+            this.labelX7.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX7.Location = new System.Drawing.Point(8, 72);
             this.labelX7.Name = "labelX7";
-            this.labelX7.Size = new System.Drawing.Size(60, 19);
+            this.labelX7.Size = new System.Drawing.Size(60, 21);
             this.labelX7.TabIndex = 28;
             this.labelX7.Text = "學分數：";
             // 
@@ -222,11 +254,12 @@
             // 
             // 
             this.txtCredit.Border.Class = "TextBoxBorder";
-            this.txtCredit.Location = new System.Drawing.Point(69, 69);
+            this.txtCredit.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtCredit.Location = new System.Drawing.Point(74, 70);
             this.txtCredit.Name = "txtCredit";
-            this.txtCredit.Size = new System.Drawing.Size(41, 25);
+            this.txtCredit.Size = new System.Drawing.Size(125, 25);
             this.txtCredit.TabIndex = 4;
-            this.txtCredit.TextChanged += new System.EventHandler(this.checkIsInteger);
+            this.txtCredit.TextChanged += new System.EventHandler(this.checkIsdecimal);
             // 
             // buttonX1
             // 
@@ -234,9 +267,9 @@
             this.buttonX1.BackColor = System.Drawing.Color.Transparent;
             this.buttonX1.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.buttonX1.Enabled = false;
-            this.buttonX1.Location = new System.Drawing.Point(188, 133);
+            this.buttonX1.Location = new System.Drawing.Point(267, 144);
             this.buttonX1.Name = "buttonX1";
-            this.buttonX1.Size = new System.Drawing.Size(56, 23);
+            this.buttonX1.Size = new System.Drawing.Size(75, 25);
             this.buttonX1.TabIndex = 8;
             this.buttonX1.Text = "確定";
             this.buttonX1.Click += new System.EventHandler(this.buttonX1_Click);
@@ -247,9 +280,9 @@
             this.buttonX2.BackColor = System.Drawing.Color.Transparent;
             this.buttonX2.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.buttonX2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonX2.Location = new System.Drawing.Point(252, 133);
+            this.buttonX2.Location = new System.Drawing.Point(348, 144);
             this.buttonX2.Name = "buttonX2";
-            this.buttonX2.Size = new System.Drawing.Size(56, 23);
+            this.buttonX2.Size = new System.Drawing.Size(75, 25);
             this.buttonX2.TabIndex = 9;
             this.buttonX2.Text = "離開";
             this.buttonX2.Click += new System.EventHandler(this.buttonX2_Click);
@@ -263,9 +296,9 @@
             this.cboSemester.Items.AddRange(new object[] {
             this.comboItem1,
             this.comboItem2});
-            this.cboSemester.Location = new System.Drawing.Point(204, 7);
+            this.cboSemester.Location = new System.Drawing.Point(288, 8);
             this.cboSemester.Name = "cboSemester";
-            this.cboSemester.Size = new System.Drawing.Size(54, 25);
+            this.cboSemester.Size = new System.Drawing.Size(125, 25);
             this.cboSemester.TabIndex = 1;
             this.cboSemester.TextChanged += new System.EventHandler(this.checkSemester);
             // 
@@ -283,9 +316,9 @@
             this.cboSchoolYear.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cboSchoolYear.FormattingEnabled = true;
             this.cboSchoolYear.ItemHeight = 19;
-            this.cboSchoolYear.Location = new System.Drawing.Point(70, 7);
+            this.cboSchoolYear.Location = new System.Drawing.Point(74, 8);
             this.cboSchoolYear.Name = "cboSchoolYear";
-            this.cboSchoolYear.Size = new System.Drawing.Size(70, 25);
+            this.cboSchoolYear.Size = new System.Drawing.Size(125, 25);
             this.cboSchoolYear.TabIndex = 0;
             this.cboSchoolYear.TextChanged += new System.EventHandler(this.checkSchoolYear);
             // 
@@ -293,9 +326,14 @@
             // 
             this.labelX3.AutoSize = true;
             this.labelX3.BackColor = System.Drawing.Color.Transparent;
-            this.labelX3.Location = new System.Drawing.Point(155, 10);
+            // 
+            // 
+            // 
+            this.labelX3.BackgroundStyle.Class = "";
+            this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX3.Location = new System.Drawing.Point(235, 10);
             this.labelX3.Name = "labelX3";
-            this.labelX3.Size = new System.Drawing.Size(47, 19);
+            this.labelX3.Size = new System.Drawing.Size(47, 21);
             this.labelX3.TabIndex = 31;
             this.labelX3.Text = "學期：";
             // 
@@ -303,9 +341,14 @@
             // 
             this.labelX4.AutoSize = true;
             this.labelX4.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX4.BackgroundStyle.Class = "";
+            this.labelX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX4.Location = new System.Drawing.Point(8, 10);
             this.labelX4.Name = "labelX4";
-            this.labelX4.Size = new System.Drawing.Size(60, 19);
+            this.labelX4.Size = new System.Drawing.Size(60, 21);
             this.labelX4.TabIndex = 32;
             this.labelX4.Text = "學年度：";
             // 
@@ -313,7 +356,7 @@
             // 
             this.AcceptButton = this.buttonX1;
             this.CancelButton = this.buttonX2;
-            this.ClientSize = new System.Drawing.Size(317, 162);
+            this.ClientSize = new System.Drawing.Size(433, 180);
             this.Controls.Add(this.cboSemester);
             this.Controls.Add(this.cboSchoolYear);
             this.Controls.Add(this.labelX3);
@@ -332,6 +375,7 @@
             this.Controls.Add(this.txtSubject);
             this.Controls.Add(this.labelX2);
             this.Controls.Add(this.labelX1);
+            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CreateClassCourse";
             this.Text = "班級開課";

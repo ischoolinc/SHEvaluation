@@ -84,6 +84,7 @@ namespace SmartSchool.Evaluation.ImportExport
             {
                 #region ValidateRow
                 int t;
+                decimal k;
                 decimal d;
                 StudentRecord student;
                 if (_StudentCollection.ContainsKey(e.Data.ID))
@@ -120,6 +121,12 @@ namespace SmartSchool.Evaluation.ImportExport
                             break;
                         case "學年度":
                         case "學分數":
+                            if (value == "" || !decimal.TryParse(value, out k))
+                            {
+                                inputFormatPass &= false;
+                                e.ErrorFields.Add(field, "必須填入數字或小數");
+                            }
+                            break;
                         case "成績年級":
                             if (value == "" || !int.TryParse(value, out t))
                             {

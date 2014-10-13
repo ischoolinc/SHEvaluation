@@ -143,7 +143,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                     case "學年度": row.Add(field, "" + var.SchoolYear); break;
                                     case "學期": row.Add(field, "" + var.Semester); break;
                                     case "英文名稱": row.Add(field, var.Detail.GetAttribute("英文名稱")); break;
-                                    case "學分數": row.Add(field, "" + var.Credit); break;
+                                    case "學分數": row.Add(field, "" + var.CreditDec()); break;
                                     case "分項類別": row.Add(field, var.Detail.GetAttribute("開課分項類別")); break;
                                     case "成績年級": row.Add(field, "" + var.GradeYear); break;
                                     case "必選修": row.Add(field, var.Require ? "必修" : "選修"); break;

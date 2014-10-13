@@ -5,16 +5,17 @@ namespace SchoolYearScoreReport
     using SmartSchool.Customization.Data.StudentExtension;
     using System;
     using System.Collections.Generic;
+     using SmartSchool;
 
     internal class StudentScore
     {
         // Fields
-        private int _beforeTotalCredit = 0;
+        private decimal _beforeTotalCredit = 0;
         private Config _config;
         private Dictionary<string, ScoreData> _entries = new Dictionary<string, ScoreData>();
-        private int _firstTotalCredit = 0;
+        private decimal _firstTotalCredit = 0;
         private int _grade_year;
-        private int _secondTotalCredit = 0;
+        private decimal _secondTotalCredit = 0;
         private Dictionary<int, decimal> _standard;
         private Dictionary<string, ScoreData> _subjects = new Dictionary<string, ScoreData>();
 
@@ -134,7 +135,7 @@ namespace SchoolYearScoreReport
                             if (!addNewOne)
                             {
                                 data = var;
-                                data.SetInfo(info.Subject, info.Semester, info.Require, info.Credit, noScore ? info.Score : -1M);
+                                data.SetInfo(info.Subject, info.Semester, info.Require, info.CreditDec(), noScore ? info.Score : -1M);
                                 data.SetLevel(info.Level, info.Semester);
                                 break;
                             }
@@ -147,7 +148,7 @@ namespace SchoolYearScoreReport
                             this._subjects.Add(info.Subject + "_" + info.Level, new ScoreData());
                         }
                         data = this._subjects[info.Subject + "_" + info.Level];
-                        data.SetInfo(info.Subject, info.Semester, info.Require, info.Credit, noScore ? info.Score : -1M);
+                        data.SetInfo(info.Subject, info.Semester, info.Require, info.CreditDec(), noScore ? info.Score : -1M);
                         data.SetLevel(info.Level, info.Semester);
                     }
                     if (!info.Pass && this._standard.ContainsKey(info.GradeYear))
@@ -169,16 +170,16 @@ namespace SchoolYearScoreReport
                     {
                         if (info.Semester == 1)
                         {
-                            this._firstTotalCredit += info.Credit;
+                             this._firstTotalCredit += info.CreditDec();
                         }
                         else if (info.Semester == 2)
                         {
-                            this._secondTotalCredit += info.Credit;
+                             this._secondTotalCredit += info.CreditDec();
                         }
                     }
                     if (info.SchoolYear <= this._config.SchoolYear)
                     {
-                        this._beforeTotalCredit += info.Credit;
+                         this._beforeTotalCredit += info.CreditDec();
                     }
                 }
             }

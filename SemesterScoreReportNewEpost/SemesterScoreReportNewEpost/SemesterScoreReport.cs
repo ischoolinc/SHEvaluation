@@ -16,6 +16,7 @@ using SHSchool.Data;
 using Aspose.Cells;
 using System.Data;
 using System.Linq;
+using SmartSchool;
 
 namespace SemesterScoreReportNewEpost
 {
@@ -661,13 +662,13 @@ namespace SemesterScoreReportNewEpost
                 #region 科目成績
 
                 Dictionary<SemesterSubjectScoreInfo, Dictionary<string, string>> subjectScore = new Dictionary<SemesterSubjectScoreInfo, Dictionary<string, string>>();
-                int thisSemesterTotalCredit = 0;
-                int thisSchoolYearTotalCredit = 0;
-                int beforeSemesterTotalCredit = 0;
+                decimal thisSemesterTotalCredit = 0;
+                decimal thisSchoolYearTotalCredit = 0;
+                decimal beforeSemesterTotalCredit = 0;
                 // 必修累計
-                int beforeSemesterTotalCreditR1 = 0;
+                decimal beforeSemesterTotalCreditR1 = 0;
                 // 選修累計
-                int beforeSemesterTotalCreditR2 = 0;
+                decimal beforeSemesterTotalCreditR2 = 0;
 
                 Dictionary<int, decimal> resitStandard = eachStudent.Fields["補考標準"] as Dictionary<int, decimal>;
 
@@ -688,7 +689,7 @@ namespace SemesterScoreReportNewEpost
 
                         subjectScore[info].Add("科目", info.Subject);
                         subjectScore[info].Add("級別", (string.IsNullOrEmpty(info.Level) ? "" : GetNumber(int.Parse(info.Level))));
-                        subjectScore[info].Add("學分", info.Credit.ToString());
+                        subjectScore[info].Add("學分", info.CreditDec().ToString());
                         subjectScore[info].Add("分數", noScore ? info.Score.ToString() : "");
                         subjectScore[info].Add("必修", ((info.Require) ? "必" : "選"));
 
@@ -707,30 +708,30 @@ namespace SemesterScoreReportNewEpost
                     if (info.Pass)
                     {
                         if (info.SchoolYear == schoolyear && info.Semester == semester)
-                            thisSemesterTotalCredit += info.Credit;
+                             thisSemesterTotalCredit += info.CreditDec();
 
                         if (info.SchoolYear < schoolyear)
                         {
-                            beforeSemesterTotalCredit += info.Credit;
+                             beforeSemesterTotalCredit += info.CreditDec();
                             // 累計必選修學分數
                             if (info.Require)
-                                beforeSemesterTotalCreditR1 += info.Credit;
+                                 beforeSemesterTotalCreditR1 += info.CreditDec();
                             else
-                                beforeSemesterTotalCreditR2 += info.Credit;
+                                 beforeSemesterTotalCreditR2 += info.CreditDec();
                         }
                         else if (info.SchoolYear == schoolyear && info.Semester <= semester)
                         {
-                            beforeSemesterTotalCredit += info.Credit;
+                             beforeSemesterTotalCredit += info.CreditDec();
 
                             // 累計必選修學分數
                             if (info.Require)
-                                beforeSemesterTotalCreditR1 += info.Credit;
+                                 beforeSemesterTotalCreditR1 += info.CreditDec();
                             else
-                                beforeSemesterTotalCreditR2 += info.Credit;
+                                 beforeSemesterTotalCreditR2 += info.CreditDec();
 
                         }
                         if (info.SchoolYear == schoolyear)
-                            thisSchoolYearTotalCredit += info.Credit;
+                             thisSchoolYearTotalCredit += info.CreditDec();
                     }
                 }
 

@@ -184,13 +184,17 @@
     <Content Include="Library\FISCA.xml" />
     <Content Include="Library\K12.Data.dll" />
     <Content Include="Library\K12.Data.pdb" />
-    <Content Include="Library\K12.Data.xml" />
+    <Content Include="Library\K12.Data.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Library\SHStaticRank2.Data.dll" />
     <Content Include="Library\SHStaticRank2.Data.pdb" />
     <Content Include="Library\SmartSchool.Core.dll" />
     <Content Include="Library\SmartSchool.Core.pdb" />
     <Content Include="Library\SmartSchool.Customization.Data.dll" />
-    <Content Include="Library\SmartSchool.Customization.Data.xml" />
+    <Content Include="Library\SmartSchool.Customization.Data.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -27,7 +27,7 @@ namespace SHStaticRank2.Data
         /// <summary>
         /// 學分加總
         /// </summary>
-        public int sumCredit = 0;
+        public decimal sumCredit = 0;
 
         /// <summary>
         /// 平均
@@ -57,7 +57,7 @@ namespace SHStaticRank2.Data
         /// <summary>
         /// 學分加總(類別1)
         /// </summary>
-        public int sumCreditC1 = 0;
+        public decimal sumCreditC1 = 0;
 
         /// <summary>
         /// 平均(類別1)
@@ -86,7 +86,7 @@ namespace SHStaticRank2.Data
         /// <summary>
         /// 學分加總(類別2)
         /// </summary>
-        public int sumCreditC2 = 0;
+        public decimal sumCreditC2 = 0;
 
         /// <summary>
         /// 平均(類別2)
@@ -186,42 +186,42 @@ namespace SHStaticRank2.Data
         /// <summary>
         /// 一上學分數
         /// </summary>
-        public int? gsCredit11 { get; set; }
+        public decimal? gsCredit11 { get; set; }
 
         /// <summary>
         /// 一下學分數
         /// </summary>
-        public int? gsCredit12 { get; set; }
+        public decimal? gsCredit12 { get; set; }
 
         /// <summary>
         /// 二上學分數
         /// </summary>
-        public int? gsCredit21 { get; set; }
+        public decimal? gsCredit21 { get; set; }
 
         /// <summary>
         /// 二下學分數
         /// </summary>
-        public int? gsCredit22 { get; set; }
+        public decimal? gsCredit22 { get; set; }
 
         /// <summary>
         /// 三上學分數
         /// </summary>
-        public int? gsCredit31 { get; set; }
+        public decimal? gsCredit31 { get; set; }
 
         /// <summary>
         /// 三下學分數
         /// </summary>
-        public int? gsCredit32 { get; set; }
+        public decimal? gsCredit32 { get; set; }
 
         /// <summary>
         /// 四上學分數
         /// </summary>
-        public int? gsCredit41 { get; set; }
+        public decimal? gsCredit41 { get; set; }
 
         /// <summary>
         /// 四下學分數
         /// </summary>
-        public int? gsCredit42 { get; set; }
+        public decimal? gsCredit42 { get; set; }
 
     }
 }

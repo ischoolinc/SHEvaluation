@@ -7,6 +7,8 @@ using System.IO;
 using FISCA.DSAUtil;
 using System.Data;
 using Aspose.Words;
+using SmartSchool;
+
 namespace SHStaticRank2.Data
 {
     public class CalcMutilSemeSubjectRank
@@ -907,60 +909,60 @@ namespace SHStaticRank2.Data
                                         {
                                             selectScore[subjKey].gsScore11 = score;
                                             selectScore[subjKey].gsSchoolYear11 = subjectScore.SchoolYear;
-                                            selectScore[subjKey].gsCredit11 = subjectScore.Credit;
+                                            selectScore[subjKey].gsCredit11 = subjectScore.CreditDec();
                                         }
                                         if (subjectScore.GradeYear == 1 && subjectScore.Semester == 2)
                                         {
                                             selectScore[subjKey].gsScore12 = score;
                                             selectScore[subjKey].gsSchoolYear12 = subjectScore.SchoolYear;
-                                            selectScore[subjKey].gsCredit12 = subjectScore.Credit;
+                                            selectScore[subjKey].gsCredit12 = subjectScore.CreditDec();
                                         }
                                         if (subjectScore.GradeYear == 2 && subjectScore.Semester == 1)
                                         {
                                             selectScore[subjKey].gsScore21 = score;
                                             selectScore[subjKey].gsSchoolYear21 = subjectScore.SchoolYear;
-                                            selectScore[subjKey].gsCredit21 = subjectScore.Credit;
+                                            selectScore[subjKey].gsCredit21 = subjectScore.CreditDec();
                                         }
 
                                         if (subjectScore.GradeYear == 2 && subjectScore.Semester == 2)
                                         {
                                             selectScore[subjKey].gsScore22 = score;
                                             selectScore[subjKey].gsSchoolYear22 = subjectScore.SchoolYear;
-                                            selectScore[subjKey].gsCredit22 = subjectScore.Credit;
+                                            selectScore[subjKey].gsCredit22 = subjectScore.CreditDec();
                                         }
                                         if (subjectScore.GradeYear == 3 && subjectScore.Semester == 1)
                                         {
                                             selectScore[subjKey].gsScore31 = score;
                                             selectScore[subjKey].gsSchoolYear31 = subjectScore.SchoolYear;
-                                            selectScore[subjKey].gsCredit31 = subjectScore.Credit;
+                                            selectScore[subjKey].gsCredit31 = subjectScore.CreditDec();
                                         }
                                         if (subjectScore.GradeYear == 3 && subjectScore.Semester == 2)
                                         {
                                             selectScore[subjKey].gsScore32 = score;
                                             selectScore[subjKey].gsSchoolYear32 = subjectScore.SchoolYear;
-                                            selectScore[subjKey].gsCredit32 = subjectScore.Credit;
+                                            selectScore[subjKey].gsCredit32 = subjectScore.CreditDec();
                                         }
 
                                         if (subjectScore.GradeYear == 4 && subjectScore.Semester == 1)
                                         {
                                             selectScore[subjKey].gsScore41 = score;
                                             selectScore[subjKey].gsSchoolYear41 = subjectScore.SchoolYear;
-                                            selectScore[subjKey].gsCredit41 = subjectScore.Credit;
+                                            selectScore[subjKey].gsCredit41 = subjectScore.CreditDec();
                                         }
                                         if (subjectScore.GradeYear == 4 && subjectScore.Semester == 2)
                                         {
                                             selectScore[subjKey].gsScore42 = score;
                                             selectScore[subjKey].gsSchoolYear42 = subjectScore.SchoolYear;
-                                            selectScore[subjKey].gsCredit42 = subjectScore.Credit;
+                                            selectScore[subjKey].gsCredit42 = subjectScore.CreditDec();
                                         }
                                         // 總分
                                         selectScore[subjKey].sumScore += score;
                                         // 總分加權
-                                        selectScore[subjKey].sumScoreA += (score * subjectScore.Credit);
+                                        selectScore[subjKey].sumScoreA += (score * subjectScore.CreditDec());
                                         // 筆數
                                         selectScore[subjKey].subjCount++;
                                         // 學分加總
-                                        selectScore[subjKey].sumCredit += subjectScore.Credit;
+                                        selectScore[subjKey].sumCredit += subjectScore.CreditDec();
 
                                         // 類別一處理, 判斷此科目是否為類別1需要的
                                         if (setting.useSubjecOrder1List.Contains(SubjName)
@@ -977,11 +979,11 @@ namespace SHStaticRank2.Data
                                             // 總分
                                             selectScore[subjKey].sumScoreC1 += score;
                                             // 總分加權
-                                            selectScore[subjKey].sumScoreAC1 += (score * subjectScore.Credit);
+                                            selectScore[subjKey].sumScoreAC1 += (score * subjectScore.CreditDec());
                                             // 筆數
                                             selectScore[subjKey].subjCountC1++;
                                             // 學分加總
-                                            selectScore[subjKey].sumCreditC1 += subjectScore.Credit;
+                                            selectScore[subjKey].sumCreditC1 += subjectScore.CreditDec();
                                         }
 
                                         // 類別二處理, 判斷此科目是否為類別1需要的
@@ -999,11 +1001,11 @@ namespace SHStaticRank2.Data
                                             // 總分
                                             selectScore[subjKey].sumScoreC2 += score;
                                             // 總分加權
-                                            selectScore[subjKey].sumScoreAC2 += (score * subjectScore.Credit);
+                                            selectScore[subjKey].sumScoreAC2 += (score * subjectScore.CreditDec());
                                             // 筆數
                                             selectScore[subjKey].subjCountC2++;
                                             // 學分加總
-                                            selectScore[subjKey].sumCreditC2 += subjectScore.Credit;
+                                            selectScore[subjKey].sumCreditC2 += subjectScore.CreditDec();
                                         }
 
                                     }
@@ -2370,11 +2372,11 @@ namespace SHStaticRank2.Data
                                     // 總分
                                     selectScore[subjKeyAll].sumScore += score;
                                     // 加總
-                                    selectScore[subjKeyAll].sumScoreA += (score * subjectScore.Credit);
+                                    selectScore[subjKeyAll].sumScoreA += (score * subjectScore.CreditDec());
                                     // 筆數
                                     selectScore[subjKeyAll].subjCount++;
                                     // 學分加總
-                                    selectScore[subjKeyAll].sumCredit += subjectScore.Credit;
+                                    selectScore[subjKeyAll].sumCredit += subjectScore.CreditDec();
                                 }
                                 // 類別一處理, 判斷此科目是否為類別1需要的
                                 if (setting.useSubjecOrder1List.Contains(SubjName)
@@ -2390,11 +2392,11 @@ namespace SHStaticRank2.Data
                                     // 總分
                                     selectScore[subjKeyAll].sumScoreC1 += score;
                                     // 總分加權
-                                    selectScore[subjKeyAll].sumScoreAC1 += (score * subjectScore.Credit);
+                                    selectScore[subjKeyAll].sumScoreAC1 += (score * subjectScore.CreditDec());
                                     // 筆數
                                     selectScore[subjKeyAll].subjCountC1++;
                                     // 學分加總
-                                    selectScore[subjKeyAll].sumCreditC1 += subjectScore.Credit;
+                                    selectScore[subjKeyAll].sumCreditC1 += subjectScore.CreditDec();
                                 }
 
                                 // 類別二處理, 判斷此科目是否為類別2需要的
@@ -2411,11 +2413,11 @@ namespace SHStaticRank2.Data
                                     // 總分
                                     selectScore[subjKeyAll].sumScoreC2 += score;
                                     // 總分加權
-                                    selectScore[subjKeyAll].sumScoreAC2 += (score * subjectScore.Credit);
+                                    selectScore[subjKeyAll].sumScoreAC2 += (score * subjectScore.CreditDec());
                                     // 筆數
                                     selectScore[subjKeyAll].subjCountC2++;
                                     // 學分加總
-                                    selectScore[subjKeyAll].sumCreditC2 += subjectScore.Credit;
+                                    selectScore[subjKeyAll].sumCreditC2 += subjectScore.CreditDec();
                                 }
                             }
 
@@ -2648,11 +2650,11 @@ namespace SHStaticRank2.Data
                                                     // 總分
                                                     selectScore[key5].sumScore += score;
                                                     // 加總
-                                                    selectScore[key5].sumScoreA += (score * subjectScore.Credit);
+                                                    selectScore[key5].sumScoreA += (score * subjectScore.CreditDec());
                                                     // 筆數
                                                     selectScore[key5].subjCount++;
                                                     // 學分加總
-                                                    selectScore[key5].sumCredit += subjectScore.Credit;
+                                                    selectScore[key5].sumCredit += subjectScore.CreditDec();
                                                 }
                                                 // 類別一處理
                                                 if (setting.useSubjecOrder1List.Contains(subjectScore.Subject)
@@ -2668,11 +2670,11 @@ namespace SHStaticRank2.Data
                                                     // 總分
                                                     selectScore[key5].sumScoreC1 += score;
                                                     // 總分加權
-                                                    selectScore[key5].sumScoreAC1 += (score * subjectScore.Credit);
+                                                    selectScore[key5].sumScoreAC1 += (score * subjectScore.CreditDec());
                                                     // 筆數
                                                     selectScore[key5].subjCountC1++;
                                                     // 學分加總
-                                                    selectScore[key5].sumCreditC1 += subjectScore.Credit;
+                                                    selectScore[key5].sumCreditC1 += subjectScore.CreditDec();
                                                 }
                                                 // 類別二處理
                                                 if (setting.useSubjecOrder2List.Contains(subjectScore.Subject)
@@ -2688,11 +2690,11 @@ namespace SHStaticRank2.Data
                                                     // 總分
                                                     selectScore[key5].sumScoreC2 += score;
                                                     // 總分加權
-                                                    selectScore[key5].sumScoreAC2 += (score * subjectScore.Credit);
+                                                    selectScore[key5].sumScoreAC2 += (score * subjectScore.CreditDec());
                                                     // 筆數
                                                     selectScore[key5].subjCountC2++;
                                                     // 學分加總
-                                                    selectScore[key5].sumCreditC2 += subjectScore.Credit;
+                                                    selectScore[key5].sumCreditC2 += subjectScore.CreditDec();
                                                 }
                                                 #endregion 處理科目原始成績
 
@@ -2711,11 +2713,11 @@ namespace SHStaticRank2.Data
                                                     // 總分
                                                     selectScore[key7].sumScore += score;
                                                     // 加總
-                                                    selectScore[key7].sumScoreA += (score * subjectScore.Credit);
+                                                    selectScore[key7].sumScoreA += (score * subjectScore.CreditDec());
                                                     // 筆數
                                                     selectScore[key7].subjCount++;
                                                     // 學分加總
-                                                    selectScore[key7].sumCredit += subjectScore.Credit;
+                                                    selectScore[key7].sumCredit += subjectScore.CreditDec();
                                                 }
                                                 // 類別一處理
                                                 if (setting.useSubjecOrder1List.Contains(subjectScore.Subject)
@@ -2731,11 +2733,11 @@ namespace SHStaticRank2.Data
                                                     // 總分
                                                     selectScore[key7].sumScoreC1 += score;
                                                     // 總分加權
-                                                    selectScore[key7].sumScoreAC1 += (score * subjectScore.Credit);
+                                                    selectScore[key7].sumScoreAC1 += (score * subjectScore.CreditDec());
                                                     // 筆數
                                                     selectScore[key7].subjCountC1++;
                                                     // 學分加總
-                                                    selectScore[key7].sumCreditC1 += subjectScore.Credit;
+                                                    selectScore[key7].sumCreditC1 += subjectScore.CreditDec();
                                                 }
                                                 // 類別二處理
                                                 if (setting.useSubjecOrder2List.Contains(subjectScore.Subject)
@@ -2751,11 +2753,11 @@ namespace SHStaticRank2.Data
                                                     // 總分
                                                     selectScore[key7].sumScoreC2 += score;
                                                     // 總分加權
-                                                    selectScore[key7].sumScoreAC2 += (score * subjectScore.Credit);
+                                                    selectScore[key7].sumScoreAC2 += (score * subjectScore.CreditDec());
                                                     // 筆數
                                                     selectScore[key7].subjCountC2++;
                                                     // 學分加總
-                                                    selectScore[key7].sumCreditC2 += subjectScore.Credit;
+                                                    selectScore[key7].sumCreditC2 += subjectScore.CreditDec();
                                                 }
                                                 #endregion 處理篩選科目原始成績
                                             }
@@ -2930,11 +2932,11 @@ namespace SHStaticRank2.Data
                                             // 總分
                                             selectScore[key6].sumScore += score;
                                             // 加總
-                                            selectScore[key6].sumScoreA += (score * subjectScore.Credit);
+                                            selectScore[key6].sumScoreA += (score * subjectScore.CreditDec());
                                             // 筆數
                                             selectScore[key6].subjCount++;
                                             // 學分加總
-                                            selectScore[key6].sumCredit += subjectScore.Credit;
+                                            selectScore[key6].sumCredit += subjectScore.CreditDec();
                                         }
                                         // 類別一處理
                                         if (setting.useSubjecOrder1List.Contains(subjectScore.Subject)
@@ -2950,11 +2952,11 @@ namespace SHStaticRank2.Data
                                             // 總分
                                             selectScore[key6].sumScoreC1 += score;
                                             // 總分加權
-                                            selectScore[key6].sumScoreAC1 += (score * subjectScore.Credit);
+                                            selectScore[key6].sumScoreAC1 += (score * subjectScore.CreditDec());
                                             // 筆數
                                             selectScore[key6].subjCountC1++;
                                             // 學分加總
-                                            selectScore[key6].sumCreditC1 += subjectScore.Credit;
+                                            selectScore[key6].sumCreditC1 += subjectScore.CreditDec();
                                         }
                                         // 類別二處理
                                         if (setting.useSubjecOrder2List.Contains(subjectScore.Subject)
@@ -2970,11 +2972,11 @@ namespace SHStaticRank2.Data
                                             // 總分
                                             selectScore[key6].sumScoreC2 += score;
                                             // 總分加權
-                                            selectScore[key6].sumScoreAC2 += (score * subjectScore.Credit);
+                                            selectScore[key6].sumScoreAC2 += (score * subjectScore.CreditDec());
                                             // 筆數
                                             selectScore[key6].subjCountC2++;
                                             // 學分加總
-                                            selectScore[key6].sumCreditC2 += subjectScore.Credit;
+                                            selectScore[key6].sumCreditC2 += subjectScore.CreditDec();
                                         }
                                     }
                                     #endregion 處理科目原始成績
@@ -2996,11 +2998,11 @@ namespace SHStaticRank2.Data
                                             // 總分
                                             selectScore[key8].sumScore += score;
                                             // 加總
-                                            selectScore[key8].sumScoreA += (score * subjectScore.Credit);
+                                            selectScore[key8].sumScoreA += (score * subjectScore.CreditDec());
                                             // 筆數
                                             selectScore[key8].subjCount++;
                                             // 學分加總
-                                            selectScore[key8].sumCredit += subjectScore.Credit;
+                                            selectScore[key8].sumCredit += subjectScore.CreditDec();
                                         }
                                         // 類別一處理
                                         if (setting.useSubjecOrder1List.Contains(subjectScore.Subject)
@@ -3016,11 +3018,11 @@ namespace SHStaticRank2.Data
                                             // 總分
                                             selectScore[key8].sumScoreC1 += score;
                                             // 總分加權
-                                            selectScore[key8].sumScoreAC1 += (score * subjectScore.Credit);
+                                            selectScore[key8].sumScoreAC1 += (score * subjectScore.CreditDec());
                                             // 筆數
                                             selectScore[key8].subjCountC1++;
                                             // 學分加總
-                                            selectScore[key8].sumCreditC1 += subjectScore.Credit;
+                                            selectScore[key8].sumCreditC1 += subjectScore.CreditDec();
                                         }
                                         // 類別二處理
                                         if (setting.useSubjecOrder2List.Contains(subjectScore.Subject)
@@ -3036,11 +3038,11 @@ namespace SHStaticRank2.Data
                                             // 總分
                                             selectScore[key8].sumScoreC2 += score;
                                             // 總分加權
-                                            selectScore[key8].sumScoreAC2 += (score * subjectScore.Credit);
+                                            selectScore[key8].sumScoreAC2 += (score * subjectScore.CreditDec());
                                             // 筆數
                                             selectScore[key8].subjCountC2++;
                                             // 學分加總
-                                            selectScore[key8].sumCreditC2 += subjectScore.Credit;
+                                            selectScore[key8].sumCreditC2 += subjectScore.CreditDec();
                                         }
                                     }
                                     #endregion 處理篩選科目原始成績

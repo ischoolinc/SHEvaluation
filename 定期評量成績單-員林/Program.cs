@@ -868,11 +868,11 @@ namespace SH_yhcvs_ExamScore_epost
                                     decimal tag2SubjectSum = 0;
                                     int tag2SubjectCount = 0;
                                     decimal printSubjectSumW = 0;
-                                    int printSubjectCreditSum = 0;
+                                    decimal printSubjectCreditSum = 0;
                                     decimal tag1SubjectSumW = 0;
-                                    int tag1SubjectCreditSum = 0;
+                                    decimal tag1SubjectCreditSum = 0;
                                     decimal tag2SubjectSumW = 0;
-                                    int tag2SubjectCreditSum = 0;
+                                    decimal tag2SubjectCreditSum = 0;
                                     foreach (var subjectName in studentExamSores[studentID].Keys)
                                     {
                                         if (conf.PrintSubjectList.Contains(subjectName))
@@ -885,8 +885,8 @@ namespace SH_yhcvs_ExamScore_epost
                                                     printSubjectSum += sceTakeRecord.ExamScore;//計算總分
                                                     printSubjectCount++;
                                                     //計算加權總分
-                                                    printSubjectSumW += sceTakeRecord.ExamScore * decimal.ToInt16((decimal)sceTakeRecord.Credit);
-                                                    printSubjectCreditSum += decimal.ToInt16((decimal)sceTakeRecord.Credit);
+                                                    printSubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
+                                                    printSubjectCreditSum += sceTakeRecord.CreditDec();
                                                     if (rank && sceTakeRecord.Status == "一般")//不在過濾名單且為一般生才做排名
                                                     {
                                                         if (sceTakeRecord.RefClass != null)
@@ -932,8 +932,8 @@ namespace SH_yhcvs_ExamScore_epost
                                                     tag1SubjectSum += sceTakeRecord.ExamScore;//計算總分
                                                     tag1SubjectCount++;
                                                     //計算加權總分
-                                                    tag1SubjectSumW += sceTakeRecord.ExamScore * decimal.ToInt16((decimal)sceTakeRecord.Credit);
-                                                    tag1SubjectCreditSum += decimal.ToInt16((decimal)sceTakeRecord.Credit);
+                                                    tag1SubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
+                                                    tag1SubjectCreditSum += sceTakeRecord.CreditDec();
                                                     //各科目類別1排名
                                                     if (rank && sceTakeRecord.Status == "一般")//不在過濾名單且為一般生才做排名
                                                     {
@@ -964,8 +964,8 @@ namespace SH_yhcvs_ExamScore_epost
                                                     tag2SubjectSum += sceTakeRecord.ExamScore;//計算總分
                                                     tag2SubjectCount++;
                                                     //計算加權總分
-                                                    tag2SubjectSumW += sceTakeRecord.ExamScore * decimal.ToInt16((decimal)sceTakeRecord.Credit);
-                                                    tag2SubjectCreditSum += decimal.ToInt16((decimal)sceTakeRecord.Credit);
+                                                    tag2SubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
+                                                    tag2SubjectCreditSum += sceTakeRecord.CreditDec();
                                                     //各科目類別2排名
                                                     if (rank && sceTakeRecord.Status == "一般")//不在過濾名單且為一般生才做排名
                                                     {

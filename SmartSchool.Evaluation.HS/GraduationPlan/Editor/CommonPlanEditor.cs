@@ -224,7 +224,7 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
                 {
                     rowIndex++;
                     //記錄每個級別所包含的學分數
-                    List<int> Credits = new List<int>();
+                    List<decimal> Credits = new List<decimal>();
                     //記錄每個級別所包含的學期
                     List<int> Semesters = new List<int>();
                     //記錄每個級別所包含的學年度
@@ -346,10 +346,10 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
 
             bool pass = true;
             DataGridViewCell cell ;
-            int tryInt=0;
+            decimal tryInt = 0;
             #region 檢查學分填寫正確
             cell = row.Cells[_CreditStartIndex];
-            if ("" + cell.Value != "" && !int.TryParse("" + cell.Value, out tryInt))
+            if ("" + cell.Value != "" && !decimal.TryParse("" + cell.Value, out tryInt))
             {
                 cell.ErrorText = "必須填入數字。";
                 dataGridViewX1.UpdateCellErrorText(cell.ColumnIndex, cell.RowIndex);
@@ -362,8 +362,9 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
             }
             #endregion
             #region 檢查級別填寫正確
+            int leval = 0;
             cell = row.Cells[_StartLevelIndex];
-            if ("" + cell.Value != "" && !int.TryParse("" + cell.Value, out tryInt))
+            if ("" + cell.Value != "" && !int.TryParse("" + cell.Value, out leval))
             {
                 cell.ErrorText = "必須填入數字。";
                 dataGridViewX1.UpdateCellErrorText(cell.ColumnIndex, cell.RowIndex);

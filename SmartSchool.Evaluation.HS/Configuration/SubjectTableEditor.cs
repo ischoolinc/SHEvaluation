@@ -18,16 +18,16 @@ namespace SmartSchool.Evaluation.Configuration
             textBoxX1.TextChanged += (sender,e) =>
             {
                 errorProvider1.Clear();
-                int integer;
-                if (!int.TryParse(textBoxX1.Text, out integer))
+                decimal integer;
+                if (!decimal.TryParse(textBoxX1.Text, out integer))
                     errorProvider1.SetError(textBoxX1, "請輸入數字!");
             };
 
             textBoxX2.TextChanged += (sender, e) =>
             {
                 errorProvider2.Clear();
-                int integer;
-                if (!int.TryParse(textBoxX2.Text, out integer))
+                decimal integer;
+                if (!decimal.TryParse(textBoxX2.Text, out integer))
                     errorProvider2.SetError(textBoxX2, "請輸入數字!");
             };
         }
@@ -44,7 +44,8 @@ namespace SmartSchool.Evaluation.Configuration
                 if ( element != null )
                 {
                      decimal integer;
-                     int CoreInteger;
+                     decimal CoreInteger;
+
                     //學程科目表 (2011/4/21修改)
                     if (_ProgramTable) 
                     {
@@ -56,7 +57,7 @@ namespace SmartSchool.Evaluation.Configuration
 
                         if (decimal.TryParse(element.GetAttribute("CreditCount"), out integer))
                             textBoxX1.Text = ""+integer;
-                        if (int.TryParse(element.GetAttribute("CoreCount"), out CoreInteger))
+                        if (decimal.TryParse(element.GetAttribute("CoreCount"), out CoreInteger))
                              textBoxX2.Text = "" + CoreInteger;
                     }
                     //核心科目表 (2011/4/21 修改)
@@ -68,7 +69,7 @@ namespace SmartSchool.Evaluation.Configuration
                         //if (int.TryParse(element.GetAttribute("CreditCount"), out integer))
                         //    integerInput2.Value = integer;
 
-                         if (int.TryParse(element.GetAttribute("AttendCount"), out CoreInteger))
+                         if (decimal.TryParse(element.GetAttribute("AttendCount"), out CoreInteger))
                               textBoxX1.Text = "" + CoreInteger;
                         if (decimal.TryParse(element.GetAttribute("CreditCount"), out integer))
                             textBoxX2.Text = ""+integer;

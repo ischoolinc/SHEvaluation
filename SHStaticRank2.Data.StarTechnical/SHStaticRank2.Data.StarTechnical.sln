@@ -1,7 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHStaticRank2.Data.StarTechnical", "SHStaticRank2.Data.StarTechnical\SHStaticRank2.Data.StarTechnical.csproj", "{078FDC88-7F06-47D3-A677-A16F91F44F3D}"
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHStaticRank2.Data.StarTechnical", "SHStaticRank2.Data.StarTechnical\SHStaticRank2.Data.StarTechnical.csproj", "{009272C9-5216-403D-8DA0-4D491FF2872A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{078FDC88-7F06-47D3-A677-A16F91F44F3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{078FDC88-7F06-47D3-A677-A16F91F44F3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{078FDC88-7F06-47D3-A677-A16F91F44F3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{078FDC88-7F06-47D3-A677-A16F91F44F3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{009272C9-5216-403D-8DA0-4D491FF2872A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{009272C9-5216-403D-8DA0-4D491FF2872A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{009272C9-5216-403D-8DA0-4D491FF2872A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{009272C9-5216-403D-8DA0-4D491FF2872A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

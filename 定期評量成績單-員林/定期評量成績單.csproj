@@ -203,7 +203,9 @@
     <Content Include="library\SmartSchool.Core.pdb" />
     <Content Include="library\SmartSchool.Customization.Data.dll" />
     <Content Include="library\SmartSchool.Customization.Data.pdb" />
-    <Content Include="library\SmartSchool.Customization.Data.xml" />
+    <Content Include="library\SmartSchool.Customization.Data.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

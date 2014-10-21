@@ -10,6 +10,7 @@ using SmartSchool.Customization.Data;
 using System.Threading;
 using SmartSchool.Customization.Data.StudentExtension;
 using FISCA.Permission;
+using SmartSchool;
 
 namespace SH_SemesterScoreReport
 {
@@ -79,13 +80,13 @@ namespace SH_SemesterScoreReport
             return levelNumber;
         }
 
-        static Dictionary<string, int> _studPassSumCreditDict1 = new Dictionary<string, int>();
-        static Dictionary<string, int> _studPassSumCreditDictAll = new Dictionary<string, int>();
+        static Dictionary<string, decimal> _studPassSumCreditDict1 = new Dictionary<string, decimal>();
+        static Dictionary<string, decimal> _studPassSumCreditDictAll = new Dictionary<string, decimal>();
 
         // 累計取得必修學分
-        static Dictionary<string, int> _studPassSumCreditDictC1 = new Dictionary<string, int>();
+        static Dictionary<string, decimal> _studPassSumCreditDictC1 = new Dictionary<string, decimal>();
         // 累計取得選修學分
-        static Dictionary<string, int> _studPassSumCreditDictC2 = new Dictionary<string, int>();
+        static Dictionary<string, decimal> _studPassSumCreditDictC2 = new Dictionary<string, decimal>();
 
         static void Program_Click(object sender_, EventArgs e_)
         {
@@ -978,11 +979,11 @@ namespace SH_SemesterScoreReport
                                     decimal tag2SubjectSum = 0;
                                     int tag2SubjectCount = 0;
                                     decimal printSubjectSumW = 0;
-                                    int printSubjectCreditSum = 0;
+                                    decimal printSubjectCreditSum = 0;
                                     decimal tag1SubjectSumW = 0;
-                                    int tag1SubjectCreditSum = 0;
+                                    decimal tag1SubjectCreditSum = 0;
                                     decimal tag2SubjectSumW = 0;
-                                    int tag2SubjectCreditSum = 0;
+                                    decimal tag2SubjectCreditSum = 0;
                                     foreach (var subjectName in studentExamSores[studentID].Keys)
                                     {
                                         if (conf.PrintSubjectList.Contains(subjectName))
@@ -995,8 +996,8 @@ namespace SH_SemesterScoreReport
                                                     printSubjectSum += sceTakeRecord.ExamScore;//計算總分
                                                     printSubjectCount++;
                                                     //計算加權總分
-                                                    printSubjectSumW += sceTakeRecord.ExamScore * decimal.ToInt16((decimal)sceTakeRecord.Credit);
-                                                    printSubjectCreditSum += decimal.ToInt16((decimal)sceTakeRecord.Credit);
+                                                    printSubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
+                                                    printSubjectCreditSum += sceTakeRecord.CreditDec();
                                                     if (rank && sceTakeRecord.Status == "一般")//不在過濾名單且為一般生才做排名
                                                     {
                                                         if (sceTakeRecord.RefClass != null)
@@ -1042,8 +1043,8 @@ namespace SH_SemesterScoreReport
                                                     tag1SubjectSum += sceTakeRecord.ExamScore;//計算總分
                                                     tag1SubjectCount++;
                                                     //計算加權總分
-                                                    tag1SubjectSumW += sceTakeRecord.ExamScore * decimal.ToInt16((decimal)sceTakeRecord.Credit);
-                                                    tag1SubjectCreditSum += decimal.ToInt16((decimal)sceTakeRecord.Credit);
+                                                    tag1SubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
+                                                    tag1SubjectCreditSum += sceTakeRecord.CreditDec();
                                                     //各科目類別1排名
                                                     if (rank && sceTakeRecord.Status == "一般")//不在過濾名單且為一般生才做排名
                                                     {
@@ -1074,8 +1075,8 @@ namespace SH_SemesterScoreReport
                                                     tag2SubjectSum += sceTakeRecord.ExamScore;//計算總分
                                                     tag2SubjectCount++;
                                                     //計算加權總分
-                                                    tag2SubjectSumW += sceTakeRecord.ExamScore * decimal.ToInt16((decimal)sceTakeRecord.Credit);
-                                                    tag2SubjectCreditSum += decimal.ToInt16((decimal)sceTakeRecord.Credit);
+                                                    tag2SubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
+                                                    tag2SubjectCreditSum += sceTakeRecord.CreditDec();
                                                     //各科目類別2排名
                                                     if (rank && sceTakeRecord.Status == "一般")//不在過濾名單且為一般生才做排名
                                                     {
@@ -1799,17 +1800,17 @@ namespace SH_SemesterScoreReport
 
                                     // 本學期取得
                                     if (semesterSubjectScore.SchoolYear.ToString()==conf.SchoolYear && semesterSubjectScore.Semester.ToString()==conf.Semester && semesterSubjectScore.Pass)
-                                        _studPassSumCreditDict1[stuRec.StudentID] += semesterSubjectScore.Credit;
+                                        _studPassSumCreditDict1[stuRec.StudentID] += semesterSubjectScore.CreditDec();
 
                                     // 累計取得
                                     if (semesterSubjectScore.Pass)
                                     {
-                                        _studPassSumCreditDictAll[stuRec.StudentID] += semesterSubjectScore.Credit;
+                                         _studPassSumCreditDictAll[stuRec.StudentID] += semesterSubjectScore.CreditDec();
 
                                         if(semesterSubjectScore.Require)
-                                            _studPassSumCreditDictC1[stuRec.StudentID] += semesterSubjectScore.Credit;
+                                             _studPassSumCreditDictC1[stuRec.StudentID] += semesterSubjectScore.CreditDec();
                                         else
-                                            _studPassSumCreditDictC2[stuRec.StudentID] += semesterSubjectScore.Credit;
+                                            _studPassSumCreditDictC2[stuRec.StudentID] += semesterSubjectScore.CreditDec();
                                     }
                                 }                            
                             }
@@ -1860,7 +1861,7 @@ namespace SH_SemesterScoreReport
                                             decimal level;
                                             subjectNumber = decimal.TryParse(semesterSubjectScore.Level, out level) ? (decimal?)level : null;
                                             row["科目名稱" + subjectIndex] = semesterSubjectScore.Subject + GetNumber(subjectNumber);
-                                            row["學分數" + subjectIndex] = semesterSubjectScore.Credit;
+                                            row["學分數" + subjectIndex] = semesterSubjectScore.CreditDec();
                                             row["科目必選修" + subjectIndex] = semesterSubjectScore.Require ? "必修" : "選修";
                                             row["科目校部定" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("修課校部訂");
                                             row["科目註記" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("註記");
@@ -1995,7 +1996,7 @@ namespace SH_SemesterScoreReport
                                                             decimal level;
                                                             subjectNumber = decimal.TryParse(sceTakeRecord.SubjectLevel, out level) ? (decimal?)level : null;
                                                             row["科目名稱" + subjectIndex] = sceTakeRecord.Subject + GetNumber(subjectNumber);
-                                                            row["學分數" + subjectIndex] = sceTakeRecord.Credit;
+                                                            row["學分數" + subjectIndex] = sceTakeRecord.CreditDec();
                                                         }
                                                         row["科目成績" + subjectIndex] = sceTakeRecord.SpecialCase == "" ? ("" + sceTakeRecord.ExamScore) : sceTakeRecord.SpecialCase;
                                                         #region 班排名及落點分析
@@ -2245,7 +2246,7 @@ namespace SH_SemesterScoreReport
                                                                 decimal level;
                                                                 subjectNumber = decimal.TryParse(courseRec.SubjectLevel, out level) ? (decimal?)level : null;
                                                                 row["科目名稱" + subjectIndex] = courseRec.Subject + GetNumber(subjectNumber);
-                                                                row["學分數" + subjectIndex] = courseRec.Credit;
+                                                                row["學分數" + subjectIndex] = courseRec.CreditDec();
                                                             }
                                                             row["科目成績" + subjectIndex] = "未輸入";
                                                         }
@@ -2281,7 +2282,7 @@ namespace SH_SemesterScoreReport
                                                     decimal level;
                                                     subjectNumber = decimal.TryParse(semesterSubjectScore.Level, out level) ? (decimal?)level : null;
                                                     row["科目名稱" + subjectIndex] = semesterSubjectScore.Subject + GetNumber(subjectNumber);
-                                                    row["學分數" + subjectIndex] = semesterSubjectScore.Credit;
+                                                    row["學分數" + subjectIndex] = semesterSubjectScore.CreditDec();
                                                     row["科目必選修" + subjectIndex] = semesterSubjectScore.Require ? "必修" : "選修";
                                                     row["科目校部定" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("修課校部訂");
                                                     row["科目註記" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("註記");

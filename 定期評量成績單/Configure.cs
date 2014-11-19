@@ -139,6 +139,13 @@ namespace 定期評量成績單
 
 
         /// <summary>
+        /// 平均計算至小數下幾位
+        /// </summary>
+        [FISCA.UDT.Field]
+        public int? AvgRd { get ; set; }
+
+
+        /// <summary>
         /// 在儲存前，把資料填入儲存欄位中
         /// </summary>
         public void Encode()

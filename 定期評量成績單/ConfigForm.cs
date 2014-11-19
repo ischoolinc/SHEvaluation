@@ -208,6 +208,7 @@ namespace 定期評量成績單
                 _ScoreCurDate = dtCurDate.Value;
             _isExportStudentList = ChkExportStudList.Checked;
             this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            Program.AvgRd = iptRd.Value;
             this.Close();
         }
 
@@ -297,6 +298,7 @@ namespace 定期評量成績單
                     Configure.Template = dialog.Template;
                     Configure.SubjectLimit = dialog.SubjectLimit;
                     Configure.ScoreCurDate = dialog.ScoreCurDate;
+                    
                     Configure.DisciplineDetailLimit = dialog.DisciplineDetailLimit;
                     Configure.ServiceLearningDetailLimit = dialog.ServiceLearningDetailLimit;
 
@@ -382,6 +384,10 @@ namespace 定期評量成績單
                         dtCurDate.Value = Configure.ScoreCurDate;
                     else
                         dtCurDate.Value = DateTime.Now;
+                    if (Configure.AvgRd.HasValue)
+                        iptRd.Value = Configure.AvgRd.Value;
+                    else
+                        iptRd.Value = 2;
 
                     // 判斷是否產生勾選學生清單
                     bool bo1;
@@ -584,6 +590,7 @@ namespace 定期評量成績單
                 conf.TagRank2TagName = Configure.TagRank2TagName;
                 conf.Template = Configure.Template;
                 conf.Encode();
+                conf.AvgRd = Configure.AvgRd;
                 conf.Save();
                 _Configures.Add(conf);
                 cboConfigure.Items.Insert(cboConfigure.Items.Count - 1, conf);
@@ -605,6 +612,9 @@ namespace 定期評量成績單
             Configure.RefenceExamRecord = ((ExamRecord)cboRefExam.SelectedItem);
             if (Configure.RefenceExamRecord != null && Configure.RefenceExamRecord.Name == "")
                 Configure.RefenceExamRecord = null;
+
+            Configure.AvgRd = iptRd.Value;
+
             foreach (ListViewItem item in listViewEx1.Items)
             {
                 if (item.Checked)

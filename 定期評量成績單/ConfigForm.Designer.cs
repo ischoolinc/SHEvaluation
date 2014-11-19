@@ -46,6 +46,9 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.tabControl1 = new DevComponents.DotNetBar.TabControl();
             this.tabControlPanel1 = new DevComponents.DotNetBar.TabControlPanel();
+            this.labelX19 = new DevComponents.DotNetBar.LabelX();
+            this.labelX18 = new DevComponents.DotNetBar.LabelX();
+            this.iptRd = new DevComponents.Editors.IntegerInput();
             this.dtCurDate = new DevComponents.Editors.DateTimeAdv.DateTimeInput();
             this.labelX17 = new DevComponents.DotNetBar.LabelX();
             this.circularProgress1 = new DevComponents.DotNetBar.Controls.CircularProgress();
@@ -81,6 +84,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabControlPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.iptRd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtCurDate)).BeginInit();
             this.tabControlPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtEnd)).BeginInit();
@@ -318,6 +322,9 @@
             // 
             // tabControlPanel1
             // 
+            this.tabControlPanel1.Controls.Add(this.labelX19);
+            this.tabControlPanel1.Controls.Add(this.labelX18);
+            this.tabControlPanel1.Controls.Add(this.iptRd);
             this.tabControlPanel1.Controls.Add(this.dtCurDate);
             this.tabControlPanel1.Controls.Add(this.labelX17);
             this.tabControlPanel1.Controls.Add(this.circularProgress1);
@@ -346,6 +353,55 @@
             this.tabControlPanel1.Style.GradientAngle = 90;
             this.tabControlPanel1.TabIndex = 1;
             this.tabControlPanel1.TabItem = this.tabItem1;
+            // 
+            // labelX19
+            // 
+            this.labelX19.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.labelX19.AutoSize = true;
+            this.labelX19.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX19.BackgroundStyle.Class = "";
+            this.labelX19.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX19.Location = new System.Drawing.Point(368, 186);
+            this.labelX19.Name = "labelX19";
+            this.labelX19.Size = new System.Drawing.Size(60, 21);
+            this.labelX19.TabIndex = 19;
+            this.labelX19.Text = "四捨五入";
+            // 
+            // labelX18
+            // 
+            this.labelX18.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.labelX18.AutoSize = true;
+            this.labelX18.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX18.BackgroundStyle.Class = "";
+            this.labelX18.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX18.Location = new System.Drawing.Point(199, 186);
+            this.labelX18.Name = "labelX18";
+            this.labelX18.Size = new System.Drawing.Size(114, 21);
+            this.labelX18.TabIndex = 18;
+            this.labelX18.Text = "平均計算至小數後";
+            // 
+            // iptRd
+            // 
+            // 
+            // 
+            // 
+            this.iptRd.BackgroundStyle.Class = "DateTimeInputBackground";
+            this.iptRd.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.iptRd.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
+            this.iptRd.Location = new System.Drawing.Point(314, 184);
+            this.iptRd.MaxValue = 5;
+            this.iptRd.MinValue = 0;
+            this.iptRd.Name = "iptRd";
+            this.iptRd.ShowUpDown = true;
+            this.iptRd.Size = new System.Drawing.Size(45, 25);
+            this.iptRd.TabIndex = 17;
+            this.iptRd.Value = 2;
             // 
             // dtCurDate
             // 
@@ -1006,6 +1062,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabControlPanel1.ResumeLayout(false);
             this.tabControlPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.iptRd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtCurDate)).EndInit();
             this.tabControlPanel3.ResumeLayout(false);
             this.tabControlPanel3.PerformLayout();
@@ -1069,6 +1126,9 @@
         private DevComponents.DotNetBar.LabelX labelX16;
         private DevComponents.Editors.DateTimeAdv.DateTimeInput dtCurDate;
         private DevComponents.DotNetBar.LabelX labelX17;
+        private DevComponents.DotNetBar.LabelX labelX19;
+        private DevComponents.DotNetBar.LabelX labelX18;
+        private DevComponents.Editors.IntegerInput iptRd;
     }
 }
 

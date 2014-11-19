@@ -97,6 +97,14 @@ namespace 班級定期評量成績單
         /// </summary>
         [FISCA.UDT.Field]
         public string RankFilterTagName { get; set; }
+
+        /// <summary>
+        /// 平均四捨五入位數
+        /// </summary>
+        [FISCA.UDT.Field]
+        public int? AvgRd { get; set; }
+
+
         public List<string> RankFilterTagList { get; private set; }
 
         /// <summary>

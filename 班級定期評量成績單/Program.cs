@@ -13,6 +13,8 @@ namespace 班級定期評量成績單
 {
      public class Program
      {
+         // 四捨五入位數
+         public static int AvgRd=2;
           [FISCA.MainMethod]
           public static void Main()
           {
@@ -727,7 +729,7 @@ namespace 班級定期評量成績單
                                                   //總分
                                                   studentPrintSubjectSum.Add(studentID, printSubjectSum);
                                                   //平均四捨五入至小數點第二位
-                                                  studentPrintSubjectAvg.Add(studentID, Math.Round(printSubjectSum / printSubjectCount, 2, MidpointRounding.AwayFromZero));
+                                                  studentPrintSubjectAvg.Add(studentID, Math.Round(printSubjectSum / printSubjectCount, AvgRd, MidpointRounding.AwayFromZero));
                                                   if (rank && studentRec.Status == "一般" && summaryRank == true)//不在過濾名單且沒有特殊成績狀況且為一般生才做排名
                                                   {
                                                        //總分班排名
@@ -752,19 +754,19 @@ namespace 班級定期評量成績單
                                                        key = "平均班排名" + studentRec.RefClass.ClassID;
                                                        if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
                                                        if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                       ranks[key].Add(Math.Round(printSubjectSum / printSubjectCount, 2, MidpointRounding.AwayFromZero));
+                                                       ranks[key].Add(Math.Round(printSubjectSum / printSubjectCount, AvgRd, MidpointRounding.AwayFromZero));
                                                        rankStudents[key].Add(studentID);
                                                        //平均科排名
                                                        key = "平均科排名" + studentRec.Department + "^^^" + gradeyear;
                                                        if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
                                                        if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                       ranks[key].Add(Math.Round(printSubjectSum / printSubjectCount, 2, MidpointRounding.AwayFromZero));
+                                                       ranks[key].Add(Math.Round(printSubjectSum / printSubjectCount, AvgRd, MidpointRounding.AwayFromZero));
                                                        rankStudents[key].Add(studentID);
                                                        //平均全校排名
                                                        key = "平均全校排名" + gradeyear;
                                                        if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
                                                        if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                       ranks[key].Add(Math.Round(printSubjectSum / printSubjectCount, 2, MidpointRounding.AwayFromZero));
+                                                       ranks[key].Add(Math.Round(printSubjectSum / printSubjectCount, AvgRd, MidpointRounding.AwayFromZero));
                                                        rankStudents[key].Add(studentID);
                                                   }
                                                   #endregion
@@ -774,7 +776,7 @@ namespace 班級定期評量成績單
                                                        //加權總分
                                                        studentPrintSubjectSumW.Add(studentID, printSubjectSumW);
                                                        //加權平均四捨五入至小數點第二位
-                                                       studentPrintSubjectAvgW.Add(studentID, Math.Round(printSubjectSumW / printSubjectCreditSum, 2, MidpointRounding.AwayFromZero));
+                                                       studentPrintSubjectAvgW.Add(studentID, Math.Round(printSubjectSumW / printSubjectCreditSum, AvgRd, MidpointRounding.AwayFromZero));
                                                        if (rank && studentRec.Status == "一般" && summaryRank == true)//不在過濾名單且為一般生才做排名
                                                        {
                                                             //加權總分班排名
@@ -799,19 +801,19 @@ namespace 班級定期評量成績單
                                                             key = "加權平均班排名" + studentRec.RefClass.ClassID;
                                                             if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
                                                             if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                            ranks[key].Add(Math.Round(printSubjectSumW / printSubjectCreditSum, 2, MidpointRounding.AwayFromZero));
+                                                            ranks[key].Add(Math.Round(printSubjectSumW / printSubjectCreditSum, AvgRd, MidpointRounding.AwayFromZero));
                                                             rankStudents[key].Add(studentID);
                                                             //加權平均科排名
                                                             key = "加權平均科排名" + studentRec.Department + "^^^" + gradeyear;
                                                             if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
                                                             if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                            ranks[key].Add(Math.Round(printSubjectSumW / printSubjectCreditSum, 2, MidpointRounding.AwayFromZero));
+                                                            ranks[key].Add(Math.Round(printSubjectSumW / printSubjectCreditSum,AvgRd, MidpointRounding.AwayFromZero));
                                                             rankStudents[key].Add(studentID);
                                                             //加權平均全校排名
                                                             key = "加權平均全校排名" + gradeyear;
                                                             if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
                                                             if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                            ranks[key].Add(Math.Round(printSubjectSumW / printSubjectCreditSum, 2, MidpointRounding.AwayFromZero));
+                                                            ranks[key].Add(Math.Round(printSubjectSumW / printSubjectCreditSum, AvgRd, MidpointRounding.AwayFromZero));
                                                             rankStudents[key].Add(studentID);
                                                        }
                                                        #endregion
@@ -823,7 +825,7 @@ namespace 班級定期評量成績單
                                                   //總分
                                                   studentTag1SubjectSum.Add(studentID, tag1SubjectSum);
                                                   //平均四捨五入至小數點第二位
-                                                  studentTag1SubjectAvg.Add(studentID, Math.Round(tag1SubjectSum / tag1SubjectCount, 2, MidpointRounding.AwayFromZero));
+                                                  studentTag1SubjectAvg.Add(studentID, Math.Round(tag1SubjectSum / tag1SubjectCount, AvgRd, MidpointRounding.AwayFromZero));
                                                   if (rank && studentRec.Status == "一般" && tag1SummaryRank == true)//不在過濾名單且為一般生才做排名
                                                   {
                                                        key = "類別1總分排名" + "^^^" + gradeyear + "^^^" + tag1ID;
@@ -835,14 +837,14 @@ namespace 班級定期評量成績單
                                                        key = "類別1平均排名" + "^^^" + gradeyear + "^^^" + tag1ID;
                                                        if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
                                                        if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                       ranks[key].Add(Math.Round(tag1SubjectSum / tag1SubjectCount, 2, MidpointRounding.AwayFromZero));
+                                                       ranks[key].Add(Math.Round(tag1SubjectSum / tag1SubjectCount, AvgRd, MidpointRounding.AwayFromZero));
                                                        rankStudents[key].Add(studentID);
                                                   }
                                                   //類別1加權總分平均排名
                                                   if (tag1SubjectCreditSum > 0)
                                                   {
                                                        studentTag1SubjectSumW.Add(studentID, tag1SubjectSumW);
-                                                       studentTag1SubjectAvgW.Add(studentID, Math.Round(tag1SubjectSumW / tag1SubjectCreditSum, 2, MidpointRounding.AwayFromZero));
+                                                       studentTag1SubjectAvgW.Add(studentID, Math.Round(tag1SubjectSumW / tag1SubjectCreditSum, AvgRd, MidpointRounding.AwayFromZero));
                                                        if (rank && studentRec.Status == "一般" && tag1SummaryRank == true)//不在過濾名單且為一般生才做排名
                                                        {
                                                             key = "類別1加權總分排名" + "^^^" + gradeyear + "^^^" + tag1ID;
@@ -854,7 +856,7 @@ namespace 班級定期評量成績單
                                                             key = "類別1加權平均排名" + "^^^" + gradeyear + "^^^" + tag1ID;
                                                             if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
                                                             if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                            ranks[key].Add(Math.Round(tag1SubjectSumW / tag1SubjectCreditSum, 2, MidpointRounding.AwayFromZero));
+                                                            ranks[key].Add(Math.Round(tag1SubjectSumW / tag1SubjectCreditSum, AvgRd, MidpointRounding.AwayFromZero));
                                                             rankStudents[key].Add(studentID);
                                                        }
                                                   }
@@ -865,7 +867,7 @@ namespace 班級定期評量成績單
                                                   //總分
                                                   studentTag2SubjectSum.Add(studentID, tag2SubjectSum);
                                                   //平均四捨五入至小數點第二位
-                                                  studentTag2SubjectAvg.Add(studentID, Math.Round(tag2SubjectSum / tag2SubjectCount, 2, MidpointRounding.AwayFromZero));
+                                                  studentTag2SubjectAvg.Add(studentID, Math.Round(tag2SubjectSum / tag2SubjectCount, AvgRd, MidpointRounding.AwayFromZero));
                                                   if (rank && studentRec.Status == "一般" && tag2SummaryRank == true)//不在過濾名單且為一般生才做排名
                                                   {
                                                        key = "類別2總分排名" + "^^^" + gradeyear + "^^^" + tag2ID;
@@ -876,14 +878,14 @@ namespace 班級定期評量成績單
                                                        key = "類別2平均排名" + "^^^" + gradeyear + "^^^" + tag2ID;
                                                        if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
                                                        if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                       ranks[key].Add(Math.Round(tag2SubjectSum / tag2SubjectCount, 2, MidpointRounding.AwayFromZero));
+                                                       ranks[key].Add(Math.Round(tag2SubjectSum / tag2SubjectCount, AvgRd, MidpointRounding.AwayFromZero));
                                                        rankStudents[key].Add(studentID);
                                                   }
                                                   //類別2加權總分平均排名
                                                   if (tag2SubjectCreditSum > 0)
                                                   {
                                                        studentTag2SubjectSumW.Add(studentID, tag2SubjectSumW);
-                                                       studentTag2SubjectAvgW.Add(studentID, Math.Round(tag2SubjectSumW / tag2SubjectCreditSum, 2, MidpointRounding.AwayFromZero));
+                                                       studentTag2SubjectAvgW.Add(studentID, Math.Round(tag2SubjectSumW / tag2SubjectCreditSum, AvgRd, MidpointRounding.AwayFromZero));
                                                        if (rank && studentRec.Status == "一般" && tag2SummaryRank == true)//不在過濾名單且為一般生才做排名
                                                        {
                                                             key = "類別2加權總分排名" + "^^^" + gradeyear + "^^^" + tag2ID;
@@ -895,7 +897,7 @@ namespace 班級定期評量成績單
                                                             key = "類別2加權平均排名" + "^^^" + gradeyear + "^^^" + tag2ID;
                                                             if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
                                                             if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                            ranks[key].Add(Math.Round(tag2SubjectSumW / tag2SubjectCreditSum, 2, MidpointRounding.AwayFromZero));
+                                                            ranks[key].Add(Math.Round(tag2SubjectSumW / tag2SubjectCreditSum, AvgRd, MidpointRounding.AwayFromZero));
                                                             rankStudents[key].Add(studentID);
                                                        }
                                                   }
@@ -934,8 +936,8 @@ namespace 班級定期評量成績單
                                              count--;
                                         }
                                         #endregion
-                                        analytics.Add(k + "^^^高標", Math.Round(rankscores.GetRange(0, count).Average(), 2, MidpointRounding.AwayFromZero));
-                                        analytics.Add(k + "^^^均標", Math.Round(rankscores.Average(), 2, MidpointRounding.AwayFromZero));
+                                        analytics.Add(k + "^^^高標", Math.Round(rankscores.GetRange(0, count).Average(), AvgRd, MidpointRounding.AwayFromZero));
+                                        analytics.Add(k + "^^^均標", Math.Round(rankscores.Average(), AvgRd, MidpointRounding.AwayFromZero));
                                         #region 算低標的中點
                                         middleIndex = rankscores.Count - 1;
                                         count = 1;
@@ -956,13 +958,13 @@ namespace 班級定期評量成績單
                                              count--;
                                         }
                                         #endregion
-                                        analytics.Add(k + "^^^低標", Math.Round(rankscores.GetRange(middleIndex, count).Average(), 2, MidpointRounding.AwayFromZero));
+                                        analytics.Add(k + "^^^低標", Math.Round(rankscores.GetRange(middleIndex, count).Average(), AvgRd, MidpointRounding.AwayFromZero));
                                         //Compute the Average      
                                         var avg = (double)rankscores.Average();
                                         //Perform the Sum of (value-avg)_2_2      
                                         var sum = (double)rankscores.Sum(d => Math.Pow((double)d - avg, 2));
                                         //Put it all together      
-                                        analytics.Add(k + "^^^標準差", Math.Round((decimal)Math.Sqrt((sum) / rankscores.Count()), 2, MidpointRounding.AwayFromZero));
+                                        analytics.Add(k + "^^^標準差", Math.Round((decimal)Math.Sqrt((sum) / rankscores.Count()), AvgRd, MidpointRounding.AwayFromZero));
                                    }
                                    #region 計算級距
                                    int count90 = 0, count80 = 0, count70 = 0, count60 = 0, count50 = 0, count40 = 0, count30 = 0, count20 = 0, count10 = 0;

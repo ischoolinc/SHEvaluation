@@ -175,7 +175,8 @@ namespace 班級定期評量成績單
 
         private void btnPrint_Click(object sender, EventArgs e)
         {
-            SaveTemplate(null, null);
+            SaveTemplate(null, null);            
+            Program.AvgRd = iptRd.Value;
             this.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.Close();
         }
@@ -295,6 +296,11 @@ namespace 班級定期評量成績單
                     {
                         item.Checked = Configure.TagRank2SubjectList.Contains(item.Text);
                     }
+
+                    if (Configure.AvgRd.HasValue)
+                        iptRd.Value = Configure.AvgRd.Value;
+                    else
+                        iptRd.Value = 2;
                 }
                 else
                 {
@@ -456,6 +462,7 @@ namespace 班級定期評量成績單
                 conf.TagRank2TagList.AddRange(Configure.TagRank2TagList);
                 conf.TagRank2TagName = Configure.TagRank2TagName;
                 conf.Template = Configure.Template;
+                conf.AvgRd = Configure.AvgRd;
                 conf.Encode();
                 conf.Save();
                 _Configures.Add(conf);
@@ -515,6 +522,7 @@ namespace 班級定期評量成績單
                 }
             }
 
+            Configure.AvgRd = iptRd.Value;
             Configure.TagRank2TagName = cboTagRank2.Text;
             Configure.TagRank2TagList.Clear();
             foreach (var item in _TagConfigRecords)

@@ -50,6 +50,7 @@
             this.cboConfigure = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.linkLabel4 = new System.Windows.Forms.LinkLabel();
             this.linkLabel3 = new System.Windows.Forms.LinkLabel();
+            this.linkLabel5 = new System.Windows.Forms.LinkLabel();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.labelX9 = new DevComponents.DotNetBar.LabelX();
@@ -65,13 +66,16 @@
             this.btnCancel = new DevComponents.DotNetBar.ButtonX();
             this.panel4 = new System.Windows.Forms.Panel();
             this.circularProgress1 = new DevComponents.DotNetBar.Controls.CircularProgress();
-            this.linkLabel5 = new System.Windows.Forms.LinkLabel();
+            this.labelX12 = new DevComponents.DotNetBar.LabelX();
+            this.labelX13 = new DevComponents.DotNetBar.LabelX();
+            this.iptRd = new DevComponents.Editors.IntegerInput();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.iptRd)).BeginInit();
             this.SuspendLayout();
             // 
             // cboTagRank1
@@ -343,12 +347,15 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 509F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(784, 509);
             this.tableLayoutPanel1.TabIndex = 11;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.iptRd);
+            this.panel1.Controls.Add(this.labelX13);
+            this.panel1.Controls.Add(this.labelX12);
             this.panel1.Controls.Add(this.cboConfigure);
             this.panel1.Controls.Add(this.linkLabel4);
             this.panel1.Controls.Add(this.linkLabel3);
@@ -414,6 +421,18 @@
             this.linkLabel3.TabStop = true;
             this.linkLabel3.Text = "複製設定檔";
             this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
+            // 
+            // linkLabel5
+            // 
+            this.linkLabel5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.linkLabel5.AutoSize = true;
+            this.linkLabel5.Location = new System.Drawing.Point(267, 483);
+            this.linkLabel5.Name = "linkLabel5";
+            this.linkLabel5.Size = new System.Drawing.Size(112, 17);
+            this.linkLabel5.TabIndex = 11;
+            this.linkLabel5.TabStop = true;
+            this.linkLabel5.Text = "下載合併欄位總表";
+            this.linkLabel5.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel5_LinkClicked);
             // 
             // linkLabel2
             // 
@@ -620,7 +639,7 @@
             this.circularProgress1.BackgroundStyle.Class = "";
             this.circularProgress1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.circularProgress1.FocusCuesEnabled = false;
-            this.circularProgress1.Location = new System.Drawing.Point(355, 217);
+            this.circularProgress1.Location = new System.Drawing.Point(355, 223);
             this.circularProgress1.Name = "circularProgress1";
             this.circularProgress1.ProgressBarType = DevComponents.DotNetBar.eCircularProgressType.Dot;
             this.circularProgress1.ProgressColor = System.Drawing.Color.LimeGreen;
@@ -629,17 +648,52 @@
             this.circularProgress1.Style = DevComponents.DotNetBar.eDotNetBarStyle.Windows7;
             this.circularProgress1.TabIndex = 13;
             // 
-            // linkLabel5
+            // labelX12
             // 
-            this.linkLabel5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.linkLabel5.AutoSize = true;
-            this.linkLabel5.Location = new System.Drawing.Point(267, 483);
-            this.linkLabel5.Name = "linkLabel5";
-            this.linkLabel5.Size = new System.Drawing.Size(112, 17);
-            this.linkLabel5.TabIndex = 11;
-            this.linkLabel5.TabStop = true;
-            this.linkLabel5.Text = "下載合併欄位總表";
-            this.linkLabel5.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel5_LinkClicked);
+            this.labelX12.AutoSize = true;
+            this.labelX12.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX12.BackgroundStyle.Class = "";
+            this.labelX12.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX12.Location = new System.Drawing.Point(93, 205);
+            this.labelX12.Name = "labelX12";
+            this.labelX12.Size = new System.Drawing.Size(127, 21);
+            this.labelX12.TabIndex = 14;
+            this.labelX12.Text = "平均計算至小數點後";
+            // 
+            // labelX13
+            // 
+            this.labelX13.AutoSize = true;
+            this.labelX13.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX13.BackgroundStyle.Class = "";
+            this.labelX13.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX13.Location = new System.Drawing.Point(285, 205);
+            this.labelX13.Name = "labelX13";
+            this.labelX13.Size = new System.Drawing.Size(74, 21);
+            this.labelX13.TabIndex = 15;
+            this.labelX13.Text = "位四捨五入";
+            // 
+            // iptRd
+            // 
+            // 
+            // 
+            // 
+            this.iptRd.BackgroundStyle.Class = "DateTimeInputBackground";
+            this.iptRd.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.iptRd.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
+            this.iptRd.Location = new System.Drawing.Point(224, 203);
+            this.iptRd.MaxValue = 10;
+            this.iptRd.MinValue = 0;
+            this.iptRd.Name = "iptRd";
+            this.iptRd.ShowUpDown = true;
+            this.iptRd.Size = new System.Drawing.Size(54, 25);
+            this.iptRd.TabIndex = 16;
+            this.iptRd.Value = 2;
             // 
             // ConfigForm
             // 
@@ -663,6 +717,7 @@
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.panel5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.iptRd)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -707,6 +762,9 @@
         private DevComponents.DotNetBar.Controls.CircularProgress circularProgress1;
         private DevComponents.DotNetBar.ButtonX btnSaveConfig;
         private System.Windows.Forms.LinkLabel linkLabel5;
+        private DevComponents.Editors.IntegerInput iptRd;
+        private DevComponents.DotNetBar.LabelX labelX13;
+        private DevComponents.DotNetBar.LabelX labelX12;
     }
 }
 

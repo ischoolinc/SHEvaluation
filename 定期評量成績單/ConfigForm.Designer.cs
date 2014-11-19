@@ -364,11 +364,11 @@
             // 
             this.labelX19.BackgroundStyle.Class = "";
             this.labelX19.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX19.Location = new System.Drawing.Point(368, 186);
+            this.labelX19.Location = new System.Drawing.Point(366, 186);
             this.labelX19.Name = "labelX19";
-            this.labelX19.Size = new System.Drawing.Size(60, 21);
+            this.labelX19.Size = new System.Drawing.Size(74, 21);
             this.labelX19.TabIndex = 19;
-            this.labelX19.Text = "四捨五入";
+            this.labelX19.Text = "位四捨五入";
             // 
             // labelX18
             // 
@@ -380,11 +380,11 @@
             // 
             this.labelX18.BackgroundStyle.Class = "";
             this.labelX18.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX18.Location = new System.Drawing.Point(199, 186);
+            this.labelX18.Location = new System.Drawing.Point(182, 186);
             this.labelX18.Name = "labelX18";
-            this.labelX18.Size = new System.Drawing.Size(114, 21);
+            this.labelX18.Size = new System.Drawing.Size(127, 21);
             this.labelX18.TabIndex = 18;
-            this.labelX18.Text = "平均計算至小數後";
+            this.labelX18.Text = "平均計算至小數點後";
             // 
             // iptRd
             // 

@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CalcSemesterSubjectScoreWizard));
             this.wizard1 = new DevComponents.DotNetBar.Wizard();
             this.wizardPage1 = new DevComponents.DotNetBar.WizardPage();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.labelX3 = new DevComponents.DotNetBar.LabelX();
@@ -43,7 +44,6 @@
             this.wizardPage4 = new DevComponents.DotNetBar.WizardPage();
             this.progressBarX2 = new DevComponents.DotNetBar.Controls.ProgressBarX();
             this.labelX5 = new DevComponents.DotNetBar.LabelX();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.wizard1.SuspendLayout();
             this.wizardPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -56,7 +56,7 @@
             // 
             this.wizard1.BackButtonText = "< 上一步";
             this.wizard1.BackButtonWidth = 65;
-            this.wizard1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(229)))), ((int)(((byte)(253)))));
+            this.wizard1.BackColor = System.Drawing.Color.Transparent;
             this.wizard1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("wizard1.BackgroundImage")));
             this.wizard1.ButtonStyle = DevComponents.DotNetBar.eWizardStyle.Office2007;
             this.wizard1.CancelButtonText = "取消";
@@ -71,9 +71,13 @@
             // 
             // 
             this.wizard1.FooterStyle.BackColor = System.Drawing.Color.Transparent;
+            this.wizard1.FooterStyle.Class = "";
+            this.wizard1.FooterStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.wizard1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(57)))), ((int)(((byte)(129)))));
+            this.wizard1.HeaderCaptionFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.wizard1.HeaderDescriptionFont = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.wizard1.HeaderDescriptionIndent = 16;
             this.wizard1.HeaderHeight = 30;
-            this.wizard1.HeaderImageSize = new System.Drawing.Size(48, 48);
             this.wizard1.HeaderImageVisible = false;
             // 
             // 
@@ -88,9 +92,10 @@
             this.wizard1.HeaderStyle.BorderLeftWidth = 1;
             this.wizard1.HeaderStyle.BorderRightWidth = 1;
             this.wizard1.HeaderStyle.BorderTopWidth = 1;
+            this.wizard1.HeaderStyle.Class = "";
+            this.wizard1.HeaderStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.wizard1.HeaderStyle.TextAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Center;
             this.wizard1.HeaderStyle.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.wizard1.HeaderTitleIndent = 5;
             this.wizard1.HelpButtonVisible = false;
             this.wizard1.LicenseKey = "F962CEC7-CD8F-4911-A9E9-CAB39962FC1F";
             this.wizard1.Location = new System.Drawing.Point(0, 0);
@@ -108,9 +113,9 @@
             // 
             // wizardPage1
             // 
-            this.wizardPage1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.wizardPage1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.wizardPage1.AntiAlias = false;
             this.wizardPage1.BackButtonEnabled = DevComponents.DotNetBar.eWizardButtonState.False;
             this.wizardPage1.BackButtonVisible = DevComponents.DotNetBar.eWizardButtonState.False;
@@ -125,8 +130,35 @@
             this.wizardPage1.Name = "wizardPage1";
             this.wizardPage1.PageDescription = "< Wizard step description >";
             this.wizardPage1.PageTitle = "選擇學年度學期";
-            this.wizardPage1.Size = new System.Drawing.Size(247, 68);
+            this.wizardPage1.Size = new System.Drawing.Size(247, 71);
+            // 
+            // 
+            // 
+            this.wizardPage1.Style.Class = "";
+            this.wizardPage1.Style.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.wizardPage1.StyleMouseDown.Class = "";
+            this.wizardPage1.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.wizardPage1.StyleMouseOver.Class = "";
+            this.wizardPage1.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.wizardPage1.TabIndex = 7;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Checked = true;
+            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox1.Location = new System.Drawing.Point(26, 51);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(131, 21);
+            this.checkBox1.TabIndex = 9;
+            this.checkBox1.Text = "自動寫入學期歷程";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // numericUpDown2
             // 
@@ -177,35 +209,50 @@
             // labelX3
             // 
             this.labelX3.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX3.BackgroundStyle.Class = "";
+            this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX3.Location = new System.Drawing.Point(145, 25);
             this.labelX3.Name = "labelX3";
-            this.labelX3.Size = new System.Drawing.Size(34, 19);
+            this.labelX3.Size = new System.Drawing.Size(34, 21);
             this.labelX3.TabIndex = 6;
             this.labelX3.Text = "學期";
             // 
             // labelX2
             // 
             this.labelX2.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX2.BackgroundStyle.Class = "";
+            this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX2.Location = new System.Drawing.Point(22, 25);
             this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(47, 19);
+            this.labelX2.Size = new System.Drawing.Size(47, 21);
             this.labelX2.TabIndex = 4;
             this.labelX2.Text = "學年度";
             // 
             // labelX1
             // 
             this.labelX1.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX1.BackgroundStyle.Class = "";
+            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX1.Location = new System.Drawing.Point(6, -1);
             this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(101, 19);
+            this.labelX1.Size = new System.Drawing.Size(101, 21);
             this.labelX1.TabIndex = 5;
             this.labelX1.Text = "選擇學年度學期";
             // 
             // wizardPage2
             // 
-            this.wizardPage2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.wizardPage2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.wizardPage2.AntiAlias = false;
             this.wizardPage2.BackButtonVisible = DevComponents.DotNetBar.eWizardButtonState.True;
             this.wizardPage2.BackColor = System.Drawing.Color.Transparent;
@@ -219,9 +266,24 @@
             this.wizardPage2.PageDescription = "< Wizard step description >";
             this.wizardPage2.PageTitle = "計算學期科目成績";
             this.wizardPage2.Size = new System.Drawing.Size(247, 71);
+            // 
+            // 
+            // 
+            this.wizardPage2.Style.Class = "";
+            this.wizardPage2.Style.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.wizardPage2.StyleMouseDown.Class = "";
+            this.wizardPage2.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.wizardPage2.StyleMouseOver.Class = "";
+            this.wizardPage2.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.wizardPage2.TabIndex = 8;
-            this.wizardPage2.BackButtonClick += new System.ComponentModel.CancelEventHandler(this.wizardPage2_BackButtonClick);
             this.wizardPage2.AfterPageDisplayed += new DevComponents.DotNetBar.WizardPageChangeEventHandler(this.wizardPage2_AfterPageDisplayed);
+            this.wizardPage2.BackButtonClick += new System.ComponentModel.CancelEventHandler(this.wizardPage2_BackButtonClick);
             // 
             // linkLabel1
             // 
@@ -237,6 +299,11 @@
             // 
             // progressBarX1
             // 
+            // 
+            // 
+            // 
+            this.progressBarX1.BackgroundStyle.Class = "";
+            this.progressBarX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.progressBarX1.Location = new System.Drawing.Point(35, 23);
             this.progressBarX1.Name = "progressBarX1";
             this.progressBarX1.Size = new System.Drawing.Size(189, 23);
@@ -246,17 +313,22 @@
             // labelX4
             // 
             this.labelX4.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX4.BackgroundStyle.Class = "";
+            this.labelX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX4.Location = new System.Drawing.Point(3, -2);
             this.labelX4.Name = "labelX4";
-            this.labelX4.Size = new System.Drawing.Size(110, 19);
+            this.labelX4.Size = new System.Drawing.Size(110, 21);
             this.labelX4.TabIndex = 0;
             this.labelX4.Text = "學期成績計算中...";
             // 
             // wizardPage4
             // 
-            this.wizardPage4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.wizardPage4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.wizardPage4.AntiAlias = false;
             this.wizardPage4.BackButtonVisible = DevComponents.DotNetBar.eWizardButtonState.False;
             this.wizardPage4.BackColor = System.Drawing.Color.Transparent;
@@ -269,12 +341,32 @@
             this.wizardPage4.NextButtonVisible = DevComponents.DotNetBar.eWizardButtonState.False;
             this.wizardPage4.PageDescription = "< Wizard step description >";
             this.wizardPage4.PageTitle = "上傳學期科目成績";
-            this.wizardPage4.Size = new System.Drawing.Size(247, 68);
+            this.wizardPage4.Size = new System.Drawing.Size(247, 71);
+            // 
+            // 
+            // 
+            this.wizardPage4.Style.Class = "";
+            this.wizardPage4.Style.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.wizardPage4.StyleMouseDown.Class = "";
+            this.wizardPage4.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.wizardPage4.StyleMouseOver.Class = "";
+            this.wizardPage4.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.wizardPage4.TabIndex = 10;
             this.wizardPage4.CancelButtonClick += new System.ComponentModel.CancelEventHandler(this.wizardPage4_CancelButtonClick);
             // 
             // progressBarX2
             // 
+            // 
+            // 
+            // 
+            this.progressBarX2.BackgroundStyle.Class = "";
+            this.progressBarX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.progressBarX2.Location = new System.Drawing.Point(45, 33);
             this.progressBarX2.Name = "progressBarX2";
             this.progressBarX2.Size = new System.Drawing.Size(189, 23);
@@ -284,23 +376,16 @@
             // labelX5
             // 
             this.labelX5.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX5.BackgroundStyle.Class = "";
+            this.labelX5.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX5.Location = new System.Drawing.Point(13, 6);
             this.labelX5.Name = "labelX5";
-            this.labelX5.Size = new System.Drawing.Size(123, 19);
+            this.labelX5.Size = new System.Drawing.Size(123, 21);
             this.labelX5.TabIndex = 2;
             this.labelX5.Text = "上傳學期科目成績...";
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(26, 51);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(131, 21);
-            this.checkBox1.TabIndex = 9;
-            this.checkBox1.Text = "自動寫入學期歷程";
-            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // CalcSemesterSubjectScoreWizard
             // 
@@ -308,15 +393,11 @@
             this.ClientSize = new System.Drawing.Size(261, 150);
             this.ControlBox = false;
             this.Controls.Add(this.wizard1);
-            this.Font = new System.Drawing.Font(SmartSchool.Common.FontStyles.GeneralFontFamily, 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.DoubleBuffered = true;
+            this.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "CalcSemesterSubjectScoreWizard";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "計算學期科目成績";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CalcSemesterSubjectScoreWizard_FormClosing);
             this.wizard1.ResumeLayout(false);

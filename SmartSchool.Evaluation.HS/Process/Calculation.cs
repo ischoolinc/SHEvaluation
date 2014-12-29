@@ -114,6 +114,12 @@ namespace SmartSchool.Evaluation.Process
         /// <param name="e"></param>
         private void buttonItem4_Click(object sender, EventArgs e)
         {
+            ISubjectCalcPostProcess obj = FISCA.InteractionService.DiscoverAPI<ISubjectCalcPostProcess>();
+            if (obj != null)
+            {
+                obj.ShowConfigForm();
+            }
+
             new CalcSemesterSubjectScoreWizard(SelectType.Student).ShowDialog();
         }
 

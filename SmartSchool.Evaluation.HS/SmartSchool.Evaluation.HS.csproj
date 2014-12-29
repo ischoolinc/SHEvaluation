@@ -526,6 +526,7 @@
     <Compile Include="Process\Wizards\CreateClassCourse.Designer.cs">
       <DependentUpon>CreateClassCourse.cs</DependentUpon>
     </Compile>
+    <Compile Include="Process\Wizards\ISubjectCalcPostProcess.cs" />
     <Compile Include="Process\Wizards\LogUtility.cs" />
     <Compile Include="Process\Wizards\CalcSchoolYearApplyScoreWizard.cs">
       <SubType>Form</SubType>

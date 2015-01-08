@@ -46,9 +46,17 @@
             this.btnExit = new DevComponents.DotNetBar.ButtonX();
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
             this.labelX4 = new DevComponents.DotNetBar.LabelX();
+            this.groupPanel1 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.cbxSeNo = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.cbxIDNumber = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.groupPanel4 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.cbxExportPDF = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.cbxExportWord = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.groupPanel3.SuspendLayout();
             this.groupPanel2.SuspendLayout();
             this.gpGradeSemester.SuspendLayout();
+            this.groupPanel1.SuspendLayout();
+            this.groupPanel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // cboRankRilter
@@ -189,6 +197,9 @@
             this.chk5Grade.BackgroundStyle.Class = "";
             this.chk5Grade.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.chk5Grade.CheckBoxStyle = DevComponents.DotNetBar.eCheckBoxStyle.RadioButton;
+            this.chk5Grade.Checked = true;
+            this.chk5Grade.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chk5Grade.CheckValue = "Y";
             this.chk5Grade.Location = new System.Drawing.Point(148, 3);
             this.chk5Grade.Name = "chk5Grade";
             this.chk5Grade.Size = new System.Drawing.Size(139, 21);
@@ -205,13 +216,11 @@
             this.chk4Grade.BackgroundStyle.Class = "";
             this.chk4Grade.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.chk4Grade.CheckBoxStyle = DevComponents.DotNetBar.eCheckBoxStyle.RadioButton;
-            this.chk4Grade.Checked = true;
-            this.chk4Grade.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chk4Grade.CheckValue = "Y";
             this.chk4Grade.Location = new System.Drawing.Point(3, 3);
             this.chk4Grade.Name = "chk4Grade";
             this.chk4Grade.Size = new System.Drawing.Size(139, 21);
             this.chk4Grade.TabIndex = 1;
+            this.chk4Grade.TabStop = false;
             this.chk4Grade.Text = "四學期(一上~二下)";
             // 
             // groupPanel2
@@ -265,7 +274,7 @@
             this.buttonX1.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.buttonX1.BackColor = System.Drawing.Color.Transparent;
             this.buttonX1.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.buttonX1.Location = new System.Drawing.Point(172, 334);
+            this.buttonX1.Location = new System.Drawing.Point(172, 471);
             this.buttonX1.Name = "buttonX1";
             this.buttonX1.Size = new System.Drawing.Size(75, 23);
             this.buttonX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -321,7 +330,7 @@
             // 
             this.lnkDownload.AutoSize = true;
             this.lnkDownload.BackColor = System.Drawing.Color.Transparent;
-            this.lnkDownload.Location = new System.Drawing.Point(19, 303);
+            this.lnkDownload.Location = new System.Drawing.Point(19, 440);
             this.lnkDownload.Name = "lnkDownload";
             this.lnkDownload.Size = new System.Drawing.Size(60, 17);
             this.lnkDownload.TabIndex = 22;
@@ -333,7 +342,7 @@
             // 
             this.lnkUpload.AutoSize = true;
             this.lnkUpload.BackColor = System.Drawing.Color.Transparent;
-            this.lnkUpload.Location = new System.Drawing.Point(86, 303);
+            this.lnkUpload.Location = new System.Drawing.Point(86, 440);
             this.lnkUpload.Name = "lnkUpload";
             this.lnkUpload.Size = new System.Drawing.Size(60, 17);
             this.lnkUpload.TabIndex = 23;
@@ -345,7 +354,7 @@
             // 
             this.lblMappingTemp.AutoSize = true;
             this.lblMappingTemp.BackColor = System.Drawing.Color.Transparent;
-            this.lblMappingTemp.Location = new System.Drawing.Point(160, 303);
+            this.lblMappingTemp.Location = new System.Drawing.Point(160, 440);
             this.lblMappingTemp.Name = "lblMappingTemp";
             this.lblMappingTemp.Size = new System.Drawing.Size(112, 17);
             this.lblMappingTemp.TabIndex = 25;
@@ -358,7 +367,7 @@
             this.btnExit.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExit.Location = new System.Drawing.Point(253, 334);
+            this.btnExit.Location = new System.Drawing.Point(253, 471);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 23);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -375,7 +384,7 @@
             // 
             this.labelX2.BackgroundStyle.Class = "";
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(21, 252);
+            this.labelX2.Location = new System.Drawing.Point(21, 389);
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(125, 21);
             this.labelX2.TabIndex = 16;
@@ -390,17 +399,177 @@
             // 
             this.labelX4.BackgroundStyle.Class = "";
             this.labelX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX4.Location = new System.Drawing.Point(21, 279);
+            this.labelX4.Location = new System.Drawing.Point(21, 416);
             this.labelX4.Name = "labelX4";
             this.labelX4.Size = new System.Drawing.Size(138, 21);
             this.labelX4.TabIndex = 31;
             this.labelX4.Text = "2.採計成績：原始成績";
             // 
+            // groupPanel1
+            // 
+            this.groupPanel1.BackColor = System.Drawing.Color.Transparent;
+            this.groupPanel1.CanvasColor = System.Drawing.SystemColors.Control;
+            this.groupPanel1.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel1.Controls.Add(this.cbxSeNo);
+            this.groupPanel1.Controls.Add(this.cbxIDNumber);
+            this.groupPanel1.DrawTitleBox = false;
+            this.groupPanel1.Location = new System.Drawing.Point(21, 320);
+            this.groupPanel1.Name = "groupPanel1";
+            this.groupPanel1.Size = new System.Drawing.Size(298, 60);
+            // 
+            // 
+            // 
+            this.groupPanel1.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.groupPanel1.Style.BackColorGradientAngle = 90;
+            this.groupPanel1.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.groupPanel1.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel1.Style.BorderBottomWidth = 1;
+            this.groupPanel1.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.groupPanel1.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel1.Style.BorderLeftWidth = 1;
+            this.groupPanel1.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel1.Style.BorderRightWidth = 1;
+            this.groupPanel1.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel1.Style.BorderTopWidth = 1;
+            this.groupPanel1.Style.Class = "";
+            this.groupPanel1.Style.CornerDiameter = 4;
+            this.groupPanel1.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.groupPanel1.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.groupPanel1.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.groupPanel1.StyleMouseDown.Class = "";
+            this.groupPanel1.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.groupPanel1.StyleMouseOver.Class = "";
+            this.groupPanel1.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.groupPanel1.TabIndex = 32;
+            this.groupPanel1.Text = "學生PDF檔案名稱命名方式";
+            // 
+            // cbxSeNo
+            // 
+            this.cbxSeNo.AutoSize = true;
+            this.cbxSeNo.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.cbxSeNo.BackgroundStyle.Class = "";
+            this.cbxSeNo.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.cbxSeNo.CheckBoxStyle = DevComponents.DotNetBar.eCheckBoxStyle.RadioButton;
+            this.cbxSeNo.Checked = true;
+            this.cbxSeNo.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbxSeNo.CheckValue = "Y";
+            this.cbxSeNo.Location = new System.Drawing.Point(3, 3);
+            this.cbxSeNo.Name = "cbxSeNo";
+            this.cbxSeNo.Size = new System.Drawing.Size(107, 21);
+            this.cbxSeNo.TabIndex = 1;
+            this.cbxSeNo.Text = "學測報名序號";
+            // 
+            // cbxIDNumber
+            // 
+            this.cbxIDNumber.AutoSize = true;
+            this.cbxIDNumber.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.cbxIDNumber.BackgroundStyle.Class = "";
+            this.cbxIDNumber.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.cbxIDNumber.CheckBoxStyle = DevComponents.DotNetBar.eCheckBoxStyle.RadioButton;
+            this.cbxIDNumber.Location = new System.Drawing.Point(148, 3);
+            this.cbxIDNumber.Name = "cbxIDNumber";
+            this.cbxIDNumber.Size = new System.Drawing.Size(94, 21);
+            this.cbxIDNumber.TabIndex = 1;
+            this.cbxIDNumber.Text = "身分證號碼";
+            // 
+            // groupPanel4
+            // 
+            this.groupPanel4.BackColor = System.Drawing.Color.Transparent;
+            this.groupPanel4.CanvasColor = System.Drawing.SystemColors.Control;
+            this.groupPanel4.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel4.Controls.Add(this.cbxExportPDF);
+            this.groupPanel4.Controls.Add(this.cbxExportWord);
+            this.groupPanel4.DrawTitleBox = false;
+            this.groupPanel4.Location = new System.Drawing.Point(21, 253);
+            this.groupPanel4.Name = "groupPanel4";
+            this.groupPanel4.Size = new System.Drawing.Size(298, 60);
+            // 
+            // 
+            // 
+            this.groupPanel4.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.groupPanel4.Style.BackColorGradientAngle = 90;
+            this.groupPanel4.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.groupPanel4.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel4.Style.BorderBottomWidth = 1;
+            this.groupPanel4.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.groupPanel4.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel4.Style.BorderLeftWidth = 1;
+            this.groupPanel4.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel4.Style.BorderRightWidth = 1;
+            this.groupPanel4.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel4.Style.BorderTopWidth = 1;
+            this.groupPanel4.Style.Class = "";
+            this.groupPanel4.Style.CornerDiameter = 4;
+            this.groupPanel4.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.groupPanel4.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.groupPanel4.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.groupPanel4.StyleMouseDown.Class = "";
+            this.groupPanel4.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.groupPanel4.StyleMouseOver.Class = "";
+            this.groupPanel4.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.groupPanel4.TabIndex = 33;
+            this.groupPanel4.Text = "產生檔案";
+            // 
+            // cbxExportPDF
+            // 
+            this.cbxExportPDF.AutoSize = true;
+            this.cbxExportPDF.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.cbxExportPDF.BackgroundStyle.Class = "";
+            this.cbxExportPDF.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.cbxExportPDF.CheckBoxStyle = DevComponents.DotNetBar.eCheckBoxStyle.RadioButton;
+            this.cbxExportPDF.Checked = true;
+            this.cbxExportPDF.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbxExportPDF.CheckValue = "Y";
+            this.cbxExportPDF.Location = new System.Drawing.Point(3, 3);
+            this.cbxExportPDF.Name = "cbxExportPDF";
+            this.cbxExportPDF.Size = new System.Drawing.Size(79, 21);
+            this.cbxExportPDF.TabIndex = 1;
+            this.cbxExportPDF.Text = "學生PDF";
+            // 
+            // cbxExportWord
+            // 
+            this.cbxExportWord.AutoSize = true;
+            this.cbxExportWord.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.cbxExportWord.BackgroundStyle.Class = "";
+            this.cbxExportWord.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.cbxExportWord.CheckBoxStyle = DevComponents.DotNetBar.eCheckBoxStyle.RadioButton;
+            this.cbxExportWord.Location = new System.Drawing.Point(148, 3);
+            this.cbxExportWord.Name = "cbxExportWord";
+            this.cbxExportWord.Size = new System.Drawing.Size(89, 21);
+            this.cbxExportWord.TabIndex = 1;
+            this.cbxExportWord.Text = "班級Word";
+            // 
             // StarUniversity
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(340, 369);
+            this.ClientSize = new System.Drawing.Size(340, 501);
+            this.Controls.Add(this.groupPanel4);
+            this.Controls.Add(this.groupPanel1);
             this.Controls.Add(this.labelX4);
             this.Controls.Add(this.labelX2);
             this.Controls.Add(this.btnExit);
@@ -413,13 +582,18 @@
             this.Controls.Add(this.groupPanel3);
             this.DoubleBuffered = true;
             this.Name = "StarUniversity";
-            this.Text = "103學年度大學繁星成績單";
+            this.Text = "104學年度大學繁星成績單";
+            this.Load += new System.EventHandler(this.StarUniversity_Load);
             this.groupPanel3.ResumeLayout(false);
             this.groupPanel3.PerformLayout();
             this.groupPanel2.ResumeLayout(false);
             this.groupPanel2.PerformLayout();
             this.gpGradeSemester.ResumeLayout(false);
             this.gpGradeSemester.PerformLayout();
+            this.groupPanel1.ResumeLayout(false);
+            this.groupPanel1.PerformLayout();
+            this.groupPanel4.ResumeLayout(false);
+            this.groupPanel4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -445,5 +619,11 @@
         private DevComponents.DotNetBar.ButtonX btnExit;
         private DevComponents.DotNetBar.LabelX labelX2;
         private DevComponents.DotNetBar.LabelX labelX4;
+        private DevComponents.DotNetBar.Controls.GroupPanel groupPanel1;
+        private DevComponents.DotNetBar.Controls.CheckBoxX cbxSeNo;
+        private DevComponents.DotNetBar.Controls.CheckBoxX cbxIDNumber;
+        private DevComponents.DotNetBar.Controls.GroupPanel groupPanel4;
+        private DevComponents.DotNetBar.Controls.CheckBoxX cbxExportPDF;
+        private DevComponents.DotNetBar.Controls.CheckBoxX cbxExportWord;
     }
 }

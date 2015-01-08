@@ -68,7 +68,14 @@ namespace SHStaticRank2.Data.StarUniversity
                 cboRankRilter.Items.Add(s);
                 cboTagRank1.Items.Add(s);
                 cboTagRank2.Items.Add(s);
-            } 
+            }
+
+            if (this.Configure.CheckExportPDF)
+                cbxExportPDF.Checked = true;
+            else
+                cbxExportWord.Checked = true;
+            
+            cbxIDNumber.Checked = this.Configure.CheckUseIDNumber;
             #endregion
             buttonX1.Enabled = true;
         }
@@ -122,7 +129,7 @@ AS tmp(id int, subject varchar(200))";
                 Configure.useSubjecOrder1List.Add(SubjectName);
                 Configure.useSubjecOrder2List.Add(SubjectName);
             }
-            Configure.Name = "多學期成績單(繁星)";
+            Configure.Name = "大學繁星";
             Configure.SortGradeYear = "三年級";
             Configure.useGradeSemesterList.Add("11");
             Configure.useGradeSemesterList.Add("12");
@@ -143,9 +150,17 @@ AS tmp(id int, subject varchar(200))";
             Configure.Rank2Tag = cboTagRank2.Text;
             Configure.RankFilterTagName = cboRankRilter.Text;
             if ( Configure.Template == null )
-                Configure.Template = new Document(new MemoryStream(Properties.Resources.多學期成績單_大學4學期));
+                Configure.Template = new Document(new MemoryStream(Properties.Resources.多學期成績單_5學期));
+
+            Configure.CheckExportPDF = cbxExportPDF.Checked;
+            if (cbxIDNumber.Checked)
+                Configure.CheckUseIDNumber = true;
+
+            if (cbxSeNo.Checked)
+                Configure.CheckUseIDNumber = false;
+
             DialogResult = System.Windows.Forms.DialogResult.OK;
-            //Configure.Save();
+            Configure.Save();
             this.Close();
         }
         private void DownloadDefaultTemplate()
@@ -176,11 +191,12 @@ AS tmp(id int, subject varchar(200))";
             try
             {
                 //document.Save(path, Aspose.Words.SaveFormat.Doc);
-                System.IO.FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write);
-                this.Configure.Template.Save(stream, Aspose.Words.SaveFormat.Doc);
-                //stream.Write(Properties.Resources.個人學期成績單樣板_高中_, 0, Properties.Resources.個人學期成績單樣板_高中_.Length);
-                stream.Flush();
-                stream.Close();
+                //System.IO.FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write);                
+                //stream.Write(Properties.Resources.多學期成績單_5學期, 0, Properties.Resources.多學期成績單_5學期.Length);
+                //stream.Flush();
+                //stream.Close();
+                //this.Configure.Template.Save(stream, Aspose.Words.SaveFormat.Doc);
+                this.Configure.Template.Save(path, SaveFormat.Doc);
                 System.Diagnostics.Process.Start(path);
             }
             catch
@@ -195,7 +211,7 @@ AS tmp(id int, subject varchar(200))";
                     {
                         //document.Save(sd.FileName, Aspose.Words.SaveFormat.Doc);
                         System.IO.FileStream stream = new FileStream(sd.FileName, FileMode.Create, FileAccess.Write);
-                        stream.Write(Properties.Resources.多學期成績單_大學4學期, 0, Properties.Resources.多學期成績單_大學4學期.Length);
+                        stream.Write(Properties.Resources.多學期成績單_5學期, 0, Properties.Resources.多學期成績單_5學期.Length);
                         stream.Flush();
                         stream.Close();
 
@@ -277,6 +293,11 @@ AS tmp(id int, subject varchar(200))";
         private void btnExit_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void StarUniversity_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

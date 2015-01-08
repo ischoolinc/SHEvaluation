@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FISCA.Data;
+using System.Data;
 
 namespace SHStaticRank2.Data
 {
@@ -56,5 +58,39 @@ namespace SHStaticRank2.Data
             }
             return retVal;
         }
+
+
+        /// <summary>
+        /// 透過學生編號取得學測報名序號
+        /// </summary>
+        /// <param name="StudentIDList"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> GetStudentSATSerNoByStudentIDList(List<string> StudentIDList)
+        {
+            Dictionary<string, string> retValue = new Dictionary<string, string>();
+            if(StudentIDList.Count>0)
+            {
+                try
+                {
+                    QueryHelper qh = new QueryHelper();
+                    string query = "select ref_student_id as sid,sat_ser_no as sno from $sh.college.sat.student where ref_student_id in('" + string.Join("','", StudentIDList.ToArray()) + "')";
+                    DataTable dt = qh.Select(query);
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        string sid = dr["sid"].ToString();
+                        string sno = "";
+                        if (dr["sno"] != null)
+                            sno = dr["sno"].ToString();
+
+                        if (!retValue.ContainsKey(sid))
+                            retValue.Add(sid, sno);
+                    }
+                }
+                catch (Exception ex)
+                { }
+            }
+            return retValue;
+        }
+        
     }
 }

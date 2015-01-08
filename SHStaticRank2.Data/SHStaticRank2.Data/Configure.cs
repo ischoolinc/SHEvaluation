@@ -101,7 +101,8 @@ namespace SHStaticRank2.Data
         /// 計算學期成績排名
         /// </summary>
         [FISCA.UDT.Field]
-        public bool WithCalSemesterScoreRank { get; set; }
+        public bool WithCalSemesterScoreRank { get; set; }      
+
 
         /// <summary>
         /// 在儲存前，把資料填入儲存欄位中
@@ -198,5 +199,17 @@ namespace SHStaticRank2.Data
         /// 勾選類別科目名稱2
         /// </summary>
         public List<string> useSubjecOrder2List = new List<string>();
+
+        /// <summary>
+        /// 檢查是否產生 PDF 檔
+        /// </summary>
+        [FISCA.UDT.Field]
+        public bool CheckExportPDF { get; set; }
+
+        /// <summary>
+        /// 產生 PDF 檔案名稱是否使用身分證號 Y:身分證 N:學測報名
+        /// </summary>
+        [FISCA.UDT.Field]
+        public bool CheckUseIDNumber { get; set; }
     }
 }

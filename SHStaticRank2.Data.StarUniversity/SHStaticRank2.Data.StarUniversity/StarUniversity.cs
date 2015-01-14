@@ -236,6 +236,15 @@ AS tmp(id int, subject varchar(200))";
                 try
                 {
                     this.Configure.Template = new Aspose.Words.Document(dialog.FileName);
+                    // 計算檔案大小
+                    MemoryStream ms = new MemoryStream();                    
+                    this.Configure.Template.Save(ms, SaveFormat.Pdf);
+                    byte[] bb = ms.ToArray();
+
+                    double bbSize = (bb.Count() / 1024);
+                    if (bbSize >= 200)
+                        MsgBox.Show("上傳範本檔案過大，產生PDF檔案大小可能超過200K。");                 
+
                     List<string> fields = new List<string>(this.Configure.Template.MailMerge.GetFieldNames());
                     this.Configure.SubjectLimit = 0;
                     while (fields.Contains("科目名稱" + (this.Configure.SubjectLimit + 1)))
@@ -243,6 +252,7 @@ AS tmp(id int, subject varchar(200))";
                         this.Configure.SubjectLimit++;
                     }
                     Configure.Encode();
+                    
                     Configure.Save();
                 }
                 catch

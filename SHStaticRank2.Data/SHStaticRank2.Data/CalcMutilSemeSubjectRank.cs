@@ -4864,12 +4864,11 @@ namespace SHStaticRank2.Data
                             // 取得 serNo
                             Dictionary<string, string> StudSATSerNoDict = Utility.GetStudentSATSerNoByStudentIDList(StudIDList);
 
-
                             #region 產生 PDF 檔案
                             foreach (StudentRecord studRec in gradeyearStudents[gradeyear])
                             {
 
-                                string FileKey = studRec.StudentID;
+                                string FileKey = "_"+studRec.StudentID;
                                 string ErrMsg = "";
 
                                 // 判斷存檔方式,Y 身分證號
@@ -4879,7 +4878,7 @@ namespace SHStaticRank2.Data
                                         FileKey = studRec.IDNumber;
                                     else
                                     {
-                                        ErrMsg = "學生系統編號："+studRec.StudentID+", 學生姓名："+studRec.StudentName+", 沒有身分證號。";
+                                        ErrMsg = "檔案編號：_"+studRec.StudentID+",學號："+studRec.StudentNumber+",學生姓名："+studRec.StudentName+", 沒有身分證號。";
                                     }
                                 }
                                 else
@@ -4893,12 +4892,12 @@ namespace SHStaticRank2.Data
                                         }
                                         else
                                         {
-                                            ErrMsg = "學生系統編號：" + studRec.StudentID + ", 學生姓名：" + studRec.StudentName + ", 沒有報名序號。";
+                                            ErrMsg = "檔案編號：_" + studRec.StudentID + ",學號：" + studRec.StudentNumber + ", 學生姓名：" + studRec.StudentName + ", 沒有報名序號。";
                                         }
                                     }
                                     else
                                     {
-                                        ErrMsg = "學生系統編號：" + studRec.StudentID + ", 學生姓名：" + studRec.StudentName + ", 沒有報名序號。";
+                                        ErrMsg = "檔案編號：_" + studRec.StudentID + ",學號：" + studRec.StudentNumber + " ,學生姓名：" + studRec.StudentName + ", 沒有報名序號。";
                                     }                                
                                 }
 
@@ -6540,11 +6539,7 @@ namespace SHStaticRank2.Data
                                 #endregion 處理篩選科目原始成績
                                 #endregion 處理科目原始成績加權平均平均
 
-
                                 _table.Rows.Add(row);
-
-
-
 
                                 if (OneClassCompleted != null)
                                     OneClassCompleted();
@@ -6560,7 +6555,6 @@ namespace SHStaticRank2.Data
                                 doc.MailMerge.DeleteFields();
 
                                 _table.Rows.Clear();
-
 
                                 #region PDF 存檔
                                 string reportNameW = FileKey;
@@ -6585,8 +6579,8 @@ namespace SHStaticRank2.Data
 
 
                                 try
-                                {
-                                    doc.Save(pathW, Aspose.Words.SaveFormat.Pdf);
+                                {                                   
+                                   doc.Save(pathW, Aspose.Words.SaveFormat.Pdf);
                                 }
                                 catch (OutOfMemoryException exow)
                                 {

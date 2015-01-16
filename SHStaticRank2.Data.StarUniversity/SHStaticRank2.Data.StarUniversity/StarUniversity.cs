@@ -167,7 +167,7 @@ AS tmp(id int, subject varchar(200))";
         {
             if (this.Configure == null) return;
             #region 儲存檔案
-            string inputReportName = "多學期成績單樣板(" + this.Configure.Name + ").doc";
+            string inputReportName = "多學期成績單樣板(" + this.Configure.Name + ")";
             string reportName = inputReportName;
 
             string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");
@@ -237,23 +237,28 @@ AS tmp(id int, subject varchar(200))";
                 {
                     this.Configure.Template = new Aspose.Words.Document(dialog.FileName);
                     // 計算檔案大小
-                    MemoryStream ms = new MemoryStream();                    
+                    MemoryStream ms = new MemoryStream();
                     this.Configure.Template.Save(ms, SaveFormat.Pdf);
                     byte[] bb = ms.ToArray();
-
+                    this.Configure.Template.Save(ms, SaveFormat.Doc);
+                    byte[] bbw = ms.ToArray();
                     double bbSize = (bb.Count() / 1024);
+                    double bbwSize = (bbw.Count() / 1024);
                     if (bbSize >= 200)
-                        MsgBox.Show("上傳範本檔案過大，產生PDF檔案大小可能超過200K。");                 
-
-                    List<string> fields = new List<string>(this.Configure.Template.MailMerge.GetFieldNames());
-                    this.Configure.SubjectLimit = 0;
-                    while (fields.Contains("科目名稱" + (this.Configure.SubjectLimit + 1)))
+                        MsgBox.Show("上傳範本檔案 "+bbwSize+" K ，產生PDF檔案大小約 "+bbSize+"K 超過200K 無法上傳，請調整範本大小再次上傳。");
+                    else
                     {
-                        this.Configure.SubjectLimit++;
-                    }
-                    Configure.Encode();
-                    
-                    Configure.Save();
+                        List<string> fields = new List<string>(this.Configure.Template.MailMerge.GetFieldNames());
+                        this.Configure.SubjectLimit = 0;
+                        while (fields.Contains("科目名稱" + (this.Configure.SubjectLimit + 1)))
+                        {
+                            this.Configure.SubjectLimit++;
+                        }
+                        Configure.Encode();
+
+                        Configure.Save();
+                        MsgBox.Show("上傳完成.");
+                    }                    
                 }
                 catch
                 {

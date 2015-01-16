@@ -160,6 +160,8 @@
     </Compile>
     <Compile Include="StringComparer.cs" />
     <Compile Include="studScore.cs" />
+    <Compile Include="StudSemsEntryRating.cs" />
+    <Compile Include="StudSemsSubjRating.cs" />
     <Compile Include="UpdateHelper.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>

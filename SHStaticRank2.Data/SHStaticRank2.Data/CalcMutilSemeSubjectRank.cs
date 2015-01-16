@@ -4401,6 +4401,39 @@ namespace SHStaticRank2.Data
                         _table.Columns.Add("三下學業成績");
                         _table.Columns.Add("四上學業成績");
                         _table.Columns.Add("四下學業成績");
+                        _table.Columns.Add("一上學業班排名");
+                        _table.Columns.Add("一下學業班排名");
+                        _table.Columns.Add("二上學業班排名");
+                        _table.Columns.Add("二下學業班排名");
+                        _table.Columns.Add("三上學業班排名");
+                        _table.Columns.Add("三下學業班排名");
+                        _table.Columns.Add("四上學業班排名");
+                        _table.Columns.Add("四下學業班排名");
+                        _table.Columns.Add("一上學業科排名");
+                        _table.Columns.Add("一下學業科排名");
+                        _table.Columns.Add("二上學業科排名");
+                        _table.Columns.Add("二下學業科排名");
+                        _table.Columns.Add("三上學業科排名");
+                        _table.Columns.Add("三下學業科排名");
+                        _table.Columns.Add("四上學業科排名");
+                        _table.Columns.Add("四下學業科排名");
+                        _table.Columns.Add("一上學業校排名");
+                        _table.Columns.Add("一下學業校排名");
+                        _table.Columns.Add("二上學業校排名");
+                        _table.Columns.Add("二下學業校排名");
+                        _table.Columns.Add("三上學業校排名");
+                        _table.Columns.Add("三下學業校排名");
+                        _table.Columns.Add("四上學業校排名");
+                        _table.Columns.Add("四下學業校排名");
+                        _table.Columns.Add("一上學業類1排名");
+                        _table.Columns.Add("一下學業類1排名");
+                        _table.Columns.Add("二上學業類1排名");
+                        _table.Columns.Add("二下學業類1排名");
+                        _table.Columns.Add("三上學業類1排名");
+                        _table.Columns.Add("三下學業類1排名");
+                        _table.Columns.Add("四上學業類1排名");
+                        _table.Columns.Add("四下學業類1排名");
+
                         _table.Columns.Add("學業平均");
                         _table.Columns.Add("學業平均科排名");
                         _table.Columns.Add("學業平均科排名母數");
@@ -4765,20 +4798,28 @@ namespace SHStaticRank2.Data
                             _table.Columns.Add("科目名稱" + i);
                             _table.Columns.Add("一上科目成績" + i);
                             _table.Columns.Add("一上科目學分數" + i);
+                            _table.Columns.Add("一上科目排名" + i);
                             _table.Columns.Add("一下科目成績" + i);
                             _table.Columns.Add("一下科目學分數" + i);
+                            _table.Columns.Add("一下科目排名" + i);
                             _table.Columns.Add("二上科目成績" + i);
                             _table.Columns.Add("二上科目學分數" + i);
+                            _table.Columns.Add("二上科目排名" + i);
                             _table.Columns.Add("二下科目成績" + i);
                             _table.Columns.Add("二下科目學分數" + i);
+                            _table.Columns.Add("二下科目排名" + i);
                             _table.Columns.Add("三上科目成績" + i);
                             _table.Columns.Add("三上科目學分數" + i);
+                            _table.Columns.Add("三上科目排名" + i);
                             _table.Columns.Add("三下科目成績" + i);
                             _table.Columns.Add("三下科目學分數" + i);
+                            _table.Columns.Add("三下科目排名" + i);
                             _table.Columns.Add("四上科目成績" + i);
                             _table.Columns.Add("四上科目學分數" + i);
+                            _table.Columns.Add("四上科目排名" + i);
                             _table.Columns.Add("四下科目成績" + i);
                             _table.Columns.Add("四下科目學分數" + i);
+                            _table.Columns.Add("四下科目排名" + i);
                             _table.Columns.Add("科目加權平均" + i);
                             _table.Columns.Add("科目加權平均科排名" + i);
                             _table.Columns.Add("科目加權平均科排名母數" + i);
@@ -4848,18 +4889,28 @@ namespace SHStaticRank2.Data
 
                         #endregion 合併欄位使用
                         
+                     
+
                         bkw.ReportProgress(80);
 
 
                         StringBuilder sbPDFErr = new StringBuilder();
 
+                        // 取得學生ID
+                        List<string> StudIDList = new List<string>();
+                        foreach (StudentRecord studRec in gradeyearStudents[gradeyear])
+                            StudIDList.Add(studRec.StudentID);     
+
+                        // 讀取各學業排名
+                        Dictionary<string, List<StudSemsEntryRating>> StudSemsEntryRatingDict = Utility.GetStudSemsEntryRatingByStudentID(StudIDList);
+
+                        // 讀取各學期各科目排名
+                        Dictionary<string, List<StudSemsSubjRating>> StudSemsSubjRatingDict = Utility.GetStudSemsSubjRatingByStudentID(StudIDList);
+
                         // 判斷是否產生 PDF
                         if (setting.CheckExportPDF)
                         {
-                            // 取得學生ID
-                            List<string> StudIDList = new List<string>();
-                            foreach (StudentRecord studRec in gradeyearStudents[gradeyear])
-                                StudIDList.Add(studRec.StudentID);
+                      
 
                             // 取得 serNo
                             Dictionary<string, string> StudSATSerNoDict = Utility.GetStudentSATSerNoByStudentIDList(StudIDList);
@@ -5276,12 +5327,152 @@ namespace SHStaticRank2.Data
                                 row["二年級學年度"] = string.Join("/", g2List.ToArray());
                                 row["三年級學年度"] = string.Join("/", g3List.ToArray());
                                 row["四年級學年度"] = string.Join("/", g4List.ToArray());
+                                                              
+                                // 處理各學期各科目排名
+                                if (StudSemsSubjRatingDict.ContainsKey(studRec.StudentID))
+                                {
+                                    foreach (StudSemsSubjRating ssr in StudSemsSubjRatingDict[studRec.StudentID])
+                                    {
+                                        if (ssr.GradeYear == "1" && ssr.Semester == "1")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["ㄧ上科目排名" + i] = ssr.GetClassRank(subjName);
+                                            }
+                                        }
+                                        if (ssr.GradeYear == "1" && ssr.Semester == "2")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["ㄧ下科目排名" + i] = ssr.GetClassRank(subjName);
+                                            }
+                                        }
 
+                                        if (ssr.GradeYear == "2" && ssr.Semester == "1")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["二上科目排名" + i] = ssr.GetClassRank(subjName);
+                                            }
+                                        }
+                                        if (ssr.GradeYear == "2" && ssr.Semester == "2")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["二下科目排名" + i] = ssr.GetClassRank(subjName);
+                                            }
+                                        }
+
+                                        if (ssr.GradeYear == "3" && ssr.Semester == "1")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["三上科目排名" + i] = ssr.GetClassRank(subjName);
+                                            }
+                                        }
+                                        if (ssr.GradeYear == "3" && ssr.Semester == "2")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["三下科目排名" + i] = ssr.GetClassRank(subjName);
+                                            }
+                                        }
+
+                                        if (ssr.GradeYear == "4" && ssr.Semester == "1")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["四上科目排名" + i] = ssr.GetClassRank(subjName);
+                                            }
+                                        }
+                                        if (ssr.GradeYear == "4" && ssr.Semester == "2")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["四下科目排名" + i] = ssr.GetClassRank(subjName);
+                                            }
+                                        }
+                                    }
+                                }
                                 if (setting.計算學業成績排名)
                                 {
                                     // 處理學業
                                     #region 處理學業
                                     string id1 = studRec.StudentID + "學業";
+
+                                    #region 讀取各學期學業排名
+                                    if (StudSemsEntryRatingDict.ContainsKey(studRec.StudentID))
+                                    {
+                                        foreach (StudSemsEntryRating sser in StudSemsEntryRatingDict[studRec.StudentID])
+                                        {
+
+                                            if (sser.GradeYear == "1" && sser.Semester == "1")
+                                            {
+                                                row["一上學業班排名"] = sser.ClassRank;
+                                                row["一上學業科排名"] = sser.DeptRank;
+                                                row["一上學業校排名"] = sser.YearRank;
+                                                row["一上學業類1排名"] = sser.Group1Rank;
+                                            }
+                                            if (sser.GradeYear == "1" && sser.Semester == "2")
+                                            {
+                                                row["一下學業班排名"] = sser.ClassRank;
+                                                row["一下學業科排名"] = sser.DeptRank;
+                                                row["一下學業校排名"] = sser.YearRank;
+                                                row["一下學業類1排名"] = sser.Group1Rank;
+                                            }
+                                            if (sser.GradeYear == "2" && sser.Semester == "1")
+                                            {
+                                                row["二上學業班排名"] = sser.ClassRank;
+                                                row["二上學業科排名"] = sser.DeptRank;
+                                                row["二上學業校排名"] = sser.YearRank;
+                                                row["二上學業類1排名"] = sser.Group1Rank;
+                                            }
+                                            if (sser.GradeYear == "2" && sser.Semester == "2")
+                                            {
+                                                row["二下學業班排名"] = sser.ClassRank;
+                                                row["二下學業科排名"] = sser.DeptRank;
+                                                row["二下學業校排名"] = sser.YearRank;
+                                                row["二下學業類1排名"] = sser.Group1Rank;
+                                            }
+                                            if (sser.GradeYear == "3" && sser.Semester == "1")
+                                            {
+                                                row["三上學業班排名"] = sser.ClassRank;
+                                                row["三上學業科排名"] = sser.DeptRank;
+                                                row["三上學業校排名"] = sser.YearRank;
+                                                row["三上學業類1排名"] = sser.Group1Rank;
+                                            }
+                                            if (sser.GradeYear == "3" && sser.Semester == "2")
+                                            {
+                                                row["三下學業班排名"] = sser.ClassRank;
+                                                row["三下學業科排名"] = sser.DeptRank;
+                                                row["三下學業校排名"] = sser.YearRank;
+                                                row["三下學業類1排名"] = sser.Group1Rank;
+                                            }
+                                            if (sser.GradeYear == "4" && sser.Semester == "1")
+                                            {
+                                                row["四上學業班排名"] = sser.ClassRank;
+                                                row["四上學業科排名"] = sser.DeptRank;
+                                                row["四上學業校排名"] = sser.YearRank;
+                                                row["四上學業類1排名"] = sser.Group1Rank;
+                                            }
+                                            if (sser.GradeYear == "4" && sser.Semester == "2")
+                                            {
+                                                row["四下學業班排名"] = sser.ClassRank;
+                                                row["四下學業科排名"] = sser.DeptRank;
+                                                row["四下學業校排名"] = sser.YearRank;
+                                                row["四下學業類1排名"] = sser.Group1Rank;
+                                            }
+                                        }
+                                    }
+                                    #endregion
 
                                     if (selectScore.ContainsKey(id1))
                                     {
@@ -6607,6 +6798,8 @@ namespace SHStaticRank2.Data
                         }
                         else
                         {
+                            
+
                             #region 產生 Word 檔案
                             foreach (string className in classNameList)
                             {
@@ -6679,7 +6872,7 @@ namespace SHStaticRank2.Data
                                                     if (!g2List.Contains(selectScore[id].gsSchoolYear21.Value))
                                                         g2List.Add(selectScore[id].gsSchoolYear21.Value);
                                                 }
-
+                                                
                                                 if (selectScore[id].gsSchoolYear22.HasValue)
                                                 {
                                                     if (!g2List.Contains(selectScore[id].gsSchoolYear22.Value))
@@ -6993,11 +7186,152 @@ namespace SHStaticRank2.Data
                                         row["三年級學年度"] = string.Join("/", g3List.ToArray());
                                         row["四年級學年度"] = string.Join("/", g4List.ToArray());
 
+                                        // 處理各學期各科目排名
+                                        if (StudSemsSubjRatingDict.ContainsKey(studRec.StudentID))
+                                        {
+                                            foreach (StudSemsSubjRating ssr in StudSemsSubjRatingDict[studRec.StudentID])
+                                            {
+                                                if (ssr.GradeYear == "1" && ssr.Semester == "1")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["一上科目排名" + i] = ssr.GetClassRank(subjName);
+                                                    }
+                                                }
+                                                if (ssr.GradeYear == "1" && ssr.Semester == "2")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["一下科目排名" + i] = ssr.GetClassRank(subjName);
+                                                    }
+                                                }
+
+                                                if (ssr.GradeYear == "2" && ssr.Semester == "1")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["二上科目排名" + i] = ssr.GetClassRank(subjName);
+                                                    }
+                                                }
+                                                if (ssr.GradeYear == "2" && ssr.Semester == "2")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["二下科目排名" + i] = ssr.GetClassRank(subjName);
+                                                    }
+                                                }
+
+                                                if (ssr.GradeYear == "3" && ssr.Semester == "1")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["三上科目排名" + i] = ssr.GetClassRank(subjName);
+                                                    }
+                                                }
+                                                if (ssr.GradeYear == "3" && ssr.Semester == "2")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["三下科目排名" + i] = ssr.GetClassRank(subjName);
+                                                    }
+                                                }
+
+                                                if (ssr.GradeYear == "4" && ssr.Semester == "1")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["四上科目排名" + i] = ssr.GetClassRank(subjName);
+                                                    }
+                                                }
+                                                if (ssr.GradeYear == "4" && ssr.Semester == "2")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["四下科目排名" + i] = ssr.GetClassRank(subjName);
+                                                    }
+                                                }
+                                            }
+                                        }
+
                                         if (setting.計算學業成績排名)
                                         {
                                             // 處理學業
                                             #region 處理學業
                                             string id1 = studRec.StudentID + "學業";
+
+                                            #region 讀取各學期學業排名
+                                            if (StudSemsEntryRatingDict.ContainsKey(studRec.StudentID))
+                                            {
+                                                foreach (StudSemsEntryRating sser in StudSemsEntryRatingDict[studRec.StudentID])
+                                                {
+
+                                                    if (sser.GradeYear == "1" && sser.Semester == "1")
+                                                    {
+                                                        row["一上學業班排名"] = sser.ClassRank;
+                                                        row["一上學業科排名"] = sser.DeptRank;
+                                                        row["一上學業校排名"] = sser.YearRank;
+                                                        row["一上學業類1排名"] = sser.Group1Rank;
+                                                    }
+                                                    if (sser.GradeYear == "1" && sser.Semester == "2")
+                                                    {
+                                                        row["一下學業班排名"] = sser.ClassRank;
+                                                        row["一下學業科排名"] = sser.DeptRank;
+                                                        row["一下學業校排名"] = sser.YearRank;
+                                                        row["一下學業類1排名"] = sser.Group1Rank;
+                                                    }
+                                                    if (sser.GradeYear == "2" && sser.Semester == "1")
+                                                    {
+                                                        row["二上學業班排名"] = sser.ClassRank;
+                                                        row["二上學業科排名"] = sser.DeptRank;
+                                                        row["二上學業校排名"] = sser.YearRank;
+                                                        row["二上學業類1排名"] = sser.Group1Rank;
+                                                    }
+                                                    if (sser.GradeYear == "2" && sser.Semester == "2")
+                                                    {
+                                                        row["二下學業班排名"] = sser.ClassRank;
+                                                        row["二下學業科排名"] = sser.DeptRank;
+                                                        row["二下學業校排名"] = sser.YearRank;
+                                                        row["二下學業類1排名"] = sser.Group1Rank;
+                                                    }
+                                                    if (sser.GradeYear == "3" && sser.Semester == "1")
+                                                    {
+                                                        row["三上學業班排名"] = sser.ClassRank;
+                                                        row["三上學業科排名"] = sser.DeptRank;
+                                                        row["三上學業校排名"] = sser.YearRank;
+                                                        row["三上學業類1排名"] = sser.Group1Rank;
+                                                    }
+                                                    if (sser.GradeYear == "3" && sser.Semester == "2")
+                                                    {
+                                                        row["三下學業班排名"] = sser.ClassRank;
+                                                        row["三下學業科排名"] = sser.DeptRank;
+                                                        row["三下學業校排名"] = sser.YearRank;
+                                                        row["三下學業類1排名"] = sser.Group1Rank;
+                                                    }
+                                                    if (sser.GradeYear == "4" && sser.Semester == "1")
+                                                    {
+                                                        row["四上學業班排名"] = sser.ClassRank;
+                                                        row["四上學業科排名"] = sser.DeptRank;
+                                                        row["四上學業校排名"] = sser.YearRank;
+                                                        row["四上學業類1排名"] = sser.Group1Rank;
+                                                    }
+                                                    if (sser.GradeYear == "4" && sser.Semester == "2")
+                                                    {
+                                                        row["四下學業班排名"] = sser.ClassRank;
+                                                        row["四下學業科排名"] = sser.DeptRank;
+                                                        row["四下學業校排名"] = sser.YearRank;
+                                                        row["四下學業類1排名"] = sser.Group1Rank;
+                                                    }
+                                                }
+                                            }
+                                            #endregion
 
                                             if (selectScore.ContainsKey(id1))
                                             {

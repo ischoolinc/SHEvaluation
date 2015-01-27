@@ -124,4 +124,7 @@
   <data name="高中多學期學生成績證明書" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\template\高中多學期學生成績證明書.doc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="高中部班級歷年成績單" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\template\高中部班級歷年成績單.doc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

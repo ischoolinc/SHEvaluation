@@ -5,6 +5,8 @@ using System.Text;
 using SmartSchool.Customization.Data;
 using System.IO;
 using FISCA.DSAUtil;
+using System.Data;
+using Aspose.Words;
 
 namespace SHStaticRank2.Data
 {
@@ -43,6 +45,27 @@ namespace SHStaticRank2.Data
                 if (conf.DialogResult == System.Windows.Forms.DialogResult.OK)
                 {
                     CalcMutilSemeSubjectRank.Setup(conf.Setting);
+                    CalcMutilSemeSubjectRank.OneClassCompleted += delegate
+                    {
+                        DataTable students = CalcMutilSemeSubjectRank._table.Copy();
+
+                        if (students.Rows.Count <= 0)
+                            return;
+
+                        Dictionary<string, string> classData = new Dictionary<string, string>();
+                        classData.Add("學校名稱", students.Rows[0]["學校名稱"] + "");
+                        classData.Add("科別", students.Rows[0]["科別"] + "");
+                        classData.Add("班級", students.Rows[0]["班級"] + "");
+
+                        SingleClassMailMerge classm = new SingleClassMailMerge(classData, students);
+                        MemoryStream ms = new MemoryStream(Properties.Resources.高中部班級歷年成績單);
+
+                        Document doc = new Document(ms);
+                        doc.MailMerge.ExecuteWithRegions(classm);
+
+                        string pathW = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");
+                        doc.Save(Path.Combine(pathW, classData["班級"]) + ".docx", SaveFormat.Docx);
+                    };
                 }
             };
         }

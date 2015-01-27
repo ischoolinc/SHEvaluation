@@ -158,6 +158,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SingleClassMailMerge.cs" />
     <Compile Include="StringComparer.cs" />
     <Compile Include="studScore.cs" />
     <Compile Include="StudSemsEntryRating.cs" />
@@ -228,8 +229,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Template\高中部班級歷年成績單.doc" />
     <None Include="Template\合併欄位總表.doc" />
     <None Include="Template\高中多學期學生成績證明書.doc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

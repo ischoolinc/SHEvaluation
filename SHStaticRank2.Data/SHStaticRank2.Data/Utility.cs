@@ -132,10 +132,18 @@ namespace SHStaticRank2.Data
                                 if (elm.Attribute("分項") != null && elm.Attribute("分項").Value == "學業")
                                 {
                                     if (elm.Attribute("成績人數") != null && elm.Attribute("成績人數").Value != "")
-                                        sser.ClassCount = int.Parse(elm.Attribute("成績人數").Value);
+                                    {
+                                        int x;
+                                        if (int.TryParse(elm.Attribute("成績人數").Value, out x))
+                                            sser.ClassCount = x;
 
+                                    }
                                     if (elm.Attribute("排名") != null && elm.Attribute("排名").Value != "")
-                                        sser.ClassRank = int.Parse(elm.Attribute("排名").Value);
+                                    {
+                                        int x;
+                                        if (int.TryParse(elm.Attribute("排名").Value, out x))
+                                            sser.ClassRank = x;
+                                    }
                                 }
                             }
                         }
@@ -149,10 +157,17 @@ namespace SHStaticRank2.Data
                                 if (elm.Attribute("分項") != null && elm.Attribute("分項").Value == "學業")
                                 {
                                     if (elm.Attribute("成績人數") != null && elm.Attribute("成績人數").Value != "")
-                                        sser.DeptCount = int.Parse(elm.Attribute("成績人數").Value);
-
+                                    {
+                                        int x;
+                                        if (int.TryParse(elm.Attribute("成績人數").Value, out x))
+                                            sser.DeptCount = x;
+                                    }
                                     if (elm.Attribute("排名") != null && elm.Attribute("排名").Value != "")
-                                        sser.DeptRank = int.Parse(elm.Attribute("排名").Value);
+                                    {
+                                        int x;
+                                        if (int.TryParse(elm.Attribute("排名").Value, out x))
+                                            sser.DeptRank = x;
+                                    }
                                 }
                             }
                         }
@@ -166,10 +181,18 @@ namespace SHStaticRank2.Data
                                 if (elm.Attribute("分項") != null && elm.Attribute("分項").Value == "學業")
                                 {
                                     if (elm.Attribute("成績人數") != null && elm.Attribute("成績人數").Value != "")
-                                        sser.YearCount = int.Parse(elm.Attribute("成績人數").Value);
+                                    {
+                                        int x;
+                                        if (int.TryParse(elm.Attribute("成績人數").Value, out x))
+                                            sser.YearCount = x;
+                                    }
 
                                     if (elm.Attribute("排名") != null && elm.Attribute("排名").Value != "")
-                                        sser.YearRank = int.Parse(elm.Attribute("排名").Value);
+                                    {
+                                        int x;
+                                        if (int.TryParse(elm.Attribute("排名").Value, out x))
+                                            sser.YearRank = x;
+                                    }
                                 }
                             }
                         }
@@ -183,10 +206,19 @@ namespace SHStaticRank2.Data
                                 if (elm.Attribute("分項") != null && elm.Attribute("分項").Value == "學業")
                                 {
                                     if (elm.Attribute("成績人數") != null && elm.Attribute("成績人數").Value != "")
-                                        sser.Group1Count = int.Parse(elm.Attribute("成績人數").Value);
+                                    {
+                                        int x;
+                                        if (int.TryParse(elm.Attribute("成績人數").Value, out x))
+                                            sser.Group1Count = x;
+                                    }
 
                                     if (elm.Attribute("排名") != null && elm.Attribute("排名").Value != "")
-                                        sser.Group1Rank = int.Parse(elm.Attribute("排名").Value);
+                                    {
+                                        int x;
+                                        if (int.TryParse(elm.Attribute("排名").Value, out x))
+                                            sser.Group1Rank = x;
+                                    }
+                                        
                                 }
                             }
                         }

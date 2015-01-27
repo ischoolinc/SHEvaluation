@@ -8,6 +8,7 @@ using FISCA.DSAUtil;
 using System.Data;
 using Aspose.Words;
 using SmartSchool;
+using FISCA.Presentation;
 
 namespace SHStaticRank2.Data
 {
@@ -4322,7 +4323,7 @@ namespace SHStaticRank2.Data
                                         mt.FileAddress = path;
                                 }
 
-                                data.Save(path, Aspose.Cells.FileFormatType.Excel97To2003);                                
+                                data.Save(path, Aspose.Cells.FileFormatType.Excel97To2003);
                             }
                             catch (OutOfMemoryException exo1)
                             {
@@ -4888,8 +4889,8 @@ namespace SHStaticRank2.Data
                         }
 
                         #endregion 合併欄位使用
-                        
-                     
+
+
 
                         bkw.ReportProgress(80);
 
@@ -4899,7 +4900,7 @@ namespace SHStaticRank2.Data
                         // 取得學生ID
                         List<string> StudIDList = new List<string>();
                         foreach (StudentRecord studRec in gradeyearStudents[gradeyear])
-                            StudIDList.Add(studRec.StudentID);     
+                            StudIDList.Add(studRec.StudentID);
 
                         // 讀取各學業排名
                         Dictionary<string, List<StudSemsEntryRating>> StudSemsEntryRatingDict = Utility.GetStudSemsEntryRatingByStudentID(StudIDList);
@@ -4910,16 +4911,17 @@ namespace SHStaticRank2.Data
                         // 判斷是否產生 PDF
                         if (setting.CheckExportPDF)
                         {
-                      
+
 
                             // 取得 serNo
                             Dictionary<string, string> StudSATSerNoDict = Utility.GetStudentSATSerNoByStudentIDList(StudIDList);
+                            int StudCountStart = 0, StudSumCount = gradeyearStudents[gradeyear].Count;
 
                             #region 產生 PDF 檔案
                             foreach (StudentRecord studRec in gradeyearStudents[gradeyear])
                             {
 
-                                string FileKey = "_"+studRec.StudentID;
+                                string FileKey = "_" + studRec.StudentID;
                                 string ErrMsg = "";
 
                                 // 判斷存檔方式,Y 身分證號
@@ -4929,7 +4931,7 @@ namespace SHStaticRank2.Data
                                         FileKey = studRec.IDNumber;
                                     else
                                     {
-                                        ErrMsg = "檔案編號：_"+studRec.StudentID+",學號："+studRec.StudentNumber+",學生姓名："+studRec.StudentName+", 沒有身分證號。";
+                                        ErrMsg = "檔案編號：_" + studRec.StudentID + ",學號：" + studRec.StudentNumber + ",學生姓名：" + studRec.StudentName + ", 沒有身分證號。";
                                     }
                                 }
                                 else
@@ -4949,7 +4951,7 @@ namespace SHStaticRank2.Data
                                     else
                                     {
                                         ErrMsg = "檔案編號：_" + studRec.StudentID + ",學號：" + studRec.StudentNumber + " ,學生姓名：" + studRec.StudentName + ", 沒有報名序號。";
-                                    }                                
+                                    }
                                 }
 
                                 if (ErrMsg != "")
@@ -5327,7 +5329,7 @@ namespace SHStaticRank2.Data
                                 row["二年級學年度"] = string.Join("/", g2List.ToArray());
                                 row["三年級學年度"] = string.Join("/", g3List.ToArray());
                                 row["四年級學年度"] = string.Join("/", g4List.ToArray());
-                                                              
+
                                 // 處理各學期各科目排名
                                 if (StudSemsSubjRatingDict.ContainsKey(studRec.StudentID))
                                 {
@@ -5338,7 +5340,7 @@ namespace SHStaticRank2.Data
                                             for (int i = 1; i <= subjCot; i++)
                                             {
                                                 string subjName = row["科目名稱" + i].ToString();
-                                                row["ㄧ上科目排名" + i] = ssr.GetClassRank(subjName);
+                                                row["一上科目排名" + i] = ssr.GetClassRank(subjName);
                                             }
                                         }
                                         if (ssr.GradeYear == "1" && ssr.Semester == "2")
@@ -5346,7 +5348,7 @@ namespace SHStaticRank2.Data
                                             for (int i = 1; i <= subjCot; i++)
                                             {
                                                 string subjName = row["科目名稱" + i].ToString();
-                                                row["ㄧ下科目排名" + i] = ssr.GetClassRank(subjName);
+                                                row["一下科目排名" + i] = ssr.GetClassRank(subjName);
                                             }
                                         }
 
@@ -5416,59 +5418,91 @@ namespace SHStaticRank2.Data
 
                                             if (sser.GradeYear == "1" && sser.Semester == "1")
                                             {
-                                                row["一上學業班排名"] = sser.ClassRank;
-                                                row["一上學業科排名"] = sser.DeptRank;
-                                                row["一上學業校排名"] = sser.YearRank;
-                                                row["一上學業類1排名"] = sser.Group1Rank;
+                                                if(sser.ClassRank.HasValue)
+                                                    row["一上學業班排名"] = sser.ClassRank.Value;
+                                                if (sser.DeptRank.HasValue)
+                                                    row["一上學業科排名"] = sser.DeptRank.Value;
+                                                if (sser.YearRank.HasValue)
+                                                    row["一上學業校排名"] = sser.YearRank.Value;
+                                                if (sser.Group1Rank.HasValue)
+                                                    row["一上學業類1排名"] = sser.Group1Rank.Value;
                                             }
                                             if (sser.GradeYear == "1" && sser.Semester == "2")
                                             {
-                                                row["一下學業班排名"] = sser.ClassRank;
-                                                row["一下學業科排名"] = sser.DeptRank;
-                                                row["一下學業校排名"] = sser.YearRank;
-                                                row["一下學業類1排名"] = sser.Group1Rank;
+                                                if (sser.ClassRank.HasValue)
+                                                    row["一下學業班排名"] = sser.ClassRank.Value;
+                                                if (sser.DeptRank.HasValue)
+                                                    row["一下學業科排名"] = sser.DeptRank.Value;
+                                                if (sser.YearRank.HasValue)
+                                                    row["一下學業校排名"] = sser.YearRank.Value;
+                                                if (sser.Group1Rank.HasValue)
+                                                    row["一下學業類1排名"] = sser.Group1Rank.Value;
                                             }
                                             if (sser.GradeYear == "2" && sser.Semester == "1")
                                             {
-                                                row["二上學業班排名"] = sser.ClassRank;
-                                                row["二上學業科排名"] = sser.DeptRank;
-                                                row["二上學業校排名"] = sser.YearRank;
-                                                row["二上學業類1排名"] = sser.Group1Rank;
+                                                if (sser.ClassRank.HasValue)
+                                                    row["二上學業班排名"] = sser.ClassRank.Value;
+                                                if (sser.DeptRank.HasValue)
+                                                    row["二上學業科排名"] = sser.DeptRank.Value;
+                                                if (sser.YearRank.HasValue)
+                                                    row["二上學業校排名"] = sser.YearRank.Value;
+                                                if (sser.Group1Rank.HasValue)
+                                                    row["二上學業類1排名"] = sser.Group1Rank.Value;
                                             }
                                             if (sser.GradeYear == "2" && sser.Semester == "2")
                                             {
-                                                row["二下學業班排名"] = sser.ClassRank;
-                                                row["二下學業科排名"] = sser.DeptRank;
-                                                row["二下學業校排名"] = sser.YearRank;
-                                                row["二下學業類1排名"] = sser.Group1Rank;
+                                                if (sser.ClassRank.HasValue)
+                                                    row["二下學業班排名"] = sser.ClassRank.Value;
+                                                if (sser.DeptRank.HasValue)
+                                                    row["二下學業科排名"] = sser.DeptRank.Value;
+                                                if (sser.YearRank.HasValue)
+                                                    row["二下學業校排名"] = sser.YearRank.Value;
+                                                if (sser.Group1Rank.HasValue)
+                                                    row["二下學業類1排名"] = sser.Group1Rank.Value;
                                             }
                                             if (sser.GradeYear == "3" && sser.Semester == "1")
                                             {
-                                                row["三上學業班排名"] = sser.ClassRank;
-                                                row["三上學業科排名"] = sser.DeptRank;
-                                                row["三上學業校排名"] = sser.YearRank;
-                                                row["三上學業類1排名"] = sser.Group1Rank;
+                                                if (sser.ClassRank.HasValue)
+                                                    row["三上學業班排名"] = sser.ClassRank.Value;
+                                                if (sser.DeptRank.HasValue)
+                                                    row["三上學業科排名"] = sser.DeptRank.Value;
+                                                if (sser.YearRank.HasValue)
+                                                    row["三上學業校排名"] = sser.YearRank.Value;
+                                                if (sser.Group1Rank.HasValue)
+                                                    row["三上學業類1排名"] = sser.Group1Rank.Value;
                                             }
                                             if (sser.GradeYear == "3" && sser.Semester == "2")
                                             {
-                                                row["三下學業班排名"] = sser.ClassRank;
-                                                row["三下學業科排名"] = sser.DeptRank;
-                                                row["三下學業校排名"] = sser.YearRank;
-                                                row["三下學業類1排名"] = sser.Group1Rank;
+                                                if (sser.ClassRank.HasValue)
+                                                    row["三下學業班排名"] = sser.ClassRank.Value;
+                                                if (sser.DeptRank.HasValue)
+                                                    row["三下學業科排名"] = sser.DeptRank.Value;
+                                                if (sser.YearRank.HasValue)
+                                                    row["三下學業校排名"] = sser.YearRank.Value;
+                                                if (sser.Group1Rank.HasValue)
+                                                    row["三下學業類1排名"] = sser.Group1Rank.Value;
                                             }
                                             if (sser.GradeYear == "4" && sser.Semester == "1")
                                             {
-                                                row["四上學業班排名"] = sser.ClassRank;
-                                                row["四上學業科排名"] = sser.DeptRank;
-                                                row["四上學業校排名"] = sser.YearRank;
-                                                row["四上學業類1排名"] = sser.Group1Rank;
+                                                if (sser.ClassRank.HasValue)
+                                                    row["四上學業班排名"] = sser.ClassRank.Value;
+                                                if (sser.DeptRank.HasValue)
+                                                    row["四上學業科排名"] = sser.DeptRank.Value;
+                                                if (sser.YearRank.HasValue)
+                                                    row["四上學業校排名"] = sser.YearRank.Value;
+                                                if (sser.Group1Rank.HasValue)
+                                                    row["四上學業類1排名"] = sser.Group1Rank.Value;
                                             }
                                             if (sser.GradeYear == "4" && sser.Semester == "2")
                                             {
-                                                row["四下學業班排名"] = sser.ClassRank;
-                                                row["四下學業科排名"] = sser.DeptRank;
-                                                row["四下學業校排名"] = sser.YearRank;
-                                                row["四下學業類1排名"] = sser.Group1Rank;
+                                                if (sser.ClassRank.HasValue)
+                                                    row["四下學業班排名"] = sser.ClassRank.Value;
+                                                if (sser.DeptRank.HasValue)
+                                                    row["四下學業科排名"] = sser.DeptRank.Value;
+                                                if (sser.YearRank.HasValue)
+                                                    row["四下學業校排名"] = sser.YearRank.Value;
+                                                if (sser.Group1Rank.HasValue)
+                                                    row["四下學業類1排名"] = sser.Group1Rank.Value;
                                             }
                                         }
                                     }
@@ -6770,8 +6804,13 @@ namespace SHStaticRank2.Data
 
 
                                 try
-                                {                                   
-                                   doc.Save(pathW, Aspose.Words.SaveFormat.Pdf);
+                                {
+                                    doc.Save(pathW, Aspose.Words.SaveFormat.Pdf);
+                                    
+                                    // 計算進度
+                                    int xx = (int)(100d / StudSumCount * StudCountStart);
+                                    FISCA.RTContext.Invoke(new Action<string, int>(PDF_Msg), new object[] { "產生學生個人PDF檔中...", xx });
+                                    StudCountStart++;
                                 }
                                 catch (OutOfMemoryException exow)
                                 {
@@ -6787,20 +6826,20 @@ namespace SHStaticRank2.Data
                                 if (sbPDFErr.Length > 0)
                                 {
                                     string pathF = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports", FolderName);
-                                    StreamWriter sw = new StreamWriter(pathF + "\\產生PDF發生錯誤.txt", true);                                    
+                                    StreamWriter sw = new StreamWriter(pathF + "\\產生PDF發生錯誤.txt", true);
                                     sw.Write(sbPDFErr.ToString());
                                     sw.Close();
                                 }
                             }
-                            catch (Exception ex) { 
-                                
+                            catch (Exception ex)
+                            {
+
                             }
                         }
                         else
                         {
-                            
-
                             #region 產生 Word 檔案
+                            int ClassCountStart = 0, ClassSumCount = classNameList.Count;
                             foreach (string className in classNameList)
                             {
 
@@ -6872,7 +6911,7 @@ namespace SHStaticRank2.Data
                                                     if (!g2List.Contains(selectScore[id].gsSchoolYear21.Value))
                                                         g2List.Add(selectScore[id].gsSchoolYear21.Value);
                                                 }
-                                                
+
                                                 if (selectScore[id].gsSchoolYear22.HasValue)
                                                 {
                                                     if (!g2List.Contains(selectScore[id].gsSchoolYear22.Value))
@@ -7272,62 +7311,93 @@ namespace SHStaticRank2.Data
                                             {
                                                 foreach (StudSemsEntryRating sser in StudSemsEntryRatingDict[studRec.StudentID])
                                                 {
-
                                                     if (sser.GradeYear == "1" && sser.Semester == "1")
                                                     {
-                                                        row["一上學業班排名"] = sser.ClassRank;
-                                                        row["一上學業科排名"] = sser.DeptRank;
-                                                        row["一上學業校排名"] = sser.YearRank;
-                                                        row["一上學業類1排名"] = sser.Group1Rank;
+                                                        if (sser.ClassRank.HasValue)
+                                                            row["一上學業班排名"] = sser.ClassRank.Value;
+                                                        if (sser.DeptRank.HasValue)
+                                                            row["一上學業科排名"] = sser.DeptRank.Value;
+                                                        if (sser.YearRank.HasValue)
+                                                            row["一上學業校排名"] = sser.YearRank.Value;
+                                                        if (sser.Group1Rank.HasValue)
+                                                            row["一上學業類1排名"] = sser.Group1Rank.Value;
                                                     }
                                                     if (sser.GradeYear == "1" && sser.Semester == "2")
                                                     {
-                                                        row["一下學業班排名"] = sser.ClassRank;
-                                                        row["一下學業科排名"] = sser.DeptRank;
-                                                        row["一下學業校排名"] = sser.YearRank;
-                                                        row["一下學業類1排名"] = sser.Group1Rank;
+                                                        if (sser.ClassRank.HasValue)
+                                                            row["一下學業班排名"] = sser.ClassRank.Value;
+                                                        if (sser.DeptRank.HasValue)
+                                                            row["一下學業科排名"] = sser.DeptRank.Value;
+                                                        if (sser.YearRank.HasValue)
+                                                            row["一下學業校排名"] = sser.YearRank.Value;
+                                                        if (sser.Group1Rank.HasValue)
+                                                            row["一下學業類1排名"] = sser.Group1Rank.Value;
                                                     }
                                                     if (sser.GradeYear == "2" && sser.Semester == "1")
                                                     {
-                                                        row["二上學業班排名"] = sser.ClassRank;
-                                                        row["二上學業科排名"] = sser.DeptRank;
-                                                        row["二上學業校排名"] = sser.YearRank;
-                                                        row["二上學業類1排名"] = sser.Group1Rank;
+                                                        if (sser.ClassRank.HasValue)
+                                                            row["二上學業班排名"] = sser.ClassRank.Value;
+                                                        if (sser.DeptRank.HasValue)
+                                                            row["二上學業科排名"] = sser.DeptRank.Value;
+                                                        if (sser.YearRank.HasValue)
+                                                            row["二上學業校排名"] = sser.YearRank.Value;
+                                                        if (sser.Group1Rank.HasValue)
+                                                            row["二上學業類1排名"] = sser.Group1Rank.Value;
                                                     }
                                                     if (sser.GradeYear == "2" && sser.Semester == "2")
                                                     {
-                                                        row["二下學業班排名"] = sser.ClassRank;
-                                                        row["二下學業科排名"] = sser.DeptRank;
-                                                        row["二下學業校排名"] = sser.YearRank;
-                                                        row["二下學業類1排名"] = sser.Group1Rank;
+                                                        if (sser.ClassRank.HasValue)
+                                                            row["二下學業班排名"] = sser.ClassRank.Value;
+                                                        if (sser.DeptRank.HasValue)
+                                                            row["二下學業科排名"] = sser.DeptRank.Value;
+                                                        if (sser.YearRank.HasValue)
+                                                            row["二下學業校排名"] = sser.YearRank.Value;
+                                                        if (sser.Group1Rank.HasValue)
+                                                            row["二下學業類1排名"] = sser.Group1Rank.Value;
                                                     }
                                                     if (sser.GradeYear == "3" && sser.Semester == "1")
                                                     {
-                                                        row["三上學業班排名"] = sser.ClassRank;
-                                                        row["三上學業科排名"] = sser.DeptRank;
-                                                        row["三上學業校排名"] = sser.YearRank;
-                                                        row["三上學業類1排名"] = sser.Group1Rank;
+                                                        if (sser.ClassRank.HasValue)
+                                                            row["三上學業班排名"] = sser.ClassRank.Value;
+                                                        if (sser.DeptRank.HasValue)
+                                                            row["三上學業科排名"] = sser.DeptRank.Value;
+                                                        if (sser.YearRank.HasValue)
+                                                            row["三上學業校排名"] = sser.YearRank.Value;
+                                                        if (sser.Group1Rank.HasValue)
+                                                            row["三上學業類1排名"] = sser.Group1Rank.Value;
                                                     }
                                                     if (sser.GradeYear == "3" && sser.Semester == "2")
                                                     {
-                                                        row["三下學業班排名"] = sser.ClassRank;
-                                                        row["三下學業科排名"] = sser.DeptRank;
-                                                        row["三下學業校排名"] = sser.YearRank;
-                                                        row["三下學業類1排名"] = sser.Group1Rank;
+                                                        if (sser.ClassRank.HasValue)
+                                                            row["三下學業班排名"] = sser.ClassRank.Value;
+                                                        if (sser.DeptRank.HasValue)
+                                                            row["三下學業科排名"] = sser.DeptRank.Value;
+                                                        if (sser.YearRank.HasValue)
+                                                            row["三下學業校排名"] = sser.YearRank.Value;
+                                                        if (sser.Group1Rank.HasValue)
+                                                            row["三下學業類1排名"] = sser.Group1Rank.Value;
                                                     }
                                                     if (sser.GradeYear == "4" && sser.Semester == "1")
                                                     {
-                                                        row["四上學業班排名"] = sser.ClassRank;
-                                                        row["四上學業科排名"] = sser.DeptRank;
-                                                        row["四上學業校排名"] = sser.YearRank;
-                                                        row["四上學業類1排名"] = sser.Group1Rank;
+                                                        if (sser.ClassRank.HasValue)
+                                                            row["四上學業班排名"] = sser.ClassRank.Value;
+                                                        if (sser.DeptRank.HasValue)
+                                                            row["四上學業科排名"] = sser.DeptRank.Value;
+                                                        if (sser.YearRank.HasValue)
+                                                            row["四上學業校排名"] = sser.YearRank.Value;
+                                                        if (sser.Group1Rank.HasValue)
+                                                            row["四上學業類1排名"] = sser.Group1Rank.Value;
                                                     }
                                                     if (sser.GradeYear == "4" && sser.Semester == "2")
                                                     {
-                                                        row["四下學業班排名"] = sser.ClassRank;
-                                                        row["四下學業科排名"] = sser.DeptRank;
-                                                        row["四下學業校排名"] = sser.YearRank;
-                                                        row["四下學業類1排名"] = sser.Group1Rank;
+                                                        if (sser.ClassRank.HasValue)
+                                                            row["四下學業班排名"] = sser.ClassRank.Value;
+                                                        if (sser.DeptRank.HasValue)
+                                                            row["四下學業科排名"] = sser.DeptRank.Value;
+                                                        if (sser.YearRank.HasValue)
+                                                            row["四下學業校排名"] = sser.YearRank.Value;
+                                                        if (sser.Group1Rank.HasValue)
+                                                            row["四下學業類1排名"] = sser.Group1Rank.Value;
                                                     }
                                                 }
                                             }
@@ -8651,6 +8721,9 @@ namespace SHStaticRank2.Data
                                 try
                                 {
                                     doc.Save(pathW, Aspose.Words.SaveFormat.Doc);
+                                    int xx =(int)(100d / ClassSumCount * ClassCountStart);
+                                    FISCA.RTContext.Invoke(new Action<string, int>(Word_Msg), new object[] { "產生班級Word檔中...", xx });
+                                    ClassCountStart++;
 
                                 }
                                 catch (OutOfMemoryException exow)
@@ -8663,9 +8736,10 @@ namespace SHStaticRank2.Data
 
                             }// doc
                             #endregion
-                        }                        
+                        }
 
                         bkw.ReportProgress(99);
+
                     }
 
                 }
@@ -8679,6 +8753,17 @@ namespace SHStaticRank2.Data
                 }
             };
             bkw.RunWorkerAsync();
+        }
+
+        
+        private static void PDF_Msg(string msg, int p)
+        {
+            MotherForm.SetStatusBarMessage(msg, p);
+        }
+
+        private static void Word_Msg(string msg, int p)
+        {
+            MotherForm.SetStatusBarMessage(msg, p);
         }
 
         //static void MailMerge_MergeImageField(object sender, Aspose.Words.Reporting.MergeImageFieldEventArgs e)

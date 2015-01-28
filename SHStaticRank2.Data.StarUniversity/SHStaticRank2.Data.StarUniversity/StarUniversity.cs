@@ -159,6 +159,8 @@ AS tmp(id int, subject varchar(200))";
             if (cbxSeNo.Checked)
                 Configure.CheckUseIDNumber = false;
 
+            Configure.CheckExportStudent = true;
+
             DialogResult = System.Windows.Forms.DialogResult.OK;
             Configure.Save();
             this.Close();

@@ -671,6 +671,7 @@ AS tmp(id int, subject varchar(200))";
                 conf.RankFilterGradeSemeterList.AddRange(Configure.RankFilterGradeSemeterList);
                 conf.WithCalSemesterScoreRank = Configure.WithCalSemesterScoreRank;
                 conf.CheckExportPDF = Configure.CheckExportPDF;
+                conf.CheckExportStudent = Configure.CheckExportStudent;
                 conf.CheckUseIDNumber = Configure.CheckUseIDNumber;
                 conf.Template = Configure.Template;
                 conf.Encode();

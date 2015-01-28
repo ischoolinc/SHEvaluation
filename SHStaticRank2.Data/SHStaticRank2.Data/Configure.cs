@@ -206,6 +206,9 @@ namespace SHStaticRank2.Data
         [FISCA.UDT.Field]
         public bool CheckExportPDF { get; set; }
 
+        [FISCA.UDT.Field]
+        public bool CheckExportStudent { get; set; }
+
         /// <summary>
         /// 產生 PDF 檔案名稱是否使用身分證號 Y:身分證 N:學測報名
         /// </summary>

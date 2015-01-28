@@ -36,11 +36,11 @@ namespace SHStaticRank2.Data
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public int GetClassCount(string name)
+        public string GetClassCount(string name)
         { 
-            int value=0;
+            string value="";
             if (_ClassCountDict.ContainsKey(name))
-                value = _ClassCountDict[name];
+                value = _ClassCountDict[name].ToString();
 
             return value;
         }
@@ -50,11 +50,11 @@ namespace SHStaticRank2.Data
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public int GetClassRank(string name)
+        public string GetClassRank(string name)
         {
-            int value = 0;
+            string value = "";
             if (_ClassRankDict.ContainsKey(name))
-                value = _ClassRankDict[name];
+                value = _ClassRankDict[name].ToString();
 
             return value;
         }

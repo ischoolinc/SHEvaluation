@@ -18,7 +18,7 @@ namespace SHStaticRank2.Data.StarTechnical
             //FISCA.Permission.Catalog cat = FISCA.Permission.RoleAclSource.Instance["教務作業"]["功能按鈕"];
             //cat.Add(new FISCA.Permission.RibbonFeature("SHSchool.SHStaticRank2.Data", "計算固定排名(測試版)"));
 
-            var button = FISCA.Presentation.MotherForm.RibbonBarItems["教務作業", "批次作業/檢視"]["成績作業"]["計算固定排名(測試版)"]["計算多學期成績固定排名(103學年度技職繁星)"];
+            var button = FISCA.Presentation.MotherForm.RibbonBarItems["教務作業", "批次作業/檢視"]["成績作業"]["計算固定排名(測試版)"]["計算多學期成績固定排名(104學年度技職繁星)"];
             button.Enable = FISCA.Permission.UserAcl.Current["SHSchool.SHStaticRank2.Data"].Executable;
             button.Click += delegate
             {
@@ -142,7 +142,7 @@ namespace SHStaticRank2.Data.StarTechnical
                                     #region save all opened excel
                                     foreach (KeyValuePair<string, Aspose.Cells.Workbook> item in wbs)
                                     {
-                                        item.Value.Save(Path.Combine(path, path_prefix + item.Key + path_suffix), Aspose.Cells.FileFormatType.Excel2003);
+                                        item.Value.Save(Path.Combine(path, path_prefix + item.Key + path_suffix), Aspose.Cells.FileFormatType.Excel97To2003);
                                     }
                                     #endregion
                                     throw;
@@ -244,7 +244,7 @@ namespace SHStaticRank2.Data.StarTechnical
                                     #region save all opened excel
                                     foreach (KeyValuePair<string, Aspose.Cells.Workbook> item in wbCheck)
                                     {
-                                        item.Value.Save(Path.Combine(path, path_prefix + "成績明細" + item.Key + ".xls"), Aspose.Cells.FileFormatType.Excel2003);
+                                        item.Value.Save(Path.Combine(path, path_prefix + "成績明細" + item.Key + ".xls"), Aspose.Cells.FileFormatType.Excel97To2003);
                                     }
                                     #endregion
                                     throw;
@@ -255,13 +255,13 @@ namespace SHStaticRank2.Data.StarTechnical
                         #region save all opened excel
                         foreach (KeyValuePair<string, Aspose.Cells.Workbook> item in wbs)
                         {
-                            item.Value.Save(Path.Combine(path, path_prefix + item.Key + path_suffix), Aspose.Cells.FileFormatType.Excel2003);
+                            item.Value.Save(Path.Combine(path, path_prefix + item.Key + path_suffix), Aspose.Cells.FileFormatType.Excel97To2003);
                         }
                         #endregion
                         #region save all opened excel wbCheck
                         foreach (KeyValuePair<string, Aspose.Cells.Workbook> item in wbCheck)
                         {
-                            item.Value.Save(Path.Combine(path, path_prefix + "成績明細" + item.Key + ".xls"), Aspose.Cells.FileFormatType.Excel2003);
+                            item.Value.Save(Path.Combine(path, path_prefix + "成績明細" + item.Key + ".xls"), Aspose.Cells.FileFormatType.Excel97To2003);
                         }
                         #endregion
                         wbs = null;

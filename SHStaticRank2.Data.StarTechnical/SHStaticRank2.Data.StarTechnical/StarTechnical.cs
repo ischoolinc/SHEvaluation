@@ -145,6 +145,8 @@ AS tmp(id int, subject varchar(200))";
             Configure.NotRankTag = cboRankRilter.Text;
             Configure.Rank1Tag = cboTagRank1.Text;
             Configure.Rank2Tag = cboTagRank1.Text; //與類別排名1相同
+            Configure.CheckExportPDF = false;
+            Configure.CheckExportStudent = true;
             //Configure.RankFilterTagName = cboRankRilter.Text;
             if (Configure.Template == null)
                 Configure.Template = new Document(new MemoryStream(Properties.Resources.多學期成績單_技職5學期));

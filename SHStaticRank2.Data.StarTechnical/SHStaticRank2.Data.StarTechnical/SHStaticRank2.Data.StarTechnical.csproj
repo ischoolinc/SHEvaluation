@@ -30,12 +30,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Cells">
-      <HintPath>..\..\..\Library\Aspose.Cells.dll</HintPath>
+    <Reference Include="Aspose.Cells_201402, Version=7.7.1.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\Aspose.Cells_201402.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Aspose.Words">
-      <HintPath>..\..\..\Library\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Pdf_201402, Version=8.8.0.0, Culture=neutral, PublicKeyToken=47b2d0fcacdd3eb6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\Aspose.Pdf_201402.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Aspose.Words_201402, Version=14.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\Aspose.Words_201402.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Campus.Report">
@@ -87,8 +94,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="SHStaticRank2.Data">
-      <HintPath>..\..\..\..\ischool desktop\modules\SHEvaluation\SHStaticRank2.Data.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\SHStaticRank2.Data\SHStaticRank2.Data\bin\Debug\SHStaticRank2.Data.dll</HintPath>
     </Reference>
     <Reference Include="SmartSchool.Core">
       <HintPath>..\..\..\Library\SmartSchool.Core.dll</HintPath>
@@ -147,10 +153,12 @@
     <None Include="Resources\多學期成績單_技職5學期.doc" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Library\Aspose.Cells.dll" />
-    <Content Include="Library\Aspose.Cells.xml" />
-    <Content Include="Library\Aspose.Words.dll" />
-    <Content Include="Library\Aspose.Words.xml" />
+    <Content Include="Library\Aspose.Cells_201402.dll" />
+    <Content Include="Library\Aspose.Cells_201402.xml" />
+    <Content Include="Library\Aspose.Pdf_201402.dll" />
+    <Content Include="Library\Aspose.Pdf_201402.xml" />
+    <Content Include="Library\Aspose.Words_201402.dll" />
+    <Content Include="Library\Aspose.Words_201402.xml" />
     <Content Include="Library\Campus.Report.dll" />
     <Content Include="Library\Campus.Report.pdb" />
     <Content Include="Library\DevComponents.DotNetBar2.dll" />
@@ -187,8 +195,6 @@
     <Content Include="Library\K12.Data.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Library\SHStaticRank2.Data.dll" />
-    <Content Include="Library\SHStaticRank2.Data.pdb" />
     <Content Include="Library\SmartSchool.Core.dll" />
     <Content Include="Library\SmartSchool.Core.pdb" />
     <Content Include="Library\SmartSchool.Customization.Data.dll" />

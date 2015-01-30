@@ -480,9 +480,9 @@
             this.cbxIDNumber.CheckBoxStyle = DevComponents.DotNetBar.eCheckBoxStyle.RadioButton;
             this.cbxIDNumber.Location = new System.Drawing.Point(148, 3);
             this.cbxIDNumber.Name = "cbxIDNumber";
-            this.cbxIDNumber.Size = new System.Drawing.Size(94, 21);
+            this.cbxIDNumber.Size = new System.Drawing.Size(80, 21);
             this.cbxIDNumber.TabIndex = 1;
-            this.cbxIDNumber.Text = "身分證號碼";
+            this.cbxIDNumber.Text = "身分證號";
             // 
             // groupPanel4
             // 

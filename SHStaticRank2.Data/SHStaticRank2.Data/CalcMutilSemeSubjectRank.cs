@@ -8692,7 +8692,7 @@ namespace SHStaticRank2.Data
                                     doc.MailMerge.Execute(_table);
                                     doc.MailMerge.RemoveEmptyParagraphs = true;
                                     doc.MailMerge.DeleteFields();
-
+                                    
                                     _table.Rows.Clear();
 
                                     //_WordDocDict.Add(className, doc);

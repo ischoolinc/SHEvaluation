@@ -115,6 +115,7 @@ AS tmp(id int, subject varchar(200))";
             Configure.CalcGradeYear2 = false;
             Configure.CalcGradeYear3 = true; //三年級
             Configure.CalcGradeYear4 = false;
+            Configure.DoNotSaveIt = true;
 
             if (cbxScoreType.Text == "擇優成績")
             {
@@ -130,8 +131,7 @@ AS tmp(id int, subject varchar(200))";
                 Configure.RankFilterUseScoreList.Add("學年調整成績");
             }
             else 
-            {                
-                Configure.DoNotSaveIt = true;
+            {
                 Configure.use原始成績 = true;//原始成績
                 Configure.use補考成績 = false;
                 Configure.use重修成績 = false;

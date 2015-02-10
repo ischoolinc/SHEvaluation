@@ -110,19 +110,41 @@ AS tmp(id int, subject varchar(200))";
                                 , "歷史"
                                 , "地理"
                                 , "公民"));
+
             Configure.CalcGradeYear1 = false;
             Configure.CalcGradeYear2 = false;
             Configure.CalcGradeYear3 = true; //三年級
             Configure.CalcGradeYear4 = false;
-            Configure.DoNotSaveIt = true;
-            Configure.use原始成績 = true;//原始成績
-            Configure.use補考成績 = false;
-            Configure.use重修成績 = false;
-            Configure.use手動調整成績 = false;
-            Configure.use學年調整成績 = false;
+
+            if (cbxScoreType.Text == "擇優成績")
+            {
+                Configure.use原始成績 = true;//原始成績
+                Configure.use補考成績 = true;
+                Configure.use重修成績 = true;
+                Configure.use手動調整成績 = true;
+                Configure.use學年調整成績 = true;
+                Configure.RankFilterUseScoreList.Add("原始成績");
+                Configure.RankFilterUseScoreList.Add("補考成績");
+                Configure.RankFilterUseScoreList.Add("重修成績");
+                Configure.RankFilterUseScoreList.Add("手動調整成績");
+                Configure.RankFilterUseScoreList.Add("學年調整成績");
+            }
+            else 
+            {                
+                Configure.DoNotSaveIt = true;
+                Configure.use原始成績 = true;//原始成績
+                Configure.use補考成績 = false;
+                Configure.use重修成績 = false;
+                Configure.use手動調整成績 = false;
+                Configure.use學年調整成績 = false;
+                Configure.RankFilterUseScoreList.Add("原始成績");            
+            }
+
             Configure.計算學業成績排名 = true;
             Configure.WithCalSemesterScoreRank = true;
-            Configure.RankFilterUseScoreList.Add("原始成績"); foreach (string SubjectName in SubjectNameList)//所有科目
+
+
+            foreach (string SubjectName in SubjectNameList)//所有科目
             {
                 Configure.useSubjectPrintList.Add(SubjectName);
                 Configure.useSubjecOrder1List.Add(SubjectName);
@@ -148,8 +170,28 @@ AS tmp(id int, subject varchar(200))";
             Configure.CheckExportPDF = false;
             Configure.CheckExportStudent = true;
             //Configure.RankFilterTagName = cboRankRilter.Text;
-            if (Configure.Template == null)
+            //if (Configure.Template == null)
+            //    Configure.Template = new Document(new MemoryStream(Properties.Resources.多學期成績單_技職5學期));
+
+            // 處理預設樣版
+            if (this.Configure.Template == null)
+            {
                 Configure.Template = new Document(new MemoryStream(Properties.Resources.多學期成績單_技職5學期));
+
+            }
+            else
+            {
+                //計算檔案大小
+                MemoryStream ms = new MemoryStream();
+                this.Configure.Template.Save(ms, SaveFormat.Doc);
+                byte[] bb = ms.ToArray();
+
+                double bbSize = (bb.Count() / 1024);
+
+                if (bbSize < 30)
+                    Configure.Template = new Document(new MemoryStream(Properties.Resources.多學期成績單_技職5學期));
+            }
+
             DialogResult = System.Windows.Forms.DialogResult.OK;
             //Configure.Save();
             this.Close();
@@ -162,7 +204,7 @@ AS tmp(id int, subject varchar(200))";
         {
             if (this.Configure == null) return;
             #region 儲存檔案
-            string inputReportName = "多學期成績單樣板(" + this.Configure.Name + ").doc";
+            string inputReportName = "多學期成績單樣板(" + this.Configure.Name + ")";
             string reportName = inputReportName;
 
             string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");
@@ -185,12 +227,33 @@ AS tmp(id int, subject varchar(200))";
             }
             try
             {
-                //document.Save(path, Aspose.Words.SaveFormat.Doc);
-                System.IO.FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write);
-                this.Configure.Template.Save(stream, Aspose.Words.SaveFormat.Doc);
-                //stream.Write(Properties.Resources.個人學期成績單樣板_高中_, 0, Properties.Resources.個人學期成績單樣板_高中_.Length);
-                stream.Flush();
-                stream.Close();
+                ////document.Save(path, Aspose.Words.SaveFormat.Doc);
+                //System.IO.FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write);
+                //this.Configure.Template.Save(stream, Aspose.Words.SaveFormat.Doc);
+                ////stream.Write(Properties.Resources.個人學期成績單樣板_高中_, 0, Properties.Resources.個人學期成績單樣板_高中_.Length);
+                //stream.Flush();
+                //stream.Close();
+
+                if (this.Configure.Template == null)
+                {
+                    Configure.Template = new Document(new MemoryStream(Properties.Resources.多學期成績單_技職5學期));
+
+                }
+                else
+                {
+                    //計算檔案大小
+                    MemoryStream ms = new MemoryStream();
+                    this.Configure.Template.Save(ms, SaveFormat.Doc);
+                    byte[] bb = ms.ToArray();
+
+                    double bbSize = (bb.Count() / 1024);
+
+                    if (bbSize < 30)
+                        Configure.Template = new Document(new MemoryStream(Properties.Resources.多學期成績單_技職5學期));
+
+                    this.Configure.Template.Save(path, SaveFormat.Doc);
+                }
+
                 System.Diagnostics.Process.Start(path);
             }
             catch
@@ -289,6 +352,13 @@ AS tmp(id int, subject varchar(200))";
             this.Close();
         }
 
-        
+        private void StarTechnical_Load(object sender, EventArgs e)
+        {
+            cbxScoreType.Items.Add("擇優成績");
+            cbxScoreType.Items.Add("原始成績");
+            cbxScoreType.Text = "擇優成績";
+            cbxScoreType.DropDownStyle = ComboBoxStyle.DropDownList;
+
+        }        
     }
 }

@@ -52,6 +52,7 @@
             this.groupPanel4 = new DevComponents.DotNetBar.Controls.GroupPanel();
             this.cbxExportPDF = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.cbxExportWord = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.cbxScoreType = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.groupPanel3.SuspendLayout();
             this.groupPanel2.SuspendLayout();
             this.gpGradeSemester.SuspendLayout();
@@ -274,7 +275,7 @@
             this.buttonX1.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.buttonX1.BackColor = System.Drawing.Color.Transparent;
             this.buttonX1.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.buttonX1.Location = new System.Drawing.Point(172, 471);
+            this.buttonX1.Location = new System.Drawing.Point(172, 476);
             this.buttonX1.Name = "buttonX1";
             this.buttonX1.Size = new System.Drawing.Size(75, 23);
             this.buttonX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -330,7 +331,7 @@
             // 
             this.lnkDownload.AutoSize = true;
             this.lnkDownload.BackColor = System.Drawing.Color.Transparent;
-            this.lnkDownload.Location = new System.Drawing.Point(19, 440);
+            this.lnkDownload.Location = new System.Drawing.Point(19, 450);
             this.lnkDownload.Name = "lnkDownload";
             this.lnkDownload.Size = new System.Drawing.Size(60, 17);
             this.lnkDownload.TabIndex = 22;
@@ -342,7 +343,7 @@
             // 
             this.lnkUpload.AutoSize = true;
             this.lnkUpload.BackColor = System.Drawing.Color.Transparent;
-            this.lnkUpload.Location = new System.Drawing.Point(86, 440);
+            this.lnkUpload.Location = new System.Drawing.Point(86, 450);
             this.lnkUpload.Name = "lnkUpload";
             this.lnkUpload.Size = new System.Drawing.Size(60, 17);
             this.lnkUpload.TabIndex = 23;
@@ -354,7 +355,7 @@
             // 
             this.lblMappingTemp.AutoSize = true;
             this.lblMappingTemp.BackColor = System.Drawing.Color.Transparent;
-            this.lblMappingTemp.Location = new System.Drawing.Point(160, 440);
+            this.lblMappingTemp.Location = new System.Drawing.Point(160, 450);
             this.lblMappingTemp.Name = "lblMappingTemp";
             this.lblMappingTemp.Size = new System.Drawing.Size(112, 17);
             this.lblMappingTemp.TabIndex = 25;
@@ -367,7 +368,7 @@
             this.btnExit.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExit.Location = new System.Drawing.Point(253, 471);
+            this.btnExit.Location = new System.Drawing.Point(253, 476);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 23);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -386,9 +387,9 @@
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX2.Location = new System.Drawing.Point(21, 389);
             this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(125, 21);
+            this.labelX2.Size = new System.Drawing.Size(135, 21);
             this.labelX2.TabIndex = 16;
-            this.labelX2.Text = "1.排名對象：三年級";
+            this.labelX2.Text = "1.排名對象：   三年級";
             // 
             // labelX4
             // 
@@ -399,11 +400,11 @@
             // 
             this.labelX4.BackgroundStyle.Class = "";
             this.labelX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX4.Location = new System.Drawing.Point(21, 416);
+            this.labelX4.Location = new System.Drawing.Point(21, 418);
             this.labelX4.Name = "labelX4";
-            this.labelX4.Size = new System.Drawing.Size(138, 21);
+            this.labelX4.Size = new System.Drawing.Size(85, 21);
             this.labelX4.TabIndex = 31;
-            this.labelX4.Text = "2.採計成績：原始成績";
+            this.labelX4.Text = "2.採計成績：";
             // 
             // groupPanel1
             // 
@@ -561,13 +562,27 @@
             this.cbxExportWord.Name = "cbxExportWord";
             this.cbxExportWord.Size = new System.Drawing.Size(89, 21);
             this.cbxExportWord.TabIndex = 1;
-            this.cbxExportWord.Text = "班級Word";
+            this.cbxExportWord.Text = "學生Word";
+            // 
+            // cbxScoreType
+            // 
+            this.cbxScoreType.DisplayMember = "Text";
+            this.cbxScoreType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cbxScoreType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxScoreType.FormattingEnabled = true;
+            this.cbxScoreType.ItemHeight = 19;
+            this.cbxScoreType.Location = new System.Drawing.Point(107, 416);
+            this.cbxScoreType.Name = "cbxScoreType";
+            this.cbxScoreType.Size = new System.Drawing.Size(140, 25);
+            this.cbxScoreType.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.cbxScoreType.TabIndex = 34;
             // 
             // StarUniversity
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(340, 501);
+            this.ClientSize = new System.Drawing.Size(340, 506);
+            this.Controls.Add(this.cbxScoreType);
             this.Controls.Add(this.groupPanel4);
             this.Controls.Add(this.groupPanel1);
             this.Controls.Add(this.labelX4);
@@ -625,5 +640,6 @@
         private DevComponents.DotNetBar.Controls.GroupPanel groupPanel4;
         private DevComponents.DotNetBar.Controls.CheckBoxX cbxExportPDF;
         private DevComponents.DotNetBar.Controls.CheckBoxX cbxExportWord;
+        private DevComponents.DotNetBar.Controls.ComboBoxEx cbxScoreType;
     }
 }

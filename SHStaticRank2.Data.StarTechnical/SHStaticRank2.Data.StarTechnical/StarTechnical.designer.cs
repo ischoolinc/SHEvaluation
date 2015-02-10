@@ -43,6 +43,7 @@
             this.labelX4 = new DevComponents.DotNetBar.LabelX();
             this.labelX6 = new DevComponents.DotNetBar.LabelX();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.cbxScoreType = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.groupPanel3.SuspendLayout();
             this.groupPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -264,9 +265,9 @@
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX2.Location = new System.Drawing.Point(22, 151);
             this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(125, 21);
+            this.labelX2.Size = new System.Drawing.Size(138, 21);
             this.labelX2.TabIndex = 16;
-            this.labelX2.Text = "1.排名對象：三年級";
+            this.labelX2.Text = "1.排名對象：    三年級";
             // 
             // labelX4
             // 
@@ -279,9 +280,9 @@
             this.labelX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX4.Location = new System.Drawing.Point(22, 178);
             this.labelX4.Name = "labelX4";
-            this.labelX4.Size = new System.Drawing.Size(138, 21);
+            this.labelX4.Size = new System.Drawing.Size(85, 21);
             this.labelX4.TabIndex = 31;
-            this.labelX4.Text = "2.採計成績：原始成績";
+            this.labelX4.Text = "2.採計成績：";
             // 
             // labelX6
             // 
@@ -310,11 +311,25 @@
             this.linkLabel1.Text = "學生類別與群別學制代碼對應";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
+            // cbxScoreType
+            // 
+            this.cbxScoreType.DisplayMember = "Text";
+            this.cbxScoreType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cbxScoreType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxScoreType.FormattingEnabled = true;
+            this.cbxScoreType.ItemHeight = 19;
+            this.cbxScoreType.Location = new System.Drawing.Point(110, 176);
+            this.cbxScoreType.Name = "cbxScoreType";
+            this.cbxScoreType.Size = new System.Drawing.Size(160, 25);
+            this.cbxScoreType.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.cbxScoreType.TabIndex = 34;
+            // 
             // StarTechnical
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(340, 290);
+            this.Controls.Add(this.cbxScoreType);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.labelX6);
             this.Controls.Add(this.labelX4);
@@ -329,6 +344,7 @@
             this.DoubleBuffered = true;
             this.Name = "StarTechnical";
             this.Text = "104學年度技職繁星成績單";
+            this.Load += new System.EventHandler(this.StarTechnical_Load);
             this.groupPanel3.ResumeLayout(false);
             this.groupPanel3.PerformLayout();
             this.groupPanel2.ResumeLayout(false);
@@ -355,5 +371,6 @@
         private DevComponents.DotNetBar.LabelX labelX4;
         private DevComponents.DotNetBar.LabelX labelX6;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private DevComponents.DotNetBar.Controls.ComboBoxEx cbxScoreType;
     }
 }

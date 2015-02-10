@@ -4910,9 +4910,7 @@ namespace SHStaticRank2.Data
 
                         // 判斷是否產生 PDF
                         if (setting.CheckExportPDF)
-                        {
-
-
+                        {                            
                             // 取得 serNo
                             Dictionary<string, string> StudSATSerNoDict = Utility.GetStudentSATSerNoByStudentIDList(StudIDList);
                             int StudCountStart = 0, StudSumCount = gradeyearStudents[gradeyear].Count;
@@ -4920,7 +4918,6 @@ namespace SHStaticRank2.Data
                             #region 產生 PDF 檔案
                             foreach (StudentRecord studRec in gradeyearStudents[gradeyear])
                             {
-
                                 string FileKey = "_" + studRec.StudentID;
                                 string ErrMsg = "";
 
@@ -6764,62 +6761,68 @@ namespace SHStaticRank2.Data
                                 #endregion 處理篩選科目原始成績
                                 #endregion 處理科目原始成績加權平均平均
 
-                                _table.Rows.Add(row);
-
-                                if (OneClassCompleted != null)
-                                    OneClassCompleted();
-                                //List<string> fields = new List<string>(docTemplate.MailMerge.GetFieldNames());
-                                //List<string> rmColumns = new List<string>();
-
-                                Aspose.Words.Document document = new Aspose.Words.Document();
-                                document = docTemplate;
-                                doc.Sections.Add(doc.ImportNode(document.Sections[0], true));
-
-                                doc.MailMerge.Execute(_table);
-                                doc.MailMerge.RemoveEmptyParagraphs = true;
-                                doc.MailMerge.DeleteFields();
-
-                                _table.Rows.Clear();
-
-                                #region PDF 存檔
-                                string reportNameW = FileKey;
-                                string pathW = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports", FolderName);
-                                if (!Directory.Exists(pathW))
-                                    Directory.CreateDirectory(pathW);
-                                pathW = Path.Combine(pathW, reportNameW + ".pdf");
-
-                                if (File.Exists(pathW))
+                                // 不排名不放入
+                                if(!noRankList.Contains(studRec.StudentID))
                                 {
-                                    int i = 1;
-                                    while (true)
+                                    _table.Rows.Add(row);
+
+                                    if (OneClassCompleted != null)
+                                        OneClassCompleted();
+                                    //List<string> fields = new List<string>(docTemplate.MailMerge.GetFieldNames());
+                                    //List<string> rmColumns = new List<string>();
+
+                                    Aspose.Words.Document document = new Aspose.Words.Document();
+                                    document = docTemplate;
+                                    doc.Sections.Add(doc.ImportNode(document.Sections[0], true));
+
+                                    doc.MailMerge.Execute(_table);
+                                    doc.MailMerge.RemoveEmptyParagraphs = true;
+                                    doc.MailMerge.DeleteFields();
+
+                                    _table.Rows.Clear();
+
+                                    #region PDF 存檔
+                                    string reportNameW = FileKey;
+                                    string pathW = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports", FolderName);
+                                    if (!Directory.Exists(pathW))
+                                        Directory.CreateDirectory(pathW);
+                                    pathW = Path.Combine(pathW, reportNameW + ".pdf");
+
+                                    if (File.Exists(pathW))
                                     {
-                                        string newPathW = Path.GetDirectoryName(pathW) + "\\" + Path.GetFileNameWithoutExtension(pathW) + (i++) + Path.GetExtension(pathW);
-                                        if (!File.Exists(newPathW))
+                                        int i = 1;
+                                        while (true)
                                         {
-                                            pathW = newPathW;
-                                            break;
+                                            string newPathW = Path.GetDirectoryName(pathW) + "\\" + Path.GetFileNameWithoutExtension(pathW) + (i++) + Path.GetExtension(pathW);
+                                            if (!File.Exists(newPathW))
+                                            {
+                                                pathW = newPathW;
+                                                break;
+                                            }
                                         }
                                     }
-                                }
 
 
-                                try
-                                {
-                                    doc.Save(pathW, Aspose.Words.SaveFormat.Pdf);
-                                    
-                                    // 計算進度
-                                    int xx = (int)(100d / StudSumCount * StudCountStart);
-                                    FISCA.RTContext.Invoke(new Action<string, int>(PDF_Msg), new object[] { "產生學生個人PDF檔中...", xx });
-                                    StudCountStart++;
+                                    try
+                                    {
+                                        doc.Save(pathW, Aspose.Words.SaveFormat.Pdf);
+
+                                        // 計算進度
+                                        int xx = (int)(100d / StudSumCount * StudCountStart);
+                                        FISCA.RTContext.Invoke(new Action<string, int>(PDF_Msg), new object[] { "產生學生個人PDF檔中...", xx });
+                                        StudCountStart++;
+                                    }
+                                    catch (OutOfMemoryException exow)
+                                    {
+                                        exc = exow;
+                                    }
+                                    doc = null;
+                                    GC.Collect();
                                 }
-                                catch (OutOfMemoryException exow)
-                                {
-                                    exc = exow;
+                                    #endregion
+
                                 }
-                                doc = null;
-                                GC.Collect();
-                            }
-                                #endregion
+                                
                             #endregion
                             try
                             {
@@ -6862,7 +6865,6 @@ namespace SHStaticRank2.Data
 
                                     foreach (StudentRecord studRec in gradeyearStudents[gradeyear])
                                     {
-
                                         if (studRec.RefClass.ClassName == className)
                                         {
 
@@ -8659,8 +8661,9 @@ namespace SHStaticRank2.Data
                                             #endregion 處理篩選科目原始成績
                                             #endregion 處理科目原始成績加權平均平均
 
-
-                                            _table.Rows.Add(row);
+                                            // 不排名不放入
+                                            if(!noRankList.Contains(studRec.StudentID))
+                                                _table.Rows.Add(row);
 
                                         }
                                     } // data row
@@ -8684,60 +8687,62 @@ namespace SHStaticRank2.Data
 
                                     //GC.Collect();
 
-                                    Aspose.Words.Document document = new Aspose.Words.Document();
-                                    document = docTemplate;
-                                    doc.Sections.Add(doc.ImportNode(document.Sections[0], true));
-
-                                    //doc.MailMerge.MergeImageField += new Aspose.Words.Reporting.MergeImageFieldEventHandler(MailMerge_MergeImageField);
-                                    doc.MailMerge.Execute(_table);
-                                    doc.MailMerge.RemoveEmptyParagraphs = true;
-                                    doc.MailMerge.DeleteFields();
-                                    
-                                    _table.Rows.Clear();
-
-                                    //_WordDocDict.Add(className, doc);
-
-                                    #region Word 存檔
-                                    string reportNameW = "W_" + className + "-多學期科目成績固定排名成績單";
-                                    string pathW = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports", FolderName);
-                                    if (!Directory.Exists(pathW))
-                                        Directory.CreateDirectory(pathW);
-                                    pathW = Path.Combine(pathW, reportNameW + ".doc");
-
-                                    if (File.Exists(pathW))
+                                    // 當 table 有資料再合併
+                                    if (_table.Rows.Count > 0)
                                     {
-                                        int i = 1;
-                                        while (true)
+
+                                        Aspose.Words.Document document = new Aspose.Words.Document();
+                                        document = docTemplate;
+                                        doc.Sections.Add(doc.ImportNode(document.Sections[0], true));
+
+                                        doc.MailMerge.Execute(_table);
+                                        doc.MailMerge.RemoveEmptyParagraphs = true;
+                                        doc.MailMerge.DeleteFields();
+
+                                        _table.Rows.Clear();                                        
+
+                                        #region Word 存檔
+                                        string reportNameW = "W_" + className + "-多學期科目成績固定排名成績單";
+                                        string pathW = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports", FolderName);
+                                        if (!Directory.Exists(pathW))
+                                            Directory.CreateDirectory(pathW);
+                                        pathW = Path.Combine(pathW, reportNameW + ".doc");
+
+                                        if (File.Exists(pathW))
                                         {
-                                            string newPathW = Path.GetDirectoryName(pathW) + "\\" + Path.GetFileNameWithoutExtension(pathW) + (i++) + Path.GetExtension(pathW);
-                                            if (!File.Exists(newPathW))
+                                            int i = 1;
+                                            while (true)
                                             {
-                                                pathW = newPathW;
-                                                break;
+                                                string newPathW = Path.GetDirectoryName(pathW) + "\\" + Path.GetFileNameWithoutExtension(pathW) + (i++) + Path.GetExtension(pathW);
+                                                if (!File.Exists(newPathW))
+                                                {
+                                                    pathW = newPathW;
+                                                    break;
+                                                }
                                             }
                                         }
-                                    }
 
 
-                                    try
-                                    {
-                                        if (setting.CheckExportStudent)
+                                        try
                                         {
-                                            doc.Save(pathW, Aspose.Words.SaveFormat.Doc);
-                                        }
-                                       
-                                        int xx = (int)(100d / ClassSumCount * ClassCountStart);
-                                        FISCA.RTContext.Invoke(new Action<string, int>(Word_Msg), new object[] { "產生班級Word檔中...", xx });
-                                        ClassCountStart++;
+                                            if (setting.CheckExportStudent)
+                                            {
+                                                doc.Save(pathW, Aspose.Words.SaveFormat.Doc);
+                                            }
 
+                                            int xx = (int)(100d / ClassSumCount * ClassCountStart);
+                                            FISCA.RTContext.Invoke(new Action<string, int>(Word_Msg), new object[] { "產生班級Word檔中...", xx });
+                                            ClassCountStart++;
+
+                                        }
+                                        catch (OutOfMemoryException exow)
+                                        {
+                                            exc = exow;
+                                        }
+                                        doc = null;
+                                        GC.Collect();
+                                        #endregion
                                     }
-                                    catch (OutOfMemoryException exow)
-                                    {
-                                        exc = exow;
-                                    }
-                                    doc = null;
-                                    GC.Collect();
-                                    #endregion
 
                                 }// doc
                                 #endregion                         

@@ -448,7 +448,7 @@
             this.groupPanel1.StyleMouseOver.Class = "";
             this.groupPanel1.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.groupPanel1.TabIndex = 32;
-            this.groupPanel1.Text = "學生PDF檔案名稱命名方式";
+            this.groupPanel1.Text = "個人申請(PDF)檔案名稱命名方式";
             // 
             // cbxSeNo
             // 
@@ -527,7 +527,7 @@
             this.groupPanel4.StyleMouseOver.Class = "";
             this.groupPanel4.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.groupPanel4.TabIndex = 33;
-            this.groupPanel4.Text = "產生檔案";
+            this.groupPanel4.Text = "產生學生在校成績證明檔案";
             // 
             // cbxExportPDF
             // 
@@ -544,9 +544,9 @@
             this.cbxExportPDF.CheckValue = "Y";
             this.cbxExportPDF.Location = new System.Drawing.Point(3, 3);
             this.cbxExportPDF.Name = "cbxExportPDF";
-            this.cbxExportPDF.Size = new System.Drawing.Size(79, 21);
+            this.cbxExportPDF.Size = new System.Drawing.Size(114, 21);
             this.cbxExportPDF.TabIndex = 1;
-            this.cbxExportPDF.Text = "學生PDF";
+            this.cbxExportPDF.Text = "個人申請(PDF)";
             // 
             // cbxExportWord
             // 
@@ -558,11 +558,11 @@
             this.cbxExportWord.BackgroundStyle.Class = "";
             this.cbxExportWord.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.cbxExportWord.CheckBoxStyle = DevComponents.DotNetBar.eCheckBoxStyle.RadioButton;
-            this.cbxExportWord.Location = new System.Drawing.Point(148, 3);
+            this.cbxExportWord.Location = new System.Drawing.Point(150, 3);
             this.cbxExportWord.Name = "cbxExportWord";
-            this.cbxExportWord.Size = new System.Drawing.Size(89, 21);
+            this.cbxExportWord.Size = new System.Drawing.Size(138, 21);
             this.cbxExportWord.TabIndex = 1;
-            this.cbxExportWord.Text = "學生Word";
+            this.cbxExportWord.Text = "依學生班級(Word)";
             // 
             // cbxScoreType
             // 
@@ -597,7 +597,7 @@
             this.Controls.Add(this.groupPanel3);
             this.DoubleBuffered = true;
             this.Name = "StarUniversity";
-            this.Text = "104學年度大學繁星成績單";
+            this.Text = "104學年度大學繁星";
             this.Load += new System.EventHandler(this.StarUniversity_Load);
             this.groupPanel3.ResumeLayout(false);
             this.groupPanel3.PerformLayout();

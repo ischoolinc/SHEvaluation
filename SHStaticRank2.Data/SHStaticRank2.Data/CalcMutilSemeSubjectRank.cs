@@ -119,6 +119,10 @@ namespace SHStaticRank2.Data
                     _memoText.Clear();
                     _PPSubjNameList.Clear();
 
+                    // 當設定檔不是班級類
+                    if (!setting.Name.Contains("班級"))
+                        setting.CheckExportStudent = true;
+
                     #region 取得學生成績資料
                     foreach (var gradeyear in gradeyearStudents.Keys)
                     {
@@ -4287,10 +4291,18 @@ namespace SHStaticRank2.Data
                         {
                             Aspose.Cells.Workbook data = _ExcelCellDict[key];
 
-                            foreach (Aspose.Cells.Worksheet sheet in data.Worksheets)
+                            try
+                            {                               
+                                foreach (Aspose.Cells.Worksheet sheet in data.Worksheets)
+                                {
+                                    if(sheet.Cells.Rows.Count>0)
+                                        sheet.FreezePanes(1, 0, 1, sheet.Cells.MaxColumn);
+                                }
+                            }                            
+                            catch(Exception ex)
                             {
-                                sheet.FreezePanes(1, 0, 1, sheet.Cells.MaxColumn);
-                            }
+ 
+                            }                           
 
                             string inputReportName = "多學期科目成績固定排名";
                             string reportName = "E_" + key + inputReportName;
@@ -4389,6 +4401,8 @@ namespace SHStaticRank2.Data
                         _table.Columns.Add("姓名");
                         _table.Columns.Add("類別一分類");
                         _table.Columns.Add("類別二分類");
+                        _table.Columns.Add("類別排名1");
+                        _table.Columns.Add("類別排名2");
                         _table.Columns.Add("一年級學年度");
                         _table.Columns.Add("二年級學年度");
                         _table.Columns.Add("三年級學年度");
@@ -4977,6 +4991,8 @@ namespace SHStaticRank2.Data
                                 row["科別"] = studRec.Department;
                                 row["類別一分類"] = (cat1Dict.ContainsKey(studRec.StudentID)) ? cat1Dict[studRec.StudentID] : "";
                                 row["類別二分類"] = (cat2Dict.ContainsKey(studRec.StudentID)) ? cat2Dict[studRec.StudentID] : "";
+                                row["類別排名1"] = (cat1Dict.ContainsKey(studRec.StudentID)) ? cat1Dict[studRec.StudentID] : "";
+                                row["類別排名2"] = (cat2Dict.ContainsKey(studRec.StudentID)) ? cat2Dict[studRec.StudentID] : "";
                                 row["一年級學年度"] = "";
                                 row["二年級學年度"] = "";
                                 row["三年級學年度"] = "";

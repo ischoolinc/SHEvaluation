@@ -98,6 +98,9 @@ namespace SHStaticRank2.Data
                     int yearCount = 0;
                     bkw.ReportProgress(1);
 
+                    if (setting.Name != "班級歷年成績單")
+                        setting.CheckExportStudent = true;
+
                     #region 整各年級學生
                     foreach (var studentRec in accessHelper.StudentHelper.GetAllStudent())
                     {
@@ -119,9 +122,6 @@ namespace SHStaticRank2.Data
                     _memoText.Clear();
                     _PPSubjNameList.Clear();
 
-                    // 當設定檔不是班級類
-                    if (!setting.Name.Contains("班級"))
-                        setting.CheckExportStudent = true;
 
                     #region 取得學生成績資料
                     foreach (var gradeyear in gradeyearStudents.Keys)

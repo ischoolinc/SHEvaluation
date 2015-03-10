@@ -4448,6 +4448,70 @@ namespace SHStaticRank2.Data
                         _table.Columns.Add("三下學業類1排名");
                         _table.Columns.Add("四上學業類1排名");
                         _table.Columns.Add("四下學業類1排名");
+                        _table.Columns.Add("一上學業班排名母數");
+                        _table.Columns.Add("一下學業班排名母數");
+                        _table.Columns.Add("二上學業班排名母數");
+                        _table.Columns.Add("二下學業班排名母數");
+                        _table.Columns.Add("三上學業班排名母數");
+                        _table.Columns.Add("三下學業班排名母數");
+                        _table.Columns.Add("四上學業班排名母數");
+                        _table.Columns.Add("四下學業班排名母數");
+                        _table.Columns.Add("一上學業科排名母數");
+                        _table.Columns.Add("一下學業科排名母數");
+                        _table.Columns.Add("二上學業科排名母數");
+                        _table.Columns.Add("二下學業科排名母數");
+                        _table.Columns.Add("三上學業科排名母數");
+                        _table.Columns.Add("三下學業科排名母數");
+                        _table.Columns.Add("四上學業科排名母數");
+                        _table.Columns.Add("四下學業科排名母數");
+                        _table.Columns.Add("一上學業校排名母數");
+                        _table.Columns.Add("一下學業校排名母數");
+                        _table.Columns.Add("二上學業校排名母數");
+                        _table.Columns.Add("二下學業校排名母數");
+                        _table.Columns.Add("三上學業校排名母數");
+                        _table.Columns.Add("三下學業校排名母數");
+                        _table.Columns.Add("四上學業校排名母數");
+                        _table.Columns.Add("四下學業校排名母數");
+                        _table.Columns.Add("一上學業類1排名母數");
+                        _table.Columns.Add("一下學業類1排名母數");
+                        _table.Columns.Add("二上學業類1排名母數");
+                        _table.Columns.Add("二下學業類1排名母數");
+                        _table.Columns.Add("三上學業類1排名母數");
+                        _table.Columns.Add("三下學業類1排名母數");
+                        _table.Columns.Add("四上學業類1排名母數");
+                        _table.Columns.Add("四下學業類1排名母數");
+                        _table.Columns.Add("一上學業班排名百分比");
+                        _table.Columns.Add("一下學業班排名百分比");
+                        _table.Columns.Add("二上學業班排名百分比");
+                        _table.Columns.Add("二下學業班排名百分比");
+                        _table.Columns.Add("三上學業班排名百分比");
+                        _table.Columns.Add("三下學業班排名百分比");
+                        _table.Columns.Add("四上學業班排名百分比");
+                        _table.Columns.Add("四下學業班排名百分比");
+                        _table.Columns.Add("一上學業科排名百分比");
+                        _table.Columns.Add("一下學業科排名百分比");
+                        _table.Columns.Add("二上學業科排名百分比");
+                        _table.Columns.Add("二下學業科排名百分比");
+                        _table.Columns.Add("三上學業科排名百分比");
+                        _table.Columns.Add("三下學業科排名百分比");
+                        _table.Columns.Add("四上學業科排名百分比");
+                        _table.Columns.Add("四下學業科排名百分比");
+                        _table.Columns.Add("一上學業校排名百分比");
+                        _table.Columns.Add("一下學業校排名百分比");
+                        _table.Columns.Add("二上學業校排名百分比");
+                        _table.Columns.Add("二下學業校排名百分比");
+                        _table.Columns.Add("三上學業校排名百分比");
+                        _table.Columns.Add("三下學業校排名百分比");
+                        _table.Columns.Add("四上學業校排名百分比");
+                        _table.Columns.Add("四下學業校排名百分比");
+                        _table.Columns.Add("一上學業類1排名百分比");
+                        _table.Columns.Add("一下學業類1排名百分比");
+                        _table.Columns.Add("二上學業類1排名百分比");
+                        _table.Columns.Add("二下學業類1排名百分比");
+                        _table.Columns.Add("三上學業類1排名百分比");
+                        _table.Columns.Add("三下學業類1排名百分比");
+                        _table.Columns.Add("四上學業類1排名百分比");
+                        _table.Columns.Add("四下學業類1排名百分比");
 
                         _table.Columns.Add("學業平均");
                         _table.Columns.Add("學業平均科排名");
@@ -5428,94 +5492,341 @@ namespace SHStaticRank2.Data
                                     {
                                         foreach (StudSemsEntryRating sser in StudSemsEntryRatingDict[studRec.StudentID])
                                         {
-
                                             if (sser.GradeYear == "1" && sser.Semester == "1")
                                             {
-                                                if(sser.ClassRank.HasValue)
+                                                if (sser.ClassRank.HasValue)
+                                                {
                                                     row["一上學業班排名"] = sser.ClassRank.Value;
+                                                    if (sser.ClassCount.HasValue)
+                                                    {
+                                                        row["一上學業班排名母數"] = sser.ClassCount.Value;
+                                                        row["一上學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.DeptRank.HasValue)
+                                                {
                                                     row["一上學業科排名"] = sser.DeptRank.Value;
+                                                    if (sser.DeptCount.HasValue)
+                                                    {
+                                                        row["一上學業科排名母數"] = sser.DeptCount.Value;
+                                                        row["一上學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.YearRank.HasValue)
+                                                {
                                                     row["一上學業校排名"] = sser.YearRank.Value;
+                                                    if (sser.YearCount.HasValue)
+                                                    {
+                                                        row["一上學業校排名母數"] = sser.YearCount.Value;
+                                                        row["一上學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.Group1Rank.HasValue)
+                                                {
                                                     row["一上學業類1排名"] = sser.Group1Rank.Value;
+                                                    if (sser.Group1Count.HasValue)
+                                                    {
+                                                        row["一上學業類1排名母數"] = sser.Group1Count.Value;
+                                                        row["一上學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                    }
+                                                }
                                             }
                                             if (sser.GradeYear == "1" && sser.Semester == "2")
                                             {
                                                 if (sser.ClassRank.HasValue)
+                                                {
                                                     row["一下學業班排名"] = sser.ClassRank.Value;
+                                                    if (sser.ClassCount.HasValue)
+                                                    {
+                                                        row["一下學業班排名母數"] = sser.ClassCount.Value;
+                                                        row["一下學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.DeptRank.HasValue)
+                                                {
                                                     row["一下學業科排名"] = sser.DeptRank.Value;
+                                                    if (sser.DeptCount.HasValue)
+                                                    {
+                                                        row["一下學業科排名母數"] = sser.DeptCount.Value;
+                                                        row["一下學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.YearRank.HasValue)
+                                                {
                                                     row["一下學業校排名"] = sser.YearRank.Value;
+                                                    if (sser.YearCount.HasValue)
+                                                    {
+                                                        row["一下學業校排名母數"] = sser.YearCount.Value;
+                                                        row["一下學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.Group1Rank.HasValue)
+                                                {
                                                     row["一下學業類1排名"] = sser.Group1Rank.Value;
+                                                    if (sser.Group1Count.HasValue)
+                                                    {
+                                                        row["一下學業類1排名母數"] = sser.Group1Count.Value;
+                                                        row["一下學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                    }
+                                                }
                                             }
                                             if (sser.GradeYear == "2" && sser.Semester == "1")
                                             {
                                                 if (sser.ClassRank.HasValue)
+                                                {
                                                     row["二上學業班排名"] = sser.ClassRank.Value;
+                                                    if (sser.ClassCount.HasValue)
+                                                    {
+                                                        row["二上學業班排名母數"] = sser.ClassCount.Value;
+                                                        row["二上學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.DeptRank.HasValue)
+                                                {
                                                     row["二上學業科排名"] = sser.DeptRank.Value;
+                                                    if (sser.DeptCount.HasValue)
+                                                    {
+                                                        row["二上學業科排名母數"] = sser.DeptCount.Value;
+                                                        row["二上學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.YearRank.HasValue)
+                                                {
                                                     row["二上學業校排名"] = sser.YearRank.Value;
+                                                    if (sser.YearCount.HasValue)
+                                                    {
+                                                        row["二上學業校排名母數"] = sser.YearCount.Value;
+                                                        row["二上學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.Group1Rank.HasValue)
+                                                {
                                                     row["二上學業類1排名"] = sser.Group1Rank.Value;
+                                                    if (sser.Group1Count.HasValue)
+                                                    {
+                                                        row["二上學業類1排名母數"] = sser.Group1Count.Value;
+                                                        row["二上學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                    }
+                                                }
                                             }
                                             if (sser.GradeYear == "2" && sser.Semester == "2")
                                             {
                                                 if (sser.ClassRank.HasValue)
+                                                {
                                                     row["二下學業班排名"] = sser.ClassRank.Value;
+                                                    if (sser.ClassCount.HasValue)
+                                                    {
+                                                        row["二下學業班排名母數"] = sser.ClassCount.Value;
+                                                        row["二下學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.DeptRank.HasValue)
+                                                {
                                                     row["二下學業科排名"] = sser.DeptRank.Value;
+                                                    if (sser.DeptCount.HasValue)
+                                                    {
+                                                        row["二下學業科排名母數"] = sser.DeptCount.Value;
+                                                        row["二下學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.YearRank.HasValue)
+                                                {
                                                     row["二下學業校排名"] = sser.YearRank.Value;
+                                                    if (sser.YearCount.HasValue)
+                                                    {
+                                                        row["二下學業校排名母數"] = sser.YearCount.Value;
+                                                        row["二下學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.Group1Rank.HasValue)
+                                                {
                                                     row["二下學業類1排名"] = sser.Group1Rank.Value;
+                                                    if (sser.Group1Count.HasValue)
+                                                    {
+                                                        row["二下學業類1排名母數"] = sser.Group1Count.Value;
+                                                        row["二下學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                    }
+                                                }
                                             }
                                             if (sser.GradeYear == "3" && sser.Semester == "1")
                                             {
                                                 if (sser.ClassRank.HasValue)
+                                                {
                                                     row["三上學業班排名"] = sser.ClassRank.Value;
+                                                    if (sser.ClassCount.HasValue)
+                                                    {
+                                                        row["三上學業班排名母數"] = sser.ClassCount.Value;
+                                                        row["三上學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.DeptRank.HasValue)
+                                                {
                                                     row["三上學業科排名"] = sser.DeptRank.Value;
+                                                    if (sser.DeptCount.HasValue)
+                                                    {
+                                                        row["三上學業科排名母數"] = sser.DeptCount.Value;
+                                                        row["三上學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.YearRank.HasValue)
+                                                {
                                                     row["三上學業校排名"] = sser.YearRank.Value;
+                                                    if (sser.YearCount.HasValue)
+                                                    {
+                                                        row["三上學業校排名母數"] = sser.YearCount.Value;
+                                                        row["三上學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.Group1Rank.HasValue)
+                                                {
                                                     row["三上學業類1排名"] = sser.Group1Rank.Value;
+                                                    if (sser.Group1Count.HasValue)
+                                                    {
+                                                        row["三上學業類1排名母數"] = sser.Group1Count.Value;
+                                                        row["三上學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                    }
+                                                }
                                             }
                                             if (sser.GradeYear == "3" && sser.Semester == "2")
                                             {
                                                 if (sser.ClassRank.HasValue)
+                                                {
                                                     row["三下學業班排名"] = sser.ClassRank.Value;
+                                                    if (sser.ClassCount.HasValue)
+                                                    {
+                                                        row["三下學業班排名母數"] = sser.ClassCount.Value;
+                                                        row["三下學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.DeptRank.HasValue)
+                                                {
                                                     row["三下學業科排名"] = sser.DeptRank.Value;
+                                                    if (sser.DeptCount.HasValue)
+                                                    {
+                                                        row["三下學業科排名母數"] = sser.DeptCount.Value;
+                                                        row["三下學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.YearRank.HasValue)
+                                                {
                                                     row["三下學業校排名"] = sser.YearRank.Value;
+                                                    if (sser.YearCount.HasValue)
+                                                    {
+                                                        row["三下學業校排名母數"] = sser.YearCount.Value;
+                                                        row["三下學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.Group1Rank.HasValue)
+                                                {
                                                     row["三下學業類1排名"] = sser.Group1Rank.Value;
+                                                    if (sser.Group1Count.HasValue)
+                                                    {
+                                                        row["三下學業類1排名母數"] = sser.Group1Count.Value;
+                                                        row["三下學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                    }
+                                                }
                                             }
                                             if (sser.GradeYear == "4" && sser.Semester == "1")
                                             {
                                                 if (sser.ClassRank.HasValue)
+                                                {
                                                     row["四上學業班排名"] = sser.ClassRank.Value;
+                                                    if (sser.ClassCount.HasValue)
+                                                    {
+                                                        row["四上學業班排名母數"] = sser.ClassCount.Value;
+                                                        row["四上學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.DeptRank.HasValue)
+                                                {
                                                     row["四上學業科排名"] = sser.DeptRank.Value;
+                                                    if (sser.DeptCount.HasValue)
+                                                    {
+                                                        row["四上學業科排名母數"] = sser.DeptCount.Value;
+                                                        row["四上學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.YearRank.HasValue)
+                                                {
                                                     row["四上學業校排名"] = sser.YearRank.Value;
+                                                    if (sser.YearCount.HasValue)
+                                                    {
+                                                        row["四上學業校排名母數"] = sser.YearCount.Value;
+                                                        row["四上學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.Group1Rank.HasValue)
+                                                {
                                                     row["四上學業類1排名"] = sser.Group1Rank.Value;
+                                                    if (sser.Group1Count.HasValue)
+                                                    {
+                                                        row["四上學業類1排名母數"] = sser.Group1Count.Value;
+                                                        row["四上學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                    }
+                                                }
                                             }
                                             if (sser.GradeYear == "4" && sser.Semester == "2")
                                             {
                                                 if (sser.ClassRank.HasValue)
+                                                {
                                                     row["四下學業班排名"] = sser.ClassRank.Value;
+                                                    if (sser.ClassCount.HasValue)
+                                                    {
+                                                        row["四下學業班排名母數"] = sser.ClassCount.Value;
+                                                        row["四下學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.DeptRank.HasValue)
+                                                {
                                                     row["四下學業科排名"] = sser.DeptRank.Value;
+                                                    if (sser.DeptCount.HasValue)
+                                                    {
+                                                        row["四下學業科排名母數"] = sser.DeptCount.Value;
+                                                        row["四下學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.YearRank.HasValue)
+                                                {
                                                     row["四下學業校排名"] = sser.YearRank.Value;
+                                                    if (sser.YearCount.HasValue)
+                                                    {
+                                                        row["四下學業校排名母數"] = sser.YearCount.Value;
+                                                        row["四下學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                    }
+                                                }
+
                                                 if (sser.Group1Rank.HasValue)
+                                                {
                                                     row["四下學業類1排名"] = sser.Group1Rank.Value;
+                                                    if (sser.Group1Count.HasValue)
+                                                    {
+                                                        row["四下學業類1排名母數"] = sser.Group1Count.Value;
+                                                        row["四下學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -7332,90 +7643,338 @@ namespace SHStaticRank2.Data
                                                         if (sser.GradeYear == "1" && sser.Semester == "1")
                                                         {
                                                             if (sser.ClassRank.HasValue)
+                                                            {
                                                                 row["一上學業班排名"] = sser.ClassRank.Value;
+                                                                if (sser.ClassCount.HasValue)
+                                                                {
+                                                                    row["一上學業班排名母數"] = sser.ClassCount.Value;
+                                                                    row["一上學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value,sser.ClassCount.Value);
+                                                                }
+                                                            }
+                                                                
                                                             if (sser.DeptRank.HasValue)
+                                                            {
                                                                 row["一上學業科排名"] = sser.DeptRank.Value;
+                                                                if(sser.DeptCount.HasValue)
+                                                                {
+                                                                    row["一上學業科排名母數"] = sser.DeptCount.Value;
+                                                                    row["一上學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value,sser.DeptCount.Value);
+                                                                }                                                                
+                                                            }
+                                                                
                                                             if (sser.YearRank.HasValue)
+                                                            {
                                                                 row["一上學業校排名"] = sser.YearRank.Value;
+                                                                if(sser.YearCount.HasValue)
+                                                                {
+                                                                    row["一上學業校排名母數"] = sser.YearCount.Value;
+                                                                    row["一上學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value,sser.YearCount.Value);
+                                                                }                                                                
+                                                            }
+                                                                
                                                             if (sser.Group1Rank.HasValue)
+                                                            {
                                                                 row["一上學業類1排名"] = sser.Group1Rank.Value;
+                                                                if(sser.Group1Count.HasValue)
+                                                                {
+                                                                    row["一上學業類1排名母數"] = sser.Group1Count.Value;
+                                                                    row["一上學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value,sser.Group1Count.Value);
+                                                                }                                                                
+                                                            }                                                                
                                                         }
                                                         if (sser.GradeYear == "1" && sser.Semester == "2")
                                                         {
                                                             if (sser.ClassRank.HasValue)
+                                                            {
                                                                 row["一下學業班排名"] = sser.ClassRank.Value;
+                                                                if (sser.ClassCount.HasValue)
+                                                                {
+                                                                    row["一下學業班排名母數"] = sser.ClassCount.Value;
+                                                                    row["一下學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                                }
+                                                            }
+
                                                             if (sser.DeptRank.HasValue)
+                                                            {
                                                                 row["一下學業科排名"] = sser.DeptRank.Value;
+                                                                if (sser.DeptCount.HasValue)
+                                                                {
+                                                                    row["一下學業科排名母數"] = sser.DeptCount.Value;
+                                                                    row["一下學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                                }
+                                                            }
+
                                                             if (sser.YearRank.HasValue)
+                                                            {
                                                                 row["一下學業校排名"] = sser.YearRank.Value;
+                                                                if (sser.YearCount.HasValue)
+                                                                {
+                                                                    row["一下學業校排名母數"] = sser.YearCount.Value;
+                                                                    row["一下學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                                }
+                                                            }
+
                                                             if (sser.Group1Rank.HasValue)
+                                                            {
                                                                 row["一下學業類1排名"] = sser.Group1Rank.Value;
+                                                                if (sser.Group1Count.HasValue)
+                                                                {
+                                                                    row["一下學業類1排名母數"] = sser.Group1Count.Value;
+                                                                    row["一下學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                                }
+                                                            }
                                                         }
                                                         if (sser.GradeYear == "2" && sser.Semester == "1")
                                                         {
                                                             if (sser.ClassRank.HasValue)
+                                                            {
                                                                 row["二上學業班排名"] = sser.ClassRank.Value;
+                                                                if (sser.ClassCount.HasValue)
+                                                                {
+                                                                    row["二上學業班排名母數"] = sser.ClassCount.Value;
+                                                                    row["二上學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                                }
+                                                            }
+
                                                             if (sser.DeptRank.HasValue)
+                                                            {
                                                                 row["二上學業科排名"] = sser.DeptRank.Value;
+                                                                if (sser.DeptCount.HasValue)
+                                                                {
+                                                                    row["二上學業科排名母數"] = sser.DeptCount.Value;
+                                                                    row["二上學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                                }
+                                                            }
+
                                                             if (sser.YearRank.HasValue)
+                                                            {
                                                                 row["二上學業校排名"] = sser.YearRank.Value;
+                                                                if (sser.YearCount.HasValue)
+                                                                {
+                                                                    row["二上學業校排名母數"] = sser.YearCount.Value;
+                                                                    row["二上學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                                }
+                                                            }
+
                                                             if (sser.Group1Rank.HasValue)
+                                                            {
                                                                 row["二上學業類1排名"] = sser.Group1Rank.Value;
+                                                                if (sser.Group1Count.HasValue)
+                                                                {
+                                                                    row["二上學業類1排名母數"] = sser.Group1Count.Value;
+                                                                    row["二上學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                                }
+                                                            }
                                                         }
                                                         if (sser.GradeYear == "2" && sser.Semester == "2")
                                                         {
                                                             if (sser.ClassRank.HasValue)
+                                                            {
                                                                 row["二下學業班排名"] = sser.ClassRank.Value;
+                                                                if (sser.ClassCount.HasValue)
+                                                                {
+                                                                    row["二下學業班排名母數"] = sser.ClassCount.Value;
+                                                                    row["二下學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                                }
+                                                            }
+
                                                             if (sser.DeptRank.HasValue)
+                                                            {
                                                                 row["二下學業科排名"] = sser.DeptRank.Value;
+                                                                if (sser.DeptCount.HasValue)
+                                                                {
+                                                                    row["二下學業科排名母數"] = sser.DeptCount.Value;
+                                                                    row["二下學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                                }
+                                                            }
+
                                                             if (sser.YearRank.HasValue)
+                                                            {
                                                                 row["二下學業校排名"] = sser.YearRank.Value;
+                                                                if (sser.YearCount.HasValue)
+                                                                {
+                                                                    row["二下學業校排名母數"] = sser.YearCount.Value;
+                                                                    row["二下學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                                }
+                                                            }
+
                                                             if (sser.Group1Rank.HasValue)
+                                                            {
                                                                 row["二下學業類1排名"] = sser.Group1Rank.Value;
+                                                                if (sser.Group1Count.HasValue)
+                                                                {
+                                                                    row["二下學業類1排名母數"] = sser.Group1Count.Value;
+                                                                    row["二下學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                                }
+                                                            }
                                                         }
                                                         if (sser.GradeYear == "3" && sser.Semester == "1")
                                                         {
                                                             if (sser.ClassRank.HasValue)
+                                                            {
                                                                 row["三上學業班排名"] = sser.ClassRank.Value;
+                                                                if (sser.ClassCount.HasValue)
+                                                                {
+                                                                    row["三上學業班排名母數"] = sser.ClassCount.Value;
+                                                                    row["三上學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                                }
+                                                            }
+
                                                             if (sser.DeptRank.HasValue)
+                                                            {
                                                                 row["三上學業科排名"] = sser.DeptRank.Value;
+                                                                if (sser.DeptCount.HasValue)
+                                                                {
+                                                                    row["三上學業科排名母數"] = sser.DeptCount.Value;
+                                                                    row["三上學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                                }
+                                                            }
+
                                                             if (sser.YearRank.HasValue)
+                                                            {
                                                                 row["三上學業校排名"] = sser.YearRank.Value;
+                                                                if (sser.YearCount.HasValue)
+                                                                {
+                                                                    row["三上學業校排名母數"] = sser.YearCount.Value;
+                                                                    row["三上學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                                }
+                                                            }
+
                                                             if (sser.Group1Rank.HasValue)
+                                                            {
                                                                 row["三上學業類1排名"] = sser.Group1Rank.Value;
+                                                                if (sser.Group1Count.HasValue)
+                                                                {
+                                                                    row["三上學業類1排名母數"] = sser.Group1Count.Value;
+                                                                    row["三上學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                                }
+                                                            }
                                                         }
                                                         if (sser.GradeYear == "3" && sser.Semester == "2")
                                                         {
                                                             if (sser.ClassRank.HasValue)
+                                                            {
                                                                 row["三下學業班排名"] = sser.ClassRank.Value;
+                                                                if (sser.ClassCount.HasValue)
+                                                                {
+                                                                    row["三下學業班排名母數"] = sser.ClassCount.Value;
+                                                                    row["三下學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                                }
+                                                            }
+
                                                             if (sser.DeptRank.HasValue)
+                                                            {
                                                                 row["三下學業科排名"] = sser.DeptRank.Value;
+                                                                if (sser.DeptCount.HasValue)
+                                                                {
+                                                                    row["三下學業科排名母數"] = sser.DeptCount.Value;
+                                                                    row["三下學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                                }
+                                                            }
+
                                                             if (sser.YearRank.HasValue)
+                                                            {
                                                                 row["三下學業校排名"] = sser.YearRank.Value;
+                                                                if (sser.YearCount.HasValue)
+                                                                {
+                                                                    row["三下學業校排名母數"] = sser.YearCount.Value;
+                                                                    row["三下學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                                }
+                                                            }
+
                                                             if (sser.Group1Rank.HasValue)
+                                                            {
                                                                 row["三下學業類1排名"] = sser.Group1Rank.Value;
+                                                                if (sser.Group1Count.HasValue)
+                                                                {
+                                                                    row["三下學業類1排名母數"] = sser.Group1Count.Value;
+                                                                    row["三下學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                                }
+                                                            }
                                                         }
                                                         if (sser.GradeYear == "4" && sser.Semester == "1")
                                                         {
                                                             if (sser.ClassRank.HasValue)
+                                                            {
                                                                 row["四上學業班排名"] = sser.ClassRank.Value;
+                                                                if (sser.ClassCount.HasValue)
+                                                                {
+                                                                    row["四上學業班排名母數"] = sser.ClassCount.Value;
+                                                                    row["四上學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                                }
+                                                            }
+
                                                             if (sser.DeptRank.HasValue)
+                                                            {
                                                                 row["四上學業科排名"] = sser.DeptRank.Value;
+                                                                if (sser.DeptCount.HasValue)
+                                                                {
+                                                                    row["四上學業科排名母數"] = sser.DeptCount.Value;
+                                                                    row["四上學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                                }
+                                                            }
+
                                                             if (sser.YearRank.HasValue)
+                                                            {
                                                                 row["四上學業校排名"] = sser.YearRank.Value;
+                                                                if (sser.YearCount.HasValue)
+                                                                {
+                                                                    row["四上學業校排名母數"] = sser.YearCount.Value;
+                                                                    row["四上學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                                }
+                                                            }
+
                                                             if (sser.Group1Rank.HasValue)
+                                                            {
                                                                 row["四上學業類1排名"] = sser.Group1Rank.Value;
+                                                                if (sser.Group1Count.HasValue)
+                                                                {
+                                                                    row["四上學業類1排名母數"] = sser.Group1Count.Value;
+                                                                    row["四上學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                                }
+                                                            }
                                                         }
                                                         if (sser.GradeYear == "4" && sser.Semester == "2")
                                                         {
                                                             if (sser.ClassRank.HasValue)
+                                                            {
                                                                 row["四下學業班排名"] = sser.ClassRank.Value;
+                                                                if (sser.ClassCount.HasValue)
+                                                                {
+                                                                    row["四下學業班排名母數"] = sser.ClassCount.Value;
+                                                                    row["四下學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                                }
+                                                            }
+
                                                             if (sser.DeptRank.HasValue)
+                                                            {
                                                                 row["四下學業科排名"] = sser.DeptRank.Value;
+                                                                if (sser.DeptCount.HasValue)
+                                                                {
+                                                                    row["四下學業科排名母數"] = sser.DeptCount.Value;
+                                                                    row["四下學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                                }
+                                                            }
+
                                                             if (sser.YearRank.HasValue)
+                                                            {
                                                                 row["四下學業校排名"] = sser.YearRank.Value;
+                                                                if (sser.YearCount.HasValue)
+                                                                {
+                                                                    row["四下學業校排名母數"] = sser.YearCount.Value;
+                                                                    row["四下學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                                }
+                                                            }
+
                                                             if (sser.Group1Rank.HasValue)
+                                                            {
                                                                 row["四下學業類1排名"] = sser.Group1Rank.Value;
+                                                                if (sser.Group1Count.HasValue)
+                                                                {
+                                                                    row["四下學業類1排名母數"] = sser.Group1Count.Value;
+                                                                    row["四下學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                                }
+                                                            }
                                                         }
                                                     }
                                                 }

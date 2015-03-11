@@ -275,7 +275,57 @@ namespace SHStaticRank2.Data
                                         sser.AddClassRank(elm.Attribute("科目").Value, int.Parse(elm.Attribute("排名").Value));
                                 }
                             }
-                        }                      
+                        }
+
+                        // 科排
+                        if (!string.IsNullOrEmpty(dStr))
+                        {
+                            XElement elmC = XElement.Parse(dStr);
+                            foreach (XElement elm in elmC.Elements("Item"))
+                            {
+                                if (elm.Attribute("科目") != null)
+                                {
+                                    if (elm.Attribute("成績人數") != null)
+                                        sser.AddDeptCount(elm.Attribute("科目").Value, int.Parse(elm.Attribute("成績人數").Value));
+
+                                    if (elm.Attribute("排名") != null)
+                                        sser.AddDeptRank(elm.Attribute("科目").Value, int.Parse(elm.Attribute("排名").Value));
+                                }
+                            }
+                        }
+                        // 年排
+                        if (!string.IsNullOrEmpty(yStr))
+                        {
+                            XElement elmC = XElement.Parse(yStr);
+                            foreach (XElement elm in elmC.Elements("Item"))
+                            {
+                                if (elm.Attribute("科目") != null)
+                                {
+                                    if (elm.Attribute("成績人數") != null)
+                                        sser.AddYearCount(elm.Attribute("科目").Value, int.Parse(elm.Attribute("成績人數").Value));
+
+                                    if (elm.Attribute("排名") != null)
+                                        sser.AddYearRank(elm.Attribute("科目").Value, int.Parse(elm.Attribute("排名").Value));
+                                }
+                            }
+                        }
+
+                        // 類1排
+                        if (!string.IsNullOrEmpty(g1Str))
+                        {
+                            XElement elmC = XElement.Parse(g1Str);
+                            foreach (XElement elm in elmC.Elements("Item"))
+                            {
+                                if (elm.Attribute("科目") != null)
+                                {
+                                    if (elm.Attribute("成績人數") != null)
+                                        sser.AddGroup1Count(elm.Attribute("科目").Value, int.Parse(elm.Attribute("成績人數").Value));
+
+                                    if (elm.Attribute("排名") != null)
+                                        sser.AddGroup1Rank(elm.Attribute("科目").Value, int.Parse(elm.Attribute("排名").Value));
+                                }
+                            }
+                        } 
                     }
                     catch (Exception ex) { }
 

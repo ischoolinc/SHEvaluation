@@ -4964,6 +4964,104 @@ namespace SHStaticRank2.Data
                             _table.Columns.Add("科目加權平均類別二排名百分比" + i);
                             _table.Columns.Add("科目加權總分類別一排名百分比" + i);
                             _table.Columns.Add("科目加權總分類別二排名百分比" + i);
+
+                            _table.Columns.Add("一上科目班排名" + i);
+                            _table.Columns.Add("一上科目班排名母數" + i);
+                            _table.Columns.Add("一上科目班排名百分比" + i);
+                            _table.Columns.Add("一上科目科排名" + i);
+                            _table.Columns.Add("一上科目科排名母數" + i);
+                            _table.Columns.Add("一上科目科排名百分比" + i);
+                            _table.Columns.Add("一上科目校排名" + i);
+                            _table.Columns.Add("一上科目校排名母數" + i);
+                            _table.Columns.Add("一上科目校排名百分比" + i);
+                            _table.Columns.Add("一上科目類1排名" + i);
+                            _table.Columns.Add("一上科目類1排名母數" + i);
+                            _table.Columns.Add("一上科目類1排名百分比" + i);
+                            _table.Columns.Add("一下科目班排名" + i);
+                            _table.Columns.Add("一下科目班排名母數" + i);
+                            _table.Columns.Add("一下科目班排名百分比" + i);
+                            _table.Columns.Add("一下科目科排名" + i);
+                            _table.Columns.Add("一下科目科排名母數" + i);
+                            _table.Columns.Add("一下科目科排名百分比" + i);
+                            _table.Columns.Add("一下科目校排名" + i);
+                            _table.Columns.Add("一下科目校排名母數" + i);
+                            _table.Columns.Add("一下科目校排名百分比" + i);
+                            _table.Columns.Add("一下科目類1排名" + i);
+                            _table.Columns.Add("一下科目類1排名母數" + i);
+                            _table.Columns.Add("一下科目類1排名百分比" + i);
+                            _table.Columns.Add("二上科目班排名" + i);
+                            _table.Columns.Add("二上科目班排名母數" + i);
+                            _table.Columns.Add("二上科目班排名百分比" + i);
+                            _table.Columns.Add("二上科目科排名" + i);
+                            _table.Columns.Add("二上科目科排名母數" + i);
+                            _table.Columns.Add("二上科目科排名百分比" + i);
+                            _table.Columns.Add("二上科目校排名" + i);
+                            _table.Columns.Add("二上科目校排名母數" + i);
+                            _table.Columns.Add("二上科目校排名百分比" + i);
+                            _table.Columns.Add("二上科目類1排名" + i);
+                            _table.Columns.Add("二上科目類1排名母數" + i);
+                            _table.Columns.Add("二上科目類1排名百分比" + i);
+                            _table.Columns.Add("二下科目班排名" + i);
+                            _table.Columns.Add("二下科目班排名母數" + i);
+                            _table.Columns.Add("二下科目班排名百分比" + i);
+                            _table.Columns.Add("二下科目科排名" + i);
+                            _table.Columns.Add("二下科目科排名母數" + i);
+                            _table.Columns.Add("二下科目科排名百分比" + i);
+                            _table.Columns.Add("二下科目校排名" + i);
+                            _table.Columns.Add("二下科目校排名母數" + i);
+                            _table.Columns.Add("二下科目校排名百分比" + i);
+                            _table.Columns.Add("二下科目類1排名" + i);
+                            _table.Columns.Add("二下科目類1排名母數" + i);
+                            _table.Columns.Add("二下科目類1排名百分比" + i);
+                            _table.Columns.Add("三上科目班排名" + i);
+                            _table.Columns.Add("三上科目班排名母數" + i);
+                            _table.Columns.Add("三上科目班排名百分比" + i);
+                            _table.Columns.Add("三上科目科排名" + i);
+                            _table.Columns.Add("三上科目科排名母數" + i);
+                            _table.Columns.Add("三上科目科排名百分比" + i);
+                            _table.Columns.Add("三上科目校排名" + i);
+                            _table.Columns.Add("三上科目校排名母數" + i);
+                            _table.Columns.Add("三上科目校排名百分比" + i);
+                            _table.Columns.Add("三上科目類1排名" + i);
+                            _table.Columns.Add("三上科目類1排名母數" + i);
+                            _table.Columns.Add("三上科目類1排名百分比" + i);
+                            _table.Columns.Add("三下科目班排名" + i);
+                            _table.Columns.Add("三下科目班排名母數" + i);
+                            _table.Columns.Add("三下科目班排名百分比" + i);
+                            _table.Columns.Add("三下科目科排名" + i);
+                            _table.Columns.Add("三下科目科排名母數" + i);
+                            _table.Columns.Add("三下科目科排名百分比" + i);
+                            _table.Columns.Add("三下科目校排名" + i);
+                            _table.Columns.Add("三下科目校排名母數" + i);
+                            _table.Columns.Add("三下科目校排名百分比" + i);
+                            _table.Columns.Add("三下科目類1排名" + i);
+                            _table.Columns.Add("三下科目類1排名母數" + i);
+                            _table.Columns.Add("三下科目類1排名百分比" + i);
+                            _table.Columns.Add("四上科目班排名" + i);
+                            _table.Columns.Add("四上科目班排名母數" + i);
+                            _table.Columns.Add("四上科目班排名百分比" + i);
+                            _table.Columns.Add("四上科目科排名" + i);
+                            _table.Columns.Add("四上科目科排名母數" + i);
+                            _table.Columns.Add("四上科目科排名百分比" + i);
+                            _table.Columns.Add("四上科目校排名" + i);
+                            _table.Columns.Add("四上科目校排名母數" + i);
+                            _table.Columns.Add("四上科目校排名百分比" + i);
+                            _table.Columns.Add("四上科目類1排名" + i);
+                            _table.Columns.Add("四上科目類1排名母數" + i);
+                            _table.Columns.Add("四上科目類1排名百分比" + i);
+                            _table.Columns.Add("四下科目班排名" + i);
+                            _table.Columns.Add("四下科目班排名母數" + i);
+                            _table.Columns.Add("四下科目班排名百分比" + i);
+                            _table.Columns.Add("四下科目科排名" + i);
+                            _table.Columns.Add("四下科目科排名母數" + i);
+                            _table.Columns.Add("四下科目科排名百分比" + i);
+                            _table.Columns.Add("四下科目校排名" + i);
+                            _table.Columns.Add("四下科目校排名母數" + i);
+                            _table.Columns.Add("四下科目校排名百分比" + i);
+                            _table.Columns.Add("四下科目類1排名" + i);
+                            _table.Columns.Add("四下科目類1排名母數" + i);
+                            _table.Columns.Add("四下科目類1排名百分比" + i);
+
                         }
 
                         #endregion 合併欄位使用
@@ -5412,6 +5510,8 @@ namespace SHStaticRank2.Data
                                 {
                                     foreach (StudSemsSubjRating ssr in StudSemsSubjRatingDict[studRec.StudentID])
                                     {
+
+                                        #region 舊
                                         if (ssr.GradeYear == "1" && ssr.Semester == "1")
                                         {
                                             for (int i = 1; i <= subjCot; i++)
@@ -5479,6 +5579,351 @@ namespace SHStaticRank2.Data
                                                 row["四下科目排名" + i] = ssr.GetClassRank(subjName);
                                             }
                                         }
+                                        #endregion
+                                        
+                                        #region 班排
+                                        if (ssr.GradeYear == "1" && ssr.Semester == "1")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["一上科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                row["一上科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                row["一上科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
+                                            }
+                                        }
+                                        if (ssr.GradeYear == "1" && ssr.Semester == "2")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["一下科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                row["一下科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                row["一下科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
+                                            }
+                                        }
+
+                                        if (ssr.GradeYear == "2" && ssr.Semester == "1")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["二上科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                row["二上科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                row["二上科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
+                                            }
+                                        }
+                                        if (ssr.GradeYear == "2" && ssr.Semester == "2")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["二下科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                row["二下科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                row["二下科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
+                                            }
+                                        }
+
+                                        if (ssr.GradeYear == "3" && ssr.Semester == "1")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["三上科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                row["三上科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                row["三上科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
+                                            }
+                                        }
+                                        if (ssr.GradeYear == "3" && ssr.Semester == "2")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["三下科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                row["三下科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                row["三下科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
+                                            }
+                                        }
+
+                                        if (ssr.GradeYear == "4" && ssr.Semester == "1")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["四上科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                row["四上科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                row["四上科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
+                                            }
+                                        }
+                                        if (ssr.GradeYear == "4" && ssr.Semester == "2")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["四下科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                row["四下科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                row["四下科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
+                                            }
+                                        }
+                                        #endregion
+
+                                        #region 科排
+                                        if (ssr.GradeYear == "1" && ssr.Semester == "1")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["一上科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                row["一上科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                row["一上科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                            }
+                                        }
+                                        if (ssr.GradeYear == "1" && ssr.Semester == "2")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["一下科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                row["一下科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                row["一下科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                            }
+                                        }
+
+                                        if (ssr.GradeYear == "2" && ssr.Semester == "1")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["二上科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                row["二上科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                row["二上科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                            }
+                                        }
+                                        if (ssr.GradeYear == "2" && ssr.Semester == "2")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["二下科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                row["二下科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                row["二下科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                            }
+                                        }
+
+                                        if (ssr.GradeYear == "3" && ssr.Semester == "1")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["三上科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                row["三上科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                row["三上科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                            }
+                                        }
+                                        if (ssr.GradeYear == "3" && ssr.Semester == "2")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["三下科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                row["三下科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                row["三下科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                            }
+                                        }
+
+                                        if (ssr.GradeYear == "4" && ssr.Semester == "1")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["四上科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                row["四上科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                row["四上科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                            }
+                                        }
+                                        if (ssr.GradeYear == "4" && ssr.Semester == "2")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["四下科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                row["四下科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                row["四下科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                            }
+                                        }
+                                        #endregion                
+
+                                        #region 校排
+                                        if (ssr.GradeYear == "1" && ssr.Semester == "1")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["一上科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                row["一上科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                row["一上科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                            }
+                                        }
+                                        if (ssr.GradeYear == "1" && ssr.Semester == "2")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["一下科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                row["一下科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                row["一下科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                            }
+                                        }
+
+                                        if (ssr.GradeYear == "2" && ssr.Semester == "1")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["二上科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                row["二上科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                row["二上科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                            }
+                                        }
+                                        if (ssr.GradeYear == "2" && ssr.Semester == "2")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["二下科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                row["二下科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                row["二下科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                            }
+                                        }
+
+                                        if (ssr.GradeYear == "3" && ssr.Semester == "1")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["三上科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                row["三上科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                row["三上科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                            }
+                                        }
+                                        if (ssr.GradeYear == "3" && ssr.Semester == "2")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["三下科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                row["三下科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                row["三下科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                            }
+                                        }
+
+                                        if (ssr.GradeYear == "4" && ssr.Semester == "1")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["四上科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                row["四上科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                row["四上科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                            }
+                                        }
+                                        if (ssr.GradeYear == "4" && ssr.Semester == "2")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["四下科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                row["四下科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                row["四下科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                            }
+                                        }
+                                        #endregion                
+
+                                        #region 類1
+                                        if (ssr.GradeYear == "1" && ssr.Semester == "1")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["一上科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                row["一上科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                row["一上科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                            }
+                                        }
+                                        if (ssr.GradeYear == "1" && ssr.Semester == "2")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["一下科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                row["一下科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                row["一下科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                            }
+                                        }
+
+                                        if (ssr.GradeYear == "2" && ssr.Semester == "1")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["二上科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                row["二上科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                row["二上科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                            }
+                                        }
+                                        if (ssr.GradeYear == "2" && ssr.Semester == "2")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["二下科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                row["二下科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                row["二下科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                            }
+                                        }
+
+                                        if (ssr.GradeYear == "3" && ssr.Semester == "1")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["三上科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                row["三上科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                row["三上科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                            }
+                                        }
+                                        if (ssr.GradeYear == "3" && ssr.Semester == "2")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["三下科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                row["三下科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                row["三下科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                            }
+                                        }
+
+                                        if (ssr.GradeYear == "4" && ssr.Semester == "1")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["四上科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                row["四上科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                row["四上科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                            }
+                                        }
+                                        if (ssr.GradeYear == "4" && ssr.Semester == "2")
+                                        {
+                                            for (int i = 1; i <= subjCot; i++)
+                                            {
+                                                string subjName = row["科目名稱" + i].ToString();
+                                                row["四下科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                row["四下科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                row["四下科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                            }
+                                        }
+                                        #endregion                    
                                     }
                                 }
                                 if (setting.計算學業成績排名)
@@ -7559,6 +8004,8 @@ namespace SHStaticRank2.Data
                                             {
                                                 foreach (StudSemsSubjRating ssr in StudSemsSubjRatingDict[studRec.StudentID])
                                                 {
+
+                                                    #region 舊
                                                     if (ssr.GradeYear == "1" && ssr.Semester == "1")
                                                     {
                                                         for (int i = 1; i <= subjCot; i++)
@@ -7626,6 +8073,352 @@ namespace SHStaticRank2.Data
                                                             row["四下科目排名" + i] = ssr.GetClassRank(subjName);
                                                         }
                                                     }
+                                                    #endregion
+
+                                                    #region 班排
+                                                    if (ssr.GradeYear == "1" && ssr.Semester == "1")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["一上科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                            row["一上科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                            row["一上科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
+                                                        }
+                                                    }
+                                                    if (ssr.GradeYear == "1" && ssr.Semester == "2")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["一下科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                            row["一下科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                            row["一下科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
+                                                        }
+                                                    }
+
+                                                    if (ssr.GradeYear == "2" && ssr.Semester == "1")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["二上科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                            row["二上科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                            row["二上科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
+                                                        }
+                                                    }
+                                                    if (ssr.GradeYear == "2" && ssr.Semester == "2")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["二下科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                            row["二下科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                            row["二下科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
+                                                        }
+                                                    }
+
+                                                    if (ssr.GradeYear == "3" && ssr.Semester == "1")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["三上科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                            row["三上科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                            row["三上科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
+                                                        }
+                                                    }
+                                                    if (ssr.GradeYear == "3" && ssr.Semester == "2")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["三下科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                            row["三下科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                            row["三下科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
+                                                        }
+                                                    }
+
+                                                    if (ssr.GradeYear == "4" && ssr.Semester == "1")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["四上科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                            row["四上科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                            row["四上科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
+                                                        }
+                                                    }
+                                                    if (ssr.GradeYear == "4" && ssr.Semester == "2")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["四下科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                            row["四下科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                            row["四下科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
+                                                        }
+                                                    }
+                                                    #endregion
+
+                                                    #region 科排
+                                                    if (ssr.GradeYear == "1" && ssr.Semester == "1")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["一上科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                            row["一上科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                            row["一上科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                                        }
+                                                    }
+                                                    if (ssr.GradeYear == "1" && ssr.Semester == "2")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["一下科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                            row["一下科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                            row["一下科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                                        }
+                                                    }
+
+                                                    if (ssr.GradeYear == "2" && ssr.Semester == "1")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["二上科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                            row["二上科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                            row["二上科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                                        }
+                                                    }
+                                                    if (ssr.GradeYear == "2" && ssr.Semester == "2")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["二下科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                            row["二下科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                            row["二下科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                                        }
+                                                    }
+
+                                                    if (ssr.GradeYear == "3" && ssr.Semester == "1")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["三上科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                            row["三上科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                            row["三上科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                                        }
+                                                    }
+                                                    if (ssr.GradeYear == "3" && ssr.Semester == "2")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["三下科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                            row["三下科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                            row["三下科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                                        }
+                                                    }
+
+                                                    if (ssr.GradeYear == "4" && ssr.Semester == "1")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["四上科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                            row["四上科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                            row["四上科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                                        }
+                                                    }
+                                                    if (ssr.GradeYear == "4" && ssr.Semester == "2")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["四下科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                            row["四下科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                            row["四下科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                                        }
+                                                    }
+                                                    #endregion
+
+                                                    #region 校排
+                                                    if (ssr.GradeYear == "1" && ssr.Semester == "1")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["一上科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                            row["一上科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                            row["一上科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                                        }
+                                                    }
+                                                    if (ssr.GradeYear == "1" && ssr.Semester == "2")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["一下科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                            row["一下科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                            row["一下科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                                        }
+                                                    }
+
+                                                    if (ssr.GradeYear == "2" && ssr.Semester == "1")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["二上科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                            row["二上科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                            row["二上科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                                        }
+                                                    }
+                                                    if (ssr.GradeYear == "2" && ssr.Semester == "2")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["二下科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                            row["二下科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                            row["二下科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                                        }
+                                                    }
+
+                                                    if (ssr.GradeYear == "3" && ssr.Semester == "1")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["三上科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                            row["三上科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                            row["三上科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                                        }
+                                                    }
+                                                    if (ssr.GradeYear == "3" && ssr.Semester == "2")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["三下科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                            row["三下科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                            row["三下科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                                        }
+                                                    }
+
+                                                    if (ssr.GradeYear == "4" && ssr.Semester == "1")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["四上科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                            row["四上科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                            row["四上科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                                        }
+                                                    }
+                                                    if (ssr.GradeYear == "4" && ssr.Semester == "2")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["四下科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                            row["四下科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                            row["四下科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                                        }
+                                                    }
+                                                    #endregion
+
+                                                    #region 類1
+                                                    if (ssr.GradeYear == "1" && ssr.Semester == "1")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["一上科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                            row["一上科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                            row["一上科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                                        }
+                                                    }
+                                                    if (ssr.GradeYear == "1" && ssr.Semester == "2")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["一下科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                            row["一下科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                            row["一下科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                                        }
+                                                    }
+
+                                                    if (ssr.GradeYear == "2" && ssr.Semester == "1")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["二上科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                            row["二上科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                            row["二上科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                                        }
+                                                    }
+                                                    if (ssr.GradeYear == "2" && ssr.Semester == "2")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["二下科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                            row["二下科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                            row["二下科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                                        }
+                                                    }
+
+                                                    if (ssr.GradeYear == "3" && ssr.Semester == "1")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["三上科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                            row["三上科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                            row["三上科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                                        }
+                                                    }
+                                                    if (ssr.GradeYear == "3" && ssr.Semester == "2")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["三下科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                            row["三下科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                            row["三下科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                                        }
+                                                    }
+
+                                                    if (ssr.GradeYear == "4" && ssr.Semester == "1")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["四上科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                            row["四上科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                            row["四上科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                                        }
+                                                    }
+                                                    if (ssr.GradeYear == "4" && ssr.Semester == "2")
+                                                    {
+                                                        for (int i = 1; i <= subjCot; i++)
+                                                        {
+                                                            string subjName = row["科目名稱" + i].ToString();
+                                                            row["四下科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                            row["四下科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                            row["四下科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                                        }
+                                                    }
+                                                    #endregion                    
+
                                                 }
                                             }
 

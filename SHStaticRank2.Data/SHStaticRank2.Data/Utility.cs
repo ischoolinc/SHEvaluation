@@ -201,7 +201,8 @@ namespace SHStaticRank2.Data
                         if (!string.IsNullOrEmpty(g1Str))
                         {
                             XElement elmG1 = XElement.Parse(g1Str);
-                            foreach (XElement elm in elmG1.Elements("Item"))
+                            foreach(XElement elmR in elmG1.Elements("Rating"))
+                            foreach (XElement elm in elmR.Elements("Item"))
                             {
                                 if (elm.Attribute("分項") != null && elm.Attribute("分項").Value == "學業")
                                 {
@@ -314,7 +315,8 @@ namespace SHStaticRank2.Data
                         if (!string.IsNullOrEmpty(g1Str))
                         {
                             XElement elmC = XElement.Parse(g1Str);
-                            foreach (XElement elm in elmC.Elements("Item"))
+                            foreach (XElement elmR in elmC.Elements("Rating"))
+                            foreach (XElement elm in elmR.Elements("Item"))
                             {
                                 if (elm.Attribute("科目") != null)
                                 {

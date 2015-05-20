@@ -147,7 +147,7 @@ namespace SHStaticRank2.Data
                                 }
                             }
                         }
-
+                        
                         // 科排
                         if (!string.IsNullOrEmpty(dStr))
                         {

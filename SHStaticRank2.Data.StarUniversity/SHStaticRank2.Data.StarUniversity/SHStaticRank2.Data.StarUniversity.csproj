@@ -189,6 +189,7 @@
   <ItemGroup>
     <None Include="Resources\多學期成績單_5學期.doc" />
     <None Include="Resources\多學期成績單_大學4學期.doc" />
+    <None Include="Resources\多學期成績單_第6學期.doc" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

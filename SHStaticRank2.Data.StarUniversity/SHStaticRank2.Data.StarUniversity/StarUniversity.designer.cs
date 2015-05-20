@@ -53,6 +53,7 @@
             this.cbxExportPDF = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.cbxExportWord = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.cbxScoreType = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.chk6Grade = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.groupPanel3.SuspendLayout();
             this.groupPanel2.SuspendLayout();
             this.gpGradeSemester.SuspendLayout();
@@ -69,7 +70,7 @@
             this.cboRankRilter.ItemHeight = 19;
             this.cboRankRilter.Location = new System.Drawing.Point(129, 3);
             this.cboRankRilter.Name = "cboRankRilter";
-            this.cboRankRilter.Size = new System.Drawing.Size(160, 25);
+            this.cboRankRilter.Size = new System.Drawing.Size(216, 25);
             this.cboRankRilter.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.cboRankRilter.TabIndex = 11;
             // 
@@ -112,7 +113,7 @@
             this.cboTagRank1.ItemHeight = 19;
             this.cboTagRank1.Location = new System.Drawing.Point(129, 7);
             this.cboTagRank1.Name = "cboTagRank1";
-            this.cboTagRank1.Size = new System.Drawing.Size(160, 25);
+            this.cboTagRank1.Size = new System.Drawing.Size(216, 25);
             this.cboTagRank1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.cboTagRank1.TabIndex = 12;
             // 
@@ -140,7 +141,7 @@
             this.cboTagRank2.ItemHeight = 19;
             this.cboTagRank2.Location = new System.Drawing.Point(129, 38);
             this.cboTagRank2.Name = "cboTagRank2";
-            this.cboTagRank2.Size = new System.Drawing.Size(160, 25);
+            this.cboTagRank2.Size = new System.Drawing.Size(216, 25);
             this.cboTagRank2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.cboTagRank2.TabIndex = 14;
             // 
@@ -154,7 +155,7 @@
             this.groupPanel3.DrawTitleBox = false;
             this.groupPanel3.Location = new System.Drawing.Point(21, 78);
             this.groupPanel3.Name = "groupPanel3";
-            this.groupPanel3.Size = new System.Drawing.Size(298, 63);
+            this.groupPanel3.Size = new System.Drawing.Size(417, 63);
             // 
             // 
             // 
@@ -201,7 +202,7 @@
             this.chk5Grade.Checked = true;
             this.chk5Grade.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chk5Grade.CheckValue = "Y";
-            this.chk5Grade.Location = new System.Drawing.Point(148, 3);
+            this.chk5Grade.Location = new System.Drawing.Point(143, 3);
             this.chk5Grade.Name = "chk5Grade";
             this.chk5Grade.Size = new System.Drawing.Size(139, 21);
             this.chk5Grade.TabIndex = 1;
@@ -236,7 +237,7 @@
             this.groupPanel2.DrawTitleBox = false;
             this.groupPanel2.Location = new System.Drawing.Point(21, 147);
             this.groupPanel2.Name = "groupPanel2";
-            this.groupPanel2.Size = new System.Drawing.Size(298, 99);
+            this.groupPanel2.Size = new System.Drawing.Size(417, 99);
             // 
             // 
             // 
@@ -275,7 +276,7 @@
             this.buttonX1.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.buttonX1.BackColor = System.Drawing.Color.Transparent;
             this.buttonX1.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.buttonX1.Location = new System.Drawing.Point(172, 476);
+            this.buttonX1.Location = new System.Drawing.Point(276, 476);
             this.buttonX1.Name = "buttonX1";
             this.buttonX1.Size = new System.Drawing.Size(75, 23);
             this.buttonX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -288,12 +289,13 @@
             this.gpGradeSemester.BackColor = System.Drawing.Color.Transparent;
             this.gpGradeSemester.CanvasColor = System.Drawing.SystemColors.Control;
             this.gpGradeSemester.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.gpGradeSemester.Controls.Add(this.chk6Grade);
             this.gpGradeSemester.Controls.Add(this.chk4Grade);
             this.gpGradeSemester.Controls.Add(this.chk5Grade);
             this.gpGradeSemester.DrawTitleBox = false;
             this.gpGradeSemester.Location = new System.Drawing.Point(21, 12);
             this.gpGradeSemester.Name = "gpGradeSemester";
-            this.gpGradeSemester.Size = new System.Drawing.Size(298, 60);
+            this.gpGradeSemester.Size = new System.Drawing.Size(417, 60);
             // 
             // 
             // 
@@ -368,7 +370,7 @@
             this.btnExit.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExit.Location = new System.Drawing.Point(253, 476);
+            this.btnExit.Location = new System.Drawing.Point(357, 476);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 23);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -416,7 +418,7 @@
             this.groupPanel1.DrawTitleBox = false;
             this.groupPanel1.Location = new System.Drawing.Point(21, 320);
             this.groupPanel1.Name = "groupPanel1";
-            this.groupPanel1.Size = new System.Drawing.Size(298, 60);
+            this.groupPanel1.Size = new System.Drawing.Size(417, 60);
             // 
             // 
             // 
@@ -495,7 +497,7 @@
             this.groupPanel4.DrawTitleBox = false;
             this.groupPanel4.Location = new System.Drawing.Point(21, 253);
             this.groupPanel4.Name = "groupPanel4";
-            this.groupPanel4.Size = new System.Drawing.Size(298, 60);
+            this.groupPanel4.Size = new System.Drawing.Size(417, 60);
             // 
             // 
             // 
@@ -577,11 +579,27 @@
             this.cbxScoreType.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.cbxScoreType.TabIndex = 34;
             // 
+            // chk6Grade
+            // 
+            this.chk6Grade.AutoSize = true;
+            this.chk6Grade.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.chk6Grade.BackgroundStyle.Class = "";
+            this.chk6Grade.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.chk6Grade.CheckBoxStyle = DevComponents.DotNetBar.eCheckBoxStyle.RadioButton;
+            this.chk6Grade.Location = new System.Drawing.Point(283, 3);
+            this.chk6Grade.Name = "chk6Grade";
+            this.chk6Grade.Size = new System.Drawing.Size(116, 21);
+            this.chk6Grade.TabIndex = 2;
+            this.chk6Grade.Text = "第六學期(三下)";
+            // 
             // StarUniversity
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(340, 506);
+            this.ClientSize = new System.Drawing.Size(455, 514);
             this.Controls.Add(this.cbxScoreType);
             this.Controls.Add(this.groupPanel4);
             this.Controls.Add(this.groupPanel1);
@@ -641,5 +659,6 @@
         private DevComponents.DotNetBar.Controls.CheckBoxX cbxExportPDF;
         private DevComponents.DotNetBar.Controls.CheckBoxX cbxExportWord;
         private DevComponents.DotNetBar.Controls.ComboBoxEx cbxScoreType;
+        private DevComponents.DotNetBar.Controls.CheckBoxX chk6Grade;
     }
 }

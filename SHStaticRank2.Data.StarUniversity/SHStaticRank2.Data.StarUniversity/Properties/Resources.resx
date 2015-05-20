@@ -124,4 +124,7 @@
   <data name="多學期成績單_大學4學期" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\多學期成績單_大學4學期.doc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="多學期成績單_第6學期" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\多學期成績單_第6學期.doc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

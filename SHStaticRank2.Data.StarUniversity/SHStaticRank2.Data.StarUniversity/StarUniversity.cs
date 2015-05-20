@@ -150,44 +150,88 @@ AS tmp(id int, subject varchar(200))";
             }
             Configure.Name = "大學繁星";
             Configure.SortGradeYear = "三年級";
-            Configure.useGradeSemesterList.Add("11");
-            Configure.useGradeSemesterList.Add("12");
-            Configure.useGradeSemesterList.Add("21");
-            Configure.useGradeSemesterList.Add("22");
-            Configure.RankFilterGradeSemeterList.Add("一上");
-            Configure.RankFilterGradeSemeterList.Add("一下");
-            Configure.RankFilterGradeSemeterList.Add("二上");
-            Configure.RankFilterGradeSemeterList.Add("二下");
+
+            if (chk4Grade.Checked)
+            {
+                Configure.useGradeSemesterList.Add("11");
+                Configure.useGradeSemesterList.Add("12");
+                Configure.useGradeSemesterList.Add("21");
+                Configure.useGradeSemesterList.Add("22");
+                Configure.RankFilterGradeSemeterList.Add("一上");
+                Configure.RankFilterGradeSemeterList.Add("一下");
+                Configure.RankFilterGradeSemeterList.Add("二上");
+                Configure.RankFilterGradeSemeterList.Add("二下");            
+            }            
             #endregion
+            
             if (chk5Grade.Checked)
             {
+                Configure.useGradeSemesterList.Add("11");
+                Configure.useGradeSemesterList.Add("12");
+                Configure.useGradeSemesterList.Add("21");
+                Configure.useGradeSemesterList.Add("22");
+                Configure.RankFilterGradeSemeterList.Add("一上");
+                Configure.RankFilterGradeSemeterList.Add("一下");
+                Configure.RankFilterGradeSemeterList.Add("二上");
+                Configure.RankFilterGradeSemeterList.Add("二下");
                 Configure.useGradeSemesterList.Add("31");
                 Configure.RankFilterGradeSemeterList.Add("三上");
             }
+
+            if (chk6Grade.Checked)
+            {
+                Configure.useGradeSemesterList.Add("32");
+                Configure.RankFilterGradeSemeterList.Add("三下");
+            }
+
             Configure.NotRankTag = cboRankRilter.Text;
             Configure.Rank1Tag = cboTagRank1.Text;
             Configure.Rank2Tag = cboTagRank2.Text;
             Configure.RankFilterTagName = cboRankRilter.Text;
-            //if ( Configure.Template == null )
-            //    Configure.Template = new Document(new MemoryStream(Properties.Resources.多學期成績單_5學期));
 
-            if (this.Configure.Template == null)
+
+            Document docTemp = null;
+
+            if (chk4Grade.Checked)
             {
-                Configure.Template = new Document(new MemoryStream(Properties.Resources.多學期成績單_5學期));
-
+                if (this.Configure.Template2 == null)
+                    Configure.Template2 = new Document(new MemoryStream(Properties.Resources.多學期成績單_大學4學期));
+                else
+                {
+                    if(this.Configure.Template2.MailMerge.GetFieldNames().Count()==0)
+                        docTemp = new Document(new MemoryStream(Properties.Resources.多學期成績單_大學4學期));
+                    else
+                        docTemp = this.Configure.Template2.Clone();                    
+                }            
             }
-            else
+
+            if (chk5Grade.Checked)
             {
-                //計算檔案大小
-                MemoryStream ms = new MemoryStream();
-                this.Configure.Template.Save(ms, SaveFormat.Doc);
-                byte[] bb = ms.ToArray();
-
-                double bbSize = (bb.Count() / 1024);
-
-                if (bbSize < 30)
-                    Configure.Template = new Document(new MemoryStream(Properties.Resources.多學期成績單_5學期));                
+                if (this.Configure.Template1 == null)
+                    Configure.Template1 = new Document(new MemoryStream(Properties.Resources.多學期成績單_5學期));
+                else
+                {
+                    if(Configure.Template1.MailMerge.GetFieldNames().Count()==0)
+                        docTemp = new Document(new MemoryStream(Properties.Resources.多學期成績單_5學期));
+                    else
+                        docTemp = this.Configure.Template1.Clone();                    
+                }
             }
+
+            if (chk6Grade.Checked)
+            {             
+                if (this.Configure.Template3 == null)
+                    Configure.Template3 = new Document(new MemoryStream(Properties.Resources.多學期成績單_第6學期));
+                else
+                {
+                    if(Configure.Template3.MailMerge.GetFieldNames().Count()==0)
+                        docTemp = new Document(new MemoryStream(Properties.Resources.多學期成績單_第6學期));
+                    else
+                        docTemp = this.Configure.Template3.Clone();                        
+                }            
+            }
+
+            this.Configure.Template = docTemp.Clone();
 
             Configure.CheckExportPDF = cbxExportPDF.Checked;
             if (cbxIDNumber.Checked)
@@ -197,9 +241,9 @@ AS tmp(id int, subject varchar(200))";
                 Configure.CheckUseIDNumber = false;
 
             Configure.CheckExportStudent = true;
-
-            DialogResult = System.Windows.Forms.DialogResult.OK;
             Configure.Save();
+            
+            DialogResult = System.Windows.Forms.DialogResult.OK;            
             this.Close();
         }
         private void DownloadDefaultTemplate()
@@ -227,35 +271,62 @@ AS tmp(id int, subject varchar(200))";
                     }
                 }
             }
-            try
-            {
-                if (this.Configure.Template == null)
-                {
-                    Configure.Template = new Document(new MemoryStream(Properties.Resources.多學期成績單_5學期));
 
-                }
+
+
+            Document docTemp = null;
+
+            try
+            {            
+
+            //計算檔案大小
+            MemoryStream ms = new MemoryStream();
+
+            // 四學期
+            if (chk4Grade.Checked)
+            {
+                if (this.Configure.Template2 == null)
+                    docTemp = new Document(new MemoryStream(Properties.Resources.多學期成績單_大學4學期));
                 else
                 {
-                    //計算檔案大小
-                    MemoryStream ms = new MemoryStream();
-                    this.Configure.Template.Save(ms, SaveFormat.Doc);
-                    byte[] bb = ms.ToArray();
+                    if(Configure.Template2.MailMerge.GetFieldNames().Count()==0)
+                        docTemp = new Document(new MemoryStream(Properties.Resources.多學期成績單_大學4學期));
+                    else
+                        docTemp = this.Configure.Template2.Clone();                        
+                }                    
+            }
 
-                    double bbSize = (bb.Count() / 1024);
-
-                    if (bbSize < 30)
-                        Configure.Template = new Document(new MemoryStream(Properties.Resources.多學期成績單_5學期));
-
-                    this.Configure.Template.Save(path, SaveFormat.Doc);
+            // 五學期
+            if (chk5Grade.Checked)
+            {
+                if(this.Configure.Template1==null)
+                    docTemp = new Document(new MemoryStream(Properties.Resources.多學期成績單_5學期));
+                else
+                {
+                    if(Configure.Template1.MailMerge.GetFieldNames().Count()==0)
+                        docTemp = new Document(new MemoryStream(Properties.Resources.多學期成績單_5學期));
+                    else
+                        docTemp = this.Configure.Template1.Clone();                       
                 }
+                    
+            }                
 
-                ////document.Save(path, Aspose.Words.SaveFormat.Doc);
-                ////System.IO.FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write);                
-                ////stream.Write(Properties.Resources.多學期成績單_5學期, 0, Properties.Resources.多學期成績單_5學期.Length);
-                ////stream.Flush();
-                ////stream.Close();
-                ////this.Configure.Template.Save(stream, Aspose.Words.SaveFormat.Doc);
-                //this.Configure.Template.Save(path, SaveFormat.Doc);
+            // 第六學期
+            if (chk6Grade.Checked)
+            {             
+                if (this.Configure.Template3 == null)
+                    docTemp = new Document(new MemoryStream(Properties.Resources.多學期成績單_第6學期));
+                else
+                {
+                    if(Configure.Template3.MailMerge.GetFieldNames().Count()==0)
+                        docTemp = new Document(new MemoryStream(Properties.Resources.多學期成績單_第6學期));
+                    else
+                        docTemp = this.Configure.Template3.Clone();                        
+                }
+            }                                    
+
+                  docTemp.Save(path, SaveFormat.Doc);
+
                 System.Diagnostics.Process.Start(path);
             }
             catch
@@ -268,12 +339,7 @@ AS tmp(id int, subject varchar(200))";
                 {
                     try
                     {
-                        //document.Save(sd.FileName, Aspose.Words.SaveFormat.Doc);
-                        System.IO.FileStream stream = new FileStream(sd.FileName, FileMode.Create, FileAccess.Write);
-                        stream.Write(Properties.Resources.多學期成績單_5學期, 0, Properties.Resources.多學期成績單_5學期.Length);
-                        stream.Flush();
-                        stream.Close();
-
+                        docTemp.Save(sd.FileName, Aspose.Words.SaveFormat.Doc);
                     }
                     catch
                     {
@@ -292,14 +358,16 @@ AS tmp(id int, subject varchar(200))";
             dialog.Filter = "Word檔案 (*.doc)|*.doc|所有檔案 (*.*)|*.*";
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                Document uploadDocTemp = null;
+
                 try
                 {
-                    this.Configure.Template = new Aspose.Words.Document(dialog.FileName);
+                    uploadDocTemp = new Aspose.Words.Document(dialog.FileName);
                     // 計算檔案大小
                     MemoryStream ms = new MemoryStream();
-                    this.Configure.Template.Save(ms, SaveFormat.Pdf);
+                    uploadDocTemp.Save(ms, SaveFormat.Pdf);
                     byte[] bb = ms.ToArray();
-                    this.Configure.Template.Save(ms, SaveFormat.Doc);
+                    uploadDocTemp.Save(ms, SaveFormat.Doc);
                     byte[] bbw = ms.ToArray();
                     double bbSize = (bb.Count() / 1024);
                     double bbwSize = (bbw.Count() / 1024);
@@ -307,12 +375,22 @@ AS tmp(id int, subject varchar(200))";
                         MsgBox.Show("上傳範本檔案 "+bbwSize+" K ，產生PDF檔案大小約 "+bbSize+"K 超過200K 無法上傳，請調整範本大小再次上傳。");
                     else
                     {
-                        List<string> fields = new List<string>(this.Configure.Template.MailMerge.GetFieldNames());
+                        List<string> fields = new List<string>(uploadDocTemp.MailMerge.GetFieldNames());
                         this.Configure.SubjectLimit = 0;
                         while (fields.Contains("科目名稱" + (this.Configure.SubjectLimit + 1)))
                         {
                             this.Configure.SubjectLimit++;
                         }
+
+                        if (chk4Grade.Checked)
+                            this.Configure.Template2 = uploadDocTemp.Clone();
+
+                        if (chk5Grade.Checked)
+                            this.Configure.Template1 = uploadDocTemp.Clone();
+
+                        if (chk6Grade.Checked)
+                            this.Configure.Template3 = uploadDocTemp.Clone();                        
+
                         Configure.Encode();
 
                         Configure.Save();
@@ -332,7 +410,9 @@ AS tmp(id int, subject varchar(200))";
         }
         private void lnkUpload_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            buttonX1.Enabled = false;
             UploadUserDefTemplate();
+            buttonX1.Enabled = true;
         }
         private void lblMappingTemp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -375,6 +455,14 @@ AS tmp(id int, subject varchar(200))";
             cbxScoreType.Items.Add("原始成績");
             cbxScoreType.Text = "擇優成績";
             cbxScoreType.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            // 當三個樣版都空白時，將預設樣版放入
+            if (Configure.Template1.MailMerge.GetFieldNames().Count() == 0 && Configure.Template2.MailMerge.GetFieldNames().Count() == 0 && Configure.Template3.MailMerge.GetFieldNames().Count() == 0)
+            {
+                Configure.Template1 = Configure.Template.Clone();
+                Configure.Encode();
+                Configure.Save();
+            }
         }
     }
 }

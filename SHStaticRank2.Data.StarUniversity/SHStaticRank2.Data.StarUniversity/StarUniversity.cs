@@ -12,6 +12,7 @@ using FISCA.Data;
 using Aspose.Words;
 using System.IO;
 using DevComponents.DotNetBar.Controls;
+using System.Xml.Linq;
 
 namespace SHStaticRank2.Data.StarUniversity
 {
@@ -241,6 +242,10 @@ AS tmp(id int, subject varchar(200))";
                 Configure.CheckUseIDNumber = false;
 
             Configure.CheckExportStudent = true;
+
+            // 儲存設定
+            SetUIConfig();
+
             Configure.Save();
             
             DialogResult = System.Windows.Forms.DialogResult.OK;            
@@ -463,6 +468,110 @@ AS tmp(id int, subject varchar(200))";
                 Configure.Encode();
                 Configure.Save();
             }
+
+            // 載入設定
+            GetUIConfig();
+        }
+
+        /// <summary>
+        /// 載入畫面設定
+        /// </summary>
+        /// <param name="conf"></param>
+        private void GetUIConfig()
+        {
+            try
+            {
+                XElement elmRoot = XElement.Parse(Configure.UIConfigString);
+                foreach (XElement elm in elmRoot.Elements("Item"))
+                {
+                    string name = "";
+                    string value="";
+                    if (elm.Attribute("Name") != null)
+                    {
+                        name = elm.Attribute("Name").Value;
+                        value=elm.Attribute("Value").Value;
+                    }
+                    if (name == "chk4Grade")
+                        chk4Grade.Checked = ParseBool(value);
+
+                    if (name == "chk5Grade")
+                        chk5Grade.Checked = ParseBool(value);
+
+                    if (name == "chk6Grade")
+                        chk6Grade.Checked = ParseBool(value);
+
+                    if (name == "cboRankRilter")
+                        cboRankRilter.Text = value;
+
+                    if (name == "cboTagRank1")
+                        cboTagRank1.Text = value;
+
+                    if (name == "cboTagRank2")
+                        cboTagRank2.Text = value;
+
+                    if (name == "cbxExportPDF")
+                        cbxExportPDF.Checked = ParseBool(value);
+
+                    if (name == "cbxExportWord")
+                        cbxExportWord.Checked = ParseBool(value);
+
+                    if (name == "cbxSeNo")
+                        cbxSeNo.Checked = ParseBool(value);
+
+                    if (name == "cbxIDNumber")
+                        cbxIDNumber.Checked = ParseBool(value);
+
+                    if (name == "cbxScoreType")
+                        cbxScoreType.Text = value;
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("解析設定檔失敗," + ex.Message);
+            }
+            
+        }
+
+        private void SetUIConfig()
+        {
+            try
+            {
+                XElement elmRoot = new XElement("Items");
+                elmRoot.Add(AddElement("chk4Grade", chk4Grade.Checked.ToString()));
+                elmRoot.Add(AddElement("chk5Grade", chk5Grade.Checked.ToString()));
+                elmRoot.Add(AddElement("chk6Grade", chk6Grade.Checked.ToString()));
+                elmRoot.Add(AddElement("cboRankRilter", cboRankRilter.Text));
+                elmRoot.Add(AddElement("cboTagRank1", cboTagRank1.Text));
+                elmRoot.Add(AddElement("cboTagRank2", cboTagRank2.Text));
+                elmRoot.Add(AddElement("cbxExportPDF", cbxExportPDF.Checked.ToString()));
+                elmRoot.Add(AddElement("cbxExportWord", cbxExportWord.Checked.ToString()));
+                elmRoot.Add(AddElement("cbxSeNo", cbxSeNo.Checked.ToString()));
+                elmRoot.Add(AddElement("cbxIDNumber", cbxIDNumber.Checked.ToString()));
+                elmRoot.Add(AddElement("cbxScoreType", cbxScoreType.Text));
+
+                Configure.UIConfigString = elmRoot.ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("寫入設定檔失敗," + ex.Message);
+            }
+        
+        }
+
+        private XElement AddElement(string Name, string Value)
+        {
+            XElement elm = new XElement("Item");
+            elm.SetAttributeValue("Name", Name);
+            elm.SetAttributeValue("Value", Value);
+            return elm;
+        }
+
+        private bool ParseBool(string str)
+        {
+            bool retVal = false;
+            bool.TryParse(str, out retVal);
+            return retVal;
         }
     }
 }

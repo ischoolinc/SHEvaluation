@@ -143,8 +143,13 @@ namespace SHStaticRank2.Data
         /// 計算學期成績排名
         /// </summary>
         [FISCA.UDT.Field]
-        public bool WithCalSemesterScoreRank { get; set; }      
+        public bool WithCalSemesterScoreRank { get; set; }
 
+        /// <summary>
+        /// UI 設定儲存值
+        /// </summary>
+        [FISCA.UDT.Field]
+        public string UIConfigString { get; set; }
 
         /// <summary>
         /// 在儲存前，把資料填入儲存欄位中

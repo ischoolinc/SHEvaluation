@@ -195,41 +195,44 @@ AS tmp(id int, subject varchar(200))";
 
             if (chk4Grade.Checked)
             {
+                // 檢查沒有樣版
                 if (this.Configure.Template2 == null)
-                    Configure.Template2 = new Document(new MemoryStream(Properties.Resources.多學期成績單_大學4學期));
-                else
-                {
-                    if(this.Configure.Template2.MailMerge.GetFieldNames().Count()==0)
-                        docTemp = new Document(new MemoryStream(Properties.Resources.多學期成績單_大學4學期));
-                    else
-                        docTemp = this.Configure.Template2.Clone();                    
-                }            
+                    Configure.Template2 = new Document(new MemoryStream(Properties.Resources.多學期成績單_大學4學期));             
+
+                // 檢查合併欄位
+                if(this.Configure.Template2.MailMerge.GetFieldNames().Count()==0)
+                    docTemp = new Document(new MemoryStream(Properties.Resources.多學期成績單_大學4學期));
+             
+                 docTemp = this.Configure.Template2.Clone();                    
+             
             }
 
             if (chk5Grade.Checked)
             {
+                // 檢查沒有樣版
                 if (this.Configure.Template1 == null)
                     Configure.Template1 = new Document(new MemoryStream(Properties.Resources.多學期成績單_5學期));
-                else
-                {
-                    if(Configure.Template1.MailMerge.GetFieldNames().Count()==0)
+
+                // 檢查合併欄位
+                if(Configure.Template1.MailMerge.GetFieldNames().Count()==0)
                         docTemp = new Document(new MemoryStream(Properties.Resources.多學期成績單_5學期));
-                    else
-                        docTemp = this.Configure.Template1.Clone();                    
-                }
+                
+                 docTemp = this.Configure.Template1.Clone();                    
+                
             }
 
             if (chk6Grade.Checked)
-            {             
+            {
+                // 檢查沒有樣版
                 if (this.Configure.Template3 == null)
                     Configure.Template3 = new Document(new MemoryStream(Properties.Resources.多學期成績單_第6學期));
-                else
-                {
-                    if(Configure.Template3.MailMerge.GetFieldNames().Count()==0)
+
+                // 檢查合併欄位
+                if(Configure.Template3.MailMerge.GetFieldNames().Count()==0)
                         docTemp = new Document(new MemoryStream(Properties.Resources.多學期成績單_第6學期));
-                    else
-                        docTemp = this.Configure.Template3.Clone();                        
-                }            
+                
+                docTemp = this.Configure.Template3.Clone();                        
+                
             }
 
             this.Configure.Template = docTemp.Clone();

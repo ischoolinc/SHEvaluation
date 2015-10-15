@@ -464,12 +464,15 @@ AS tmp(id int, subject varchar(200))";
             cbxScoreType.Text = "擇優成績";
             cbxScoreType.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            // 當三個樣版都空白時，將預設樣版放入
-            if (Configure.Template1.MailMerge.GetFieldNames().Count() == 0 && Configure.Template2.MailMerge.GetFieldNames().Count() == 0 && Configure.Template3.MailMerge.GetFieldNames().Count() == 0)
+            // 當三個樣版都空白時，將預設樣版放入(支援相容)
+            if (Configure.Template1 == null && Configure.Template2 == null && Configure.Template3 == null)
             {
-                Configure.Template1 = Configure.Template.Clone();
-                Configure.Encode();
-                Configure.Save();
+                if(Configure.Template !=null)
+                {
+                    Configure.Template1 = Configure.Template.Clone();
+                    Configure.Encode();
+                    Configure.Save();
+                }                
             }
 
             // 載入設定

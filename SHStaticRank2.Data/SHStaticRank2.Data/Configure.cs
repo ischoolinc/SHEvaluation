@@ -190,22 +190,33 @@ namespace SHStaticRank2.Data
                 this.RankFilterUseScoreName += (this.RankFilterUseScoreName == "" ? "" : "^^^") + item;
             }
 
-            System.IO.MemoryStream stream = new System.IO.MemoryStream();
-            this.Template.Save(stream, Aspose.Words.SaveFormat.Doc);
-            this.TemplateStream = Convert.ToBase64String(stream.ToArray());
+            if (this.Template != null)
+            {
+                System.IO.MemoryStream stream = new System.IO.MemoryStream();
+                this.Template.Save(stream, Aspose.Words.SaveFormat.Doc);
+                this.TemplateStream = Convert.ToBase64String(stream.ToArray());
+            }
 
-            System.IO.MemoryStream stream1 = new System.IO.MemoryStream();
-            this.Template1.Save(stream1, Aspose.Words.SaveFormat.Doc);
-            this.TemplateStream1 = Convert.ToBase64String(stream1.ToArray());
+            if (this.Template1 != null)
+            {
+                System.IO.MemoryStream stream1 = new System.IO.MemoryStream();
+                this.Template1.Save(stream1, Aspose.Words.SaveFormat.Doc);
+                this.TemplateStream1 = Convert.ToBase64String(stream1.ToArray());
+            }
 
+            if(this.Template2 !=null)
+            {
+                System.IO.MemoryStream stream2 = new System.IO.MemoryStream();
+                this.Template2.Save(stream2, Aspose.Words.SaveFormat.Doc);
+                this.TemplateStream2 = Convert.ToBase64String(stream2.ToArray());
+            }
 
-            System.IO.MemoryStream stream2 = new System.IO.MemoryStream();
-            this.Template2.Save(stream2, Aspose.Words.SaveFormat.Doc);
-            this.TemplateStream2 = Convert.ToBase64String(stream2.ToArray());
-
-            System.IO.MemoryStream stream3 = new System.IO.MemoryStream();
-            this.Template3.Save(stream3, Aspose.Words.SaveFormat.Doc);
-            this.TemplateStream3 = Convert.ToBase64String(stream3.ToArray());
+            if(this.Template3 !=null)
+            {
+                System.IO.MemoryStream stream3 = new System.IO.MemoryStream();
+                this.Template3.Save(stream3, Aspose.Words.SaveFormat.Doc);
+                this.TemplateStream3 = Convert.ToBase64String(stream3.ToArray());
+            }
 
         }
         /// <summary>
@@ -223,13 +234,17 @@ namespace SHStaticRank2.Data
             // 年級學期
             this.RankFilterGradeSemeterList  = new List<string>(this.RankFilterGradeSemeter.Split(new string[] { "^^^" }, StringSplitOptions.RemoveEmptyEntries));
 
-            this.Template = new Aspose.Words.Document(new MemoryStream(Convert.FromBase64String(this.TemplateStream)));
+            if(this.TemplateStream !=null)
+                this.Template = new Aspose.Words.Document(new MemoryStream(Convert.FromBase64String(this.TemplateStream)));
 
-            this.Template1 = new Aspose.Words.Document(new MemoryStream(Convert.FromBase64String(this.TemplateStream1)));
+            if(this.TemplateStream1!=null)
+                this.Template1 = new Aspose.Words.Document(new MemoryStream(Convert.FromBase64String(this.TemplateStream1)));
 
-            this.Template2 = new Aspose.Words.Document(new MemoryStream(Convert.FromBase64String(this.TemplateStream2)));
+            if(this.TemplateStream2 !=null)
+                this.Template2 = new Aspose.Words.Document(new MemoryStream(Convert.FromBase64String(this.TemplateStream2)));
 
-            this.Template3 = new Aspose.Words.Document(new MemoryStream(Convert.FromBase64String(this.TemplateStream3)));
+            if(this.TemplateStream3 !=null)
+                this.Template3 = new Aspose.Words.Document(new MemoryStream(Convert.FromBase64String(this.TemplateStream3)));
         }
 
 

@@ -150,6 +150,13 @@ namespace SHStaticRank2.Data
         /// </summary>
         [FISCA.UDT.Field]
         public string UIConfigString { get; set; }
+        
+        /// <summary>
+        /// 科目名稱回歸對照使用
+        /// </summary>
+        [FISCA.UDT.Field]
+        public string SubjectMapping { get; set; }
+
 
         /// <summary>
         /// 在儲存前，把資料填入儲存欄位中

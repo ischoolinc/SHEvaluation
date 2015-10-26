@@ -826,6 +826,31 @@ namespace SHStaticRank2.Data
 
                         // 儲存成績用
                         Dictionary<string, studScore> selectScore = new Dictionary<string, studScore>();
+
+                        // 解析科目對照
+                        SubjMappingDict.Clear();
+
+                        try
+                        {
+                            // 解析科目對照
+                            XElement elmRoot = XElement.Parse(setting.SubjectMapping);
+                            foreach (XElement elm in elmRoot.Elements("Item"))
+                            {
+                                string Subj = elm.Attribute("Subject").Value;
+                                string SysSubj = elm.Attribute("SysSubject").Value;
+                                if (!SubjMappingDict.ContainsKey(Subj))
+                                    SubjMappingDict.Add(Subj, new List<string>());
+
+                                // 解析字串+
+                                List<string> strList = SysSubj.Split('+').ToList();
+
+                                foreach (string str in strList)
+                                    SubjMappingDict[Subj].Add(str);
+                            }
+                        }
+                        catch (Exception ex)
+                        { }
+
                         foreach (var studentRec in studentList)
                         {
                             string studentID = studentRec.StudentID;
@@ -1210,26 +1235,10 @@ namespace SHStaticRank2.Data
                             
                             // 2015/10/22 因實中新增
                             #region 處理回歸科目成績
-                            // 科目對照                                                        
-                            SubjMappingDict.Clear();
+                                                        
                             
                             try
-                            {
-                                // 解析科目對照
-                                XElement elmRoot = XElement.Parse(setting.SubjectMapping);
-                                foreach (XElement elm in elmRoot.Elements("Item"))
-                                {
-                                    string Subj = elm.Attribute("Subject").Value;
-                                    string SysSubj = elm.Attribute("SysSubject").Value;
-                                    if (!SubjMappingDict.ContainsKey(Subj))
-                                        SubjMappingDict.Add(Subj, new List<string>());
-
-                                    // 解析字串+
-                                    List<string> strList = SysSubj.Split('+').ToList();
-
-                                    foreach(string str in strList)
-                                        SubjMappingDict[Subj].Add(str);
-                                }
+                            {                            
 
                                 // 解析成績
                                 foreach (string SubjName in SubjMappingDict.Keys)
@@ -1248,14 +1257,14 @@ namespace SHStaticRank2.Data
 
                                         foreach (var subjectScore in studentRec.SemesterSubjectScoreList)
                                         {                                            
-                                            // 當成績不在勾選年級學期，跳過
-                                            string gs = subjectScore.GradeYear + "" + subjectScore.Semester;
-                                            if (!setting.useGradeSemesterList.Contains(gs))
-                                                continue;
+                                            //// 當成績不在勾選年級學期，跳過
+                                            //string gs = subjectScore.GradeYear + "" + subjectScore.Semester;
+                                            //if (!setting.useGradeSemesterList.Contains(gs))
+                                            //    continue;
 
-                                            // 不相關科目跳出
-                                            if (!SubjMappingDict[SubjName].Contains(subjectScore.Subject))
-                                                continue;
+                                            // //不相關科目跳出
+                                            //if (!SubjMappingDict[SubjName].Contains(subjectScore.Subject))
+                                            //    continue;
                                             
 
                                             // 判斷此科目是否為需要產出的
@@ -1269,6 +1278,7 @@ namespace SHStaticRank2.Data
                                                     )
                                                 )
                                             {
+                                                score = 0;
                                                 chkHasSubjectName = true;
                                                 if (!selectScore.ContainsKey(subjKeyR1))
                                                     selectScore.Add(subjKeyR1, new studScore());
@@ -1316,33 +1326,33 @@ namespace SHStaticRank2.Data
                                                 if (chkHasSubjectName)
                                                 {
                                                     // 記錄科目學期成績
-                                                    if (subjectScore.GradeYear == 1 && subjectScore.Semester == 1)
+                                                    if (subjectScore.GradeYear == 1 && subjectScore.Semester == 1 && subjectScore.Subject == MappingSubj)
                                                     {
                                                         selectScore[subjKeyR1].gsSchoolYear11 = subjectScore.SchoolYear;
                                                         sumScore11 += score * subjectScore.CreditDec();
                                                         sumCredit11 += subjectScore.CreditDec();
                                                     }
-                                                    if (subjectScore.GradeYear == 1 && subjectScore.Semester == 2)
+                                                    if (subjectScore.GradeYear == 1 && subjectScore.Semester == 2 && subjectScore.Subject == MappingSubj)
                                                     {
                                                         selectScore[subjKeyR1].gsSchoolYear12 = subjectScore.SchoolYear;
                                                         sumScore12 += score * subjectScore.CreditDec();
                                                         sumCredit12 += subjectScore.CreditDec();
 
                                                     }
-                                                    if (subjectScore.GradeYear == 2 && subjectScore.Semester == 1)
+                                                    if (subjectScore.GradeYear == 2 && subjectScore.Semester == 1 && subjectScore.Subject == MappingSubj)
                                                     {
                                                         selectScore[subjKeyR1].gsSchoolYear21 = subjectScore.SchoolYear;
                                                         sumScore21 += score * subjectScore.CreditDec();
                                                         sumCredit21 += subjectScore.CreditDec();
                                                     }
 
-                                                    if (subjectScore.GradeYear == 2 && subjectScore.Semester == 2)
+                                                    if (subjectScore.GradeYear == 2 && subjectScore.Semester == 2 && subjectScore.Subject == MappingSubj)
                                                     {
                                                         selectScore[subjKeyR1].gsSchoolYear22 = subjectScore.SchoolYear;
                                                         sumScore22 += score * subjectScore.CreditDec();
                                                         sumCredit22 += subjectScore.CreditDec();
                                                     }
-                                                    if (subjectScore.GradeYear == 3 && subjectScore.Semester == 1)
+                                                    if (subjectScore.GradeYear == 3 && subjectScore.Semester == 1 && subjectScore.Subject == MappingSubj)
                                                     {
                                                         selectScore[subjKeyR1].gsSchoolYear31 = subjectScore.SchoolYear;
                                                         sumScore31 += score * subjectScore.CreditDec();
@@ -1350,7 +1360,7 @@ namespace SHStaticRank2.Data
 
 
                                                     }
-                                                    if (subjectScore.GradeYear == 3 && subjectScore.Semester == 2)
+                                                    if (subjectScore.GradeYear == 3 && subjectScore.Semester == 2 && subjectScore.Subject == MappingSubj)
                                                     {
                                                         selectScore[subjKeyR1].gsSchoolYear32 = subjectScore.SchoolYear;
                                                         sumScore32 += score * subjectScore.CreditDec();
@@ -1358,7 +1368,7 @@ namespace SHStaticRank2.Data
 
                                                     }
 
-                                                    if (subjectScore.GradeYear == 4 && subjectScore.Semester == 1)
+                                                    if (subjectScore.GradeYear == 4 && subjectScore.Semester == 1 && subjectScore.Subject == MappingSubj)
                                                     {
                                                         selectScore[subjKeyR1].gsSchoolYear41 = subjectScore.SchoolYear;
                                                         sumScore41 += score * subjectScore.CreditDec();
@@ -1366,7 +1376,7 @@ namespace SHStaticRank2.Data
 
 
                                                     }
-                                                    if (subjectScore.GradeYear == 4 && subjectScore.Semester == 2)
+                                                    if (subjectScore.GradeYear == 4 && subjectScore.Semester == 2 && subjectScore.Subject == MappingSubj)
                                                     {
                                                         selectScore[subjKeyR1].gsSchoolYear42 = subjectScore.SchoolYear;
                                                         sumScore42 += score * subjectScore.CreditDec();

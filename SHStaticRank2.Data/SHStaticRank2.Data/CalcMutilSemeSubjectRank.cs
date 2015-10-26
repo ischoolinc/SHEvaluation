@@ -1433,51 +1433,318 @@ namespace SHStaticRank2.Data
                                     }
                                     
                                     // 處理分數
-
                                     if(sumCredit11>0)
                                     {
                                         selectScore[subjKeyR1].gsScore11 = sumScore11 / sumCredit11;
                                         selectScore[subjKeyR1].gsCredit11 = sumCredit11;
+                                        selectScore[subjKeyR1].subjCount++;
+                                        selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit11.Value;
+                                        selectScore[subjKeyR1].sumScore+=selectScore[subjKeyR1].gsScore11.Value;
+                                        selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore11.Value * selectScore[subjKeyR1].gsCredit11.Value;
+
+                                        if (studentRec.Fields.ContainsKey("tag1"))
+                                        {
+                                            chkHasTag1 = true;
+                                            // 總分
+                                            selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore11.Value; ;
+                                            // 總分加權
+                                            selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore11.Value * selectScore[subjKeyR1].gsCredit11.Value;
+                                            // 筆數
+                                            selectScore[subjKeyR1].subjCountC1++;
+                                            // 學分加總
+                                            selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit11.Value;
+                                        }
+
+                                        if (studentRec.Fields.ContainsKey("tag2"))
+                                        {
+                                            chkHasTag2 = true;
+                                            // 總分
+                                            selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore11.Value; ;
+                                            // 總分加權
+                                            selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore11.Value * selectScore[subjKeyR1].gsCredit11.Value;
+                                            // 筆數
+                                            selectScore[subjKeyR1].subjCountC2++;
+                                            // 學分加總
+                                            selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit11.Value;
+                                        }
                                     }
                                     if (sumCredit12 > 0)
                                     {
                                         selectScore[subjKeyR1].gsScore12 = sumScore12 / sumCredit12;
                                         selectScore[subjKeyR1].gsCredit12 = sumCredit12;
+                                        selectScore[subjKeyR1].subjCount++;
+                                        selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit12.Value;
+                                        selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore12.Value;
+                                        selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore12.Value * selectScore[subjKeyR1].gsCredit12.Value;
+
+                                        if (studentRec.Fields.ContainsKey("tag1"))
+                                        {
+                                            chkHasTag1 = true;
+                                            // 總分
+                                            selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore12.Value; ;
+                                            // 總分加權
+                                            selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore12.Value * selectScore[subjKeyR1].gsCredit12.Value;
+                                            // 筆數
+                                            selectScore[subjKeyR1].subjCountC1++;
+                                            // 學分加總
+                                            selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit12.Value;
+                                        }
+
+                                        if (studentRec.Fields.ContainsKey("tag2"))
+                                        {
+                                            chkHasTag2 = true;
+                                            // 總分
+                                            selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore12.Value; ;
+                                            // 總分加權
+                                            selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore12.Value * selectScore[subjKeyR1].gsCredit12.Value;
+                                            // 筆數
+                                            selectScore[subjKeyR1].subjCountC2++;
+                                            // 學分加總
+                                            selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit12.Value;
+                                        }
+
                                     }
                                     if (sumCredit21 > 0)
                                     {
                                         selectScore[subjKeyR1].gsScore21 = sumScore21 / sumCredit21;
                                         selectScore[subjKeyR1].gsCredit21 = sumCredit21;
+                                        selectScore[subjKeyR1].subjCount++;
+                                        selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit21.Value;
+                                        selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore21.Value;
+                                        selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore21.Value * selectScore[subjKeyR1].gsCredit21.Value;
+
+                                        if (studentRec.Fields.ContainsKey("tag1"))
+                                        {
+                                            chkHasTag1 = true;
+                                            // 總分
+                                            selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore21.Value; ;
+                                            // 總分加權
+                                            selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore21.Value * selectScore[subjKeyR1].gsCredit21.Value;
+                                            // 筆數
+                                            selectScore[subjKeyR1].subjCountC1++;
+                                            // 學分加總
+                                            selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit21.Value;
+                                        }
+
+                                        if (studentRec.Fields.ContainsKey("tag2"))
+                                        {
+                                            chkHasTag2 = true;
+                                            // 總分
+                                            selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore21.Value; ;
+                                            // 總分加權
+                                            selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore21.Value * selectScore[subjKeyR1].gsCredit21.Value;
+                                            // 筆數
+                                            selectScore[subjKeyR1].subjCountC2++;
+                                            // 學分加總
+                                            selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit21.Value;
+                                        }
                                     }
                                     if (sumCredit22 > 0)
                                     {
                                         selectScore[subjKeyR1].gsScore22 = sumScore22 / sumCredit22;
                                         selectScore[subjKeyR1].gsCredit22 = sumCredit22;
+                                        selectScore[subjKeyR1].subjCount++;
+                                        selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit22.Value;
+                                        selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore22.Value;
+                                        selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore22.Value * selectScore[subjKeyR1].gsCredit22.Value;
+
+                                        if (studentRec.Fields.ContainsKey("tag1"))
+                                        {
+                                            chkHasTag1 = true;
+                                            // 總分
+                                            selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore22.Value; ;
+                                            // 總分加權
+                                            selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore22.Value * selectScore[subjKeyR1].gsCredit22.Value;
+                                            // 筆數
+                                            selectScore[subjKeyR1].subjCountC1++;
+                                            // 學分加總
+                                            selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit22.Value;
+                                        }
+
+                                        if (studentRec.Fields.ContainsKey("tag2"))
+                                        {
+                                            chkHasTag2 = true;
+                                            // 總分
+                                            selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore22.Value; ;
+                                            // 總分加權
+                                            selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore22.Value * selectScore[subjKeyR1].gsCredit22.Value;
+                                            // 筆數
+                                            selectScore[subjKeyR1].subjCountC2++;
+                                            // 學分加總
+                                            selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit22.Value;
+                                        }
+
                                     }
                                     if (sumCredit31 > 0)
                                     {
                                         selectScore[subjKeyR1].gsScore31 = sumScore31 / sumCredit31;
                                         selectScore[subjKeyR1].gsCredit31 = sumCredit31;
+                                        selectScore[subjKeyR1].subjCount++;
+                                        selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit31.Value;
+                                        selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore31.Value;
+                                        selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore31.Value * selectScore[subjKeyR1].gsCredit31.Value;
+
+                                        if (studentRec.Fields.ContainsKey("tag1"))
+                                        {
+                                            chkHasTag1 = true;
+                                            // 總分
+                                            selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore31.Value; ;
+                                            // 總分加權
+                                            selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore31.Value * selectScore[subjKeyR1].gsCredit31.Value;
+                                            // 筆數
+                                            selectScore[subjKeyR1].subjCountC1++;
+                                            // 學分加總
+                                            selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit31.Value;
+                                        }
+
+                                        if (studentRec.Fields.ContainsKey("tag2"))
+                                        {
+                                            chkHasTag2 = true;
+                                            // 總分
+                                            selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore31.Value; ;
+                                            // 總分加權
+                                            selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore31.Value * selectScore[subjKeyR1].gsCredit31.Value;
+                                            // 筆數
+                                            selectScore[subjKeyR1].subjCountC2++;
+                                            // 學分加總
+                                            selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit31.Value;
+                                        }
+
                                     }
                                     if (sumCredit32 > 0)
                                     {
                                         selectScore[subjKeyR1].gsScore32 = sumScore32 / sumCredit32;
                                         selectScore[subjKeyR1].gsCredit32 = sumCredit32;
+                                        selectScore[subjKeyR1].subjCount++;
+                                        selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit32.Value;
+                                        selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore32.Value;
+                                        selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore32.Value * selectScore[subjKeyR1].gsCredit32.Value;
+
+                                        if (studentRec.Fields.ContainsKey("tag1"))
+                                        {
+                                            chkHasTag1 = true;
+                                            // 總分
+                                            selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore32.Value; ;
+                                            // 總分加權
+                                            selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore32.Value * selectScore[subjKeyR1].gsCredit32.Value;
+                                            // 筆數
+                                            selectScore[subjKeyR1].subjCountC1++;
+                                            // 學分加總
+                                            selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit32.Value;
+                                        }
+
+                                        if (studentRec.Fields.ContainsKey("tag2"))
+                                        {
+                                            chkHasTag2 = true;
+                                            // 總分
+                                            selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore32.Value; ;
+                                            // 總分加權
+                                            selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore32.Value * selectScore[subjKeyR1].gsCredit32.Value;
+                                            // 筆數
+                                            selectScore[subjKeyR1].subjCountC2++;
+                                            // 學分加總
+                                            selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit32.Value;
+                                        }
+
                                     }
                                     if (sumCredit41 > 0)
                                     {
                                         selectScore[subjKeyR1].gsScore41 = sumScore41 / sumCredit41;
                                         selectScore[subjKeyR1].gsCredit41 = sumCredit41;
+                                        selectScore[subjKeyR1].subjCount++;
+                                        selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit41.Value;
+                                        selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore41.Value;
+                                        selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore41.Value * selectScore[subjKeyR1].gsCredit41.Value;
+
+                                        if (studentRec.Fields.ContainsKey("tag1"))
+                                        {
+                                            chkHasTag1 = true;
+                                            // 總分
+                                            selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore41.Value; ;
+                                            // 總分加權
+                                            selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore41.Value * selectScore[subjKeyR1].gsCredit41.Value;
+                                            // 筆數
+                                            selectScore[subjKeyR1].subjCountC1++;
+                                            // 學分加總
+                                            selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit41.Value;
+                                        }
+
+                                        if (studentRec.Fields.ContainsKey("tag2"))
+                                        {
+                                            chkHasTag2 = true;
+                                            // 總分
+                                            selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore41.Value; ;
+                                            // 總分加權
+                                            selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore41.Value * selectScore[subjKeyR1].gsCredit41.Value;
+                                            // 筆數
+                                            selectScore[subjKeyR1].subjCountC2++;
+                                            // 學分加總
+                                            selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit41.Value;
+                                        }
+
                                     }
                                     if (sumCredit42 > 0)
                                     {
                                         selectScore[subjKeyR1].gsScore42 = sumScore42 / sumCredit42;
                                         selectScore[subjKeyR1].gsCredit42 = sumCredit42;
+                                        selectScore[subjKeyR1].subjCount++;
+                                        selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit42.Value;
+                                        selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore42.Value;
+                                        selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore42.Value * selectScore[subjKeyR1].gsCredit42.Value;
+
+                                        if (studentRec.Fields.ContainsKey("tag1"))
+                                        {
+                                            chkHasTag1 = true;
+                                            // 總分
+                                            selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore42.Value; ;
+                                            // 總分加權
+                                            selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore42.Value * selectScore[subjKeyR1].gsCredit42.Value;
+                                            // 筆數
+                                            selectScore[subjKeyR1].subjCountC1++;
+                                            // 學分加總
+                                            selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit42.Value;
+                                        }
+
+                                        if (studentRec.Fields.ContainsKey("tag2"))
+                                        {
+                                            chkHasTag2 = true;
+                                            // 總分
+                                            selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore42.Value; ;
+                                            // 總分加權
+                                            selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore42.Value * selectScore[subjKeyR1].gsCredit42.Value;
+                                            // 筆數
+                                            selectScore[subjKeyR1].subjCountC2++;
+                                            // 學分加總
+                                            selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit42.Value;
+                                        }
+
                                     }
 
+                                    // 計算平均,加權平均
+                                    if (selectScore[subjKeyR1].subjCount>0)
+                                        selectScore[subjKeyR1].avgScore = selectScore[subjKeyR1].sumScore / selectScore[subjKeyR1].subjCount;
 
+                                    if (selectScore[subjKeyR1].subjCountC1 > 0)
+                                        selectScore[subjKeyR1].avgScoreC1 = selectScore[subjKeyR1].sumScoreC1 / selectScore[subjKeyR1].subjCountC1;
+
+                                    if (selectScore[subjKeyR1].subjCountC2 > 0)
+                                        selectScore[subjKeyR1].avgScoreC2 = selectScore[subjKeyR1].sumScoreC2 / selectScore[subjKeyR1].subjCountC2;
+
+                                    if (selectScore[subjKeyR1].sumCredit > 0)
+                                        selectScore[subjKeyR1].avgScoreA = selectScore[subjKeyR1].sumScoreA / selectScore[subjKeyR1].sumCredit;
+
+                                    if (selectScore[subjKeyR1].sumCreditC1 > 0)
+                                        selectScore[subjKeyR1].avgScoreAC1 = selectScore[subjKeyR1].sumScoreAC1 / selectScore[subjKeyR1].sumCreditC1;
+
+                                    if (selectScore[subjKeyR1].sumCreditC2 > 0)
+                                        selectScore[subjKeyR1].avgScoreAC2 = selectScore[subjKeyR1].sumScoreAC2 / selectScore[subjKeyR1].sumCreditC2;
 
                                     #endregion
+                                    
+                                   
+
+
+
 
                                     #region 總分、平均、排名
                                     if (chkHasSubjectName)
@@ -1505,6 +1772,398 @@ namespace SHStaticRank2.Data
 
                                         if (!noRankList.Contains(studentRec.StudentID))//不是不排名學生
                                         {
+                                            #region 各學期科目成績班排名
+                                            {
+                                                string key11 = "回歸一上科目班排名" + studentRec.RefClass.ClassID + "^^^" + SubjName;
+                                                if (!ranks.ContainsKey(key11)) ranks.Add(key11, new List<decimal>());
+                                                if (!rankStudents.ContainsKey(key11)) rankStudents.Add(key11, new List<string>());
+                                                if (selectScore[subjKeyR1].gsScore11.HasValue)
+                                                {
+                                                    ranks[key11].Add(selectScore[subjKeyR1].gsScore11.Value);
+                                                    rankStudents[key11].Add(studentID);
+                                                }
+
+                                                string key12 = "回歸一下科目班排名" + studentRec.RefClass.ClassID + "^^^" + SubjName;
+                                                if (!ranks.ContainsKey(key12)) ranks.Add(key12, new List<decimal>());
+                                                if (!rankStudents.ContainsKey(key12)) rankStudents.Add(key12, new List<string>());
+                                                if (selectScore[subjKeyR1].gsScore12.HasValue)
+                                                {
+                                                    ranks[key12].Add(selectScore[subjKeyR1].gsScore12.Value);
+                                                    rankStudents[key12].Add(studentID);
+                                                }
+
+                                                string key21 = "回歸二上科目班排名" + studentRec.RefClass.ClassID + "^^^" + SubjName;
+                                                if (!ranks.ContainsKey(key21)) ranks.Add(key21, new List<decimal>());
+                                                if (!rankStudents.ContainsKey(key21)) rankStudents.Add(key21, new List<string>());
+                                                if (selectScore[subjKeyR1].gsScore21.HasValue)
+                                                {
+                                                    ranks[key21].Add(selectScore[subjKeyR1].gsScore21.Value);
+                                                    rankStudents[key21].Add(studentID);
+                                                }
+
+                                                string key22 = "回歸二下科目班排名" + studentRec.RefClass.ClassID + "^^^" + SubjName;
+                                                if (!ranks.ContainsKey(key22)) ranks.Add(key22, new List<decimal>());
+                                                if (!rankStudents.ContainsKey(key22)) rankStudents.Add(key22, new List<string>());
+                                                if (selectScore[subjKeyR1].gsScore22.HasValue)
+                                                {
+                                                    ranks[key22].Add(selectScore[subjKeyR1].gsScore22.Value);
+                                                    rankStudents[key22].Add(studentID);
+                                                }
+
+                                                string key31 = "回歸三上科目班排名" + studentRec.RefClass.ClassID + "^^^" + SubjName;
+                                                if (!ranks.ContainsKey(key31)) ranks.Add(key31, new List<decimal>());
+                                                if (!rankStudents.ContainsKey(key31)) rankStudents.Add(key31, new List<string>());
+                                                if (selectScore[subjKeyR1].gsScore31.HasValue)
+                                                {
+                                                    ranks[key31].Add(selectScore[subjKeyR1].gsScore31.Value);
+                                                    rankStudents[key31].Add(studentID);
+                                                }
+
+                                                string key32 = "回歸三下科目班排名" + studentRec.RefClass.ClassID + "^^^" + SubjName;
+                                                if (!ranks.ContainsKey(key32)) ranks.Add(key32, new List<decimal>());
+                                                if (!rankStudents.ContainsKey(key32)) rankStudents.Add(key32, new List<string>());
+                                                if (selectScore[subjKeyR1].gsScore32.HasValue)
+                                                {
+                                                    ranks[key32].Add(selectScore[subjKeyR1].gsScore32.Value);
+                                                    rankStudents[key32].Add(studentID);
+                                                }
+
+                                                string key41 = "回歸四上科目班排名" + studentRec.RefClass.ClassID + "^^^" + SubjName;
+                                                if (!ranks.ContainsKey(key41)) ranks.Add(key41, new List<decimal>());
+                                                if (!rankStudents.ContainsKey(key41)) rankStudents.Add(key41, new List<string>());
+                                                if (selectScore[subjKeyR1].gsScore41.HasValue)
+                                                {
+                                                    ranks[key41].Add(selectScore[subjKeyR1].gsScore41.Value);
+                                                    rankStudents[key41].Add(studentID);
+                                                }
+
+                                                string key42 = "回歸四下科目班排名" + studentRec.RefClass.ClassID + "^^^" + SubjName;
+                                                if (!ranks.ContainsKey(key42)) ranks.Add(key42, new List<decimal>());
+                                                if (!rankStudents.ContainsKey(key42)) rankStudents.Add(key42, new List<string>());
+                                                if (selectScore[subjKeyR1].gsScore42.HasValue)
+                                                {
+                                                    ranks[key42].Add(selectScore[subjKeyR1].gsScore42.Value);
+                                                    rankStudents[key42].Add(studentID);
+                                                }
+                                            }
+
+                                            #endregion
+
+                                            #region 各學期科目成績科科排名
+                                            {
+                                                if (studentRec.Department != "")
+                                                {
+                                                    string key11 = "回歸一上科目科排名" + studentRec.Department + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key11)) ranks.Add(key11, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key11)) rankStudents.Add(key11, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore11.HasValue)
+                                                    {
+                                                        ranks[key11].Add(selectScore[subjKeyR1].gsScore11.Value);
+                                                        rankStudents[key11].Add(studentID);
+                                                    }
+
+                                                    string key12 = "回歸一下科目科排名" + studentRec.Department + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key12)) ranks.Add(key12, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key12)) rankStudents.Add(key12, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore12.HasValue)
+                                                    {
+                                                        ranks[key12].Add(selectScore[subjKeyR1].gsScore12.Value);
+                                                        rankStudents[key12].Add(studentID);
+                                                    }
+
+                                                    string key21 = "回歸二上科目科排名" + studentRec.Department + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key21)) ranks.Add(key21, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key21)) rankStudents.Add(key21, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore21.HasValue)
+                                                    {
+                                                        ranks[key21].Add(selectScore[subjKeyR1].gsScore21.Value);
+                                                        rankStudents[key21].Add(studentID);
+                                                    }
+
+                                                    string key22 = "回歸二下科目科排名" + studentRec.Department + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key22)) ranks.Add(key22, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key22)) rankStudents.Add(key22, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore22.HasValue)
+                                                    {
+                                                        ranks[key22].Add(selectScore[subjKeyR1].gsScore22.Value);
+                                                        rankStudents[key22].Add(studentID);
+                                                    }
+
+                                                    string key31 = "回歸三上科目科排名" + studentRec.Department + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key31)) ranks.Add(key31, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key31)) rankStudents.Add(key31, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore31.HasValue)
+                                                    {
+                                                        ranks[key31].Add(selectScore[subjKeyR1].gsScore31.Value);
+                                                        rankStudents[key31].Add(studentID);
+                                                    }
+
+                                                    string key32 = "回歸三下科目科排名" + studentRec.Department + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key32)) ranks.Add(key32, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key32)) rankStudents.Add(key32, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore32.HasValue)
+                                                    {
+                                                        ranks[key32].Add(selectScore[subjKeyR1].gsScore32.Value);
+                                                        rankStudents[key32].Add(studentID);
+                                                    }
+
+                                                    string key41 = "回歸四上科目科排名" + studentRec.Department + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key41)) ranks.Add(key41, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key41)) rankStudents.Add(key41, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore41.HasValue)
+                                                    {
+                                                        ranks[key41].Add(selectScore[subjKeyR1].gsScore41.Value);
+                                                        rankStudents[key41].Add(studentID);
+                                                    }
+
+                                                    string key42 = "回歸四下科目科排名" + studentRec.Department + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key42)) ranks.Add(key42, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key42)) rankStudents.Add(key42, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore42.HasValue)
+                                                    {
+                                                        ranks[key42].Add(selectScore[subjKeyR1].gsScore42.Value);
+                                                        rankStudents[key42].Add(studentID);
+                                                    }
+
+                                                }
+                                            }
+                                            #endregion
+
+                                            #region 各學期科目成績科校排名
+                                            {
+                                                string key11 = "回歸一上科目校排名" + gradeyear + "^^^" + SubjName;
+                                                if (!ranks.ContainsKey(key11)) ranks.Add(key11, new List<decimal>());
+                                                if (!rankStudents.ContainsKey(key11)) rankStudents.Add(key11, new List<string>());
+                                                if (selectScore[subjKeyR1].gsScore11.HasValue)
+                                                {
+                                                    ranks[key11].Add(selectScore[subjKeyR1].gsScore11.Value);
+                                                    rankStudents[key11].Add(studentID);
+                                                }
+
+                                                string key12 = "回歸一下科目校排名" + gradeyear + "^^^" + SubjName;
+                                                if (!ranks.ContainsKey(key12)) ranks.Add(key12, new List<decimal>());
+                                                if (!rankStudents.ContainsKey(key12)) rankStudents.Add(key12, new List<string>());
+                                                if (selectScore[subjKeyR1].gsScore12.HasValue)
+                                                {
+                                                    ranks[key12].Add(selectScore[subjKeyR1].gsScore12.Value);
+                                                    rankStudents[key12].Add(studentID);
+                                                }
+
+                                                string key21 = "回歸二上科目校排名" + gradeyear + "^^^" + SubjName;
+                                                if (!ranks.ContainsKey(key21)) ranks.Add(key21, new List<decimal>());
+                                                if (!rankStudents.ContainsKey(key21)) rankStudents.Add(key21, new List<string>());
+                                                if (selectScore[subjKeyR1].gsScore21.HasValue)
+                                                {
+                                                    ranks[key21].Add(selectScore[subjKeyR1].gsScore21.Value);
+                                                    rankStudents[key21].Add(studentID);
+                                                }
+
+                                                string key22 = "回歸二下科目校排名" + gradeyear + "^^^" + SubjName;
+                                                if (!ranks.ContainsKey(key22)) ranks.Add(key22, new List<decimal>());
+                                                if (!rankStudents.ContainsKey(key22)) rankStudents.Add(key22, new List<string>());
+                                                if (selectScore[subjKeyR1].gsScore22.HasValue)
+                                                {
+                                                    ranks[key22].Add(selectScore[subjKeyR1].gsScore22.Value);
+                                                    rankStudents[key22].Add(studentID);
+                                                }
+
+                                                string key31 = "回歸三上科目校排名" + gradeyear + "^^^" + SubjName;
+                                                if (!ranks.ContainsKey(key31)) ranks.Add(key31, new List<decimal>());
+                                                if (!rankStudents.ContainsKey(key31)) rankStudents.Add(key31, new List<string>());
+                                                if (selectScore[subjKeyR1].gsScore31.HasValue)
+                                                {
+                                                    ranks[key31].Add(selectScore[subjKeyR1].gsScore31.Value);
+                                                    rankStudents[key31].Add(studentID);
+                                                }
+
+                                                string key32 = "回歸三下科目校排名" + gradeyear + "^^^" + SubjName;
+                                                if (!ranks.ContainsKey(key32)) ranks.Add(key32, new List<decimal>());
+                                                if (!rankStudents.ContainsKey(key32)) rankStudents.Add(key32, new List<string>());
+                                                if (selectScore[subjKeyR1].gsScore32.HasValue)
+                                                {
+                                                    ranks[key32].Add(selectScore[subjKeyR1].gsScore32.Value);
+                                                    rankStudents[key32].Add(studentID);
+                                                }
+
+                                                string key41 = "回歸四上科目校排名" + gradeyear + "^^^" + SubjName;
+                                                if (!ranks.ContainsKey(key41)) ranks.Add(key41, new List<decimal>());
+                                                if (!rankStudents.ContainsKey(key41)) rankStudents.Add(key41, new List<string>());
+                                                if (selectScore[subjKeyR1].gsScore41.HasValue)
+                                                {
+                                                    ranks[key41].Add(selectScore[subjKeyR1].gsScore41.Value);
+                                                    rankStudents[key41].Add(studentID);
+                                                }
+
+                                                string key42 = "回歸四下科目校排名" + gradeyear + "^^^" + SubjName;
+                                                if (!ranks.ContainsKey(key42)) ranks.Add(key42, new List<decimal>());
+                                                if (!rankStudents.ContainsKey(key42)) rankStudents.Add(key42, new List<string>());
+                                                if (selectScore[subjKeyR1].gsScore42.HasValue)
+                                                {
+                                                    ranks[key42].Add(selectScore[subjKeyR1].gsScore42.Value);
+                                                    rankStudents[key42].Add(studentID);
+                                                }
+                                            }
+                                            #endregion
+
+                                            #region 各學期科目成績科類1排名
+                                            {
+                                                if (studentRec.Fields.ContainsKey("tag1"))
+                                                {
+                                                    string key11 = "回歸一上科目類1排名" + studentRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key11)) ranks.Add(key11, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key11)) rankStudents.Add(key11, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore11.HasValue)
+                                                    {
+                                                        ranks[key11].Add(selectScore[subjKeyR1].gsScore11.Value);
+                                                        rankStudents[key11].Add(studentID);
+                                                    }
+
+                                                    string key12 = "回歸一下科目類1排名" + studentRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key12)) ranks.Add(key12, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key12)) rankStudents.Add(key12, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore12.HasValue)
+                                                    {
+                                                        ranks[key12].Add(selectScore[subjKeyR1].gsScore12.Value);
+                                                        rankStudents[key12].Add(studentID);
+                                                    }
+
+                                                    string key21 = "回歸二上科目類1排名" + studentRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key21)) ranks.Add(key21, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key21)) rankStudents.Add(key21, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore21.HasValue)
+                                                    {
+                                                        ranks[key21].Add(selectScore[subjKeyR1].gsScore21.Value);
+                                                        rankStudents[key21].Add(studentID);
+                                                    }
+
+                                                    string key22 = "回歸二下科目類1排名" + studentRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key22)) ranks.Add(key22, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key22)) rankStudents.Add(key22, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore22.HasValue)
+                                                    {
+                                                        ranks[key22].Add(selectScore[subjKeyR1].gsScore22.Value);
+                                                        rankStudents[key22].Add(studentID);
+                                                    }
+
+                                                    string key31 = "回歸三上科目類1排名" + studentRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key31)) ranks.Add(key31, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key31)) rankStudents.Add(key31, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore31.HasValue)
+                                                    {
+                                                        ranks[key31].Add(selectScore[subjKeyR1].gsScore31.Value);
+                                                        rankStudents[key31].Add(studentID);
+                                                    }
+
+                                                    string key32 = "回歸三下科目類1排名" + studentRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key32)) ranks.Add(key32, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key32)) rankStudents.Add(key32, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore32.HasValue)
+                                                    {
+                                                        ranks[key32].Add(selectScore[subjKeyR1].gsScore32.Value);
+                                                        rankStudents[key32].Add(studentID);
+                                                    }
+
+                                                    string key41 = "回歸四上科目類1排名" + studentRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key41)) ranks.Add(key41, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key41)) rankStudents.Add(key41, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore41.HasValue)
+                                                    {
+                                                        ranks[key41].Add(selectScore[subjKeyR1].gsScore41.Value);
+                                                        rankStudents[key41].Add(studentID);
+                                                    }
+
+                                                    string key42 = "回歸四下科目類1排名" + studentRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key42)) ranks.Add(key42, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key42)) rankStudents.Add(key42, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore42.HasValue)
+                                                    {
+                                                        ranks[key42].Add(selectScore[subjKeyR1].gsScore42.Value);
+                                                        rankStudents[key42].Add(studentID);
+                                                    }
+                                                }
+                                            }
+                                            #endregion
+
+                                            #region 各學期科目成績科類2排名
+                                            {
+                                                if (studentRec.Fields.ContainsKey("tag2"))
+                                                {
+                                                    string key11 = "回歸一上科目類2排名" + studentRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key11)) ranks.Add(key11, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key11)) rankStudents.Add(key11, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore11.HasValue)
+                                                    {
+                                                        ranks[key11].Add(selectScore[subjKeyR1].gsScore11.Value);
+                                                        rankStudents[key11].Add(studentID);
+                                                    }
+
+                                                    string key12 = "回歸一下科目類2排名" + studentRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key12)) ranks.Add(key12, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key12)) rankStudents.Add(key12, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore12.HasValue)
+                                                    {
+                                                        ranks[key12].Add(selectScore[subjKeyR1].gsScore12.Value);
+                                                        rankStudents[key12].Add(studentID);
+                                                    }
+
+                                                    string key21 = "回歸二上科目類2排名" + studentRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key21)) ranks.Add(key21, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key21)) rankStudents.Add(key21, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore21.HasValue)
+                                                    {
+                                                        ranks[key21].Add(selectScore[subjKeyR1].gsScore21.Value);
+                                                        rankStudents[key21].Add(studentID);
+                                                    }
+
+                                                    string key22 = "回歸二下科目類2排名" + studentRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key22)) ranks.Add(key22, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key22)) rankStudents.Add(key22, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore22.HasValue)
+                                                    {
+                                                        ranks[key22].Add(selectScore[subjKeyR1].gsScore22.Value);
+                                                        rankStudents[key22].Add(studentID);
+                                                    }
+
+                                                    string key31 = "回歸三上科目類2排名" + studentRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key31)) ranks.Add(key31, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key31)) rankStudents.Add(key31, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore31.HasValue)
+                                                    {
+                                                        ranks[key31].Add(selectScore[subjKeyR1].gsScore31.Value);
+                                                        rankStudents[key31].Add(studentID);
+                                                    }
+
+                                                    string key32 = "回歸三下科目類2排名" + studentRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key32)) ranks.Add(key32, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key32)) rankStudents.Add(key32, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore32.HasValue)
+                                                    {
+                                                        ranks[key32].Add(selectScore[subjKeyR1].gsScore32.Value);
+                                                        rankStudents[key32].Add(studentID);
+                                                    }
+
+                                                    string key41 = "回歸四上科目類2排名" + studentRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key41)) ranks.Add(key41, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key41)) rankStudents.Add(key41, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore41.HasValue)
+                                                    {
+                                                        ranks[key41].Add(selectScore[subjKeyR1].gsScore41.Value);
+                                                        rankStudents[key41].Add(studentID);
+                                                    }
+
+                                                    string key42 = "回歸四下科目類2排名" + studentRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + SubjName;
+                                                    if (!ranks.ContainsKey(key42)) ranks.Add(key42, new List<decimal>());
+                                                    if (!rankStudents.ContainsKey(key42)) rankStudents.Add(key42, new List<string>());
+                                                    if (selectScore[subjKeyR1].gsScore42.HasValue)
+                                                    {
+                                                        ranks[key42].Add(selectScore[subjKeyR1].gsScore42.Value);
+                                                        rankStudents[key42].Add(studentID);
+                                                    }
+                                                }
+                                            }
+                                            #endregion
+
+
                                             #region 班排名_回歸_
                                             {
                                                 string key1 = "總分班排名_回歸_" + studentRec.RefClass.ClassID + "^^^" + SubjName;
@@ -5730,6 +6389,38 @@ namespace SHStaticRank2.Data
                             _table.Columns.Add("回歸四下科目類1排名" + i);
                             _table.Columns.Add("回歸四下科目類1排名母數" + i);
                             _table.Columns.Add("回歸四下科目類1排名百分比" + i);
+
+                            _table.Columns.Add("回歸一上科目類2排名" + i);
+                            _table.Columns.Add("回歸一上科目類2排名母數" + i);
+                            _table.Columns.Add("回歸一上科目類2排名百分比" + i);
+
+                            _table.Columns.Add("回歸一下科目類2排名" + i);
+                            _table.Columns.Add("回歸一下科目類2排名母數" + i);
+                            _table.Columns.Add("回歸一下科目類2排名百分比" + i);
+
+                            _table.Columns.Add("回歸二上科目類2排名" + i);
+                            _table.Columns.Add("回歸二上科目類2排名母數" + i);
+                            _table.Columns.Add("回歸二上科目類2排名百分比" + i);
+
+                            _table.Columns.Add("回歸二下科目類2排名" + i);
+                            _table.Columns.Add("回歸二下科目類2排名母數" + i);
+                            _table.Columns.Add("回歸二下科目類2排名百分比" + i);
+
+                            _table.Columns.Add("回歸三上科目類2排名" + i);
+                            _table.Columns.Add("回歸三上科目類2排名母數" + i);
+                            _table.Columns.Add("回歸三上科目類2排名百分比" + i);
+
+                            _table.Columns.Add("回歸三下科目類2排名" + i);
+                            _table.Columns.Add("回歸三下科目類2排名母數" + i);
+                            _table.Columns.Add("回歸三下科目類2排名百分比" + i);
+
+                            _table.Columns.Add("回歸四上科目類2排名" + i);
+                            _table.Columns.Add("回歸四上科目類2排名母數" + i);
+                            _table.Columns.Add("回歸四上科目類2排名百分比" + i);
+
+                            _table.Columns.Add("回歸四下科目類2排名" + i);
+                            _table.Columns.Add("回歸四下科目類2排名母數" + i);
+                            _table.Columns.Add("回歸四下科目類2排名百分比" + i);
                         }
 
 
@@ -8664,6 +9355,7 @@ namespace SHStaticRank2.Data
                                             #endregion 處理科目
 
 
+                                            subjIndex = 1;
                                             // 處理科目回歸
                                             #region 處理科目回歸
                                             foreach (string subjName in SubjMappingDict.Keys)
@@ -8763,6 +9455,510 @@ namespace SHStaticRank2.Data
 
                                                     if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                                     {
+
+                                                        #region 寫入各科目成績班排名
+                                                        string key11 = "回歸一上科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key11))
+                                                        {
+                                                            if (selectScore[id].gsScore11.HasValue)
+                                                            {
+                                                                int rr = ranks[key11].IndexOf(selectScore[id].gsScore11.Value) + 1;
+                                                                row["回歸一上科目班排名" + subjIndex] = rr;
+                                                                row["回歸一上科目班排名母數" + subjIndex] = ranks[key11].Count;
+                                                                row["回歸一上科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key11].Count);
+                                                            }
+                                                        }
+
+                                                        string key12 = "回歸一下科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key12))
+                                                        {
+                                                            if (selectScore[id].gsScore12.HasValue)
+                                                            {
+                                                                int rr = ranks[key12].IndexOf(selectScore[id].gsScore12.Value) + 1;
+                                                                row["回歸一下科目班排名" + subjIndex] = rr;
+                                                                row["回歸一下科目班排名母數" + subjIndex] = ranks[key12].Count;
+                                                                row["回歸一下科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key12].Count);
+                                                            }
+                                                        }
+
+                                                        string key21 = "回歸二上科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key21))
+                                                        {
+                                                            if (selectScore[id].gsScore21.HasValue)
+                                                            {
+                                                                int rr = ranks[key21].IndexOf(selectScore[id].gsScore21.Value) + 1;
+                                                                row["回歸二上科目班排名" + subjIndex] = rr;
+                                                                row["回歸二上科目班排名母數" + subjIndex] = ranks[key21].Count;
+                                                                row["回歸二上科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key21].Count);
+                                                            }
+                                                        }
+
+                                                        string key22 = "回歸二下科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key22))
+                                                        {
+                                                            if (selectScore[id].gsScore22.HasValue)
+                                                            {
+                                                                int rr = ranks[key22].IndexOf(selectScore[id].gsScore22.Value) + 1;
+                                                                row["回歸二下科目班排名" + subjIndex] = rr;
+                                                                row["回歸二下科目班排名母數" + subjIndex] = ranks[key22].Count;
+                                                                row["回歸二下科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key22].Count);
+                                                            }
+                                                        }
+
+                                                        string key31 = "回歸三上科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key31))
+                                                        {
+                                                            if (selectScore[id].gsScore31.HasValue)
+                                                            {
+                                                                int rr = ranks[key31].IndexOf(selectScore[id].gsScore31.Value) + 1;
+                                                                row["回歸三上科目班排名" + subjIndex] = rr;
+                                                                row["回歸三上科目班排名母數" + subjIndex] = ranks[key31].Count;
+                                                                row["回歸三上科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key31].Count);
+                                                            }
+                                                        }
+
+                                                        string key32 = "回歸三下科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key32))
+                                                        {
+                                                            if (selectScore[id].gsScore32.HasValue)
+                                                            {
+                                                                int rr = ranks[key32].IndexOf(selectScore[id].gsScore32.Value) + 1;
+                                                                row["回歸三下科目班排名" + subjIndex] = rr;
+                                                                row["回歸三下科目班排名母數" + subjIndex] = ranks[key32].Count;
+                                                                row["回歸三下科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key32].Count);
+                                                            }
+                                                        }
+
+                                                        string key41 = "回歸四上科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key41))
+                                                        {
+                                                            if (selectScore[id].gsScore41.HasValue)
+                                                            {
+                                                                int rr = ranks[key41].IndexOf(selectScore[id].gsScore41.Value) + 1;
+                                                                row["回歸四上科目班排名" + subjIndex] = rr;
+                                                                row["回歸四上科目班排名母數" + subjIndex] = ranks[key41].Count;
+                                                                row["回歸四上科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key41].Count);
+                                                            }
+                                                        }
+
+                                                        string key42 = "回歸四下科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key42))
+                                                        {
+                                                            if (selectScore[id].gsScore42.HasValue)
+                                                            {
+                                                                int rr = ranks[key42].IndexOf(selectScore[id].gsScore42.Value) + 1;
+                                                                row["回歸四下科目班排名" + subjIndex] = rr;
+                                                                row["回歸四下科目班排名母數" + subjIndex] = ranks[key42].Count;
+                                                                row["回歸四下科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key42].Count);
+                                                            }
+                                                        }
+
+                                                        #endregion
+
+                                                        #region 寫入各科目成績科排名
+                                                        key11 = "回歸一上科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key11))
+                                                        {
+                                                            if (selectScore[id].gsScore11.HasValue)
+                                                            {
+                                                                int rr = ranks[key11].IndexOf(selectScore[id].gsScore11.Value) + 1;
+                                                                row["回歸一上科目科排名" + subjIndex] = rr;
+                                                                row["回歸一上科目科排名母數" + subjIndex] = ranks[key11].Count;
+                                                                row["回歸一上科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key11].Count);
+                                                            }
+                                                        }
+
+                                                        key12 = "回歸一下科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key12))
+                                                        {
+                                                            if (selectScore[id].gsScore12.HasValue)
+                                                            {
+                                                                int rr = ranks[key12].IndexOf(selectScore[id].gsScore12.Value) + 1;
+                                                                row["回歸一下科目科排名" + subjIndex] = rr;
+                                                                row["回歸一下科目科排名母數" + subjIndex] = ranks[key12].Count;
+                                                                row["回歸一下科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key12].Count);
+                                                            }
+                                                        }
+
+                                                        key21 = "回歸二上科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key21))
+                                                        {
+                                                            if (selectScore[id].gsScore21.HasValue)
+                                                            {
+                                                                int rr = ranks[key21].IndexOf(selectScore[id].gsScore21.Value) + 1;
+                                                                row["回歸二上科目科排名" + subjIndex] = rr;
+                                                                row["回歸二上科目科排名母數" + subjIndex] = ranks[key21].Count;
+                                                                row["回歸二上科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key21].Count);
+                                                            }
+                                                        }
+
+                                                        key22 = "回歸二下科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key22))
+                                                        {
+                                                            if (selectScore[id].gsScore22.HasValue)
+                                                            {
+                                                                int rr = ranks[key22].IndexOf(selectScore[id].gsScore22.Value) + 1;
+                                                                row["回歸二下科目科排名" + subjIndex] = rr;
+                                                                row["回歸二下科目科排名母數" + subjIndex] = ranks[key22].Count;
+                                                                row["回歸二下科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key22].Count);
+                                                            }
+                                                        }
+
+                                                        key31 = "回歸三上科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key31))
+                                                        {
+                                                            if (selectScore[id].gsScore31.HasValue)
+                                                            {
+                                                                int rr = ranks[key31].IndexOf(selectScore[id].gsScore31.Value) + 1;
+                                                                row["回歸三上科目科排名" + subjIndex] = rr;
+                                                                row["回歸三上科目科排名母數" + subjIndex] = ranks[key31].Count;
+                                                                row["回歸三上科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key31].Count);
+                                                            }
+                                                        }
+
+                                                        key32 = "回歸三下科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key32))
+                                                        {
+                                                            if (selectScore[id].gsScore32.HasValue)
+                                                            {
+                                                                int rr = ranks[key32].IndexOf(selectScore[id].gsScore32.Value) + 1;
+                                                                row["回歸三下科目科排名" + subjIndex] = rr;
+                                                                row["回歸三下科目科排名母數" + subjIndex] = ranks[key32].Count;
+                                                                row["回歸三下科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key32].Count);
+                                                            }
+                                                        }
+
+                                                        key41 = "回歸四上科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key41))
+                                                        {
+                                                            if (selectScore[id].gsScore41.HasValue)
+                                                            {
+                                                                int rr = ranks[key41].IndexOf(selectScore[id].gsScore41.Value) + 1;
+                                                                row["回歸四上科目科排名" + subjIndex] = rr;
+                                                                row["回歸四上科目科排名母數" + subjIndex] = ranks[key41].Count;
+                                                                row["回歸四上科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key41].Count);
+                                                            }
+                                                        }
+
+                                                        key42 = "回歸四下科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key42))
+                                                        {
+                                                            if (selectScore[id].gsScore42.HasValue)
+                                                            {
+                                                                int rr = ranks[key42].IndexOf(selectScore[id].gsScore42.Value) + 1;
+                                                                row["回歸四下科目科排名" + subjIndex] = rr;
+                                                                row["回歸四下科目科排名母數" + subjIndex] = ranks[key42].Count;
+                                                                row["回歸四下科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key42].Count);
+                                                            }
+                                                        }
+
+                                                        #endregion
+                                                        
+                                                        #region 寫入各科目成績校排名
+                                                        key11 = "回歸一上科目校排名" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key11))
+                                                        {
+                                                            if (selectScore[id].gsScore11.HasValue)
+                                                            {
+                                                                int rr = ranks[key11].IndexOf(selectScore[id].gsScore11.Value) + 1;
+                                                                row["回歸一上科目校排名" + subjIndex] = rr;
+                                                                row["回歸一上科目校排名母數" + subjIndex] = ranks[key11].Count;
+                                                                row["回歸一上科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key11].Count);
+                                                            }
+                                                        }
+
+                                                        key12 = "回歸一下科目校排名" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key12))
+                                                        {
+                                                            if (selectScore[id].gsScore12.HasValue)
+                                                            {
+                                                                int rr = ranks[key12].IndexOf(selectScore[id].gsScore12.Value) + 1;
+                                                                row["回歸一下科目校排名" + subjIndex] = rr;
+                                                                row["回歸一下科目校排名母數" + subjIndex] = ranks[key12].Count;
+                                                                row["回歸一下科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key12].Count);
+                                                            }
+                                                        }
+
+                                                        key21 = "回歸二上科目校排名" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key21))
+                                                        {
+                                                            if (selectScore[id].gsScore21.HasValue)
+                                                            {
+                                                                int rr = ranks[key21].IndexOf(selectScore[id].gsScore21.Value) + 1;
+                                                                row["回歸二上科目校排名" + subjIndex] = rr;
+                                                                row["回歸二上科目校排名母數" + subjIndex] = ranks[key21].Count;
+                                                                row["回歸二上科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key21].Count);
+                                                            }
+                                                        }
+
+                                                        key22 = "回歸二下科目校排名" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key22))
+                                                        {
+                                                            if (selectScore[id].gsScore22.HasValue)
+                                                            {
+                                                                int rr = ranks[key22].IndexOf(selectScore[id].gsScore22.Value) + 1;
+                                                                row["回歸二下科目校排名" + subjIndex] = rr;
+                                                                row["回歸二下科目校排名母數" + subjIndex] = ranks[key22].Count;
+                                                                row["回歸二下科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key22].Count);
+                                                            }
+                                                        }
+
+                                                        key31 = "回歸三上科目校排名" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key31))
+                                                        {
+                                                            if (selectScore[id].gsScore31.HasValue)
+                                                            {
+                                                                int rr = ranks[key31].IndexOf(selectScore[id].gsScore31.Value) + 1;
+                                                                row["回歸三上科目校排名" + subjIndex] = rr;
+                                                                row["回歸三上科目校排名母數" + subjIndex] = ranks[key31].Count;
+                                                                row["回歸三上科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key31].Count);
+                                                            }
+                                                        }
+
+                                                        key32 = "回歸三下科目校排名" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key32))
+                                                        {
+                                                            if (selectScore[id].gsScore32.HasValue)
+                                                            {
+                                                                int rr = ranks[key32].IndexOf(selectScore[id].gsScore32.Value) + 1;
+                                                                row["回歸三下科目校排名" + subjIndex] = rr;
+                                                                row["回歸三下科目校排名母數" + subjIndex] = ranks[key32].Count;
+                                                                row["回歸三下科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key32].Count);
+                                                            }
+                                                        }
+
+                                                        key41 = "回歸四上科目校排名" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key41))
+                                                        {
+                                                            if (selectScore[id].gsScore41.HasValue)
+                                                            {
+                                                                int rr = ranks[key41].IndexOf(selectScore[id].gsScore41.Value) + 1;
+                                                                row["回歸四上科目校排名" + subjIndex] = rr;
+                                                                row["回歸四上科目校排名母數" + subjIndex] = ranks[key41].Count;
+                                                                row["回歸四上科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key41].Count);
+                                                            }
+                                                        }
+
+                                                        key42 = "回歸四下科目校排名" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key42))
+                                                        {
+                                                            if (selectScore[id].gsScore42.HasValue)
+                                                            {
+                                                                int rr = ranks[key42].IndexOf(selectScore[id].gsScore42.Value) + 1;
+                                                                row["回歸四下科目校排名" + subjIndex] = rr;
+                                                                row["回歸四下科目校排名母數" + subjIndex] = ranks[key42].Count;
+                                                                row["回歸四下科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key42].Count);
+                                                            }
+                                                        }
+
+                                                        #endregion
+
+                                                        #region 寫入各科目成績類1排名
+                                                        if (studRec.Fields.ContainsKey("tag1"))
+                                                        {
+                                                            key11 = "回歸一上科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                            if (ranks.ContainsKey(key11))
+                                                            {
+                                                                if (selectScore[id].gsScore11.HasValue)
+                                                                {
+                                                                    int rr = ranks[key11].IndexOf(selectScore[id].gsScore11.Value) + 1;
+                                                                    row["回歸一上科目類1排名" + subjIndex] = rr;
+                                                                    row["回歸一上科目類1排名母數" + subjIndex] = ranks[key11].Count;
+                                                                    row["回歸一上科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key11].Count);
+                                                                }
+                                                            }
+
+                                                            key12 = "回歸一下科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                            if (ranks.ContainsKey(key12))
+                                                            {
+                                                                if (selectScore[id].gsScore12.HasValue)
+                                                                {
+                                                                    int rr = ranks[key12].IndexOf(selectScore[id].gsScore12.Value) + 1;
+                                                                    row["回歸一下科目類1排名" + subjIndex] = rr;
+                                                                    row["回歸一下科目類1排名母數" + subjIndex] = ranks[key12].Count;
+                                                                    row["回歸一下科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key12].Count);
+                                                                }
+                                                            }
+
+                                                            key21 = "回歸二上科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                            if (ranks.ContainsKey(key21))
+                                                            {
+                                                                if (selectScore[id].gsScore21.HasValue)
+                                                                {
+                                                                    int rr = ranks[key21].IndexOf(selectScore[id].gsScore21.Value) + 1;
+                                                                    row["回歸二上科目類1排名" + subjIndex] = rr;
+                                                                    row["回歸二上科目類1排名母數" + subjIndex] = ranks[key21].Count;
+                                                                    row["回歸二上科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key21].Count);
+                                                                }
+                                                            }
+
+                                                            key22 = "回歸二下科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                            if (ranks.ContainsKey(key22))
+                                                            {
+                                                                if (selectScore[id].gsScore22.HasValue)
+                                                                {
+                                                                    int rr = ranks[key22].IndexOf(selectScore[id].gsScore22.Value) + 1;
+                                                                    row["回歸二下科目類1排名" + subjIndex] = rr;
+                                                                    row["回歸二下科目類1排名母數" + subjIndex] = ranks[key22].Count;
+                                                                    row["回歸二下科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key22].Count);
+                                                                }
+                                                            }
+
+                                                            key31 = "回歸三上科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                            if (ranks.ContainsKey(key31))
+                                                            {
+                                                                if (selectScore[id].gsScore31.HasValue)
+                                                                {
+                                                                    int rr = ranks[key31].IndexOf(selectScore[id].gsScore31.Value) + 1;
+                                                                    row["回歸三上科目類1排名" + subjIndex] = rr;
+                                                                    row["回歸三上科目類1排名母數" + subjIndex] = ranks[key31].Count;
+                                                                    row["回歸三上科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key31].Count);
+                                                                }
+                                                            }
+
+                                                            key32 = "回歸三下科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                            if (ranks.ContainsKey(key32))
+                                                            {
+                                                                if (selectScore[id].gsScore32.HasValue)
+                                                                {
+                                                                    int rr = ranks[key32].IndexOf(selectScore[id].gsScore32.Value) + 1;
+                                                                    row["回歸三下科目類1排名" + subjIndex] = rr;
+                                                                    row["回歸三下科目類1排名母數" + subjIndex] = ranks[key32].Count;
+                                                                    row["回歸三下科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key32].Count);
+                                                                }
+                                                            }
+
+                                                            key41 = "回歸四上科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                            if (ranks.ContainsKey(key41))
+                                                            {
+                                                                if (selectScore[id].gsScore41.HasValue)
+                                                                {
+                                                                    int rr = ranks[key41].IndexOf(selectScore[id].gsScore41.Value) + 1;
+                                                                    row["回歸四上科目類1排名" + subjIndex] = rr;
+                                                                    row["回歸四上科目類1排名母數" + subjIndex] = ranks[key41].Count;
+                                                                    row["回歸四上科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key41].Count);
+                                                                }
+                                                            }
+
+                                                            key42 = "回歸四下科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                            if (ranks.ContainsKey(key42))
+                                                            {
+                                                                if (selectScore[id].gsScore42.HasValue)
+                                                                {
+                                                                    int rr = ranks[key42].IndexOf(selectScore[id].gsScore42.Value) + 1;
+                                                                    row["回歸四下科目類1排名" + subjIndex] = rr;
+                                                                    row["回歸四下科目類1排名母數" + subjIndex] = ranks[key42].Count;
+                                                                    row["回歸四下科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key42].Count);
+                                                                }
+                                                            }
+                                                        }
+
+                                                        #endregion
+
+                                                        #region 寫入各科目成績類2排名
+
+                                                        if (studRec.Fields.ContainsKey("tag2"))
+                                                        {
+                                                            key11 = "回歸一上科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                            if (ranks.ContainsKey(key11))
+                                                            {
+                                                                if (selectScore[id].gsScore11.HasValue)
+                                                                {
+                                                                    int rr = ranks[key11].IndexOf(selectScore[id].gsScore11.Value) + 1;
+                                                                    row["回歸一上科目類2排名" + subjIndex] = rr;
+                                                                    row["回歸一上科目類2排名母數" + subjIndex] = ranks[key11].Count;
+                                                                    row["回歸一上科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key11].Count);
+                                                                }
+                                                            }
+
+                                                            key12 = "回歸一下科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                            if (ranks.ContainsKey(key12))
+                                                            {
+                                                                if (selectScore[id].gsScore12.HasValue)
+                                                                {
+                                                                    int rr = ranks[key12].IndexOf(selectScore[id].gsScore12.Value) + 1;
+                                                                    row["回歸一下科目類2排名" + subjIndex] = rr;
+                                                                    row["回歸一下科目類2排名母數" + subjIndex] = ranks[key12].Count;
+                                                                    row["回歸一下科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key12].Count);
+                                                                }
+                                                            }
+
+                                                            key21 = "回歸二上科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                            if (ranks.ContainsKey(key21))
+                                                            {
+                                                                if (selectScore[id].gsScore21.HasValue)
+                                                                {
+                                                                    int rr = ranks[key21].IndexOf(selectScore[id].gsScore21.Value) + 1;
+                                                                    row["回歸二上科目類2排名" + subjIndex] = rr;
+                                                                    row["回歸二上科目類2排名母數" + subjIndex] = ranks[key21].Count;
+                                                                    row["回歸二上科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key21].Count);
+                                                                }
+                                                            }
+
+                                                            key22 = "回歸二下科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                            if (ranks.ContainsKey(key22))
+                                                            {
+                                                                if (selectScore[id].gsScore22.HasValue)
+                                                                {
+                                                                    int rr = ranks[key22].IndexOf(selectScore[id].gsScore22.Value) + 1;
+                                                                    row["回歸二下科目類2排名" + subjIndex] = rr;
+                                                                    row["回歸二下科目類2排名母數" + subjIndex] = ranks[key22].Count;
+                                                                    row["回歸二下科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key22].Count);
+                                                                }
+                                                            }
+
+                                                            key31 = "回歸三上科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                            if (ranks.ContainsKey(key31))
+                                                            {
+                                                                if (selectScore[id].gsScore31.HasValue)
+                                                                {
+                                                                    int rr = ranks[key31].IndexOf(selectScore[id].gsScore31.Value) + 1;
+                                                                    row["回歸三上科目類2排名" + subjIndex] = rr;
+                                                                    row["回歸三上科目類2排名母數" + subjIndex] = ranks[key31].Count;
+                                                                    row["回歸三上科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key31].Count);
+                                                                }
+                                                            }
+
+                                                            key32 = "回歸三下科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                            if (ranks.ContainsKey(key32))
+                                                            {
+                                                                if (selectScore[id].gsScore32.HasValue)
+                                                                {
+                                                                    int rr = ranks[key32].IndexOf(selectScore[id].gsScore32.Value) + 1;
+                                                                    row["回歸三下科目類2排名" + subjIndex] = rr;
+                                                                    row["回歸三下科目類2排名母數" + subjIndex] = ranks[key32].Count;
+                                                                    row["回歸三下科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key32].Count);
+                                                                }
+                                                            }
+
+                                                            key41 = "回歸四上科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                            if (ranks.ContainsKey(key41))
+                                                            {
+                                                                if (selectScore[id].gsScore41.HasValue)
+                                                                {
+                                                                    int rr = ranks[key41].IndexOf(selectScore[id].gsScore41.Value) + 1;
+                                                                    row["回歸四上科目類2排名" + subjIndex] = rr;
+                                                                    row["回歸四上科目類2排名母數" + subjIndex] = ranks[key41].Count;
+                                                                    row["回歸四上科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key41].Count);
+                                                                }
+                                                            }
+
+                                                            key42 = "回歸四下科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                            if (ranks.ContainsKey(key42))
+                                                            {
+                                                                if (selectScore[id].gsScore42.HasValue)
+                                                                {
+                                                                    int rr = ranks[key42].IndexOf(selectScore[id].gsScore42.Value) + 1;
+                                                                    row["回歸四下科目類2排名" + subjIndex] = rr;
+                                                                    row["回歸四下科目類2排名母數" + subjIndex] = ranks[key42].Count;
+                                                                    row["回歸四下科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key42].Count);
+                                                                }
+                                                            }
+                                                        }
+
+                                                        #endregion
+
+
                                                         string key4 = "加權平均班排名_回歸_" + studRec.RefClass.ClassID + "^^^" + subjName;
                                                         if (ranks.ContainsKey(key4))
                                                         {

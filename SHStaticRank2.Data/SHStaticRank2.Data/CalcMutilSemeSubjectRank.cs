@@ -1445,7 +1445,7 @@ namespace SHStaticRank2.Data
                                     // 處理分數
                                     if(sumCredit11>0)
                                     {
-                                        selectScore[subjKeyR1].gsScore11 = sumScore11 / sumCredit11;
+                                        selectScore[subjKeyR1].gsScore11 = Math.Round(sumScore11 / sumCredit11,0,MidpointRounding.AwayFromZero);
                                         selectScore[subjKeyR1].gsCredit11 = sumCredit11;
                                         selectScore[subjKeyR1].subjCount++;
                                         selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit11.Value;
@@ -1480,7 +1480,7 @@ namespace SHStaticRank2.Data
                                     }
                                     if (sumCredit12 > 0)
                                     {
-                                        selectScore[subjKeyR1].gsScore12 = sumScore12 / sumCredit12;
+                                        selectScore[subjKeyR1].gsScore12 = Math.Round(sumScore12 / sumCredit12,0,MidpointRounding.AwayFromZero);
                                         selectScore[subjKeyR1].gsCredit12 = sumCredit12;
                                         selectScore[subjKeyR1].subjCount++;
                                         selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit12.Value;
@@ -1516,7 +1516,7 @@ namespace SHStaticRank2.Data
                                     }
                                     if (sumCredit21 > 0)
                                     {
-                                        selectScore[subjKeyR1].gsScore21 = sumScore21 / sumCredit21;
+                                        selectScore[subjKeyR1].gsScore21 =Math.Round(sumScore21 / sumCredit21,0,MidpointRounding.AwayFromZero);
                                         selectScore[subjKeyR1].gsCredit21 = sumCredit21;
                                         selectScore[subjKeyR1].subjCount++;
                                         selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit21.Value;
@@ -1551,7 +1551,7 @@ namespace SHStaticRank2.Data
                                     }
                                     if (sumCredit22 > 0)
                                     {
-                                        selectScore[subjKeyR1].gsScore22 = sumScore22 / sumCredit22;
+                                        selectScore[subjKeyR1].gsScore22 = Math.Round(sumScore22 / sumCredit22,0,MidpointRounding.AwayFromZero);
                                         selectScore[subjKeyR1].gsCredit22 = sumCredit22;
                                         selectScore[subjKeyR1].subjCount++;
                                         selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit22.Value;
@@ -1587,7 +1587,7 @@ namespace SHStaticRank2.Data
                                     }
                                     if (sumCredit31 > 0)
                                     {
-                                        selectScore[subjKeyR1].gsScore31 = sumScore31 / sumCredit31;
+                                        selectScore[subjKeyR1].gsScore31 = Math.Round(sumScore31 / sumCredit31,0,MidpointRounding.AwayFromZero);
                                         selectScore[subjKeyR1].gsCredit31 = sumCredit31;
                                         selectScore[subjKeyR1].subjCount++;
                                         selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit31.Value;
@@ -1623,7 +1623,7 @@ namespace SHStaticRank2.Data
                                     }
                                     if (sumCredit32 > 0)
                                     {
-                                        selectScore[subjKeyR1].gsScore32 = sumScore32 / sumCredit32;
+                                        selectScore[subjKeyR1].gsScore32 = Math.Round(sumScore32 / sumCredit32,0,MidpointRounding.AwayFromZero);
                                         selectScore[subjKeyR1].gsCredit32 = sumCredit32;
                                         selectScore[subjKeyR1].subjCount++;
                                         selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit32.Value;
@@ -1659,7 +1659,7 @@ namespace SHStaticRank2.Data
                                     }
                                     if (sumCredit41 > 0)
                                     {
-                                        selectScore[subjKeyR1].gsScore41 = sumScore41 / sumCredit41;
+                                        selectScore[subjKeyR1].gsScore41 = Math.Round(sumScore41 / sumCredit41,0,MidpointRounding.AwayFromZero);
                                         selectScore[subjKeyR1].gsCredit41 = sumCredit41;
                                         selectScore[subjKeyR1].subjCount++;
                                         selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit41.Value;
@@ -1695,7 +1695,7 @@ namespace SHStaticRank2.Data
                                     }
                                     if (sumCredit42 > 0)
                                     {
-                                        selectScore[subjKeyR1].gsScore42 = sumScore42 / sumCredit42;
+                                        selectScore[subjKeyR1].gsScore42 =Math.Round(sumScore42 / sumCredit42,0,MidpointRounding.AwayFromZero);
                                         selectScore[subjKeyR1].gsCredit42 = sumCredit42;
                                         selectScore[subjKeyR1].subjCount++;
                                         selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit42.Value;
@@ -12258,10 +12258,10 @@ namespace SHStaticRank2.Data
 
                                     //GC.Collect();
 
-                                    // debug 用
-                                    _table.TableName = "debug";
-                                    string pathAA = System.Windows.Forms.Application.StartupPath + "\\多學期成績單debug.xml";
-                                    _table.WriteXml(pathAA);
+                                    //// debug 用
+                                    //_table.TableName = "debug";
+                                    //string pathAA = System.Windows.Forms.Application.StartupPath + "\\多學期成績單debug.xml";
+                                    //_table.WriteXml(pathAA);
 
                                     // 當 table 有資料再合併
                                     if (_table.Rows.Count > 0)

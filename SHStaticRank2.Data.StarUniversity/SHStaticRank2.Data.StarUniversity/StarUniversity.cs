@@ -201,7 +201,7 @@ AS tmp(id int, subject varchar(200))";
 
                 // 檢查合併欄位
                 if(this.Configure.Template2.MailMerge.GetFieldNames().Count()==0)
-                    docTemp = new Document(new MemoryStream(Properties.Resources.多學期成績單_大學4學期));
+                    Configure.Template2 = new Document(new MemoryStream(Properties.Resources.多學期成績單_大學4學期));
              
                  docTemp = this.Configure.Template2.Clone();                    
              
@@ -215,7 +215,7 @@ AS tmp(id int, subject varchar(200))";
 
                 // 檢查合併欄位
                 if(Configure.Template1.MailMerge.GetFieldNames().Count()==0)
-                        docTemp = new Document(new MemoryStream(Properties.Resources.多學期成績單_5學期));
+                    Configure.Template1 = new Document(new MemoryStream(Properties.Resources.多學期成績單_5學期));
                 
                  docTemp = this.Configure.Template1.Clone();                    
                 
@@ -229,7 +229,7 @@ AS tmp(id int, subject varchar(200))";
 
                 // 檢查合併欄位
                 if(Configure.Template3.MailMerge.GetFieldNames().Count()==0)
-                        docTemp = new Document(new MemoryStream(Properties.Resources.多學期成績單_第6學期));
+                    Configure.Template3 = new Document(new MemoryStream(Properties.Resources.多學期成績單_第6學期));
                 
                 docTemp = this.Configure.Template3.Clone();                        
                 

@@ -55,6 +55,9 @@ namespace SmartSchool.Evaluation.ImportExport
                 , "畢業採計-校部訂"
                 , "畢業採計-不計學分"
                 , "畢業採計-說明"
+                , "是否補修成績"
+                , "重修學年度"
+                , "重修學期"
                 );
             filterRepeat.CheckedChanged += delegate
             {
@@ -210,6 +213,10 @@ namespace SmartSchool.Evaluation.ImportExport
                                     case "畢業採計-說明":
                                         row.Add(field, var.Detail.GetAttribute(field));
                                         break;
+
+                                    case "是否補修成績": row.Add(field, var.Detail.GetAttribute("是否補修成績") == "是" ? "是" : ""); break;
+                                    case "重修學年度": row.Add(field, var.Detail.GetAttribute("重修學年度")); break;
+                                    case "重修學期": row.Add(field, var.Detail.GetAttribute("重修學期")); break;
                                 }
                             }
                         }

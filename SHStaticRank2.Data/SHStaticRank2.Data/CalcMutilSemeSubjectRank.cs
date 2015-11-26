@@ -827,7 +827,8 @@ namespace SHStaticRank2.Data
                         // 儲存成績用
                         Dictionary<string, studScore> selectScore = new Dictionary<string, studScore>();
 
-                        // 解析科目對照
+
+                        #region 解析回歸科目對照
                         SubjMappingDict.Clear();
 
                         try
@@ -847,9 +848,60 @@ namespace SHStaticRank2.Data
                                 foreach (string str in strList)
                                     SubjMappingDict[Subj].Add(str);
                             }
+
+                            List<string> HasSubjNameList = new List<string>();
+                            List<string> newMappingList = new List<string>();
+                            
+                            foreach (string key in SubjMappingDict.Keys)
+                            {
+                                if (!HasSubjNameList.Contains(key))
+                                    HasSubjNameList.Add(key);
+
+                                foreach (string value in SubjMappingDict[key])
+                                {
+                                    if (!HasSubjNameList.Contains(value))
+                                        HasSubjNameList.Add(value);
+                                }
+                            }
+
+                            // 加入過濾後科目
+                            foreach (var studentRec in studentList)
+                            {
+                                foreach (var subjectScore in studentRec.SemesterSubjectScoreList)
+                                {
+                                    if (!HasSubjNameList.Contains(subjectScore.Subject))
+                                    {
+                                        if (!newMappingList.Contains(subjectScore.Subject))
+                                            newMappingList.Add(subjectScore.Subject);
+                                    }
+                                }
+                            }
+
+                            newMappingList.Sort();
+
+                            // 顯示全部科目`,非回歸科目放後
+                            if (setting.CheckExportSubjectMapping == false)
+                            {
+
+                                foreach (string str in newMappingList)
+                                {
+                                    if (!SubjMappingDict.ContainsKey(str))
+                                    {
+                                        List<string> li = new List<string>();
+                                        li.Add(str);
+                                        SubjMappingDict.Add(str, li);
+                                    }
+
+                                }
+                            }
+
                         }
                         catch (Exception ex)
                         { }
+
+                        #endregion
+                        
+
 
                         foreach (var studentRec in studentList)
                         {
@@ -1230,17 +1282,15 @@ namespace SHStaticRank2.Data
                                 #endregion
                             }
                             #endregion 處理列印科目成績
-
-
+                            
                             
                             // 2015/10/22 因實中新增
                             #region 處理回歸科目成績
-                                                        
                             
+                            // 建立學生成績索引                      
                             try
-                            {                            
-
-                                // 解析成績
+                            {
+                                #region 解析回歸科目成績並填入
                                 foreach (string SubjName in SubjMappingDict.Keys)
                                 {
                                     // 處理回歸總分,加權總分,平均,加權平均
@@ -1248,25 +1298,17 @@ namespace SHStaticRank2.Data
                                     bool chkHasSubjectName = false;
                                     bool chkHasTag1 = false, chkHasTag2 = false;
                                     decimal sumScore11 = 0, sumCredit11 = 0, sumScore12 = 0, sumCredit12 = 0, sumScore21 = 0, sumCredit21 = 0, sumScore22 = 0, sumCredit22 = 0, sumScore31 = 0, sumCredit31 = 0, sumScore32 = 0, sumCredit32 = 0, sumScore41 = 0, sumCredit41 = 0, sumScore42 = 0, sumCredit42 = 0;
-                                                                        
+                                    
                                     #region 填入科目成績
                                     foreach (string MappingSubj in SubjMappingDict[SubjName])
                                     {
                                         decimal score = decimal.MinValue, tryParseScore;
-                                        bool match = false;
+                                        bool match = false;                                   
+                                                                            
 
+                                        // 讀取學生學期成績資料
                                         foreach (var subjectScore in studentRec.SemesterSubjectScoreList)
-                                        {                                            
-                                            //// 當成績不在勾選年級學期，跳過
-                                            //string gs = subjectScore.GradeYear + "" + subjectScore.Semester;
-                                            //if (!setting.useGradeSemesterList.Contains(gs))
-                                            //    continue;
-
-                                            // //不相關科目跳出
-                                            //if (!SubjMappingDict[SubjName].Contains(subjectScore.Subject))
-                                            //    continue;
-                                            
-
+                                        {
                                             // 判斷此科目是否為需要產出的
                                             if (subjectScore.Subject == MappingSubj
                                                 && (
@@ -1278,10 +1320,12 @@ namespace SHStaticRank2.Data
                                                     )
                                                 )
                                             {
-                                                score = 0;
-                                                chkHasSubjectName = true;
                                                 if (!selectScore.ContainsKey(subjKeyR1))
                                                     selectScore.Add(subjKeyR1, new studScore());
+
+                                                score = 0;
+                                                chkHasSubjectName = true;
+                                         
 
                                                 #region 取最高分
                                                 if (setting.use手動調整成績 && decimal.TryParse(subjectScore.Detail.GetAttribute("擇優採計成績"), out tryParseScore))
@@ -1314,14 +1358,14 @@ namespace SHStaticRank2.Data
                                                     if (score < tryParseScore)
                                                         score = tryParseScore;
                                                 }
-                                                #endregion                                          
-                                            
+                                                #endregion
+
 
                                                 // 沒有任何成績跳過
                                                 if (match == false)
                                                     continue;
-                                            
-                                            
+
+
                                                 // 有科目再處理
                                                 if (chkHasSubjectName)
                                                 {
@@ -1384,72 +1428,22 @@ namespace SHStaticRank2.Data
 
                                                     }
                                                 }
-
-
-                                                    //// 總分
-                                                    //selectScore[subjKeyR1].sumScore += AvgScore;
-                                                    //// 總分加權
-                                                    //selectScore[subjKeyR1].sumScoreA += (AvgScore * SumCredit);
-                                                    //// 筆數
-                                                    //selectScore[subjKeyR1].subjCount++;
-                                                    //// 學分加總
-                                                    //selectScore[subjKeyR1].sumCredit += SumCredit;
-
-                                                    //// 類別一處理, 判斷此科目是否為類別1需要的
-                                                    //if (setting.useSubjecOrder1List.Contains(SubjName)
-                                                    //    && (
-                                                    //        replaceTag1部訂必修專業及實習科目 == false ||
-                                                    //        (
-                                                    //            subjectScore.Detail.GetAttribute("修課校部訂") == "部訂"
-                                                    //            && subjectScore.Require == true
-                                                    //            && (subjectScore.Detail.GetAttribute("開課分項類別") == "專業科目" || subjectScore.Detail.GetAttribute("開課分項類別") == "實習科目"))
-                                                    //        )
-                                                    //    )
-                                                    //{
-                                                    //    chkHasTag1 = true;
-                                                    //    // 總分
-                                                    //    selectScore[subjKeyR1].sumScoreC1 += AvgScore;
-                                                    //    // 總分加權
-                                                    //    selectScore[subjKeyR1].sumScoreAC1 += (AvgScore*SumCredit);
-                                                    //    // 筆數
-                                                    //    selectScore[subjKeyR1].subjCountC1++;
-                                                    //    // 學分加總
-                                                    //    selectScore[subjKeyR1].sumCreditC1 += SumCredit;
-                                                    //}
-
-                                                    //// 類別二處理, 判斷此科目是否為類別1需要的
-                                                    //if (setting.useSubjecOrder2List.Contains(SubjName)
-                                                    //    && (
-                                                    //        replaceTag2部訂必修專業及實習科目 == false ||
-                                                    //        (
-                                                    //            subjectScore.Detail.GetAttribute("修課校部訂") == "部訂"
-                                                    //            && subjectScore.Require == true
-                                                    //            && (subjectScore.Detail.GetAttribute("開課分項類別") == "專業科目" || subjectScore.Detail.GetAttribute("開課分項類別") == "實習科目"))
-                                                    //        )
-                                                    //    )
-                                                    //{
-                                                    //    chkHasTag2 = true;
-                                                    //    // 總分
-                                                    //    selectScore[subjKeyR1].sumScoreC2 += AvgScore;
-                                                    //    // 總分加權
-                                                    //    selectScore[subjKeyR1].sumScoreAC2 += (AvgScore * SumCredit);
-                                                    //    // 筆數
-                                                    //    selectScore[subjKeyR1].subjCountC2++;
-                                                    //    // 學分加總
-                                                    //    selectScore[subjKeyR1].sumCreditC2 += SumCredit;
-                                                //}
-                                                }
-                                            }                                        
+                                            }
+                                        }
                                     }
-                                    
-                                    // 處理分數
-                                    if(sumCredit11>0)
+
+
+                                    if (selectScore.ContainsKey(subjKeyR1))
                                     {
-                                        selectScore[subjKeyR1].gsScore11 = Math.Round(sumScore11 / sumCredit11,0,MidpointRounding.AwayFromZero);
+
+                                    // 處理分數
+                                    if (sumCredit11 > 0)
+                                    {
+                                        selectScore[subjKeyR1].gsScore11 = Math.Round(sumScore11 / sumCredit11, 0, MidpointRounding.AwayFromZero);
                                         selectScore[subjKeyR1].gsCredit11 = sumCredit11;
                                         selectScore[subjKeyR1].subjCount++;
                                         selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit11.Value;
-                                        selectScore[subjKeyR1].sumScore+=selectScore[subjKeyR1].gsScore11.Value;
+                                        selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore11.Value;
                                         selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore11.Value * selectScore[subjKeyR1].gsCredit11.Value;
 
                                         if (studentRec.Fields.ContainsKey("tag1"))
@@ -1480,7 +1474,7 @@ namespace SHStaticRank2.Data
                                     }
                                     if (sumCredit12 > 0)
                                     {
-                                        selectScore[subjKeyR1].gsScore12 = Math.Round(sumScore12 / sumCredit12,0,MidpointRounding.AwayFromZero);
+                                        selectScore[subjKeyR1].gsScore12 = Math.Round(sumScore12 / sumCredit12, 0, MidpointRounding.AwayFromZero);
                                         selectScore[subjKeyR1].gsCredit12 = sumCredit12;
                                         selectScore[subjKeyR1].subjCount++;
                                         selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit12.Value;
@@ -1516,7 +1510,7 @@ namespace SHStaticRank2.Data
                                     }
                                     if (sumCredit21 > 0)
                                     {
-                                        selectScore[subjKeyR1].gsScore21 =Math.Round(sumScore21 / sumCredit21,0,MidpointRounding.AwayFromZero);
+                                        selectScore[subjKeyR1].gsScore21 = Math.Round(sumScore21 / sumCredit21, 0, MidpointRounding.AwayFromZero);
                                         selectScore[subjKeyR1].gsCredit21 = sumCredit21;
                                         selectScore[subjKeyR1].subjCount++;
                                         selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit21.Value;
@@ -1551,7 +1545,7 @@ namespace SHStaticRank2.Data
                                     }
                                     if (sumCredit22 > 0)
                                     {
-                                        selectScore[subjKeyR1].gsScore22 = Math.Round(sumScore22 / sumCredit22,0,MidpointRounding.AwayFromZero);
+                                        selectScore[subjKeyR1].gsScore22 = Math.Round(sumScore22 / sumCredit22, 0, MidpointRounding.AwayFromZero);
                                         selectScore[subjKeyR1].gsCredit22 = sumCredit22;
                                         selectScore[subjKeyR1].subjCount++;
                                         selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit22.Value;
@@ -1587,7 +1581,7 @@ namespace SHStaticRank2.Data
                                     }
                                     if (sumCredit31 > 0)
                                     {
-                                        selectScore[subjKeyR1].gsScore31 = Math.Round(sumScore31 / sumCredit31,0,MidpointRounding.AwayFromZero);
+                                        selectScore[subjKeyR1].gsScore31 = Math.Round(sumScore31 / sumCredit31, 0, MidpointRounding.AwayFromZero);
                                         selectScore[subjKeyR1].gsCredit31 = sumCredit31;
                                         selectScore[subjKeyR1].subjCount++;
                                         selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit31.Value;
@@ -1623,7 +1617,7 @@ namespace SHStaticRank2.Data
                                     }
                                     if (sumCredit32 > 0)
                                     {
-                                        selectScore[subjKeyR1].gsScore32 = Math.Round(sumScore32 / sumCredit32,0,MidpointRounding.AwayFromZero);
+                                        selectScore[subjKeyR1].gsScore32 = Math.Round(sumScore32 / sumCredit32, 0, MidpointRounding.AwayFromZero);
                                         selectScore[subjKeyR1].gsCredit32 = sumCredit32;
                                         selectScore[subjKeyR1].subjCount++;
                                         selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit32.Value;
@@ -1659,7 +1653,7 @@ namespace SHStaticRank2.Data
                                     }
                                     if (sumCredit41 > 0)
                                     {
-                                        selectScore[subjKeyR1].gsScore41 = Math.Round(sumScore41 / sumCredit41,0,MidpointRounding.AwayFromZero);
+                                        selectScore[subjKeyR1].gsScore41 = Math.Round(sumScore41 / sumCredit41, 0, MidpointRounding.AwayFromZero);
                                         selectScore[subjKeyR1].gsCredit41 = sumCredit41;
                                         selectScore[subjKeyR1].subjCount++;
                                         selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit41.Value;
@@ -1695,7 +1689,7 @@ namespace SHStaticRank2.Data
                                     }
                                     if (sumCredit42 > 0)
                                     {
-                                        selectScore[subjKeyR1].gsScore42 =Math.Round(sumScore42 / sumCredit42,0,MidpointRounding.AwayFromZero);
+                                        selectScore[subjKeyR1].gsScore42 = Math.Round(sumScore42 / sumCredit42, 0, MidpointRounding.AwayFromZero);
                                         selectScore[subjKeyR1].gsCredit42 = sumCredit42;
                                         selectScore[subjKeyR1].subjCount++;
                                         selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit42.Value;
@@ -1731,7 +1725,7 @@ namespace SHStaticRank2.Data
                                     }
 
                                     // 計算平均,加權平均
-                                    if (selectScore[subjKeyR1].subjCount>0)
+                                    if (selectScore[subjKeyR1].subjCount > 0)
                                         selectScore[subjKeyR1].avgScore = selectScore[subjKeyR1].sumScore / selectScore[subjKeyR1].subjCount;
 
                                     if (selectScore[subjKeyR1].subjCountC1 > 0)
@@ -1749,12 +1743,9 @@ namespace SHStaticRank2.Data
                                     if (selectScore[subjKeyR1].sumCreditC2 > 0)
                                         selectScore[subjKeyR1].avgScoreAC2 = selectScore[subjKeyR1].sumScoreAC2 / selectScore[subjKeyR1].sumCreditC2;
 
+                                }
                                     #endregion
-                                    
-                                   
-
-
-
+                                                              
 
                                     #region 總分、平均、排名
                                     if (chkHasSubjectName)
@@ -2336,15 +2327,13 @@ namespace SHStaticRank2.Data
                                     #endregion
 
                                 }
+                                #endregion                                
                             }
                             catch (Exception ex)
                             { }
                             #endregion
 
                         
-
-
-
                             if (setting.計算學業成績排名)
                             {
                                 #region 處理學業成績

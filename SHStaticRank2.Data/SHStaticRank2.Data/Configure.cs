@@ -156,7 +156,7 @@ namespace SHStaticRank2.Data
         /// </summary>
         [FISCA.UDT.Field]
         public string SubjectMapping { get; set; }
-
+           
 
         /// <summary>
         /// 在儲存前，把資料填入儲存欄位中
@@ -303,5 +303,12 @@ namespace SHStaticRank2.Data
         /// </summary>
         [FISCA.UDT.Field]
         public bool CheckUseIDNumber { get; set; }
+
+
+        /// <summary>
+        /// 判斷是否只產生回歸科目
+        /// </summary>
+        [FISCA.UDT.Field]
+        public bool CheckExportSubjectMapping { get; set; }
     }
 }

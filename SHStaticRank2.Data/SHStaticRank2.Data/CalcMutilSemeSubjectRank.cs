@@ -6199,7 +6199,7 @@ namespace SHStaticRank2.Data
 
                         }
 
-                        for (int i = 1; i <= 30; i++)
+                        for (int i = 1; i <= 60; i++)
                         {
                             _table.Columns.Add("回歸科目名稱" + i);
                             _table.Columns.Add("回歸一上科目成績" + i);

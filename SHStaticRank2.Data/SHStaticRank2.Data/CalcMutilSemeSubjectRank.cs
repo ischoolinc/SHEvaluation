@@ -5533,6 +5533,7 @@ namespace SHStaticRank2.Data
                         _table.Columns.Add("班級");
                         _table.Columns.Add("座號");
                         _table.Columns.Add("學號");
+                        _table.Columns.Add("學生系統編號");
                         _table.Columns.Add("姓名");
                         _table.Columns.Add("類別一分類");
                         _table.Columns.Add("類別二分類");
@@ -6509,6 +6510,7 @@ namespace SHStaticRank2.Data
                                 row["班級"] = studRec.RefClass.ClassName;
                                 row["座號"] = studRec.SeatNo;
                                 row["學號"] = studRec.StudentNumber;
+                                row["學生系統編號"] = studRec.StudentID;
                                 row["姓名"] = studRec.StudentName;
                                 row["科別"] = studRec.Department;
                                 row["類別一分類"] = (cat1Dict.ContainsKey(studRec.StudentID)) ? cat1Dict[studRec.StudentID] : "";
@@ -9005,6 +9007,7 @@ namespace SHStaticRank2.Data
                                             row["班級"] = studRec.RefClass.ClassName;
                                             row["座號"] = studRec.SeatNo;
                                             row["學號"] = studRec.StudentNumber;
+                                            row["學生系統編號"] = studRec.StudentID;
                                             row["姓名"] = studRec.StudentName;
                                             row["科別"] = studRec.Department;
                                             row["類別一分類"] = (cat1Dict.ContainsKey(studRec.StudentID)) ? cat1Dict[studRec.StudentID] : "";

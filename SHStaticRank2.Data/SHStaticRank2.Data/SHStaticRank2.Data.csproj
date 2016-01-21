@@ -119,6 +119,10 @@
       <HintPath>Library\SmartSchool.Customization.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SmartSchool.ePaper">
+      <HintPath>Library\SmartSchool.ePaper.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />

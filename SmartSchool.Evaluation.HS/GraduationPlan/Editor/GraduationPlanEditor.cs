@@ -425,7 +425,8 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
             _NotIncludedInCalcIndex = Column16.Index;
 
             dataGridViewX1.CurrentCell = dataGridViewX1.FirstDisplayedCell;
-            dataGridViewX1.BeginEdit(true);
+            if (dataGridViewX1.CurrentCell !=null)
+                dataGridViewX1.BeginEdit(true);
 
         }
 
@@ -571,7 +572,8 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
             }
             if (this.IsValidated) {}
             dataGridViewX1.CurrentCell = dataGridViewX1.FirstDisplayedCell;
-            dataGridViewX1.BeginEdit(true);
+            if(dataGridViewX1.CurrentCell !=null)
+                dataGridViewX1.BeginEdit(true);
             ValidateSameSubjectSameLevel();
         }
         /// <summary>

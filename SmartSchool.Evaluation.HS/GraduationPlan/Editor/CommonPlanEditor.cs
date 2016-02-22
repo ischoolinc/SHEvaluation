@@ -68,7 +68,8 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
             dataGridViewX1.Rows[0].Cells[_StartLevelIndex].ReadOnly = true;
 
             dataGridViewX1.CurrentCell = dataGridViewX1.FirstDisplayedCell;
-            dataGridViewX1.BeginEdit(true);
+            if(dataGridViewX1.CurrentCell !=null)
+                dataGridViewX1.BeginEdit(true);
         }
 
         private string GetNumber(int p)
@@ -201,7 +202,9 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
             }
             if (this.IsValidated) { }
             dataGridViewX1.CurrentCell = dataGridViewX1.FirstDisplayedCell;
-            dataGridViewX1.BeginEdit(true);
+
+            if(dataGridViewX1.CurrentCell !=null)
+                dataGridViewX1.BeginEdit(true);
         }
 
         public System.Xml.XmlElement GetSource()

@@ -466,7 +466,7 @@ namespace SmartSchool.Evaluation
                                     newScoreInfo.SetAttribute("科目", sacRecord.Subject);
                                     newScoreInfo.SetAttribute("科目級別", sacRecord.SubjectLevel);
                                     newScoreInfo.SetAttribute("開課分項類別", sacRecord.Entry);
-                                    newScoreInfo.SetAttribute("開課學分數", "" + sacRecord.Credit);
+                                    newScoreInfo.SetAttribute("開課學分數", "" + sacRecord.CreditDec());
                                     newScoreInfo.SetAttribute("原始成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
                                     newScoreInfo.SetAttribute("重修成績", "");
                                     newScoreInfo.SetAttribute("學年調整成績", "");

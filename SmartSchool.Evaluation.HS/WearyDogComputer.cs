@@ -891,7 +891,7 @@ namespace SmartSchool.Evaluation
             accesshelper.StudentHelper.FillSemesterSubjectScore(false, students);
             foreach (StudentRecord var in students)
             {
-                Dictionary<string, int> entryCreditCount = new Dictionary<string, int>();
+                Dictionary<string, decimal> entryCreditCount = new Dictionary<string, decimal>();
                 Dictionary<string, List<decimal>> entrySubjectScores = new Dictionary<string, List<decimal>>();
                 Dictionary<string, decimal> entryDividend = new Dictionary<string, decimal>();
                 Dictionary<string, bool> calcEntry = new Dictionary<string, bool>();
@@ -975,7 +975,7 @@ namespace SmartSchool.Evaluation
                                 continue;
                             #region 分項類別跟學分數
                             string entry = subjectNode.Detail.GetAttribute("開課分項類別");
-                            int credit = subjectNode.Credit;
+                            decimal credit = subjectNode.CreditDec();
                             #endregion
                             decimal tryParseDecimal;
                             decimal maxScore = 0;
@@ -1965,13 +1965,13 @@ namespace SmartSchool.Evaluation
                 XmlElement gradeCalcScoreElement = doc.CreateElement("GradScore");
                 if (canCalc)
                 {
-                    Dictionary<string, int> entryCount = new Dictionary<string, int>();
+                    Dictionary<string, decimal> entryCount = new Dictionary<string, decimal>();
                     Dictionary<string, decimal> entrySum = new Dictionary<string, decimal>();
                     //使用所有科目成績加權計算畢業成績(學業)
                     if (useSubjectAdv)
                     {
                         #region 使用所有科目成績加權計算畢業成績(總分及總數)
-                        int creditCount = 0;
+                        decimal creditCount = 0;
                         decimal scoreSum = 0;
                         foreach (SemesterSubjectScoreInfo subjectScoreInfo in var.SemesterSubjectScoreList)
                         {
@@ -1982,8 +1982,8 @@ namespace SmartSchool.Evaluation
                                      GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(var.StudentID).GetSubjectInfo(subjectScoreInfo.Subject, subjectScoreInfo.Level).NotIncludedInCalc
                                     )
                                     continue;
-                                int realCredit = 0;
-                                int.TryParse(GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(var.StudentID).GetSubjectInfo(subjectScoreInfo.Subject, subjectScoreInfo.Level).Credit, out realCredit);
+                                decimal realCredit = 0;
+                                decimal.TryParse(GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(var.StudentID).GetSubjectInfo(subjectScoreInfo.Subject, subjectScoreInfo.Level).Credit, out realCredit);
                                 scoreSum += subjectScoreInfo.Score * realCredit;
                                 creditCount += realCredit;
                             }

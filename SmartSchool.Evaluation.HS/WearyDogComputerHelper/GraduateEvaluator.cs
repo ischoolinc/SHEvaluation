@@ -112,7 +112,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                     //修滿所有必修課程
                     if (rule.SelectSingleNode("修滿所有必修課程") != null)
                     {
-                        if (rule.SelectSingleNode("修滿所有必修課程").InnerText == "true")
+                        if (rule.SelectSingleNode("修滿所有必修課程").InnerText == "True")
                         {
                             attendAllRequiredSubjects = true;
                             //判斷若以課程規為主，但是學生身上卻沒有課程規劃
@@ -1008,7 +1008,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                     //修滿所有必修課程
                     if (rule.SelectSingleNode("修滿所有必修課程") != null)
                     {
-                        if (rule.SelectSingleNode("修滿所有必修課程").InnerText == "true")
+                        if (rule.SelectSingleNode("修滿所有必修課程").InnerText == "True")
                         {
                             attendAllRequiredSubjects = true;
                             //判斷若以課程規為主，但是學生身上卻沒有課程規劃

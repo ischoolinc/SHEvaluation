@@ -33,14 +33,14 @@
             this.navigationPanePanel1 = new DevComponents.DotNetBar.NavigationPanePanel();
             this._WaitingPicture = new System.Windows.Forms.PictureBox();
             this.advTree1 = new DevComponents.AdvTree.AdvTree();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.jtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nodeConnector1 = new DevComponents.AdvTree.NodeConnector();
             this.elementStyle1 = new DevComponents.DotNetBar.ElementStyle();
             this.btnCreate = new DevComponents.DotNetBar.ButtonX();
             this.btnEditName = new DevComponents.DotNetBar.ButtonX();
             this.btnUpdate = new DevComponents.DotNetBar.ButtonX();
             this.btnDelete = new DevComponents.DotNetBar.ButtonX();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.jtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contentPanel = new System.Windows.Forms.Panel();
             this.tabControl2 = new DevComponents.DotNetBar.TabControl();
             this.tabControlPanel2 = new DevComponents.DotNetBar.TabControlPanel();
@@ -73,7 +73,7 @@
             this.controlPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.controlPanel.Location = new System.Drawing.Point(0, 0);
             this.controlPanel.Name = "controlPanel";
-            this.controlPanel.Size = new System.Drawing.Size(200, 498);
+            this.controlPanel.Size = new System.Drawing.Size(200, 561);
             this.controlPanel.TabIndex = 2;
             // 
             // navigationPanePanel1
@@ -89,7 +89,7 @@
             this.navigationPanePanel1.Location = new System.Drawing.Point(0, 0);
             this.navigationPanePanel1.Name = "navigationPanePanel1";
             this.navigationPanePanel1.ParentItem = null;
-            this.navigationPanePanel1.Size = new System.Drawing.Size(200, 498);
+            this.navigationPanePanel1.Size = new System.Drawing.Size(200, 561);
             this.navigationPanePanel1.Style.Alignment = System.Drawing.StringAlignment.Center;
             this.navigationPanePanel1.Style.BackColor1.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.BarBackground;
             this.navigationPanePanel1.Style.BackColor2.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.BarBackground2;
@@ -129,12 +129,26 @@
             this.advTree1.NodesConnector = this.nodeConnector1;
             this.advTree1.NodeStyle = this.elementStyle1;
             this.advTree1.PathSeparator = ";";
-            this.advTree1.Size = new System.Drawing.Size(200, 415);
+            this.advTree1.Size = new System.Drawing.Size(200, 478);
             this.advTree1.Styles.Add(this.elementStyle1);
             this.advTree1.TabIndex = 4;
             this.advTree1.Text = "advTree1";
             this.advTree1.NodeClick += new DevComponents.AdvTree.TreeNodeMouseEventHandler(this.advTree1_NodeClick);
             this.advTree1.SizeChanged += new System.EventHandler(this.advTree1_SizeChanged);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.jtToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(123, 26);
+            // 
+            // jtToolStripMenuItem
+            // 
+            this.jtToolStripMenuItem.Name = "jtToolStripMenuItem";
+            this.jtToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.jtToolStripMenuItem.Text = "重新整理";
+            this.jtToolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // nodeConnector1
             // 
@@ -152,7 +166,7 @@
             this.btnCreate.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnCreate.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnCreate.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnCreate.Location = new System.Drawing.Point(0, 415);
+            this.btnCreate.Location = new System.Drawing.Point(0, 478);
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.Size = new System.Drawing.Size(200, 20);
             this.btnCreate.TabIndex = 1;
@@ -164,7 +178,7 @@
             this.btnEditName.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnEditName.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnEditName.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnEditName.Location = new System.Drawing.Point(0, 435);
+            this.btnEditName.Location = new System.Drawing.Point(0, 498);
             this.btnEditName.Name = "btnEditName";
             this.btnEditName.Size = new System.Drawing.Size(200, 23);
             this.btnEditName.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -177,7 +191,7 @@
             this.btnUpdate.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnUpdate.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnUpdate.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnUpdate.Location = new System.Drawing.Point(0, 458);
+            this.btnUpdate.Location = new System.Drawing.Point(0, 521);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(200, 20);
             this.btnUpdate.TabIndex = 1;
@@ -189,26 +203,12 @@
             this.btnDelete.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnDelete.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnDelete.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnDelete.Location = new System.Drawing.Point(0, 478);
+            this.btnDelete.Location = new System.Drawing.Point(0, 541);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(200, 20);
             this.btnDelete.TabIndex = 1;
             this.btnDelete.Text = "刪除";
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.jtToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(125, 26);
-            // 
-            // jtToolStripMenuItem
-            // 
-            this.jtToolStripMenuItem.Name = "jtToolStripMenuItem";
-            this.jtToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.jtToolStripMenuItem.Text = "重新整理";
-            this.jtToolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // contentPanel
             // 
@@ -217,7 +217,7 @@
             this.contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.contentPanel.Location = new System.Drawing.Point(200, 0);
             this.contentPanel.Name = "contentPanel";
-            this.contentPanel.Size = new System.Drawing.Size(575, 498);
+            this.contentPanel.Size = new System.Drawing.Size(784, 561);
             this.contentPanel.TabIndex = 1;
             // 
             // tabControl2
@@ -233,7 +233,7 @@
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedTabFont = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Bold);
             this.tabControl2.SelectedTabIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(575, 498);
+            this.tabControl2.Size = new System.Drawing.Size(784, 561);
             this.tabControl2.Style = DevComponents.DotNetBar.eTabStripStyle.VS2005Document;
             this.tabControl2.TabIndex = 6;
             this.tabControl2.TabLayoutType = DevComponents.DotNetBar.eTabLayoutType.FixedWithNavigationBox;
@@ -251,7 +251,7 @@
             this.tabControlPanel2.Location = new System.Drawing.Point(0, 29);
             this.tabControlPanel2.Name = "tabControlPanel2";
             this.tabControlPanel2.Padding = new System.Windows.Forms.Padding(1);
-            this.tabControlPanel2.Size = new System.Drawing.Size(575, 469);
+            this.tabControlPanel2.Size = new System.Drawing.Size(784, 532);
             this.tabControlPanel2.Style.BackColor1.Color = System.Drawing.Color.Transparent;
             this.tabControlPanel2.Style.BackColor2.Color = System.Drawing.Color.Transparent;
             this.tabControlPanel2.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
@@ -288,7 +288,7 @@
             this.graduationPlanEditor1.Location = new System.Drawing.Point(1, 35);
             this.graduationPlanEditor1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.graduationPlanEditor1.Name = "graduationPlanEditor1";
-            this.graduationPlanEditor1.Size = new System.Drawing.Size(573, 433);
+            this.graduationPlanEditor1.Size = new System.Drawing.Size(782, 496);
             this.graduationPlanEditor1.TabIndex = 0;
             // 
             // tabItem1
@@ -305,7 +305,7 @@
             this.tabControlPanel3.Location = new System.Drawing.Point(0, 29);
             this.tabControlPanel3.Name = "tabControlPanel3";
             this.tabControlPanel3.Padding = new System.Windows.Forms.Padding(1);
-            this.tabControlPanel3.Size = new System.Drawing.Size(575, 469);
+            this.tabControlPanel3.Size = new System.Drawing.Size(784, 532);
             this.tabControlPanel3.Style.BackColor1.Color = System.Drawing.Color.Transparent;
             this.tabControlPanel3.Style.BackColor2.Color = System.Drawing.Color.Transparent;
             this.tabControlPanel3.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
@@ -349,7 +349,7 @@
             this.listViewEx1.Location = new System.Drawing.Point(6, 34);
             this.listViewEx1.MultiSelect = false;
             this.listViewEx1.Name = "listViewEx1";
-            this.listViewEx1.Size = new System.Drawing.Size(565, 430);
+            this.listViewEx1.Size = new System.Drawing.Size(774, 493);
             this.listViewEx1.SmallImageList = this.imageList1;
             this.listViewEx1.TabIndex = 0;
             this.listViewEx1.UseCompatibleStateImageBehavior = false;
@@ -401,7 +401,7 @@
             this.expandableSplitter1.HotGripLightColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.BarBackground;
             this.expandableSplitter1.Location = new System.Drawing.Point(200, 0);
             this.expandableSplitter1.Name = "expandableSplitter1";
-            this.expandableSplitter1.Size = new System.Drawing.Size(1, 498);
+            this.expandableSplitter1.Size = new System.Drawing.Size(1, 561);
             this.expandableSplitter1.Style = DevComponents.DotNetBar.eSplitterStyle.Office2007;
             this.expandableSplitter1.TabIndex = 3;
             this.expandableSplitter1.TabStop = false;
@@ -410,10 +410,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(775, 498);
+            this.ClientSize = new System.Drawing.Size(984, 561);
             this.Controls.Add(this.expandableSplitter1);
             this.Controls.Add(this.contentPanel);
             this.Controls.Add(this.controlPanel);
+            this.DoubleBuffered = true;
             this.MaximizeBox = true;
             this.Name = "FrmGraduationPlanConfiguration";
             this.Text = "班級課程規劃表";

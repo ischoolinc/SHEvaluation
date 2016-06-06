@@ -57,7 +57,7 @@
             this.controlPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.controlPanel.Location = new System.Drawing.Point(0, 0);
             this.controlPanel.Name = "controlPanel";
-            this.controlPanel.Size = new System.Drawing.Size(200, 474);
+            this.controlPanel.Size = new System.Drawing.Size(200, 561);
             this.controlPanel.TabIndex = 0;
             // 
             // expandablePanel1
@@ -69,7 +69,7 @@
             this.expandablePanel1.ExpandButtonVisible = false;
             this.expandablePanel1.Location = new System.Drawing.Point(0, 0);
             this.expandablePanel1.Name = "expandablePanel1";
-            this.expandablePanel1.Size = new System.Drawing.Size(200, 474);
+            this.expandablePanel1.Size = new System.Drawing.Size(200, 561);
             this.expandablePanel1.Style.Alignment = System.Drawing.StringAlignment.Center;
             this.expandablePanel1.Style.BackColor1.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
             this.expandablePanel1.Style.BackColor2.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
@@ -102,7 +102,7 @@
             this.navigationPanePanel2.Location = new System.Drawing.Point(0, 23);
             this.navigationPanePanel2.Name = "navigationPanePanel2";
             this.navigationPanePanel2.ParentItem = null;
-            this.navigationPanePanel2.Size = new System.Drawing.Size(200, 451);
+            this.navigationPanePanel2.Size = new System.Drawing.Size(200, 538);
             this.navigationPanePanel2.Style.BackColor1.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.BarBackground;
             this.navigationPanePanel2.Style.BackColor2.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.BarBackground2;
             this.navigationPanePanel2.Style.BorderColor.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
@@ -133,7 +133,7 @@
             this.advTree1.NodesConnector = this.nodeConnector1;
             this.advTree1.NodeStyle = this.elementStyle1;
             this.advTree1.PathSeparator = ";";
-            this.advTree1.Size = new System.Drawing.Size(200, 360);
+            this.advTree1.Size = new System.Drawing.Size(200, 447);
             this.advTree1.Styles.Add(this.elementStyle1);
             this.advTree1.TabIndex = 4;
             this.advTree1.Text = "advTree1";
@@ -166,7 +166,7 @@
             this.btn_create.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btn_create.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btn_create.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btn_create.Location = new System.Drawing.Point(0, 360);
+            this.btn_create.Location = new System.Drawing.Point(0, 447);
             this.btn_create.Name = "btn_create";
             this.btn_create.Size = new System.Drawing.Size(200, 23);
             this.btn_create.TabIndex = 0;
@@ -178,7 +178,7 @@
             this.btn_edit_name.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btn_edit_name.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btn_edit_name.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btn_edit_name.Location = new System.Drawing.Point(0, 383);
+            this.btn_edit_name.Location = new System.Drawing.Point(0, 470);
             this.btn_edit_name.Name = "btn_edit_name";
             this.btn_edit_name.Size = new System.Drawing.Size(200, 22);
             this.btn_edit_name.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -191,7 +191,7 @@
             this.btn_update.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btn_update.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btn_update.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btn_update.Location = new System.Drawing.Point(0, 405);
+            this.btn_update.Location = new System.Drawing.Point(0, 492);
             this.btn_update.Name = "btn_update";
             this.btn_update.Size = new System.Drawing.Size(200, 23);
             this.btn_update.TabIndex = 0;
@@ -204,7 +204,7 @@
             this.btn_delete.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btn_delete.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btn_delete.Enabled = false;
-            this.btn_delete.Location = new System.Drawing.Point(0, 428);
+            this.btn_delete.Location = new System.Drawing.Point(0, 515);
             this.btn_delete.Name = "btn_delete";
             this.btn_delete.Size = new System.Drawing.Size(200, 23);
             this.btn_delete.TabIndex = 0;
@@ -218,7 +218,7 @@
             this.contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.contentPanel.Location = new System.Drawing.Point(200, 0);
             this.contentPanel.Name = "contentPanel";
-            this.contentPanel.Size = new System.Drawing.Size(584, 474);
+            this.contentPanel.Size = new System.Drawing.Size(734, 561);
             this.contentPanel.TabIndex = 0;
             // 
             // scoreCalcRuleEditor1
@@ -231,7 +231,7 @@
             this.scoreCalcRuleEditor1.Margin = new System.Windows.Forms.Padding(4);
             this.scoreCalcRuleEditor1.Name = "scoreCalcRuleEditor1";
             this.scoreCalcRuleEditor1.ScoreCalcRuleName = "";
-            this.scoreCalcRuleEditor1.Size = new System.Drawing.Size(584, 474);
+            this.scoreCalcRuleEditor1.Size = new System.Drawing.Size(734, 561);
             this.scoreCalcRuleEditor1.TabIndex = 6;
             this.scoreCalcRuleEditor1.Visible = false;
             // 
@@ -263,7 +263,7 @@
             this.expandableSplitter1.HotGripLightColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.BarBackground;
             this.expandableSplitter1.Location = new System.Drawing.Point(200, 0);
             this.expandableSplitter1.Name = "expandableSplitter1";
-            this.expandableSplitter1.Size = new System.Drawing.Size(1, 474);
+            this.expandableSplitter1.Size = new System.Drawing.Size(1, 561);
             this.expandableSplitter1.Style = DevComponents.DotNetBar.eSplitterStyle.Office2007;
             this.expandableSplitter1.TabIndex = 1;
             this.expandableSplitter1.TabStop = false;
@@ -272,10 +272,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 474);
+            this.ClientSize = new System.Drawing.Size(934, 561);
             this.Controls.Add(this.expandableSplitter1);
             this.Controls.Add(this.contentPanel);
             this.Controls.Add(this.controlPanel);
+            this.DoubleBuffered = true;
             this.MaximizeBox = true;
             this.Name = "FrmScoreCalcConfiguration";
             this.Text = "成績計算規則";

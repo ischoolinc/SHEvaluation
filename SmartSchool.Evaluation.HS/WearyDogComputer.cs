@@ -326,7 +326,12 @@ namespace SmartSchool.Evaluation
                                 //最高分
                                 decimal maxScore = sacRecord.FinalScore;
                                 #region 抓最高分
+
                                 string[] scoreNames = new string[] { "原始成績", "學年調整成績", "擇優採計成績", "補考成績", "重修成績" };
+
+                              
+
+                                
                                 foreach (string scorename in scoreNames)
                                 {
                                     decimal s;
@@ -1420,6 +1425,10 @@ namespace SmartSchool.Evaluation
                 //成績年級及計算規則皆存在，允許計算成績
                 bool canCalc = true;
                 Dictionary<string, bool> calcEntry = new Dictionary<string, bool>();
+
+
+                List<string> scoreTypeList = new List<string>();
+
                 #region 取得成績年級跟計算規則
                 #region 處理計算規則
 
@@ -1452,6 +1461,36 @@ namespace SmartSchool.Evaluation
                             mode = RoundMode.無條件進位;
                     }
                     #endregion
+
+                    #region 學年成績計算採計成績欄位
+                    if (scoreCalcRule.SelectSingleNode("學年成績計算採計成績欄位") != null)
+                    {
+                        if (bool.TryParse(helper.GetText("學年成績計算採計成績欄位/@原始成績"), out tryParsebool) && tryParsebool)
+                        {
+                            scoreTypeList.Add("原始成績");
+                        }
+                        if (bool.TryParse(helper.GetText("學年成績計算採計成績欄位/@補考成績"), out tryParsebool) && tryParsebool)
+                        {
+                            scoreTypeList.Add("補考成績");
+                        }
+                        if (bool.TryParse(helper.GetText("學年成績計算採計成績欄位/@重修成績"), out tryParsebool) && tryParsebool)
+                        {
+                            scoreTypeList.Add("重修成績");
+                        }
+                        if (bool.TryParse(helper.GetText("學年成績計算採計成績欄位/@擇優採計成績"), out tryParsebool) && tryParsebool)
+                        {
+                            scoreTypeList.Add("擇優採計成績");
+                        }
+                        if (bool.TryParse(helper.GetText("學年成績計算採計成績欄位/@學年調整成績"), out tryParsebool) && tryParsebool)
+                        {
+                            scoreTypeList.Add("學年調整成績");
+                        }
+                        
+           
+                    }
+                    #endregion
+
+
                 }
                 #endregion
                 #endregion
@@ -1514,9 +1553,26 @@ namespace SmartSchool.Evaluation
                             {
                                 //先判斷這筆科目成績能不能計算
                                 decimal maxscore = decimal.MinValue, tryParsedecimal;
+                                
                                 bool hasScore = false;
+
+                                // 2016/12/22 穎驊因應 客戶學校反映調整， 重修成績只能取得學分，不能納入計算分數， 恩正指示調整此處，移除 scoreType 重修成績。                                
                                 //將學期科目成績擇優
-                                foreach (string scoreType in new string[] { "原始成績", "補考成績", "重修成績", "擇優採計成績" })
+                                //foreach (string scoreType in new string[] { "原始成績", "補考成績", "擇優採計成績" })
+                                //{
+                                //    if (decimal.TryParse(score.Detail.GetAttribute(scoreType), out tryParsedecimal))
+                                //    {
+                                //        hasScore |= true;
+                                //        if (tryParsedecimal > maxscore)
+                                //            maxscore = tryParsedecimal;
+                                //    }
+                                //}
+
+
+                                // 2017/1/12 穎驊因應學校調整， 將上次的(上面)的更動 與恩正、韻如討論後， 決定 將"學年成績計算" 會有哪幾項成績納入計算
+                                //一併放在 教務作業 設定 中的 "成績計算規則" 一起設定
+
+                                foreach (string scoreType in scoreTypeList)
                                 {
                                     if (decimal.TryParse(score.Detail.GetAttribute(scoreType), out tryParsedecimal))
                                     {
@@ -1525,6 +1581,7 @@ namespace SmartSchool.Evaluation
                                             maxscore = tryParsedecimal;
                                     }
                                 }
+
                                 //可以被計算
                                 if (hasScore)
                                 {

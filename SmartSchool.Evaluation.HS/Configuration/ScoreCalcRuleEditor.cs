@@ -223,6 +223,23 @@ namespace SmartSchool.Evaluation.Configuration
             //清空畢業學分數設定值
             textBoxX2.Text = textBoxX6.Text = textBoxX1.Text = textBoxX7.Text = textBoxX11.Text = textBoxX8.Text = textBoxX10.Text = "";
 
+
+
+            #region 新增 計算採計學年科目成績欄位 其 預設值 (2017/1/12 穎驊新增)
+            //原始成績
+            checkBoxX25.Checked = true;
+            //補考成績
+            checkBoxX24.Checked = true;
+            //重修成績
+            checkBoxX23.Checked = true;
+            //手動調整成績
+            checkBoxX22.Checked = true;
+            //學年調整成績
+            //2017/1/12 穎驊筆記，恩正說 此項 學年調整成績 就邏輯上不會出現在"計算採計學年科目成績欄位" 故預設 為 false ，甚至 其在UI功能也 disable 掉
+            checkBoxX21.Checked = false; 
+            #endregion
+
+
             reseting = false;
         }
         /// <summary>
@@ -430,6 +447,40 @@ namespace SmartSchool.Evaluation.Configuration
                 #endregion
             }
             #endregion
+
+            #region 學年成績計算採計成績欄位
+            element = (XmlElement)_scrContent.SelectSingleNode("學年成績計算採計成績欄位");
+            if (element != null)
+            {
+                #region 原始成績
+                tryParseBool = true;
+                bool.TryParse(element.GetAttribute("原始成績"), out tryParseBool);
+                checkBoxX25.Checked = tryParseBool;
+                #endregion
+                #region 補考成績
+                tryParseBool = true;
+                bool.TryParse(element.GetAttribute("補考成績"), out tryParseBool);
+                checkBoxX24.Checked = tryParseBool;
+                #endregion
+                #region 重修成績
+                tryParseBool = true;
+                bool.TryParse(element.GetAttribute("重修成績"), out tryParseBool);
+                checkBoxX23.Checked = tryParseBool;
+                #endregion
+                #region 擇優採計成績
+                tryParseBool = true;
+                bool.TryParse(element.GetAttribute("擇優採計成績"), out tryParseBool);
+                checkBoxX22.Checked = tryParseBool;
+                #endregion
+                #region 學年調整成績
+                tryParseBool = true;
+                bool.TryParse(element.GetAttribute("學年調整成績"), out tryParseBool);
+                checkBoxX21.Checked = tryParseBool;
+                #endregion
+            }
+            #endregion
+
+
             #region 延修及重讀成績處理規則
             if (_scrContent.SelectSingleNode("延修及重讀成績處理規則") != null)
             {
@@ -479,6 +530,9 @@ namespace SmartSchool.Evaluation.Configuration
                 //    radioButton27.Checked = true;
             }
             #endregion
+
+
+
             #region 重修成績
             element = (XmlElement)_scrContent.SelectSingleNode("重修成績");
             tryParseBool = false;
@@ -770,6 +824,18 @@ namespace SmartSchool.Evaluation.Configuration
             parentelement.SetAttribute("學年調整成績", checkBoxX18.Checked.ToString());
             doc.DocumentElement.AppendChild(parentelement);
             #endregion
+
+            #region 學年成績計算採計成績欄位
+            parentelement = doc.CreateElement("學年成績計算採計成績欄位");
+            parentelement.SetAttribute("原始成績", checkBoxX25.Checked.ToString());
+            parentelement.SetAttribute("補考成績", checkBoxX24.Checked.ToString());
+            parentelement.SetAttribute("重修成績", checkBoxX23.Checked.ToString());
+            parentelement.SetAttribute("擇優採計成績", checkBoxX22.Checked.ToString());
+            parentelement.SetAttribute("學年調整成績", checkBoxX21.Checked.ToString());
+            doc.DocumentElement.AppendChild(parentelement);
+            #endregion
+
+
             #region 延修及重讀成績處理規則
             parentelement = doc.CreateElement("延修及重讀成績處理規則");
             {
@@ -798,6 +864,8 @@ namespace SmartSchool.Evaluation.Configuration
             //element.SetAttribute("不重新計算學期分項成績", radioButton27.Checked.ToString());
             doc.DocumentElement.AppendChild(element);
             #endregion
+
+
             #region 重修成績
             element = doc.CreateElement("重修成績");
             element.SetAttribute("登錄至原學期", "" + (comboBoxEx1.SelectedIndex == 1));
@@ -896,7 +964,7 @@ namespace SmartSchool.Evaluation.Configuration
             }
             //同一科目級別不重複採計
             element = doc.CreateElement("同一科目級別不重複採計");
-            element.InnerText = checkBoxX20.Checked?"TRUE":"FALSE";
+            element.InnerText = checkBoxX20.Checked ? "TRUE" : "FALSE";
             parentelement.AppendChild(element);
 
             doc.DocumentElement.AppendChild(parentelement);

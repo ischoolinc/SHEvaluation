@@ -1485,9 +1485,20 @@ namespace SmartSchool.Evaluation
                         {
                             scoreTypeList.Add("學年調整成績");
                         }
-                        
-           
+
+
                     }
+                    // 2017/1/13 穎驊 與恩正討論 過後， 需要 再加上一個 若使用者都沒有 儲存設定 的預設， 此預設項目 與舊模式 相同，
+                    // 也與  SmartSchool.Evaluation.Configuration.ScoreCalcRuleEditor 內的 使用者設定介面預設  一樣
+                    else 
+                    {
+                        scoreTypeList.Add("原始成績");
+                        scoreTypeList.Add("補考成績");
+                        scoreTypeList.Add("重修成績");
+                        scoreTypeList.Add("擇優採計成績");
+                        //scoreTypeList.Add("學年調整成績");                                        
+                    }
+
                     #endregion
 
 

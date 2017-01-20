@@ -255,7 +255,7 @@ namespace SmartSchool.Evaluation
 
             List<Type> _type_list = new List<Type>(new Type[]{
                 typeof(SemesterScorePalmerworm),
-                typeof(SchoolYearScorePalmerworm),   
+                typeof(SchoolYearScorePalmerworm),
                 typeof(GradScorePalmerworm)
             });
 
@@ -355,320 +355,286 @@ namespace SmartSchool.Evaluation
             {
                 case "補考標準":
                     #region 填入補考標準
-                    foreach (StudentRecord var in e.List)
                     {
-                        //補考標準<年及,補考標準>
-                        Dictionary<int, decimal> resitLimit = new Dictionary<int, decimal>();
-                        #region 取得成績年級跟計算規則
+                        foreach (StudentRecord var in e.List)
                         {
-                            #region 處理計算規則
-                            XmlElement scoreCalcRule = ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var.StudentID) == null ? null : ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var.StudentID).ScoreCalcRuleElement;
-                            if (scoreCalcRule != null)
+                            //補考標準<年及,補考標準>
+                            Dictionary<int, decimal> resitLimit = new Dictionary<int, decimal>();
+                            #region 取得成績年級跟計算規則
                             {
-                                #region 有設定計算規則
-                                DSXmlHelper helper = new DSXmlHelper(scoreCalcRule);
-                                bool tryParsebool;
-                                int tryParseint;
-                                decimal tryParseDecimal;
-                                foreach (XmlElement element in helper.GetElements("及格標準/學生類別"))
+                                #region 處理計算規則
+                                XmlElement scoreCalcRule = ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var.StudentID) == null ? null : ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var.StudentID).ScoreCalcRuleElement;
+                                if (scoreCalcRule != null)
                                 {
-                                    string cat = element.GetAttribute("類別");
-                                    bool useful = false;
-                                    //掃描學生的類別作比對
-                                    foreach (CategoryInfo catinfo in var.StudentCategorys)
+                                    #region 有設定計算規則
+                                    DSXmlHelper helper = new DSXmlHelper(scoreCalcRule);
+                                    bool tryParsebool;
+                                    int tryParseint;
+                                    decimal tryParseDecimal;
+                                    foreach (XmlElement element in helper.GetElements("及格標準/學生類別"))
                                     {
-                                        if (catinfo.Name == cat || catinfo.FullName == cat)
-                                            useful = true;
-                                    }
-                                    //學生是指定的類別或類別為"預設"
-                                    if (cat == "預設" || useful)
-                                    {
-                                        for (int gyear = 1; gyear <= 4; gyear++)
+                                        string cat = element.GetAttribute("類別");
+                                        bool useful = false;
+                                        //掃描學生的類別作比對
+                                        foreach (CategoryInfo catinfo in var.StudentCategorys)
                                         {
-                                            switch (gyear)
+                                            if (catinfo.Name == cat || catinfo.FullName == cat)
+                                                useful = true;
+                                        }
+                                        //學生是指定的類別或類別為"預設"
+                                        if (cat == "預設" || useful)
+                                        {
+                                            for (int gyear = 1; gyear <= 4; gyear++)
                                             {
-                                                case 1:
-                                                    if (decimal.TryParse(element.GetAttribute("一年級補考標準"), out tryParseDecimal))
-                                                    {
-                                                        if (!resitLimit.ContainsKey(gyear))
-                                                            resitLimit.Add(gyear, tryParseDecimal);
-                                                        if (resitLimit[gyear] > tryParseDecimal)
-                                                            resitLimit[gyear] = tryParseDecimal;
-                                                    }
-                                                    break;
-                                                case 2:
-                                                    if (decimal.TryParse(element.GetAttribute("二年級補考標準"), out tryParseDecimal))
-                                                    {
-                                                        if (!resitLimit.ContainsKey(gyear))
-                                                            resitLimit.Add(gyear, tryParseDecimal);
-                                                        if (resitLimit[gyear] > tryParseDecimal)
-                                                            resitLimit[gyear] = tryParseDecimal;
-                                                    }
-                                                    break;
-                                                case 3:
-                                                    if (decimal.TryParse(element.GetAttribute("三年級補考標準"), out tryParseDecimal))
-                                                    {
-                                                        if (!resitLimit.ContainsKey(gyear))
-                                                            resitLimit.Add(gyear, tryParseDecimal);
-                                                        if (resitLimit[gyear] > tryParseDecimal)
-                                                            resitLimit[gyear] = tryParseDecimal;
-                                                    }
-                                                    break;
-                                                case 4:
-                                                    if (decimal.TryParse(element.GetAttribute("四年級補考標準"), out tryParseDecimal))
-                                                    {
-                                                        if (!resitLimit.ContainsKey(gyear))
-                                                            resitLimit.Add(gyear, tryParseDecimal);
-                                                        if (resitLimit[gyear] > tryParseDecimal)
-                                                            resitLimit[gyear] = tryParseDecimal;
-                                                    }
-                                                    break;
-                                                default:
-                                                    break;
+                                                switch (gyear)
+                                                {
+                                                    case 1:
+                                                        if (decimal.TryParse(element.GetAttribute("一年級補考標準"), out tryParseDecimal))
+                                                        {
+                                                            if (!resitLimit.ContainsKey(gyear))
+                                                                resitLimit.Add(gyear, tryParseDecimal);
+                                                            if (resitLimit[gyear] > tryParseDecimal)
+                                                                resitLimit[gyear] = tryParseDecimal;
+                                                        }
+                                                        break;
+                                                    case 2:
+                                                        if (decimal.TryParse(element.GetAttribute("二年級補考標準"), out tryParseDecimal))
+                                                        {
+                                                            if (!resitLimit.ContainsKey(gyear))
+                                                                resitLimit.Add(gyear, tryParseDecimal);
+                                                            if (resitLimit[gyear] > tryParseDecimal)
+                                                                resitLimit[gyear] = tryParseDecimal;
+                                                        }
+                                                        break;
+                                                    case 3:
+                                                        if (decimal.TryParse(element.GetAttribute("三年級補考標準"), out tryParseDecimal))
+                                                        {
+                                                            if (!resitLimit.ContainsKey(gyear))
+                                                                resitLimit.Add(gyear, tryParseDecimal);
+                                                            if (resitLimit[gyear] > tryParseDecimal)
+                                                                resitLimit[gyear] = tryParseDecimal;
+                                                        }
+                                                        break;
+                                                    case 4:
+                                                        if (decimal.TryParse(element.GetAttribute("四年級補考標準"), out tryParseDecimal))
+                                                        {
+                                                            if (!resitLimit.ContainsKey(gyear))
+                                                                resitLimit.Add(gyear, tryParseDecimal);
+                                                            if (resitLimit[gyear] > tryParseDecimal)
+                                                                resitLimit[gyear] = tryParseDecimal;
+                                                        }
+                                                        break;
+                                                    default:
+                                                        break;
+                                                }
                                             }
                                         }
                                     }
+                                    #endregion
                                 }
                                 #endregion
                             }
                             #endregion
+                            for (int i = 1; i <= 4; i++)//1-4年級如果某個年級沒有補考標準就填入40
+                            {
+                                if (!resitLimit.ContainsKey(i))
+                                    resitLimit.Add(i, 40);
+                            }
+                            //填入補考標準
+                            if (!var.Fields.ContainsKey("補考標準"))
+                                var.Fields.Add("補考標準", resitLimit);
+                            else
+                                var.Fields["補考標準"] = resitLimit;
                         }
-                        #endregion
-                        for (int i = 1; i <= 4; i++)//1-4年級如果某個年級沒有補考標準就填入40
-                        {
-                            if (!resitLimit.ContainsKey(i))
-                                resitLimit.Add(i, 40);
-                        }
-                        //填入補考標準
-                        if (!var.Fields.ContainsKey("補考標準"))
-                            var.Fields.Add("補考標準", resitLimit);
-                        else
-                            var.Fields["補考標準"] = resitLimit;
                     }
                     break;
-                    #endregion
+                #endregion
                 case "及格標準":
                     #region 填入及格標準
-                    foreach (StudentRecord var in e.List)
                     {
-                        //補考標準<年及,補考標準>
-                        Dictionary<int, decimal> applyLimit = new Dictionary<int, decimal>();
-                        #region 取得成績年級跟計算規則
+                        foreach (StudentRecord var in e.List)
                         {
-                            #region 處理計算規則
-                            XmlElement scoreCalcRule = ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var.StudentID) == null ? null : ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var.StudentID).ScoreCalcRuleElement;
-                            if (scoreCalcRule != null)
+                            //補考標準<年及,補考標準>
+                            Dictionary<int, decimal> applyLimit = new Dictionary<int, decimal>();
+                            #region 取得成績年級跟計算規則
                             {
-                                #region 有設定計算規則
-                                DSXmlHelper helper = new DSXmlHelper(scoreCalcRule);
-                                bool tryParsebool;
-                                int tryParseint;
-                                decimal tryParseDecimal;
-                                foreach (XmlElement element in helper.GetElements("及格標準/學生類別"))
+                                #region 處理計算規則
+                                XmlElement scoreCalcRule = ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var.StudentID) == null ? null : ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var.StudentID).ScoreCalcRuleElement;
+                                if (scoreCalcRule != null)
                                 {
-                                    string cat = element.GetAttribute("類別");
-                                    bool useful = false;
-                                    //掃描學生的類別作比對
-                                    foreach (CategoryInfo catinfo in var.StudentCategorys)
+                                    #region 有設定計算規則
+                                    DSXmlHelper helper = new DSXmlHelper(scoreCalcRule);
+                                    bool tryParsebool;
+                                    int tryParseint;
+                                    decimal tryParseDecimal;
+                                    foreach (XmlElement element in helper.GetElements("及格標準/學生類別"))
                                     {
-                                        if (catinfo.Name == cat || catinfo.FullName == cat)
-                                            useful = true;
-                                    }
-                                    //學生是指定的類別或類別為"預設"
-                                    if (cat == "預設" || useful)
-                                    {
-                                        for (int gyear = 1; gyear <= 4; gyear++)
+                                        string cat = element.GetAttribute("類別");
+                                        bool useful = false;
+                                        //掃描學生的類別作比對
+                                        foreach (CategoryInfo catinfo in var.StudentCategorys)
                                         {
-                                            switch (gyear)
+                                            if (catinfo.Name == cat || catinfo.FullName == cat)
+                                                useful = true;
+                                        }
+                                        //學生是指定的類別或類別為"預設"
+                                        if (cat == "預設" || useful)
+                                        {
+                                            for (int gyear = 1; gyear <= 4; gyear++)
                                             {
-                                                case 1:
-                                                    if (decimal.TryParse(element.GetAttribute("一年級及格標準"), out tryParseDecimal))
-                                                    {
-                                                        if (!applyLimit.ContainsKey(gyear))
-                                                            applyLimit.Add(gyear, tryParseDecimal);
-                                                        if (applyLimit[gyear] > tryParseDecimal)
-                                                            applyLimit[gyear] = tryParseDecimal;
-                                                    }
-                                                    break;
-                                                case 2:
-                                                    if (decimal.TryParse(element.GetAttribute("二年級及格標準"), out tryParseDecimal))
-                                                    {
-                                                        if (!applyLimit.ContainsKey(gyear))
-                                                            applyLimit.Add(gyear, tryParseDecimal);
-                                                        if (applyLimit[gyear] > tryParseDecimal)
-                                                            applyLimit[gyear] = tryParseDecimal;
-                                                    }
-                                                    break;
-                                                case 3:
-                                                    if (decimal.TryParse(element.GetAttribute("三年級及格標準"), out tryParseDecimal))
-                                                    {
-                                                        if (!applyLimit.ContainsKey(gyear))
-                                                            applyLimit.Add(gyear, tryParseDecimal);
-                                                        if (applyLimit[gyear] > tryParseDecimal)
-                                                            applyLimit[gyear] = tryParseDecimal;
-                                                    }
-                                                    break;
-                                                case 4:
-                                                    if (decimal.TryParse(element.GetAttribute("四年級及格標準"), out tryParseDecimal))
-                                                    {
-                                                        if (!applyLimit.ContainsKey(gyear))
-                                                            applyLimit.Add(gyear, tryParseDecimal);
-                                                        if (applyLimit[gyear] > tryParseDecimal)
-                                                            applyLimit[gyear] = tryParseDecimal;
-                                                    }
-                                                    break;
-                                                default:
-                                                    break;
+                                                switch (gyear)
+                                                {
+                                                    case 1:
+                                                        if (decimal.TryParse(element.GetAttribute("一年級及格標準"), out tryParseDecimal))
+                                                        {
+                                                            if (!applyLimit.ContainsKey(gyear))
+                                                                applyLimit.Add(gyear, tryParseDecimal);
+                                                            if (applyLimit[gyear] > tryParseDecimal)
+                                                                applyLimit[gyear] = tryParseDecimal;
+                                                        }
+                                                        break;
+                                                    case 2:
+                                                        if (decimal.TryParse(element.GetAttribute("二年級及格標準"), out tryParseDecimal))
+                                                        {
+                                                            if (!applyLimit.ContainsKey(gyear))
+                                                                applyLimit.Add(gyear, tryParseDecimal);
+                                                            if (applyLimit[gyear] > tryParseDecimal)
+                                                                applyLimit[gyear] = tryParseDecimal;
+                                                        }
+                                                        break;
+                                                    case 3:
+                                                        if (decimal.TryParse(element.GetAttribute("三年級及格標準"), out tryParseDecimal))
+                                                        {
+                                                            if (!applyLimit.ContainsKey(gyear))
+                                                                applyLimit.Add(gyear, tryParseDecimal);
+                                                            if (applyLimit[gyear] > tryParseDecimal)
+                                                                applyLimit[gyear] = tryParseDecimal;
+                                                        }
+                                                        break;
+                                                    case 4:
+                                                        if (decimal.TryParse(element.GetAttribute("四年級及格標準"), out tryParseDecimal))
+                                                        {
+                                                            if (!applyLimit.ContainsKey(gyear))
+                                                                applyLimit.Add(gyear, tryParseDecimal);
+                                                            if (applyLimit[gyear] > tryParseDecimal)
+                                                                applyLimit[gyear] = tryParseDecimal;
+                                                        }
+                                                        break;
+                                                    default:
+                                                        break;
+                                                }
                                             }
                                         }
                                     }
+                                    #endregion
                                 }
                                 #endregion
                             }
                             #endregion
+                            for (int i = 1; i <= 4; i++)//1-4年級如果某個年級沒有及格標準就填入60
+                            {
+                                if (!applyLimit.ContainsKey(i))
+                                    applyLimit.Add(i, 60);
+                            }
+                            //填入及格標準
+                            if (!var.Fields.ContainsKey("及格標準"))
+                                var.Fields.Add("及格標準", applyLimit);
+                            else
+                                var.Fields["及格標準"] = applyLimit;
                         }
-                        #endregion
-                        for (int i = 1; i <= 4; i++)//1-4年級如果某個年級沒有及格標準就填入60
-                        {
-                            if (!applyLimit.ContainsKey(i))
-                                applyLimit.Add(i, 60);
-                        }
-                        //填入及格標準
-                        if (!var.Fields.ContainsKey("及格標準"))
-                            var.Fields.Add("及格標準", applyLimit);
-                        else
-                            var.Fields["及格標準"] = applyLimit;
                     }
                     break;
-                    #endregion
+                #endregion
                 case "本學期德行表現成績":
                     #region 填入當學期德行表現成績
-                    new AngelDemonComputer().FillDemonScore(
-                                        new AccessHelper(),
-                                        SmartSchool.Customization.Data.SystemInformation.SchoolYear,
-                                        SmartSchool.Customization.Data.SystemInformation.Semester,
-                                        new List<StudentRecord>(e.List)
-                                        );
-                    foreach (StudentRecord var in e.List)
                     {
-                        if (var.Fields.ContainsKey("DemonScore"))
+                        new AngelDemonComputer().FillDemonScore(
+                                          new AccessHelper(),
+                                          SmartSchool.Customization.Data.SystemInformation.SchoolYear,
+                                          SmartSchool.Customization.Data.SystemInformation.Semester,
+                                          new List<StudentRecord>(e.List)
+                                          );
+                        foreach (StudentRecord var in e.List)
                         {
-                            var.Fields.Add("本學期德行表現成績", var.Fields["DemonScore"]);
-                            var.Fields.Remove("DemonScore");
-                        }
-                        else
-                        {
-                            var.Fields.Add("本學期德行表現成績", new XmlDocument().CreateElement("DemonScore"));
-                        }
-                    }
-                    break;
-                    #endregion
-                case "畢業成績":
-                    #region 填入畢業成績
-                    Dictionary<string, StudentRecord> students = new Dictionary<string, StudentRecord>();
-                    foreach (StudentRecord var in e.List)
-                    {
-                        if (!students.ContainsKey(var.StudentID))
-                            students.Add(var.StudentID, var);
-                    }
-                    Dictionary<string, Dictionary<string, decimal>> sid_entry_score = new Dictionary<string, Dictionary<string, decimal>>();
-                    foreach (XmlElement studentElement in SmartSchool.Feature.QueryStudent.GetDetailList(new string[] { "ID", "GradScore" }, new List<string>(students.Keys).ToArray()).GetContent().GetElements("Student"))
-                    {
-                        string ID = studentElement.GetAttribute("ID");
-                        foreach (XmlElement scoreElement in studentElement.SelectNodes("GradScore/GradScore/EntryScore"))
-                        {
-                            if (!sid_entry_score.ContainsKey(ID))
-                                sid_entry_score.Add(ID, new Dictionary<string, decimal>());
-                            string entry = scoreElement.GetAttribute("Entry");
-                            decimal dec;
-                            if (decimal.TryParse(scoreElement.GetAttribute("Score"), out dec))
+                            if (var.Fields.ContainsKey("DemonScore"))
                             {
-                                if (!sid_entry_score[ID].ContainsKey(entry))
-                                    sid_entry_score[ID].Add(entry, dec);
+                                var.Fields.Add("本學期德行表現成績", var.Fields["DemonScore"]);
+                                var.Fields.Remove("DemonScore");
+                            }
+                            else
+                            {
+                                var.Fields.Add("本學期德行表現成績", new XmlDocument().CreateElement("DemonScore"));
                             }
                         }
                     }
-                    foreach (StudentRecord student in students.Values)
-                    {
-                        Dictionary<string, decimal> entryScore = sid_entry_score.ContainsKey(student.StudentID) ? sid_entry_score[student.StudentID] : new Dictionary<string, decimal>();
-                        if (student.Fields.ContainsKey("畢業成績"))
-                            student.Fields["畢業成績"] = entryScore;
-                        else
-                            student.Fields.Add("畢業成績", entryScore);
-                    }
                     break;
-                    #endregion
-                case "核心科目表":
-                    #region 填入核心科目表
-                    foreach (StudentRecord student in e.List)
+                #endregion
+                case "畢業成績":
+                    #region 填入畢業成績
                     {
-                        XmlDocument doc = new XmlDocument();
-                        XmlElement root = doc.CreateElement("核心科目表");
-                        #region 預設學程核心科目表
-                        if (
-                            student.Fields.ContainsKey("SubDepartment") &&//科別有子項
-                            SubjectTable.Items["學程科目表"].Contains("" + student.Fields["SubDepartment"]) //子項是一個學程名稱
-                            )
+                        Dictionary<string, StudentRecord> students = new Dictionary<string, StudentRecord>();
+                        foreach (StudentRecord var in e.List)
                         {
-                            //預設學程科目表
-                            XmlElement contentElement = (XmlElement)SubjectTable.Items["學程科目表"]["" + student.Fields["SubDepartment"]].Content.SelectSingleNode("SubjectTableContent");
-                            foreach (XmlElement snode in contentElement.SelectNodes("Subject"))
+                            if (!students.ContainsKey(var.StudentID))
+                                students.Add(var.StudentID, var);
+                        }
+                        Dictionary<string, Dictionary<string, decimal>> sid_entry_score = new Dictionary<string, Dictionary<string, decimal>>();
+                        foreach (XmlElement studentElement in SmartSchool.Feature.QueryStudent.GetDetailList(new string[] { "ID", "GradScore" }, new List<string>(students.Keys).ToArray()).GetContent().GetElements("Student"))
+                        {
+                            string ID = studentElement.GetAttribute("ID");
+                            foreach (XmlElement scoreElement in studentElement.SelectNodes("GradScore/GradScore/EntryScore"))
                             {
-                                string name = ((XmlElement)snode).GetAttribute("Name");
-                                bool iscore = false;
-                                bool.TryParse(snode.GetAttribute("IsCore"), out iscore);
-                                if (iscore)
+                                if (!sid_entry_score.ContainsKey(ID))
+                                    sid_entry_score.Add(ID, new Dictionary<string, decimal>());
+                                string entry = scoreElement.GetAttribute("Entry");
+                                decimal dec;
+                                if (decimal.TryParse(scoreElement.GetAttribute("Score"), out dec))
                                 {
-                                    if (snode.SelectNodes("Level").Count == 0)
-                                    {
-                                        XmlElement subjectElement = doc.CreateElement("核心科目");
-                                        subjectElement.SetAttribute("科目", name);
-                                        subjectElement.SetAttribute("級別", "");
-                                        subjectElement.SetAttribute("來源", "預設學程科目表");
-                                        root.AppendChild(subjectElement);
-                                    }
-                                    else
-                                    {
-                                        foreach (XmlNode lnode in snode.SelectNodes("Level"))
-                                        {
-                                            XmlElement subjectElement = doc.CreateElement("核心科目");
-                                            subjectElement.SetAttribute("科目", name);
-                                            subjectElement.SetAttribute("級別", lnode.InnerText);
-                                            subjectElement.SetAttribute("來源", "預設學程科目表");
-                                            root.AppendChild(subjectElement);
-                                        }
-                                    }
+                                    if (!sid_entry_score[ID].ContainsKey(entry))
+                                        sid_entry_score[ID].Add(entry, dec);
                                 }
                             }
                         }
-                        #endregion
-                        #region 設定的核心科目表
-                        XmlElement scoreCalcRule = ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(student.StudentID) == null ? null : ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(student.StudentID).ScoreCalcRuleElement;
-                        if (scoreCalcRule != null)
+                        foreach (StudentRecord student in students.Values)
                         {
-                            List<string> checkedList = new List<string>();
-                            #region 整理要選用的科目表
-                            foreach (XmlNode st in scoreCalcRule.SelectNodes("核心科目表/科目表"))
+                            Dictionary<string, decimal> entryScore = sid_entry_score.ContainsKey(student.StudentID) ? sid_entry_score[student.StudentID] : new Dictionary<string, decimal>();
+                            if (student.Fields.ContainsKey("畢業成績"))
+                                student.Fields["畢業成績"] = entryScore;
+                            else
+                                student.Fields.Add("畢業成績", entryScore);
+                        }
+                    }
+                    break;
+                #endregion
+                case "核心科目表":
+                    #region 填入核心科目表
+
+                    {
+                        foreach (StudentRecord student in e.List)
+                        {
+                            XmlDocument doc = new XmlDocument();
+                            XmlElement root = doc.CreateElement("核心科目表");
+                            #region 預設學程核心科目表
+                            if (
+                                student.Fields.ContainsKey("SubDepartment") &&//科別有子項
+                                SubjectTable.Items["學程科目表"].Contains("" + student.Fields["SubDepartment"]) //子項是一個學程名稱
+                                )
                             {
-                                checkedList.Add(st.InnerText);
-                            }
-                            #endregion
-                            foreach (SubjectTableItem subjectTable in SubjectTable.Items["核心科目表"])
-                            {
-                                #region 是要選用的科目表就進行判斷
-                                if (checkedList.Contains(subjectTable.Name) && subjectTable.Content.SelectSingleNode("SubjectTableContent") != null)
+                                //預設學程科目表
+                                XmlElement contentElement = (XmlElement)SubjectTable.Items["學程科目表"]["" + student.Fields["SubDepartment"]].Content.SelectSingleNode("SubjectTableContent");
+                                foreach (XmlElement snode in contentElement.SelectNodes("Subject"))
                                 {
-                                    XmlElement contentElement = (XmlElement)subjectTable.Content.SelectSingleNode("SubjectTableContent");
-                                    #region 整理在科目表中所有的科目級別
-                                    foreach (XmlNode snode in contentElement.SelectNodes("Subject"))
+                                    string name = ((XmlElement)snode).GetAttribute("Name");
+                                    bool iscore = false;
+                                    bool.TryParse(snode.GetAttribute("IsCore"), out iscore);
+                                    if (iscore)
                                     {
-                                        string name = ((XmlElement)snode).GetAttribute("Name");
                                         if (snode.SelectNodes("Level").Count == 0)
                                         {
                                             XmlElement subjectElement = doc.CreateElement("核心科目");
                                             subjectElement.SetAttribute("科目", name);
                                             subjectElement.SetAttribute("級別", "");
-                                            subjectElement.SetAttribute("來源", subjectTable.Name);
+                                            subjectElement.SetAttribute("來源", "預設學程科目表");
                                             root.AppendChild(subjectElement);
                                         }
                                         else
@@ -678,21 +644,86 @@ namespace SmartSchool.Evaluation
                                                 XmlElement subjectElement = doc.CreateElement("核心科目");
                                                 subjectElement.SetAttribute("科目", name);
                                                 subjectElement.SetAttribute("級別", lnode.InnerText);
-                                                subjectElement.SetAttribute("來源", subjectTable.Name);
+                                                subjectElement.SetAttribute("來源", "預設學程科目表");
                                                 root.AppendChild(subjectElement);
                                             }
                                         }
                                     }
+                                }
+                            }
+                            #endregion
+                            #region 設定的核心科目表
+                            XmlElement scoreCalcRule = ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(student.StudentID) == null ? null : ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(student.StudentID).ScoreCalcRuleElement;
+                            if (scoreCalcRule != null)
+                            {
+                                List<string> checkedList = new List<string>();
+                                #region 整理要選用的科目表
+                                foreach (XmlNode st in scoreCalcRule.SelectNodes("核心科目表/科目表"))
+                                {
+                                    checkedList.Add(st.InnerText);
+                                }
+                                #endregion
+                                foreach (SubjectTableItem subjectTable in SubjectTable.Items["核心科目表"])
+                                {
+                                    #region 是要選用的科目表就進行判斷
+                                    if (checkedList.Contains(subjectTable.Name) && subjectTable.Content.SelectSingleNode("SubjectTableContent") != null)
+                                    {
+                                        XmlElement contentElement = (XmlElement)subjectTable.Content.SelectSingleNode("SubjectTableContent");
+                                        #region 整理在科目表中所有的科目級別
+                                        foreach (XmlNode snode in contentElement.SelectNodes("Subject"))
+                                        {
+                                            string name = ((XmlElement)snode).GetAttribute("Name");
+                                            if (snode.SelectNodes("Level").Count == 0)
+                                            {
+                                                XmlElement subjectElement = doc.CreateElement("核心科目");
+                                                subjectElement.SetAttribute("科目", name);
+                                                subjectElement.SetAttribute("級別", "");
+                                                subjectElement.SetAttribute("來源", subjectTable.Name);
+                                                root.AppendChild(subjectElement);
+                                            }
+                                            else
+                                            {
+                                                foreach (XmlNode lnode in snode.SelectNodes("Level"))
+                                                {
+                                                    XmlElement subjectElement = doc.CreateElement("核心科目");
+                                                    subjectElement.SetAttribute("科目", name);
+                                                    subjectElement.SetAttribute("級別", lnode.InnerText);
+                                                    subjectElement.SetAttribute("來源", subjectTable.Name);
+                                                    root.AppendChild(subjectElement);
+                                                }
+                                            }
+                                        }
+                                        #endregion
+                                    }
                                     #endregion
                                 }
+                            }
+                            #endregion
+                            if (student.Fields.ContainsKey("核心科目表"))
+                                student.Fields["核心科目表"] = root;
+                            else
+                                student.Fields.Add("核心科目表", root);
+                        }
+
+                    }
+                    break;
+                #endregion
+                case "成績計算規則":
+                    #region 填入成績計算規則
+                    {
+                        foreach (StudentRecord var in e.List)
+                        {
+                            XmlElement scoreCalcRule = ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var.StudentID) == null ? null : ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var.StudentID).ScoreCalcRuleElement;
+                            if (scoreCalcRule != null)
+                            {
+                                #region 有設定計算規則
+                                if (var.Fields.ContainsKey("成績計算規則"))
+                                    var.Fields["成績計算規則"] = scoreCalcRule;
+                                else
+                                    var.Fields.Add("成績計算規則", scoreCalcRule);
                                 #endregion
                             }
                         }
-                        #endregion
-                        if (student.Fields.ContainsKey("核心科目表"))
-                            student.Fields["核心科目表"] = root;
-                        else
-                            student.Fields.Add("核心科目表", root);
                     }
                     break;
                     #endregion
@@ -1451,7 +1482,7 @@ namespace SmartSchool.Evaluation
                     default:
                         levelNumber = "" + (p);
                         break;
-                    #endregion
+                        #endregion
                 }
                 return levelNumber;
             }

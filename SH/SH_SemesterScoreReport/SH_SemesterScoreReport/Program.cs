@@ -305,6 +305,16 @@ namespace SH_SemesterScoreReport
                 table.Columns.Add("上學期健康與護理成績");
                 table.Columns.Add("上學期實習科目成績");
                 table.Columns.Add("上學期德行成績");
+
+                // 上學期分項成績 -- //2017/8/28 穎驊補齊缺漏欄位
+                table.Columns.Add("上學期學業(原始)成績");
+                table.Columns.Add("上學期體育(原始)成績");
+                table.Columns.Add("上學期國防通識(原始)成績");
+                table.Columns.Add("上學期健康與護理(原始)成績");
+                table.Columns.Add("上學期實習科目(原始)成績");
+                table.Columns.Add("上學期德行(原始)成績");
+
+
                 // 學年分項成績 --
                 table.Columns.Add("學年學業成績");
                 table.Columns.Add("學年體育成績");

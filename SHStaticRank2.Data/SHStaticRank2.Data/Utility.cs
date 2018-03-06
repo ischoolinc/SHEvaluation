@@ -201,26 +201,29 @@ namespace SHStaticRank2.Data
                         if (!string.IsNullOrEmpty(g1Str))
                         {
                             XElement elmG1 = XElement.Parse(g1Str);
-                            foreach(XElement elmR in elmG1.Elements("Rating"))
-                            foreach (XElement elm in elmR.Elements("Item"))
+                            foreach (XElement elmR in elmG1.Elements("Rating"))
                             {
-                                if (elm.Attribute("分項") != null && elm.Attribute("分項").Value == "學業")
+                                foreach (XElement elm in elmR.Elements("Item"))
                                 {
-                                    if (elm.Attribute("成績人數") != null && elm.Attribute("成績人數").Value != "")
+                                    if (elm.Attribute("分項") != null && elm.Attribute("分項").Value == "學業")
                                     {
-                                        int x;
-                                        if (int.TryParse(elm.Attribute("成績人數").Value, out x))
-                                            sser.Group1Count = x;
-                                    }
+                                        if (elm.Attribute("成績人數") != null && elm.Attribute("成績人數").Value != "")
+                                        {
+                                            int x;
+                                            if (int.TryParse(elm.Attribute("成績人數").Value, out x))
+                                                sser.Group1Count = x;
+                                        }
 
-                                    if (elm.Attribute("排名") != null && elm.Attribute("排名").Value != "")
-                                    {
-                                        int x;
-                                        if (int.TryParse(elm.Attribute("排名").Value, out x))
-                                            sser.Group1Rank = x;
+                                        if (elm.Attribute("排名") != null && elm.Attribute("排名").Value != "")
+                                        {
+                                            int x;
+                                            if (int.TryParse(elm.Attribute("排名").Value, out x))
+                                                sser.Group1Rank = x;
+                                        }
                                     }
-                                        
+                                    break;
                                 }
+                                break;
                             }
                         }
                     }
@@ -325,6 +328,7 @@ namespace SHStaticRank2.Data
 
                                     if (elm.Attribute("排名") != null)
                                         sser.AddGroup1Rank(elm.Attribute("科目").Value, int.Parse(elm.Attribute("排名").Value));
+                                    break;
                                 }
                             }
                         } 

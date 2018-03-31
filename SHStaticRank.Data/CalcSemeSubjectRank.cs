@@ -11,7 +11,8 @@ namespace SHStaticRank.Data
     {
         public static void Setup()
         {
-            var button = FISCA.Presentation.MotherForm.RibbonBarItems["教務作業", "批次作業/檢視"]["成績作業"]["計算固定排名(測試版)"]["計算學期成績固定排名"];
+            var button = FISCA.Presentation.MotherForm.RibbonBarItems["教務作業", "批次作業/檢視"]["成績作業"]["計算固定排名"]["計算學期成績固定排名"];
+            // 2018/3/31 穎驊整理模組註解，本功能的權限為 教務作業/功能按鈕/計算成績，先暫時維持原樣
             button.Enable = FISCA.Permission.UserAcl.Current["Button0670"].Executable;//MotherForm.RibbonBarItems["教務作業", "批次作業/檢視"]["成績作業"]["學期成績處理"].Enable = CurrentUser.Acl["Button0670"].Executable;
             button.Click += delegate
             {

@@ -69,7 +69,7 @@ namespace SHStaticRank2.Data
         public static Dictionary<string, string> GetStudentSATSerNoByStudentIDList(List<string> StudentIDList)
         {
             Dictionary<string, string> retValue = new Dictionary<string, string>();
-            if(StudentIDList.Count>0)
+            if (StudentIDList.Count > 0)
             {
                 try
                 {
@@ -99,8 +99,8 @@ namespace SHStaticRank2.Data
             if (StudentIDList.Count > 0)
             {
                 QueryHelper qh = new QueryHelper();
-                string query = "select ref_student_id as sid,school_year,semester,grade_year,class_rating,dept_rating,year_rating,group_rating from sems_entry_score where ref_student_id in ("+string.Join(",",StudentIDList.ToArray())+") and entry_group=1  order by ref_student_id,grade_year,semester";                
-              
+                string query = "select ref_student_id as sid,school_year,semester,grade_year,class_rating,dept_rating,year_rating,group_rating from sems_entry_score where ref_student_id in (" + string.Join(",", StudentIDList.ToArray()) + ") and entry_group=1  order by ref_student_id,grade_year,semester";
+
                 DataTable dt = qh.Select(query);
                 foreach (DataRow dr in dt.Rows)
                 {
@@ -147,7 +147,7 @@ namespace SHStaticRank2.Data
                                 }
                             }
                         }
-                        
+
                         // 科排
                         if (!string.IsNullOrEmpty(dStr))
                         {
@@ -237,88 +237,124 @@ namespace SHStaticRank2.Data
 
         public static Dictionary<string, List<StudSemsSubjRating>> GetStudSemsSubjRatingByStudentID(List<string> StudentIDList)
         {
+            //2018/3/31 穎驊註解，因應新民的客服#5822 無法轉出大學個人申請前五學期成績單，其學校一筆查詢太多，會造成資料庫當機的問題
+            //在此改寫，倘若學生數太多，則分500人一批，來做查詢
             Dictionary<string, List<StudSemsSubjRating>> retValue = new Dictionary<string, List<StudSemsSubjRating>>();
-            if (StudentIDList.Count > 0)
+            if (StudentIDList.Count > 0 && StudentIDList.Count < 500)
             {
-                QueryHelper qh = new QueryHelper();
-                string query = "select ref_student_id as sid,school_year,semester,grade_year,class_rating,dept_rating,year_rating,group_rating from sems_subj_score where ref_student_id in (" + string.Join(",", StudentIDList.ToArray()) + ")  order by ref_student_id,grade_year,semester";
-
-                DataTable dt = qh.Select(query);
-                foreach (DataRow dr in dt.Rows)
+                retValue = GetStudSemsSubjRatingByStudentID_fx(StudentIDList);
+            }
+            //假如學生數大於500 則分批作業
+            if (StudentIDList.Count >= 500)
+            {
+                List<List<string>> listGroup = new List<List<string>>();
+                int j = 500;
+                for (int i = 0; i < StudentIDList.Count; i += 500)
                 {
-                    string sid = dr["sid"].ToString();
+                    List<string> cList = new List<string>();
+                    cList = StudentIDList.Take(j).Skip(i).ToList();
+                    j += 500;
+                    listGroup.Add(cList);
+                }
+                // 把分匹的查詢結果，再併成dict ，以利回傳結果
+                foreach (List<string> list in listGroup)
+                {
+                    Dictionary<string, List<StudSemsSubjRating>> retValue_batch = new Dictionary<string, List<StudSemsSubjRating>>();
 
-                    if (!retValue.ContainsKey(sid))
-                        retValue.Add(sid, new List<StudSemsSubjRating>());
+                    retValue_batch = GetStudSemsSubjRatingByStudentID_fx(list);
 
-                    StudSemsSubjRating sser = new StudSemsSubjRating();
-                    sser.StudentID = sid;
-                    sser.SchoolYear = dr["school_year"].ToString();
-                    sser.Semester = dr["semester"].ToString();
-                    sser.GradeYear = dr["grade_year"].ToString();                    
-                    // Parse XML
-                    try
+                    retValue = retValue.Concat(retValue_batch).ToDictionary(k => k.Key, v => v.Value);
+                }
+
+
+            }
+            return retValue;
+        }
+        // 舊的方法，不變
+        private static Dictionary<string, List<StudSemsSubjRating>> GetStudSemsSubjRatingByStudentID_fx(List<string> StudentIDList)
+        {
+            Dictionary<string, List<StudSemsSubjRating>> _retValue = new Dictionary<string, List<StudSemsSubjRating>>();
+
+
+            QueryHelper qh = new QueryHelper();
+            string query = "select ref_student_id as sid,school_year,semester,grade_year,class_rating,dept_rating,year_rating,group_rating from sems_subj_score where ref_student_id in (" + string.Join(",", StudentIDList.ToArray()) + ")  order by ref_student_id,grade_year,semester";
+
+            DataTable dt = qh.Select(query);
+            foreach (DataRow dr in dt.Rows)
+            {
+                string sid = dr["sid"].ToString();
+
+                if (!_retValue.ContainsKey(sid))
+                    _retValue.Add(sid, new List<StudSemsSubjRating>());
+
+                StudSemsSubjRating sser = new StudSemsSubjRating();
+                sser.StudentID = sid;
+                sser.SchoolYear = dr["school_year"].ToString();
+                sser.Semester = dr["semester"].ToString();
+                sser.GradeYear = dr["grade_year"].ToString();
+                // Parse XML
+                try
+                {
+                    string cStr = dr["class_rating"].ToString();
+                    string dStr = dr["dept_rating"].ToString();
+                    string yStr = dr["year_rating"].ToString();
+                    string g1Str = dr["group_rating"].ToString();
+
+                    // 班排
+                    if (!string.IsNullOrEmpty(cStr))
                     {
-                        string cStr = dr["class_rating"].ToString();
-                        string dStr = dr["dept_rating"].ToString();
-                        string yStr = dr["year_rating"].ToString();
-                        string g1Str = dr["group_rating"].ToString();
-
-                        // 班排
-                        if (!string.IsNullOrEmpty(cStr))
+                        XElement elmC = XElement.Parse(cStr);
+                        foreach (XElement elm in elmC.Elements("Item"))
                         {
-                            XElement elmC = XElement.Parse(cStr);
-                            foreach (XElement elm in elmC.Elements("Item"))
+                            if (elm.Attribute("科目") != null)
                             {
-                                if (elm.Attribute("科目") != null)
-                                {
-                                    if (elm.Attribute("成績人數") != null)
-                                        sser.AddClassCount(elm.Attribute("科目").Value, int.Parse(elm.Attribute("成績人數").Value));
+                                if (elm.Attribute("成績人數") != null)
+                                    sser.AddClassCount(elm.Attribute("科目").Value, int.Parse(elm.Attribute("成績人數").Value));
 
-                                    if (elm.Attribute("排名") != null)
-                                        sser.AddClassRank(elm.Attribute("科目").Value, int.Parse(elm.Attribute("排名").Value));
-                                }
+                                if (elm.Attribute("排名") != null)
+                                    sser.AddClassRank(elm.Attribute("科目").Value, int.Parse(elm.Attribute("排名").Value));
                             }
                         }
+                    }
 
-                        // 科排
-                        if (!string.IsNullOrEmpty(dStr))
+                    // 科排
+                    if (!string.IsNullOrEmpty(dStr))
+                    {
+                        XElement elmC = XElement.Parse(dStr);
+                        foreach (XElement elm in elmC.Elements("Item"))
                         {
-                            XElement elmC = XElement.Parse(dStr);
-                            foreach (XElement elm in elmC.Elements("Item"))
+                            if (elm.Attribute("科目") != null)
                             {
-                                if (elm.Attribute("科目") != null)
-                                {
-                                    if (elm.Attribute("成績人數") != null)
-                                        sser.AddDeptCount(elm.Attribute("科目").Value, int.Parse(elm.Attribute("成績人數").Value));
+                                if (elm.Attribute("成績人數") != null)
+                                    sser.AddDeptCount(elm.Attribute("科目").Value, int.Parse(elm.Attribute("成績人數").Value));
 
-                                    if (elm.Attribute("排名") != null)
-                                        sser.AddDeptRank(elm.Attribute("科目").Value, int.Parse(elm.Attribute("排名").Value));
-                                }
+                                if (elm.Attribute("排名") != null)
+                                    sser.AddDeptRank(elm.Attribute("科目").Value, int.Parse(elm.Attribute("排名").Value));
                             }
                         }
-                        // 年排
-                        if (!string.IsNullOrEmpty(yStr))
+                    }
+                    // 年排
+                    if (!string.IsNullOrEmpty(yStr))
+                    {
+                        XElement elmC = XElement.Parse(yStr);
+                        foreach (XElement elm in elmC.Elements("Item"))
                         {
-                            XElement elmC = XElement.Parse(yStr);
-                            foreach (XElement elm in elmC.Elements("Item"))
+                            if (elm.Attribute("科目") != null)
                             {
-                                if (elm.Attribute("科目") != null)
-                                {
-                                    if (elm.Attribute("成績人數") != null)
-                                        sser.AddYearCount(elm.Attribute("科目").Value, int.Parse(elm.Attribute("成績人數").Value));
+                                if (elm.Attribute("成績人數") != null)
+                                    sser.AddYearCount(elm.Attribute("科目").Value, int.Parse(elm.Attribute("成績人數").Value));
 
-                                    if (elm.Attribute("排名") != null)
-                                        sser.AddYearRank(elm.Attribute("科目").Value, int.Parse(elm.Attribute("排名").Value));
-                                }
+                                if (elm.Attribute("排名") != null)
+                                    sser.AddYearRank(elm.Attribute("科目").Value, int.Parse(elm.Attribute("排名").Value));
                             }
                         }
+                    }
 
-                        // 類1排
-                        if (!string.IsNullOrEmpty(g1Str))
-                        {
-                            XElement elmC = XElement.Parse(g1Str);
-                            foreach (XElement elmR in elmC.Elements("Rating"))
+                    // 類1排
+                    if (!string.IsNullOrEmpty(g1Str))
+                    {
+                        XElement elmC = XElement.Parse(g1Str);
+                        foreach (XElement elmR in elmC.Elements("Rating"))
                             foreach (XElement elm in elmR.Elements("Item"))
                             {
                                 if (elm.Attribute("科目") != null)
@@ -331,14 +367,21 @@ namespace SHStaticRank2.Data
                                     break;
                                 }
                             }
-                        } 
                     }
-                    catch (Exception ex) { }
-
-                    retValue[sid].Add(sser);
                 }
+                catch (Exception ex) { }
+
+                _retValue[sid].Add(sser);
             }
-            return retValue;
+
+
+
+
+            return _retValue;
         }
+
+
+
+
     }
 }

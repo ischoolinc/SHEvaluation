@@ -20,7 +20,7 @@ namespace SHStaticRank2.Data
         public static DataTable _table = new DataTable();
         public static string FolderName = "";
         static Dictionary<string, List<string>> SubjMappingDict = new Dictionary<string, List<string>>();
-        
+
 
         public static void Setup(SHStaticRank2.Data.Configure setting)
         {
@@ -32,13 +32,13 @@ namespace SHStaticRank2.Data
             Dictionary<string, Aspose.Cells.Workbook> _ExcelCellDict = new Dictionary<string, Aspose.Cells.Workbook>();
             List<memoText> _memoText = new List<memoText>();
             List<string> _PPSubjNameList = new List<string>();
-        
+
             AccessHelper accessHelper = new AccessHelper();
             UpdateHelper updateHelper = new UpdateHelper();
             Dictionary<string, List<StudentRecord>> gradeyearStudents = new Dictionary<string, List<StudentRecord>>();
             System.ComponentModel.BackgroundWorker bkw = new System.ComponentModel.BackgroundWorker();
             bkw.WorkerReportsProgress = true;
-            bkw.ProgressChanged += delegate(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+            bkw.ProgressChanged += delegate (object sender, System.ComponentModel.ProgressChangedEventArgs e)
             {
                 FISCA.Presentation.MotherForm.SetStatusBarMessage("多學期科目成績固定排名計算中...", e.ProgressPercentage);
             };
@@ -92,7 +92,7 @@ namespace SHStaticRank2.Data
             bkw.DoWork += delegate
             {
                 try
-                {                    
+                {
 
                     FolderName = "多學期科目成績固定排名" + DateTime.Now.Year + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day) + string.Format("{0:00}", DateTime.Now.Hour) + string.Format("{0:00}", DateTime.Now.Minute);
 
@@ -851,7 +851,7 @@ namespace SHStaticRank2.Data
 
                             List<string> HasSubjNameList = new List<string>();
                             List<string> newMappingList = new List<string>();
-                            
+
                             foreach (string key in SubjMappingDict.Keys)
                             {
                                 if (!HasSubjNameList.Contains(key))
@@ -900,7 +900,7 @@ namespace SHStaticRank2.Data
                         { }
 
                         #endregion
-                        
+
 
 
                         foreach (var studentRec in studentList)
@@ -1282,11 +1282,11 @@ namespace SHStaticRank2.Data
                                 #endregion
                             }
                             #endregion 處理列印科目成績
-                            
-                            
+
+
                             // 2015/10/22 因實中新增
                             #region 處理回歸科目成績
-                            
+
                             // 建立學生成績索引                      
                             try
                             {
@@ -1298,13 +1298,13 @@ namespace SHStaticRank2.Data
                                     bool chkHasSubjectName = false;
                                     bool chkHasTag1 = false, chkHasTag2 = false;
                                     decimal sumScore11 = 0, sumCredit11 = 0, sumScore12 = 0, sumCredit12 = 0, sumScore21 = 0, sumCredit21 = 0, sumScore22 = 0, sumCredit22 = 0, sumScore31 = 0, sumCredit31 = 0, sumScore32 = 0, sumCredit32 = 0, sumScore41 = 0, sumCredit41 = 0, sumScore42 = 0, sumCredit42 = 0;
-                                    
+
                                     #region 填入科目成績
                                     foreach (string MappingSubj in SubjMappingDict[SubjName])
                                     {
                                         decimal score = decimal.MinValue, tryParseScore;
-                                        bool match = false;                                   
-                                                                            
+                                        bool match = false;
+
 
                                         // 讀取學生學期成績資料
                                         foreach (var subjectScore in studentRec.SemesterSubjectScoreList)
@@ -1325,7 +1325,7 @@ namespace SHStaticRank2.Data
 
                                                 score = 0;
                                                 chkHasSubjectName = true;
-                                         
+
 
                                                 #region 取最高分
                                                 if (setting.use手動調整成績 && decimal.TryParse(subjectScore.Detail.GetAttribute("擇優採計成績"), out tryParseScore))
@@ -1436,316 +1436,316 @@ namespace SHStaticRank2.Data
                                     if (selectScore.ContainsKey(subjKeyR1))
                                     {
 
-                                    // 處理分數
-                                    if (sumCredit11 > 0)
-                                    {
-                                        selectScore[subjKeyR1].gsScore11 = Math.Round(sumScore11 / sumCredit11, 0, MidpointRounding.AwayFromZero);
-                                        selectScore[subjKeyR1].gsCredit11 = sumCredit11;
-                                        selectScore[subjKeyR1].subjCount++;
-                                        selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit11.Value;
-                                        selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore11.Value;
-                                        selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore11.Value * selectScore[subjKeyR1].gsCredit11.Value;
-
-                                        if (studentRec.Fields.ContainsKey("tag1"))
+                                        // 處理分數
+                                        if (sumCredit11 > 0)
                                         {
-                                            chkHasTag1 = true;
-                                            // 總分
-                                            selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore11.Value; ;
-                                            // 總分加權
-                                            selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore11.Value * selectScore[subjKeyR1].gsCredit11.Value;
-                                            // 筆數
-                                            selectScore[subjKeyR1].subjCountC1++;
-                                            // 學分加總
-                                            selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit11.Value;
+                                            selectScore[subjKeyR1].gsScore11 = Math.Round(sumScore11 / sumCredit11, 0, MidpointRounding.AwayFromZero);
+                                            selectScore[subjKeyR1].gsCredit11 = sumCredit11;
+                                            selectScore[subjKeyR1].subjCount++;
+                                            selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit11.Value;
+                                            selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore11.Value;
+                                            selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore11.Value * selectScore[subjKeyR1].gsCredit11.Value;
+
+                                            if (studentRec.Fields.ContainsKey("tag1"))
+                                            {
+                                                chkHasTag1 = true;
+                                                // 總分
+                                                selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore11.Value; ;
+                                                // 總分加權
+                                                selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore11.Value * selectScore[subjKeyR1].gsCredit11.Value;
+                                                // 筆數
+                                                selectScore[subjKeyR1].subjCountC1++;
+                                                // 學分加總
+                                                selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit11.Value;
+                                            }
+
+                                            if (studentRec.Fields.ContainsKey("tag2"))
+                                            {
+                                                chkHasTag2 = true;
+                                                // 總分
+                                                selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore11.Value; ;
+                                                // 總分加權
+                                                selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore11.Value * selectScore[subjKeyR1].gsCredit11.Value;
+                                                // 筆數
+                                                selectScore[subjKeyR1].subjCountC2++;
+                                                // 學分加總
+                                                selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit11.Value;
+                                            }
+                                        }
+                                        if (sumCredit12 > 0)
+                                        {
+                                            selectScore[subjKeyR1].gsScore12 = Math.Round(sumScore12 / sumCredit12, 0, MidpointRounding.AwayFromZero);
+                                            selectScore[subjKeyR1].gsCredit12 = sumCredit12;
+                                            selectScore[subjKeyR1].subjCount++;
+                                            selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit12.Value;
+                                            selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore12.Value;
+                                            selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore12.Value * selectScore[subjKeyR1].gsCredit12.Value;
+
+                                            if (studentRec.Fields.ContainsKey("tag1"))
+                                            {
+                                                chkHasTag1 = true;
+                                                // 總分
+                                                selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore12.Value; ;
+                                                // 總分加權
+                                                selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore12.Value * selectScore[subjKeyR1].gsCredit12.Value;
+                                                // 筆數
+                                                selectScore[subjKeyR1].subjCountC1++;
+                                                // 學分加總
+                                                selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit12.Value;
+                                            }
+
+                                            if (studentRec.Fields.ContainsKey("tag2"))
+                                            {
+                                                chkHasTag2 = true;
+                                                // 總分
+                                                selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore12.Value; ;
+                                                // 總分加權
+                                                selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore12.Value * selectScore[subjKeyR1].gsCredit12.Value;
+                                                // 筆數
+                                                selectScore[subjKeyR1].subjCountC2++;
+                                                // 學分加總
+                                                selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit12.Value;
+                                            }
+
+                                        }
+                                        if (sumCredit21 > 0)
+                                        {
+                                            selectScore[subjKeyR1].gsScore21 = Math.Round(sumScore21 / sumCredit21, 0, MidpointRounding.AwayFromZero);
+                                            selectScore[subjKeyR1].gsCredit21 = sumCredit21;
+                                            selectScore[subjKeyR1].subjCount++;
+                                            selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit21.Value;
+                                            selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore21.Value;
+                                            selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore21.Value * selectScore[subjKeyR1].gsCredit21.Value;
+
+                                            if (studentRec.Fields.ContainsKey("tag1"))
+                                            {
+                                                chkHasTag1 = true;
+                                                // 總分
+                                                selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore21.Value; ;
+                                                // 總分加權
+                                                selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore21.Value * selectScore[subjKeyR1].gsCredit21.Value;
+                                                // 筆數
+                                                selectScore[subjKeyR1].subjCountC1++;
+                                                // 學分加總
+                                                selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit21.Value;
+                                            }
+
+                                            if (studentRec.Fields.ContainsKey("tag2"))
+                                            {
+                                                chkHasTag2 = true;
+                                                // 總分
+                                                selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore21.Value; ;
+                                                // 總分加權
+                                                selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore21.Value * selectScore[subjKeyR1].gsCredit21.Value;
+                                                // 筆數
+                                                selectScore[subjKeyR1].subjCountC2++;
+                                                // 學分加總
+                                                selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit21.Value;
+                                            }
+                                        }
+                                        if (sumCredit22 > 0)
+                                        {
+                                            selectScore[subjKeyR1].gsScore22 = Math.Round(sumScore22 / sumCredit22, 0, MidpointRounding.AwayFromZero);
+                                            selectScore[subjKeyR1].gsCredit22 = sumCredit22;
+                                            selectScore[subjKeyR1].subjCount++;
+                                            selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit22.Value;
+                                            selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore22.Value;
+                                            selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore22.Value * selectScore[subjKeyR1].gsCredit22.Value;
+
+                                            if (studentRec.Fields.ContainsKey("tag1"))
+                                            {
+                                                chkHasTag1 = true;
+                                                // 總分
+                                                selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore22.Value; ;
+                                                // 總分加權
+                                                selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore22.Value * selectScore[subjKeyR1].gsCredit22.Value;
+                                                // 筆數
+                                                selectScore[subjKeyR1].subjCountC1++;
+                                                // 學分加總
+                                                selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit22.Value;
+                                            }
+
+                                            if (studentRec.Fields.ContainsKey("tag2"))
+                                            {
+                                                chkHasTag2 = true;
+                                                // 總分
+                                                selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore22.Value; ;
+                                                // 總分加權
+                                                selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore22.Value * selectScore[subjKeyR1].gsCredit22.Value;
+                                                // 筆數
+                                                selectScore[subjKeyR1].subjCountC2++;
+                                                // 學分加總
+                                                selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit22.Value;
+                                            }
+
+                                        }
+                                        if (sumCredit31 > 0)
+                                        {
+                                            selectScore[subjKeyR1].gsScore31 = Math.Round(sumScore31 / sumCredit31, 0, MidpointRounding.AwayFromZero);
+                                            selectScore[subjKeyR1].gsCredit31 = sumCredit31;
+                                            selectScore[subjKeyR1].subjCount++;
+                                            selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit31.Value;
+                                            selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore31.Value;
+                                            selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore31.Value * selectScore[subjKeyR1].gsCredit31.Value;
+
+                                            if (studentRec.Fields.ContainsKey("tag1"))
+                                            {
+                                                chkHasTag1 = true;
+                                                // 總分
+                                                selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore31.Value; ;
+                                                // 總分加權
+                                                selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore31.Value * selectScore[subjKeyR1].gsCredit31.Value;
+                                                // 筆數
+                                                selectScore[subjKeyR1].subjCountC1++;
+                                                // 學分加總
+                                                selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit31.Value;
+                                            }
+
+                                            if (studentRec.Fields.ContainsKey("tag2"))
+                                            {
+                                                chkHasTag2 = true;
+                                                // 總分
+                                                selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore31.Value; ;
+                                                // 總分加權
+                                                selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore31.Value * selectScore[subjKeyR1].gsCredit31.Value;
+                                                // 筆數
+                                                selectScore[subjKeyR1].subjCountC2++;
+                                                // 學分加總
+                                                selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit31.Value;
+                                            }
+
+                                        }
+                                        if (sumCredit32 > 0)
+                                        {
+                                            selectScore[subjKeyR1].gsScore32 = Math.Round(sumScore32 / sumCredit32, 0, MidpointRounding.AwayFromZero);
+                                            selectScore[subjKeyR1].gsCredit32 = sumCredit32;
+                                            selectScore[subjKeyR1].subjCount++;
+                                            selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit32.Value;
+                                            selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore32.Value;
+                                            selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore32.Value * selectScore[subjKeyR1].gsCredit32.Value;
+
+                                            if (studentRec.Fields.ContainsKey("tag1"))
+                                            {
+                                                chkHasTag1 = true;
+                                                // 總分
+                                                selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore32.Value; ;
+                                                // 總分加權
+                                                selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore32.Value * selectScore[subjKeyR1].gsCredit32.Value;
+                                                // 筆數
+                                                selectScore[subjKeyR1].subjCountC1++;
+                                                // 學分加總
+                                                selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit32.Value;
+                                            }
+
+                                            if (studentRec.Fields.ContainsKey("tag2"))
+                                            {
+                                                chkHasTag2 = true;
+                                                // 總分
+                                                selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore32.Value; ;
+                                                // 總分加權
+                                                selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore32.Value * selectScore[subjKeyR1].gsCredit32.Value;
+                                                // 筆數
+                                                selectScore[subjKeyR1].subjCountC2++;
+                                                // 學分加總
+                                                selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit32.Value;
+                                            }
+
+                                        }
+                                        if (sumCredit41 > 0)
+                                        {
+                                            selectScore[subjKeyR1].gsScore41 = Math.Round(sumScore41 / sumCredit41, 0, MidpointRounding.AwayFromZero);
+                                            selectScore[subjKeyR1].gsCredit41 = sumCredit41;
+                                            selectScore[subjKeyR1].subjCount++;
+                                            selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit41.Value;
+                                            selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore41.Value;
+                                            selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore41.Value * selectScore[subjKeyR1].gsCredit41.Value;
+
+                                            if (studentRec.Fields.ContainsKey("tag1"))
+                                            {
+                                                chkHasTag1 = true;
+                                                // 總分
+                                                selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore41.Value; ;
+                                                // 總分加權
+                                                selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore41.Value * selectScore[subjKeyR1].gsCredit41.Value;
+                                                // 筆數
+                                                selectScore[subjKeyR1].subjCountC1++;
+                                                // 學分加總
+                                                selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit41.Value;
+                                            }
+
+                                            if (studentRec.Fields.ContainsKey("tag2"))
+                                            {
+                                                chkHasTag2 = true;
+                                                // 總分
+                                                selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore41.Value; ;
+                                                // 總分加權
+                                                selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore41.Value * selectScore[subjKeyR1].gsCredit41.Value;
+                                                // 筆數
+                                                selectScore[subjKeyR1].subjCountC2++;
+                                                // 學分加總
+                                                selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit41.Value;
+                                            }
+
+                                        }
+                                        if (sumCredit42 > 0)
+                                        {
+                                            selectScore[subjKeyR1].gsScore42 = Math.Round(sumScore42 / sumCredit42, 0, MidpointRounding.AwayFromZero);
+                                            selectScore[subjKeyR1].gsCredit42 = sumCredit42;
+                                            selectScore[subjKeyR1].subjCount++;
+                                            selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit42.Value;
+                                            selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore42.Value;
+                                            selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore42.Value * selectScore[subjKeyR1].gsCredit42.Value;
+
+                                            if (studentRec.Fields.ContainsKey("tag1"))
+                                            {
+                                                chkHasTag1 = true;
+                                                // 總分
+                                                selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore42.Value; ;
+                                                // 總分加權
+                                                selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore42.Value * selectScore[subjKeyR1].gsCredit42.Value;
+                                                // 筆數
+                                                selectScore[subjKeyR1].subjCountC1++;
+                                                // 學分加總
+                                                selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit42.Value;
+                                            }
+
+                                            if (studentRec.Fields.ContainsKey("tag2"))
+                                            {
+                                                chkHasTag2 = true;
+                                                // 總分
+                                                selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore42.Value; ;
+                                                // 總分加權
+                                                selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore42.Value * selectScore[subjKeyR1].gsCredit42.Value;
+                                                // 筆數
+                                                selectScore[subjKeyR1].subjCountC2++;
+                                                // 學分加總
+                                                selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit42.Value;
+                                            }
+
                                         }
 
-                                        if (studentRec.Fields.ContainsKey("tag2"))
-                                        {
-                                            chkHasTag2 = true;
-                                            // 總分
-                                            selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore11.Value; ;
-                                            // 總分加權
-                                            selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore11.Value * selectScore[subjKeyR1].gsCredit11.Value;
-                                            // 筆數
-                                            selectScore[subjKeyR1].subjCountC2++;
-                                            // 學分加總
-                                            selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit11.Value;
-                                        }
+                                        // 計算平均,加權平均
+                                        if (selectScore[subjKeyR1].subjCount > 0)
+                                            selectScore[subjKeyR1].avgScore = selectScore[subjKeyR1].sumScore / selectScore[subjKeyR1].subjCount;
+
+                                        if (selectScore[subjKeyR1].subjCountC1 > 0)
+                                            selectScore[subjKeyR1].avgScoreC1 = selectScore[subjKeyR1].sumScoreC1 / selectScore[subjKeyR1].subjCountC1;
+
+                                        if (selectScore[subjKeyR1].subjCountC2 > 0)
+                                            selectScore[subjKeyR1].avgScoreC2 = selectScore[subjKeyR1].sumScoreC2 / selectScore[subjKeyR1].subjCountC2;
+
+                                        if (selectScore[subjKeyR1].sumCredit > 0)
+                                            selectScore[subjKeyR1].avgScoreA = selectScore[subjKeyR1].sumScoreA / selectScore[subjKeyR1].sumCredit;
+
+                                        if (selectScore[subjKeyR1].sumCreditC1 > 0)
+                                            selectScore[subjKeyR1].avgScoreAC1 = selectScore[subjKeyR1].sumScoreAC1 / selectScore[subjKeyR1].sumCreditC1;
+
+                                        if (selectScore[subjKeyR1].sumCreditC2 > 0)
+                                            selectScore[subjKeyR1].avgScoreAC2 = selectScore[subjKeyR1].sumScoreAC2 / selectScore[subjKeyR1].sumCreditC2;
+
                                     }
-                                    if (sumCredit12 > 0)
-                                    {
-                                        selectScore[subjKeyR1].gsScore12 = Math.Round(sumScore12 / sumCredit12, 0, MidpointRounding.AwayFromZero);
-                                        selectScore[subjKeyR1].gsCredit12 = sumCredit12;
-                                        selectScore[subjKeyR1].subjCount++;
-                                        selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit12.Value;
-                                        selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore12.Value;
-                                        selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore12.Value * selectScore[subjKeyR1].gsCredit12.Value;
-
-                                        if (studentRec.Fields.ContainsKey("tag1"))
-                                        {
-                                            chkHasTag1 = true;
-                                            // 總分
-                                            selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore12.Value; ;
-                                            // 總分加權
-                                            selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore12.Value * selectScore[subjKeyR1].gsCredit12.Value;
-                                            // 筆數
-                                            selectScore[subjKeyR1].subjCountC1++;
-                                            // 學分加總
-                                            selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit12.Value;
-                                        }
-
-                                        if (studentRec.Fields.ContainsKey("tag2"))
-                                        {
-                                            chkHasTag2 = true;
-                                            // 總分
-                                            selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore12.Value; ;
-                                            // 總分加權
-                                            selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore12.Value * selectScore[subjKeyR1].gsCredit12.Value;
-                                            // 筆數
-                                            selectScore[subjKeyR1].subjCountC2++;
-                                            // 學分加總
-                                            selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit12.Value;
-                                        }
-
-                                    }
-                                    if (sumCredit21 > 0)
-                                    {
-                                        selectScore[subjKeyR1].gsScore21 = Math.Round(sumScore21 / sumCredit21, 0, MidpointRounding.AwayFromZero);
-                                        selectScore[subjKeyR1].gsCredit21 = sumCredit21;
-                                        selectScore[subjKeyR1].subjCount++;
-                                        selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit21.Value;
-                                        selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore21.Value;
-                                        selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore21.Value * selectScore[subjKeyR1].gsCredit21.Value;
-
-                                        if (studentRec.Fields.ContainsKey("tag1"))
-                                        {
-                                            chkHasTag1 = true;
-                                            // 總分
-                                            selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore21.Value; ;
-                                            // 總分加權
-                                            selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore21.Value * selectScore[subjKeyR1].gsCredit21.Value;
-                                            // 筆數
-                                            selectScore[subjKeyR1].subjCountC1++;
-                                            // 學分加總
-                                            selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit21.Value;
-                                        }
-
-                                        if (studentRec.Fields.ContainsKey("tag2"))
-                                        {
-                                            chkHasTag2 = true;
-                                            // 總分
-                                            selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore21.Value; ;
-                                            // 總分加權
-                                            selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore21.Value * selectScore[subjKeyR1].gsCredit21.Value;
-                                            // 筆數
-                                            selectScore[subjKeyR1].subjCountC2++;
-                                            // 學分加總
-                                            selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit21.Value;
-                                        }
-                                    }
-                                    if (sumCredit22 > 0)
-                                    {
-                                        selectScore[subjKeyR1].gsScore22 = Math.Round(sumScore22 / sumCredit22, 0, MidpointRounding.AwayFromZero);
-                                        selectScore[subjKeyR1].gsCredit22 = sumCredit22;
-                                        selectScore[subjKeyR1].subjCount++;
-                                        selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit22.Value;
-                                        selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore22.Value;
-                                        selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore22.Value * selectScore[subjKeyR1].gsCredit22.Value;
-
-                                        if (studentRec.Fields.ContainsKey("tag1"))
-                                        {
-                                            chkHasTag1 = true;
-                                            // 總分
-                                            selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore22.Value; ;
-                                            // 總分加權
-                                            selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore22.Value * selectScore[subjKeyR1].gsCredit22.Value;
-                                            // 筆數
-                                            selectScore[subjKeyR1].subjCountC1++;
-                                            // 學分加總
-                                            selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit22.Value;
-                                        }
-
-                                        if (studentRec.Fields.ContainsKey("tag2"))
-                                        {
-                                            chkHasTag2 = true;
-                                            // 總分
-                                            selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore22.Value; ;
-                                            // 總分加權
-                                            selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore22.Value * selectScore[subjKeyR1].gsCredit22.Value;
-                                            // 筆數
-                                            selectScore[subjKeyR1].subjCountC2++;
-                                            // 學分加總
-                                            selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit22.Value;
-                                        }
-
-                                    }
-                                    if (sumCredit31 > 0)
-                                    {
-                                        selectScore[subjKeyR1].gsScore31 = Math.Round(sumScore31 / sumCredit31, 0, MidpointRounding.AwayFromZero);
-                                        selectScore[subjKeyR1].gsCredit31 = sumCredit31;
-                                        selectScore[subjKeyR1].subjCount++;
-                                        selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit31.Value;
-                                        selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore31.Value;
-                                        selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore31.Value * selectScore[subjKeyR1].gsCredit31.Value;
-
-                                        if (studentRec.Fields.ContainsKey("tag1"))
-                                        {
-                                            chkHasTag1 = true;
-                                            // 總分
-                                            selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore31.Value; ;
-                                            // 總分加權
-                                            selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore31.Value * selectScore[subjKeyR1].gsCredit31.Value;
-                                            // 筆數
-                                            selectScore[subjKeyR1].subjCountC1++;
-                                            // 學分加總
-                                            selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit31.Value;
-                                        }
-
-                                        if (studentRec.Fields.ContainsKey("tag2"))
-                                        {
-                                            chkHasTag2 = true;
-                                            // 總分
-                                            selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore31.Value; ;
-                                            // 總分加權
-                                            selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore31.Value * selectScore[subjKeyR1].gsCredit31.Value;
-                                            // 筆數
-                                            selectScore[subjKeyR1].subjCountC2++;
-                                            // 學分加總
-                                            selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit31.Value;
-                                        }
-
-                                    }
-                                    if (sumCredit32 > 0)
-                                    {
-                                        selectScore[subjKeyR1].gsScore32 = Math.Round(sumScore32 / sumCredit32, 0, MidpointRounding.AwayFromZero);
-                                        selectScore[subjKeyR1].gsCredit32 = sumCredit32;
-                                        selectScore[subjKeyR1].subjCount++;
-                                        selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit32.Value;
-                                        selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore32.Value;
-                                        selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore32.Value * selectScore[subjKeyR1].gsCredit32.Value;
-
-                                        if (studentRec.Fields.ContainsKey("tag1"))
-                                        {
-                                            chkHasTag1 = true;
-                                            // 總分
-                                            selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore32.Value; ;
-                                            // 總分加權
-                                            selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore32.Value * selectScore[subjKeyR1].gsCredit32.Value;
-                                            // 筆數
-                                            selectScore[subjKeyR1].subjCountC1++;
-                                            // 學分加總
-                                            selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit32.Value;
-                                        }
-
-                                        if (studentRec.Fields.ContainsKey("tag2"))
-                                        {
-                                            chkHasTag2 = true;
-                                            // 總分
-                                            selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore32.Value; ;
-                                            // 總分加權
-                                            selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore32.Value * selectScore[subjKeyR1].gsCredit32.Value;
-                                            // 筆數
-                                            selectScore[subjKeyR1].subjCountC2++;
-                                            // 學分加總
-                                            selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit32.Value;
-                                        }
-
-                                    }
-                                    if (sumCredit41 > 0)
-                                    {
-                                        selectScore[subjKeyR1].gsScore41 = Math.Round(sumScore41 / sumCredit41, 0, MidpointRounding.AwayFromZero);
-                                        selectScore[subjKeyR1].gsCredit41 = sumCredit41;
-                                        selectScore[subjKeyR1].subjCount++;
-                                        selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit41.Value;
-                                        selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore41.Value;
-                                        selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore41.Value * selectScore[subjKeyR1].gsCredit41.Value;
-
-                                        if (studentRec.Fields.ContainsKey("tag1"))
-                                        {
-                                            chkHasTag1 = true;
-                                            // 總分
-                                            selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore41.Value; ;
-                                            // 總分加權
-                                            selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore41.Value * selectScore[subjKeyR1].gsCredit41.Value;
-                                            // 筆數
-                                            selectScore[subjKeyR1].subjCountC1++;
-                                            // 學分加總
-                                            selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit41.Value;
-                                        }
-
-                                        if (studentRec.Fields.ContainsKey("tag2"))
-                                        {
-                                            chkHasTag2 = true;
-                                            // 總分
-                                            selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore41.Value; ;
-                                            // 總分加權
-                                            selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore41.Value * selectScore[subjKeyR1].gsCredit41.Value;
-                                            // 筆數
-                                            selectScore[subjKeyR1].subjCountC2++;
-                                            // 學分加總
-                                            selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit41.Value;
-                                        }
-
-                                    }
-                                    if (sumCredit42 > 0)
-                                    {
-                                        selectScore[subjKeyR1].gsScore42 = Math.Round(sumScore42 / sumCredit42, 0, MidpointRounding.AwayFromZero);
-                                        selectScore[subjKeyR1].gsCredit42 = sumCredit42;
-                                        selectScore[subjKeyR1].subjCount++;
-                                        selectScore[subjKeyR1].sumCredit += selectScore[subjKeyR1].gsCredit42.Value;
-                                        selectScore[subjKeyR1].sumScore += selectScore[subjKeyR1].gsScore42.Value;
-                                        selectScore[subjKeyR1].sumScoreA += selectScore[subjKeyR1].gsScore42.Value * selectScore[subjKeyR1].gsCredit42.Value;
-
-                                        if (studentRec.Fields.ContainsKey("tag1"))
-                                        {
-                                            chkHasTag1 = true;
-                                            // 總分
-                                            selectScore[subjKeyR1].sumScoreC1 += selectScore[subjKeyR1].gsScore42.Value; ;
-                                            // 總分加權
-                                            selectScore[subjKeyR1].sumScoreAC1 += selectScore[subjKeyR1].gsScore42.Value * selectScore[subjKeyR1].gsCredit42.Value;
-                                            // 筆數
-                                            selectScore[subjKeyR1].subjCountC1++;
-                                            // 學分加總
-                                            selectScore[subjKeyR1].sumCreditC1 += selectScore[subjKeyR1].gsCredit42.Value;
-                                        }
-
-                                        if (studentRec.Fields.ContainsKey("tag2"))
-                                        {
-                                            chkHasTag2 = true;
-                                            // 總分
-                                            selectScore[subjKeyR1].sumScoreC2 += selectScore[subjKeyR1].gsScore42.Value; ;
-                                            // 總分加權
-                                            selectScore[subjKeyR1].sumScoreAC2 += selectScore[subjKeyR1].gsScore42.Value * selectScore[subjKeyR1].gsCredit42.Value;
-                                            // 筆數
-                                            selectScore[subjKeyR1].subjCountC2++;
-                                            // 學分加總
-                                            selectScore[subjKeyR1].sumCreditC2 += selectScore[subjKeyR1].gsCredit42.Value;
-                                        }
-
-                                    }
-
-                                    // 計算平均,加權平均
-                                    if (selectScore[subjKeyR1].subjCount > 0)
-                                        selectScore[subjKeyR1].avgScore = selectScore[subjKeyR1].sumScore / selectScore[subjKeyR1].subjCount;
-
-                                    if (selectScore[subjKeyR1].subjCountC1 > 0)
-                                        selectScore[subjKeyR1].avgScoreC1 = selectScore[subjKeyR1].sumScoreC1 / selectScore[subjKeyR1].subjCountC1;
-
-                                    if (selectScore[subjKeyR1].subjCountC2 > 0)
-                                        selectScore[subjKeyR1].avgScoreC2 = selectScore[subjKeyR1].sumScoreC2 / selectScore[subjKeyR1].subjCountC2;
-
-                                    if (selectScore[subjKeyR1].sumCredit > 0)
-                                        selectScore[subjKeyR1].avgScoreA = selectScore[subjKeyR1].sumScoreA / selectScore[subjKeyR1].sumCredit;
-
-                                    if (selectScore[subjKeyR1].sumCreditC1 > 0)
-                                        selectScore[subjKeyR1].avgScoreAC1 = selectScore[subjKeyR1].sumScoreAC1 / selectScore[subjKeyR1].sumCreditC1;
-
-                                    if (selectScore[subjKeyR1].sumCreditC2 > 0)
-                                        selectScore[subjKeyR1].avgScoreAC2 = selectScore[subjKeyR1].sumScoreAC2 / selectScore[subjKeyR1].sumCreditC2;
-
-                                }
                                     #endregion
-                                                              
+
 
                                     #region 總分、平均、排名
                                     if (chkHasSubjectName)
@@ -2333,7 +2333,7 @@ namespace SHStaticRank2.Data
                             { }
                             #endregion
 
-                        
+
                             if (setting.計算學業成績排名)
                             {
                                 #region 處理學業成績
@@ -5427,17 +5427,17 @@ namespace SHStaticRank2.Data
                             Aspose.Cells.Workbook data = _ExcelCellDict[key];
 
                             try
-                            {                               
+                            {
                                 foreach (Aspose.Cells.Worksheet sheet in data.Worksheets)
                                 {
-                                    if(sheet.Cells.Rows.Count>0)
+                                    if (sheet.Cells.Rows.Count > 0)
                                         sheet.FreezePanes(1, 0, 1, sheet.Cells.MaxColumn);
                                 }
-                            }                            
-                            catch(Exception ex)
+                            }
+                            catch (Exception ex)
                             {
- 
-                            }                           
+
+                            }
 
                             string inputReportName = "多學期科目成績固定排名";
                             string reportName = "E_" + key + inputReportName;
@@ -6442,12 +6442,12 @@ namespace SHStaticRank2.Data
                         // 讀取各學業排名
                         Dictionary<string, List<StudSemsEntryRating>> StudSemsEntryRatingDict = Utility.GetStudSemsEntryRatingByStudentID(StudIDList);
 
-                        // 讀取各學期各科目排名
+                        // 讀取各學期各科目排名， 2018/3/31 穎驊註解，若一口氣查詢的學生筆數太多(ex:新民高中一屆1640人)此方法有可能造成資料庫記憶體爆掉，而回傳不回結果，可以進去看方法，我有最新改寫，一次500人批次處理。
                         Dictionary<string, List<StudSemsSubjRating>> StudSemsSubjRatingDict = Utility.GetStudSemsSubjRatingByStudentID(StudIDList);
 
                         // 判斷是否產生 PDF
                         if (setting.CheckExportPDF)
-                        {                            
+                        {
                             // 取得 serNo
                             Dictionary<string, string> StudSATSerNoDict = Utility.GetStudentSATSerNoByStudentIDList(StudIDList);
                             int StudCountStart = 0, StudSumCount = gradeyearStudents[gradeyear].Count;
@@ -6455,6 +6455,13 @@ namespace SHStaticRank2.Data
                             #region 產生 PDF 檔案
                             foreach (StudentRecord studRec in gradeyearStudents[gradeyear])
                             {
+                                //2018/3/31 穎驊註解，先在每一輪loop 開頭 就先濾掉不排名學生，可以避免資源浪費，以及
+                                // 可能會造成#6517 DataRow row = _table.NewRow(); 記憶體洩漏的問題，
+                                // 因為在一個DataRow row 產生後，其來源table 會預期它會被加入，
+                                //但若後來造印製表才判斷此份資料不需被加入，就會產生記憶體洩漏，資料比數一大，就會造成系統當機。
+                                if (noRankList.Contains(studRec.StudentID))
+                                    continue;
+
                                 string FileKey = "_" + studRec.StudentID;
                                 string ErrMsg = "";
 
@@ -6505,6 +6512,8 @@ namespace SHStaticRank2.Data
                                     docTemplate = new Aspose.Words.Document(new MemoryStream(Properties.Resources.高中多學期學生成績證明書));
 
                                 doc.Sections.Clear();
+                                //DataTable _d = new DataTable();
+                                //_d = _table.Clone();
                                 DataRow row = _table.NewRow();
                                 row["學校名稱"] = SchoolName;
                                 row["班級"] = studRec.RefClass.ClassName;
@@ -7774,7 +7783,7 @@ namespace SHStaticRank2.Data
                                             }
                                         }
                                         #endregion
-                                        
+
                                         #region 班排
                                         if (ssr.GradeYear == "1" && ssr.Semester == "1")
                                         {
@@ -9728,7 +9737,7 @@ namespace SHStaticRank2.Data
                                 #endregion 處理科目原始成績加權平均平均
 
                                 // 不排名不放入
-                                if(!noRankList.Contains(studRec.StudentID))
+                                if (!noRankList.Contains(studRec.StudentID))
                                 {
                                     _table.Rows.Add(row);
 
@@ -9785,10 +9794,10 @@ namespace SHStaticRank2.Data
                                     doc = null;
                                     GC.Collect();
                                 }
-                                    #endregion
+                                #endregion
 
-                                }
-                                
+                            }
+
                             #endregion
                             try
                             {
@@ -9806,3346 +9815,3353 @@ namespace SHStaticRank2.Data
                             }
                         }
                         else
-                        {                         
-                                #region 產生 Word 檔案
-                                int ClassCountStart = 0, ClassSumCount = classNameList.Count;
-                                foreach (string className in classNameList)
+                        {
+                            #region 產生 Word 檔案
+                            int ClassCountStart = 0, ClassSumCount = classNameList.Count;
+                            foreach (string className in classNameList)
+                            {
+
+                                // 產生 DataRow 資料
+                                List<int> g1List = new List<int>();
+                                List<int> g2List = new List<int>();
+                                List<int> g3List = new List<int>();
+                                List<int> g4List = new List<int>();
+
+                                // Word 套表
+                                // 樣板
+                                Aspose.Words.Document doc = new Aspose.Words.Document();
+                                Aspose.Words.Document docTemplate = setting.Template;
+                                if (docTemplate == null)
+                                    docTemplate = new Aspose.Words.Document(new MemoryStream(Properties.Resources.高中多學期學生成績證明書));
+
+
+                                doc.Sections.Clear();
+
+
+                                foreach (StudentRecord studRec in gradeyearStudents[gradeyear])
                                 {
-
-                                    // 產生 DataRow 資料
-                                    List<int> g1List = new List<int>();
-                                    List<int> g2List = new List<int>();
-                                    List<int> g3List = new List<int>();
-                                    List<int> g4List = new List<int>();
-
-                                    // Word 套表
-                                    // 樣板
-                                    Aspose.Words.Document doc = new Aspose.Words.Document();
-                                    Aspose.Words.Document docTemplate = setting.Template;
-                                    if (docTemplate == null)
-                                        docTemplate = new Aspose.Words.Document(new MemoryStream(Properties.Resources.高中多學期學生成績證明書));
+                                    //2018/3/31 穎驊註解，先在每一輪loop 開頭 就先濾掉不排名學生，可以避免資源浪費，以及
+                                    // 可能會造成#9853 DataRow row = _table.NewRow(); 記憶體洩漏的問題，
+                                    // 因為在一個DataRow row 產生後，其來源table 會預期它會被加入，
+                                    //但若後來造印製表才判斷此份資料不需被加入就會產生記憶體洩漏，資料比數一大，就會造成系統當機。
+                                    if (noRankList.Contains(studRec.StudentID))
+                                        continue;
 
 
-                                    doc.Sections.Clear();
-
-
-                                    foreach (StudentRecord studRec in gradeyearStudents[gradeyear])
+                                    if (studRec.RefClass.ClassName == className)
                                     {
-                                        if (studRec.RefClass.ClassName == className)
+                                        DataRow row = _table.NewRow();
+                                        row["學校名稱"] = SchoolName;
+                                        row["班級"] = studRec.RefClass.ClassName;
+                                        row["座號"] = studRec.SeatNo;
+                                        row["學號"] = studRec.StudentNumber;
+                                        row["學生系統編號"] = studRec.StudentID;
+                                        row["姓名"] = studRec.StudentName;
+                                        row["科別"] = studRec.Department;
+                                        row["類別一分類"] = (cat1Dict.ContainsKey(studRec.StudentID)) ? cat1Dict[studRec.StudentID] : "";
+                                        row["類別二分類"] = (cat2Dict.ContainsKey(studRec.StudentID)) ? cat2Dict[studRec.StudentID] : "";
+                                        row["一年級學年度"] = "";
+                                        row["二年級學年度"] = "";
+                                        row["三年級學年度"] = "";
+                                        row["四年級學年度"] = "";
+                                        g1List.Clear();
+                                        g2List.Clear();
+                                        g3List.Clear();
+                                        g4List.Clear();
+
+                                        int subjIndex = 1;
+                                        // 處理科目
+                                        #region 處理科目
+                                        foreach (string subjName in setting.useSubjectPrintList)
                                         {
+                                            string id = studRec.StudentID + "^^^" + subjName;
 
-                                            DataRow row = _table.NewRow();
-                                            row["學校名稱"] = SchoolName;
-                                            row["班級"] = studRec.RefClass.ClassName;
-                                            row["座號"] = studRec.SeatNo;
-                                            row["學號"] = studRec.StudentNumber;
-                                            row["學生系統編號"] = studRec.StudentID;
-                                            row["姓名"] = studRec.StudentName;
-                                            row["科別"] = studRec.Department;
-                                            row["類別一分類"] = (cat1Dict.ContainsKey(studRec.StudentID)) ? cat1Dict[studRec.StudentID] : "";
-                                            row["類別二分類"] = (cat2Dict.ContainsKey(studRec.StudentID)) ? cat2Dict[studRec.StudentID] : "";
-                                            row["一年級學年度"] = "";
-                                            row["二年級學年度"] = "";
-                                            row["三年級學年度"] = "";
-                                            row["四年級學年度"] = "";
-                                            g1List.Clear();
-                                            g2List.Clear();
-                                            g3List.Clear();
-                                            g4List.Clear();
-
-                                            int subjIndex = 1;
-                                            // 處理科目
-                                            #region 處理科目
-                                            foreach (string subjName in setting.useSubjectPrintList)
+                                            if (selectScore.ContainsKey(id))
                                             {
-                                                string id = studRec.StudentID + "^^^" + subjName;
+                                                row["科目名稱" + subjIndex] = subjName;
 
-                                                if (selectScore.ContainsKey(id))
+                                                if (selectScore[id].gsSchoolYear11.HasValue)
                                                 {
-                                                    row["科目名稱" + subjIndex] = subjName;
-
-                                                    if (selectScore[id].gsSchoolYear11.HasValue)
-                                                    {
-                                                        if (!g1List.Contains(selectScore[id].gsSchoolYear11.Value))
-                                                            g1List.Add(selectScore[id].gsSchoolYear11.Value);
-                                                    }
-                                                    if (selectScore[id].gsSchoolYear12.HasValue)
-                                                    {
-                                                        if (!g1List.Contains(selectScore[id].gsSchoolYear12.Value))
-                                                            g1List.Add(selectScore[id].gsSchoolYear12.Value);
-                                                    }
-
-                                                    if (selectScore[id].gsSchoolYear21.HasValue)
-                                                    {
-                                                        if (!g2List.Contains(selectScore[id].gsSchoolYear21.Value))
-                                                            g2List.Add(selectScore[id].gsSchoolYear21.Value);
-                                                    }
-
-                                                    if (selectScore[id].gsSchoolYear22.HasValue)
-                                                    {
-                                                        if (!g2List.Contains(selectScore[id].gsSchoolYear22.Value))
-                                                            g2List.Add(selectScore[id].gsSchoolYear22.Value);
-                                                    }
-
-                                                    if (selectScore[id].gsSchoolYear31.HasValue)
-                                                    {
-                                                        if (!g3List.Contains(selectScore[id].gsSchoolYear31.Value))
-                                                            g3List.Add(selectScore[id].gsSchoolYear31.Value);
-                                                    }
-                                                    if (selectScore[id].gsSchoolYear32.HasValue)
-                                                    {
-                                                        if (!g3List.Contains(selectScore[id].gsSchoolYear32.Value))
-                                                            g3List.Add(selectScore[id].gsSchoolYear32.Value);
-                                                    }
-
-                                                    if (selectScore[id].gsSchoolYear41.HasValue)
-                                                    {
-                                                        if (!g4List.Contains(selectScore[id].gsSchoolYear41.Value))
-                                                            g4List.Add(selectScore[id].gsSchoolYear41.Value);
-                                                    }
-
-                                                    if (selectScore[id].gsSchoolYear42.HasValue)
-                                                    {
-                                                        if (!g4List.Contains(selectScore[id].gsSchoolYear42.Value))
-                                                            g4List.Add(selectScore[id].gsSchoolYear42.Value);
-                                                    }
-
-                                                    if (selectScore[id].gsScore11.HasValue)
-                                                        row["一上科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore11.Value);
-                                                    if (selectScore[id].gsCredit11.HasValue)
-                                                        row["一上科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit11.Value);
-                                                    if (selectScore[id].gsScore12.HasValue)
-                                                        row["一下科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore12.Value);
-
-                                                    if (selectScore[id].gsCredit12.HasValue)
-                                                        row["一下科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit12.Value);
-                                                    if (selectScore[id].gsScore21.HasValue)
-                                                        row["二上科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore21.Value);
-
-                                                    if (selectScore[id].gsCredit21.HasValue)
-                                                        row["二上科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit21.Value);
-
-                                                    if (selectScore[id].gsScore22.HasValue)
-                                                        row["二下科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore22.Value);
-
-                                                    if (selectScore[id].gsCredit22.HasValue)
-                                                        row["二下科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit22.Value);
-
-                                                    if (selectScore[id].gsScore31.HasValue)
-                                                        row["三上科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore31.Value);
-
-                                                    if (selectScore[id].gsCredit31.HasValue)
-                                                        row["三上科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit31.Value);
-
-                                                    if (selectScore[id].gsScore32.HasValue)
-                                                        row["三下科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore32.Value);
-
-                                                    if (selectScore[id].gsCredit32.HasValue)
-                                                        row["三下科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit32.Value);
-
-                                                    if (selectScore[id].gsScore41.HasValue)
-                                                        row["四上科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore41.Value);
-
-                                                    if (selectScore[id].gsCredit41.HasValue)
-                                                        row["四上科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit41.Value);
-
-                                                    if (selectScore[id].gsScore42.HasValue)
-                                                        row["四下科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore42.Value);
-
-                                                    if (selectScore[id].gsCredit42.HasValue)
-                                                        row["四下科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit42.Value);
-
-                                                    row["科目平均" + subjIndex] = Utility.NoRound(selectScore[id].avgScore);
-                                                    row["科目總分" + subjIndex] = Utility.NoRound(selectScore[id].sumScore);
-                                                    row["科目加權平均" + subjIndex] = Utility.NoRound(selectScore[id].avgScoreA);
-                                                    row["科目加權總分" + subjIndex] = Utility.NoRound(selectScore[id].sumScoreA);
-
-                                                    if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
-                                                    {
-                                                        string key4 = "加權平均班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key4))
-                                                        {
-                                                            int rr = ranks[key4].IndexOf(selectScore[id].avgScoreA) + 1;
-                                                            row["科目加權平均班排名" + subjIndex] = rr;
-                                                            row["科目加權平均班排名母數" + subjIndex] = ranks[key4].Count;
-                                                            row["科目加權平均班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key4].Count);
-                                                        }
-
-                                                        key4 = "加權平均科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key4))
-                                                        {
-                                                            int rr = ranks[key4].IndexOf(selectScore[id].avgScoreA) + 1;
-                                                            row["科目加權平均科排名" + subjIndex] = rr;
-                                                            row["科目加權平均科排名母數" + subjIndex] = ranks[key4].Count;
-                                                            row["科目加權平均科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key4].Count);
-
-                                                        }
-                                                        key4 = "加權平均全校排名" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key4))
-                                                        {
-                                                            int rr = ranks[key4].IndexOf(selectScore[id].avgScoreA) + 1;
-                                                            row["科目加權平均校排名" + subjIndex] = rr;
-                                                            row["科目加權平均校排名母數" + subjIndex] = ranks[key4].Count;
-                                                            row["科目加權平均校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key4].Count);
-                                                        }
-                                                        if (studRec.Fields.ContainsKey("tag1"))
-                                                        {
-                                                            key4 = "加權平均類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key4))
-                                                            {
-                                                                if (ranks[key4].IndexOf(selectScore[id].avgScoreAC1) >= 0)
-                                                                {
-                                                                    int rr = ranks[key4].IndexOf(selectScore[id].avgScoreAC1) + 1;
-                                                                    row["科目加權平均類別一排名" + subjIndex] = rr;
-                                                                    row["科目加權平均類別一排名母數" + subjIndex] = ranks[key4].Count;
-                                                                    row["科目加權平均類別一排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key4].Count);
-                                                                }
-                                                            }
-                                                        }
-                                                        if (studRec.Fields.ContainsKey("tag2"))
-                                                        {
-                                                            if (ranks.ContainsKey(key4))
-                                                            {
-                                                                if (ranks[key4].IndexOf(selectScore[id].avgScoreAC2) >= 0)
-                                                                {
-                                                                    int rr = ranks[key4].IndexOf(selectScore[id].avgScoreAC2) + 1;
-                                                                    row["科目加權平均類別二排名" + subjIndex] = rr;
-                                                                    row["科目加權平均類別二排名母數" + subjIndex] = ranks[key4].Count;
-                                                                    row["科目加權平均類別二排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key4].Count);
-                                                                }
-                                                            }
-                                                        }
-
-                                                        string key2 = "加權總分班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id].sumScoreA) + 1;
-                                                            row["科目加權總分班排名" + subjIndex] = rr;
-                                                            row["科目加權總分班排名母數" + subjIndex] = ranks[key2].Count;
-                                                            row["科目加權總分班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-                                                        key2 = "加權總分科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id].sumScoreA) + 1;
-                                                            row["科目加權總分科排名" + subjIndex] = rr;
-                                                            row["科目加權總分科排名母數" + subjIndex] = ranks[key2].Count;
-                                                            row["科目加權總分科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-
-                                                        }
-
-                                                        key2 = "加權總分全校排名" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id].sumScoreA) + 1;
-                                                            row["科目加權總分校排名" + subjIndex] = rr;
-                                                            row["科目加權總分校排名母數" + subjIndex] = ranks[key2].Count;
-                                                            row["科目加權總分校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-
-                                                        if (studRec.Fields.ContainsKey("tag1"))
-                                                        {
-                                                            key2 = "加權總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key2))
-                                                            {
-                                                                if (ranks[key2].IndexOf(selectScore[id].sumScoreAC1) >= 0)
-                                                                {
-                                                                    int rr = ranks[key2].IndexOf(selectScore[id].sumScoreAC1) + 1;
-                                                                    row["科目加權總分類別一排名" + subjIndex] = rr;
-                                                                    row["科目加權總分類別一排名母數" + subjIndex] = ranks[key2].Count;
-                                                                    row["科目加權總分類別一排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                                }
-                                                            }
-                                                        }
-                                                        if (studRec.Fields.ContainsKey("tag2"))
-                                                        {
-                                                            key2 = "加權總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key2))
-                                                            {
-                                                                if (ranks[key2].IndexOf(selectScore[id].sumScoreAC2) >= 0)
-                                                                {
-                                                                    int rr = ranks[key2].IndexOf(selectScore[id].sumScoreAC2) + 1;
-                                                                    row["科目加權總分類別二排名" + subjIndex] = rr;
-                                                                    row["科目加權總分類別二排名母數" + subjIndex] = ranks[key2].Count;
-                                                                    row["科目加權總分類別二排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                                }
-                                                            }
-                                                        }
-
-                                                        string key3 = "平均班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key3))
-                                                        {
-                                                            int rr = ranks[key3].IndexOf(selectScore[id].avgScore) + 1;
-                                                            row["科目平均班排名" + subjIndex] = rr;
-                                                            row["科目平均班排名母數" + subjIndex] = ranks[key3].Count;
-                                                            row["科目平均班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key3].Count);
-                                                        }
-
-                                                        key3 = "平均科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key3))
-                                                        {
-                                                            int rr = ranks[key3].IndexOf(selectScore[id].avgScore) + 1;
-                                                            row["科目平均科排名" + subjIndex] = rr;
-                                                            row["科目平均科排名母數" + subjIndex] = ranks[key3].Count;
-                                                            row["科目平均科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key3].Count);
-                                                        }
-                                                        key3 = "平均全校排名" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key3))
-                                                        {
-                                                            int rr = ranks[key3].IndexOf(selectScore[id].avgScore) + 1;
-                                                            row["科目平均校排名" + subjIndex] = rr;
-                                                            row["科目平均校排名母數" + subjIndex] = ranks[key3].Count;
-                                                            row["科目平均校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key3].Count);
-                                                        }
-
-                                                        if (studRec.Fields.ContainsKey("tag1"))
-                                                        {
-                                                            key3 = "平均類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key3))
-                                                            {
-                                                                if (ranks[key3].IndexOf(selectScore[id].avgScoreC1) >= 0)
-                                                                {
-                                                                    int rr = ranks[key3].IndexOf(selectScore[id].avgScoreC1) + 1;
-                                                                    row["科目平均類別一排名" + subjIndex] = rr;
-                                                                    row["科目平均類別一排名母數" + subjIndex] = ranks[key3].Count;
-                                                                    row["科目平均類別一排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key3].Count);
-                                                                }
-                                                            }
-                                                        }
-
-                                                        if (studRec.Fields.ContainsKey("tag2"))
-                                                        {
-                                                            key3 = "平均類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key3))
-                                                            {
-                                                                if (ranks[key3].IndexOf(selectScore[id].avgScoreC2) >= 0)
-                                                                {
-                                                                    int rr = ranks[key3].IndexOf(selectScore[id].avgScoreC2) + 1;
-                                                                    row["科目平均類別二排名" + subjIndex] = rr;
-                                                                    row["科目平均類別二排名母數" + subjIndex] = ranks[key3].Count;
-                                                                    row["科目平均類別二排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key3].Count);
-                                                                }
-                                                            }
-                                                        }
-                                                        string key1 = "總分班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            int rr = ranks[key1].IndexOf(selectScore[id].sumScore) + 1;
-                                                            row["科目總分班排名" + subjIndex] = rr;
-                                                            row["科目總分班排名母數" + subjIndex] = ranks[key1].Count;
-                                                            row["科目總分班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key1].Count);
-                                                        }
-                                                        key1 = "總分科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            int rr = ranks[key1].IndexOf(selectScore[id].sumScore) + 1;
-                                                            row["科目總分科排名" + subjIndex] = rr;
-                                                            row["科目總分科排名母數" + subjIndex] = ranks[key1].Count;
-                                                            row["科目總分科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key1].Count);
-                                                        }
-                                                        key1 = "總分全校排名" + gradeyear + "^^^" + subjName;
-
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            int rr = ranks[key1].IndexOf(selectScore[id].sumScore) + 1;
-                                                            row["科目總分校排名" + subjIndex] = rr;
-                                                            row["科目總分校排名母數" + subjIndex] = ranks[key1].Count;
-                                                            row["科目總分校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key1].Count);
-                                                        }
-
-                                                        if (studRec.Fields.ContainsKey("tag1"))
-                                                        {
-                                                            key1 = "總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key1))
-                                                            {
-                                                                if (ranks[key1].IndexOf(selectScore[id].sumScoreC1) >= 0)
-                                                                {
-                                                                    int rr = ranks[key1].IndexOf(selectScore[id].sumScoreC1) + 1;
-                                                                    row["科目總分類別一排名" + subjIndex] = rr;
-                                                                    row["科目總分類別一排名母數" + subjIndex] = ranks[key1].Count;
-                                                                    row["科目總分類別一排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key1].Count);
-                                                                }
-                                                            }
-                                                        }
-                                                        if (studRec.Fields.ContainsKey("tag2"))
-                                                        {
-                                                            key1 = "總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key1))
-                                                            {
-                                                                if (ranks[key1].IndexOf(selectScore[id].sumScoreC2) >= 0)
-                                                                {
-                                                                    int rr = ranks[key1].IndexOf(selectScore[id].sumScoreC2) + 1;
-                                                                    row["科目總分類別二排名" + subjIndex] = rr;
-                                                                    row["科目總分類別二排名母數" + subjIndex] = ranks[key1].Count;
-                                                                    row["科目總分類別二排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key1].Count);
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-
-                                                    subjIndex++;
+                                                    if (!g1List.Contains(selectScore[id].gsSchoolYear11.Value))
+                                                        g1List.Add(selectScore[id].gsSchoolYear11.Value);
                                                 }
-                                            }
-                                            #endregion 處理科目
-
-
-                                            subjIndex = 1;
-                                            // 處理科目回歸
-                                            #region 處理科目回歸
-                                            foreach (string subjName in SubjMappingDict.Keys)
-                                            {
-                                                string id = studRec.StudentID + "^^^回歸" + subjName;
-
-                                                if (selectScore.ContainsKey(id))
+                                                if (selectScore[id].gsSchoolYear12.HasValue)
                                                 {
-                                                    row["回歸科目名稱" + subjIndex] = subjName;
+                                                    if (!g1List.Contains(selectScore[id].gsSchoolYear12.Value))
+                                                        g1List.Add(selectScore[id].gsSchoolYear12.Value);
+                                                }
 
-                                                    if (selectScore[id].gsSchoolYear11.HasValue)
+                                                if (selectScore[id].gsSchoolYear21.HasValue)
+                                                {
+                                                    if (!g2List.Contains(selectScore[id].gsSchoolYear21.Value))
+                                                        g2List.Add(selectScore[id].gsSchoolYear21.Value);
+                                                }
+
+                                                if (selectScore[id].gsSchoolYear22.HasValue)
+                                                {
+                                                    if (!g2List.Contains(selectScore[id].gsSchoolYear22.Value))
+                                                        g2List.Add(selectScore[id].gsSchoolYear22.Value);
+                                                }
+
+                                                if (selectScore[id].gsSchoolYear31.HasValue)
+                                                {
+                                                    if (!g3List.Contains(selectScore[id].gsSchoolYear31.Value))
+                                                        g3List.Add(selectScore[id].gsSchoolYear31.Value);
+                                                }
+                                                if (selectScore[id].gsSchoolYear32.HasValue)
+                                                {
+                                                    if (!g3List.Contains(selectScore[id].gsSchoolYear32.Value))
+                                                        g3List.Add(selectScore[id].gsSchoolYear32.Value);
+                                                }
+
+                                                if (selectScore[id].gsSchoolYear41.HasValue)
+                                                {
+                                                    if (!g4List.Contains(selectScore[id].gsSchoolYear41.Value))
+                                                        g4List.Add(selectScore[id].gsSchoolYear41.Value);
+                                                }
+
+                                                if (selectScore[id].gsSchoolYear42.HasValue)
+                                                {
+                                                    if (!g4List.Contains(selectScore[id].gsSchoolYear42.Value))
+                                                        g4List.Add(selectScore[id].gsSchoolYear42.Value);
+                                                }
+
+                                                if (selectScore[id].gsScore11.HasValue)
+                                                    row["一上科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore11.Value);
+                                                if (selectScore[id].gsCredit11.HasValue)
+                                                    row["一上科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit11.Value);
+                                                if (selectScore[id].gsScore12.HasValue)
+                                                    row["一下科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore12.Value);
+
+                                                if (selectScore[id].gsCredit12.HasValue)
+                                                    row["一下科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit12.Value);
+                                                if (selectScore[id].gsScore21.HasValue)
+                                                    row["二上科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore21.Value);
+
+                                                if (selectScore[id].gsCredit21.HasValue)
+                                                    row["二上科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit21.Value);
+
+                                                if (selectScore[id].gsScore22.HasValue)
+                                                    row["二下科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore22.Value);
+
+                                                if (selectScore[id].gsCredit22.HasValue)
+                                                    row["二下科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit22.Value);
+
+                                                if (selectScore[id].gsScore31.HasValue)
+                                                    row["三上科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore31.Value);
+
+                                                if (selectScore[id].gsCredit31.HasValue)
+                                                    row["三上科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit31.Value);
+
+                                                if (selectScore[id].gsScore32.HasValue)
+                                                    row["三下科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore32.Value);
+
+                                                if (selectScore[id].gsCredit32.HasValue)
+                                                    row["三下科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit32.Value);
+
+                                                if (selectScore[id].gsScore41.HasValue)
+                                                    row["四上科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore41.Value);
+
+                                                if (selectScore[id].gsCredit41.HasValue)
+                                                    row["四上科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit41.Value);
+
+                                                if (selectScore[id].gsScore42.HasValue)
+                                                    row["四下科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore42.Value);
+
+                                                if (selectScore[id].gsCredit42.HasValue)
+                                                    row["四下科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit42.Value);
+
+                                                row["科目平均" + subjIndex] = Utility.NoRound(selectScore[id].avgScore);
+                                                row["科目總分" + subjIndex] = Utility.NoRound(selectScore[id].sumScore);
+                                                row["科目加權平均" + subjIndex] = Utility.NoRound(selectScore[id].avgScoreA);
+                                                row["科目加權總分" + subjIndex] = Utility.NoRound(selectScore[id].sumScoreA);
+
+                                                if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                                {
+                                                    string key4 = "加權平均班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key4))
                                                     {
-                                                        if (!g1List.Contains(selectScore[id].gsSchoolYear11.Value))
-                                                            g1List.Add(selectScore[id].gsSchoolYear11.Value);
+                                                        int rr = ranks[key4].IndexOf(selectScore[id].avgScoreA) + 1;
+                                                        row["科目加權平均班排名" + subjIndex] = rr;
+                                                        row["科目加權平均班排名母數" + subjIndex] = ranks[key4].Count;
+                                                        row["科目加權平均班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key4].Count);
                                                     }
-                                                    if (selectScore[id].gsSchoolYear12.HasValue)
+
+                                                    key4 = "加權平均科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key4))
                                                     {
-                                                        if (!g1List.Contains(selectScore[id].gsSchoolYear12.Value))
-                                                            g1List.Add(selectScore[id].gsSchoolYear12.Value);
+                                                        int rr = ranks[key4].IndexOf(selectScore[id].avgScoreA) + 1;
+                                                        row["科目加權平均科排名" + subjIndex] = rr;
+                                                        row["科目加權平均科排名母數" + subjIndex] = ranks[key4].Count;
+                                                        row["科目加權平均科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key4].Count);
+
+                                                    }
+                                                    key4 = "加權平均全校排名" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key4))
+                                                    {
+                                                        int rr = ranks[key4].IndexOf(selectScore[id].avgScoreA) + 1;
+                                                        row["科目加權平均校排名" + subjIndex] = rr;
+                                                        row["科目加權平均校排名母數" + subjIndex] = ranks[key4].Count;
+                                                        row["科目加權平均校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key4].Count);
+                                                    }
+                                                    if (studRec.Fields.ContainsKey("tag1"))
+                                                    {
+                                                        key4 = "加權平均類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key4))
+                                                        {
+                                                            if (ranks[key4].IndexOf(selectScore[id].avgScoreAC1) >= 0)
+                                                            {
+                                                                int rr = ranks[key4].IndexOf(selectScore[id].avgScoreAC1) + 1;
+                                                                row["科目加權平均類別一排名" + subjIndex] = rr;
+                                                                row["科目加權平均類別一排名母數" + subjIndex] = ranks[key4].Count;
+                                                                row["科目加權平均類別一排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key4].Count);
+                                                            }
+                                                        }
+                                                    }
+                                                    if (studRec.Fields.ContainsKey("tag2"))
+                                                    {
+                                                        if (ranks.ContainsKey(key4))
+                                                        {
+                                                            if (ranks[key4].IndexOf(selectScore[id].avgScoreAC2) >= 0)
+                                                            {
+                                                                int rr = ranks[key4].IndexOf(selectScore[id].avgScoreAC2) + 1;
+                                                                row["科目加權平均類別二排名" + subjIndex] = rr;
+                                                                row["科目加權平均類別二排名母數" + subjIndex] = ranks[key4].Count;
+                                                                row["科目加權平均類別二排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key4].Count);
+                                                            }
+                                                        }
                                                     }
 
-                                                    if (selectScore[id].gsSchoolYear21.HasValue)
+                                                    string key2 = "加權總分班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key2))
                                                     {
-                                                        if (!g2List.Contains(selectScore[id].gsSchoolYear21.Value))
-                                                            g2List.Add(selectScore[id].gsSchoolYear21.Value);
+                                                        int rr = ranks[key2].IndexOf(selectScore[id].sumScoreA) + 1;
+                                                        row["科目加權總分班排名" + subjIndex] = rr;
+                                                        row["科目加權總分班排名母數" + subjIndex] = ranks[key2].Count;
+                                                        row["科目加權總分班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                    }
+                                                    key2 = "加權總分科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key2))
+                                                    {
+                                                        int rr = ranks[key2].IndexOf(selectScore[id].sumScoreA) + 1;
+                                                        row["科目加權總分科排名" + subjIndex] = rr;
+                                                        row["科目加權總分科排名母數" + subjIndex] = ranks[key2].Count;
+                                                        row["科目加權總分科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+
                                                     }
 
-                                                    if (selectScore[id].gsSchoolYear22.HasValue)
+                                                    key2 = "加權總分全校排名" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key2))
                                                     {
-                                                        if (!g2List.Contains(selectScore[id].gsSchoolYear22.Value))
-                                                            g2List.Add(selectScore[id].gsSchoolYear22.Value);
+                                                        int rr = ranks[key2].IndexOf(selectScore[id].sumScoreA) + 1;
+                                                        row["科目加權總分校排名" + subjIndex] = rr;
+                                                        row["科目加權總分校排名母數" + subjIndex] = ranks[key2].Count;
+                                                        row["科目加權總分校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key2].Count);
                                                     }
 
-                                                    if (selectScore[id].gsSchoolYear31.HasValue)
+                                                    if (studRec.Fields.ContainsKey("tag1"))
                                                     {
-                                                        if (!g3List.Contains(selectScore[id].gsSchoolYear31.Value))
-                                                            g3List.Add(selectScore[id].gsSchoolYear31.Value);
+                                                        key2 = "加權總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key2))
+                                                        {
+                                                            if (ranks[key2].IndexOf(selectScore[id].sumScoreAC1) >= 0)
+                                                            {
+                                                                int rr = ranks[key2].IndexOf(selectScore[id].sumScoreAC1) + 1;
+                                                                row["科目加權總分類別一排名" + subjIndex] = rr;
+                                                                row["科目加權總分類別一排名母數" + subjIndex] = ranks[key2].Count;
+                                                                row["科目加權總分類別一排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                            }
+                                                        }
                                                     }
-                                                    if (selectScore[id].gsSchoolYear32.HasValue)
+                                                    if (studRec.Fields.ContainsKey("tag2"))
                                                     {
-                                                        if (!g3List.Contains(selectScore[id].gsSchoolYear32.Value))
-                                                            g3List.Add(selectScore[id].gsSchoolYear32.Value);
+                                                        key2 = "加權總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key2))
+                                                        {
+                                                            if (ranks[key2].IndexOf(selectScore[id].sumScoreAC2) >= 0)
+                                                            {
+                                                                int rr = ranks[key2].IndexOf(selectScore[id].sumScoreAC2) + 1;
+                                                                row["科目加權總分類別二排名" + subjIndex] = rr;
+                                                                row["科目加權總分類別二排名母數" + subjIndex] = ranks[key2].Count;
+                                                                row["科目加權總分類別二排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                            }
+                                                        }
                                                     }
 
-                                                    if (selectScore[id].gsSchoolYear41.HasValue)
+                                                    string key3 = "平均班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key3))
                                                     {
-                                                        if (!g4List.Contains(selectScore[id].gsSchoolYear41.Value))
-                                                            g4List.Add(selectScore[id].gsSchoolYear41.Value);
+                                                        int rr = ranks[key3].IndexOf(selectScore[id].avgScore) + 1;
+                                                        row["科目平均班排名" + subjIndex] = rr;
+                                                        row["科目平均班排名母數" + subjIndex] = ranks[key3].Count;
+                                                        row["科目平均班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key3].Count);
                                                     }
 
-                                                    if (selectScore[id].gsSchoolYear42.HasValue)
+                                                    key3 = "平均科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key3))
                                                     {
-                                                        if (!g4List.Contains(selectScore[id].gsSchoolYear42.Value))
-                                                            g4List.Add(selectScore[id].gsSchoolYear42.Value);
+                                                        int rr = ranks[key3].IndexOf(selectScore[id].avgScore) + 1;
+                                                        row["科目平均科排名" + subjIndex] = rr;
+                                                        row["科目平均科排名母數" + subjIndex] = ranks[key3].Count;
+                                                        row["科目平均科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key3].Count);
+                                                    }
+                                                    key3 = "平均全校排名" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key3))
+                                                    {
+                                                        int rr = ranks[key3].IndexOf(selectScore[id].avgScore) + 1;
+                                                        row["科目平均校排名" + subjIndex] = rr;
+                                                        row["科目平均校排名母數" + subjIndex] = ranks[key3].Count;
+                                                        row["科目平均校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key3].Count);
                                                     }
 
-                                                    if (selectScore[id].gsScore11.HasValue)
-                                                        row["回歸一上科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore11.Value);
-                                                    if (selectScore[id].gsCredit11.HasValue)
-                                                        row["回歸一上科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit11.Value);
-                                                    if (selectScore[id].gsScore12.HasValue)
-                                                        row["回歸一下科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore12.Value);
-
-                                                    if (selectScore[id].gsCredit12.HasValue)
-                                                        row["回歸一下科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit12.Value);
-                                                    if (selectScore[id].gsScore21.HasValue)
-                                                        row["回歸二上科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore21.Value);
-
-                                                    if (selectScore[id].gsCredit21.HasValue)
-                                                        row["回歸二上科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit21.Value);
-
-                                                    if (selectScore[id].gsScore22.HasValue)
-                                                        row["回歸二下科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore22.Value);
-
-                                                    if (selectScore[id].gsCredit22.HasValue)
-                                                        row["回歸二下科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit22.Value);
-
-                                                    if (selectScore[id].gsScore31.HasValue)
-                                                        row["回歸三上科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore31.Value);
-
-                                                    if (selectScore[id].gsCredit31.HasValue)
-                                                        row["回歸三上科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit31.Value);
-
-                                                    if (selectScore[id].gsScore32.HasValue)
-                                                        row["回歸三下科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore32.Value);
-
-                                                    if (selectScore[id].gsCredit32.HasValue)
-                                                        row["回歸三下科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit32.Value);
-
-                                                    if (selectScore[id].gsScore41.HasValue)
-                                                        row["回歸四上科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore41.Value);
-
-                                                    row["回歸科目平均" + subjIndex] = Utility.NoRound(selectScore[id].avgScore);
-                                                    row["回歸科目總分" + subjIndex] = Utility.NoRound(selectScore[id].sumScore);
-                                                    row["回歸科目加權平均" + subjIndex] = Utility.NoRound(selectScore[id].avgScoreA);
-                                                    row["回歸科目加權總分" + subjIndex] = Utility.NoRound(selectScore[id].sumScoreA);
-
-                                                    if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                                    if (studRec.Fields.ContainsKey("tag1"))
                                                     {
+                                                        key3 = "平均類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key3))
+                                                        {
+                                                            if (ranks[key3].IndexOf(selectScore[id].avgScoreC1) >= 0)
+                                                            {
+                                                                int rr = ranks[key3].IndexOf(selectScore[id].avgScoreC1) + 1;
+                                                                row["科目平均類別一排名" + subjIndex] = rr;
+                                                                row["科目平均類別一排名母數" + subjIndex] = ranks[key3].Count;
+                                                                row["科目平均類別一排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key3].Count);
+                                                            }
+                                                        }
+                                                    }
 
-                                                        #region 寫入各科目成績班排名
-                                                        string key11 = "回歸一上科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                    if (studRec.Fields.ContainsKey("tag2"))
+                                                    {
+                                                        key3 = "平均類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key3))
+                                                        {
+                                                            if (ranks[key3].IndexOf(selectScore[id].avgScoreC2) >= 0)
+                                                            {
+                                                                int rr = ranks[key3].IndexOf(selectScore[id].avgScoreC2) + 1;
+                                                                row["科目平均類別二排名" + subjIndex] = rr;
+                                                                row["科目平均類別二排名母數" + subjIndex] = ranks[key3].Count;
+                                                                row["科目平均類別二排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key3].Count);
+                                                            }
+                                                        }
+                                                    }
+                                                    string key1 = "總分班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key1))
+                                                    {
+                                                        int rr = ranks[key1].IndexOf(selectScore[id].sumScore) + 1;
+                                                        row["科目總分班排名" + subjIndex] = rr;
+                                                        row["科目總分班排名母數" + subjIndex] = ranks[key1].Count;
+                                                        row["科目總分班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key1].Count);
+                                                    }
+                                                    key1 = "總分科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key1))
+                                                    {
+                                                        int rr = ranks[key1].IndexOf(selectScore[id].sumScore) + 1;
+                                                        row["科目總分科排名" + subjIndex] = rr;
+                                                        row["科目總分科排名母數" + subjIndex] = ranks[key1].Count;
+                                                        row["科目總分科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key1].Count);
+                                                    }
+                                                    key1 = "總分全校排名" + gradeyear + "^^^" + subjName;
+
+                                                    if (ranks.ContainsKey(key1))
+                                                    {
+                                                        int rr = ranks[key1].IndexOf(selectScore[id].sumScore) + 1;
+                                                        row["科目總分校排名" + subjIndex] = rr;
+                                                        row["科目總分校排名母數" + subjIndex] = ranks[key1].Count;
+                                                        row["科目總分校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key1].Count);
+                                                    }
+
+                                                    if (studRec.Fields.ContainsKey("tag1"))
+                                                    {
+                                                        key1 = "總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key1))
+                                                        {
+                                                            if (ranks[key1].IndexOf(selectScore[id].sumScoreC1) >= 0)
+                                                            {
+                                                                int rr = ranks[key1].IndexOf(selectScore[id].sumScoreC1) + 1;
+                                                                row["科目總分類別一排名" + subjIndex] = rr;
+                                                                row["科目總分類別一排名母數" + subjIndex] = ranks[key1].Count;
+                                                                row["科目總分類別一排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key1].Count);
+                                                            }
+                                                        }
+                                                    }
+                                                    if (studRec.Fields.ContainsKey("tag2"))
+                                                    {
+                                                        key1 = "總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key1))
+                                                        {
+                                                            if (ranks[key1].IndexOf(selectScore[id].sumScoreC2) >= 0)
+                                                            {
+                                                                int rr = ranks[key1].IndexOf(selectScore[id].sumScoreC2) + 1;
+                                                                row["科目總分類別二排名" + subjIndex] = rr;
+                                                                row["科目總分類別二排名母數" + subjIndex] = ranks[key1].Count;
+                                                                row["科目總分類別二排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key1].Count);
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                                subjIndex++;
+                                            }
+                                        }
+                                        #endregion 處理科目
+
+
+                                        subjIndex = 1;
+                                        // 處理科目回歸
+                                        #region 處理科目回歸
+                                        foreach (string subjName in SubjMappingDict.Keys)
+                                        {
+                                            string id = studRec.StudentID + "^^^回歸" + subjName;
+
+                                            if (selectScore.ContainsKey(id))
+                                            {
+                                                row["回歸科目名稱" + subjIndex] = subjName;
+
+                                                if (selectScore[id].gsSchoolYear11.HasValue)
+                                                {
+                                                    if (!g1List.Contains(selectScore[id].gsSchoolYear11.Value))
+                                                        g1List.Add(selectScore[id].gsSchoolYear11.Value);
+                                                }
+                                                if (selectScore[id].gsSchoolYear12.HasValue)
+                                                {
+                                                    if (!g1List.Contains(selectScore[id].gsSchoolYear12.Value))
+                                                        g1List.Add(selectScore[id].gsSchoolYear12.Value);
+                                                }
+
+                                                if (selectScore[id].gsSchoolYear21.HasValue)
+                                                {
+                                                    if (!g2List.Contains(selectScore[id].gsSchoolYear21.Value))
+                                                        g2List.Add(selectScore[id].gsSchoolYear21.Value);
+                                                }
+
+                                                if (selectScore[id].gsSchoolYear22.HasValue)
+                                                {
+                                                    if (!g2List.Contains(selectScore[id].gsSchoolYear22.Value))
+                                                        g2List.Add(selectScore[id].gsSchoolYear22.Value);
+                                                }
+
+                                                if (selectScore[id].gsSchoolYear31.HasValue)
+                                                {
+                                                    if (!g3List.Contains(selectScore[id].gsSchoolYear31.Value))
+                                                        g3List.Add(selectScore[id].gsSchoolYear31.Value);
+                                                }
+                                                if (selectScore[id].gsSchoolYear32.HasValue)
+                                                {
+                                                    if (!g3List.Contains(selectScore[id].gsSchoolYear32.Value))
+                                                        g3List.Add(selectScore[id].gsSchoolYear32.Value);
+                                                }
+
+                                                if (selectScore[id].gsSchoolYear41.HasValue)
+                                                {
+                                                    if (!g4List.Contains(selectScore[id].gsSchoolYear41.Value))
+                                                        g4List.Add(selectScore[id].gsSchoolYear41.Value);
+                                                }
+
+                                                if (selectScore[id].gsSchoolYear42.HasValue)
+                                                {
+                                                    if (!g4List.Contains(selectScore[id].gsSchoolYear42.Value))
+                                                        g4List.Add(selectScore[id].gsSchoolYear42.Value);
+                                                }
+
+                                                if (selectScore[id].gsScore11.HasValue)
+                                                    row["回歸一上科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore11.Value);
+                                                if (selectScore[id].gsCredit11.HasValue)
+                                                    row["回歸一上科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit11.Value);
+                                                if (selectScore[id].gsScore12.HasValue)
+                                                    row["回歸一下科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore12.Value);
+
+                                                if (selectScore[id].gsCredit12.HasValue)
+                                                    row["回歸一下科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit12.Value);
+                                                if (selectScore[id].gsScore21.HasValue)
+                                                    row["回歸二上科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore21.Value);
+
+                                                if (selectScore[id].gsCredit21.HasValue)
+                                                    row["回歸二上科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit21.Value);
+
+                                                if (selectScore[id].gsScore22.HasValue)
+                                                    row["回歸二下科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore22.Value);
+
+                                                if (selectScore[id].gsCredit22.HasValue)
+                                                    row["回歸二下科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit22.Value);
+
+                                                if (selectScore[id].gsScore31.HasValue)
+                                                    row["回歸三上科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore31.Value);
+
+                                                if (selectScore[id].gsCredit31.HasValue)
+                                                    row["回歸三上科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit31.Value);
+
+                                                if (selectScore[id].gsScore32.HasValue)
+                                                    row["回歸三下科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore32.Value);
+
+                                                if (selectScore[id].gsCredit32.HasValue)
+                                                    row["回歸三下科目學分數" + subjIndex] = Utility.NoRound(selectScore[id].gsCredit32.Value);
+
+                                                if (selectScore[id].gsScore41.HasValue)
+                                                    row["回歸四上科目成績" + subjIndex] = Utility.NoRound(selectScore[id].gsScore41.Value);
+
+                                                row["回歸科目平均" + subjIndex] = Utility.NoRound(selectScore[id].avgScore);
+                                                row["回歸科目總分" + subjIndex] = Utility.NoRound(selectScore[id].sumScore);
+                                                row["回歸科目加權平均" + subjIndex] = Utility.NoRound(selectScore[id].avgScoreA);
+                                                row["回歸科目加權總分" + subjIndex] = Utility.NoRound(selectScore[id].sumScoreA);
+
+                                                if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                                {
+
+                                                    #region 寫入各科目成績班排名
+                                                    string key11 = "回歸一上科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key11))
+                                                    {
+                                                        if (selectScore[id].gsScore11.HasValue)
+                                                        {
+                                                            int rr = ranks[key11].IndexOf(selectScore[id].gsScore11.Value) + 1;
+                                                            row["回歸一上科目班排名" + subjIndex] = rr;
+                                                            row["回歸一上科目班排名母數" + subjIndex] = ranks[key11].Count;
+                                                            row["回歸一上科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key11].Count);
+                                                        }
+                                                    }
+
+                                                    string key12 = "回歸一下科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key12))
+                                                    {
+                                                        if (selectScore[id].gsScore12.HasValue)
+                                                        {
+                                                            int rr = ranks[key12].IndexOf(selectScore[id].gsScore12.Value) + 1;
+                                                            row["回歸一下科目班排名" + subjIndex] = rr;
+                                                            row["回歸一下科目班排名母數" + subjIndex] = ranks[key12].Count;
+                                                            row["回歸一下科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key12].Count);
+                                                        }
+                                                    }
+
+                                                    string key21 = "回歸二上科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key21))
+                                                    {
+                                                        if (selectScore[id].gsScore21.HasValue)
+                                                        {
+                                                            int rr = ranks[key21].IndexOf(selectScore[id].gsScore21.Value) + 1;
+                                                            row["回歸二上科目班排名" + subjIndex] = rr;
+                                                            row["回歸二上科目班排名母數" + subjIndex] = ranks[key21].Count;
+                                                            row["回歸二上科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key21].Count);
+                                                        }
+                                                    }
+
+                                                    string key22 = "回歸二下科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key22))
+                                                    {
+                                                        if (selectScore[id].gsScore22.HasValue)
+                                                        {
+                                                            int rr = ranks[key22].IndexOf(selectScore[id].gsScore22.Value) + 1;
+                                                            row["回歸二下科目班排名" + subjIndex] = rr;
+                                                            row["回歸二下科目班排名母數" + subjIndex] = ranks[key22].Count;
+                                                            row["回歸二下科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key22].Count);
+                                                        }
+                                                    }
+
+                                                    string key31 = "回歸三上科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key31))
+                                                    {
+                                                        if (selectScore[id].gsScore31.HasValue)
+                                                        {
+                                                            int rr = ranks[key31].IndexOf(selectScore[id].gsScore31.Value) + 1;
+                                                            row["回歸三上科目班排名" + subjIndex] = rr;
+                                                            row["回歸三上科目班排名母數" + subjIndex] = ranks[key31].Count;
+                                                            row["回歸三上科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key31].Count);
+                                                        }
+                                                    }
+
+                                                    string key32 = "回歸三下科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key32))
+                                                    {
+                                                        if (selectScore[id].gsScore32.HasValue)
+                                                        {
+                                                            int rr = ranks[key32].IndexOf(selectScore[id].gsScore32.Value) + 1;
+                                                            row["回歸三下科目班排名" + subjIndex] = rr;
+                                                            row["回歸三下科目班排名母數" + subjIndex] = ranks[key32].Count;
+                                                            row["回歸三下科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key32].Count);
+                                                        }
+                                                    }
+
+                                                    string key41 = "回歸四上科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key41))
+                                                    {
+                                                        if (selectScore[id].gsScore41.HasValue)
+                                                        {
+                                                            int rr = ranks[key41].IndexOf(selectScore[id].gsScore41.Value) + 1;
+                                                            row["回歸四上科目班排名" + subjIndex] = rr;
+                                                            row["回歸四上科目班排名母數" + subjIndex] = ranks[key41].Count;
+                                                            row["回歸四上科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key41].Count);
+                                                        }
+                                                    }
+
+                                                    string key42 = "回歸四下科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key42))
+                                                    {
+                                                        if (selectScore[id].gsScore42.HasValue)
+                                                        {
+                                                            int rr = ranks[key42].IndexOf(selectScore[id].gsScore42.Value) + 1;
+                                                            row["回歸四下科目班排名" + subjIndex] = rr;
+                                                            row["回歸四下科目班排名母數" + subjIndex] = ranks[key42].Count;
+                                                            row["回歸四下科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key42].Count);
+                                                        }
+                                                    }
+
+                                                    #endregion
+
+                                                    #region 寫入各科目成績科排名
+                                                    key11 = "回歸一上科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key11))
+                                                    {
+                                                        if (selectScore[id].gsScore11.HasValue)
+                                                        {
+                                                            int rr = ranks[key11].IndexOf(selectScore[id].gsScore11.Value) + 1;
+                                                            row["回歸一上科目科排名" + subjIndex] = rr;
+                                                            row["回歸一上科目科排名母數" + subjIndex] = ranks[key11].Count;
+                                                            row["回歸一上科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key11].Count);
+                                                        }
+                                                    }
+
+                                                    key12 = "回歸一下科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key12))
+                                                    {
+                                                        if (selectScore[id].gsScore12.HasValue)
+                                                        {
+                                                            int rr = ranks[key12].IndexOf(selectScore[id].gsScore12.Value) + 1;
+                                                            row["回歸一下科目科排名" + subjIndex] = rr;
+                                                            row["回歸一下科目科排名母數" + subjIndex] = ranks[key12].Count;
+                                                            row["回歸一下科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key12].Count);
+                                                        }
+                                                    }
+
+                                                    key21 = "回歸二上科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key21))
+                                                    {
+                                                        if (selectScore[id].gsScore21.HasValue)
+                                                        {
+                                                            int rr = ranks[key21].IndexOf(selectScore[id].gsScore21.Value) + 1;
+                                                            row["回歸二上科目科排名" + subjIndex] = rr;
+                                                            row["回歸二上科目科排名母數" + subjIndex] = ranks[key21].Count;
+                                                            row["回歸二上科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key21].Count);
+                                                        }
+                                                    }
+
+                                                    key22 = "回歸二下科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key22))
+                                                    {
+                                                        if (selectScore[id].gsScore22.HasValue)
+                                                        {
+                                                            int rr = ranks[key22].IndexOf(selectScore[id].gsScore22.Value) + 1;
+                                                            row["回歸二下科目科排名" + subjIndex] = rr;
+                                                            row["回歸二下科目科排名母數" + subjIndex] = ranks[key22].Count;
+                                                            row["回歸二下科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key22].Count);
+                                                        }
+                                                    }
+
+                                                    key31 = "回歸三上科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key31))
+                                                    {
+                                                        if (selectScore[id].gsScore31.HasValue)
+                                                        {
+                                                            int rr = ranks[key31].IndexOf(selectScore[id].gsScore31.Value) + 1;
+                                                            row["回歸三上科目科排名" + subjIndex] = rr;
+                                                            row["回歸三上科目科排名母數" + subjIndex] = ranks[key31].Count;
+                                                            row["回歸三上科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key31].Count);
+                                                        }
+                                                    }
+
+                                                    key32 = "回歸三下科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key32))
+                                                    {
+                                                        if (selectScore[id].gsScore32.HasValue)
+                                                        {
+                                                            int rr = ranks[key32].IndexOf(selectScore[id].gsScore32.Value) + 1;
+                                                            row["回歸三下科目科排名" + subjIndex] = rr;
+                                                            row["回歸三下科目科排名母數" + subjIndex] = ranks[key32].Count;
+                                                            row["回歸三下科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key32].Count);
+                                                        }
+                                                    }
+
+                                                    key41 = "回歸四上科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key41))
+                                                    {
+                                                        if (selectScore[id].gsScore41.HasValue)
+                                                        {
+                                                            int rr = ranks[key41].IndexOf(selectScore[id].gsScore41.Value) + 1;
+                                                            row["回歸四上科目科排名" + subjIndex] = rr;
+                                                            row["回歸四上科目科排名母數" + subjIndex] = ranks[key41].Count;
+                                                            row["回歸四上科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key41].Count);
+                                                        }
+                                                    }
+
+                                                    key42 = "回歸四下科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key42))
+                                                    {
+                                                        if (selectScore[id].gsScore42.HasValue)
+                                                        {
+                                                            int rr = ranks[key42].IndexOf(selectScore[id].gsScore42.Value) + 1;
+                                                            row["回歸四下科目科排名" + subjIndex] = rr;
+                                                            row["回歸四下科目科排名母數" + subjIndex] = ranks[key42].Count;
+                                                            row["回歸四下科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key42].Count);
+                                                        }
+                                                    }
+
+                                                    #endregion
+
+                                                    #region 寫入各科目成績校排名
+                                                    key11 = "回歸一上科目校排名" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key11))
+                                                    {
+                                                        if (selectScore[id].gsScore11.HasValue)
+                                                        {
+                                                            int rr = ranks[key11].IndexOf(selectScore[id].gsScore11.Value) + 1;
+                                                            row["回歸一上科目校排名" + subjIndex] = rr;
+                                                            row["回歸一上科目校排名母數" + subjIndex] = ranks[key11].Count;
+                                                            row["回歸一上科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key11].Count);
+                                                        }
+                                                    }
+
+                                                    key12 = "回歸一下科目校排名" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key12))
+                                                    {
+                                                        if (selectScore[id].gsScore12.HasValue)
+                                                        {
+                                                            int rr = ranks[key12].IndexOf(selectScore[id].gsScore12.Value) + 1;
+                                                            row["回歸一下科目校排名" + subjIndex] = rr;
+                                                            row["回歸一下科目校排名母數" + subjIndex] = ranks[key12].Count;
+                                                            row["回歸一下科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key12].Count);
+                                                        }
+                                                    }
+
+                                                    key21 = "回歸二上科目校排名" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key21))
+                                                    {
+                                                        if (selectScore[id].gsScore21.HasValue)
+                                                        {
+                                                            int rr = ranks[key21].IndexOf(selectScore[id].gsScore21.Value) + 1;
+                                                            row["回歸二上科目校排名" + subjIndex] = rr;
+                                                            row["回歸二上科目校排名母數" + subjIndex] = ranks[key21].Count;
+                                                            row["回歸二上科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key21].Count);
+                                                        }
+                                                    }
+
+                                                    key22 = "回歸二下科目校排名" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key22))
+                                                    {
+                                                        if (selectScore[id].gsScore22.HasValue)
+                                                        {
+                                                            int rr = ranks[key22].IndexOf(selectScore[id].gsScore22.Value) + 1;
+                                                            row["回歸二下科目校排名" + subjIndex] = rr;
+                                                            row["回歸二下科目校排名母數" + subjIndex] = ranks[key22].Count;
+                                                            row["回歸二下科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key22].Count);
+                                                        }
+                                                    }
+
+                                                    key31 = "回歸三上科目校排名" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key31))
+                                                    {
+                                                        if (selectScore[id].gsScore31.HasValue)
+                                                        {
+                                                            int rr = ranks[key31].IndexOf(selectScore[id].gsScore31.Value) + 1;
+                                                            row["回歸三上科目校排名" + subjIndex] = rr;
+                                                            row["回歸三上科目校排名母數" + subjIndex] = ranks[key31].Count;
+                                                            row["回歸三上科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key31].Count);
+                                                        }
+                                                    }
+
+                                                    key32 = "回歸三下科目校排名" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key32))
+                                                    {
+                                                        if (selectScore[id].gsScore32.HasValue)
+                                                        {
+                                                            int rr = ranks[key32].IndexOf(selectScore[id].gsScore32.Value) + 1;
+                                                            row["回歸三下科目校排名" + subjIndex] = rr;
+                                                            row["回歸三下科目校排名母數" + subjIndex] = ranks[key32].Count;
+                                                            row["回歸三下科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key32].Count);
+                                                        }
+                                                    }
+
+                                                    key41 = "回歸四上科目校排名" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key41))
+                                                    {
+                                                        if (selectScore[id].gsScore41.HasValue)
+                                                        {
+                                                            int rr = ranks[key41].IndexOf(selectScore[id].gsScore41.Value) + 1;
+                                                            row["回歸四上科目校排名" + subjIndex] = rr;
+                                                            row["回歸四上科目校排名母數" + subjIndex] = ranks[key41].Count;
+                                                            row["回歸四上科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key41].Count);
+                                                        }
+                                                    }
+
+                                                    key42 = "回歸四下科目校排名" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key42))
+                                                    {
+                                                        if (selectScore[id].gsScore42.HasValue)
+                                                        {
+                                                            int rr = ranks[key42].IndexOf(selectScore[id].gsScore42.Value) + 1;
+                                                            row["回歸四下科目校排名" + subjIndex] = rr;
+                                                            row["回歸四下科目校排名母數" + subjIndex] = ranks[key42].Count;
+                                                            row["回歸四下科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key42].Count);
+                                                        }
+                                                    }
+
+                                                    #endregion
+
+                                                    #region 寫入各科目成績類1排名
+                                                    if (studRec.Fields.ContainsKey("tag1"))
+                                                    {
+                                                        key11 = "回歸一上科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
                                                         if (ranks.ContainsKey(key11))
                                                         {
                                                             if (selectScore[id].gsScore11.HasValue)
                                                             {
                                                                 int rr = ranks[key11].IndexOf(selectScore[id].gsScore11.Value) + 1;
-                                                                row["回歸一上科目班排名" + subjIndex] = rr;
-                                                                row["回歸一上科目班排名母數" + subjIndex] = ranks[key11].Count;
-                                                                row["回歸一上科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key11].Count);
+                                                                row["回歸一上科目類1排名" + subjIndex] = rr;
+                                                                row["回歸一上科目類1排名母數" + subjIndex] = ranks[key11].Count;
+                                                                row["回歸一上科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key11].Count);
                                                             }
                                                         }
 
-                                                        string key12 = "回歸一下科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                        key12 = "回歸一下科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
                                                         if (ranks.ContainsKey(key12))
                                                         {
                                                             if (selectScore[id].gsScore12.HasValue)
                                                             {
                                                                 int rr = ranks[key12].IndexOf(selectScore[id].gsScore12.Value) + 1;
-                                                                row["回歸一下科目班排名" + subjIndex] = rr;
-                                                                row["回歸一下科目班排名母數" + subjIndex] = ranks[key12].Count;
-                                                                row["回歸一下科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key12].Count);
+                                                                row["回歸一下科目類1排名" + subjIndex] = rr;
+                                                                row["回歸一下科目類1排名母數" + subjIndex] = ranks[key12].Count;
+                                                                row["回歸一下科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key12].Count);
                                                             }
                                                         }
 
-                                                        string key21 = "回歸二上科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                        key21 = "回歸二上科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
                                                         if (ranks.ContainsKey(key21))
                                                         {
                                                             if (selectScore[id].gsScore21.HasValue)
                                                             {
                                                                 int rr = ranks[key21].IndexOf(selectScore[id].gsScore21.Value) + 1;
-                                                                row["回歸二上科目班排名" + subjIndex] = rr;
-                                                                row["回歸二上科目班排名母數" + subjIndex] = ranks[key21].Count;
-                                                                row["回歸二上科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key21].Count);
+                                                                row["回歸二上科目類1排名" + subjIndex] = rr;
+                                                                row["回歸二上科目類1排名母數" + subjIndex] = ranks[key21].Count;
+                                                                row["回歸二上科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key21].Count);
                                                             }
                                                         }
 
-                                                        string key22 = "回歸二下科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                        key22 = "回歸二下科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
                                                         if (ranks.ContainsKey(key22))
                                                         {
                                                             if (selectScore[id].gsScore22.HasValue)
                                                             {
                                                                 int rr = ranks[key22].IndexOf(selectScore[id].gsScore22.Value) + 1;
-                                                                row["回歸二下科目班排名" + subjIndex] = rr;
-                                                                row["回歸二下科目班排名母數" + subjIndex] = ranks[key22].Count;
-                                                                row["回歸二下科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key22].Count);
+                                                                row["回歸二下科目類1排名" + subjIndex] = rr;
+                                                                row["回歸二下科目類1排名母數" + subjIndex] = ranks[key22].Count;
+                                                                row["回歸二下科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key22].Count);
                                                             }
                                                         }
 
-                                                        string key31 = "回歸三上科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                        key31 = "回歸三上科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
                                                         if (ranks.ContainsKey(key31))
                                                         {
                                                             if (selectScore[id].gsScore31.HasValue)
                                                             {
                                                                 int rr = ranks[key31].IndexOf(selectScore[id].gsScore31.Value) + 1;
-                                                                row["回歸三上科目班排名" + subjIndex] = rr;
-                                                                row["回歸三上科目班排名母數" + subjIndex] = ranks[key31].Count;
-                                                                row["回歸三上科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key31].Count);
+                                                                row["回歸三上科目類1排名" + subjIndex] = rr;
+                                                                row["回歸三上科目類1排名母數" + subjIndex] = ranks[key31].Count;
+                                                                row["回歸三上科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key31].Count);
                                                             }
                                                         }
 
-                                                        string key32 = "回歸三下科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                        key32 = "回歸三下科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
                                                         if (ranks.ContainsKey(key32))
                                                         {
                                                             if (selectScore[id].gsScore32.HasValue)
                                                             {
                                                                 int rr = ranks[key32].IndexOf(selectScore[id].gsScore32.Value) + 1;
-                                                                row["回歸三下科目班排名" + subjIndex] = rr;
-                                                                row["回歸三下科目班排名母數" + subjIndex] = ranks[key32].Count;
-                                                                row["回歸三下科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key32].Count);
+                                                                row["回歸三下科目類1排名" + subjIndex] = rr;
+                                                                row["回歸三下科目類1排名母數" + subjIndex] = ranks[key32].Count;
+                                                                row["回歸三下科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key32].Count);
                                                             }
                                                         }
 
-                                                        string key41 = "回歸四上科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                        key41 = "回歸四上科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
                                                         if (ranks.ContainsKey(key41))
                                                         {
                                                             if (selectScore[id].gsScore41.HasValue)
                                                             {
                                                                 int rr = ranks[key41].IndexOf(selectScore[id].gsScore41.Value) + 1;
-                                                                row["回歸四上科目班排名" + subjIndex] = rr;
-                                                                row["回歸四上科目班排名母數" + subjIndex] = ranks[key41].Count;
-                                                                row["回歸四上科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key41].Count);
+                                                                row["回歸四上科目類1排名" + subjIndex] = rr;
+                                                                row["回歸四上科目類1排名母數" + subjIndex] = ranks[key41].Count;
+                                                                row["回歸四上科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key41].Count);
                                                             }
                                                         }
 
-                                                        string key42 = "回歸四下科目班排名" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                        key42 = "回歸四下科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
                                                         if (ranks.ContainsKey(key42))
                                                         {
                                                             if (selectScore[id].gsScore42.HasValue)
                                                             {
                                                                 int rr = ranks[key42].IndexOf(selectScore[id].gsScore42.Value) + 1;
-                                                                row["回歸四下科目班排名" + subjIndex] = rr;
-                                                                row["回歸四下科目班排名母數" + subjIndex] = ranks[key42].Count;
-                                                                row["回歸四下科目班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key42].Count);
+                                                                row["回歸四下科目類1排名" + subjIndex] = rr;
+                                                                row["回歸四下科目類1排名母數" + subjIndex] = ranks[key42].Count;
+                                                                row["回歸四下科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key42].Count);
                                                             }
                                                         }
+                                                    }
 
-                                                        #endregion
+                                                    #endregion
 
-                                                        #region 寫入各科目成績科排名
-                                                        key11 = "回歸一上科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                    #region 寫入各科目成績類2排名
+
+                                                    if (studRec.Fields.ContainsKey("tag2"))
+                                                    {
+                                                        key11 = "回歸一上科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
                                                         if (ranks.ContainsKey(key11))
                                                         {
                                                             if (selectScore[id].gsScore11.HasValue)
                                                             {
                                                                 int rr = ranks[key11].IndexOf(selectScore[id].gsScore11.Value) + 1;
-                                                                row["回歸一上科目科排名" + subjIndex] = rr;
-                                                                row["回歸一上科目科排名母數" + subjIndex] = ranks[key11].Count;
-                                                                row["回歸一上科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key11].Count);
+                                                                row["回歸一上科目類2排名" + subjIndex] = rr;
+                                                                row["回歸一上科目類2排名母數" + subjIndex] = ranks[key11].Count;
+                                                                row["回歸一上科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key11].Count);
                                                             }
                                                         }
 
-                                                        key12 = "回歸一下科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                        key12 = "回歸一下科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
                                                         if (ranks.ContainsKey(key12))
                                                         {
                                                             if (selectScore[id].gsScore12.HasValue)
                                                             {
                                                                 int rr = ranks[key12].IndexOf(selectScore[id].gsScore12.Value) + 1;
-                                                                row["回歸一下科目科排名" + subjIndex] = rr;
-                                                                row["回歸一下科目科排名母數" + subjIndex] = ranks[key12].Count;
-                                                                row["回歸一下科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key12].Count);
+                                                                row["回歸一下科目類2排名" + subjIndex] = rr;
+                                                                row["回歸一下科目類2排名母數" + subjIndex] = ranks[key12].Count;
+                                                                row["回歸一下科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key12].Count);
                                                             }
                                                         }
 
-                                                        key21 = "回歸二上科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                        key21 = "回歸二上科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
                                                         if (ranks.ContainsKey(key21))
                                                         {
                                                             if (selectScore[id].gsScore21.HasValue)
                                                             {
                                                                 int rr = ranks[key21].IndexOf(selectScore[id].gsScore21.Value) + 1;
-                                                                row["回歸二上科目科排名" + subjIndex] = rr;
-                                                                row["回歸二上科目科排名母數" + subjIndex] = ranks[key21].Count;
-                                                                row["回歸二上科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key21].Count);
+                                                                row["回歸二上科目類2排名" + subjIndex] = rr;
+                                                                row["回歸二上科目類2排名母數" + subjIndex] = ranks[key21].Count;
+                                                                row["回歸二上科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key21].Count);
                                                             }
                                                         }
 
-                                                        key22 = "回歸二下科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                        key22 = "回歸二下科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
                                                         if (ranks.ContainsKey(key22))
                                                         {
                                                             if (selectScore[id].gsScore22.HasValue)
                                                             {
                                                                 int rr = ranks[key22].IndexOf(selectScore[id].gsScore22.Value) + 1;
-                                                                row["回歸二下科目科排名" + subjIndex] = rr;
-                                                                row["回歸二下科目科排名母數" + subjIndex] = ranks[key22].Count;
-                                                                row["回歸二下科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key22].Count);
+                                                                row["回歸二下科目類2排名" + subjIndex] = rr;
+                                                                row["回歸二下科目類2排名母數" + subjIndex] = ranks[key22].Count;
+                                                                row["回歸二下科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key22].Count);
                                                             }
                                                         }
 
-                                                        key31 = "回歸三上科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                        key31 = "回歸三上科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
                                                         if (ranks.ContainsKey(key31))
                                                         {
                                                             if (selectScore[id].gsScore31.HasValue)
                                                             {
                                                                 int rr = ranks[key31].IndexOf(selectScore[id].gsScore31.Value) + 1;
-                                                                row["回歸三上科目科排名" + subjIndex] = rr;
-                                                                row["回歸三上科目科排名母數" + subjIndex] = ranks[key31].Count;
-                                                                row["回歸三上科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key31].Count);
+                                                                row["回歸三上科目類2排名" + subjIndex] = rr;
+                                                                row["回歸三上科目類2排名母數" + subjIndex] = ranks[key31].Count;
+                                                                row["回歸三上科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key31].Count);
                                                             }
                                                         }
 
-                                                        key32 = "回歸三下科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                        key32 = "回歸三下科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
                                                         if (ranks.ContainsKey(key32))
                                                         {
                                                             if (selectScore[id].gsScore32.HasValue)
                                                             {
                                                                 int rr = ranks[key32].IndexOf(selectScore[id].gsScore32.Value) + 1;
-                                                                row["回歸三下科目科排名" + subjIndex] = rr;
-                                                                row["回歸三下科目科排名母數" + subjIndex] = ranks[key32].Count;
-                                                                row["回歸三下科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key32].Count);
+                                                                row["回歸三下科目類2排名" + subjIndex] = rr;
+                                                                row["回歸三下科目類2排名母數" + subjIndex] = ranks[key32].Count;
+                                                                row["回歸三下科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key32].Count);
                                                             }
                                                         }
 
-                                                        key41 = "回歸四上科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                        key41 = "回歸四上科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
                                                         if (ranks.ContainsKey(key41))
                                                         {
                                                             if (selectScore[id].gsScore41.HasValue)
                                                             {
                                                                 int rr = ranks[key41].IndexOf(selectScore[id].gsScore41.Value) + 1;
-                                                                row["回歸四上科目科排名" + subjIndex] = rr;
-                                                                row["回歸四上科目科排名母數" + subjIndex] = ranks[key41].Count;
-                                                                row["回歸四上科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key41].Count);
+                                                                row["回歸四上科目類2排名" + subjIndex] = rr;
+                                                                row["回歸四上科目類2排名母數" + subjIndex] = ranks[key41].Count;
+                                                                row["回歸四上科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key41].Count);
                                                             }
                                                         }
 
-                                                        key42 = "回歸四下科目科排名" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                        key42 = "回歸四下科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
                                                         if (ranks.ContainsKey(key42))
                                                         {
                                                             if (selectScore[id].gsScore42.HasValue)
                                                             {
                                                                 int rr = ranks[key42].IndexOf(selectScore[id].gsScore42.Value) + 1;
-                                                                row["回歸四下科目科排名" + subjIndex] = rr;
-                                                                row["回歸四下科目科排名母數" + subjIndex] = ranks[key42].Count;
-                                                                row["回歸四下科目科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key42].Count);
-                                                            }
-                                                        }
-
-                                                        #endregion
-                                                        
-                                                        #region 寫入各科目成績校排名
-                                                        key11 = "回歸一上科目校排名" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key11))
-                                                        {
-                                                            if (selectScore[id].gsScore11.HasValue)
-                                                            {
-                                                                int rr = ranks[key11].IndexOf(selectScore[id].gsScore11.Value) + 1;
-                                                                row["回歸一上科目校排名" + subjIndex] = rr;
-                                                                row["回歸一上科目校排名母數" + subjIndex] = ranks[key11].Count;
-                                                                row["回歸一上科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key11].Count);
-                                                            }
-                                                        }
-
-                                                        key12 = "回歸一下科目校排名" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key12))
-                                                        {
-                                                            if (selectScore[id].gsScore12.HasValue)
-                                                            {
-                                                                int rr = ranks[key12].IndexOf(selectScore[id].gsScore12.Value) + 1;
-                                                                row["回歸一下科目校排名" + subjIndex] = rr;
-                                                                row["回歸一下科目校排名母數" + subjIndex] = ranks[key12].Count;
-                                                                row["回歸一下科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key12].Count);
-                                                            }
-                                                        }
-
-                                                        key21 = "回歸二上科目校排名" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key21))
-                                                        {
-                                                            if (selectScore[id].gsScore21.HasValue)
-                                                            {
-                                                                int rr = ranks[key21].IndexOf(selectScore[id].gsScore21.Value) + 1;
-                                                                row["回歸二上科目校排名" + subjIndex] = rr;
-                                                                row["回歸二上科目校排名母數" + subjIndex] = ranks[key21].Count;
-                                                                row["回歸二上科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key21].Count);
-                                                            }
-                                                        }
-
-                                                        key22 = "回歸二下科目校排名" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key22))
-                                                        {
-                                                            if (selectScore[id].gsScore22.HasValue)
-                                                            {
-                                                                int rr = ranks[key22].IndexOf(selectScore[id].gsScore22.Value) + 1;
-                                                                row["回歸二下科目校排名" + subjIndex] = rr;
-                                                                row["回歸二下科目校排名母數" + subjIndex] = ranks[key22].Count;
-                                                                row["回歸二下科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key22].Count);
-                                                            }
-                                                        }
-
-                                                        key31 = "回歸三上科目校排名" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key31))
-                                                        {
-                                                            if (selectScore[id].gsScore31.HasValue)
-                                                            {
-                                                                int rr = ranks[key31].IndexOf(selectScore[id].gsScore31.Value) + 1;
-                                                                row["回歸三上科目校排名" + subjIndex] = rr;
-                                                                row["回歸三上科目校排名母數" + subjIndex] = ranks[key31].Count;
-                                                                row["回歸三上科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key31].Count);
-                                                            }
-                                                        }
-
-                                                        key32 = "回歸三下科目校排名" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key32))
-                                                        {
-                                                            if (selectScore[id].gsScore32.HasValue)
-                                                            {
-                                                                int rr = ranks[key32].IndexOf(selectScore[id].gsScore32.Value) + 1;
-                                                                row["回歸三下科目校排名" + subjIndex] = rr;
-                                                                row["回歸三下科目校排名母數" + subjIndex] = ranks[key32].Count;
-                                                                row["回歸三下科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key32].Count);
-                                                            }
-                                                        }
-
-                                                        key41 = "回歸四上科目校排名" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key41))
-                                                        {
-                                                            if (selectScore[id].gsScore41.HasValue)
-                                                            {
-                                                                int rr = ranks[key41].IndexOf(selectScore[id].gsScore41.Value) + 1;
-                                                                row["回歸四上科目校排名" + subjIndex] = rr;
-                                                                row["回歸四上科目校排名母數" + subjIndex] = ranks[key41].Count;
-                                                                row["回歸四上科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key41].Count);
-                                                            }
-                                                        }
-
-                                                        key42 = "回歸四下科目校排名" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key42))
-                                                        {
-                                                            if (selectScore[id].gsScore42.HasValue)
-                                                            {
-                                                                int rr = ranks[key42].IndexOf(selectScore[id].gsScore42.Value) + 1;
-                                                                row["回歸四下科目校排名" + subjIndex] = rr;
-                                                                row["回歸四下科目校排名母數" + subjIndex] = ranks[key42].Count;
-                                                                row["回歸四下科目校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key42].Count);
-                                                            }
-                                                        }
-
-                                                        #endregion
-
-                                                        #region 寫入各科目成績類1排名
-                                                        if (studRec.Fields.ContainsKey("tag1"))
-                                                        {
-                                                            key11 = "回歸一上科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key11))
-                                                            {
-                                                                if (selectScore[id].gsScore11.HasValue)
-                                                                {
-                                                                    int rr = ranks[key11].IndexOf(selectScore[id].gsScore11.Value) + 1;
-                                                                    row["回歸一上科目類1排名" + subjIndex] = rr;
-                                                                    row["回歸一上科目類1排名母數" + subjIndex] = ranks[key11].Count;
-                                                                    row["回歸一上科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key11].Count);
-                                                                }
-                                                            }
-
-                                                            key12 = "回歸一下科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key12))
-                                                            {
-                                                                if (selectScore[id].gsScore12.HasValue)
-                                                                {
-                                                                    int rr = ranks[key12].IndexOf(selectScore[id].gsScore12.Value) + 1;
-                                                                    row["回歸一下科目類1排名" + subjIndex] = rr;
-                                                                    row["回歸一下科目類1排名母數" + subjIndex] = ranks[key12].Count;
-                                                                    row["回歸一下科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key12].Count);
-                                                                }
-                                                            }
-
-                                                            key21 = "回歸二上科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key21))
-                                                            {
-                                                                if (selectScore[id].gsScore21.HasValue)
-                                                                {
-                                                                    int rr = ranks[key21].IndexOf(selectScore[id].gsScore21.Value) + 1;
-                                                                    row["回歸二上科目類1排名" + subjIndex] = rr;
-                                                                    row["回歸二上科目類1排名母數" + subjIndex] = ranks[key21].Count;
-                                                                    row["回歸二上科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key21].Count);
-                                                                }
-                                                            }
-
-                                                            key22 = "回歸二下科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key22))
-                                                            {
-                                                                if (selectScore[id].gsScore22.HasValue)
-                                                                {
-                                                                    int rr = ranks[key22].IndexOf(selectScore[id].gsScore22.Value) + 1;
-                                                                    row["回歸二下科目類1排名" + subjIndex] = rr;
-                                                                    row["回歸二下科目類1排名母數" + subjIndex] = ranks[key22].Count;
-                                                                    row["回歸二下科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key22].Count);
-                                                                }
-                                                            }
-
-                                                            key31 = "回歸三上科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key31))
-                                                            {
-                                                                if (selectScore[id].gsScore31.HasValue)
-                                                                {
-                                                                    int rr = ranks[key31].IndexOf(selectScore[id].gsScore31.Value) + 1;
-                                                                    row["回歸三上科目類1排名" + subjIndex] = rr;
-                                                                    row["回歸三上科目類1排名母數" + subjIndex] = ranks[key31].Count;
-                                                                    row["回歸三上科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key31].Count);
-                                                                }
-                                                            }
-
-                                                            key32 = "回歸三下科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key32))
-                                                            {
-                                                                if (selectScore[id].gsScore32.HasValue)
-                                                                {
-                                                                    int rr = ranks[key32].IndexOf(selectScore[id].gsScore32.Value) + 1;
-                                                                    row["回歸三下科目類1排名" + subjIndex] = rr;
-                                                                    row["回歸三下科目類1排名母數" + subjIndex] = ranks[key32].Count;
-                                                                    row["回歸三下科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key32].Count);
-                                                                }
-                                                            }
-
-                                                            key41 = "回歸四上科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key41))
-                                                            {
-                                                                if (selectScore[id].gsScore41.HasValue)
-                                                                {
-                                                                    int rr = ranks[key41].IndexOf(selectScore[id].gsScore41.Value) + 1;
-                                                                    row["回歸四上科目類1排名" + subjIndex] = rr;
-                                                                    row["回歸四上科目類1排名母數" + subjIndex] = ranks[key41].Count;
-                                                                    row["回歸四上科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key41].Count);
-                                                                }
-                                                            }
-
-                                                            key42 = "回歸四下科目類1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key42))
-                                                            {
-                                                                if (selectScore[id].gsScore42.HasValue)
-                                                                {
-                                                                    int rr = ranks[key42].IndexOf(selectScore[id].gsScore42.Value) + 1;
-                                                                    row["回歸四下科目類1排名" + subjIndex] = rr;
-                                                                    row["回歸四下科目類1排名母數" + subjIndex] = ranks[key42].Count;
-                                                                    row["回歸四下科目類1排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key42].Count);
-                                                                }
-                                                            }
-                                                        }
-
-                                                        #endregion
-
-                                                        #region 寫入各科目成績類2排名
-
-                                                        if (studRec.Fields.ContainsKey("tag2"))
-                                                        {
-                                                            key11 = "回歸一上科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key11))
-                                                            {
-                                                                if (selectScore[id].gsScore11.HasValue)
-                                                                {
-                                                                    int rr = ranks[key11].IndexOf(selectScore[id].gsScore11.Value) + 1;
-                                                                    row["回歸一上科目類2排名" + subjIndex] = rr;
-                                                                    row["回歸一上科目類2排名母數" + subjIndex] = ranks[key11].Count;
-                                                                    row["回歸一上科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key11].Count);
-                                                                }
-                                                            }
-
-                                                            key12 = "回歸一下科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key12))
-                                                            {
-                                                                if (selectScore[id].gsScore12.HasValue)
-                                                                {
-                                                                    int rr = ranks[key12].IndexOf(selectScore[id].gsScore12.Value) + 1;
-                                                                    row["回歸一下科目類2排名" + subjIndex] = rr;
-                                                                    row["回歸一下科目類2排名母數" + subjIndex] = ranks[key12].Count;
-                                                                    row["回歸一下科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key12].Count);
-                                                                }
-                                                            }
-
-                                                            key21 = "回歸二上科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key21))
-                                                            {
-                                                                if (selectScore[id].gsScore21.HasValue)
-                                                                {
-                                                                    int rr = ranks[key21].IndexOf(selectScore[id].gsScore21.Value) + 1;
-                                                                    row["回歸二上科目類2排名" + subjIndex] = rr;
-                                                                    row["回歸二上科目類2排名母數" + subjIndex] = ranks[key21].Count;
-                                                                    row["回歸二上科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key21].Count);
-                                                                }
-                                                            }
-
-                                                            key22 = "回歸二下科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key22))
-                                                            {
-                                                                if (selectScore[id].gsScore22.HasValue)
-                                                                {
-                                                                    int rr = ranks[key22].IndexOf(selectScore[id].gsScore22.Value) + 1;
-                                                                    row["回歸二下科目類2排名" + subjIndex] = rr;
-                                                                    row["回歸二下科目類2排名母數" + subjIndex] = ranks[key22].Count;
-                                                                    row["回歸二下科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key22].Count);
-                                                                }
-                                                            }
-
-                                                            key31 = "回歸三上科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key31))
-                                                            {
-                                                                if (selectScore[id].gsScore31.HasValue)
-                                                                {
-                                                                    int rr = ranks[key31].IndexOf(selectScore[id].gsScore31.Value) + 1;
-                                                                    row["回歸三上科目類2排名" + subjIndex] = rr;
-                                                                    row["回歸三上科目類2排名母數" + subjIndex] = ranks[key31].Count;
-                                                                    row["回歸三上科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key31].Count);
-                                                                }
-                                                            }
-
-                                                            key32 = "回歸三下科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key32))
-                                                            {
-                                                                if (selectScore[id].gsScore32.HasValue)
-                                                                {
-                                                                    int rr = ranks[key32].IndexOf(selectScore[id].gsScore32.Value) + 1;
-                                                                    row["回歸三下科目類2排名" + subjIndex] = rr;
-                                                                    row["回歸三下科目類2排名母數" + subjIndex] = ranks[key32].Count;
-                                                                    row["回歸三下科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key32].Count);
-                                                                }
-                                                            }
-
-                                                            key41 = "回歸四上科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key41))
-                                                            {
-                                                                if (selectScore[id].gsScore41.HasValue)
-                                                                {
-                                                                    int rr = ranks[key41].IndexOf(selectScore[id].gsScore41.Value) + 1;
-                                                                    row["回歸四上科目類2排名" + subjIndex] = rr;
-                                                                    row["回歸四上科目類2排名母數" + subjIndex] = ranks[key41].Count;
-                                                                    row["回歸四上科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key41].Count);
-                                                                }
-                                                            }
-
-                                                            key42 = "回歸四下科目類2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key42))
-                                                            {
-                                                                if (selectScore[id].gsScore42.HasValue)
-                                                                {
-                                                                    int rr = ranks[key42].IndexOf(selectScore[id].gsScore42.Value) + 1;
-                                                                    row["回歸四下科目類2排名" + subjIndex] = rr;
-                                                                    row["回歸四下科目類2排名母數" + subjIndex] = ranks[key42].Count;
-                                                                    row["回歸四下科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key42].Count);
-                                                                }
-                                                            }
-                                                        }
-
-                                                        #endregion
-
-
-                                                        string key4 = "加權平均班排名_回歸_" + studRec.RefClass.ClassID + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key4))
-                                                        {
-                                                            int rr = ranks[key4].IndexOf(selectScore[id].avgScoreA) + 1;
-                                                            row["回歸科目加權平均班排名" + subjIndex] = rr;
-                                                            row["回歸科目加權平均班排名母數" + subjIndex] = ranks[key4].Count;
-                                                            row["回歸科目加權平均班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key4].Count);
-                                                        }
-
-                                                        key4 = "加權平均科排名_回歸_" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key4))
-                                                        {
-                                                            int rr = ranks[key4].IndexOf(selectScore[id].avgScoreA) + 1;
-                                                            row["回歸科目加權平均科排名" + subjIndex] = rr;
-                                                            row["回歸科目加權平均科排名母數" + subjIndex] = ranks[key4].Count;
-                                                            row["回歸科目加權平均科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key4].Count);
-
-                                                        }
-                                                        key4 = "加權平均全校排名_回歸_" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key4))
-                                                        {
-                                                            int rr = ranks[key4].IndexOf(selectScore[id].avgScoreA) + 1;
-                                                            row["回歸科目加權平均校排名" + subjIndex] = rr;
-                                                            row["回歸科目加權平均校排名母數" + subjIndex] = ranks[key4].Count;
-                                                            row["回歸科目加權平均校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key4].Count);
-                                                        }
-                                                        if (studRec.Fields.ContainsKey("tag1"))
-                                                        {
-                                                            key4 = "加權平均類別1排名_回歸_" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key4))
-                                                            {
-                                                                if (ranks[key4].IndexOf(selectScore[id].avgScoreAC1) >= 0)
-                                                                {
-                                                                    int rr = ranks[key4].IndexOf(selectScore[id].avgScoreAC1) + 1;
-                                                                    row["回歸科目加權平均類別一排名" + subjIndex] = rr;
-                                                                    row["回歸科目加權平均類別一排名母數" + subjIndex] = ranks[key4].Count;
-                                                                    row["回歸科目加權平均類別一排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key4].Count);
-                                                                }
-                                                            }
-                                                        }
-                                                        if (studRec.Fields.ContainsKey("tag2"))
-                                                        {
-                                                            if (ranks.ContainsKey(key4))
-                                                            {
-                                                                if (ranks[key4].IndexOf(selectScore[id].avgScoreAC2) >= 0)
-                                                                {
-                                                                    int rr = ranks[key4].IndexOf(selectScore[id].avgScoreAC2) + 1;
-                                                                    row["回歸科目加權平均類別二排名" + subjIndex] = rr;
-                                                                    row["回歸科目加權平均類別二排名母數" + subjIndex] = ranks[key4].Count;
-                                                                    row["回歸科目加權平均類別二排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key4].Count);
-                                                                }
-                                                            }
-                                                        }
-
-                                                        string key2 = "加權總分班排名_回歸_" + studRec.RefClass.ClassID + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id].sumScoreA) + 1;
-                                                            row["回歸科目加權總分班排名" + subjIndex] = rr;
-                                                            row["回歸科目加權總分班排名母數" + subjIndex] = ranks[key2].Count;
-                                                            row["回歸科目加權總分班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-                                                        key2 = "加權總分科排名_回歸_" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id].sumScoreA) + 1;
-                                                            row["回歸科目加權總分科排名" + subjIndex] = rr;
-                                                            row["回歸科目加權總分科排名母數" + subjIndex] = ranks[key2].Count;
-                                                            row["回歸科目加權總分科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-
-                                                        }
-
-                                                        key2 = "加權總分全校排名_回歸_" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id].sumScoreA) + 1;
-                                                            row["回歸科目加權總分校排名" + subjIndex] = rr;
-                                                            row["回歸科目加權總分校排名母數" + subjIndex] = ranks[key2].Count;
-                                                            row["回歸科目加權總分校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-
-                                                        if (studRec.Fields.ContainsKey("tag1"))
-                                                        {
-                                                            key2 = "加權總分類別1排名_回歸_" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key2))
-                                                            {
-                                                                if (ranks[key2].IndexOf(selectScore[id].sumScoreAC1) >= 0)
-                                                                {
-                                                                    int rr = ranks[key2].IndexOf(selectScore[id].sumScoreAC1) + 1;
-                                                                    row["回歸科目加權總分類別一排名" + subjIndex] = rr;
-                                                                    row["回歸科目加權總分類別一排名母數" + subjIndex] = ranks[key2].Count;
-                                                                    row["回歸科目加權總分類別一排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                                }
-                                                            }
-                                                        }
-                                                        if (studRec.Fields.ContainsKey("tag2"))
-                                                        {
-                                                            key2 = "加權總分類別2排名_回歸_" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key2))
-                                                            {
-                                                                if (ranks[key2].IndexOf(selectScore[id].sumScoreAC2) >= 0)
-                                                                {
-                                                                    int rr = ranks[key2].IndexOf(selectScore[id].sumScoreAC2) + 1;
-                                                                    row["回歸科目加權總分類別二排名" + subjIndex] = rr;
-                                                                    row["回歸科目加權總分類別二排名母數" + subjIndex] = ranks[key2].Count;
-                                                                    row["回歸科目加權總分類別二排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                                }
-                                                            }
-                                                        }
-
-                                                        string key3 = "平均班排名_回歸_" + studRec.RefClass.ClassID + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key3))
-                                                        {
-                                                            int rr = ranks[key3].IndexOf(selectScore[id].avgScore) + 1;
-                                                            row["回歸科目平均班排名" + subjIndex] = rr;
-                                                            row["回歸科目平均班排名母數" + subjIndex] = ranks[key3].Count;
-                                                            row["回歸科目平均班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key3].Count);
-                                                        }
-
-                                                        key3 = "平均科排名_回歸_" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key3))
-                                                        {
-                                                            int rr = ranks[key3].IndexOf(selectScore[id].avgScore) + 1;
-                                                            row["回歸科目平均科排名" + subjIndex] = rr;
-                                                            row["回歸科目平均科排名母數" + subjIndex] = ranks[key3].Count;
-                                                            row["回歸科目平均科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key3].Count);
-                                                        }
-                                                        key3 = "平均全校排名_回歸_" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key3))
-                                                        {
-                                                            int rr = ranks[key3].IndexOf(selectScore[id].avgScore) + 1;
-                                                            row["回歸科目平均校排名" + subjIndex] = rr;
-                                                            row["回歸科目平均校排名母數" + subjIndex] = ranks[key3].Count;
-                                                            row["回歸科目平均校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key3].Count);
-                                                        }
-
-                                                        if (studRec.Fields.ContainsKey("tag1"))
-                                                        {
-                                                            key3 = "平均類別1排名_回歸_" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key3))
-                                                            {
-                                                                if (ranks[key3].IndexOf(selectScore[id].avgScoreC1) >= 0)
-                                                                {
-                                                                    int rr = ranks[key3].IndexOf(selectScore[id].avgScoreC1) + 1;
-                                                                    row["回歸科目平均類別一排名" + subjIndex] = rr;
-                                                                    row["回歸科目平均類別一排名母數" + subjIndex] = ranks[key3].Count;
-                                                                    row["回歸科目平均類別一排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key3].Count);
-                                                                }
-                                                            }
-                                                        }
-
-                                                        if (studRec.Fields.ContainsKey("tag2"))
-                                                        {
-                                                            key3 = "平均類別2排名_回歸_" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key3))
-                                                            {
-                                                                if (ranks[key3].IndexOf(selectScore[id].avgScoreC2) >= 0)
-                                                                {
-                                                                    int rr = ranks[key3].IndexOf(selectScore[id].avgScoreC2) + 1;
-                                                                    row["回歸科目平均類別二排名" + subjIndex] = rr;
-                                                                    row["回歸科目平均類別二排名母數" + subjIndex] = ranks[key3].Count;
-                                                                    row["回歸科目平均類別二排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key3].Count);
-                                                                }
-                                                            }
-                                                        }
-                                                        string key1 = "總分班排名_回歸_" + studRec.RefClass.ClassID + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            int rr = ranks[key1].IndexOf(selectScore[id].sumScore) + 1;
-                                                            row["回歸科目總分班排名" + subjIndex] = rr;
-                                                            row["回歸科目總分班排名母數" + subjIndex] = ranks[key1].Count;
-                                                            row["回歸科目總分班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key1].Count);
-                                                        }
-                                                        key1 = "總分科排名_回歸_" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            int rr = ranks[key1].IndexOf(selectScore[id].sumScore) + 1;
-                                                            row["回歸科目總分科排名" + subjIndex] = rr;
-                                                            row["回歸科目總分科排名母數" + subjIndex] = ranks[key1].Count;
-                                                            row["回歸科目總分科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key1].Count);
-                                                        }
-                                                        key1 = "總分全校排名_回歸_" + gradeyear + "^^^" + subjName;
-
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            int rr = ranks[key1].IndexOf(selectScore[id].sumScore) + 1;
-                                                            row["回歸科目總分校排名" + subjIndex] = rr;
-                                                            row["回歸科目總分校排名母數" + subjIndex] = ranks[key1].Count;
-                                                            row["回歸科目總分校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key1].Count);
-                                                        }
-
-                                                        if (studRec.Fields.ContainsKey("tag1"))
-                                                        {
-                                                            key1 = "總分類別1排名_回歸_" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key1))
-                                                            {
-                                                                if (ranks[key1].IndexOf(selectScore[id].sumScoreC1) >= 0)
-                                                                {
-                                                                    int rr = ranks[key1].IndexOf(selectScore[id].sumScoreC1) + 1;
-                                                                    row["回歸科目總分類別一排名" + subjIndex] = rr;
-                                                                    row["回歸科目總分類別一排名母數" + subjIndex] = ranks[key1].Count;
-                                                                    row["回歸科目總分類別一排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key1].Count);
-                                                                }
-                                                            }
-                                                        }
-                                                        if (studRec.Fields.ContainsKey("tag2"))
-                                                        {
-                                                            key1 = "總分類別2排名_回歸_" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
-                                                            if (ranks.ContainsKey(key1))
-                                                            {
-                                                                if (ranks[key1].IndexOf(selectScore[id].sumScoreC2) >= 0)
-                                                                {
-                                                                    int rr = ranks[key1].IndexOf(selectScore[id].sumScoreC2) + 1;
-                                                                    row["回歸科目總分類別二排名" + subjIndex] = rr;
-                                                                    row["回歸科目總分類別二排名母數" + subjIndex] = ranks[key1].Count;
-                                                                    row["回歸科目總分類別二排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key1].Count);
-                                                                }
+                                                                row["回歸四下科目類2排名" + subjIndex] = rr;
+                                                                row["回歸四下科目類2排名母數" + subjIndex] = ranks[key42].Count;
+                                                                row["回歸四下科目類2排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key42].Count);
                                                             }
                                                         }
                                                     }
 
-                                                    subjIndex++;
+                                                    #endregion
+
+
+                                                    string key4 = "加權平均班排名_回歸_" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key4))
+                                                    {
+                                                        int rr = ranks[key4].IndexOf(selectScore[id].avgScoreA) + 1;
+                                                        row["回歸科目加權平均班排名" + subjIndex] = rr;
+                                                        row["回歸科目加權平均班排名母數" + subjIndex] = ranks[key4].Count;
+                                                        row["回歸科目加權平均班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key4].Count);
+                                                    }
+
+                                                    key4 = "加權平均科排名_回歸_" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key4))
+                                                    {
+                                                        int rr = ranks[key4].IndexOf(selectScore[id].avgScoreA) + 1;
+                                                        row["回歸科目加權平均科排名" + subjIndex] = rr;
+                                                        row["回歸科目加權平均科排名母數" + subjIndex] = ranks[key4].Count;
+                                                        row["回歸科目加權平均科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key4].Count);
+
+                                                    }
+                                                    key4 = "加權平均全校排名_回歸_" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key4))
+                                                    {
+                                                        int rr = ranks[key4].IndexOf(selectScore[id].avgScoreA) + 1;
+                                                        row["回歸科目加權平均校排名" + subjIndex] = rr;
+                                                        row["回歸科目加權平均校排名母數" + subjIndex] = ranks[key4].Count;
+                                                        row["回歸科目加權平均校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key4].Count);
+                                                    }
+                                                    if (studRec.Fields.ContainsKey("tag1"))
+                                                    {
+                                                        key4 = "加權平均類別1排名_回歸_" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key4))
+                                                        {
+                                                            if (ranks[key4].IndexOf(selectScore[id].avgScoreAC1) >= 0)
+                                                            {
+                                                                int rr = ranks[key4].IndexOf(selectScore[id].avgScoreAC1) + 1;
+                                                                row["回歸科目加權平均類別一排名" + subjIndex] = rr;
+                                                                row["回歸科目加權平均類別一排名母數" + subjIndex] = ranks[key4].Count;
+                                                                row["回歸科目加權平均類別一排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key4].Count);
+                                                            }
+                                                        }
+                                                    }
+                                                    if (studRec.Fields.ContainsKey("tag2"))
+                                                    {
+                                                        if (ranks.ContainsKey(key4))
+                                                        {
+                                                            if (ranks[key4].IndexOf(selectScore[id].avgScoreAC2) >= 0)
+                                                            {
+                                                                int rr = ranks[key4].IndexOf(selectScore[id].avgScoreAC2) + 1;
+                                                                row["回歸科目加權平均類別二排名" + subjIndex] = rr;
+                                                                row["回歸科目加權平均類別二排名母數" + subjIndex] = ranks[key4].Count;
+                                                                row["回歸科目加權平均類別二排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key4].Count);
+                                                            }
+                                                        }
+                                                    }
+
+                                                    string key2 = "加權總分班排名_回歸_" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key2))
+                                                    {
+                                                        int rr = ranks[key2].IndexOf(selectScore[id].sumScoreA) + 1;
+                                                        row["回歸科目加權總分班排名" + subjIndex] = rr;
+                                                        row["回歸科目加權總分班排名母數" + subjIndex] = ranks[key2].Count;
+                                                        row["回歸科目加權總分班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                    }
+                                                    key2 = "加權總分科排名_回歸_" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key2))
+                                                    {
+                                                        int rr = ranks[key2].IndexOf(selectScore[id].sumScoreA) + 1;
+                                                        row["回歸科目加權總分科排名" + subjIndex] = rr;
+                                                        row["回歸科目加權總分科排名母數" + subjIndex] = ranks[key2].Count;
+                                                        row["回歸科目加權總分科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+
+                                                    }
+
+                                                    key2 = "加權總分全校排名_回歸_" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key2))
+                                                    {
+                                                        int rr = ranks[key2].IndexOf(selectScore[id].sumScoreA) + 1;
+                                                        row["回歸科目加權總分校排名" + subjIndex] = rr;
+                                                        row["回歸科目加權總分校排名母數" + subjIndex] = ranks[key2].Count;
+                                                        row["回歸科目加權總分校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                    }
+
+                                                    if (studRec.Fields.ContainsKey("tag1"))
+                                                    {
+                                                        key2 = "加權總分類別1排名_回歸_" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key2))
+                                                        {
+                                                            if (ranks[key2].IndexOf(selectScore[id].sumScoreAC1) >= 0)
+                                                            {
+                                                                int rr = ranks[key2].IndexOf(selectScore[id].sumScoreAC1) + 1;
+                                                                row["回歸科目加權總分類別一排名" + subjIndex] = rr;
+                                                                row["回歸科目加權總分類別一排名母數" + subjIndex] = ranks[key2].Count;
+                                                                row["回歸科目加權總分類別一排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                            }
+                                                        }
+                                                    }
+                                                    if (studRec.Fields.ContainsKey("tag2"))
+                                                    {
+                                                        key2 = "加權總分類別2排名_回歸_" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key2))
+                                                        {
+                                                            if (ranks[key2].IndexOf(selectScore[id].sumScoreAC2) >= 0)
+                                                            {
+                                                                int rr = ranks[key2].IndexOf(selectScore[id].sumScoreAC2) + 1;
+                                                                row["回歸科目加權總分類別二排名" + subjIndex] = rr;
+                                                                row["回歸科目加權總分類別二排名母數" + subjIndex] = ranks[key2].Count;
+                                                                row["回歸科目加權總分類別二排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                            }
+                                                        }
+                                                    }
+
+                                                    string key3 = "平均班排名_回歸_" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key3))
+                                                    {
+                                                        int rr = ranks[key3].IndexOf(selectScore[id].avgScore) + 1;
+                                                        row["回歸科目平均班排名" + subjIndex] = rr;
+                                                        row["回歸科目平均班排名母數" + subjIndex] = ranks[key3].Count;
+                                                        row["回歸科目平均班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key3].Count);
+                                                    }
+
+                                                    key3 = "平均科排名_回歸_" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key3))
+                                                    {
+                                                        int rr = ranks[key3].IndexOf(selectScore[id].avgScore) + 1;
+                                                        row["回歸科目平均科排名" + subjIndex] = rr;
+                                                        row["回歸科目平均科排名母數" + subjIndex] = ranks[key3].Count;
+                                                        row["回歸科目平均科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key3].Count);
+                                                    }
+                                                    key3 = "平均全校排名_回歸_" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key3))
+                                                    {
+                                                        int rr = ranks[key3].IndexOf(selectScore[id].avgScore) + 1;
+                                                        row["回歸科目平均校排名" + subjIndex] = rr;
+                                                        row["回歸科目平均校排名母數" + subjIndex] = ranks[key3].Count;
+                                                        row["回歸科目平均校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key3].Count);
+                                                    }
+
+                                                    if (studRec.Fields.ContainsKey("tag1"))
+                                                    {
+                                                        key3 = "平均類別1排名_回歸_" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key3))
+                                                        {
+                                                            if (ranks[key3].IndexOf(selectScore[id].avgScoreC1) >= 0)
+                                                            {
+                                                                int rr = ranks[key3].IndexOf(selectScore[id].avgScoreC1) + 1;
+                                                                row["回歸科目平均類別一排名" + subjIndex] = rr;
+                                                                row["回歸科目平均類別一排名母數" + subjIndex] = ranks[key3].Count;
+                                                                row["回歸科目平均類別一排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key3].Count);
+                                                            }
+                                                        }
+                                                    }
+
+                                                    if (studRec.Fields.ContainsKey("tag2"))
+                                                    {
+                                                        key3 = "平均類別2排名_回歸_" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key3))
+                                                        {
+                                                            if (ranks[key3].IndexOf(selectScore[id].avgScoreC2) >= 0)
+                                                            {
+                                                                int rr = ranks[key3].IndexOf(selectScore[id].avgScoreC2) + 1;
+                                                                row["回歸科目平均類別二排名" + subjIndex] = rr;
+                                                                row["回歸科目平均類別二排名母數" + subjIndex] = ranks[key3].Count;
+                                                                row["回歸科目平均類別二排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key3].Count);
+                                                            }
+                                                        }
+                                                    }
+                                                    string key1 = "總分班排名_回歸_" + studRec.RefClass.ClassID + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key1))
+                                                    {
+                                                        int rr = ranks[key1].IndexOf(selectScore[id].sumScore) + 1;
+                                                        row["回歸科目總分班排名" + subjIndex] = rr;
+                                                        row["回歸科目總分班排名母數" + subjIndex] = ranks[key1].Count;
+                                                        row["回歸科目總分班排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key1].Count);
+                                                    }
+                                                    key1 = "總分科排名_回歸_" + studRec.Department + "^^^" + gradeyear + "^^^" + subjName;
+                                                    if (ranks.ContainsKey(key1))
+                                                    {
+                                                        int rr = ranks[key1].IndexOf(selectScore[id].sumScore) + 1;
+                                                        row["回歸科目總分科排名" + subjIndex] = rr;
+                                                        row["回歸科目總分科排名母數" + subjIndex] = ranks[key1].Count;
+                                                        row["回歸科目總分科排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key1].Count);
+                                                    }
+                                                    key1 = "總分全校排名_回歸_" + gradeyear + "^^^" + subjName;
+
+                                                    if (ranks.ContainsKey(key1))
+                                                    {
+                                                        int rr = ranks[key1].IndexOf(selectScore[id].sumScore) + 1;
+                                                        row["回歸科目總分校排名" + subjIndex] = rr;
+                                                        row["回歸科目總分校排名母數" + subjIndex] = ranks[key1].Count;
+                                                        row["回歸科目總分校排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key1].Count);
+                                                    }
+
+                                                    if (studRec.Fields.ContainsKey("tag1"))
+                                                    {
+                                                        key1 = "總分類別1排名_回歸_" + studRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key1))
+                                                        {
+                                                            if (ranks[key1].IndexOf(selectScore[id].sumScoreC1) >= 0)
+                                                            {
+                                                                int rr = ranks[key1].IndexOf(selectScore[id].sumScoreC1) + 1;
+                                                                row["回歸科目總分類別一排名" + subjIndex] = rr;
+                                                                row["回歸科目總分類別一排名母數" + subjIndex] = ranks[key1].Count;
+                                                                row["回歸科目總分類別一排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key1].Count);
+                                                            }
+                                                        }
+                                                    }
+                                                    if (studRec.Fields.ContainsKey("tag2"))
+                                                    {
+                                                        key1 = "總分類別2排名_回歸_" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
+                                                        if (ranks.ContainsKey(key1))
+                                                        {
+                                                            if (ranks[key1].IndexOf(selectScore[id].sumScoreC2) >= 0)
+                                                            {
+                                                                int rr = ranks[key1].IndexOf(selectScore[id].sumScoreC2) + 1;
+                                                                row["回歸科目總分類別二排名" + subjIndex] = rr;
+                                                                row["回歸科目總分類別二排名母數" + subjIndex] = ranks[key1].Count;
+                                                                row["回歸科目總分類別二排名百分比" + subjIndex] = Utility.ParseRankPercent(rr, ranks[key1].Count);
+                                                            }
+                                                        }
+                                                    }
                                                 }
+
+                                                subjIndex++;
                                             }
-                                            #endregion 處理科目回歸
+                                        }
+                                        #endregion 處理科目回歸
 
 
-                                            // 處理科目年級學年度
-                                            row["一年級學年度"] = string.Join("/", g1List.ToArray());
-                                            row["二年級學年度"] = string.Join("/", g2List.ToArray());
-                                            row["三年級學年度"] = string.Join("/", g3List.ToArray());
-                                            row["四年級學年度"] = string.Join("/", g4List.ToArray());
+                                        // 處理科目年級學年度
+                                        row["一年級學年度"] = string.Join("/", g1List.ToArray());
+                                        row["二年級學年度"] = string.Join("/", g2List.ToArray());
+                                        row["三年級學年度"] = string.Join("/", g3List.ToArray());
+                                        row["四年級學年度"] = string.Join("/", g4List.ToArray());
 
-                                            // 處理各學期各科目排名
-                                            if (StudSemsSubjRatingDict.ContainsKey(studRec.StudentID))
+                                        // 處理各學期各科目排名
+                                        if (StudSemsSubjRatingDict.ContainsKey(studRec.StudentID))
+                                        {
+                                            foreach (StudSemsSubjRating ssr in StudSemsSubjRatingDict[studRec.StudentID])
                                             {
-                                                foreach (StudSemsSubjRating ssr in StudSemsSubjRatingDict[studRec.StudentID])
+
+                                                #region 舊
+                                                if (ssr.GradeYear == "1" && ssr.Semester == "1")
                                                 {
-
-                                                    #region 舊
-                                                    if (ssr.GradeYear == "1" && ssr.Semester == "1")
+                                                    for (int i = 1; i <= subjCot; i++)
                                                     {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["一上科目排名" + i] = ssr.GetClassRank(subjName);
-                                                        }
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["一上科目排名" + i] = ssr.GetClassRank(subjName);
                                                     }
-                                                    if (ssr.GradeYear == "1" && ssr.Semester == "2")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["一下科目排名" + i] = ssr.GetClassRank(subjName);
-                                                        }
-                                                    }
-
-                                                    if (ssr.GradeYear == "2" && ssr.Semester == "1")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["二上科目排名" + i] = ssr.GetClassRank(subjName);
-                                                        }
-                                                    }
-                                                    if (ssr.GradeYear == "2" && ssr.Semester == "2")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["二下科目排名" + i] = ssr.GetClassRank(subjName);
-                                                        }
-                                                    }
-
-                                                    if (ssr.GradeYear == "3" && ssr.Semester == "1")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["三上科目排名" + i] = ssr.GetClassRank(subjName);
-                                                        }
-                                                    }
-                                                    if (ssr.GradeYear == "3" && ssr.Semester == "2")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["三下科目排名" + i] = ssr.GetClassRank(subjName);
-                                                        }
-                                                    }
-
-                                                    if (ssr.GradeYear == "4" && ssr.Semester == "1")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["四上科目排名" + i] = ssr.GetClassRank(subjName);
-                                                        }
-                                                    }
-                                                    if (ssr.GradeYear == "4" && ssr.Semester == "2")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["四下科目排名" + i] = ssr.GetClassRank(subjName);
-                                                        }
-                                                    }
-                                                    #endregion
-
-                                                    #region 班排
-                                                    if (ssr.GradeYear == "1" && ssr.Semester == "1")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["一上科目班排名" + i] = ssr.GetClassRank(subjName);
-                                                            row["一上科目班排名母數" + i] = ssr.GetClassCount(subjName);
-                                                            row["一上科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
-                                                        }
-                                                    }
-                                                    if (ssr.GradeYear == "1" && ssr.Semester == "2")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["一下科目班排名" + i] = ssr.GetClassRank(subjName);
-                                                            row["一下科目班排名母數" + i] = ssr.GetClassCount(subjName);
-                                                            row["一下科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
-                                                        }
-                                                    }
-
-                                                    if (ssr.GradeYear == "2" && ssr.Semester == "1")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["二上科目班排名" + i] = ssr.GetClassRank(subjName);
-                                                            row["二上科目班排名母數" + i] = ssr.GetClassCount(subjName);
-                                                            row["二上科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
-                                                        }
-                                                    }
-                                                    if (ssr.GradeYear == "2" && ssr.Semester == "2")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["二下科目班排名" + i] = ssr.GetClassRank(subjName);
-                                                            row["二下科目班排名母數" + i] = ssr.GetClassCount(subjName);
-                                                            row["二下科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
-                                                        }
-                                                    }
-
-                                                    if (ssr.GradeYear == "3" && ssr.Semester == "1")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["三上科目班排名" + i] = ssr.GetClassRank(subjName);
-                                                            row["三上科目班排名母數" + i] = ssr.GetClassCount(subjName);
-                                                            row["三上科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
-                                                        }
-                                                    }
-                                                    if (ssr.GradeYear == "3" && ssr.Semester == "2")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["三下科目班排名" + i] = ssr.GetClassRank(subjName);
-                                                            row["三下科目班排名母數" + i] = ssr.GetClassCount(subjName);
-                                                            row["三下科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
-                                                        }
-                                                    }
-
-                                                    if (ssr.GradeYear == "4" && ssr.Semester == "1")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["四上科目班排名" + i] = ssr.GetClassRank(subjName);
-                                                            row["四上科目班排名母數" + i] = ssr.GetClassCount(subjName);
-                                                            row["四上科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
-                                                        }
-                                                    }
-                                                    if (ssr.GradeYear == "4" && ssr.Semester == "2")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["四下科目班排名" + i] = ssr.GetClassRank(subjName);
-                                                            row["四下科目班排名母數" + i] = ssr.GetClassCount(subjName);
-                                                            row["四下科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
-                                                        }
-                                                    }
-                                                    #endregion
-
-                                                    #region 科排
-                                                    if (ssr.GradeYear == "1" && ssr.Semester == "1")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["一上科目科排名" + i] = ssr.GetDeptRank(subjName);
-                                                            row["一上科目科排名母數" + i] = ssr.GetDeptCount(subjName);
-                                                            row["一上科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
-                                                        }
-                                                    }
-                                                    if (ssr.GradeYear == "1" && ssr.Semester == "2")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["一下科目科排名" + i] = ssr.GetDeptRank(subjName);
-                                                            row["一下科目科排名母數" + i] = ssr.GetDeptCount(subjName);
-                                                            row["一下科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
-                                                        }
-                                                    }
-
-                                                    if (ssr.GradeYear == "2" && ssr.Semester == "1")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["二上科目科排名" + i] = ssr.GetDeptRank(subjName);
-                                                            row["二上科目科排名母數" + i] = ssr.GetDeptCount(subjName);
-                                                            row["二上科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
-                                                        }
-                                                    }
-                                                    if (ssr.GradeYear == "2" && ssr.Semester == "2")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["二下科目科排名" + i] = ssr.GetDeptRank(subjName);
-                                                            row["二下科目科排名母數" + i] = ssr.GetDeptCount(subjName);
-                                                            row["二下科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
-                                                        }
-                                                    }
-
-                                                    if (ssr.GradeYear == "3" && ssr.Semester == "1")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["三上科目科排名" + i] = ssr.GetDeptRank(subjName);
-                                                            row["三上科目科排名母數" + i] = ssr.GetDeptCount(subjName);
-                                                            row["三上科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
-                                                        }
-                                                    }
-                                                    if (ssr.GradeYear == "3" && ssr.Semester == "2")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["三下科目科排名" + i] = ssr.GetDeptRank(subjName);
-                                                            row["三下科目科排名母數" + i] = ssr.GetDeptCount(subjName);
-                                                            row["三下科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
-                                                        }
-                                                    }
-
-                                                    if (ssr.GradeYear == "4" && ssr.Semester == "1")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["四上科目科排名" + i] = ssr.GetDeptRank(subjName);
-                                                            row["四上科目科排名母數" + i] = ssr.GetDeptCount(subjName);
-                                                            row["四上科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
-                                                        }
-                                                    }
-                                                    if (ssr.GradeYear == "4" && ssr.Semester == "2")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["四下科目科排名" + i] = ssr.GetDeptRank(subjName);
-                                                            row["四下科目科排名母數" + i] = ssr.GetDeptCount(subjName);
-                                                            row["四下科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
-                                                        }
-                                                    }
-                                                    #endregion
-
-                                                    #region 校排
-                                                    if (ssr.GradeYear == "1" && ssr.Semester == "1")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["一上科目校排名" + i] = ssr.GetYearRank(subjName);
-                                                            row["一上科目校排名母數" + i] = ssr.GetYearCount(subjName);
-                                                            row["一上科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
-                                                        }
-                                                    }
-                                                    if (ssr.GradeYear == "1" && ssr.Semester == "2")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["一下科目校排名" + i] = ssr.GetYearRank(subjName);
-                                                            row["一下科目校排名母數" + i] = ssr.GetYearCount(subjName);
-                                                            row["一下科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
-                                                        }
-                                                    }
-
-                                                    if (ssr.GradeYear == "2" && ssr.Semester == "1")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["二上科目校排名" + i] = ssr.GetYearRank(subjName);
-                                                            row["二上科目校排名母數" + i] = ssr.GetYearCount(subjName);
-                                                            row["二上科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
-                                                        }
-                                                    }
-                                                    if (ssr.GradeYear == "2" && ssr.Semester == "2")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["二下科目校排名" + i] = ssr.GetYearRank(subjName);
-                                                            row["二下科目校排名母數" + i] = ssr.GetYearCount(subjName);
-                                                            row["二下科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
-                                                        }
-                                                    }
-
-                                                    if (ssr.GradeYear == "3" && ssr.Semester == "1")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["三上科目校排名" + i] = ssr.GetYearRank(subjName);
-                                                            row["三上科目校排名母數" + i] = ssr.GetYearCount(subjName);
-                                                            row["三上科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
-                                                        }
-                                                    }
-                                                    if (ssr.GradeYear == "3" && ssr.Semester == "2")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["三下科目校排名" + i] = ssr.GetYearRank(subjName);
-                                                            row["三下科目校排名母數" + i] = ssr.GetYearCount(subjName);
-                                                            row["三下科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
-                                                        }
-                                                    }
-
-                                                    if (ssr.GradeYear == "4" && ssr.Semester == "1")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["四上科目校排名" + i] = ssr.GetYearRank(subjName);
-                                                            row["四上科目校排名母數" + i] = ssr.GetYearCount(subjName);
-                                                            row["四上科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
-                                                        }
-                                                    }
-                                                    if (ssr.GradeYear == "4" && ssr.Semester == "2")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["四下科目校排名" + i] = ssr.GetYearRank(subjName);
-                                                            row["四下科目校排名母數" + i] = ssr.GetYearCount(subjName);
-                                                            row["四下科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
-                                                        }
-                                                    }
-                                                    #endregion
-
-                                                    #region 類1
-                                                    if (ssr.GradeYear == "1" && ssr.Semester == "1")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["一上科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
-                                                            row["一上科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
-                                                            row["一上科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
-                                                        }
-                                                    }
-                                                    if (ssr.GradeYear == "1" && ssr.Semester == "2")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["一下科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
-                                                            row["一下科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
-                                                            row["一下科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
-                                                        }
-                                                    }
-
-                                                    if (ssr.GradeYear == "2" && ssr.Semester == "1")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["二上科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
-                                                            row["二上科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
-                                                            row["二上科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
-                                                        }
-                                                    }
-                                                    if (ssr.GradeYear == "2" && ssr.Semester == "2")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["二下科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
-                                                            row["二下科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
-                                                            row["二下科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
-                                                        }
-                                                    }
-
-                                                    if (ssr.GradeYear == "3" && ssr.Semester == "1")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["三上科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
-                                                            row["三上科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
-                                                            row["三上科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
-                                                        }
-                                                    }
-                                                    if (ssr.GradeYear == "3" && ssr.Semester == "2")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["三下科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
-                                                            row["三下科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
-                                                            row["三下科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
-                                                        }
-                                                    }
-
-                                                    if (ssr.GradeYear == "4" && ssr.Semester == "1")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["四上科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
-                                                            row["四上科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
-                                                            row["四上科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
-                                                        }
-                                                    }
-                                                    if (ssr.GradeYear == "4" && ssr.Semester == "2")
-                                                    {
-                                                        for (int i = 1; i <= subjCot; i++)
-                                                        {
-                                                            string subjName = row["科目名稱" + i].ToString();
-                                                            row["四下科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
-                                                            row["四下科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
-                                                            row["四下科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
-                                                        }
-                                                    }
-                                                    #endregion                    
-
                                                 }
-                                            }
-
-                                            if (setting.計算學業成績排名)
-                                            {
-                                                // 處理學業
-                                                #region 處理學業
-                                                string id1 = studRec.StudentID + "學業";
-
-                                                #region 讀取各學期學業排名
-                                                if (StudSemsEntryRatingDict.ContainsKey(studRec.StudentID))
+                                                if (ssr.GradeYear == "1" && ssr.Semester == "2")
                                                 {
-                                                    foreach (StudSemsEntryRating sser in StudSemsEntryRatingDict[studRec.StudentID])
+                                                    for (int i = 1; i <= subjCot; i++)
                                                     {
-                                                        if (sser.GradeYear == "1" && sser.Semester == "1")
-                                                        {
-                                                            if (sser.ClassRank.HasValue)
-                                                            {
-                                                                row["一上學業班排名"] = sser.ClassRank.Value;
-                                                                if (sser.ClassCount.HasValue)
-                                                                {
-                                                                    row["一上學業班排名母數"] = sser.ClassCount.Value;
-                                                                    row["一上學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value,sser.ClassCount.Value);
-                                                                }
-                                                            }
-                                                                
-                                                            if (sser.DeptRank.HasValue)
-                                                            {
-                                                                row["一上學業科排名"] = sser.DeptRank.Value;
-                                                                if(sser.DeptCount.HasValue)
-                                                                {
-                                                                    row["一上學業科排名母數"] = sser.DeptCount.Value;
-                                                                    row["一上學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value,sser.DeptCount.Value);
-                                                                }                                                                
-                                                            }
-                                                                
-                                                            if (sser.YearRank.HasValue)
-                                                            {
-                                                                row["一上學業校排名"] = sser.YearRank.Value;
-                                                                if(sser.YearCount.HasValue)
-                                                                {
-                                                                    row["一上學業校排名母數"] = sser.YearCount.Value;
-                                                                    row["一上學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value,sser.YearCount.Value);
-                                                                }                                                                
-                                                            }
-                                                                
-                                                            if (sser.Group1Rank.HasValue)
-                                                            {
-                                                                row["一上學業類1排名"] = sser.Group1Rank.Value;
-                                                                if(sser.Group1Count.HasValue)
-                                                                {
-                                                                    row["一上學業類1排名母數"] = sser.Group1Count.Value;
-                                                                    row["一上學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value,sser.Group1Count.Value);
-                                                                }                                                                
-                                                            }                                                                
-                                                        }
-                                                        if (sser.GradeYear == "1" && sser.Semester == "2")
-                                                        {
-                                                            if (sser.ClassRank.HasValue)
-                                                            {
-                                                                row["一下學業班排名"] = sser.ClassRank.Value;
-                                                                if (sser.ClassCount.HasValue)
-                                                                {
-                                                                    row["一下學業班排名母數"] = sser.ClassCount.Value;
-                                                                    row["一下學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
-                                                                }
-                                                            }
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["一下科目排名" + i] = ssr.GetClassRank(subjName);
+                                                    }
+                                                }
 
-                                                            if (sser.DeptRank.HasValue)
-                                                            {
-                                                                row["一下學業科排名"] = sser.DeptRank.Value;
-                                                                if (sser.DeptCount.HasValue)
-                                                                {
-                                                                    row["一下學業科排名母數"] = sser.DeptCount.Value;
-                                                                    row["一下學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
-                                                                }
-                                                            }
+                                                if (ssr.GradeYear == "2" && ssr.Semester == "1")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["二上科目排名" + i] = ssr.GetClassRank(subjName);
+                                                    }
+                                                }
+                                                if (ssr.GradeYear == "2" && ssr.Semester == "2")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["二下科目排名" + i] = ssr.GetClassRank(subjName);
+                                                    }
+                                                }
 
-                                                            if (sser.YearRank.HasValue)
-                                                            {
-                                                                row["一下學業校排名"] = sser.YearRank.Value;
-                                                                if (sser.YearCount.HasValue)
-                                                                {
-                                                                    row["一下學業校排名母數"] = sser.YearCount.Value;
-                                                                    row["一下學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
-                                                                }
-                                                            }
+                                                if (ssr.GradeYear == "3" && ssr.Semester == "1")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["三上科目排名" + i] = ssr.GetClassRank(subjName);
+                                                    }
+                                                }
+                                                if (ssr.GradeYear == "3" && ssr.Semester == "2")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["三下科目排名" + i] = ssr.GetClassRank(subjName);
+                                                    }
+                                                }
 
-                                                            if (sser.Group1Rank.HasValue)
-                                                            {
-                                                                row["一下學業類1排名"] = sser.Group1Rank.Value;
-                                                                if (sser.Group1Count.HasValue)
-                                                                {
-                                                                    row["一下學業類1排名母數"] = sser.Group1Count.Value;
-                                                                    row["一下學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
-                                                                }
-                                                            }
-                                                        }
-                                                        if (sser.GradeYear == "2" && sser.Semester == "1")
-                                                        {
-                                                            if (sser.ClassRank.HasValue)
-                                                            {
-                                                                row["二上學業班排名"] = sser.ClassRank.Value;
-                                                                if (sser.ClassCount.HasValue)
-                                                                {
-                                                                    row["二上學業班排名母數"] = sser.ClassCount.Value;
-                                                                    row["二上學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
-                                                                }
-                                                            }
-
-                                                            if (sser.DeptRank.HasValue)
-                                                            {
-                                                                row["二上學業科排名"] = sser.DeptRank.Value;
-                                                                if (sser.DeptCount.HasValue)
-                                                                {
-                                                                    row["二上學業科排名母數"] = sser.DeptCount.Value;
-                                                                    row["二上學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
-                                                                }
-                                                            }
-
-                                                            if (sser.YearRank.HasValue)
-                                                            {
-                                                                row["二上學業校排名"] = sser.YearRank.Value;
-                                                                if (sser.YearCount.HasValue)
-                                                                {
-                                                                    row["二上學業校排名母數"] = sser.YearCount.Value;
-                                                                    row["二上學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
-                                                                }
-                                                            }
-
-                                                            if (sser.Group1Rank.HasValue)
-                                                            {
-                                                                row["二上學業類1排名"] = sser.Group1Rank.Value;
-                                                                if (sser.Group1Count.HasValue)
-                                                                {
-                                                                    row["二上學業類1排名母數"] = sser.Group1Count.Value;
-                                                                    row["二上學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
-                                                                }
-                                                            }
-                                                        }
-                                                        if (sser.GradeYear == "2" && sser.Semester == "2")
-                                                        {
-                                                            if (sser.ClassRank.HasValue)
-                                                            {
-                                                                row["二下學業班排名"] = sser.ClassRank.Value;
-                                                                if (sser.ClassCount.HasValue)
-                                                                {
-                                                                    row["二下學業班排名母數"] = sser.ClassCount.Value;
-                                                                    row["二下學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
-                                                                }
-                                                            }
-
-                                                            if (sser.DeptRank.HasValue)
-                                                            {
-                                                                row["二下學業科排名"] = sser.DeptRank.Value;
-                                                                if (sser.DeptCount.HasValue)
-                                                                {
-                                                                    row["二下學業科排名母數"] = sser.DeptCount.Value;
-                                                                    row["二下學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
-                                                                }
-                                                            }
-
-                                                            if (sser.YearRank.HasValue)
-                                                            {
-                                                                row["二下學業校排名"] = sser.YearRank.Value;
-                                                                if (sser.YearCount.HasValue)
-                                                                {
-                                                                    row["二下學業校排名母數"] = sser.YearCount.Value;
-                                                                    row["二下學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
-                                                                }
-                                                            }
-
-                                                            if (sser.Group1Rank.HasValue)
-                                                            {
-                                                                row["二下學業類1排名"] = sser.Group1Rank.Value;
-                                                                if (sser.Group1Count.HasValue)
-                                                                {
-                                                                    row["二下學業類1排名母數"] = sser.Group1Count.Value;
-                                                                    row["二下學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
-                                                                }
-                                                            }
-                                                        }
-                                                        if (sser.GradeYear == "3" && sser.Semester == "1")
-                                                        {
-                                                            if (sser.ClassRank.HasValue)
-                                                            {
-                                                                row["三上學業班排名"] = sser.ClassRank.Value;
-                                                                if (sser.ClassCount.HasValue)
-                                                                {
-                                                                    row["三上學業班排名母數"] = sser.ClassCount.Value;
-                                                                    row["三上學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
-                                                                }
-                                                            }
-
-                                                            if (sser.DeptRank.HasValue)
-                                                            {
-                                                                row["三上學業科排名"] = sser.DeptRank.Value;
-                                                                if (sser.DeptCount.HasValue)
-                                                                {
-                                                                    row["三上學業科排名母數"] = sser.DeptCount.Value;
-                                                                    row["三上學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
-                                                                }
-                                                            }
-
-                                                            if (sser.YearRank.HasValue)
-                                                            {
-                                                                row["三上學業校排名"] = sser.YearRank.Value;
-                                                                if (sser.YearCount.HasValue)
-                                                                {
-                                                                    row["三上學業校排名母數"] = sser.YearCount.Value;
-                                                                    row["三上學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
-                                                                }
-                                                            }
-
-                                                            if (sser.Group1Rank.HasValue)
-                                                            {
-                                                                row["三上學業類1排名"] = sser.Group1Rank.Value;
-                                                                if (sser.Group1Count.HasValue)
-                                                                {
-                                                                    row["三上學業類1排名母數"] = sser.Group1Count.Value;
-                                                                    row["三上學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
-                                                                }
-                                                            }
-                                                        }
-                                                        if (sser.GradeYear == "3" && sser.Semester == "2")
-                                                        {
-                                                            if (sser.ClassRank.HasValue)
-                                                            {
-                                                                row["三下學業班排名"] = sser.ClassRank.Value;
-                                                                if (sser.ClassCount.HasValue)
-                                                                {
-                                                                    row["三下學業班排名母數"] = sser.ClassCount.Value;
-                                                                    row["三下學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
-                                                                }
-                                                            }
-
-                                                            if (sser.DeptRank.HasValue)
-                                                            {
-                                                                row["三下學業科排名"] = sser.DeptRank.Value;
-                                                                if (sser.DeptCount.HasValue)
-                                                                {
-                                                                    row["三下學業科排名母數"] = sser.DeptCount.Value;
-                                                                    row["三下學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
-                                                                }
-                                                            }
-
-                                                            if (sser.YearRank.HasValue)
-                                                            {
-                                                                row["三下學業校排名"] = sser.YearRank.Value;
-                                                                if (sser.YearCount.HasValue)
-                                                                {
-                                                                    row["三下學業校排名母數"] = sser.YearCount.Value;
-                                                                    row["三下學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
-                                                                }
-                                                            }
-
-                                                            if (sser.Group1Rank.HasValue)
-                                                            {
-                                                                row["三下學業類1排名"] = sser.Group1Rank.Value;
-                                                                if (sser.Group1Count.HasValue)
-                                                                {
-                                                                    row["三下學業類1排名母數"] = sser.Group1Count.Value;
-                                                                    row["三下學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
-                                                                }
-                                                            }
-                                                        }
-                                                        if (sser.GradeYear == "4" && sser.Semester == "1")
-                                                        {
-                                                            if (sser.ClassRank.HasValue)
-                                                            {
-                                                                row["四上學業班排名"] = sser.ClassRank.Value;
-                                                                if (sser.ClassCount.HasValue)
-                                                                {
-                                                                    row["四上學業班排名母數"] = sser.ClassCount.Value;
-                                                                    row["四上學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
-                                                                }
-                                                            }
-
-                                                            if (sser.DeptRank.HasValue)
-                                                            {
-                                                                row["四上學業科排名"] = sser.DeptRank.Value;
-                                                                if (sser.DeptCount.HasValue)
-                                                                {
-                                                                    row["四上學業科排名母數"] = sser.DeptCount.Value;
-                                                                    row["四上學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
-                                                                }
-                                                            }
-
-                                                            if (sser.YearRank.HasValue)
-                                                            {
-                                                                row["四上學業校排名"] = sser.YearRank.Value;
-                                                                if (sser.YearCount.HasValue)
-                                                                {
-                                                                    row["四上學業校排名母數"] = sser.YearCount.Value;
-                                                                    row["四上學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
-                                                                }
-                                                            }
-
-                                                            if (sser.Group1Rank.HasValue)
-                                                            {
-                                                                row["四上學業類1排名"] = sser.Group1Rank.Value;
-                                                                if (sser.Group1Count.HasValue)
-                                                                {
-                                                                    row["四上學業類1排名母數"] = sser.Group1Count.Value;
-                                                                    row["四上學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
-                                                                }
-                                                            }
-                                                        }
-                                                        if (sser.GradeYear == "4" && sser.Semester == "2")
-                                                        {
-                                                            if (sser.ClassRank.HasValue)
-                                                            {
-                                                                row["四下學業班排名"] = sser.ClassRank.Value;
-                                                                if (sser.ClassCount.HasValue)
-                                                                {
-                                                                    row["四下學業班排名母數"] = sser.ClassCount.Value;
-                                                                    row["四下學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
-                                                                }
-                                                            }
-
-                                                            if (sser.DeptRank.HasValue)
-                                                            {
-                                                                row["四下學業科排名"] = sser.DeptRank.Value;
-                                                                if (sser.DeptCount.HasValue)
-                                                                {
-                                                                    row["四下學業科排名母數"] = sser.DeptCount.Value;
-                                                                    row["四下學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
-                                                                }
-                                                            }
-
-                                                            if (sser.YearRank.HasValue)
-                                                            {
-                                                                row["四下學業校排名"] = sser.YearRank.Value;
-                                                                if (sser.YearCount.HasValue)
-                                                                {
-                                                                    row["四下學業校排名母數"] = sser.YearCount.Value;
-                                                                    row["四下學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
-                                                                }
-                                                            }
-
-                                                            if (sser.Group1Rank.HasValue)
-                                                            {
-                                                                row["四下學業類1排名"] = sser.Group1Rank.Value;
-                                                                if (sser.Group1Count.HasValue)
-                                                                {
-                                                                    row["四下學業類1排名母數"] = sser.Group1Count.Value;
-                                                                    row["四下學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
-                                                                }
-                                                            }
-                                                        }
+                                                if (ssr.GradeYear == "4" && ssr.Semester == "1")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["四上科目排名" + i] = ssr.GetClassRank(subjName);
+                                                    }
+                                                }
+                                                if (ssr.GradeYear == "4" && ssr.Semester == "2")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["四下科目排名" + i] = ssr.GetClassRank(subjName);
                                                     }
                                                 }
                                                 #endregion
 
-                                                if (selectScore.ContainsKey(id1))
+                                                #region 班排
+                                                if (ssr.GradeYear == "1" && ssr.Semester == "1")
                                                 {
-                                                    if (selectScore[id1].gsScore11.HasValue)
-                                                        row["一上學業成績"] = Utility.NoRound(selectScore[id1].gsScore11.Value);
-
-                                                    if (selectScore[id1].gsScore12.HasValue)
-                                                        row["一下學業成績"] = Utility.NoRound(selectScore[id1].gsScore12.Value);
-
-                                                    if (selectScore[id1].gsScore21.HasValue)
-                                                        row["二上學業成績"] = Utility.NoRound(selectScore[id1].gsScore21.Value);
-
-                                                    if (selectScore[id1].gsScore22.HasValue)
-                                                        row["二下學業成績"] = Utility.NoRound(selectScore[id1].gsScore22.Value);
-
-                                                    if (selectScore[id1].gsScore31.HasValue)
-                                                        row["三上學業成績"] = Utility.NoRound(selectScore[id1].gsScore31.Value);
-
-                                                    if (selectScore[id1].gsScore32.HasValue)
-                                                        row["三下學業成績"] = Utility.NoRound(selectScore[id1].gsScore32.Value);
-
-                                                    if (selectScore[id1].gsScore41.HasValue)
-                                                        row["四上學業成績"] = Utility.NoRound(selectScore[id1].gsScore41.Value);
-
-                                                    if (selectScore[id1].gsScore42.HasValue)
-                                                        row["四下學業成績"] = Utility.NoRound(selectScore[id1].gsScore42.Value);
-
-
-                                                    row["學業平均"] = Utility.NoRound(selectScore[id1].avgScore);
-                                                    if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                                    for (int i = 1; i <= subjCot; i++)
                                                     {
-                                                        string key2 = "學業成績平均班排名" + studRec.RefClass.ClassID + "^^^";
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id1].avgScore) + 1;
-                                                            row["學業平均班排名"] = rr;
-                                                            row["學業平均班排名母數"] = ranks[key2].Count;
-                                                            row["學業平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-
-                                                        key2 = "學業成績平均科排名" + studRec.Department + "^^^" + gradeyear;
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id1].avgScore) + 1;
-                                                            row["學業平均科排名"] = rr;
-                                                            row["學業平均科排名母數"] = ranks[key2].Count;
-                                                            row["學業平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-
-                                                        key2 = "學業成績平均全校排名" + gradeyear + "^^^";
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id1].avgScore) + 1;
-                                                            row["學業平均校排名"] = rr;
-                                                            row["學業平均校排名母數"] = ranks[key2].Count;
-                                                            row["學業平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-
-                                                        if (studRec.Fields.ContainsKey("tag1"))
-                                                        {
-                                                            key2 = "學業成績平均類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key2))
-                                                            {
-                                                                int rr = ranks[key2].IndexOf(selectScore[id1].avgScoreC1) + 1;
-                                                                row["學業平均類別一排名"] = rr;
-                                                                row["學業平均類別一排名母數"] = ranks[key2].Count;
-                                                                row["學業平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-
-                                                            }
-                                                        }
-                                                        if (studRec.Fields.ContainsKey("tag2"))
-                                                        {
-                                                            key2 = "學業成績平均類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key2))
-                                                            {
-                                                                int rr = ranks[key2].IndexOf(selectScore[id1].avgScoreC2) + 1;
-                                                                row["學業平均類別二排名"] = rr;
-                                                                row["學業平均類別二排名母數"] = ranks[key2].Count;
-                                                                row["學業平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                            }
-                                                        }
-                                                    }
-                                                    row["學業總分"] = Utility.NoRound(selectScore[id1].sumScore);
-                                                    if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
-                                                    {
-                                                        string key1 = "學業成績總分班排名" + studRec.RefClass.ClassID + "^^^";
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            row["學業總分班排名"] = ranks[key1].IndexOf(selectScore[id1].sumScore) + 1;
-                                                            row["學業總分班排名母數"] = ranks[key1].Count;
-                                                        }
-
-                                                        key1 = "學業成績總分科排名" + studRec.Department + "^^^" + gradeyear;
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            row["學業總分科排名"] = ranks[key1].IndexOf(selectScore[id1].sumScore) + 1;
-                                                            row["學業總分科排名母數"] = ranks[key1].Count;
-                                                        }
-
-                                                        key1 = "學業成績總分全校排名" + gradeyear + "^^^";
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            row["學業總分校排名"] = ranks[key1].IndexOf(selectScore[id1].sumScore) + 1;
-                                                            row["學業總分校排名母數"] = ranks[key1].Count;
-                                                        }
-
-                                                        if (studRec.Fields.ContainsKey("tag1"))
-                                                        {
-                                                            key1 = "學業成績總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key1))
-                                                            {
-                                                                row["學業總分類別一排名"] = ranks[key1].IndexOf(selectScore[id1].sumScoreC1) + 1;
-                                                                row["學業總分類別一排名母數"] = ranks[key1].Count;
-                                                            }
-                                                        }
-                                                        if (studRec.Fields.ContainsKey("tag2"))
-                                                        {
-                                                            key1 = "學業成績總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key1))
-                                                            {
-                                                                row["學業總分類別二排名"] = ranks[key1].IndexOf(selectScore[id1].sumScoreC2) + 1;
-                                                                row["學業總分類別二排名母數"] = ranks[key1].Count;
-                                                            }
-                                                        }
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["一上科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                        row["一上科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                        row["一上科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
                                                     }
                                                 }
-                                                #endregion 處理學業
-
-                                                // 處理學業原始
-                                                #region 處理學業原始
-                                                string id1_5 = studRec.StudentID + "學業原始";
-
-                                                if (selectScore.ContainsKey(id1_5))
+                                                if (ssr.GradeYear == "1" && ssr.Semester == "2")
                                                 {
-                                                    if (selectScore[id1_5].gsScore11.HasValue)
-                                                        row["一上學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore11.Value);
-
-                                                    if (selectScore[id1_5].gsScore12.HasValue)
-                                                        row["一下學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore12.Value);
-
-                                                    if (selectScore[id1_5].gsScore21.HasValue)
-                                                        row["二上學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore21.Value);
-
-                                                    if (selectScore[id1_5].gsScore22.HasValue)
-                                                        row["二下學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore22.Value);
-
-                                                    if (selectScore[id1_5].gsScore31.HasValue)
-                                                        row["三上學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore31.Value);
-
-                                                    if (selectScore[id1_5].gsScore32.HasValue)
-                                                        row["三下學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore32.Value);
-
-                                                    if (selectScore[id1_5].gsScore41.HasValue)
-                                                        row["四上學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore41.Value);
-
-                                                    if (selectScore[id1_5].gsScore42.HasValue)
-                                                        row["四下學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore42.Value);
-
-
-                                                    row["學業原始平均"] = Utility.NoRound(selectScore[id1_5].avgScore);
-                                                    if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                                    for (int i = 1; i <= subjCot; i++)
                                                     {
-                                                        string key2 = "學業原始成績平均班排名" + studRec.RefClass.ClassID + "^^^";
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id1_5].avgScore) + 1;
-                                                            row["學業原始平均班排名"] = rr;
-                                                            row["學業原始平均班排名母數"] = ranks[key2].Count;
-                                                            row["學業原始平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-
-                                                        key2 = "學業原始成績平均科排名" + studRec.Department + "^^^" + gradeyear;
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id1_5].avgScore) + 1;
-                                                            row["學業原始平均科排名"] = rr;
-                                                            row["學業原始平均科排名母數"] = ranks[key2].Count;
-                                                            row["學業原始平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-
-                                                        key2 = "學業原始成績平均全校排名" + gradeyear + "^^^";
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id1_5].avgScore) + 1;
-                                                            row["學業原始平均校排名"] = rr;
-                                                            row["學業原始平均校排名母數"] = ranks[key2].Count;
-                                                            row["學業原始平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-
-                                                        if (studRec.Fields.ContainsKey("tag1"))
-                                                        {
-                                                            key2 = "學業原始成績平均類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key2))
-                                                            {
-                                                                int rr = ranks[key2].IndexOf(selectScore[id1_5].avgScoreC1) + 1;
-                                                                row["學業原始平均類別一排名"] = rr;
-                                                                row["學業原始平均類別一排名母數"] = ranks[key2].Count;
-                                                                row["學業原始平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-
-                                                            }
-                                                        }
-                                                        if (studRec.Fields.ContainsKey("tag2"))
-                                                        {
-                                                            key2 = "學業原始成績平均類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key2))
-                                                            {
-                                                                int rr = ranks[key2].IndexOf(selectScore[id1_5].avgScoreC2) + 1;
-                                                                row["學業原始平均類別二排名"] = rr;
-                                                                row["學業原始平均類別二排名母數"] = ranks[key2].Count;
-                                                                row["學業原始平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                            }
-                                                        }
-                                                    }
-                                                    row["學業原始總分"] = Utility.NoRound(selectScore[id1_5].sumScore);
-                                                    if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
-                                                    {
-                                                        string key1 = "學業原始成績總分班排名" + studRec.RefClass.ClassID + "^^^";
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            row["學業原始總分班排名"] = ranks[key1].IndexOf(selectScore[id1_5].sumScore) + 1;
-                                                            row["學業原始總分班排名母數"] = ranks[key1].Count;
-                                                        }
-
-                                                        key1 = "學業原始成績總分科排名" + studRec.Department + "^^^" + gradeyear;
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            row["學業原始總分科排名"] = ranks[key1].IndexOf(selectScore[id1_5].sumScore) + 1;
-                                                            row["學業原始總分科排名母數"] = ranks[key1].Count;
-                                                        }
-
-                                                        key1 = "學業原始成績總分全校排名" + gradeyear + "^^^";
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            row["學業原始總分校排名"] = ranks[key1].IndexOf(selectScore[id1_5].sumScore) + 1;
-                                                            row["學業原始總分校排名母數"] = ranks[key1].Count;
-                                                        }
-
-                                                        if (studRec.Fields.ContainsKey("tag1"))
-                                                        {
-                                                            key1 = "學業原始成績總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key1))
-                                                            {
-                                                                row["學業原始總分類別一排名"] = ranks[key1].IndexOf(selectScore[id1_5].sumScoreC1) + 1;
-                                                                row["學業原始總分類別一排名母數"] = ranks[key1].Count;
-                                                            }
-                                                        }
-                                                        if (studRec.Fields.ContainsKey("tag2"))
-                                                        {
-                                                            key1 = "學業原始成績總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key1))
-                                                            {
-                                                                row["學業原始總分類別二排名"] = ranks[key1].IndexOf(selectScore[id1_5].sumScoreC2) + 1;
-                                                                row["學業原始總分類別二排名母數"] = ranks[key1].Count;
-                                                            }
-                                                        }
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["一下科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                        row["一下科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                        row["一下科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
                                                     }
                                                 }
-                                                #endregion 處理學業原始
 
-                                                // 處理學業體育
-                                                #region 處理學業體育
-                                                string id1_1 = studRec.StudentID + "學業體育";
-
-                                                if (selectScore.ContainsKey(id1_1))
+                                                if (ssr.GradeYear == "2" && ssr.Semester == "1")
                                                 {
-                                                    if (selectScore[id1_1].gsScore11.HasValue)
-                                                        row["一上學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore11.Value);
-
-                                                    if (selectScore[id1_1].gsScore12.HasValue)
-                                                        row["一下學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore12.Value);
-
-                                                    if (selectScore[id1_1].gsScore21.HasValue)
-                                                        row["二上學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore21.Value);
-
-                                                    if (selectScore[id1_1].gsScore22.HasValue)
-                                                        row["二下學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore22.Value);
-
-                                                    if (selectScore[id1_1].gsScore31.HasValue)
-                                                        row["三上學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore31.Value);
-
-                                                    if (selectScore[id1_1].gsScore32.HasValue)
-                                                        row["三下學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore32.Value);
-
-                                                    if (selectScore[id1_1].gsScore41.HasValue)
-                                                        row["四上學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore41.Value);
-
-                                                    if (selectScore[id1_1].gsScore42.HasValue)
-                                                        row["四下學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore42.Value);
-
-
-                                                    row["學業體育平均"] = Utility.NoRound(selectScore[id1_1].avgScore);
-                                                    if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                                    for (int i = 1; i <= subjCot; i++)
                                                     {
-                                                        string key2 = "學業體育成績平均班排名" + studRec.RefClass.ClassID + "^^^";
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id1_1].avgScore) + 1;
-                                                            row["學業體育平均班排名"] = rr;
-                                                            row["學業體育平均班排名母數"] = ranks[key2].Count;
-                                                            row["學業體育平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-
-                                                        key2 = "學業體育成績平均科排名" + studRec.Department + "^^^" + gradeyear;
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id1_1].avgScore) + 1;
-                                                            row["學業體育平均科排名"] = rr;
-                                                            row["學業體育平均科排名母數"] = ranks[key2].Count;
-                                                            row["學業體育平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-
-                                                        key2 = "學業體育成績平均全校排名" + gradeyear + "^^^";
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id1_1].avgScore) + 1;
-                                                            row["學業體育平均校排名"] = rr;
-                                                            row["學業體育平均校排名母數"] = ranks[key2].Count;
-                                                            row["學業體育平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-
-                                                        if (studRec.Fields.ContainsKey("tag1"))
-                                                        {
-                                                            key2 = "學業體育成績平均類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key2))
-                                                            {
-                                                                int rr = ranks[key2].IndexOf(selectScore[id1_1].avgScoreC1) + 1;
-                                                                row["學業體育平均類別一排名"] = rr;
-                                                                row["學業體育平均類別一排名母數"] = ranks[key2].Count;
-                                                                row["學業體育平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-
-                                                            }
-                                                        }
-                                                        if (studRec.Fields.ContainsKey("tag2"))
-                                                        {
-                                                            key2 = "學業體育成績平均類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key2))
-                                                            {
-                                                                int rr = ranks[key2].IndexOf(selectScore[id1_1].avgScoreC2) + 1;
-                                                                row["學業體育平均類別二排名"] = rr;
-                                                                row["學業體育平均類別二排名母數"] = ranks[key2].Count;
-                                                                row["學業體育平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                            }
-                                                        }
-                                                    }
-                                                    row["學業體育總分"] = Utility.NoRound(selectScore[id1_1].sumScore);
-                                                    if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
-                                                    {
-                                                        string key1 = "學業體育成績總分班排名" + studRec.RefClass.ClassID + "^^^";
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            row["學業體育總分班排名"] = ranks[key1].IndexOf(selectScore[id1_1].sumScore) + 1;
-                                                            row["學業體育總分班排名母數"] = ranks[key1].Count;
-                                                        }
-
-                                                        key1 = "學業體育成績總分科排名" + studRec.Department + "^^^" + gradeyear;
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            row["學業體育總分科排名"] = ranks[key1].IndexOf(selectScore[id1_1].sumScore) + 1;
-                                                            row["學業體育總分科排名母數"] = ranks[key1].Count;
-                                                        }
-
-                                                        key1 = "學業體育成績總分全校排名" + gradeyear + "^^^";
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            row["學業體育總分校排名"] = ranks[key1].IndexOf(selectScore[id1_1].sumScore) + 1;
-                                                            row["學業體育總分校排名母數"] = ranks[key1].Count;
-                                                        }
-
-                                                        if (studRec.Fields.ContainsKey("tag1"))
-                                                        {
-                                                            key1 = "學業體育成績總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key1))
-                                                            {
-                                                                row["學業體育總分類別一排名"] = ranks[key1].IndexOf(selectScore[id1_1].sumScoreC1) + 1;
-                                                                row["學業體育總分類別一排名母數"] = ranks[key1].Count;
-                                                            }
-                                                        }
-                                                        if (studRec.Fields.ContainsKey("tag2"))
-                                                        {
-                                                            key1 = "學業體育成績總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key1))
-                                                            {
-                                                                row["學業體育總分類別二排名"] = ranks[key1].IndexOf(selectScore[id1_1].sumScoreC2) + 1;
-                                                                row["學業體育總分類別二排名母數"] = ranks[key1].Count;
-                                                            }
-                                                        }
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["二上科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                        row["二上科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                        row["二上科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
                                                     }
                                                 }
-                                                #endregion 處理學業體育
-
-                                                // 處理學業健康與護理
-                                                #region 處理學業健康與護理
-                                                string id1_2 = studRec.StudentID + "學業健康與護理";
-
-                                                if (selectScore.ContainsKey(id1_2))
+                                                if (ssr.GradeYear == "2" && ssr.Semester == "2")
                                                 {
-                                                    if (selectScore[id1_2].gsScore11.HasValue)
-                                                        row["一上學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore11.Value);
-
-                                                    if (selectScore[id1_2].gsScore12.HasValue)
-                                                        row["一下學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore12.Value);
-
-                                                    if (selectScore[id1_2].gsScore21.HasValue)
-                                                        row["二上學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore21.Value);
-
-                                                    if (selectScore[id1_2].gsScore22.HasValue)
-                                                        row["二下學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore22.Value);
-
-                                                    if (selectScore[id1_2].gsScore31.HasValue)
-                                                        row["三上學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore31.Value);
-
-                                                    if (selectScore[id1_2].gsScore32.HasValue)
-                                                        row["三下學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore32.Value);
-
-                                                    if (selectScore[id1_2].gsScore41.HasValue)
-                                                        row["四上學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore41.Value);
-
-                                                    if (selectScore[id1_2].gsScore42.HasValue)
-                                                        row["四下學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore42.Value);
-
-
-                                                    row["學業健康與護理平均"] = Utility.NoRound(selectScore[id1_2].avgScore);
-                                                    if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                                    for (int i = 1; i <= subjCot; i++)
                                                     {
-                                                        string key2 = "學業健康與護理成績平均班排名" + studRec.RefClass.ClassID + "^^^";
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id1_2].avgScore) + 1;
-                                                            row["學業健康與護理平均班排名"] = rr;
-                                                            row["學業健康與護理平均班排名母數"] = ranks[key2].Count;
-                                                            row["學業健康與護理平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-
-                                                        key2 = "學業健康與護理成績平均科排名" + studRec.Department + "^^^" + gradeyear;
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id1_2].avgScore) + 1;
-                                                            row["學業健康與護理平均科排名"] = rr;
-                                                            row["學業健康與護理平均科排名母數"] = ranks[key2].Count;
-                                                            row["學業健康與護理平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-
-                                                        key2 = "學業健康與護理成績平均全校排名" + gradeyear + "^^^";
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id1_2].avgScore) + 1;
-                                                            row["學業健康與護理平均校排名"] = rr;
-                                                            row["學業健康與護理平均校排名母數"] = ranks[key2].Count;
-                                                            row["學業健康與護理平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-
-                                                        if (studRec.Fields.ContainsKey("tag1"))
-                                                        {
-                                                            key2 = "學業健康與護理成績平均類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key2))
-                                                            {
-                                                                int rr = ranks[key2].IndexOf(selectScore[id1_2].avgScoreC1) + 1;
-                                                                row["學業健康與護理平均類別一排名"] = rr;
-                                                                row["學業健康與護理平均類別一排名母數"] = ranks[key2].Count;
-                                                                row["學業健康與護理平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-
-                                                            }
-                                                        }
-                                                        if (studRec.Fields.ContainsKey("tag2"))
-                                                        {
-                                                            key2 = "學業健康與護理成績平均類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key2))
-                                                            {
-                                                                int rr = ranks[key2].IndexOf(selectScore[id1_2].avgScoreC2) + 1;
-                                                                row["學業健康與護理平均類別二排名"] = rr;
-                                                                row["學業健康與護理平均類別二排名母數"] = ranks[key2].Count;
-                                                                row["學業健康與護理平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                            }
-                                                        }
-                                                    }
-                                                    row["學業健康與護理總分"] = Utility.NoRound(selectScore[id1_2].sumScore);
-                                                    if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
-                                                    {
-                                                        string key1 = "學業健康與護理成績總分班排名" + studRec.RefClass.ClassID + "^^^";
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            row["學業健康與護理總分班排名"] = ranks[key1].IndexOf(selectScore[id1_2].sumScore) + 1;
-                                                            row["學業健康與護理總分班排名母數"] = ranks[key1].Count;
-                                                        }
-
-                                                        key1 = "學業健康與護理成績總分科排名" + studRec.Department + "^^^" + gradeyear;
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            row["學業健康與護理總分科排名"] = ranks[key1].IndexOf(selectScore[id1_2].sumScore) + 1;
-                                                            row["學業健康與護理總分科排名母數"] = ranks[key1].Count;
-                                                        }
-
-                                                        key1 = "學業健康與護理成績總分全校排名" + gradeyear + "^^^";
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            row["學業健康與護理總分校排名"] = ranks[key1].IndexOf(selectScore[id1_2].sumScore) + 1;
-                                                            row["學業健康與護理總分校排名母數"] = ranks[key1].Count;
-                                                        }
-
-                                                        if (studRec.Fields.ContainsKey("tag1"))
-                                                        {
-                                                            key1 = "學業健康與護理成績總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key1))
-                                                            {
-                                                                row["學業健康與護理總分類別一排名"] = ranks[key1].IndexOf(selectScore[id1_2].sumScoreC1) + 1;
-                                                                row["學業健康與護理總分類別一排名母數"] = ranks[key1].Count;
-                                                            }
-                                                        }
-                                                        if (studRec.Fields.ContainsKey("tag2"))
-                                                        {
-                                                            key1 = "學業健康與護理成績總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key1))
-                                                            {
-                                                                row["學業健康與護理總分類別二排名"] = ranks[key1].IndexOf(selectScore[id1_2].sumScoreC2) + 1;
-                                                                row["學業健康與護理總分類別二排名母數"] = ranks[key1].Count;
-                                                            }
-                                                        }
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["二下科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                        row["二下科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                        row["二下科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
                                                     }
                                                 }
-                                                #endregion 處理學業健康與護理
 
-                                                // 處理學業國防通識
-                                                #region 處理學業國防通識
-                                                string id1_3 = studRec.StudentID + "學業國防通識";
-
-                                                if (selectScore.ContainsKey(id1_3))
+                                                if (ssr.GradeYear == "3" && ssr.Semester == "1")
                                                 {
-                                                    if (selectScore[id1_3].gsScore11.HasValue)
-                                                        row["一上學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore11.Value);
-
-                                                    if (selectScore[id1_3].gsScore12.HasValue)
-                                                        row["一下學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore12.Value);
-
-                                                    if (selectScore[id1_3].gsScore21.HasValue)
-                                                        row["二上學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore21.Value);
-
-                                                    if (selectScore[id1_3].gsScore22.HasValue)
-                                                        row["二下學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore22.Value);
-
-                                                    if (selectScore[id1_3].gsScore31.HasValue)
-                                                        row["三上學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore31.Value);
-
-                                                    if (selectScore[id1_3].gsScore32.HasValue)
-                                                        row["三下學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore32.Value);
-
-                                                    if (selectScore[id1_3].gsScore41.HasValue)
-                                                        row["四上學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore41.Value);
-
-                                                    if (selectScore[id1_3].gsScore42.HasValue)
-                                                        row["四下學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore42.Value);
-
-
-                                                    row["學業國防通識平均"] = Utility.NoRound(selectScore[id1_3].avgScore);
-                                                    if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                                    for (int i = 1; i <= subjCot; i++)
                                                     {
-                                                        string key2 = "學業國防通識成績平均班排名" + studRec.RefClass.ClassID + "^^^";
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id1_3].avgScore) + 1;
-                                                            row["學業國防通識平均班排名"] = rr;
-                                                            row["學業國防通識平均班排名母數"] = ranks[key2].Count;
-                                                            row["學業國防通識平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-
-                                                        key2 = "學業國防通識成績平均科排名" + studRec.Department + "^^^" + gradeyear;
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id1_3].avgScore) + 1;
-                                                            row["學業國防通識平均科排名"] = rr;
-                                                            row["學業國防通識平均科排名母數"] = ranks[key2].Count;
-                                                            row["學業國防通識平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-
-                                                        key2 = "學業國防通識成績平均全校排名" + gradeyear + "^^^";
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id1_3].avgScore) + 1;
-                                                            row["學業國防通識平均校排名"] = rr;
-                                                            row["學業國防通識平均校排名母數"] = ranks[key2].Count;
-                                                            row["學業國防通識平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-
-                                                        if (studRec.Fields.ContainsKey("tag1"))
-                                                        {
-                                                            key2 = "學業國防通識成績平均類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key2))
-                                                            {
-                                                                int rr = ranks[key2].IndexOf(selectScore[id1_3].avgScoreC1) + 1;
-                                                                row["學業國防通識平均類別一排名"] = rr;
-                                                                row["學業國防通識平均類別一排名母數"] = ranks[key2].Count;
-                                                                row["學業國防通識平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-
-                                                            }
-                                                        }
-                                                        if (studRec.Fields.ContainsKey("tag2"))
-                                                        {
-                                                            key2 = "學業國防通識成績平均類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key2))
-                                                            {
-                                                                int rr = ranks[key2].IndexOf(selectScore[id1_3].avgScoreC2) + 1;
-                                                                row["學業國防通識平均類別二排名"] = rr;
-                                                                row["學業國防通識平均類別二排名母數"] = ranks[key2].Count;
-                                                                row["學業國防通識平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                            }
-                                                        }
-                                                    }
-                                                    row["學業國防通識總分"] = Utility.NoRound(selectScore[id1_3].sumScore);
-                                                    if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
-                                                    {
-                                                        string key1 = "學業國防通識成績總分班排名" + studRec.RefClass.ClassID + "^^^";
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            row["學業國防通識總分班排名"] = ranks[key1].IndexOf(selectScore[id1_3].sumScore) + 1;
-                                                            row["學業國防通識總分班排名母數"] = ranks[key1].Count;
-                                                        }
-
-                                                        key1 = "學業國防通識成績總分科排名" + studRec.Department + "^^^" + gradeyear;
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            row["學業國防通識總分科排名"] = ranks[key1].IndexOf(selectScore[id1_3].sumScore) + 1;
-                                                            row["學業國防通識總分科排名母數"] = ranks[key1].Count;
-                                                        }
-
-                                                        key1 = "學業國防通識成績總分全校排名" + gradeyear + "^^^";
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            row["學業國防通識總分校排名"] = ranks[key1].IndexOf(selectScore[id1_3].sumScore) + 1;
-                                                            row["學業國防通識總分校排名母數"] = ranks[key1].Count;
-                                                        }
-
-                                                        if (studRec.Fields.ContainsKey("tag1"))
-                                                        {
-                                                            key1 = "學業國防通識成績總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key1))
-                                                            {
-                                                                row["學業國防通識總分類別一排名"] = ranks[key1].IndexOf(selectScore[id1_3].sumScoreC1) + 1;
-                                                                row["學業國防通識總分類別一排名母數"] = ranks[key1].Count;
-                                                            }
-                                                        }
-                                                        if (studRec.Fields.ContainsKey("tag2"))
-                                                        {
-                                                            key1 = "學業國防通識成績總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key1))
-                                                            {
-                                                                row["學業國防通識總分類別二排名"] = ranks[key1].IndexOf(selectScore[id1_3].sumScoreC2) + 1;
-                                                                row["學業國防通識總分類別二排名母數"] = ranks[key1].Count;
-                                                            }
-                                                        }
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["三上科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                        row["三上科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                        row["三上科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
                                                     }
                                                 }
-                                                #endregion 處理學業國防通識
-
-                                                // 處理學業實習科目
-                                                #region 處理學業實習科目
-                                                string id1_4 = studRec.StudentID + "學業實習科目";
-
-                                                if (selectScore.ContainsKey(id1_4))
+                                                if (ssr.GradeYear == "3" && ssr.Semester == "2")
                                                 {
-                                                    if (selectScore[id1_4].gsScore11.HasValue)
-                                                        row["一上學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore11.Value);
-
-                                                    if (selectScore[id1_4].gsScore12.HasValue)
-                                                        row["一下學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore12.Value);
-
-                                                    if (selectScore[id1_4].gsScore21.HasValue)
-                                                        row["二上學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore21.Value);
-
-                                                    if (selectScore[id1_4].gsScore22.HasValue)
-                                                        row["二下學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore22.Value);
-
-                                                    if (selectScore[id1_4].gsScore31.HasValue)
-                                                        row["三上學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore31.Value);
-
-                                                    if (selectScore[id1_4].gsScore32.HasValue)
-                                                        row["三下學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore32.Value);
-
-                                                    if (selectScore[id1_4].gsScore41.HasValue)
-                                                        row["四上學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore41.Value);
-
-                                                    if (selectScore[id1_4].gsScore42.HasValue)
-                                                        row["四下學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore42.Value);
-
-
-                                                    row["學業實習科目平均"] = Utility.NoRound(selectScore[id1_4].avgScore);
-                                                    if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                                    for (int i = 1; i <= subjCot; i++)
                                                     {
-                                                        string key2 = "學業實習科目成績平均班排名" + studRec.RefClass.ClassID + "^^^";
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id1_4].avgScore) + 1;
-                                                            row["學業實習科目平均班排名"] = rr;
-                                                            row["學業實習科目平均班排名母數"] = ranks[key2].Count;
-                                                            row["學業實習科目平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-
-                                                        key2 = "學業實習科目成績平均科排名" + studRec.Department + "^^^" + gradeyear;
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id1_4].avgScore) + 1;
-                                                            row["學業實習科目平均科排名"] = rr;
-                                                            row["學業實習科目平均科排名母數"] = ranks[key2].Count;
-                                                            row["學業實習科目平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-
-                                                        key2 = "學業實習科目成績平均全校排名" + gradeyear + "^^^";
-                                                        if (ranks.ContainsKey(key2))
-                                                        {
-                                                            int rr = ranks[key2].IndexOf(selectScore[id1_4].avgScore) + 1;
-                                                            row["學業實習科目平均校排名"] = rr;
-                                                            row["學業實習科目平均校排名母數"] = ranks[key2].Count;
-                                                            row["學業實習科目平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                        }
-
-                                                        if (studRec.Fields.ContainsKey("tag1"))
-                                                        {
-                                                            key2 = "學業實習科目成績平均類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key2))
-                                                            {
-                                                                int rr = ranks[key2].IndexOf(selectScore[id1_4].avgScoreC1) + 1;
-                                                                row["學業實習科目平均類別一排名"] = rr;
-                                                                row["學業實習科目平均類別一排名母數"] = ranks[key2].Count;
-                                                                row["學業實習科目平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-
-                                                            }
-                                                        }
-                                                        if (studRec.Fields.ContainsKey("tag2"))
-                                                        {
-                                                            key2 = "學業實習科目成績平均類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key2))
-                                                            {
-                                                                int rr = ranks[key2].IndexOf(selectScore[id1_4].avgScoreC2) + 1;
-                                                                row["學業實習科目平均類別二排名"] = rr;
-                                                                row["學業實習科目平均類別二排名母數"] = ranks[key2].Count;
-                                                                row["學業實習科目平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
-                                                            }
-                                                        }
-                                                    }
-                                                    row["學業實習科目總分"] = Utility.NoRound(selectScore[id1_4].sumScore);
-                                                    if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
-                                                    {
-                                                        string key1 = "學業實習科目成績總分班排名" + studRec.RefClass.ClassID + "^^^";
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            row["學業實習科目總分班排名"] = ranks[key1].IndexOf(selectScore[id1_4].sumScore) + 1;
-                                                            row["學業實習科目總分班排名母數"] = ranks[key1].Count;
-                                                        }
-
-                                                        key1 = "學業實習科目成績總分科排名" + studRec.Department + "^^^" + gradeyear;
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            row["學業實習科目總分科排名"] = ranks[key1].IndexOf(selectScore[id1_4].sumScore) + 1;
-                                                            row["學業實習科目總分科排名母數"] = ranks[key1].Count;
-                                                        }
-
-                                                        key1 = "學業實習科目成績總分全校排名" + gradeyear + "^^^";
-                                                        if (ranks.ContainsKey(key1))
-                                                        {
-                                                            row["學業實習科目總分校排名"] = ranks[key1].IndexOf(selectScore[id1_4].sumScore) + 1;
-                                                            row["學業實習科目總分校排名母數"] = ranks[key1].Count;
-                                                        }
-
-                                                        if (studRec.Fields.ContainsKey("tag1"))
-                                                        {
-                                                            key1 = "學業實習科目成績總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key1))
-                                                            {
-                                                                row["學業實習科目總分類別一排名"] = ranks[key1].IndexOf(selectScore[id1_4].sumScoreC1) + 1;
-                                                                row["學業實習科目總分類別一排名母數"] = ranks[key1].Count;
-                                                            }
-                                                        }
-                                                        if (studRec.Fields.ContainsKey("tag2"))
-                                                        {
-                                                            key1 = "學業實習科目成績總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key1))
-                                                            {
-                                                                row["學業實習科目總分類別二排名"] = ranks[key1].IndexOf(selectScore[id1_4].sumScoreC2) + 1;
-                                                                row["學業實習科目總分類別二排名母數"] = ranks[key1].Count;
-                                                            }
-                                                        }
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["三下科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                        row["三下科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                        row["三下科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
                                                     }
                                                 }
-                                                #endregion 處理學業實習科目
+
+                                                if (ssr.GradeYear == "4" && ssr.Semester == "1")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["四上科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                        row["四上科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                        row["四上科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
+                                                    }
+                                                }
+                                                if (ssr.GradeYear == "4" && ssr.Semester == "2")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["四下科目班排名" + i] = ssr.GetClassRank(subjName);
+                                                        row["四下科目班排名母數" + i] = ssr.GetClassCount(subjName);
+                                                        row["四下科目班排名百分比" + i] = ssr.GetClassRankP(subjName);
+                                                    }
+                                                }
+                                                #endregion
+
+                                                #region 科排
+                                                if (ssr.GradeYear == "1" && ssr.Semester == "1")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["一上科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                        row["一上科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                        row["一上科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                                    }
+                                                }
+                                                if (ssr.GradeYear == "1" && ssr.Semester == "2")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["一下科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                        row["一下科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                        row["一下科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                                    }
+                                                }
+
+                                                if (ssr.GradeYear == "2" && ssr.Semester == "1")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["二上科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                        row["二上科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                        row["二上科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                                    }
+                                                }
+                                                if (ssr.GradeYear == "2" && ssr.Semester == "2")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["二下科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                        row["二下科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                        row["二下科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                                    }
+                                                }
+
+                                                if (ssr.GradeYear == "3" && ssr.Semester == "1")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["三上科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                        row["三上科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                        row["三上科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                                    }
+                                                }
+                                                if (ssr.GradeYear == "3" && ssr.Semester == "2")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["三下科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                        row["三下科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                        row["三下科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                                    }
+                                                }
+
+                                                if (ssr.GradeYear == "4" && ssr.Semester == "1")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["四上科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                        row["四上科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                        row["四上科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                                    }
+                                                }
+                                                if (ssr.GradeYear == "4" && ssr.Semester == "2")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["四下科目科排名" + i] = ssr.GetDeptRank(subjName);
+                                                        row["四下科目科排名母數" + i] = ssr.GetDeptCount(subjName);
+                                                        row["四下科目科排名百分比" + i] = ssr.GetDeptRankP(subjName);
+                                                    }
+                                                }
+                                                #endregion
+
+                                                #region 校排
+                                                if (ssr.GradeYear == "1" && ssr.Semester == "1")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["一上科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                        row["一上科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                        row["一上科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                                    }
+                                                }
+                                                if (ssr.GradeYear == "1" && ssr.Semester == "2")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["一下科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                        row["一下科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                        row["一下科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                                    }
+                                                }
+
+                                                if (ssr.GradeYear == "2" && ssr.Semester == "1")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["二上科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                        row["二上科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                        row["二上科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                                    }
+                                                }
+                                                if (ssr.GradeYear == "2" && ssr.Semester == "2")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["二下科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                        row["二下科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                        row["二下科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                                    }
+                                                }
+
+                                                if (ssr.GradeYear == "3" && ssr.Semester == "1")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["三上科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                        row["三上科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                        row["三上科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                                    }
+                                                }
+                                                if (ssr.GradeYear == "3" && ssr.Semester == "2")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["三下科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                        row["三下科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                        row["三下科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                                    }
+                                                }
+
+                                                if (ssr.GradeYear == "4" && ssr.Semester == "1")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["四上科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                        row["四上科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                        row["四上科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                                    }
+                                                }
+                                                if (ssr.GradeYear == "4" && ssr.Semester == "2")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["四下科目校排名" + i] = ssr.GetYearRank(subjName);
+                                                        row["四下科目校排名母數" + i] = ssr.GetYearCount(subjName);
+                                                        row["四下科目校排名百分比" + i] = ssr.GetYearRankP(subjName);
+                                                    }
+                                                }
+                                                #endregion
+
+                                                #region 類1
+                                                if (ssr.GradeYear == "1" && ssr.Semester == "1")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["一上科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                        row["一上科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                        row["一上科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                                    }
+                                                }
+                                                if (ssr.GradeYear == "1" && ssr.Semester == "2")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["一下科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                        row["一下科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                        row["一下科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                                    }
+                                                }
+
+                                                if (ssr.GradeYear == "2" && ssr.Semester == "1")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["二上科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                        row["二上科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                        row["二上科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                                    }
+                                                }
+                                                if (ssr.GradeYear == "2" && ssr.Semester == "2")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["二下科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                        row["二下科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                        row["二下科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                                    }
+                                                }
+
+                                                if (ssr.GradeYear == "3" && ssr.Semester == "1")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["三上科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                        row["三上科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                        row["三上科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                                    }
+                                                }
+                                                if (ssr.GradeYear == "3" && ssr.Semester == "2")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["三下科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                        row["三下科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                        row["三下科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                                    }
+                                                }
+
+                                                if (ssr.GradeYear == "4" && ssr.Semester == "1")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["四上科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                        row["四上科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                        row["四上科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                                    }
+                                                }
+                                                if (ssr.GradeYear == "4" && ssr.Semester == "2")
+                                                {
+                                                    for (int i = 1; i <= subjCot; i++)
+                                                    {
+                                                        string subjName = row["科目名稱" + i].ToString();
+                                                        row["四下科目類1排名" + i] = ssr.GetGroup1Rank(subjName);
+                                                        row["四下科目類1排名母數" + i] = ssr.GetGroup1Count(subjName);
+                                                        row["四下科目類1排名百分比" + i] = ssr.GetGroup1RankP(subjName);
+                                                    }
+                                                }
+                                                #endregion
 
                                             }
-                                            // 處理總計
-                                            #region 處理總計
-                                            string id2 = studRec.StudentID + "總計成績";
-                                            if (selectScore.ContainsKey(id2))
-                                            {
+                                        }
 
-                                                row["總計加權平均"] = Utility.NoRound(selectScore[id2].avgScoreA);
-                                                if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                        if (setting.計算學業成績排名)
+                                        {
+                                            // 處理學業
+                                            #region 處理學業
+                                            string id1 = studRec.StudentID + "學業";
+
+                                            #region 讀取各學期學業排名
+                                            if (StudSemsEntryRatingDict.ContainsKey(studRec.StudentID))
+                                            {
+                                                foreach (StudSemsEntryRating sser in StudSemsEntryRatingDict[studRec.StudentID])
                                                 {
-                                                    string key4 = "總計加權平均班排名" + studRec.RefClass.ClassID;
-                                                    if (ranks.ContainsKey(key4))
+                                                    if (sser.GradeYear == "1" && sser.Semester == "1")
                                                     {
-                                                        row["總計加權平均班排名"] = ranks[key4].IndexOf(selectScore[id2].avgScoreA) + 1;
-                                                        row["總計加權平均班排名母數"] = ranks[key4].Count;
-                                                    }
-                                                    if (ranks.ContainsKey(key4))
-                                                    {
-                                                        row["總計加權平均科排名"] = ranks[key4].IndexOf(selectScore[id2].avgScoreA) + 1;
-                                                        row["總計加權平均科排名母數"] = ranks[key4].Count;
-                                                    }
-                                                    if (ranks.ContainsKey(key4))
-                                                    {
-                                                        row["總計加權平均校排名"] = ranks[key4].IndexOf(selectScore[id2].avgScoreA) + 1;
-                                                        row["總計加權平均校排名母數"] = ranks[key4].Count;
-                                                    }
-                                                    if (studRec.Fields.ContainsKey("tag1"))
-                                                    {
-                                                        if (ranks.ContainsKey(key4))
+                                                        if (sser.ClassRank.HasValue)
                                                         {
-                                                            row["總計加權平均類別一"] = Utility.NoRound(selectScore[id2].avgScoreAC1);
-                                                            row["總計加權平均類別一排名"] = ranks[key4].IndexOf(selectScore[id2].avgScoreAC1) + 1;
-                                                            row["總計加權平均類別一排名母數"] = ranks[key4].Count;
+                                                            row["一上學業班排名"] = sser.ClassRank.Value;
+                                                            if (sser.ClassCount.HasValue)
+                                                            {
+                                                                row["一上學業班排名母數"] = sser.ClassCount.Value;
+                                                                row["一上學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.DeptRank.HasValue)
+                                                        {
+                                                            row["一上學業科排名"] = sser.DeptRank.Value;
+                                                            if (sser.DeptCount.HasValue)
+                                                            {
+                                                                row["一上學業科排名母數"] = sser.DeptCount.Value;
+                                                                row["一上學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.YearRank.HasValue)
+                                                        {
+                                                            row["一上學業校排名"] = sser.YearRank.Value;
+                                                            if (sser.YearCount.HasValue)
+                                                            {
+                                                                row["一上學業校排名母數"] = sser.YearCount.Value;
+                                                                row["一上學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.Group1Rank.HasValue)
+                                                        {
+                                                            row["一上學業類1排名"] = sser.Group1Rank.Value;
+                                                            if (sser.Group1Count.HasValue)
+                                                            {
+                                                                row["一上學業類1排名母數"] = sser.Group1Count.Value;
+                                                                row["一上學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                            }
                                                         }
                                                     }
-
-                                                    if (studRec.Fields.ContainsKey("tag2"))
+                                                    if (sser.GradeYear == "1" && sser.Semester == "2")
                                                     {
-                                                        if (ranks.ContainsKey(key4))
+                                                        if (sser.ClassRank.HasValue)
                                                         {
-                                                            row["總計加權平均類別二"] = selectScore[id2].avgScoreAC2;
-                                                            row["總計加權平均類別二排名"] = ranks[key4].IndexOf(selectScore[id2].avgScoreAC2) + 1;
-                                                            row["總計加權平均類別二排名母數"] = ranks[key4].Count;
+                                                            row["一下學業班排名"] = sser.ClassRank.Value;
+                                                            if (sser.ClassCount.HasValue)
+                                                            {
+                                                                row["一下學業班排名母數"] = sser.ClassCount.Value;
+                                                                row["一下學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.DeptRank.HasValue)
+                                                        {
+                                                            row["一下學業科排名"] = sser.DeptRank.Value;
+                                                            if (sser.DeptCount.HasValue)
+                                                            {
+                                                                row["一下學業科排名母數"] = sser.DeptCount.Value;
+                                                                row["一下學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.YearRank.HasValue)
+                                                        {
+                                                            row["一下學業校排名"] = sser.YearRank.Value;
+                                                            if (sser.YearCount.HasValue)
+                                                            {
+                                                                row["一下學業校排名母數"] = sser.YearCount.Value;
+                                                                row["一下學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.Group1Rank.HasValue)
+                                                        {
+                                                            row["一下學業類1排名"] = sser.Group1Rank.Value;
+                                                            if (sser.Group1Count.HasValue)
+                                                            {
+                                                                row["一下學業類1排名母數"] = sser.Group1Count.Value;
+                                                                row["一下學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                            }
+                                                        }
+                                                    }
+                                                    if (sser.GradeYear == "2" && sser.Semester == "1")
+                                                    {
+                                                        if (sser.ClassRank.HasValue)
+                                                        {
+                                                            row["二上學業班排名"] = sser.ClassRank.Value;
+                                                            if (sser.ClassCount.HasValue)
+                                                            {
+                                                                row["二上學業班排名母數"] = sser.ClassCount.Value;
+                                                                row["二上學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.DeptRank.HasValue)
+                                                        {
+                                                            row["二上學業科排名"] = sser.DeptRank.Value;
+                                                            if (sser.DeptCount.HasValue)
+                                                            {
+                                                                row["二上學業科排名母數"] = sser.DeptCount.Value;
+                                                                row["二上學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.YearRank.HasValue)
+                                                        {
+                                                            row["二上學業校排名"] = sser.YearRank.Value;
+                                                            if (sser.YearCount.HasValue)
+                                                            {
+                                                                row["二上學業校排名母數"] = sser.YearCount.Value;
+                                                                row["二上學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.Group1Rank.HasValue)
+                                                        {
+                                                            row["二上學業類1排名"] = sser.Group1Rank.Value;
+                                                            if (sser.Group1Count.HasValue)
+                                                            {
+                                                                row["二上學業類1排名母數"] = sser.Group1Count.Value;
+                                                                row["二上學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                            }
+                                                        }
+                                                    }
+                                                    if (sser.GradeYear == "2" && sser.Semester == "2")
+                                                    {
+                                                        if (sser.ClassRank.HasValue)
+                                                        {
+                                                            row["二下學業班排名"] = sser.ClassRank.Value;
+                                                            if (sser.ClassCount.HasValue)
+                                                            {
+                                                                row["二下學業班排名母數"] = sser.ClassCount.Value;
+                                                                row["二下學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.DeptRank.HasValue)
+                                                        {
+                                                            row["二下學業科排名"] = sser.DeptRank.Value;
+                                                            if (sser.DeptCount.HasValue)
+                                                            {
+                                                                row["二下學業科排名母數"] = sser.DeptCount.Value;
+                                                                row["二下學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.YearRank.HasValue)
+                                                        {
+                                                            row["二下學業校排名"] = sser.YearRank.Value;
+                                                            if (sser.YearCount.HasValue)
+                                                            {
+                                                                row["二下學業校排名母數"] = sser.YearCount.Value;
+                                                                row["二下學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.Group1Rank.HasValue)
+                                                        {
+                                                            row["二下學業類1排名"] = sser.Group1Rank.Value;
+                                                            if (sser.Group1Count.HasValue)
+                                                            {
+                                                                row["二下學業類1排名母數"] = sser.Group1Count.Value;
+                                                                row["二下學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                            }
+                                                        }
+                                                    }
+                                                    if (sser.GradeYear == "3" && sser.Semester == "1")
+                                                    {
+                                                        if (sser.ClassRank.HasValue)
+                                                        {
+                                                            row["三上學業班排名"] = sser.ClassRank.Value;
+                                                            if (sser.ClassCount.HasValue)
+                                                            {
+                                                                row["三上學業班排名母數"] = sser.ClassCount.Value;
+                                                                row["三上學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.DeptRank.HasValue)
+                                                        {
+                                                            row["三上學業科排名"] = sser.DeptRank.Value;
+                                                            if (sser.DeptCount.HasValue)
+                                                            {
+                                                                row["三上學業科排名母數"] = sser.DeptCount.Value;
+                                                                row["三上學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.YearRank.HasValue)
+                                                        {
+                                                            row["三上學業校排名"] = sser.YearRank.Value;
+                                                            if (sser.YearCount.HasValue)
+                                                            {
+                                                                row["三上學業校排名母數"] = sser.YearCount.Value;
+                                                                row["三上學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.Group1Rank.HasValue)
+                                                        {
+                                                            row["三上學業類1排名"] = sser.Group1Rank.Value;
+                                                            if (sser.Group1Count.HasValue)
+                                                            {
+                                                                row["三上學業類1排名母數"] = sser.Group1Count.Value;
+                                                                row["三上學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                            }
+                                                        }
+                                                    }
+                                                    if (sser.GradeYear == "3" && sser.Semester == "2")
+                                                    {
+                                                        if (sser.ClassRank.HasValue)
+                                                        {
+                                                            row["三下學業班排名"] = sser.ClassRank.Value;
+                                                            if (sser.ClassCount.HasValue)
+                                                            {
+                                                                row["三下學業班排名母數"] = sser.ClassCount.Value;
+                                                                row["三下學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.DeptRank.HasValue)
+                                                        {
+                                                            row["三下學業科排名"] = sser.DeptRank.Value;
+                                                            if (sser.DeptCount.HasValue)
+                                                            {
+                                                                row["三下學業科排名母數"] = sser.DeptCount.Value;
+                                                                row["三下學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.YearRank.HasValue)
+                                                        {
+                                                            row["三下學業校排名"] = sser.YearRank.Value;
+                                                            if (sser.YearCount.HasValue)
+                                                            {
+                                                                row["三下學業校排名母數"] = sser.YearCount.Value;
+                                                                row["三下學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.Group1Rank.HasValue)
+                                                        {
+                                                            row["三下學業類1排名"] = sser.Group1Rank.Value;
+                                                            if (sser.Group1Count.HasValue)
+                                                            {
+                                                                row["三下學業類1排名母數"] = sser.Group1Count.Value;
+                                                                row["三下學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                            }
+                                                        }
+                                                    }
+                                                    if (sser.GradeYear == "4" && sser.Semester == "1")
+                                                    {
+                                                        if (sser.ClassRank.HasValue)
+                                                        {
+                                                            row["四上學業班排名"] = sser.ClassRank.Value;
+                                                            if (sser.ClassCount.HasValue)
+                                                            {
+                                                                row["四上學業班排名母數"] = sser.ClassCount.Value;
+                                                                row["四上學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.DeptRank.HasValue)
+                                                        {
+                                                            row["四上學業科排名"] = sser.DeptRank.Value;
+                                                            if (sser.DeptCount.HasValue)
+                                                            {
+                                                                row["四上學業科排名母數"] = sser.DeptCount.Value;
+                                                                row["四上學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.YearRank.HasValue)
+                                                        {
+                                                            row["四上學業校排名"] = sser.YearRank.Value;
+                                                            if (sser.YearCount.HasValue)
+                                                            {
+                                                                row["四上學業校排名母數"] = sser.YearCount.Value;
+                                                                row["四上學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.Group1Rank.HasValue)
+                                                        {
+                                                            row["四上學業類1排名"] = sser.Group1Rank.Value;
+                                                            if (sser.Group1Count.HasValue)
+                                                            {
+                                                                row["四上學業類1排名母數"] = sser.Group1Count.Value;
+                                                                row["四上學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                            }
+                                                        }
+                                                    }
+                                                    if (sser.GradeYear == "4" && sser.Semester == "2")
+                                                    {
+                                                        if (sser.ClassRank.HasValue)
+                                                        {
+                                                            row["四下學業班排名"] = sser.ClassRank.Value;
+                                                            if (sser.ClassCount.HasValue)
+                                                            {
+                                                                row["四下學業班排名母數"] = sser.ClassCount.Value;
+                                                                row["四下學業班排名百分比"] = Utility.ParseRankPercent(sser.ClassRank.Value, sser.ClassCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.DeptRank.HasValue)
+                                                        {
+                                                            row["四下學業科排名"] = sser.DeptRank.Value;
+                                                            if (sser.DeptCount.HasValue)
+                                                            {
+                                                                row["四下學業科排名母數"] = sser.DeptCount.Value;
+                                                                row["四下學業科排名百分比"] = Utility.ParseRankPercent(sser.DeptRank.Value, sser.DeptCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.YearRank.HasValue)
+                                                        {
+                                                            row["四下學業校排名"] = sser.YearRank.Value;
+                                                            if (sser.YearCount.HasValue)
+                                                            {
+                                                                row["四下學業校排名母數"] = sser.YearCount.Value;
+                                                                row["四下學業校排名百分比"] = Utility.ParseRankPercent(sser.YearRank.Value, sser.YearCount.Value);
+                                                            }
+                                                        }
+
+                                                        if (sser.Group1Rank.HasValue)
+                                                        {
+                                                            row["四下學業類1排名"] = sser.Group1Rank.Value;
+                                                            if (sser.Group1Count.HasValue)
+                                                            {
+                                                                row["四下學業類1排名母數"] = sser.Group1Count.Value;
+                                                                row["四下學業類1排名百分比"] = Utility.ParseRankPercent(sser.Group1Rank.Value, sser.Group1Count.Value);
+                                                            }
                                                         }
                                                     }
                                                 }
+                                            }
+                                            #endregion
 
-                                                row["總計加權總分"] = Utility.NoRound(selectScore[id2].sumScoreA);
+                                            if (selectScore.ContainsKey(id1))
+                                            {
+                                                if (selectScore[id1].gsScore11.HasValue)
+                                                    row["一上學業成績"] = Utility.NoRound(selectScore[id1].gsScore11.Value);
 
+                                                if (selectScore[id1].gsScore12.HasValue)
+                                                    row["一下學業成績"] = Utility.NoRound(selectScore[id1].gsScore12.Value);
+
+                                                if (selectScore[id1].gsScore21.HasValue)
+                                                    row["二上學業成績"] = Utility.NoRound(selectScore[id1].gsScore21.Value);
+
+                                                if (selectScore[id1].gsScore22.HasValue)
+                                                    row["二下學業成績"] = Utility.NoRound(selectScore[id1].gsScore22.Value);
+
+                                                if (selectScore[id1].gsScore31.HasValue)
+                                                    row["三上學業成績"] = Utility.NoRound(selectScore[id1].gsScore31.Value);
+
+                                                if (selectScore[id1].gsScore32.HasValue)
+                                                    row["三下學業成績"] = Utility.NoRound(selectScore[id1].gsScore32.Value);
+
+                                                if (selectScore[id1].gsScore41.HasValue)
+                                                    row["四上學業成績"] = Utility.NoRound(selectScore[id1].gsScore41.Value);
+
+                                                if (selectScore[id1].gsScore42.HasValue)
+                                                    row["四下學業成績"] = Utility.NoRound(selectScore[id1].gsScore42.Value);
+
+
+                                                row["學業平均"] = Utility.NoRound(selectScore[id1].avgScore);
                                                 if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                                 {
-                                                    string key2 = "總計加權總分班排名" + studRec.RefClass.ClassID;
+                                                    string key2 = "學業成績平均班排名" + studRec.RefClass.ClassID + "^^^";
                                                     if (ranks.ContainsKey(key2))
                                                     {
-                                                        row["總計加權總分班排名"] = ranks[key2].IndexOf(selectScore[id2].sumScoreA) + 1; ;
-                                                        row["總計加權總分班排名母數"] = ranks[key2].Count;
+                                                        int rr = ranks[key2].IndexOf(selectScore[id1].avgScore) + 1;
+                                                        row["學業平均班排名"] = rr;
+                                                        row["學業平均班排名母數"] = ranks[key2].Count;
+                                                        row["學業平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
                                                     }
 
-                                                    key2 = "總計加權總分科排名" + studRec.Department + "^^^" + gradeyear;
+                                                    key2 = "學業成績平均科排名" + studRec.Department + "^^^" + gradeyear;
                                                     if (ranks.ContainsKey(key2))
                                                     {
-                                                        row["總計加權總分科排名"] = ranks[key2].IndexOf(selectScore[id2].sumScoreA) + 1; ;
-                                                        row["總計加權總分科排名母數"] = ranks[key2].Count;
+                                                        int rr = ranks[key2].IndexOf(selectScore[id1].avgScore) + 1;
+                                                        row["學業平均科排名"] = rr;
+                                                        row["學業平均科排名母數"] = ranks[key2].Count;
+                                                        row["學業平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
                                                     }
 
-                                                    key2 = "總計加權總分全校排名" + gradeyear;
+                                                    key2 = "學業成績平均全校排名" + gradeyear + "^^^";
                                                     if (ranks.ContainsKey(key2))
                                                     {
-                                                        row["總計加權總分校排名"] = ranks[key2].IndexOf(selectScore[id2].sumScoreA) + 1; ;
-                                                        row["總計加權總分校排名母數"] = ranks[key2].Count;
+                                                        int rr = ranks[key2].IndexOf(selectScore[id1].avgScore) + 1;
+                                                        row["學業平均校排名"] = rr;
+                                                        row["學業平均校排名母數"] = ranks[key2].Count;
+                                                        row["學業平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
                                                     }
 
                                                     if (studRec.Fields.ContainsKey("tag1"))
                                                     {
-                                                        key2 = "總計加權總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                        key2 = "學業成績平均類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
                                                         if (ranks.ContainsKey(key2))
                                                         {
-                                                            row["總計加權總分類別一"] = Utility.NoRound(selectScore[id2].sumScoreAC1);
-                                                            row["總計加權總分類別一排名"] = ranks[key2].IndexOf(selectScore[id2].sumScoreAC1) + 1; ;
-                                                            row["總計加權總分類別一排名母數"] = ranks[key2].Count;
+                                                            int rr = ranks[key2].IndexOf(selectScore[id1].avgScoreC1) + 1;
+                                                            row["學業平均類別一排名"] = rr;
+                                                            row["學業平均類別一排名母數"] = ranks[key2].Count;
+                                                            row["學業平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+
                                                         }
                                                     }
-
                                                     if (studRec.Fields.ContainsKey("tag2"))
                                                     {
-                                                        key2 = "總計加權總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                        key2 = "學業成績平均類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
                                                         if (ranks.ContainsKey(key2))
                                                         {
-                                                            row["總計加權總分類別二"] = Utility.NoRound(selectScore[id2].sumScoreAC2);
-                                                            row["總計加權總分類別二排名"] = ranks[key2].IndexOf(selectScore[id2].sumScoreAC2) + 1; ;
-                                                            row["總計加權總分類別二排名母數"] = ranks[key2].Count;
+                                                            int rr = ranks[key2].IndexOf(selectScore[id1].avgScoreC2) + 1;
+                                                            row["學業平均類別二排名"] = rr;
+                                                            row["學業平均類別二排名母數"] = ranks[key2].Count;
+                                                            row["學業平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
                                                         }
                                                     }
                                                 }
-
-                                                row["總計平均"] = Utility.NoRound(selectScore[id2].avgScore);
+                                                row["學業總分"] = Utility.NoRound(selectScore[id1].sumScore);
                                                 if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                                 {
-                                                    string key3 = "總計平均班排名" + studRec.RefClass.ClassID;
-                                                    if (ranks.ContainsKey(key3))
+                                                    string key1 = "學業成績總分班排名" + studRec.RefClass.ClassID + "^^^";
+                                                    if (ranks.ContainsKey(key1))
                                                     {
-                                                        row["總計平均班排名"] = ranks[key3].IndexOf(selectScore[id2].avgScore) + 1;
-                                                        row["總計平均班排名母數"] = ranks[key3].Count;
+                                                        row["學業總分班排名"] = ranks[key1].IndexOf(selectScore[id1].sumScore) + 1;
+                                                        row["學業總分班排名母數"] = ranks[key1].Count;
                                                     }
 
-                                                    key3 = "總計平均科排名" + studRec.Department + "^^^" + gradeyear;
-                                                    if (ranks.ContainsKey(key3))
+                                                    key1 = "學業成績總分科排名" + studRec.Department + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key1))
                                                     {
-                                                        row["總計平均科排名"] = ranks[key3].IndexOf(selectScore[id2].avgScore) + 1;
-                                                        row["總計平均科排名母數"] = ranks[key3].Count;
+                                                        row["學業總分科排名"] = ranks[key1].IndexOf(selectScore[id1].sumScore) + 1;
+                                                        row["學業總分科排名母數"] = ranks[key1].Count;
                                                     }
 
-                                                    key3 = "總計平均全校排名" + gradeyear;
-                                                    if (ranks.ContainsKey(key3))
+                                                    key1 = "學業成績總分全校排名" + gradeyear + "^^^";
+                                                    if (ranks.ContainsKey(key1))
                                                     {
-                                                        row["總計平均校排名"] = ranks[key3].IndexOf(selectScore[id2].avgScore) + 1;
-                                                        row["總計平均校排名母數"] = ranks[key3].Count;
+                                                        row["學業總分校排名"] = ranks[key1].IndexOf(selectScore[id1].sumScore) + 1;
+                                                        row["學業總分校排名母數"] = ranks[key1].Count;
                                                     }
 
                                                     if (studRec.Fields.ContainsKey("tag1"))
                                                     {
-                                                        key3 = "總計平均類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
-                                                        if (ranks.ContainsKey(key3))
-                                                        {
-                                                            row["總計平均類別一"] = Utility.NoRound(selectScore[id2].avgScoreC1);
-                                                            row["總計平均類別一排名"] = ranks[key3].IndexOf(selectScore[id2].avgScoreC1) + 1;
-                                                            row["總計平均類別一排名母數"] = ranks[key3].Count;
-                                                        }
-                                                    }
-
-                                                    if (studRec.Fields.ContainsKey("tag2"))
-                                                    {
-                                                        key3 = "總計平均類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
-                                                        if (ranks.ContainsKey(key3))
-                                                        {
-                                                            row["總計平均類別二"] = Utility.NoRound(selectScore[id2].avgScoreC2);
-                                                            row["總計平均類別二排名"] = ranks[key3].IndexOf(selectScore[id2].avgScoreC2) + 1;
-                                                            row["總計平均類別二排名母數"] = ranks[key3].Count;
-                                                        }
-                                                    }
-                                                }
-                                                row["總計總分"] = Utility.NoRound(selectScore[id2].sumScore);
-                                                if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
-                                                {
-                                                    string key1 = "總計總分班排名" + studRec.RefClass.ClassID;
-                                                    if (ranks.ContainsKey(key1))
-                                                    {
-                                                        row["總計總分班排名"] = ranks[key1].IndexOf(selectScore[id2].sumScore) + 1;
-                                                        row["總計總分班排名母數"] = ranks[key1].Count;
-                                                    }
-
-                                                    key1 = "總計總分科排名" + studRec.Department + "^^^" + gradeyear;
-                                                    if (ranks.ContainsKey(key1))
-                                                    {
-                                                        row["總計總分科排名"] = ranks[key1].IndexOf(selectScore[id2].sumScore) + 1;
-                                                        row["總計總分科排名母數"] = ranks[key1].Count;
-                                                    }
-
-                                                    key1 = "總計總分全校排名" + gradeyear;
-                                                    if (ranks.ContainsKey(key1))
-                                                    {
-                                                        row["總計總分校排名"] = ranks[key1].IndexOf(selectScore[id2].sumScore) + 1;
-                                                        row["總計總分校排名母數"] = ranks[key1].Count;
-                                                    }
-
-                                                    if (studRec.Fields.ContainsKey("tag1"))
-                                                    {
-                                                        key1 = "總計總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                        key1 = "學業成績總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
                                                         if (ranks.ContainsKey(key1))
                                                         {
-                                                            row["總計總分類別一"] = Utility.NoRound(selectScore[id2].sumScoreC1);
-                                                            row["總計總分類別一排名"] = ranks[key1].IndexOf(selectScore[id2].sumScoreC1) + 1;
-                                                            row["總計總分類別一排名母數"] = ranks[key1].Count;
+                                                            row["學業總分類別一排名"] = ranks[key1].IndexOf(selectScore[id1].sumScoreC1) + 1;
+                                                            row["學業總分類別一排名母數"] = ranks[key1].Count;
                                                         }
                                                     }
                                                     if (studRec.Fields.ContainsKey("tag2"))
                                                     {
-                                                        key1 = "總計總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                        key1 = "學業成績總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
                                                         if (ranks.ContainsKey(key1))
                                                         {
-                                                            row["總計總分類別二"] = Utility.NoRound(selectScore[id2].sumScoreC2);
-                                                            row["總計總分類別二排名"] = ranks[key1].IndexOf(selectScore[id2].sumScoreC2) + 1;
-                                                            row["總計總分類別二排名母數"] = ranks[key1].Count;
+                                                            row["學業總分類別二排名"] = ranks[key1].IndexOf(selectScore[id1].sumScoreC2) + 1;
+                                                            row["學業總分類別二排名母數"] = ranks[key1].Count;
                                                         }
                                                     }
                                                 }
                                             }
-                                            #endregion 處理總計
+                                            #endregion 處理學業
 
-                                            // 處理科目原始成績加權平均
-                                            #region 處理科目原始成績加權平均
-                                            string key5_name = "科目原始成績加權平均";
-                                            string key7_name = "篩選科目原始成績加權平均";
-                                            for (int g = 1; g <= 4; g++)
+                                            // 處理學業原始
+                                            #region 處理學業原始
+                                            string id1_5 = studRec.StudentID + "學業原始";
+
+                                            if (selectScore.ContainsKey(id1_5))
                                             {
-                                                string key5 = "", key7 = "";
-                                                string gsS = "";
-                                                for (int s = 1; s <= 2; s++)
-                                                {
-                                                    if (g == 1 && s == 1) gsS = "一上";
-                                                    if (g == 1 && s == 2) gsS = "一下";
-                                                    if (g == 2 && s == 1) gsS = "二上";
-                                                    if (g == 2 && s == 2) gsS = "二下";
-                                                    if (g == 3 && s == 1) gsS = "三上";
-                                                    if (g == 3 && s == 2) gsS = "三下";
-                                                    if (g == 4 && s == 1) gsS = "四上";
-                                                    if (g == 4 && s == 2) gsS = "四下";
-                                                    key5 = studRec.StudentID + gsS + key5_name;
-                                                    key7 = studRec.StudentID + gsS + key7_name;
+                                                if (selectScore[id1_5].gsScore11.HasValue)
+                                                    row["一上學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore11.Value);
 
-                                                    string id5 = studRec.StudentID + gsS + key5_name;
-                                                    string id7 = studRec.StudentID + gsS + key7_name;
+                                                if (selectScore[id1_5].gsScore12.HasValue)
+                                                    row["一下學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore12.Value);
 
-                                                    #region 處理科目原始成績
-                                                    if (selectScore.ContainsKey(id5))
-                                                    {
-                                                        row[gsS + "科目原始成績加權平均"] = Utility.NoRound(selectScore[id5].avgScoreA);
-                                                        if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
-                                                        {
-                                                            string key5a = gsS + "科目原始成績加權平均班排名" + studRec.RefClass.ClassID;
-                                                            if (ranks.ContainsKey(key5a))
-                                                            {
-                                                                int rr = ranks[key5a].IndexOf(selectScore[id5].avgScoreA) + 1;
-                                                                row[gsS + "科目原始成績加權平均班排名"] = rr;
-                                                                row[gsS + "科目原始成績加權平均班排名母數"] = ranks[key5a].Count;
-                                                                row[gsS + "科目原始成績加權平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key5a].Count);
-                                                            }
+                                                if (selectScore[id1_5].gsScore21.HasValue)
+                                                    row["二上學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore21.Value);
 
-                                                            key5a = gsS + "科目原始成績加權平均科排名" + studRec.Department + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key5a))
-                                                            {
-                                                                int rr = ranks[key5a].IndexOf(selectScore[id5].avgScoreA) + 1;
-                                                                row[gsS + "科目原始成績加權平均科排名"] = rr;
-                                                                row[gsS + "科目原始成績加權平均科排名母數"] = ranks[key5a].Count;
-                                                                row[gsS + "科目原始成績加權平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key5a].Count);
-                                                            }
+                                                if (selectScore[id1_5].gsScore22.HasValue)
+                                                    row["二下學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore22.Value);
 
-                                                            key5a = gsS + "科目原始成績加權平均校排名" + gradeyear;
-                                                            if (ranks.ContainsKey(key5a))
-                                                            {
-                                                                int rr = ranks[key5a].IndexOf(selectScore[id5].avgScoreA) + 1;
-                                                                row[gsS + "科目原始成績加權平均校排名"] = rr;
-                                                                row[gsS + "科目原始成績加權平均校排名母數"] = ranks[key5a].Count;
-                                                                row[gsS + "科目原始成績加權平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key5a].Count);
-                                                            }
-                                                            if (studRec.Fields.ContainsKey("tag1"))
-                                                            {
-                                                                key5a = gsS + "科目原始成績加權平均類別一" + studRec.Fields["tag1"] + "^^^" + gradeyear;
-                                                                if (ranks.ContainsKey(key5a))
-                                                                {
-                                                                    int rr = ranks[key5a].IndexOf(selectScore[id5].avgScoreAC1) + 1;
-                                                                    row[gsS + "科目原始成績加權平均類別一"] = Utility.NoRound(selectScore[id5].avgScoreAC1);
-                                                                    row[gsS + "科目原始成績加權平均類別一排名"] = rr;
-                                                                    row[gsS + "科目原始成績加權平均類別一排名母數"] = ranks[key5a].Count;
-                                                                    row[gsS + "科目原始成績加權平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key5a].Count);
-                                                                }
-                                                            }
+                                                if (selectScore[id1_5].gsScore31.HasValue)
+                                                    row["三上學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore31.Value);
 
-                                                            if (studRec.Fields.ContainsKey("tag2"))
-                                                            {
-                                                                key5a = gsS + "科目原始成績加權平均類別二" + studRec.Fields["tag2"] + "^^^" + gradeyear;
-                                                                if (ranks.ContainsKey(key5a))
-                                                                {
-                                                                    int rr = ranks[key5a].IndexOf(selectScore[id5].avgScoreAC2) + 1;
-                                                                    row[gsS + "科目原始成績加權平均類別二"] = Utility.NoRound(selectScore[id5].avgScoreAC2);
-                                                                    row[gsS + "科目原始成績加權平均類別二排名"] = rr;
-                                                                    row[gsS + "科目原始成績加權平均類別二排名母數"] = ranks[key5a].Count;
-                                                                    row[gsS + "科目原始成績加權平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key5a].Count);
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    #endregion 處理科目原始成績
+                                                if (selectScore[id1_5].gsScore32.HasValue)
+                                                    row["三下學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore32.Value);
 
-                                                    #region 處理篩選科目原始成績
-                                                    if (selectScore.ContainsKey(id7))
-                                                    {
-                                                        row[gsS + "篩選科目原始成績加權平均"] = Utility.NoRound(selectScore[id7].avgScoreA);
+                                                if (selectScore[id1_5].gsScore41.HasValue)
+                                                    row["四上學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore41.Value);
 
-                                                        if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
-                                                        {
-                                                            string key7a = gsS + "篩選科目原始成績加權平均班排名" + studRec.RefClass.ClassID;
-                                                            if (ranks.ContainsKey(key7a))
-                                                            {
-                                                                int rr = ranks[key7a].IndexOf(selectScore[id7].avgScoreA) + 1;
-                                                                row[gsS + "篩選科目原始成績加權平均班排名"] = rr;
-                                                                row[gsS + "篩選科目原始成績加權平均班排名母數"] = ranks[key7a].Count;
-                                                                row[gsS + "篩選科目原始成績加權平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key7a].Count);
-                                                            }
+                                                if (selectScore[id1_5].gsScore42.HasValue)
+                                                    row["四下學業原始成績"] = Utility.NoRound(selectScore[id1_5].gsScore42.Value);
 
-                                                            key7a = gsS + "篩選科目原始成績加權平均科排名" + studRec.Department + "^^^" + gradeyear;
-                                                            if (ranks.ContainsKey(key7a))
-                                                            {
-                                                                int rr = ranks[key7a].IndexOf(selectScore[id7].avgScoreA) + 1;
-                                                                row[gsS + "篩選科目原始成績加權平均科排名"] = rr;
-                                                                row[gsS + "篩選科目原始成績加權平均科排名母數"] = ranks[key7a].Count;
-                                                                row[gsS + "篩選科目原始成績加權平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key7a].Count);
-                                                            }
 
-                                                            key7a = gsS + "篩選科目原始成績加權平均校排名" + gradeyear;
-                                                            if (ranks.ContainsKey(key7a))
-                                                            {
-                                                                int rr = ranks[key7a].IndexOf(selectScore[id7].avgScoreA) + 1;
-                                                                row[gsS + "篩選科目原始成績加權平均校排名"] = rr;
-                                                                row[gsS + "篩選科目原始成績加權平均校排名母數"] = ranks[key7a].Count;
-                                                                row[gsS + "篩選科目原始成績加權平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key7a].Count);
-                                                            }
-
-                                                            if (studRec.Fields.ContainsKey("tag1"))
-                                                            {
-                                                                key7a = gsS + "篩選科目原始成績加權平均類別一" + studRec.Fields["tag1"] + "^^^" + gradeyear;
-                                                                if (ranks.ContainsKey(key7a))
-                                                                {
-                                                                    int rr = ranks[key7a].IndexOf(selectScore[id7].avgScoreAC1) + 1;
-                                                                    row[gsS + "篩選科目原始成績加權平均類別一"] = Utility.NoRound(selectScore[id7].avgScoreAC1);
-                                                                    row[gsS + "篩選科目原始成績加權平均類別一排名"] = rr;
-                                                                    row[gsS + "篩選科目原始成績加權平均類別一排名母數"] = ranks[key7a].Count;
-                                                                    row[gsS + "篩選科目原始成績加權平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key7a].Count);
-                                                                }
-                                                            }
-
-                                                            if (studRec.Fields.ContainsKey("tag2"))
-                                                            {
-                                                                key7a = gsS + "篩選科目原始成績加權平均類別二" + studRec.Fields["tag2"] + "^^^" + gradeyear;
-                                                                if (ranks.ContainsKey(key7a))
-                                                                {
-                                                                    int rr = ranks[key7a].IndexOf(selectScore[id7].avgScoreAC2) + 1;
-                                                                    row[gsS + "篩選科目原始成績加權平均類別二"] = Utility.NoRound(selectScore[id7].avgScoreAC2);
-                                                                    row[gsS + "篩選科目原始成績加權平均類別二排名"] = rr;
-                                                                    row[gsS + "篩選科目原始成績加權平均類別二排名母數"] = ranks[key7a].Count;
-                                                                    row[gsS + "篩選科目原始成績加權平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key7a].Count);
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    #endregion 處理篩選科目原始成績
-                                                }
-                                            }
-                                            #endregion 處理科目原始成績加權平均
-
-                                            // 處理科目原始成績加權平均平均
-                                            #region 處理科目原始成績加權平均平均
-                                            string key6_name = "科目原始成績加權平均平均";
-                                            string key8_name = "篩選科目原始成績加權平均平均";
-                                            string key6 = studRec.StudentID + key6_name;
-                                            string key8 = studRec.StudentID + key8_name;
-
-                                            string id6 = studRec.StudentID + key6_name;
-                                            string id8 = studRec.StudentID + key8_name;
-
-                                            #region 處理科目原始成績
-                                            if (selectScore.ContainsKey(id6))
-                                            {
-
-                                                row["科目原始成績加權平均平均"] = Utility.NoRound(selectScore[id6].avgScoreA);
+                                                row["學業原始平均"] = Utility.NoRound(selectScore[id1_5].avgScore);
                                                 if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                                 {
-                                                    string key6a = "科目原始成績加權平均平均班排名" + studRec.RefClass.ClassID;
-                                                    if (ranks.ContainsKey(key6a))
+                                                    string key2 = "學業原始成績平均班排名" + studRec.RefClass.ClassID + "^^^";
+                                                    if (ranks.ContainsKey(key2))
                                                     {
-                                                        int rr = ranks[key6a].IndexOf(selectScore[id6].avgScoreA) + 1;
-                                                        row["科目原始成績加權平均平均班排名"] = rr;
-                                                        row["科目原始成績加權平均平均班排名母數"] = ranks[key6a].Count;
-                                                        row["科目原始成績加權平均平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key6a].Count);
+                                                        int rr = ranks[key2].IndexOf(selectScore[id1_5].avgScore) + 1;
+                                                        row["學業原始平均班排名"] = rr;
+                                                        row["學業原始平均班排名母數"] = ranks[key2].Count;
+                                                        row["學業原始平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
                                                     }
 
-                                                    key6a = "科目原始成績加權平均平均科排名" + studRec.Department + "^^^" + gradeyear;
-                                                    if (ranks.ContainsKey(key6a))
+                                                    key2 = "學業原始成績平均科排名" + studRec.Department + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key2))
                                                     {
-                                                        int rr = ranks[key6a].IndexOf(selectScore[id6].avgScoreA) + 1;
-                                                        row["科目原始成績加權平均平均科排名"] = rr;
-                                                        row["科目原始成績加權平均平均科排名母數"] = ranks[key6a].Count;
-                                                        row["科目原始成績加權平均平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key6a].Count);
+                                                        int rr = ranks[key2].IndexOf(selectScore[id1_5].avgScore) + 1;
+                                                        row["學業原始平均科排名"] = rr;
+                                                        row["學業原始平均科排名母數"] = ranks[key2].Count;
+                                                        row["學業原始平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
                                                     }
 
-                                                    key6a = "科目原始成績加權平均平均校排名" + gradeyear;
-                                                    if (ranks.ContainsKey(key6a))
+                                                    key2 = "學業原始成績平均全校排名" + gradeyear + "^^^";
+                                                    if (ranks.ContainsKey(key2))
                                                     {
-                                                        int rr = ranks[key6a].IndexOf(selectScore[id6].avgScoreA) + 1;
-                                                        row["科目原始成績加權平均平均校排名"] = rr;
-                                                        row["科目原始成績加權平均平均校排名母數"] = ranks[key6a].Count;
-                                                        row["科目原始成績加權平均平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key6a].Count);
+                                                        int rr = ranks[key2].IndexOf(selectScore[id1_5].avgScore) + 1;
+                                                        row["學業原始平均校排名"] = rr;
+                                                        row["學業原始平均校排名母數"] = ranks[key2].Count;
+                                                        row["學業原始平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
                                                     }
+
                                                     if (studRec.Fields.ContainsKey("tag1"))
                                                     {
-                                                        key6a = "科目原始成績加權平均平均類別一" + studRec.Fields["tag1"] + "^^^" + gradeyear;
-                                                        if (ranks.ContainsKey(key6a))
+                                                        key2 = "學業原始成績平均類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key2))
                                                         {
-                                                            int rr = ranks[key6a].IndexOf(selectScore[id6].avgScoreAC1) + 1;
-                                                            row["科目原始成績加權平均平均類別一"] = Utility.NoRound(selectScore[id6].avgScoreAC1);
-                                                            row["科目原始成績加權平均平均類別一排名"] = rr;
-                                                            row["科目原始成績加權平均平均類別一排名母數"] = ranks[key6a].Count;
-                                                            row["科目原始成績加權平均平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key6a].Count);
+                                                            int rr = ranks[key2].IndexOf(selectScore[id1_5].avgScoreC1) + 1;
+                                                            row["學業原始平均類別一排名"] = rr;
+                                                            row["學業原始平均類別一排名母數"] = ranks[key2].Count;
+                                                            row["學業原始平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+
                                                         }
                                                     }
-
                                                     if (studRec.Fields.ContainsKey("tag2"))
                                                     {
-                                                        key6a = "科目原始成績加權平均平均類別二" + studRec.Fields["tag2"] + "^^^" + gradeyear;
-                                                        if (ranks.ContainsKey(key6a))
+                                                        key2 = "學業原始成績平均類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key2))
                                                         {
-                                                            int rr = ranks[key6a].IndexOf(selectScore[id6].avgScoreAC2) + 1;
-                                                            row["科目原始成績加權平均平均類別二"] = Utility.NoRound(selectScore[id6].avgScoreAC2);
-                                                            row["科目原始成績加權平均平均類別二排名"] = rr;
-                                                            row["科目原始成績加權平均平均類別二排名母數"] = ranks[key6a].Count;
-                                                            row["科目原始成績加權平均平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key6a].Count);
+                                                            int rr = ranks[key2].IndexOf(selectScore[id1_5].avgScoreC2) + 1;
+                                                            row["學業原始平均類別二排名"] = rr;
+                                                            row["學業原始平均類別二排名母數"] = ranks[key2].Count;
+                                                            row["學業原始平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
                                                         }
                                                     }
                                                 }
-                                            }
-                                            #endregion 處理科目原始成績
-
-                                            #region 處理篩選科目原始成績
-                                            if (selectScore.ContainsKey(id8))
-                                            {
-                                                row["篩選科目原始成績加權平均平均"] = Utility.NoRound(selectScore[id8].avgScoreA);
+                                                row["學業原始總分"] = Utility.NoRound(selectScore[id1_5].sumScore);
                                                 if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
                                                 {
-                                                    string key8a = "篩選科目原始成績加權平均平均班排名" + studRec.RefClass.ClassID;
-                                                    if (ranks.ContainsKey(key8a))
+                                                    string key1 = "學業原始成績總分班排名" + studRec.RefClass.ClassID + "^^^";
+                                                    if (ranks.ContainsKey(key1))
                                                     {
-                                                        int rr = ranks[key8a].IndexOf(selectScore[id8].avgScoreA) + 1;
-                                                        row["篩選科目原始成績加權平均平均班排名"] = rr;
-                                                        row["篩選科目原始成績加權平均平均班排名母數"] = ranks[key8a].Count;
-                                                        row["篩選科目原始成績加權平均平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key8a].Count);
+                                                        row["學業原始總分班排名"] = ranks[key1].IndexOf(selectScore[id1_5].sumScore) + 1;
+                                                        row["學業原始總分班排名母數"] = ranks[key1].Count;
                                                     }
 
-                                                    key8a = "篩選科目原始成績加權平均平均科排名" + studRec.Department + "^^^" + gradeyear;
-                                                    if (ranks.ContainsKey(key8a))
+                                                    key1 = "學業原始成績總分科排名" + studRec.Department + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key1))
                                                     {
-                                                        int rr = ranks[key8a].IndexOf(selectScore[id8].avgScoreA) + 1;
-                                                        row["篩選科目原始成績加權平均平均科排名"] = rr;
-                                                        row["篩選科目原始成績加權平均平均科排名母數"] = ranks[key8a].Count;
-                                                        row["篩選科目原始成績加權平均平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key8a].Count);
+                                                        row["學業原始總分科排名"] = ranks[key1].IndexOf(selectScore[id1_5].sumScore) + 1;
+                                                        row["學業原始總分科排名母數"] = ranks[key1].Count;
                                                     }
 
-                                                    key8a = "篩選科目原始成績加權平均平均校排名" + gradeyear;
-                                                    if (ranks.ContainsKey(key8a))
+                                                    key1 = "學業原始成績總分全校排名" + gradeyear + "^^^";
+                                                    if (ranks.ContainsKey(key1))
                                                     {
-                                                        int rr = ranks[key8a].IndexOf(selectScore[id8].avgScoreA) + 1;
-                                                        row["篩選科目原始成績加權平均平均校排名"] = rr;
-                                                        row["篩選科目原始成績加權平均平均校排名母數"] = ranks[key8a].Count;
-                                                        row["篩選科目原始成績加權平均平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key8a].Count);
+                                                        row["學業原始總分校排名"] = ranks[key1].IndexOf(selectScore[id1_5].sumScore) + 1;
+                                                        row["學業原始總分校排名母數"] = ranks[key1].Count;
                                                     }
+
                                                     if (studRec.Fields.ContainsKey("tag1"))
                                                     {
-                                                        key8a = "篩選科目原始成績加權平均平均類別一" + studRec.Fields["tag1"] + "^^^" + gradeyear;
-                                                        if (ranks.ContainsKey(key8a))
+                                                        key1 = "學業原始成績總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key1))
                                                         {
-                                                            int rr = ranks[key8a].IndexOf(selectScore[id8].avgScoreAC1) + 1;
-                                                            row["篩選科目原始成績加權平均平均類別一"] = Utility.NoRound(selectScore[id8].avgScoreAC1);
-                                                            row["篩選科目原始成績加權平均平均類別一排名"] = rr;
-                                                            row["篩選科目原始成績加權平均平均類別一排名母數"] = ranks[key8a].Count;
-                                                            row["篩選科目原始成績加權平均平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key8a].Count);
+                                                            row["學業原始總分類別一排名"] = ranks[key1].IndexOf(selectScore[id1_5].sumScoreC1) + 1;
+                                                            row["學業原始總分類別一排名母數"] = ranks[key1].Count;
                                                         }
                                                     }
-
                                                     if (studRec.Fields.ContainsKey("tag2"))
                                                     {
-                                                        key8a = "篩選科目原始成績加權平均平均類別二" + studRec.Fields["tag2"] + "^^^" + gradeyear;
-                                                        if (ranks.ContainsKey(key8a))
+                                                        key1 = "學業原始成績總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key1))
                                                         {
-                                                            int rr = ranks[key8a].IndexOf(selectScore[id8].avgScoreAC2) + 1;
-                                                            row["篩選科目原始成績加權平均平均類別二"] = Utility.NoRound(selectScore[id8].avgScoreAC2);
-                                                            row["篩選科目原始成績加權平均平均類別二排名"] = rr;
-                                                            row["篩選科目原始成績加權平均平均類別二排名母數"] = ranks[key8a].Count;
-                                                            row["篩選科目原始成績加權平均平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key8a].Count);
+                                                            row["學業原始總分類別二排名"] = ranks[key1].IndexOf(selectScore[id1_5].sumScoreC2) + 1;
+                                                            row["學業原始總分類別二排名母數"] = ranks[key1].Count;
                                                         }
                                                     }
                                                 }
                                             }
-                                            #endregion 處理篩選科目原始成績
-                                            #endregion 處理科目原始成績加權平均平均
+                                            #endregion 處理學業原始
 
-                                            // 不排名不放入
-                                            if(!noRankList.Contains(studRec.StudentID))
-                                                _table.Rows.Add(row);
+                                            // 處理學業體育
+                                            #region 處理學業體育
+                                            string id1_1 = studRec.StudentID + "學業體育";
+
+                                            if (selectScore.ContainsKey(id1_1))
+                                            {
+                                                if (selectScore[id1_1].gsScore11.HasValue)
+                                                    row["一上學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore11.Value);
+
+                                                if (selectScore[id1_1].gsScore12.HasValue)
+                                                    row["一下學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore12.Value);
+
+                                                if (selectScore[id1_1].gsScore21.HasValue)
+                                                    row["二上學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore21.Value);
+
+                                                if (selectScore[id1_1].gsScore22.HasValue)
+                                                    row["二下學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore22.Value);
+
+                                                if (selectScore[id1_1].gsScore31.HasValue)
+                                                    row["三上學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore31.Value);
+
+                                                if (selectScore[id1_1].gsScore32.HasValue)
+                                                    row["三下學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore32.Value);
+
+                                                if (selectScore[id1_1].gsScore41.HasValue)
+                                                    row["四上學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore41.Value);
+
+                                                if (selectScore[id1_1].gsScore42.HasValue)
+                                                    row["四下學業體育成績"] = Utility.NoRound(selectScore[id1_1].gsScore42.Value);
+
+
+                                                row["學業體育平均"] = Utility.NoRound(selectScore[id1_1].avgScore);
+                                                if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                                {
+                                                    string key2 = "學業體育成績平均班排名" + studRec.RefClass.ClassID + "^^^";
+                                                    if (ranks.ContainsKey(key2))
+                                                    {
+                                                        int rr = ranks[key2].IndexOf(selectScore[id1_1].avgScore) + 1;
+                                                        row["學業體育平均班排名"] = rr;
+                                                        row["學業體育平均班排名母數"] = ranks[key2].Count;
+                                                        row["學業體育平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                    }
+
+                                                    key2 = "學業體育成績平均科排名" + studRec.Department + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key2))
+                                                    {
+                                                        int rr = ranks[key2].IndexOf(selectScore[id1_1].avgScore) + 1;
+                                                        row["學業體育平均科排名"] = rr;
+                                                        row["學業體育平均科排名母數"] = ranks[key2].Count;
+                                                        row["學業體育平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                    }
+
+                                                    key2 = "學業體育成績平均全校排名" + gradeyear + "^^^";
+                                                    if (ranks.ContainsKey(key2))
+                                                    {
+                                                        int rr = ranks[key2].IndexOf(selectScore[id1_1].avgScore) + 1;
+                                                        row["學業體育平均校排名"] = rr;
+                                                        row["學業體育平均校排名母數"] = ranks[key2].Count;
+                                                        row["學業體育平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                    }
+
+                                                    if (studRec.Fields.ContainsKey("tag1"))
+                                                    {
+                                                        key2 = "學業體育成績平均類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key2))
+                                                        {
+                                                            int rr = ranks[key2].IndexOf(selectScore[id1_1].avgScoreC1) + 1;
+                                                            row["學業體育平均類別一排名"] = rr;
+                                                            row["學業體育平均類別一排名母數"] = ranks[key2].Count;
+                                                            row["學業體育平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+
+                                                        }
+                                                    }
+                                                    if (studRec.Fields.ContainsKey("tag2"))
+                                                    {
+                                                        key2 = "學業體育成績平均類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key2))
+                                                        {
+                                                            int rr = ranks[key2].IndexOf(selectScore[id1_1].avgScoreC2) + 1;
+                                                            row["學業體育平均類別二排名"] = rr;
+                                                            row["學業體育平均類別二排名母數"] = ranks[key2].Count;
+                                                            row["學業體育平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                        }
+                                                    }
+                                                }
+                                                row["學業體育總分"] = Utility.NoRound(selectScore[id1_1].sumScore);
+                                                if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                                {
+                                                    string key1 = "學業體育成績總分班排名" + studRec.RefClass.ClassID + "^^^";
+                                                    if (ranks.ContainsKey(key1))
+                                                    {
+                                                        row["學業體育總分班排名"] = ranks[key1].IndexOf(selectScore[id1_1].sumScore) + 1;
+                                                        row["學業體育總分班排名母數"] = ranks[key1].Count;
+                                                    }
+
+                                                    key1 = "學業體育成績總分科排名" + studRec.Department + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key1))
+                                                    {
+                                                        row["學業體育總分科排名"] = ranks[key1].IndexOf(selectScore[id1_1].sumScore) + 1;
+                                                        row["學業體育總分科排名母數"] = ranks[key1].Count;
+                                                    }
+
+                                                    key1 = "學業體育成績總分全校排名" + gradeyear + "^^^";
+                                                    if (ranks.ContainsKey(key1))
+                                                    {
+                                                        row["學業體育總分校排名"] = ranks[key1].IndexOf(selectScore[id1_1].sumScore) + 1;
+                                                        row["學業體育總分校排名母數"] = ranks[key1].Count;
+                                                    }
+
+                                                    if (studRec.Fields.ContainsKey("tag1"))
+                                                    {
+                                                        key1 = "學業體育成績總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key1))
+                                                        {
+                                                            row["學業體育總分類別一排名"] = ranks[key1].IndexOf(selectScore[id1_1].sumScoreC1) + 1;
+                                                            row["學業體育總分類別一排名母數"] = ranks[key1].Count;
+                                                        }
+                                                    }
+                                                    if (studRec.Fields.ContainsKey("tag2"))
+                                                    {
+                                                        key1 = "學業體育成績總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key1))
+                                                        {
+                                                            row["學業體育總分類別二排名"] = ranks[key1].IndexOf(selectScore[id1_1].sumScoreC2) + 1;
+                                                            row["學業體育總分類別二排名母數"] = ranks[key1].Count;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            #endregion 處理學業體育
+
+                                            // 處理學業健康與護理
+                                            #region 處理學業健康與護理
+                                            string id1_2 = studRec.StudentID + "學業健康與護理";
+
+                                            if (selectScore.ContainsKey(id1_2))
+                                            {
+                                                if (selectScore[id1_2].gsScore11.HasValue)
+                                                    row["一上學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore11.Value);
+
+                                                if (selectScore[id1_2].gsScore12.HasValue)
+                                                    row["一下學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore12.Value);
+
+                                                if (selectScore[id1_2].gsScore21.HasValue)
+                                                    row["二上學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore21.Value);
+
+                                                if (selectScore[id1_2].gsScore22.HasValue)
+                                                    row["二下學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore22.Value);
+
+                                                if (selectScore[id1_2].gsScore31.HasValue)
+                                                    row["三上學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore31.Value);
+
+                                                if (selectScore[id1_2].gsScore32.HasValue)
+                                                    row["三下學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore32.Value);
+
+                                                if (selectScore[id1_2].gsScore41.HasValue)
+                                                    row["四上學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore41.Value);
+
+                                                if (selectScore[id1_2].gsScore42.HasValue)
+                                                    row["四下學業健康與護理成績"] = Utility.NoRound(selectScore[id1_2].gsScore42.Value);
+
+
+                                                row["學業健康與護理平均"] = Utility.NoRound(selectScore[id1_2].avgScore);
+                                                if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                                {
+                                                    string key2 = "學業健康與護理成績平均班排名" + studRec.RefClass.ClassID + "^^^";
+                                                    if (ranks.ContainsKey(key2))
+                                                    {
+                                                        int rr = ranks[key2].IndexOf(selectScore[id1_2].avgScore) + 1;
+                                                        row["學業健康與護理平均班排名"] = rr;
+                                                        row["學業健康與護理平均班排名母數"] = ranks[key2].Count;
+                                                        row["學業健康與護理平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                    }
+
+                                                    key2 = "學業健康與護理成績平均科排名" + studRec.Department + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key2))
+                                                    {
+                                                        int rr = ranks[key2].IndexOf(selectScore[id1_2].avgScore) + 1;
+                                                        row["學業健康與護理平均科排名"] = rr;
+                                                        row["學業健康與護理平均科排名母數"] = ranks[key2].Count;
+                                                        row["學業健康與護理平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                    }
+
+                                                    key2 = "學業健康與護理成績平均全校排名" + gradeyear + "^^^";
+                                                    if (ranks.ContainsKey(key2))
+                                                    {
+                                                        int rr = ranks[key2].IndexOf(selectScore[id1_2].avgScore) + 1;
+                                                        row["學業健康與護理平均校排名"] = rr;
+                                                        row["學業健康與護理平均校排名母數"] = ranks[key2].Count;
+                                                        row["學業健康與護理平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                    }
+
+                                                    if (studRec.Fields.ContainsKey("tag1"))
+                                                    {
+                                                        key2 = "學業健康與護理成績平均類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key2))
+                                                        {
+                                                            int rr = ranks[key2].IndexOf(selectScore[id1_2].avgScoreC1) + 1;
+                                                            row["學業健康與護理平均類別一排名"] = rr;
+                                                            row["學業健康與護理平均類別一排名母數"] = ranks[key2].Count;
+                                                            row["學業健康與護理平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+
+                                                        }
+                                                    }
+                                                    if (studRec.Fields.ContainsKey("tag2"))
+                                                    {
+                                                        key2 = "學業健康與護理成績平均類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key2))
+                                                        {
+                                                            int rr = ranks[key2].IndexOf(selectScore[id1_2].avgScoreC2) + 1;
+                                                            row["學業健康與護理平均類別二排名"] = rr;
+                                                            row["學業健康與護理平均類別二排名母數"] = ranks[key2].Count;
+                                                            row["學業健康與護理平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                        }
+                                                    }
+                                                }
+                                                row["學業健康與護理總分"] = Utility.NoRound(selectScore[id1_2].sumScore);
+                                                if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                                {
+                                                    string key1 = "學業健康與護理成績總分班排名" + studRec.RefClass.ClassID + "^^^";
+                                                    if (ranks.ContainsKey(key1))
+                                                    {
+                                                        row["學業健康與護理總分班排名"] = ranks[key1].IndexOf(selectScore[id1_2].sumScore) + 1;
+                                                        row["學業健康與護理總分班排名母數"] = ranks[key1].Count;
+                                                    }
+
+                                                    key1 = "學業健康與護理成績總分科排名" + studRec.Department + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key1))
+                                                    {
+                                                        row["學業健康與護理總分科排名"] = ranks[key1].IndexOf(selectScore[id1_2].sumScore) + 1;
+                                                        row["學業健康與護理總分科排名母數"] = ranks[key1].Count;
+                                                    }
+
+                                                    key1 = "學業健康與護理成績總分全校排名" + gradeyear + "^^^";
+                                                    if (ranks.ContainsKey(key1))
+                                                    {
+                                                        row["學業健康與護理總分校排名"] = ranks[key1].IndexOf(selectScore[id1_2].sumScore) + 1;
+                                                        row["學業健康與護理總分校排名母數"] = ranks[key1].Count;
+                                                    }
+
+                                                    if (studRec.Fields.ContainsKey("tag1"))
+                                                    {
+                                                        key1 = "學業健康與護理成績總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key1))
+                                                        {
+                                                            row["學業健康與護理總分類別一排名"] = ranks[key1].IndexOf(selectScore[id1_2].sumScoreC1) + 1;
+                                                            row["學業健康與護理總分類別一排名母數"] = ranks[key1].Count;
+                                                        }
+                                                    }
+                                                    if (studRec.Fields.ContainsKey("tag2"))
+                                                    {
+                                                        key1 = "學業健康與護理成績總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key1))
+                                                        {
+                                                            row["學業健康與護理總分類別二排名"] = ranks[key1].IndexOf(selectScore[id1_2].sumScoreC2) + 1;
+                                                            row["學業健康與護理總分類別二排名母數"] = ranks[key1].Count;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            #endregion 處理學業健康與護理
+
+                                            // 處理學業國防通識
+                                            #region 處理學業國防通識
+                                            string id1_3 = studRec.StudentID + "學業國防通識";
+
+                                            if (selectScore.ContainsKey(id1_3))
+                                            {
+                                                if (selectScore[id1_3].gsScore11.HasValue)
+                                                    row["一上學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore11.Value);
+
+                                                if (selectScore[id1_3].gsScore12.HasValue)
+                                                    row["一下學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore12.Value);
+
+                                                if (selectScore[id1_3].gsScore21.HasValue)
+                                                    row["二上學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore21.Value);
+
+                                                if (selectScore[id1_3].gsScore22.HasValue)
+                                                    row["二下學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore22.Value);
+
+                                                if (selectScore[id1_3].gsScore31.HasValue)
+                                                    row["三上學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore31.Value);
+
+                                                if (selectScore[id1_3].gsScore32.HasValue)
+                                                    row["三下學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore32.Value);
+
+                                                if (selectScore[id1_3].gsScore41.HasValue)
+                                                    row["四上學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore41.Value);
+
+                                                if (selectScore[id1_3].gsScore42.HasValue)
+                                                    row["四下學業國防通識成績"] = Utility.NoRound(selectScore[id1_3].gsScore42.Value);
+
+
+                                                row["學業國防通識平均"] = Utility.NoRound(selectScore[id1_3].avgScore);
+                                                if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                                {
+                                                    string key2 = "學業國防通識成績平均班排名" + studRec.RefClass.ClassID + "^^^";
+                                                    if (ranks.ContainsKey(key2))
+                                                    {
+                                                        int rr = ranks[key2].IndexOf(selectScore[id1_3].avgScore) + 1;
+                                                        row["學業國防通識平均班排名"] = rr;
+                                                        row["學業國防通識平均班排名母數"] = ranks[key2].Count;
+                                                        row["學業國防通識平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                    }
+
+                                                    key2 = "學業國防通識成績平均科排名" + studRec.Department + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key2))
+                                                    {
+                                                        int rr = ranks[key2].IndexOf(selectScore[id1_3].avgScore) + 1;
+                                                        row["學業國防通識平均科排名"] = rr;
+                                                        row["學業國防通識平均科排名母數"] = ranks[key2].Count;
+                                                        row["學業國防通識平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                    }
+
+                                                    key2 = "學業國防通識成績平均全校排名" + gradeyear + "^^^";
+                                                    if (ranks.ContainsKey(key2))
+                                                    {
+                                                        int rr = ranks[key2].IndexOf(selectScore[id1_3].avgScore) + 1;
+                                                        row["學業國防通識平均校排名"] = rr;
+                                                        row["學業國防通識平均校排名母數"] = ranks[key2].Count;
+                                                        row["學業國防通識平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                    }
+
+                                                    if (studRec.Fields.ContainsKey("tag1"))
+                                                    {
+                                                        key2 = "學業國防通識成績平均類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key2))
+                                                        {
+                                                            int rr = ranks[key2].IndexOf(selectScore[id1_3].avgScoreC1) + 1;
+                                                            row["學業國防通識平均類別一排名"] = rr;
+                                                            row["學業國防通識平均類別一排名母數"] = ranks[key2].Count;
+                                                            row["學業國防通識平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+
+                                                        }
+                                                    }
+                                                    if (studRec.Fields.ContainsKey("tag2"))
+                                                    {
+                                                        key2 = "學業國防通識成績平均類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key2))
+                                                        {
+                                                            int rr = ranks[key2].IndexOf(selectScore[id1_3].avgScoreC2) + 1;
+                                                            row["學業國防通識平均類別二排名"] = rr;
+                                                            row["學業國防通識平均類別二排名母數"] = ranks[key2].Count;
+                                                            row["學業國防通識平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                        }
+                                                    }
+                                                }
+                                                row["學業國防通識總分"] = Utility.NoRound(selectScore[id1_3].sumScore);
+                                                if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                                {
+                                                    string key1 = "學業國防通識成績總分班排名" + studRec.RefClass.ClassID + "^^^";
+                                                    if (ranks.ContainsKey(key1))
+                                                    {
+                                                        row["學業國防通識總分班排名"] = ranks[key1].IndexOf(selectScore[id1_3].sumScore) + 1;
+                                                        row["學業國防通識總分班排名母數"] = ranks[key1].Count;
+                                                    }
+
+                                                    key1 = "學業國防通識成績總分科排名" + studRec.Department + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key1))
+                                                    {
+                                                        row["學業國防通識總分科排名"] = ranks[key1].IndexOf(selectScore[id1_3].sumScore) + 1;
+                                                        row["學業國防通識總分科排名母數"] = ranks[key1].Count;
+                                                    }
+
+                                                    key1 = "學業國防通識成績總分全校排名" + gradeyear + "^^^";
+                                                    if (ranks.ContainsKey(key1))
+                                                    {
+                                                        row["學業國防通識總分校排名"] = ranks[key1].IndexOf(selectScore[id1_3].sumScore) + 1;
+                                                        row["學業國防通識總分校排名母數"] = ranks[key1].Count;
+                                                    }
+
+                                                    if (studRec.Fields.ContainsKey("tag1"))
+                                                    {
+                                                        key1 = "學業國防通識成績總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key1))
+                                                        {
+                                                            row["學業國防通識總分類別一排名"] = ranks[key1].IndexOf(selectScore[id1_3].sumScoreC1) + 1;
+                                                            row["學業國防通識總分類別一排名母數"] = ranks[key1].Count;
+                                                        }
+                                                    }
+                                                    if (studRec.Fields.ContainsKey("tag2"))
+                                                    {
+                                                        key1 = "學業國防通識成績總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key1))
+                                                        {
+                                                            row["學業國防通識總分類別二排名"] = ranks[key1].IndexOf(selectScore[id1_3].sumScoreC2) + 1;
+                                                            row["學業國防通識總分類別二排名母數"] = ranks[key1].Count;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            #endregion 處理學業國防通識
+
+                                            // 處理學業實習科目
+                                            #region 處理學業實習科目
+                                            string id1_4 = studRec.StudentID + "學業實習科目";
+
+                                            if (selectScore.ContainsKey(id1_4))
+                                            {
+                                                if (selectScore[id1_4].gsScore11.HasValue)
+                                                    row["一上學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore11.Value);
+
+                                                if (selectScore[id1_4].gsScore12.HasValue)
+                                                    row["一下學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore12.Value);
+
+                                                if (selectScore[id1_4].gsScore21.HasValue)
+                                                    row["二上學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore21.Value);
+
+                                                if (selectScore[id1_4].gsScore22.HasValue)
+                                                    row["二下學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore22.Value);
+
+                                                if (selectScore[id1_4].gsScore31.HasValue)
+                                                    row["三上學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore31.Value);
+
+                                                if (selectScore[id1_4].gsScore32.HasValue)
+                                                    row["三下學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore32.Value);
+
+                                                if (selectScore[id1_4].gsScore41.HasValue)
+                                                    row["四上學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore41.Value);
+
+                                                if (selectScore[id1_4].gsScore42.HasValue)
+                                                    row["四下學業實習科目成績"] = Utility.NoRound(selectScore[id1_4].gsScore42.Value);
+
+
+                                                row["學業實習科目平均"] = Utility.NoRound(selectScore[id1_4].avgScore);
+                                                if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                                {
+                                                    string key2 = "學業實習科目成績平均班排名" + studRec.RefClass.ClassID + "^^^";
+                                                    if (ranks.ContainsKey(key2))
+                                                    {
+                                                        int rr = ranks[key2].IndexOf(selectScore[id1_4].avgScore) + 1;
+                                                        row["學業實習科目平均班排名"] = rr;
+                                                        row["學業實習科目平均班排名母數"] = ranks[key2].Count;
+                                                        row["學業實習科目平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                    }
+
+                                                    key2 = "學業實習科目成績平均科排名" + studRec.Department + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key2))
+                                                    {
+                                                        int rr = ranks[key2].IndexOf(selectScore[id1_4].avgScore) + 1;
+                                                        row["學業實習科目平均科排名"] = rr;
+                                                        row["學業實習科目平均科排名母數"] = ranks[key2].Count;
+                                                        row["學業實習科目平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                    }
+
+                                                    key2 = "學業實習科目成績平均全校排名" + gradeyear + "^^^";
+                                                    if (ranks.ContainsKey(key2))
+                                                    {
+                                                        int rr = ranks[key2].IndexOf(selectScore[id1_4].avgScore) + 1;
+                                                        row["學業實習科目平均校排名"] = rr;
+                                                        row["學業實習科目平均校排名母數"] = ranks[key2].Count;
+                                                        row["學業實習科目平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                    }
+
+                                                    if (studRec.Fields.ContainsKey("tag1"))
+                                                    {
+                                                        key2 = "學業實習科目成績平均類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key2))
+                                                        {
+                                                            int rr = ranks[key2].IndexOf(selectScore[id1_4].avgScoreC1) + 1;
+                                                            row["學業實習科目平均類別一排名"] = rr;
+                                                            row["學業實習科目平均類別一排名母數"] = ranks[key2].Count;
+                                                            row["學業實習科目平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+
+                                                        }
+                                                    }
+                                                    if (studRec.Fields.ContainsKey("tag2"))
+                                                    {
+                                                        key2 = "學業實習科目成績平均類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key2))
+                                                        {
+                                                            int rr = ranks[key2].IndexOf(selectScore[id1_4].avgScoreC2) + 1;
+                                                            row["學業實習科目平均類別二排名"] = rr;
+                                                            row["學業實習科目平均類別二排名母數"] = ranks[key2].Count;
+                                                            row["學業實習科目平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key2].Count);
+                                                        }
+                                                    }
+                                                }
+                                                row["學業實習科目總分"] = Utility.NoRound(selectScore[id1_4].sumScore);
+                                                if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                                {
+                                                    string key1 = "學業實習科目成績總分班排名" + studRec.RefClass.ClassID + "^^^";
+                                                    if (ranks.ContainsKey(key1))
+                                                    {
+                                                        row["學業實習科目總分班排名"] = ranks[key1].IndexOf(selectScore[id1_4].sumScore) + 1;
+                                                        row["學業實習科目總分班排名母數"] = ranks[key1].Count;
+                                                    }
+
+                                                    key1 = "學業實習科目成績總分科排名" + studRec.Department + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key1))
+                                                    {
+                                                        row["學業實習科目總分科排名"] = ranks[key1].IndexOf(selectScore[id1_4].sumScore) + 1;
+                                                        row["學業實習科目總分科排名母數"] = ranks[key1].Count;
+                                                    }
+
+                                                    key1 = "學業實習科目成績總分全校排名" + gradeyear + "^^^";
+                                                    if (ranks.ContainsKey(key1))
+                                                    {
+                                                        row["學業實習科目總分校排名"] = ranks[key1].IndexOf(selectScore[id1_4].sumScore) + 1;
+                                                        row["學業實習科目總分校排名母數"] = ranks[key1].Count;
+                                                    }
+
+                                                    if (studRec.Fields.ContainsKey("tag1"))
+                                                    {
+                                                        key1 = "學業實習科目成績總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key1))
+                                                        {
+                                                            row["學業實習科目總分類別一排名"] = ranks[key1].IndexOf(selectScore[id1_4].sumScoreC1) + 1;
+                                                            row["學業實習科目總分類別一排名母數"] = ranks[key1].Count;
+                                                        }
+                                                    }
+                                                    if (studRec.Fields.ContainsKey("tag2"))
+                                                    {
+                                                        key1 = "學業實習科目成績總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key1))
+                                                        {
+                                                            row["學業實習科目總分類別二排名"] = ranks[key1].IndexOf(selectScore[id1_4].sumScoreC2) + 1;
+                                                            row["學業實習科目總分類別二排名母數"] = ranks[key1].Count;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            #endregion 處理學業實習科目
 
                                         }
-                                    } // data row
+                                        // 處理總計
+                                        #region 處理總計
+                                        string id2 = studRec.StudentID + "總計成績";
+                                        if (selectScore.ContainsKey(id2))
+                                        {
 
-                                    if (OneClassCompleted != null)
-                                        OneClassCompleted();
-     
-                                    //List<string> fields = new List<string>(docTemplate.MailMerge.GetFieldNames());
-                                    //List<string> rmColumns = new List<string>();
+                                            row["總計加權平均"] = Utility.NoRound(selectScore[id2].avgScoreA);
+                                            if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                            {
+                                                string key4 = "總計加權平均班排名" + studRec.RefClass.ClassID;
+                                                if (ranks.ContainsKey(key4))
+                                                {
+                                                    row["總計加權平均班排名"] = ranks[key4].IndexOf(selectScore[id2].avgScoreA) + 1;
+                                                    row["總計加權平均班排名母數"] = ranks[key4].Count;
+                                                }
+                                                if (ranks.ContainsKey(key4))
+                                                {
+                                                    row["總計加權平均科排名"] = ranks[key4].IndexOf(selectScore[id2].avgScoreA) + 1;
+                                                    row["總計加權平均科排名母數"] = ranks[key4].Count;
+                                                }
+                                                if (ranks.ContainsKey(key4))
+                                                {
+                                                    row["總計加權平均校排名"] = ranks[key4].IndexOf(selectScore[id2].avgScoreA) + 1;
+                                                    row["總計加權平均校排名母數"] = ranks[key4].Count;
+                                                }
+                                                if (studRec.Fields.ContainsKey("tag1"))
+                                                {
+                                                    if (ranks.ContainsKey(key4))
+                                                    {
+                                                        row["總計加權平均類別一"] = Utility.NoRound(selectScore[id2].avgScoreAC1);
+                                                        row["總計加權平均類別一排名"] = ranks[key4].IndexOf(selectScore[id2].avgScoreAC1) + 1;
+                                                        row["總計加權平均類別一排名母數"] = ranks[key4].Count;
+                                                    }
+                                                }
 
-                                    //foreach (DataColumn dc in _table.Columns)
-                                    //{
-                                    //    if (!fields.Contains(dc.ColumnName))
-                                    //    {
-                                    //        rmColumns.Add(dc.ColumnName);
-                                    //    }
-                                    //}
-                                    //// 檢查有資料才Merge
-                                    //foreach (string str in rmColumns)
-                                    //    _table.Columns.Remove(str);
+                                                if (studRec.Fields.ContainsKey("tag2"))
+                                                {
+                                                    if (ranks.ContainsKey(key4))
+                                                    {
+                                                        row["總計加權平均類別二"] = selectScore[id2].avgScoreAC2;
+                                                        row["總計加權平均類別二排名"] = ranks[key4].IndexOf(selectScore[id2].avgScoreAC2) + 1;
+                                                        row["總計加權平均類別二排名母數"] = ranks[key4].Count;
+                                                    }
+                                                }
+                                            }
 
-                                    //GC.Collect();
+                                            row["總計加權總分"] = Utility.NoRound(selectScore[id2].sumScoreA);
 
-                                    //// debug 用
-                                    //_table.TableName = "debug";
-                                    //string pathAA = System.Windows.Forms.Application.StartupPath + "\\多學期成績單debug.xml";
-                                    //_table.WriteXml(pathAA);
+                                            if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                            {
+                                                string key2 = "總計加權總分班排名" + studRec.RefClass.ClassID;
+                                                if (ranks.ContainsKey(key2))
+                                                {
+                                                    row["總計加權總分班排名"] = ranks[key2].IndexOf(selectScore[id2].sumScoreA) + 1; ;
+                                                    row["總計加權總分班排名母數"] = ranks[key2].Count;
+                                                }
 
-                                    // 當 table 有資料再合併
-                                    if (_table.Rows.Count > 0)
+                                                key2 = "總計加權總分科排名" + studRec.Department + "^^^" + gradeyear;
+                                                if (ranks.ContainsKey(key2))
+                                                {
+                                                    row["總計加權總分科排名"] = ranks[key2].IndexOf(selectScore[id2].sumScoreA) + 1; ;
+                                                    row["總計加權總分科排名母數"] = ranks[key2].Count;
+                                                }
+
+                                                key2 = "總計加權總分全校排名" + gradeyear;
+                                                if (ranks.ContainsKey(key2))
+                                                {
+                                                    row["總計加權總分校排名"] = ranks[key2].IndexOf(selectScore[id2].sumScoreA) + 1; ;
+                                                    row["總計加權總分校排名母數"] = ranks[key2].Count;
+                                                }
+
+                                                if (studRec.Fields.ContainsKey("tag1"))
+                                                {
+                                                    key2 = "總計加權總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key2))
+                                                    {
+                                                        row["總計加權總分類別一"] = Utility.NoRound(selectScore[id2].sumScoreAC1);
+                                                        row["總計加權總分類別一排名"] = ranks[key2].IndexOf(selectScore[id2].sumScoreAC1) + 1; ;
+                                                        row["總計加權總分類別一排名母數"] = ranks[key2].Count;
+                                                    }
+                                                }
+
+                                                if (studRec.Fields.ContainsKey("tag2"))
+                                                {
+                                                    key2 = "總計加權總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key2))
+                                                    {
+                                                        row["總計加權總分類別二"] = Utility.NoRound(selectScore[id2].sumScoreAC2);
+                                                        row["總計加權總分類別二排名"] = ranks[key2].IndexOf(selectScore[id2].sumScoreAC2) + 1; ;
+                                                        row["總計加權總分類別二排名母數"] = ranks[key2].Count;
+                                                    }
+                                                }
+                                            }
+
+                                            row["總計平均"] = Utility.NoRound(selectScore[id2].avgScore);
+                                            if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                            {
+                                                string key3 = "總計平均班排名" + studRec.RefClass.ClassID;
+                                                if (ranks.ContainsKey(key3))
+                                                {
+                                                    row["總計平均班排名"] = ranks[key3].IndexOf(selectScore[id2].avgScore) + 1;
+                                                    row["總計平均班排名母數"] = ranks[key3].Count;
+                                                }
+
+                                                key3 = "總計平均科排名" + studRec.Department + "^^^" + gradeyear;
+                                                if (ranks.ContainsKey(key3))
+                                                {
+                                                    row["總計平均科排名"] = ranks[key3].IndexOf(selectScore[id2].avgScore) + 1;
+                                                    row["總計平均科排名母數"] = ranks[key3].Count;
+                                                }
+
+                                                key3 = "總計平均全校排名" + gradeyear;
+                                                if (ranks.ContainsKey(key3))
+                                                {
+                                                    row["總計平均校排名"] = ranks[key3].IndexOf(selectScore[id2].avgScore) + 1;
+                                                    row["總計平均校排名母數"] = ranks[key3].Count;
+                                                }
+
+                                                if (studRec.Fields.ContainsKey("tag1"))
+                                                {
+                                                    key3 = "總計平均類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key3))
+                                                    {
+                                                        row["總計平均類別一"] = Utility.NoRound(selectScore[id2].avgScoreC1);
+                                                        row["總計平均類別一排名"] = ranks[key3].IndexOf(selectScore[id2].avgScoreC1) + 1;
+                                                        row["總計平均類別一排名母數"] = ranks[key3].Count;
+                                                    }
+                                                }
+
+                                                if (studRec.Fields.ContainsKey("tag2"))
+                                                {
+                                                    key3 = "總計平均類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key3))
+                                                    {
+                                                        row["總計平均類別二"] = Utility.NoRound(selectScore[id2].avgScoreC2);
+                                                        row["總計平均類別二排名"] = ranks[key3].IndexOf(selectScore[id2].avgScoreC2) + 1;
+                                                        row["總計平均類別二排名母數"] = ranks[key3].Count;
+                                                    }
+                                                }
+                                            }
+                                            row["總計總分"] = Utility.NoRound(selectScore[id2].sumScore);
+                                            if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                            {
+                                                string key1 = "總計總分班排名" + studRec.RefClass.ClassID;
+                                                if (ranks.ContainsKey(key1))
+                                                {
+                                                    row["總計總分班排名"] = ranks[key1].IndexOf(selectScore[id2].sumScore) + 1;
+                                                    row["總計總分班排名母數"] = ranks[key1].Count;
+                                                }
+
+                                                key1 = "總計總分科排名" + studRec.Department + "^^^" + gradeyear;
+                                                if (ranks.ContainsKey(key1))
+                                                {
+                                                    row["總計總分科排名"] = ranks[key1].IndexOf(selectScore[id2].sumScore) + 1;
+                                                    row["總計總分科排名母數"] = ranks[key1].Count;
+                                                }
+
+                                                key1 = "總計總分全校排名" + gradeyear;
+                                                if (ranks.ContainsKey(key1))
+                                                {
+                                                    row["總計總分校排名"] = ranks[key1].IndexOf(selectScore[id2].sumScore) + 1;
+                                                    row["總計總分校排名母數"] = ranks[key1].Count;
+                                                }
+
+                                                if (studRec.Fields.ContainsKey("tag1"))
+                                                {
+                                                    key1 = "總計總分類別1排名" + studRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key1))
+                                                    {
+                                                        row["總計總分類別一"] = Utility.NoRound(selectScore[id2].sumScoreC1);
+                                                        row["總計總分類別一排名"] = ranks[key1].IndexOf(selectScore[id2].sumScoreC1) + 1;
+                                                        row["總計總分類別一排名母數"] = ranks[key1].Count;
+                                                    }
+                                                }
+                                                if (studRec.Fields.ContainsKey("tag2"))
+                                                {
+                                                    key1 = "總計總分類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key1))
+                                                    {
+                                                        row["總計總分類別二"] = Utility.NoRound(selectScore[id2].sumScoreC2);
+                                                        row["總計總分類別二排名"] = ranks[key1].IndexOf(selectScore[id2].sumScoreC2) + 1;
+                                                        row["總計總分類別二排名母數"] = ranks[key1].Count;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        #endregion 處理總計
+
+                                        // 處理科目原始成績加權平均
+                                        #region 處理科目原始成績加權平均
+                                        string key5_name = "科目原始成績加權平均";
+                                        string key7_name = "篩選科目原始成績加權平均";
+                                        for (int g = 1; g <= 4; g++)
+                                        {
+                                            string key5 = "", key7 = "";
+                                            string gsS = "";
+                                            for (int s = 1; s <= 2; s++)
+                                            {
+                                                if (g == 1 && s == 1) gsS = "一上";
+                                                if (g == 1 && s == 2) gsS = "一下";
+                                                if (g == 2 && s == 1) gsS = "二上";
+                                                if (g == 2 && s == 2) gsS = "二下";
+                                                if (g == 3 && s == 1) gsS = "三上";
+                                                if (g == 3 && s == 2) gsS = "三下";
+                                                if (g == 4 && s == 1) gsS = "四上";
+                                                if (g == 4 && s == 2) gsS = "四下";
+                                                key5 = studRec.StudentID + gsS + key5_name;
+                                                key7 = studRec.StudentID + gsS + key7_name;
+
+                                                string id5 = studRec.StudentID + gsS + key5_name;
+                                                string id7 = studRec.StudentID + gsS + key7_name;
+
+                                                #region 處理科目原始成績
+                                                if (selectScore.ContainsKey(id5))
+                                                {
+                                                    row[gsS + "科目原始成績加權平均"] = Utility.NoRound(selectScore[id5].avgScoreA);
+                                                    if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                                    {
+                                                        string key5a = gsS + "科目原始成績加權平均班排名" + studRec.RefClass.ClassID;
+                                                        if (ranks.ContainsKey(key5a))
+                                                        {
+                                                            int rr = ranks[key5a].IndexOf(selectScore[id5].avgScoreA) + 1;
+                                                            row[gsS + "科目原始成績加權平均班排名"] = rr;
+                                                            row[gsS + "科目原始成績加權平均班排名母數"] = ranks[key5a].Count;
+                                                            row[gsS + "科目原始成績加權平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key5a].Count);
+                                                        }
+
+                                                        key5a = gsS + "科目原始成績加權平均科排名" + studRec.Department + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key5a))
+                                                        {
+                                                            int rr = ranks[key5a].IndexOf(selectScore[id5].avgScoreA) + 1;
+                                                            row[gsS + "科目原始成績加權平均科排名"] = rr;
+                                                            row[gsS + "科目原始成績加權平均科排名母數"] = ranks[key5a].Count;
+                                                            row[gsS + "科目原始成績加權平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key5a].Count);
+                                                        }
+
+                                                        key5a = gsS + "科目原始成績加權平均校排名" + gradeyear;
+                                                        if (ranks.ContainsKey(key5a))
+                                                        {
+                                                            int rr = ranks[key5a].IndexOf(selectScore[id5].avgScoreA) + 1;
+                                                            row[gsS + "科目原始成績加權平均校排名"] = rr;
+                                                            row[gsS + "科目原始成績加權平均校排名母數"] = ranks[key5a].Count;
+                                                            row[gsS + "科目原始成績加權平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key5a].Count);
+                                                        }
+                                                        if (studRec.Fields.ContainsKey("tag1"))
+                                                        {
+                                                            key5a = gsS + "科目原始成績加權平均類別一" + studRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                            if (ranks.ContainsKey(key5a))
+                                                            {
+                                                                int rr = ranks[key5a].IndexOf(selectScore[id5].avgScoreAC1) + 1;
+                                                                row[gsS + "科目原始成績加權平均類別一"] = Utility.NoRound(selectScore[id5].avgScoreAC1);
+                                                                row[gsS + "科目原始成績加權平均類別一排名"] = rr;
+                                                                row[gsS + "科目原始成績加權平均類別一排名母數"] = ranks[key5a].Count;
+                                                                row[gsS + "科目原始成績加權平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key5a].Count);
+                                                            }
+                                                        }
+
+                                                        if (studRec.Fields.ContainsKey("tag2"))
+                                                        {
+                                                            key5a = gsS + "科目原始成績加權平均類別二" + studRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                            if (ranks.ContainsKey(key5a))
+                                                            {
+                                                                int rr = ranks[key5a].IndexOf(selectScore[id5].avgScoreAC2) + 1;
+                                                                row[gsS + "科目原始成績加權平均類別二"] = Utility.NoRound(selectScore[id5].avgScoreAC2);
+                                                                row[gsS + "科目原始成績加權平均類別二排名"] = rr;
+                                                                row[gsS + "科目原始成績加權平均類別二排名母數"] = ranks[key5a].Count;
+                                                                row[gsS + "科目原始成績加權平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key5a].Count);
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                #endregion 處理科目原始成績
+
+                                                #region 處理篩選科目原始成績
+                                                if (selectScore.ContainsKey(id7))
+                                                {
+                                                    row[gsS + "篩選科目原始成績加權平均"] = Utility.NoRound(selectScore[id7].avgScoreA);
+
+                                                    if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                                    {
+                                                        string key7a = gsS + "篩選科目原始成績加權平均班排名" + studRec.RefClass.ClassID;
+                                                        if (ranks.ContainsKey(key7a))
+                                                        {
+                                                            int rr = ranks[key7a].IndexOf(selectScore[id7].avgScoreA) + 1;
+                                                            row[gsS + "篩選科目原始成績加權平均班排名"] = rr;
+                                                            row[gsS + "篩選科目原始成績加權平均班排名母數"] = ranks[key7a].Count;
+                                                            row[gsS + "篩選科目原始成績加權平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key7a].Count);
+                                                        }
+
+                                                        key7a = gsS + "篩選科目原始成績加權平均科排名" + studRec.Department + "^^^" + gradeyear;
+                                                        if (ranks.ContainsKey(key7a))
+                                                        {
+                                                            int rr = ranks[key7a].IndexOf(selectScore[id7].avgScoreA) + 1;
+                                                            row[gsS + "篩選科目原始成績加權平均科排名"] = rr;
+                                                            row[gsS + "篩選科目原始成績加權平均科排名母數"] = ranks[key7a].Count;
+                                                            row[gsS + "篩選科目原始成績加權平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key7a].Count);
+                                                        }
+
+                                                        key7a = gsS + "篩選科目原始成績加權平均校排名" + gradeyear;
+                                                        if (ranks.ContainsKey(key7a))
+                                                        {
+                                                            int rr = ranks[key7a].IndexOf(selectScore[id7].avgScoreA) + 1;
+                                                            row[gsS + "篩選科目原始成績加權平均校排名"] = rr;
+                                                            row[gsS + "篩選科目原始成績加權平均校排名母數"] = ranks[key7a].Count;
+                                                            row[gsS + "篩選科目原始成績加權平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key7a].Count);
+                                                        }
+
+                                                        if (studRec.Fields.ContainsKey("tag1"))
+                                                        {
+                                                            key7a = gsS + "篩選科目原始成績加權平均類別一" + studRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                            if (ranks.ContainsKey(key7a))
+                                                            {
+                                                                int rr = ranks[key7a].IndexOf(selectScore[id7].avgScoreAC1) + 1;
+                                                                row[gsS + "篩選科目原始成績加權平均類別一"] = Utility.NoRound(selectScore[id7].avgScoreAC1);
+                                                                row[gsS + "篩選科目原始成績加權平均類別一排名"] = rr;
+                                                                row[gsS + "篩選科目原始成績加權平均類別一排名母數"] = ranks[key7a].Count;
+                                                                row[gsS + "篩選科目原始成績加權平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key7a].Count);
+                                                            }
+                                                        }
+
+                                                        if (studRec.Fields.ContainsKey("tag2"))
+                                                        {
+                                                            key7a = gsS + "篩選科目原始成績加權平均類別二" + studRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                            if (ranks.ContainsKey(key7a))
+                                                            {
+                                                                int rr = ranks[key7a].IndexOf(selectScore[id7].avgScoreAC2) + 1;
+                                                                row[gsS + "篩選科目原始成績加權平均類別二"] = Utility.NoRound(selectScore[id7].avgScoreAC2);
+                                                                row[gsS + "篩選科目原始成績加權平均類別二排名"] = rr;
+                                                                row[gsS + "篩選科目原始成績加權平均類別二排名母數"] = ranks[key7a].Count;
+                                                                row[gsS + "篩選科目原始成績加權平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key7a].Count);
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                #endregion 處理篩選科目原始成績
+                                            }
+                                        }
+                                        #endregion 處理科目原始成績加權平均
+
+                                        // 處理科目原始成績加權平均平均
+                                        #region 處理科目原始成績加權平均平均
+                                        string key6_name = "科目原始成績加權平均平均";
+                                        string key8_name = "篩選科目原始成績加權平均平均";
+                                        string key6 = studRec.StudentID + key6_name;
+                                        string key8 = studRec.StudentID + key8_name;
+
+                                        string id6 = studRec.StudentID + key6_name;
+                                        string id8 = studRec.StudentID + key8_name;
+
+                                        #region 處理科目原始成績
+                                        if (selectScore.ContainsKey(id6))
+                                        {
+
+                                            row["科目原始成績加權平均平均"] = Utility.NoRound(selectScore[id6].avgScoreA);
+                                            if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                            {
+                                                string key6a = "科目原始成績加權平均平均班排名" + studRec.RefClass.ClassID;
+                                                if (ranks.ContainsKey(key6a))
+                                                {
+                                                    int rr = ranks[key6a].IndexOf(selectScore[id6].avgScoreA) + 1;
+                                                    row["科目原始成績加權平均平均班排名"] = rr;
+                                                    row["科目原始成績加權平均平均班排名母數"] = ranks[key6a].Count;
+                                                    row["科目原始成績加權平均平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key6a].Count);
+                                                }
+
+                                                key6a = "科目原始成績加權平均平均科排名" + studRec.Department + "^^^" + gradeyear;
+                                                if (ranks.ContainsKey(key6a))
+                                                {
+                                                    int rr = ranks[key6a].IndexOf(selectScore[id6].avgScoreA) + 1;
+                                                    row["科目原始成績加權平均平均科排名"] = rr;
+                                                    row["科目原始成績加權平均平均科排名母數"] = ranks[key6a].Count;
+                                                    row["科目原始成績加權平均平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key6a].Count);
+                                                }
+
+                                                key6a = "科目原始成績加權平均平均校排名" + gradeyear;
+                                                if (ranks.ContainsKey(key6a))
+                                                {
+                                                    int rr = ranks[key6a].IndexOf(selectScore[id6].avgScoreA) + 1;
+                                                    row["科目原始成績加權平均平均校排名"] = rr;
+                                                    row["科目原始成績加權平均平均校排名母數"] = ranks[key6a].Count;
+                                                    row["科目原始成績加權平均平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key6a].Count);
+                                                }
+                                                if (studRec.Fields.ContainsKey("tag1"))
+                                                {
+                                                    key6a = "科目原始成績加權平均平均類別一" + studRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key6a))
+                                                    {
+                                                        int rr = ranks[key6a].IndexOf(selectScore[id6].avgScoreAC1) + 1;
+                                                        row["科目原始成績加權平均平均類別一"] = Utility.NoRound(selectScore[id6].avgScoreAC1);
+                                                        row["科目原始成績加權平均平均類別一排名"] = rr;
+                                                        row["科目原始成績加權平均平均類別一排名母數"] = ranks[key6a].Count;
+                                                        row["科目原始成績加權平均平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key6a].Count);
+                                                    }
+                                                }
+
+                                                if (studRec.Fields.ContainsKey("tag2"))
+                                                {
+                                                    key6a = "科目原始成績加權平均平均類別二" + studRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key6a))
+                                                    {
+                                                        int rr = ranks[key6a].IndexOf(selectScore[id6].avgScoreAC2) + 1;
+                                                        row["科目原始成績加權平均平均類別二"] = Utility.NoRound(selectScore[id6].avgScoreAC2);
+                                                        row["科目原始成績加權平均平均類別二排名"] = rr;
+                                                        row["科目原始成績加權平均平均類別二排名母數"] = ranks[key6a].Count;
+                                                        row["科目原始成績加權平均平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key6a].Count);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        #endregion 處理科目原始成績
+
+                                        #region 處理篩選科目原始成績
+                                        if (selectScore.ContainsKey(id8))
+                                        {
+                                            row["篩選科目原始成績加權平均平均"] = Utility.NoRound(selectScore[id8].avgScoreA);
+                                            if (!noRankList.Contains(studRec.StudentID))//不是不排名學生
+                                            {
+                                                string key8a = "篩選科目原始成績加權平均平均班排名" + studRec.RefClass.ClassID;
+                                                if (ranks.ContainsKey(key8a))
+                                                {
+                                                    int rr = ranks[key8a].IndexOf(selectScore[id8].avgScoreA) + 1;
+                                                    row["篩選科目原始成績加權平均平均班排名"] = rr;
+                                                    row["篩選科目原始成績加權平均平均班排名母數"] = ranks[key8a].Count;
+                                                    row["篩選科目原始成績加權平均平均班排名百分比"] = Utility.ParseRankPercent(rr, ranks[key8a].Count);
+                                                }
+
+                                                key8a = "篩選科目原始成績加權平均平均科排名" + studRec.Department + "^^^" + gradeyear;
+                                                if (ranks.ContainsKey(key8a))
+                                                {
+                                                    int rr = ranks[key8a].IndexOf(selectScore[id8].avgScoreA) + 1;
+                                                    row["篩選科目原始成績加權平均平均科排名"] = rr;
+                                                    row["篩選科目原始成績加權平均平均科排名母數"] = ranks[key8a].Count;
+                                                    row["篩選科目原始成績加權平均平均科排名百分比"] = Utility.ParseRankPercent(rr, ranks[key8a].Count);
+                                                }
+
+                                                key8a = "篩選科目原始成績加權平均平均校排名" + gradeyear;
+                                                if (ranks.ContainsKey(key8a))
+                                                {
+                                                    int rr = ranks[key8a].IndexOf(selectScore[id8].avgScoreA) + 1;
+                                                    row["篩選科目原始成績加權平均平均校排名"] = rr;
+                                                    row["篩選科目原始成績加權平均平均校排名母數"] = ranks[key8a].Count;
+                                                    row["篩選科目原始成績加權平均平均校排名百分比"] = Utility.ParseRankPercent(rr, ranks[key8a].Count);
+                                                }
+                                                if (studRec.Fields.ContainsKey("tag1"))
+                                                {
+                                                    key8a = "篩選科目原始成績加權平均平均類別一" + studRec.Fields["tag1"] + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key8a))
+                                                    {
+                                                        int rr = ranks[key8a].IndexOf(selectScore[id8].avgScoreAC1) + 1;
+                                                        row["篩選科目原始成績加權平均平均類別一"] = Utility.NoRound(selectScore[id8].avgScoreAC1);
+                                                        row["篩選科目原始成績加權平均平均類別一排名"] = rr;
+                                                        row["篩選科目原始成績加權平均平均類別一排名母數"] = ranks[key8a].Count;
+                                                        row["篩選科目原始成績加權平均平均類別一排名百分比"] = Utility.ParseRankPercent(rr, ranks[key8a].Count);
+                                                    }
+                                                }
+
+                                                if (studRec.Fields.ContainsKey("tag2"))
+                                                {
+                                                    key8a = "篩選科目原始成績加權平均平均類別二" + studRec.Fields["tag2"] + "^^^" + gradeyear;
+                                                    if (ranks.ContainsKey(key8a))
+                                                    {
+                                                        int rr = ranks[key8a].IndexOf(selectScore[id8].avgScoreAC2) + 1;
+                                                        row["篩選科目原始成績加權平均平均類別二"] = Utility.NoRound(selectScore[id8].avgScoreAC2);
+                                                        row["篩選科目原始成績加權平均平均類別二排名"] = rr;
+                                                        row["篩選科目原始成績加權平均平均類別二排名母數"] = ranks[key8a].Count;
+                                                        row["篩選科目原始成績加權平均平均類別二排名百分比"] = Utility.ParseRankPercent(rr, ranks[key8a].Count);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        #endregion 處理篩選科目原始成績
+                                        #endregion 處理科目原始成績加權平均平均
+
+                                        // 不排名不放入
+                                        if (!noRankList.Contains(studRec.StudentID))
+                                            _table.Rows.Add(row);
+
+                                    }
+                                } // data row
+
+                                if (OneClassCompleted != null)
+                                    OneClassCompleted();
+
+                                //List<string> fields = new List<string>(docTemplate.MailMerge.GetFieldNames());
+                                //List<string> rmColumns = new List<string>();
+
+                                //foreach (DataColumn dc in _table.Columns)
+                                //{
+                                //    if (!fields.Contains(dc.ColumnName))
+                                //    {
+                                //        rmColumns.Add(dc.ColumnName);
+                                //    }
+                                //}
+                                //// 檢查有資料才Merge
+                                //foreach (string str in rmColumns)
+                                //    _table.Columns.Remove(str);
+
+                                //GC.Collect();
+
+                                //// debug 用
+                                //_table.TableName = "debug";
+                                //string pathAA = System.Windows.Forms.Application.StartupPath + "\\多學期成績單debug.xml";
+                                //_table.WriteXml(pathAA);
+
+                                // 當 table 有資料再合併
+                                if (_table.Rows.Count > 0)
+                                {
+
+                                    Aspose.Words.Document document = new Aspose.Words.Document();
+                                    document = docTemplate;
+                                    doc.Sections.Add(doc.ImportNode(document.Sections[0], true));
+
+                                    doc.MailMerge.Execute(_table);
+                                    doc.MailMerge.RemoveEmptyParagraphs = true;
+                                    doc.MailMerge.DeleteFields();
+
+                                    _table.Rows.Clear();
+
+                                    #region Word 存檔
+                                    string reportNameW = "W_" + className + "-多學期科目成績固定排名成績單";
+                                    string pathW = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports", FolderName);
+                                    if (!Directory.Exists(pathW))
+                                        Directory.CreateDirectory(pathW);
+                                    pathW = Path.Combine(pathW, reportNameW + ".doc");
+
+                                    if (File.Exists(pathW))
                                     {
-
-                                        Aspose.Words.Document document = new Aspose.Words.Document();
-                                        document = docTemplate;
-                                        doc.Sections.Add(doc.ImportNode(document.Sections[0], true));
-
-                                        doc.MailMerge.Execute(_table);
-                                        doc.MailMerge.RemoveEmptyParagraphs = true;
-                                        doc.MailMerge.DeleteFields();
-
-                                        _table.Rows.Clear();                                        
-
-                                        #region Word 存檔
-                                        string reportNameW = "W_" + className + "-多學期科目成績固定排名成績單";
-                                        string pathW = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports", FolderName);
-                                        if (!Directory.Exists(pathW))
-                                            Directory.CreateDirectory(pathW);
-                                        pathW = Path.Combine(pathW, reportNameW + ".doc");
-
-                                        if (File.Exists(pathW))
+                                        int i = 1;
+                                        while (true)
                                         {
-                                            int i = 1;
-                                            while (true)
+                                            string newPathW = Path.GetDirectoryName(pathW) + "\\" + Path.GetFileNameWithoutExtension(pathW) + (i++) + Path.GetExtension(pathW);
+                                            if (!File.Exists(newPathW))
                                             {
-                                                string newPathW = Path.GetDirectoryName(pathW) + "\\" + Path.GetFileNameWithoutExtension(pathW) + (i++) + Path.GetExtension(pathW);
-                                                if (!File.Exists(newPathW))
-                                                {
-                                                    pathW = newPathW;
-                                                    break;
-                                                }
+                                                pathW = newPathW;
+                                                break;
                                             }
                                         }
-
-
-                                        try
-                                        {
-                                            if (setting.CheckExportStudent)
-                                            {
-                                                doc.Save(pathW, Aspose.Words.SaveFormat.Doc);
-                                            }
-
-                                            int xx = (int)(100d / ClassSumCount * ClassCountStart);
-                                            FISCA.RTContext.Invoke(new Action<string, int>(Word_Msg), new object[] { "產生班級Word檔中...", xx });
-                                            ClassCountStart++;
-
-                                        }
-                                        catch (OutOfMemoryException exow)
-                                        {
-                                            exc = exow;
-                                        }
-                                        doc = null;
-                                        GC.Collect();
-                                        #endregion
                                     }
 
-                                }// doc
-                                #endregion                         
+
+                                    try
+                                    {
+                                        if (setting.CheckExportStudent)
+                                        {
+                                            doc.Save(pathW, Aspose.Words.SaveFormat.Doc);
+                                        }
+
+                                        int xx = (int)(100d / ClassSumCount * ClassCountStart);
+                                        FISCA.RTContext.Invoke(new Action<string, int>(Word_Msg), new object[] { "產生班級Word檔中...", xx });
+                                        ClassCountStart++;
+
+                                    }
+                                    catch (OutOfMemoryException exow)
+                                    {
+                                        exc = exow;
+                                    }
+                                    doc = null;
+                                    GC.Collect();
+                                    #endregion
+                                }
+
+                            }// doc
+                            #endregion
                         }
 
 
@@ -13166,7 +13182,7 @@ namespace SHStaticRank2.Data
             bkw.RunWorkerAsync();
         }
 
-        
+
         private static void PDF_Msg(string msg, int p)
         {
             MotherForm.SetStatusBarMessage(msg, p);

@@ -281,7 +281,10 @@ namespace SmartSchool.Evaluation.Process.Wizards
                         {
                             _ErrorViewer.SetMessage(stu, errormessages[stu]);
                         }
-                        _ErrorViewer.Show();
+
+                        // 2018/5/24 穎驊完成項目調整 [H成績][02] 修正計算學期科目成績資料錯誤提醒，
+                        // 統一將提醒錯誤視窗在bkw_RunWorkerCompleted 後才呈現，本來在背景執行序就不應該動到UI
+                        //_ErrorViewer.Show();
                     }
                 }
                 this.progressBarX1.Value = e.ProgressPercentage;

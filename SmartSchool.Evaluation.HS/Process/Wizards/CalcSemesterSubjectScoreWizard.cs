@@ -23,6 +23,8 @@ namespace SmartSchool.Evaluation.Process.Wizards
 
         private SelectType _Type;
 
+        private string str_warning = "下列課程的科目名稱或分項類別有錯誤,故不列入計算\r\n";
+
         public CalcSemesterSubjectScoreWizard(SelectType type)
         {
             _Type = type;
@@ -310,13 +312,11 @@ namespace SmartSchool.Evaluation.Process.Wizards
 
             //異常課程提示清單
             if (computer._WarningList != null && computer._WarningList.Count > 0)
-            {
-                string str = "下列課程的科目名稱或分項類別有錯誤,故不列入計算\r\n";
+            {                
                 foreach (string s in computer._WarningList)
                 {
-                    str += s + "\r\n";
-                }
-                MessageBox.Show(str);
+                    str_warning += s + "\r\n";
+                }                
             }
 
             if (allPass)
@@ -346,6 +346,11 @@ namespace SmartSchool.Evaluation.Process.Wizards
                     wizard1.SelectedPage = wizardPage4;
                     upLoad((List<StudentRecord>)e.Result);
                 }
+
+                // 2018/5/24 穎驊完成項目調整 [H成績][02] 修正計算學期科目成績資料錯誤提醒，
+                // 統一將提醒錯誤視窗在bkw_RunWorkerCompleted 後才呈現，本來在背景執行序就不應該動到UI
+                // 警告視窗
+                MessageBox.Show(str_warning,"提醒!");
             }
         }
 
@@ -362,7 +367,9 @@ namespace SmartSchool.Evaluation.Process.Wizards
                         {
                             _ErrorViewer.SetMessage(stu, errormessages[stu]);
                         }
-                        _ErrorViewer.Show();
+                        // 2018/5/24 穎驊完成項目調整 [H成績][02] 修正計算學期科目成績資料錯誤提醒，
+                        // 統一將提醒錯誤視窗在bkw_RunWorkerCompleted 後才呈現，本來在背景執行序就不應該動到UI
+                        //_ErrorViewer.Show(); 
                     }
                 }
                 this.progressBarX1.Value = e.ProgressPercentage;

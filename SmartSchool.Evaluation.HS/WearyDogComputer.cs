@@ -6,6 +6,9 @@ using FISCA.DSAUtil;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
 using SmartSchool.Evaluation.WearyDogComputerHelper;
+using FISCA.Data;
+using System.Data;
+using System.Xml.Linq;
 
 namespace SmartSchool.Evaluation
 {
@@ -78,6 +81,81 @@ namespace SmartSchool.Evaluation
             accesshelper.StudentHelper.FillAttendCourse(schoolyear, semester, students);
             //抓學生歷年學期科目成績
             accesshelper.StudentHelper.FillSemesterSubjectScore(false, students);
+
+            // 2018/5/24 穎驊新增 紀錄 於 [H成績][06] 課程重讀重修設定，的新設定，假如學生有重覆科目級別被抓出來，且設定了計算方式，
+            // 此字典可用於對照， 格式 <studentID_subject_level,重修(寫回原學期)||重讀(擇優採計成績)||視為一般修課>
+            Dictionary<string, string> duplicateSubjectLevelMethodDict = new Dictionary<string, string>();
+
+
+            // 整理所欲計算學期科目學生的ID
+            List<string> sidList = new List<string>();
+            
+            foreach (StudentRecord sr in students)
+            {
+                if (!sidList.Contains(sr.StudentID))
+                {
+                    sidList.Add(sr.StudentID);
+                }
+            }
+
+            string sid = string.Join(",", sidList);
+
+            string query2 = string.Format(@"SELECT sc_attend.id
+	,sc_attend.extensions AS extensions
+	,student.id AS refStudentID	
+	,student.name AS studentName
+	,student.student_number AS studentNumber
+	,student.seat_no AS seatNo  
+	,class.class_name AS className
+	,class.grade_year AS gradeYear
+	,course.id AS refCourseID
+    ,course.course_name AS courseName
+	,course.subject AS subjectName
+	,course.subj_level AS subjectLevel
+	FROM sc_attend 
+	LEFT JOIN student ON sc_attend.ref_student_id =student.id 
+	LEFT JOIN class ON student.ref_class_id =class.id  
+	LEFT JOIN course ON sc_attend.ref_course_id =course.id  
+	WHERE 
+	student.status ='1' 
+	AND course.school_year = '{0}'
+    AND course.semester = '{1}'
+    AND student.id IN ({2})
+    ORDER BY courseName,className, seatNo ASC", schoolyear, semester, sid);
+
+            QueryHelper qh1 = new QueryHelper();
+
+            //DataTable dt_SCAttend = qh1.Select(query2);
+
+            //// 將學生本學期的修課紀錄整理出來 (包含了重覆科目級別的計算處理方式會在extensions內)
+            //foreach (DataRow dr in dt_SCAttend.Rows)
+            //{
+            //    string key = "" + dr["refStudentID"] + "_" + dr["subjectName"] + "_" + dr["subjectLevel"];
+
+            //    string xmlStr = "<root>" + dr["extensions"] + "</root>";
+            //    string method = "";
+
+            //    XElement elmRoot = XElement.Parse(xmlStr);
+
+            //    if (elmRoot != null)
+            //    {
+            //        if (elmRoot.Element("Extensions") != null)
+            //        {
+            //            foreach (XElement ex in elmRoot.Element("Extensions").Elements("Extension"))
+            //            {
+            //                if (ex.Attribute("Name").Value == "DuplicatedLevelSubjectCalRule")
+            //                {
+            //                    method = ex.Element("Rule").Value;
+            //                }
+            //            }
+            //        }
+            //    }
+            //    if (!duplicateSubjectLevelMethodDict.ContainsKey(key))
+            //    {                   
+            //        duplicateSubjectLevelMethodDict.Add("" + dr["refStudentID"] + "_" + dr["subjectName"] + "_" + dr["subjectLevel"], method);
+            //    }
+            //}
+
 
             foreach (StudentRecord var in students)
             {
@@ -298,6 +376,7 @@ namespace SmartSchool.Evaluation
                         string key = sacRecord.Subject.Trim() + "_" + sacRecord.SubjectLevel.Trim();
                         //發現為重修科目
                         if (writeToFirstSemester && restudySubjectScoreList.ContainsValue(key))
+                        //if (writeToFirstSemester && duplicateSubjectLevelMethodDict[var.StudentID +"_"+ sacRecord.Subject.Trim() + "_" + sacRecord.SubjectLevel.Trim()] == "重修(寫回原學期)")
                         {
                             #region 寫入重修成績回原學期
                             int sy = 0, se = 0;

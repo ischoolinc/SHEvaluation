@@ -350,7 +350,12 @@ namespace SmartSchool.Evaluation.Process.Wizards
                 // 2018/5/24 穎驊完成項目調整 [H成績][02] 修正計算學期科目成績資料錯誤提醒，
                 // 統一將提醒錯誤視窗在bkw_RunWorkerCompleted 後才呈現，本來在背景執行序就不應該動到UI
                 // 警告視窗
-                MessageBox.Show(str_warning,"提醒!");
+                // 2018/5/28 ，有小BUG 無論是否有錯誤都會跳出來，先這樣擋兩天，之後 Warning 視窗 與error 視窗 會整併
+                if (str_warning != "下列課程的科目名稱或分項類別有錯誤,故不列入計算\r\n")
+                {
+                    MessageBox.Show(str_warning, "提醒!");
+                }
+                
             }
         }
 

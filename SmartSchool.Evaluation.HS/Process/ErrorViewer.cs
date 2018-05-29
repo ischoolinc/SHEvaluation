@@ -47,15 +47,17 @@ namespace SmartSchool.Evaluation.Process
 
         public void Clear()
         {
-            this.Hide();
+            //this.Hide();
             this.dataGridViewX1.Rows.Clear();
             toolStripStatusLabel1.Text = "";
         }
 
         private void ErrorViewer_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //this.Close();
             this.Hide();
             e.Cancel = true;
+
         }
     }
 }

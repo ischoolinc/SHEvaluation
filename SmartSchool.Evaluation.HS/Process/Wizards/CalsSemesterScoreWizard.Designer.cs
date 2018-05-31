@@ -83,11 +83,11 @@
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX1.Location = new System.Drawing.Point(35, 41);
             this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(668, 73);
+            this.labelX1.Size = new System.Drawing.Size(671, 73);
             this.labelX1.TabIndex = 1;
-            this.labelX1.Text = "將學生本學期修課之課程總成績轉換為學期科目成績，並依成績計算規則所規定的及格標準判斷是否取得學分。\r\n若非本學期末第一次計算，使成績更動，建議重新處理所有後續成績" +
-    "作業，以產生正確的資料。\r\n　●當發現修課的科目與級別在之前的學期有重覆時，將依本學期末設定 教務作業/成績作業 重覆修課採計方式 :\r\n        重修(" +
-    "寫回原學期)、重讀(擇優採計成績)、視為一般修課登錄成績。";
+            this.labelX1.Text = "將學生本學期修課之課程總成績轉換為學期科目成績，並依成績計算規則所規定的及格標準判斷是否取得學分。\r\n若非本學期末第一次計算，使成績更動，建議重新處理後續成績作業" +
+    "(分項成績、計算排名)，以產生正確的資料。\r\n　●當發現修課的科目與級別在之前的學期有重覆時，將依本學期末設定 教務作業/成績作業 重覆修課採計方式 :\r\n  " +
+    "      重修(寫回原學期)、重讀(擇優採計成績)、視為一般修課登錄成績。";
             // 
             // labelX2
             // 

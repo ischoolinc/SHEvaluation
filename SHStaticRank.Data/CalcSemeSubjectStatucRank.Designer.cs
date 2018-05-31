@@ -45,6 +45,7 @@
             this.chk補考成績 = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.chk原始成績 = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.groupPanel3 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.chkClearNoRankData = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.chkGrade3 = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.chkGrade2 = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.chkGrade1 = new DevComponents.DotNetBar.Controls.CheckBoxX();
@@ -52,7 +53,6 @@
             this.chkDoNotSaveIt = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.buttonX1 = new DevComponents.DotNetBar.ButtonX();
             this.chk計算學業成績排名 = new DevComponents.DotNetBar.Controls.CheckBoxX();
-            this.chkClearNoRankData = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.groupPanel1.SuspendLayout();
             this.groupPanel3.SuspendLayout();
             this.groupPanel2.SuspendLayout();
@@ -383,6 +383,22 @@
             this.groupPanel3.TabIndex = 17;
             this.groupPanel3.Text = "排名對象";
             // 
+            // chkClearNoRankData
+            // 
+            this.chkClearNoRankData.AutoSize = true;
+            this.chkClearNoRankData.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.chkClearNoRankData.BackgroundStyle.Class = "";
+            this.chkClearNoRankData.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.chkClearNoRankData.Location = new System.Drawing.Point(4, 59);
+            this.chkClearNoRankData.Name = "chkClearNoRankData";
+            this.chkClearNoRankData.Size = new System.Drawing.Size(228, 21);
+            this.chkClearNoRankData.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.chkClearNoRankData.TabIndex = 20;
+            this.chkClearNoRankData.Text = "儲存時清除不排名學生的排名資料";
+            // 
             // chkGrade3
             // 
             this.chkGrade3.AutoSize = true;
@@ -534,22 +550,6 @@
             this.chk計算學業成績排名.TabIndex = 19;
             this.chk計算學業成績排名.Text = "計算學業成績排名";
             // 
-            // chkClearNoRankData
-            // 
-            this.chkClearNoRankData.AutoSize = true;
-            this.chkClearNoRankData.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.chkClearNoRankData.BackgroundStyle.Class = "";
-            this.chkClearNoRankData.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.chkClearNoRankData.Location = new System.Drawing.Point(4, 59);
-            this.chkClearNoRankData.Name = "chkClearNoRankData";
-            this.chkClearNoRankData.Size = new System.Drawing.Size(228, 21);
-            this.chkClearNoRankData.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.chkClearNoRankData.TabIndex = 20;
-            this.chkClearNoRankData.Text = "儲存時清除不排名學生的排名資料";
-            // 
             // CalcSemeSubjectStatucRank
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
@@ -566,8 +566,10 @@
             this.Controls.Add(this.labelX7);
             this.Controls.Add(this.cboSchoolYear);
             this.DoubleBuffered = true;
+            this.MaximumSize = new System.Drawing.Size(336, 484);
+            this.MinimumSize = new System.Drawing.Size(336, 484);
             this.Name = "CalcSemeSubjectStatucRank";
-            this.Text = "計算學期成績固定排名(測試版)";
+            this.Text = "計算學期成績固定排名";
             this.Load += new System.EventHandler(this.CalcSemeSubjectStatucRank_Load);
             this.groupPanel1.ResumeLayout(false);
             this.groupPanel1.PerformLayout();

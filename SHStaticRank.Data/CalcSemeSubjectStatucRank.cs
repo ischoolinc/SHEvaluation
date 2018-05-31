@@ -13,10 +13,17 @@ namespace SHStaticRank.Data
 {
     public partial class CalcSemeSubjectStatucRank : BaseForm
     {
+        
         private string _DefalutSchoolYear = "";
         private string _DefaultSemester = "";
         private List<TagConfigRecord> _TagConfigRecords = new List<TagConfigRecord>();
-        public CalcSemeSubjectStatucRank()
+
+        public CalcSemeSubjectStatucRank():this(false)
+        {
+            
+        }
+
+        public CalcSemeSubjectStatucRank(bool fixSchoolyearSemester)
         {
             _TagConfigRecords = K12.Data.TagConfig.SelectByCategory(TagCategory.Student);
             _DefalutSchoolYear = "" + K12.Data.School.DefaultSchoolYear;
@@ -38,6 +45,9 @@ namespace SHStaticRank.Data
 
             cboSchoolYear.Text = "" + _DefalutSchoolYear;
             cboSemester.Text = "" + _DefaultSemester;
+
+            cboSchoolYear.Enabled = !fixSchoolyearSemester; //// 2018/5/31 穎驊 因應[H成績][03] 學期成績計算相關流程操作文字提醒 調整，將原本的計算排名功能關閉，一率引導到固定排名功能
+            cboSemester.Enabled = !fixSchoolyearSemester;   // 假若是自 教務作業 批次作業而來，則不給其調整學年度學期，只能在原學期動作
 
             List<string> prefix = new List<string>();
             List<string> tag = new List<string>();
@@ -73,6 +83,8 @@ namespace SHStaticRank.Data
             }
         }
 
+
+
         private void CalcSemeSubjectStatucRank_Load(object sender, EventArgs e)
         {
             MessageBox.Show(
@@ -81,7 +93,7 @@ namespace SHStaticRank.Data
 排名完將會顯示排名細節，此資料目前暫不儲存，請自行留存。
 1.排名對象為目前為該年級，扣除標註有不排名類別以及非一般狀態學生(非在選取的學期中就讀該年級的學生)。
 2.計算過程中所有學生年級、班級、所屬類別等皆以目前的狀態進行計算，不會因為選取以前的學年度而往回推。
-3.排名所採用的分數為勾選成績項目中選最高值。
+3.排名所採用的目前學期科目成績分數為勾選成績項目中選最高值。
 4.若勾選'僅預覽，不儲存結果'項目，排名資料將不會寫入資料庫，僅有排名細節供預覽用。");
         }
 

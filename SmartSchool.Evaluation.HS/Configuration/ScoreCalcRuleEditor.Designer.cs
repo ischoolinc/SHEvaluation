@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.itemContainer9 = new DevComponents.DotNetBar.ItemContainer();
             this.labelItem1 = new DevComponents.DotNetBar.LabelItem();
             this.panelEx1 = new DevComponents.DotNetBar.PanelEx();
@@ -118,6 +118,12 @@
             this.checkBoxX8 = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.checkBoxX1 = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.groupPanel6 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.groupPanel27 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.checkBoxX21 = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.checkBoxX22 = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.checkBoxX23 = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.checkBoxX24 = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.checkBoxX25 = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.checkBoxX5 = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.groupPanel11 = new DevComponents.DotNetBar.Controls.GroupPanel();
             this.radioButton13 = new System.Windows.Forms.RadioButton();
@@ -195,12 +201,6 @@
             this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.groupPanel27 = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.checkBoxX21 = new DevComponents.DotNetBar.Controls.CheckBoxX();
-            this.checkBoxX22 = new DevComponents.DotNetBar.Controls.CheckBoxX();
-            this.checkBoxX23 = new DevComponents.DotNetBar.Controls.CheckBoxX();
-            this.checkBoxX24 = new DevComponents.DotNetBar.Controls.CheckBoxX();
-            this.checkBoxX25 = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.panelEx1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -230,6 +230,7 @@
             this.groupPanel8.SuspendLayout();
             this.groupPanel7.SuspendLayout();
             this.groupPanel6.SuspendLayout();
+            this.groupPanel27.SuspendLayout();
             this.groupPanel11.SuspendLayout();
             this.groupPanel14.SuspendLayout();
             this.groupPanel18.SuspendLayout();
@@ -247,7 +248,6 @@
             this.groupPanel23.SuspendLayout();
             this.groupPanel13.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
-            this.groupPanel27.SuspendLayout();
             this.SuspendLayout();
             // 
             // itemContainer9
@@ -891,9 +891,9 @@
             this.groupPanel2.BackColor = System.Drawing.Color.Transparent;
             this.groupPanel2.CanvasColor = System.Drawing.SystemColors.Control;
             this.groupPanel2.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.groupPanel2.Controls.Add(this.groupPanel19);
             this.groupPanel2.Controls.Add(this.groupPanel20);
             this.groupPanel2.Controls.Add(this.groupPanel17);
+            this.groupPanel2.Controls.Add(this.groupPanel19);
             this.groupPanel2.Location = new System.Drawing.Point(167, 228);
             this.groupPanel2.Name = "groupPanel2";
             this.groupPanel2.Size = new System.Drawing.Size(644, 273);
@@ -938,7 +938,7 @@
             this.groupPanel19.DrawTitleBox = false;
             this.groupPanel19.Location = new System.Drawing.Point(5, 5);
             this.groupPanel19.Name = "groupPanel19";
-            this.groupPanel19.Size = new System.Drawing.Size(628, 164);
+            this.groupPanel19.Size = new System.Drawing.Size(628, 238);
             // 
             // 
             // 
@@ -979,14 +979,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewX1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewX1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewX1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewX1.ColumnHeadersHeight = 40;
             this.dataGridViewX1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridViewX1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -999,20 +999,20 @@
             this.Column6,
             this.Column7,
             this.Column9});
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewX1.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewX1.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridViewX1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dataGridViewX1.Location = new System.Drawing.Point(8, 3);
             this.dataGridViewX1.Name = "dataGridViewX1";
             this.dataGridViewX1.RowHeadersWidth = 27;
             this.dataGridViewX1.RowTemplate.Height = 24;
-            this.dataGridViewX1.Size = new System.Drawing.Size(607, 131);
+            this.dataGridViewX1.Size = new System.Drawing.Size(607, 205);
             this.dataGridViewX1.TabIndex = 0;
             this.dataGridViewX1.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewX1_CellEnter);
             this.dataGridViewX1.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewX1_CellMouseClick);
@@ -1124,6 +1124,7 @@
             this.groupPanel20.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.groupPanel20.TabIndex = 4;
             this.groupPanel20.Text = "重修成績";
+            this.groupPanel20.Visible = false;
             // 
             // labelX1
             // 
@@ -1205,6 +1206,7 @@
             this.groupPanel17.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.groupPanel17.TabIndex = 4;
             this.groupPanel17.Text = "重讀成績";
+            this.groupPanel17.Visible = false;
             // 
             // labelX15
             // 
@@ -1865,6 +1867,128 @@
             this.groupPanel6.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.groupPanel6.TabIndex = 9;
             this.groupPanel6.Text = "學年科目成績計算規則";
+            // 
+            // groupPanel27
+            // 
+            this.groupPanel27.CanvasColor = System.Drawing.SystemColors.Control;
+            this.groupPanel27.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel27.Controls.Add(this.checkBoxX21);
+            this.groupPanel27.Controls.Add(this.checkBoxX22);
+            this.groupPanel27.Controls.Add(this.checkBoxX23);
+            this.groupPanel27.Controls.Add(this.checkBoxX24);
+            this.groupPanel27.Controls.Add(this.checkBoxX25);
+            this.groupPanel27.DrawTitleBox = false;
+            this.groupPanel27.Location = new System.Drawing.Point(5, 133);
+            this.groupPanel27.Name = "groupPanel27";
+            this.groupPanel27.Size = new System.Drawing.Size(630, 85);
+            // 
+            // 
+            // 
+            this.groupPanel27.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.groupPanel27.Style.BackColorGradientAngle = 90;
+            this.groupPanel27.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.groupPanel27.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel27.Style.BorderBottomWidth = 1;
+            this.groupPanel27.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.groupPanel27.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel27.Style.BorderLeftWidth = 1;
+            this.groupPanel27.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel27.Style.BorderRightWidth = 1;
+            this.groupPanel27.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel27.Style.BorderTopWidth = 1;
+            this.groupPanel27.Style.Class = "";
+            this.groupPanel27.Style.CornerDiameter = 4;
+            this.groupPanel27.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.groupPanel27.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.groupPanel27.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.groupPanel27.StyleMouseDown.Class = "";
+            this.groupPanel27.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.groupPanel27.StyleMouseOver.Class = "";
+            this.groupPanel27.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.groupPanel27.TabIndex = 8;
+            this.groupPanel27.Text = "計算採計學年科目成績欄位";
+            // 
+            // checkBoxX21
+            // 
+            this.checkBoxX21.AutoSize = true;
+            this.checkBoxX21.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.checkBoxX21.BackgroundStyle.Class = "";
+            this.checkBoxX21.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX21.Enabled = false;
+            this.checkBoxX21.Location = new System.Drawing.Point(164, 30);
+            this.checkBoxX21.Name = "checkBoxX21";
+            this.checkBoxX21.Size = new System.Drawing.Size(107, 21);
+            this.checkBoxX21.TabIndex = 0;
+            this.checkBoxX21.Text = "學年調整成績";
+            // 
+            // checkBoxX22
+            // 
+            this.checkBoxX22.AutoSize = true;
+            this.checkBoxX22.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.checkBoxX22.BackgroundStyle.Class = "";
+            this.checkBoxX22.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX22.Location = new System.Drawing.Point(5, 30);
+            this.checkBoxX22.Name = "checkBoxX22";
+            this.checkBoxX22.Size = new System.Drawing.Size(107, 21);
+            this.checkBoxX22.TabIndex = 0;
+            this.checkBoxX22.Text = "手動調整成績";
+            // 
+            // checkBoxX23
+            // 
+            this.checkBoxX23.AutoSize = true;
+            this.checkBoxX23.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.checkBoxX23.BackgroundStyle.Class = "";
+            this.checkBoxX23.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX23.Location = new System.Drawing.Point(316, 4);
+            this.checkBoxX23.Name = "checkBoxX23";
+            this.checkBoxX23.Size = new System.Drawing.Size(80, 21);
+            this.checkBoxX23.TabIndex = 0;
+            this.checkBoxX23.Text = "重修成績";
+            // 
+            // checkBoxX24
+            // 
+            this.checkBoxX24.AutoSize = true;
+            this.checkBoxX24.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.checkBoxX24.BackgroundStyle.Class = "";
+            this.checkBoxX24.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX24.Location = new System.Drawing.Point(164, 4);
+            this.checkBoxX24.Name = "checkBoxX24";
+            this.checkBoxX24.Size = new System.Drawing.Size(80, 21);
+            this.checkBoxX24.TabIndex = 0;
+            this.checkBoxX24.Text = "補考成績";
+            // 
+            // checkBoxX25
+            // 
+            this.checkBoxX25.AutoSize = true;
+            this.checkBoxX25.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.checkBoxX25.BackgroundStyle.Class = "";
+            this.checkBoxX25.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX25.Location = new System.Drawing.Point(5, 4);
+            this.checkBoxX25.Name = "checkBoxX25";
+            this.checkBoxX25.Size = new System.Drawing.Size(80, 21);
+            this.checkBoxX25.TabIndex = 0;
+            this.checkBoxX25.Text = "原始成績";
             // 
             // checkBoxX5
             // 
@@ -3256,128 +3380,6 @@
             this.dataGridViewTextBoxColumn9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.dataGridViewTextBoxColumn9.Width = 63;
             // 
-            // groupPanel27
-            // 
-            this.groupPanel27.CanvasColor = System.Drawing.SystemColors.Control;
-            this.groupPanel27.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.groupPanel27.Controls.Add(this.checkBoxX21);
-            this.groupPanel27.Controls.Add(this.checkBoxX22);
-            this.groupPanel27.Controls.Add(this.checkBoxX23);
-            this.groupPanel27.Controls.Add(this.checkBoxX24);
-            this.groupPanel27.Controls.Add(this.checkBoxX25);
-            this.groupPanel27.DrawTitleBox = false;
-            this.groupPanel27.Location = new System.Drawing.Point(5, 133);
-            this.groupPanel27.Name = "groupPanel27";
-            this.groupPanel27.Size = new System.Drawing.Size(630, 85);
-            // 
-            // 
-            // 
-            this.groupPanel27.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.groupPanel27.Style.BackColorGradientAngle = 90;
-            this.groupPanel27.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.groupPanel27.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel27.Style.BorderBottomWidth = 1;
-            this.groupPanel27.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.groupPanel27.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel27.Style.BorderLeftWidth = 1;
-            this.groupPanel27.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel27.Style.BorderRightWidth = 1;
-            this.groupPanel27.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
-            this.groupPanel27.Style.BorderTopWidth = 1;
-            this.groupPanel27.Style.Class = "";
-            this.groupPanel27.Style.CornerDiameter = 4;
-            this.groupPanel27.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
-            this.groupPanel27.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.groupPanel27.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
-            // 
-            // 
-            // 
-            this.groupPanel27.StyleMouseDown.Class = "";
-            this.groupPanel27.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            // 
-            // 
-            // 
-            this.groupPanel27.StyleMouseOver.Class = "";
-            this.groupPanel27.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.groupPanel27.TabIndex = 8;
-            this.groupPanel27.Text = "計算採計學年科目成績欄位";
-            // 
-            // checkBoxX21
-            // 
-            this.checkBoxX21.AutoSize = true;
-            this.checkBoxX21.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.checkBoxX21.BackgroundStyle.Class = "";
-            this.checkBoxX21.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.checkBoxX21.Enabled = false;
-            this.checkBoxX21.Location = new System.Drawing.Point(164, 30);
-            this.checkBoxX21.Name = "checkBoxX21";
-            this.checkBoxX21.Size = new System.Drawing.Size(107, 21);
-            this.checkBoxX21.TabIndex = 0;
-            this.checkBoxX21.Text = "學年調整成績";
-            // 
-            // checkBoxX22
-            // 
-            this.checkBoxX22.AutoSize = true;
-            this.checkBoxX22.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.checkBoxX22.BackgroundStyle.Class = "";
-            this.checkBoxX22.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.checkBoxX22.Location = new System.Drawing.Point(5, 30);
-            this.checkBoxX22.Name = "checkBoxX22";
-            this.checkBoxX22.Size = new System.Drawing.Size(107, 21);
-            this.checkBoxX22.TabIndex = 0;
-            this.checkBoxX22.Text = "手動調整成績";
-            // 
-            // checkBoxX23
-            // 
-            this.checkBoxX23.AutoSize = true;
-            this.checkBoxX23.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.checkBoxX23.BackgroundStyle.Class = "";
-            this.checkBoxX23.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.checkBoxX23.Location = new System.Drawing.Point(316, 4);
-            this.checkBoxX23.Name = "checkBoxX23";
-            this.checkBoxX23.Size = new System.Drawing.Size(80, 21);
-            this.checkBoxX23.TabIndex = 0;
-            this.checkBoxX23.Text = "重修成績";
-            // 
-            // checkBoxX24
-            // 
-            this.checkBoxX24.AutoSize = true;
-            this.checkBoxX24.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.checkBoxX24.BackgroundStyle.Class = "";
-            this.checkBoxX24.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.checkBoxX24.Location = new System.Drawing.Point(164, 4);
-            this.checkBoxX24.Name = "checkBoxX24";
-            this.checkBoxX24.Size = new System.Drawing.Size(80, 21);
-            this.checkBoxX24.TabIndex = 0;
-            this.checkBoxX24.Text = "補考成績";
-            // 
-            // checkBoxX25
-            // 
-            this.checkBoxX25.AutoSize = true;
-            this.checkBoxX25.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.checkBoxX25.BackgroundStyle.Class = "";
-            this.checkBoxX25.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.checkBoxX25.Location = new System.Drawing.Point(5, 4);
-            this.checkBoxX25.Name = "checkBoxX25";
-            this.checkBoxX25.Size = new System.Drawing.Size(80, 21);
-            this.checkBoxX25.TabIndex = 0;
-            this.checkBoxX25.Text = "原始成績";
-            // 
             // ScoreCalcRuleEditor
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -3430,6 +3432,8 @@
             this.groupPanel7.ResumeLayout(false);
             this.groupPanel7.PerformLayout();
             this.groupPanel6.ResumeLayout(false);
+            this.groupPanel27.ResumeLayout(false);
+            this.groupPanel27.PerformLayout();
             this.groupPanel11.ResumeLayout(false);
             this.groupPanel11.PerformLayout();
             this.groupPanel14.ResumeLayout(false);
@@ -3458,8 +3462,6 @@
             this.groupPanel13.ResumeLayout(false);
             this.groupPanel13.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
-            this.groupPanel27.ResumeLayout(false);
-            this.groupPanel27.PerformLayout();
             this.ResumeLayout(false);
 
         }

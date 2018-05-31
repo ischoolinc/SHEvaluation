@@ -30,11 +30,10 @@ namespace StudentDuplicateSubjectCheck
         {
             InitializeComponent();
 
-            comboBoxEx1.Items.Add("一年級");
-            comboBoxEx1.Items.Add("二年級");
-            comboBoxEx1.Items.Add("三年級");
-
-            comboBoxEx1.SelectedIndex = 0; //預設先選一
+            
+            this.numericUpDown1.Minimum = 1;
+            this.numericUpDown1.Maximum = 5;
+            this.numericUpDown1.Value = 1;
 
             labelX2.Text = "本功能將會對本學期學生的修課紀錄檢查，" + Environment.NewLine + "假若與先前的學期成績有重覆的科目級別則會列出，" + Environment.NewLine + "由人工設定計算方式。";
 
@@ -48,7 +47,8 @@ namespace StudentDuplicateSubjectCheck
 
         private void buttonX1_Click(object sender, EventArgs e)
         {
-            selectGradeYear = "" + comboBoxEx1.SelectedItem;
+            
+            targetGradeYear = ""+this.numericUpDown1.Value;
             FreezeUI();
             _backgroundWorker.RunWorkerAsync();
         }
@@ -57,9 +57,19 @@ namespace StudentDuplicateSubjectCheck
         {
             ActivateUI();
 
-            CheckCalculatedLogicForm cclf = new CheckCalculatedLogicForm(scaDuplicateList);
+            FISCA.Presentation.MotherForm.SetStatusBarMessage("檢查本學期重覆修課完畢。");
 
-            cclf.ShowDialog();
+            // 有資料才show
+            if (scaDuplicateList.Count != 0)
+            {
+                CheckCalculatedLogicForm cclf = new CheckCalculatedLogicForm(scaDuplicateList);
+                cclf.ShowDialog();
+            }
+            else
+            {
+                MsgBox.Show("本年級本學期並無重覆修課的紀錄。");
+            }
+            
         }
 
         private void _backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -74,24 +84,7 @@ namespace StudentDuplicateSubjectCheck
             //清空上次資料
             scaDuplicateList.Clear();
 
-            switch (selectGradeYear)
-            {
-                case "一年級":
-                    targetGradeYear = "1";
-                    break;
 
-                case "二年級":
-                    targetGradeYear = "2";
-                    break;
-
-                case "三年級":
-                    targetGradeYear = "3";
-                    break;
-
-                default:
-                    targetGradeYear = "";
-                    break;
-            }
 
             List<string> sidList = new List<string>();
 
@@ -224,15 +217,13 @@ namespace StudentDuplicateSubjectCheck
         }
 
         private void FreezeUI()
-        {
-            comboBoxEx1.Enabled = false;
+        {            
             buttonX1.Enabled = false;
             buttonX2.Enabled = false;
         }
 
         private void ActivateUI()
-        {
-            comboBoxEx1.Enabled = true;
+        {            
             buttonX1.Enabled = true;
             buttonX2.Enabled = true;
         }

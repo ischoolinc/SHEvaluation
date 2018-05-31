@@ -267,7 +267,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            this._ErrorViewer.Show();
+            this._ErrorViewer.ShowDialog();
         }
 
         private void CalcSemesterSubjectScoreWizard_FormClosing(object sender, FormClosingEventArgs e)

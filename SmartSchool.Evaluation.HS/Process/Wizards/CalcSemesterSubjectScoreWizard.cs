@@ -18,12 +18,18 @@ namespace SmartSchool.Evaluation.Process.Wizards
         private const int _MaxPackageSize = 250;
 
         private ErrorViewer _ErrorViewer = new ErrorViewer();
-
+        private WarnViewer _WarnViewer;
+        
         private BackgroundWorker runningBackgroundWorker = new BackgroundWorker();
 
         private SelectType _Type;
 
-        private string str_warning = "下列課程的科目名稱或分項類別有錯誤,故不列入計算\r\n";
+        private List<string> warningList = new List<string>();
+
+        private List<StudentRecord> resultList; // 儲存最後結果的List
+
+        private bool hasWarning = false;
+        private bool hasError = false;
 
         public CalcSemesterSubjectScoreWizard(SelectType type)
         {
@@ -137,6 +143,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
                     break;
             }
             linkLabel1.Visible = false;
+            linkLabel2.Visible = false;
             labelX4.Text = "學期成績計算中...";
             runningBackgroundWorker = new BackgroundWorker();
             runningBackgroundWorker.WorkerSupportsCancellation = true;
@@ -149,6 +156,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
 
         void bkw_DoWork(object sender, DoWorkEventArgs e)
         {
+            warningList.Clear();// 將警告名單清空
             BackgroundWorker bkw = ((BackgroundWorker)sender);
             int schoolyear = (int)((object[])e.Argument)[0];
             int semester = (int)((object[])e.Argument)[1];
@@ -312,11 +320,12 @@ namespace SmartSchool.Evaluation.Process.Wizards
 
             //異常課程提示清單
             if (computer._WarningList != null && computer._WarningList.Count > 0)
-            {                
-                foreach (string s in computer._WarningList)
+            {
+                hasWarning = true;
+                foreach (string s in computer._WarningList) // 這邊先整理好有疑慮的課程警告名單，等全部都做完後一併處理
                 {
-                    str_warning += s + "\r\n";
-                }                
+                    warningList.Add(s);                
+                }
             }
 
             if (allPass)
@@ -338,22 +347,42 @@ namespace SmartSchool.Evaluation.Process.Wizards
             {
                 if (e.Result == null)
                 {
-                    linkLabel1.Visible = true;
-                    labelX4.Text = "計算失敗，請檢查錯誤訊息。";
+                    hasError = true; //有錯誤，使用者將無法繼續計算
+                    _WarnViewer = new WarnViewer(hasError);
                 }
                 else
                 {
-                    wizard1.SelectedPage = wizardPage4;
-                    upLoad((List<StudentRecord>)e.Result);
+                    hasError = false;
+                    _WarnViewer = new WarnViewer(hasError);
                 }
 
-                // 2018/5/24 穎驊完成項目調整 [H成績][02] 修正計算學期科目成績資料錯誤提醒，
-                // 統一將提醒錯誤視窗在bkw_RunWorkerCompleted 後才呈現，本來在背景執行序就不應該動到UI
-                // 警告視窗
-                // 2018/5/28 ，有小BUG 無論是否有錯誤都會跳出來，先這樣擋兩天，之後 Warning 視窗 與error 視窗 會整併
-                if (str_warning != "下列課程的科目名稱或分項類別有錯誤,故不列入計算\r\n")
+                foreach (string s in warningList)
+                {                    
+                    _WarnViewer.SetMessage("課程:" + s, "科目名稱或分項類別有錯誤, 故此課程不列入計算");
+                }
+
+                if (hasError && !hasWarning) // 有錯誤 沒警告
                 {
-                    MessageBox.Show(str_warning, "提醒!");
+                    linkLabel1.Visible = true;
+                    labelX4.Text = "計算失敗，請檢查錯誤訊息。";
+                }
+                else if (hasError && hasWarning) // 有錯誤 有警告
+                {
+                    linkLabel1.Visible = true;
+                    linkLabel2.Visible = true; // 不再主動跳出視窗，警告訊息放在這裡供使用者點選打開檢查
+                    labelX4.Text = "計算失敗，請檢查警告訊息、錯誤訊息";
+
+                }
+                else if (!hasError && hasWarning) // 沒錯誤 有警告
+                {
+                    linkLabel2.Visible = true; // 不再主動跳出視窗，警告訊息放在這裡供使用者點選打開檢查
+                    labelX4.Text = "計算成功，請檢查警告訊息後，上傳成績";
+                    resultList = (List<StudentRecord>) e.Result;
+                }
+                else // 沒錯誤 沒警告
+                {
+                    wizard1.SelectedPage = wizardPage4;
+                    upLoad((List<StudentRecord>)e.Result);
                 }
                 
             }
@@ -386,12 +415,13 @@ namespace SmartSchool.Evaluation.Process.Wizards
             if (runningBackgroundWorker.IsBusy)
                 runningBackgroundWorker.CancelAsync();
             this._ErrorViewer.Clear();
+            this._WarnViewer.Clear(); //若按上一步，把之前的訊息刪掉。
             this._ErrorViewer.Hide();
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            this._ErrorViewer.Show();
+            this._ErrorViewer.ShowDialog();
         }
 
         private void CalcSemesterSubjectScoreWizard_FormClosing(object sender, FormClosingEventArgs e)
@@ -551,5 +581,16 @@ namespace SmartSchool.Evaluation.Process.Wizards
             #endregion
         }
         #endregion
+
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            //假若 _WarnViewer 警告視窗 經使用者確認過後資料後，
+            //將會啟動上傳 學期科目成績機制(若有錯誤資訊，使用者將無法點選上傳按鈕)
+            if (_WarnViewer.ShowDialog() == DialogResult.OK)
+            {
+                wizard1.SelectedPage = wizardPage4;
+                upLoad(resultList);
+            }
+        }
     }
 }

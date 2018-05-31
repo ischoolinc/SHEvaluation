@@ -177,6 +177,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AngelDemonComputer.cs" />
+    <Compile Include="CompleteForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CompleteForm.designer.cs">
+      <DependentUpon>CompleteForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Configuration\FrmGraduationPlanConfiguration.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -316,6 +322,7 @@
     <Compile Include="Content\SemesterScorePalmerworm.Designer.cs">
       <DependentUpon>SemesterScorePalmerworm.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataGridViewExport.cs" />
     <Compile Include="ExtandColumn\ClassGraduationPlan.cs" />
     <Compile Include="ExtandColumn\ClassScoreCalcRule.cs" />
     <Compile Include="ExtandColumn\StudentCalcRule.cs" />
@@ -370,6 +377,12 @@
     </Compile>
     <Compile Include="Process\CreateCourceForClass.Designer.cs">
       <DependentUpon>CreateCourceForClass.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Process\WarnViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Process\WarnViewer.Designer.cs">
+      <DependentUpon>WarnViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Process\ErrorViewer.cs">
       <SubType>Form</SubType>
@@ -771,6 +784,10 @@
     <None Include="Resources\隨堂重修清單.xls" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CompleteForm.resx">
+      <DependentUpon>CompleteForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Configuration\FrmGraduationPlanConfiguration.resx">
       <DependentUpon>FrmGraduationPlanConfiguration.cs</DependentUpon>
     </EmbeddedResource>
@@ -881,6 +898,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Process\CreateCourceForClass.resx">
       <DependentUpon>CreateCourceForClass.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Process\WarnViewer.resx">
+      <DependentUpon>WarnViewer.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Process\ErrorViewer.resx">

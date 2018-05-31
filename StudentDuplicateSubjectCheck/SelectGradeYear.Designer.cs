@@ -31,8 +31,9 @@
             this.buttonX1 = new DevComponents.DotNetBar.ButtonX();
             this.buttonX2 = new DevComponents.DotNetBar.ButtonX();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
-            this.comboBoxEx1 = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonX1
@@ -73,23 +74,11 @@
             // 
             this.labelX1.BackgroundStyle.Class = "";
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX1.Location = new System.Drawing.Point(33, 101);
+            this.labelX1.Location = new System.Drawing.Point(49, 99);
             this.labelX1.Name = "labelX1";
             this.labelX1.Size = new System.Drawing.Size(129, 23);
             this.labelX1.TabIndex = 2;
             this.labelX1.Text = "選擇欲設定檢查年級:";
-            // 
-            // comboBoxEx1
-            // 
-            this.comboBoxEx1.DisplayMember = "Text";
-            this.comboBoxEx1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.comboBoxEx1.FormattingEnabled = true;
-            this.comboBoxEx1.ItemHeight = 19;
-            this.comboBoxEx1.Location = new System.Drawing.Point(173, 101);
-            this.comboBoxEx1.Name = "comboBoxEx1";
-            this.comboBoxEx1.Size = new System.Drawing.Size(168, 25);
-            this.comboBoxEx1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.comboBoxEx1.TabIndex = 3;
             // 
             // labelX2
             // 
@@ -105,13 +94,35 @@
             this.labelX2.TabIndex = 4;
             this.labelX2.Text = "本功能將會對本學期學生的修課紀錄檢查，假若有與先前的學期成績資料有重覆的學期科目級別則會列出，由人工設定計算方式。";
             // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(184, 99);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            150,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(75, 25);
+            this.numericUpDown1.TabIndex = 9;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            96,
+            0,
+            0,
+            0});
+            // 
             // SelectGradeYear
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(346, 164);
+            this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.labelX2);
-            this.Controls.Add(this.comboBoxEx1);
             this.Controls.Add(this.labelX1);
             this.Controls.Add(this.buttonX2);
             this.Controls.Add(this.buttonX1);
@@ -120,6 +131,7 @@
             this.MinimumSize = new System.Drawing.Size(362, 203);
             this.Name = "SelectGradeYear";
             this.Text = "選擇年級";
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -129,7 +141,7 @@
         private DevComponents.DotNetBar.ButtonX buttonX1;
         private DevComponents.DotNetBar.ButtonX buttonX2;
         private DevComponents.DotNetBar.LabelX labelX1;
-        private DevComponents.DotNetBar.Controls.ComboBoxEx comboBoxEx1;
         private DevComponents.DotNetBar.LabelX labelX2;
+        protected System.Windows.Forms.NumericUpDown numericUpDown1;
     }
 }

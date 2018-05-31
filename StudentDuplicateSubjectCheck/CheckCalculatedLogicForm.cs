@@ -318,6 +318,20 @@ FROM
 
             MsgBox.Show("已於[學生待處理]加入" + StudentIDList.Count + "名學生");
         }
+
+        //匯出
+        private void buttonX4_Click(object sender, EventArgs e)
+        {
+            #region 匯出
+            if (saveFileDialog1.ShowDialog() != DialogResult.OK) return;
+
+            DataGridViewExport export = new DataGridViewExport(dataGridViewX1);
+            export.Save(saveFileDialog1.FileName);
+
+            if (new CompleteForm().ShowDialog() == DialogResult.Yes)
+                System.Diagnostics.Process.Start(saveFileDialog1.FileName);
+            #endregion
+        }
     }
 }
 

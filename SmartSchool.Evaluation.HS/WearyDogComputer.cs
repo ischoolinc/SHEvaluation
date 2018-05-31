@@ -86,6 +86,8 @@ namespace SmartSchool.Evaluation
             // 此字典可用於對照， 格式 <studentID_subject_level,重修(寫回原學期)||重讀(擇優採計成績)||視為一般修課>
             Dictionary<string, string> duplicateSubjectLevelMethodDict = new Dictionary<string, string>();
 
+            Dictionary<string, string> duplicateSubjectLevelMethodDict_Afterfilter = new Dictionary<string, string>(); // 真正過濾後，有重覆科目級別的項目
+
 
             // 整理所欲計算學期科目學生的ID
             List<string> sidList = new List<string>();
@@ -125,36 +127,36 @@ namespace SmartSchool.Evaluation
 
             QueryHelper qh1 = new QueryHelper();
 
-            //DataTable dt_SCAttend = qh1.Select(query2);
+            DataTable dt_SCAttend = qh1.Select(query2);
 
-            //// 將學生本學期的修課紀錄整理出來 (包含了重覆科目級別的計算處理方式會在extensions內)
-            //foreach (DataRow dr in dt_SCAttend.Rows)
-            //{
-            //    string key = "" + dr["refStudentID"] + "_" + dr["subjectName"] + "_" + dr["subjectLevel"];
+            // 將學生本學期的修課紀錄整理出來 (包含了重覆科目級別的計算處理方式會在extensions內)
+            foreach (DataRow dr in dt_SCAttend.Rows)
+            {
+                string key = "" + dr["refStudentID"] + "_" + dr["subjectName"] + "_" + dr["subjectLevel"];
 
-            //    string xmlStr = "<root>" + dr["extensions"] + "</root>";
-            //    string method = "";
+                string xmlStr = "<root>" + dr["extensions"] + "</root>";
+                string method = "";
 
-            //    XElement elmRoot = XElement.Parse(xmlStr);
+                XElement elmRoot = XElement.Parse(xmlStr);
 
-            //    if (elmRoot != null)
-            //    {
-            //        if (elmRoot.Element("Extensions") != null)
-            //        {
-            //            foreach (XElement ex in elmRoot.Element("Extensions").Elements("Extension"))
-            //            {
-            //                if (ex.Attribute("Name").Value == "DuplicatedLevelSubjectCalRule")
-            //                {
-            //                    method = ex.Element("Rule").Value;
-            //                }
-            //            }
-            //        }
-            //    }
-            //    if (!duplicateSubjectLevelMethodDict.ContainsKey(key))
-            //    {                   
-            //        duplicateSubjectLevelMethodDict.Add("" + dr["refStudentID"] + "_" + dr["subjectName"] + "_" + dr["subjectLevel"], method);
-            //    }
-            //}
+                if (elmRoot != null)
+                {
+                    if (elmRoot.Element("Extensions") != null)
+                    {
+                        foreach (XElement ex in elmRoot.Element("Extensions").Elements("Extension"))
+                        {
+                            if (ex.Attribute("Name").Value == "DuplicatedLevelSubjectCalRule")
+                            {
+                                method = ex.Element("Rule").Value;
+                            }
+                        }
+                    }
+                }
+                if (!duplicateSubjectLevelMethodDict.ContainsKey(key))
+                {
+                    duplicateSubjectLevelMethodDict.Add("" + dr["refStudentID"] + "_" + dr["subjectName"] + "_" + dr["subjectLevel"], method);
+                }
+            }
 
 
             foreach (StudentRecord var in students)
@@ -168,7 +170,7 @@ namespace SmartSchool.Evaluation
                 //使用擇優採計成績
                 bool choseBetter = true;
                 //重修登錄至原學期
-                bool writeToFirstSemester = false;
+                //bool writeToFirstSemester = false;
                 //及格標準<年及,及格標準>
                 Dictionary<int, decimal> applyLimit = new Dictionary<int, decimal>();
                 //applyLimit.Add(1, 60);
@@ -237,13 +239,13 @@ namespace SmartSchool.Evaluation
                             if (bool.TryParse(helper.GetText("各項成績計算位數/科目成績計算位數/@無條件進位"), out tryParsebool) && tryParsebool)
                                 mode = RoundMode.無條件進位;
                         }
-                        if (scoreCalcRule.SelectSingleNode("延修及重讀成績處理規則/重讀成績") != null)
-                        {
-                            if (bool.TryParse(helper.GetText("延修及重讀成績處理規則/重讀成績/@擇優採計成績"), out tryParsebool))
-                                choseBetter = tryParsebool;
-                        }
-                        if (bool.TryParse(helper.GetText("重修成績/@登錄至原學期"), out tryParsebool))
-                            writeToFirstSemester = tryParsebool;
+                        //if (scoreCalcRule.SelectSingleNode("延修及重讀成績處理規則/重讀成績") != null) 2018/5/29 穎驊註解 ，因應 [H成績][04] 計算學期科目成績調整 ，不再使用這個屬性 ，若有重讀，此屬性永遠是true，擇優
+                        //{
+                        //    if (bool.TryParse(helper.GetText("延修及重讀成績處理規則/重讀成績/@擇優採計成績"), out tryParsebool))
+                        //        choseBetter = tryParsebool;
+                        //}
+                        //if (bool.TryParse(helper.GetText("重修成績/@登錄至原學期"), out tryParsebool)) 2018/5/29 穎驊註解 ，因應 [H成績][04] 計算學期科目成績調整 ，不再使用這個屬性，若有重覆科目級別，請至教務作業 /成績作業 課程重讀重修設定
+                        //    writeToFirstSemester = tryParsebool;
                         foreach (XmlElement element in helper.GetElements("及格標準/學生類別"))
                         {
                             string cat = element.GetAttribute("類別");
@@ -326,6 +328,7 @@ namespace SmartSchool.Evaluation
                     foreach (SemesterSubjectScoreInfo scoreinfo in var.SemesterSubjectScoreList)
                     {
                         string key = scoreinfo.Subject.Trim() + "_" + scoreinfo.Level.Trim();
+
                         if (scoreinfo.SchoolYear == schoolyear)
                         {
                             if (scoreinfo.Semester == semester)
@@ -345,6 +348,12 @@ namespace SmartSchool.Evaluation
                             else
                                 restudySubjectScoreList.Add(scoreinfo, key);
                         }
+
+                        if (duplicateSubjectLevelMethodDict.ContainsKey(var.StudentID + "_" + key) && !duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(var.StudentID + "_" + key) && !currentSubjectScoreList.ContainsValue(key)) //假如有key 又非本學期的成績(可能本學期末已經先算過一次了) 則加入重覆計算的規則
+                        {
+                            duplicateSubjectLevelMethodDict_Afterfilter.Add(var.StudentID + "_" + key, duplicateSubjectLevelMethodDict[var.StudentID + "_" + key]);
+                        }
+
                         if (!semesterSubjectScoreList.ContainsKey(scoreinfo.SchoolYear))
                             semesterSubjectScoreList.Add(scoreinfo.SchoolYear, new Dictionary<int, Dictionary<string, SemesterSubjectScoreInfo>>());
                         if (!semesterSubjectScoreList[scoreinfo.SchoolYear].ContainsKey(scoreinfo.Semester))
@@ -370,13 +379,37 @@ namespace SmartSchool.Evaluation
                         {
                             if (!_ErrorList.ContainsKey(var))
                                 _ErrorList.Add(var, new List<string>());
-                            _ErrorList[var].Add("" + sacRecord.CourseName + "沒有修課總成績，無法計算。");
+                            _ErrorList[var].Add("" + sacRecord.CourseName + "沒有修課總成績，無法計算。"); 
                             continue;
                         }
                         string key = sacRecord.Subject.Trim() + "_" + sacRecord.SubjectLevel.Trim();
+
+                        if (duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(var.StudentID + "_" + key) ? duplicateSubjectLevelMethodDict_Afterfilter[var.StudentID + "_" + key] == "" : false) // 如果使用者 沒有設定，要擋下，逼他們設定完畢才可以計算完畢
+                        {
+                            int sy = 0, se = 0;
+                            #region 找到最近一次修課紀錄
+                            foreach (SemesterSubjectScoreInfo si in restudySubjectScoreList.Keys)
+                            {
+                                if (restudySubjectScoreList[si] == key)
+                                {
+                                    if (si.SchoolYear > sy || (si.SchoolYear == sy && si.Semester > se))
+                                    {
+                                        sy = si.SchoolYear;
+                                        se = si.Semester;                                        
+                                    }
+                                }
+                            }
+                            #endregion
+
+                            if (!_ErrorList.ContainsKey(var))
+                                _ErrorList.Add(var, new List<string>());
+                            _ErrorList[var].Add("課程名稱 :" + sacRecord.CourseName + "， 已於"+ sy +"學年度 第" +se +"學期修習過，請至 教務作業/成績作業 重覆修課採計方式 設定。");
+                            continue;
+                        }
+
                         //發現為重修科目
-                        if (writeToFirstSemester && restudySubjectScoreList.ContainsValue(key))
-                        //if (writeToFirstSemester && duplicateSubjectLevelMethodDict[var.StudentID +"_"+ sacRecord.Subject.Trim() + "_" + sacRecord.SubjectLevel.Trim()] == "重修(寫回原學期)")
+                        //if (writeToFirstSemester && restudySubjectScoreList.ContainsValue(key))
+                        if (duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(var.StudentID + "_" + key)?duplicateSubjectLevelMethodDict_Afterfilter[var.StudentID + "_" + key] == "重修(寫回原學期)" : false)// 因應[H成績][04] 計算學期科目成績調整
                         {
                             #region 寫入重修成績回原學期
                             int sy = 0, se = 0;
@@ -491,7 +524,7 @@ namespace SmartSchool.Evaluation
                                     }
                                     #endregion
                                     //如果有擇優採計成績且重讀學期有修過課
-                                    if (choseBetter && repeatSubjectScoreList.ContainsValue(key))
+                                    if (duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(var.StudentID + "_" + key) ? duplicateSubjectLevelMethodDict_Afterfilter[var.StudentID + "_" + key] == "重讀(擇優採計成績)":false)
                                     {
                                         #region 填入擇優採計成績
                                         foreach (SemesterSubjectScoreInfo s in repeatSubjectScoreList.Keys)
@@ -576,7 +609,7 @@ namespace SmartSchool.Evaluation
                                     #endregion
 
                                     //如果有擇優採計成績且重讀學期有修過課
-                                    if (choseBetter && repeatSubjectScoreList.ContainsValue(key))
+                                    if (duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(var.StudentID + "_" + key) ? duplicateSubjectLevelMethodDict_Afterfilter[var.StudentID + "_" + key] == "重讀(擇優採計成績)" : false)
                                     {
                                         #region 填入擇優採計成績
                                         foreach (SemesterSubjectScoreInfo s in repeatSubjectScoreList.Keys)

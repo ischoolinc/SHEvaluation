@@ -38,6 +38,7 @@
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
             this.wizardPage2 = new DevComponents.DotNetBar.WizardPage();
+            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.progressBarX1 = new DevComponents.DotNetBar.Controls.ProgressBarX();
             this.labelX4 = new DevComponents.DotNetBar.LabelX();
@@ -102,7 +103,7 @@
             this.wizard1.Name = "wizard1";
             this.wizard1.NextButtonText = "下一步 >";
             this.wizard1.NextButtonWidth = 65;
-            this.wizard1.Size = new System.Drawing.Size(261, 150);
+            this.wizard1.Size = new System.Drawing.Size(261, 169);
             this.wizard1.TabIndex = 0;
             this.wizard1.WizardPages.AddRange(new DevComponents.DotNetBar.WizardPage[] {
             this.wizardPage1,
@@ -130,7 +131,7 @@
             this.wizardPage1.Name = "wizardPage1";
             this.wizardPage1.PageDescription = "< Wizard step description >";
             this.wizardPage1.PageTitle = "選擇學年度學期";
-            this.wizardPage1.Size = new System.Drawing.Size(247, 71);
+            this.wizardPage1.Size = new System.Drawing.Size(247, 90);
             // 
             // 
             // 
@@ -257,6 +258,7 @@
             this.wizardPage2.BackButtonVisible = DevComponents.DotNetBar.eWizardButtonState.True;
             this.wizardPage2.BackColor = System.Drawing.Color.Transparent;
             this.wizardPage2.CancelButtonVisible = DevComponents.DotNetBar.eWizardButtonState.True;
+            this.wizardPage2.Controls.Add(this.linkLabel2);
             this.wizardPage2.Controls.Add(this.linkLabel1);
             this.wizardPage2.Controls.Add(this.progressBarX1);
             this.wizardPage2.Controls.Add(this.labelX4);
@@ -265,7 +267,7 @@
             this.wizardPage2.NextButtonVisible = DevComponents.DotNetBar.eWizardButtonState.False;
             this.wizardPage2.PageDescription = "< Wizard step description >";
             this.wizardPage2.PageTitle = "計算學期科目成績";
-            this.wizardPage2.Size = new System.Drawing.Size(247, 71);
+            this.wizardPage2.Size = new System.Drawing.Size(247, 90);
             // 
             // 
             // 
@@ -285,11 +287,23 @@
             this.wizardPage2.AfterPageDisplayed += new DevComponents.DotNetBar.WizardPageChangeEventHandler(this.wizardPage2_AfterPageDisplayed);
             this.wizardPage2.BackButtonClick += new System.ComponentModel.CancelEventHandler(this.wizardPage2_BackButtonClick);
             // 
+            // linkLabel2
+            // 
+            this.linkLabel2.AutoSize = true;
+            this.linkLabel2.BackColor = System.Drawing.Color.Transparent;
+            this.linkLabel2.Location = new System.Drawing.Point(64, 73);
+            this.linkLabel2.Name = "linkLabel2";
+            this.linkLabel2.Size = new System.Drawing.Size(86, 17);
+            this.linkLabel2.TabIndex = 3;
+            this.linkLabel2.TabStop = true;
+            this.linkLabel2.Text = "檢視警告訊息";
+            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.BackColor = System.Drawing.Color.Transparent;
-            this.linkLabel1.Location = new System.Drawing.Point(154, 52);
+            this.linkLabel1.Location = new System.Drawing.Point(156, 73);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(86, 17);
             this.linkLabel1.TabIndex = 2;
@@ -341,7 +355,7 @@
             this.wizardPage4.NextButtonVisible = DevComponents.DotNetBar.eWizardButtonState.False;
             this.wizardPage4.PageDescription = "< Wizard step description >";
             this.wizardPage4.PageTitle = "上傳學期科目成績";
-            this.wizardPage4.Size = new System.Drawing.Size(247, 71);
+            this.wizardPage4.Size = new System.Drawing.Size(247, 90);
             // 
             // 
             // 
@@ -390,7 +404,7 @@
             // CalcSemesterSubjectScoreWizard
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(261, 150);
+            this.ClientSize = new System.Drawing.Size(261, 169);
             this.ControlBox = false;
             this.Controls.Add(this.wizard1);
             this.DoubleBuffered = true;
@@ -430,5 +444,6 @@
         private DevComponents.DotNetBar.Controls.ProgressBarX progressBarX2;
         private DevComponents.DotNetBar.LabelX labelX5;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.LinkLabel linkLabel2;
     }
 }

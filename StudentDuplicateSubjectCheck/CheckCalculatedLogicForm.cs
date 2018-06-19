@@ -80,9 +80,9 @@ namespace StudentDuplicateSubjectCheck
                 row.Cells[0].Value = record.CourseName;
                 row.Cells[1].Value = record.SubjectName;
                 row.Cells[2].Value = record.SubjectLevel;
-                row.Cells[3].Value = record.StudentNumber;
-                row.Cells[4].Value = record.GradeYear;
-                row.Cells[5].Value = record.ClassName;
+                row.Cells[3].Value = record.GradeYear;  
+                row.Cells[4].Value = record.ClassName;
+                row.Cells[5].Value = record.StudentNumber;
                 row.Cells[6].Value = record.SeatNo;
                 row.Cells[7].Value = record.Name;
                 

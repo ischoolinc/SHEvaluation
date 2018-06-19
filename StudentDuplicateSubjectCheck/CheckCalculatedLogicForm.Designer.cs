@@ -121,16 +121,19 @@
             this.Column9.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Column9.HeaderText = "課程";
             this.Column9.Name = "Column9";
+            this.Column9.ReadOnly = true;
             // 
             // Column6
             // 
             this.Column6.HeaderText = "科目";
             this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
             // 
             // Column7
             // 
             this.Column7.HeaderText = "級別";
             this.Column7.Name = "Column7";
+            this.Column7.ReadOnly = true;
             this.Column7.Width = 90;
             // 
             // Column1
@@ -144,6 +147,7 @@
             this.Column1.IntegralHeight = false;
             this.Column1.ItemHeight = 17;
             this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
             this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Column1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Column1.Width = 60;
@@ -152,22 +156,26 @@
             // 
             this.Column2.HeaderText = "班級";
             this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
             // 
             // Column3
             // 
             this.Column3.HeaderText = "學號";
             this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
             // 
             // Column4
             // 
             this.Column4.HeaderText = "座號";
             this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
             this.Column4.Width = 60;
             // 
             // Column5
             // 
             this.Column5.HeaderText = "姓名";
             this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
             // 
             // Column8
             // 
@@ -196,7 +204,7 @@
             this.labelX1.Name = "labelX1";
             this.labelX1.Size = new System.Drawing.Size(918, 23);
             this.labelX1.TabIndex = 3;
-            this.labelX1.Text = "說明:  下列資料為本學期檢查學生修課紀錄其科目、級別與舊成績重覆，需要由使用者設定計算判斷方式，才能進行學期科目成績計算，否則一律不採計。";
+            this.labelX1.Text = "說明:  以下為檢查學生修課紀錄科目、級別與舊成績重覆，需要設定計算判斷方式，才可以計算學期科目成績，否則一律不採計。";
             // 
             // comboBoxEx1
             // 
@@ -268,7 +276,7 @@
             this.labelX4.Name = "labelX4";
             this.labelX4.Size = new System.Drawing.Size(542, 23);
             this.labelX4.TabIndex = 8;
-            this.labelX4.Text = "重修(寫回原學期): 把本學期成績，寫回之前重覆科目級別學期成績的重修成績欄位。";
+            this.labelX4.Text = "重修(寫回原學期): 把本學期成績，寫回舊學期成績的重修成績欄位。";
             // 
             // labelX5
             // 
@@ -282,7 +290,7 @@
             this.labelX5.Name = "labelX5";
             this.labelX5.Size = new System.Drawing.Size(556, 23);
             this.labelX5.TabIndex = 9;
-            this.labelX5.Text = "重讀(擇優採計成績):  本學期成績與之前重覆科目級別的學期成績，擇優採計紀錄至本學期。";
+            this.labelX5.Text = "重讀(擇優採計成績):  本學期成績舊學期成績，擇優採計紀錄至本學期。";
             // 
             // labelX6
             // 
@@ -353,6 +361,12 @@
         private DevComponents.DotNetBar.Controls.ComboBoxEx comboBoxEx1;
         private DevComponents.DotNetBar.LabelX labelX2;
         private DevComponents.DotNetBar.LabelX labelX3;
+        private DevComponents.DotNetBar.ButtonX buttonX3;
+        private DevComponents.DotNetBar.LabelX labelX4;
+        private DevComponents.DotNetBar.LabelX labelX5;
+        private DevComponents.DotNetBar.LabelX labelX6;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private DevComponents.DotNetBar.ButtonX buttonX4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
@@ -362,11 +376,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn Column8;
-        private DevComponents.DotNetBar.ButtonX buttonX3;
-        private DevComponents.DotNetBar.LabelX labelX4;
-        private DevComponents.DotNetBar.LabelX labelX5;
-        private DevComponents.DotNetBar.LabelX labelX6;
-        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private DevComponents.DotNetBar.ButtonX buttonX4;
     }
 }

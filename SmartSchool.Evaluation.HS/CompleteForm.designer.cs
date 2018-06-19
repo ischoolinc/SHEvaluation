@@ -83,6 +83,9 @@
             this.Controls.Add(this.btnYes);
             this.Controls.Add(this.btnNo);
             this.Controls.Add(this.lblMessage);
+            this.DoubleBuffered = true;
+            this.MaximumSize = new System.Drawing.Size(218, 115);
+            this.MinimumSize = new System.Drawing.Size(218, 115);
             this.Name = "CompleteForm";
             this.Text = "";
             this.ResumeLayout(false);

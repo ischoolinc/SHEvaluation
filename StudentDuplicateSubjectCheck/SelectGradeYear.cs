@@ -103,6 +103,11 @@ namespace StudentDuplicateSubjectCheck
 
             foreach (SHSemesterScoreRecord data in ssList)
             {
+                // 2018/6/12 穎驊筆記，佳樺測出 會抓到同學期的成績比對，在此濾掉， 同學期的重覆不算，因為學校可能會先算過本學期的 成績， 那本學期成績 與本學期修課重覆 是很正常的事
+                if ("" + data.SchoolYear == schoolYear && "" + data.Semester == semester)
+                {
+                    continue;
+                }
                 // 以前學期，學期科目成績紀錄(題外話 如果未來覺得 scaList 使用ischool API的抓法太沒效率，可以考慮直接寫一串SQL)
                 if (!dataCompareDict.ContainsKey(data.RefStudentID))
                 {

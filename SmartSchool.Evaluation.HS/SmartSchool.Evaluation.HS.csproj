@@ -71,6 +71,10 @@
       <HintPath>Library\FISCA.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="FISCA.DSAClient">
+      <HintPath>Library\FISCA.DSAClient.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="FISCA.DSAUtil, Version=3.9.0.10, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\FISCA.DSAUtil.dll</HintPath>
@@ -365,6 +369,7 @@
     <Compile Include="ImportExport\ExportSchoolYearSubjectScore.cs" />
     <Compile Include="ImportExport\ImportSchoolYearEntryScore.cs" />
     <Compile Include="ImportExport\ImportSchoolYearSubjectScore.cs" />
+    <Compile Include="ImportExport\ImportSemesterEntryScoreRank.cs" />
     <Compile Include="Process\AssignClass.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -683,7 +688,11 @@
     <Compile Include="ScoreCalcRule\ScoreCalcRuleInfoCollection.cs" />
     <Compile Include="EventHub.cs" />
     <Compile Include="SecureButtonAdapter.cs" />
+    <Compile Include="StudSemsEntryRating.cs" />
+    <Compile Include="StudSemsSubjRating.cs" />
     <Compile Include="SubjectTable.cs" />
+    <Compile Include="UpdateHelper.cs" />
+    <Compile Include="Utility.cs" />
     <Compile Include="WearyDogComputer.cs" />
     <Compile Include="WearyDogComputerHelper\GraduateEvaluator.cs" />
     <Compile Include="WearyDogComputerHelper\GraduateRule.cs" />

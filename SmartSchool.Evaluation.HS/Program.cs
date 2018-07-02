@@ -183,7 +183,8 @@ namespace SmartSchool.Evaluation
             rbItemImport["成績相關匯入"]["匯入學期分項成績"].Enable = CurrentUser.Acl["Button0230"].Executable;
             rbItemImport["成績相關匯入"]["匯入學期分項成績"].Click += delegate
             {
-                new ImportStudent(new ImportSemesterEntryScore()).ShowDialog();
+                //new ImportStudent(new ImportSemesterEntryScore()).ShowDialog();
+                new ImportStudent(new ImportSemesterEntryScoreRank()).ShowDialog();
             };
 
             rbItemImport["成績相關匯入"]["匯入學年科目成績"].Enable = CurrentUser.Acl["Button0240"].Executable;

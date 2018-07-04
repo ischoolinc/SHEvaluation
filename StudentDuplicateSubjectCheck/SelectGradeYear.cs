@@ -99,7 +99,9 @@ namespace StudentDuplicateSubjectCheck
 
             _backgroundWorker.ReportProgress(30);
 
-            List<SHSchool.Data.SHSemesterScoreRecord> ssList = SHSchool.Data.SHSemesterScore.SelectByStudentIDs(sidList);
+            // 2018/7/4 穎驊協助 嘉詮處理客服 https://ischool.zendesk.com/agent/tickets/6133 ，發現 ischool API  SHSemesterScore.SelectByStudentID 
+            // 預設會將 學期歷程重覆的 重讀學期資料濾掉， 需要設定為 false，才會有。
+            List<SHSchool.Data.SHSemesterScoreRecord> ssList = SHSchool.Data.SHSemesterScore.SelectByStudentIDs(sidList,false);
 
             foreach (SHSemesterScoreRecord data in ssList)
             {

@@ -65,17 +65,17 @@ namespace SmartSchool.Evaluation
         // 2018/7/2 穎驊，檢驗成績系統，支援匯入匯出，在此新增類2邏輯
 
         /// <summary>
-        /// 類1名稱
+        /// 類2名稱
         /// </summary>
         public string Group2 { get; set; }
 
         /// <summary>
-        /// 類1成績人數
+        /// 類2成績人數
         /// </summary>
         public int? Group2Count { get; set; }
 
         /// <summary>
-        /// 類1排名
+        /// 類2排名
         /// </summary>
         public int? Group2Rank { get; set; }
 

@@ -401,6 +401,7 @@ namespace SmartSchool.Evaluation
                     {
                         XElement elmC = XElement.Parse(g1Str);
                         foreach (XElement elmR in elmC.Elements("Rating"))
+                        {
                             foreach (XElement elm in elmR.Elements("Item"))
                             {
                                 if (elm.Attribute("科目") != null)
@@ -410,9 +411,12 @@ namespace SmartSchool.Evaluation
 
                                     if (elm.Attribute("排名") != null)
                                         sser.AddGroup1Rank(elm.Attribute("科目").Value, int.Parse(elm.Attribute("排名").Value));
-                                    break;
+
                                 }
                             }
+                            break;
+                        }
+                            
                     }
                 }
                 catch (Exception ex) { }

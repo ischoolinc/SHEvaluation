@@ -14,6 +14,8 @@ namespace SmartSchool.Evaluation.ImportExport
     [FeatureCode("Button0140")]
     class ExportSemesterSubjectScore : SmartSchool.API.PlugIn.Export.Exporter//ExportProcess
     {
+        // 記錄學生學期科目排名Dict
+        Dictionary<string, List<StudSemsSubjRating>> StudSemsSubjRatingDict = new Dictionary<string, List<StudSemsSubjRating>>();
 
         public ExportSemesterSubjectScore()
         {
@@ -58,6 +60,14 @@ namespace SmartSchool.Evaluation.ImportExport
                 , "是否補修成績"
                 , "重修學年度"
                 , "重修學期"
+                , "班排名"
+                , "班排名母數"
+                , "科排名"
+                , "科排名母數"
+                , "校排名"
+                , "校排名母數"
+                , "類排名"
+                , "類排名母數"
                 );
             filterRepeat.CheckedChanged += delegate
             {
@@ -95,9 +105,14 @@ namespace SmartSchool.Evaluation.ImportExport
                 }
             };
             AccessHelper _AccessHelper = new AccessHelper();
-            wizard.ExportPackage += delegate(object sender, SmartSchool.API.PlugIn.Export.ExportPackageEventArgs e)
+            wizard.ExportPackage += delegate (object sender, SmartSchool.API.PlugIn.Export.ExportPackageEventArgs e)
             {
                 List<StudentRecord> students = _AccessHelper.StudentHelper.GetStudents(e.List);
+
+
+                // 2018/7/30 穎驊新增，取得學生 學期科目成績 固定排名
+                StudSemsSubjRatingDict = Utility.GetStudSemsSubjRatingByStudentID(e.List);
+
                 if (filterRepeat.Checked)
                 {
                     var gCheck = false;
@@ -217,7 +232,20 @@ namespace SmartSchool.Evaluation.ImportExport
                                     case "是否補修成績": row.Add(field, var.Detail.GetAttribute("是否補修成績") == "是" ? "是" : ""); break;
                                     case "重修學年度": row.Add(field, var.Detail.GetAttribute("重修學年度")); break;
                                     case "重修學期": row.Add(field, var.Detail.GetAttribute("重修學期")); break;
+                                    case "班排名": row.Add(field, GetRank(stu.StudentID, ""+var.SchoolYear, ""+var.Semester, var.Subject,field)); break;
+                                    case "班排名母數": row.Add(field, GetRank(stu.StudentID, "" + var.SchoolYear, "" + var.Semester, var.Subject, field)); break;
+                                    case "科排名": row.Add(field, GetRank(stu.StudentID, "" + var.SchoolYear, "" + var.Semester, var.Subject, field)); break;
+                                    case "科排名母數": row.Add(field, GetRank(stu.StudentID, "" + var.SchoolYear, "" + var.Semester, var.Subject, field)); break;
+                                    case "校排名": row.Add(field, GetRank(stu.StudentID, "" + var.SchoolYear, "" + var.Semester, var.Subject, field)); break;
+                                    case "校排名母數": row.Add(field, GetRank(stu.StudentID, "" + var.SchoolYear, "" + var.Semester, var.Subject, field)); break;
+                                    case "類排名": row.Add(field, GetRank(stu.StudentID, "" + var.SchoolYear, "" + var.Semester, var.Subject, field)); break;
+                                    case "類排名母數": row.Add(field, GetRank(stu.StudentID, "" + var.SchoolYear, "" + var.Semester, var.Subject, field)); break;
+
                                 }
+
+
+
+
                             }
                         }
                         e.Items.Add(row);
@@ -282,5 +310,39 @@ namespace SmartSchool.Evaluation.ImportExport
         //        }
         //    }
         //}
+
+        private string GetRank(string studentID,string schoolyear,string semester ,string subject,string rankType)
+        {
+            string rank = "";
+
+
+            //處理學期科目成績排名資料
+            if (StudSemsSubjRatingDict.ContainsKey(studentID))
+            {
+                foreach (var record in StudSemsSubjRatingDict[studentID])
+                {
+                    if (record.SchoolYear == schoolyear && record.Semester ==  semester)
+                    {
+                        switch (rankType)
+                        {
+                            case "班排名": rank = record.GetClassRank(subject); break;
+                            case "班排名母數": rank = record.GetClassCount(subject); break;
+                            case "科排名": rank = record.GetDeptRank(subject); break;
+                            case "科排名母數": rank = record.GetDeptCount(subject); break;
+                            case "校排名": rank = record.GetYearRank(subject); break;
+                            case "校排名母數": rank = record.GetYearCount(subject); break;
+                            case "類排名": rank = record.GetGroup1Rank(subject); break;
+                            case "類排名母數": rank = record.GetGroup1Count(subject); break;
+
+                        }                                               
+                    }
+                }
+            }
+
+            return rank;
+        }
+
+
     }
 }
+

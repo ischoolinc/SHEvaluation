@@ -11,6 +11,7 @@ using FISCA.Presentation.Controls;
 using K12.Data;
 using FISCA.Data;
 using SHSchool.Data;
+using SmartSchool.Customization.Data;
 
 namespace StudentDuplicateSubjectCheck
 {
@@ -99,41 +100,95 @@ namespace StudentDuplicateSubjectCheck
 
             _backgroundWorker.ReportProgress(30);
 
+            #region 舊的抓取成績方式 (有問題!)
             // 2018/7/4 穎驊協助 嘉詮處理客服 https://ischool.zendesk.com/agent/tickets/6133 ，發現 ischool API  SHSemesterScore.SelectByStudentID 
             // 預設會將 學期歷程重覆的 重讀學期資料濾掉， 需要設定為 false，才會有。
-            List<SHSchool.Data.SHSemesterScoreRecord> ssList = SHSchool.Data.SHSemesterScore.SelectByStudentIDs(sidList,false);
+            //List<SHSchool.Data.SHSemesterScoreRecord> ssList = SHSchool.Data.SHSemesterScore.SelectByStudentIDs(sidList, false);
 
-            foreach (SHSemesterScoreRecord data in ssList)
+            //foreach (SHSemesterScoreRecord data in ssList)
+            //{
+            //    // 2018/6/12 穎驊筆記，佳樺測出 會抓到同學期的成績比對，在此濾掉， 同學期的重覆不算，因為學校可能會先算過本學期的 成績， 那本學期成績 與本學期修課重覆 是很正常的事
+            //    if ("" + data.SchoolYear == schoolYear && "" + data.Semester == semester)
+            //    {
+            //        continue;
+            //    }
+            //    // 以前學期，學期科目成績紀錄(題外話 如果未來覺得 scaList 使用ischool API的抓法太沒效率，可以考慮直接寫一串SQL)
+            //    if (!dataCompareDict.ContainsKey(data.RefStudentID))
+            //    {
+            //        dataCompareDict.Add(data.RefStudentID, new List<string>());
+
+            //        foreach (var subjectData in data.Subjects.Values)
+            //        {
+            //            if (!dataCompareDict[data.RefStudentID].Contains(subjectData.Subject + "_" + subjectData.Level))
+            //            {
+            //                dataCompareDict[data.RefStudentID].Add(subjectData.Subject + "_" + subjectData.Level);
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        foreach (var subjectData in data.Subjects.Values)
+            //        {
+            //            if (!dataCompareDict[data.RefStudentID].Contains(subjectData.Subject + "_" + subjectData.Level))
+            //            {
+            //                dataCompareDict[data.RefStudentID].Add(subjectData.Subject + "_" + subjectData.Level);
+            //            }
+            //        }
+            //    }
+            //} 
+            #endregion
+
+            // 2018/9/12 穎驊註解， 因應康橋結業計算詢問的問題:"有學生有重覆科目級別，卻在本功能無法列出"，
+            // 檢查後發現 使用 ischool API List<SHSchool.Data.SHSemesterScoreRecord> ssList = SHSchool.Data.SHSemesterScore.SelectByStudentIDs(sidList, false);
+            // 抓取的學期科目成績， 若同一學期 有重覆的兩個科目， 此API 回傳的只會有第一筆，因此會造成部分學生的重覆修課檢查無法在本功能被列出
+            // 跟恩正討論後，建議與成績計算邏輯 WearyDogComputer 抓取學生學期科目成績使用方法一致，因此做了下列改寫
+
+            #region 新寫法
+            AccessHelper accesshelper = new AccessHelper();
+
+            List<SmartSchool.Customization.Data.StudentRecord> students = new List<SmartSchool.Customization.Data.StudentRecord>();
+
+            students = new List<SmartSchool.Customization.Data.StudentRecord>();
+            foreach (SmartSchool.Customization.Data.ClassRecord classrecord in accesshelper.ClassHelper.GetAllClass())
             {
-                // 2018/6/12 穎驊筆記，佳樺測出 會抓到同學期的成績比對，在此濾掉， 同學期的重覆不算，因為學校可能會先算過本學期的 成績， 那本學期成績 與本學期修課重覆 是很正常的事
-                if ("" + data.SchoolYear == schoolYear && "" + data.Semester == semester)
-                {
-                    continue;
-                }
-                // 以前學期，學期科目成績紀錄(題外話 如果未來覺得 scaList 使用ischool API的抓法太沒效率，可以考慮直接寫一串SQL)
-                if (!dataCompareDict.ContainsKey(data.RefStudentID))
-                {
-                    dataCompareDict.Add(data.RefStudentID, new List<string>());
-
-                    foreach (var subjectData in data.Subjects.Values)
-                    {
-                        if (!dataCompareDict[data.RefStudentID].Contains(subjectData.Subject + "_" + subjectData.Level))
-                        {
-                            dataCompareDict[data.RefStudentID].Add(subjectData.Subject + "_" + subjectData.Level);
-                        }
-                    }
-                }
-                else
-                {
-                    foreach (var subjectData in data.Subjects.Values)
-                    {
-                        if (!dataCompareDict[data.RefStudentID].Contains(subjectData.Subject + "_" + subjectData.Level))
-                        {
-                            dataCompareDict[data.RefStudentID].Add(subjectData.Subject + "_" + subjectData.Level);
-                        }
-                    }
-                }
+                int tryParseGradeYear;
+                if (int.TryParse(classrecord.GradeYear, out tryParseGradeYear) && tryParseGradeYear == (int)numericUpDown1.Value)
+                    students.AddRange(classrecord.Students);
             }
+
+            // 預設會將 學期歷程重覆的 重讀學期資料濾掉， 需要設定為 false，才會有。
+            accesshelper.StudentHelper.FillSemesterSubjectScore(false, students);
+
+            foreach (SmartSchool.Customization.Data.StudentRecord student in students)
+            {
+                foreach (SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo subjectScore in student.SemesterSubjectScoreList)
+                {
+
+                    // 2018/6/12 穎驊筆記，佳樺測出 會抓到同學期的成績比對，在此濾掉， 同學期的重覆不算，因為學校可能會先算過本學期的 成績， 那本學期成績 與本學期修課重覆 是很正常的事
+                    if ("" + subjectScore.SchoolYear == schoolYear && "" + subjectScore.Semester == semester)
+                    {
+                        continue;
+                    }
+                    // 以前學期，學期科目成績紀錄(題外話 如果未來覺得 scaList 使用ischool API的抓法太沒效率，可以考慮直接寫一串SQL)
+                    if (!dataCompareDict.ContainsKey(student.StudentID))
+                    {
+                        dataCompareDict.Add(student.StudentID, new List<string>());
+
+                        if (!dataCompareDict[student.StudentID].Contains(subjectScore.Subject + "_" + subjectScore.Level))
+                        {
+                            dataCompareDict[student.StudentID].Add(subjectScore.Subject + "_" + subjectScore.Level);
+                        }
+                    }
+                    else
+                    {
+                        if (!dataCompareDict[student.StudentID].Contains(subjectScore.Subject + "_" + subjectScore.Level))
+                        {
+                            dataCompareDict[student.StudentID].Add(subjectScore.Subject + "_" + subjectScore.Level);
+                        }
+                    }
+                }
+            } 
+            #endregion
 
             _backgroundWorker.ReportProgress(60);
 

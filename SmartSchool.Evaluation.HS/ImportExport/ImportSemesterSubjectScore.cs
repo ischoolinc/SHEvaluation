@@ -928,10 +928,23 @@ namespace SmartSchool.Evaluation.ImportExport
 
         private void updateSemesterSubjectScore(object item)
         {
+            UpdateHelper updatehelper = new UpdateHelper();
+
             List<List<SmartSchool.Feature.Score.EditScore.UpdateInfo>> updatePackages = (List<List<SmartSchool.Feature.Score.EditScore.UpdateInfo>>)item;
             foreach (List<SmartSchool.Feature.Score.EditScore.UpdateInfo> package in updatePackages)
             {
                 SmartSchool.Feature.Score.EditScore.UpdateSemesterSubjectScore(package.ToArray());
+
+//                foreach (var rankpage in package)
+//                {
+//                    string sql = @"UPDATE sems_subj_score
+//SET   class_rating
+// = ''
+//WHERE id = " + rankpage.ID;
+
+//                    updatehelper.Execute(sql);
+
+//                }                    
             }
         }
 

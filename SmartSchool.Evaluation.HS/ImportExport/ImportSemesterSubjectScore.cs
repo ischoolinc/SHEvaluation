@@ -28,6 +28,7 @@ namespace SmartSchool.Evaluation.ImportExport
             Dictionary<string, List<StudSemsSubjRatingXML>> StudSemsSubjRankDict = new Dictionary<string, List<StudSemsSubjRatingXML>>();
             Dictionary<string, int> _ID_SchoolYear_Semester_GradeYear = new Dictionary<string, int>();
             Dictionary<string, List<string>> _ID_SchoolYear_Semester_Subject = new Dictionary<string, List<string>>();
+            Dictionary<string, List<string>> _ID_SchoolYear_Semester_Rating_Group = new Dictionary<string, List<string>>();
             Dictionary<string, StudentRecord> _StudentCollection = new Dictionary<string, StudentRecord>();
             Dictionary<StudentRecord, Dictionary<int, decimal>> _StudentPassScore = new Dictionary<StudentRecord, Dictionary<int, decimal>>();
             AccessHelper _AccessHelper;
@@ -220,6 +221,7 @@ namespace SmartSchool.Evaluation.ImportExport
                     string level = e.Data["科目級別"];
                     string schoolYear = e.Data["學年度"];
                     string semester = e.Data["學期"];
+                    string group = e.Data["類別"];
                     int? sy = null;
                     int? se = null;
                     int? le = null;
@@ -266,6 +268,25 @@ namespace SmartSchool.Evaluation.ImportExport
                         }
                         else
                             _ID_SchoolYear_Semester_Subject[key].Add(skey);
+                        #endregion
+                        #region 驗證多於一種排名 類別
+                        string groupRatingKey = group;
+                        if (!_ID_SchoolYear_Semester_Rating_Group.ContainsKey(key))
+                            _ID_SchoolYear_Semester_Rating_Group.Add(key, new List<string>());
+                        if (_ID_SchoolYear_Semester_Rating_Group[key].Contains(groupRatingKey))
+                        {
+                        
+                        }
+                        else if (!_ID_SchoolYear_Semester_Rating_Group[key].Contains(groupRatingKey) && _ID_SchoolYear_Semester_Rating_Group[key].Count>0 && groupRatingKey!="")
+                        {
+                            // 同一學生 同一學期 的全部科目只能有一種 類別
+                            errorMessage += (errorMessage == "" ? "" : "\n") + "同一學期不允許多筆 '類別'資料";                            
+                        }
+                        else
+                        {
+                            _ID_SchoolYear_Semester_Rating_Group[key].Add(groupRatingKey);
+                        }
+                        
                         #endregion
                         if (e.SelectFields.Contains("成績年級"))
                         {
@@ -997,25 +1018,37 @@ namespace SmartSchool.Evaluation.ImportExport
                                     {
                                         XElement elmC = semesterScoreRankDictionary[sy][se]["class_rating"];
 
-                                        elmC.Elements("Item").Where(el => el.Attribute("科目").Value == "" + row["科目"] && el.Attribute("科目級別").Value == "" + row["科目級別"]).Remove();
+                                        if (elmC != null)
+                                        {
+                                            elmC.Elements("Item").Where(el => el.Attribute("科目").Value == "" + row["科目"] && el.Attribute("科目級別").Value == "" + row["科目級別"]).Remove();
+                                        }
                                     }
                                     if (clearDeptRating)
                                     {
                                         XElement elmD = semesterScoreRankDictionary[sy][se]["dept_rating"];
 
-                                        elmD.Elements("Item").Where(el => el.Attribute("科目").Value == "" + row["科目"] && el.Attribute("科目級別").Value == "" + row["科目級別"]).Remove();
+                                        if (elmD != null)
+                                        {
+                                            elmD.Elements("Item").Where(el => el.Attribute("科目").Value == "" + row["科目"] && el.Attribute("科目級別").Value == "" + row["科目級別"]).Remove();
+                                        }                                        
                                     }
                                     if (clearSchoolRating)
                                     {
                                         XElement elmY = semesterScoreRankDictionary[sy][se]["year_rating"];
 
-                                        elmY.Elements("Item").Where(el => el.Attribute("科目").Value == "" + row["科目"] && el.Attribute("科目級別").Value == "" + row["科目級別"]).Remove();
+                                        if (elmY != null)
+                                        {
+                                            elmY.Elements("Item").Where(el => el.Attribute("科目").Value == "" + row["科目"] && el.Attribute("科目級別").Value == "" + row["科目級別"]).Remove();
+                                        }
                                     }
                                     if (clearTag1Raging)
                                     {
                                         XElement elmG = semesterScoreRankDictionary[sy][se]["group_rating"];
 
-                                        elmG.Element("Rating").Elements("Item").Where(el => el.Attribute("科目").Value == "" + row["科目"] && el.Attribute("科目級別").Value == "" + row["科目級別"]).Remove();
+                                        if (elmG != null)
+                                        {
+                                            elmG.Element("Rating").Elements("Item").Where(el => el.Attribute("科目").Value == "" + row["科目"] && el.Attribute("科目級別").Value == "" + row["科目級別"]).Remove();
+                                        }                                        
                                     } 
                                     #endregion
 

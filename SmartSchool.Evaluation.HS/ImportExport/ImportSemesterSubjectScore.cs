@@ -1297,7 +1297,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                         using (XmlReader xmlReader = oldClassRank.CreateReader())
                                         {
                                             doc.Load(xmlReader);
-                                            classRating.AppendChild(doc.FirstChild);
+                                            deptRating.AppendChild(doc.FirstChild);
                                         }
                                     }
 
@@ -1309,7 +1309,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                         using (XmlReader xmlReader = oldClassRank.CreateReader())
                                         {
                                             doc.Load(xmlReader);
-                                            classRating.AppendChild(doc.FirstChild);
+                                            schoolRating.AppendChild(doc.FirstChild);
                                         }
                                     }
 
@@ -1321,7 +1321,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                         using (XmlReader xmlReader = oldClassRank.CreateReader())
                                         {
                                             doc.Load(xmlReader);
-                                            classRating.AppendChild(doc.FirstChild);
+                                            tag1Rating.AppendChild(doc.FirstChild);
                                         }
                                     }
 

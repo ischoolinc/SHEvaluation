@@ -19,7 +19,7 @@ namespace SH_SemesterScoreReport
         [FISCA.MainMethod]
         public static void Main()
         {
-            var btn = K12.Presentation.NLDPanels.Student.RibbonBarItems["資料統計"]["報表"]["成績相關報表"]["期末成績通知單(測試版)"];
+            var btn = K12.Presentation.NLDPanels.Student.RibbonBarItems["資料統計"]["報表"]["成績相關報表"]["期末成績通知單"];
             btn.Enable = false;
             K12.Presentation.NLDPanels.Student.SelectedSourceChanged += delegate 
             {
@@ -29,7 +29,7 @@ namespace SH_SemesterScoreReport
 
             //權限設定
             Catalog permission = RoleAclSource.Instance["學生"]["功能按鈕"];
-            permission.Add(new RibbonFeature(Permissions.期末成績通知單, "期末成績通知單(測試版)"));
+            permission.Add(new RibbonFeature(Permissions.期末成績通知單, "期末成績通知單"));
         }
 
         private static string GetNumber(decimal? p)
@@ -138,6 +138,7 @@ namespace SH_SemesterScoreReport
                 table.Columns.Add("座號");
                 table.Columns.Add("學號");
                 table.Columns.Add("姓名");
+                table.Columns.Add("英文姓名");
                 table.Columns.Add("定期評量");
                 table.Columns.Add("本學期取得學分數");
                 table.Columns.Add("累計取得學分數");
@@ -507,7 +508,26 @@ namespace SH_SemesterScoreReport
                 };
                 bkw.DoWork += delegate(object sender, System.ComponentModel.DoWorkEventArgs e)
                 {
+                    FISCA.Data.QueryHelper qh = new FISCA.Data.QueryHelper();
+
                     var studentRecords = accessHelper.StudentHelper.GetStudents(selectedStudents);
+
+                    // 2019/01/30 穎驊新增學生英文姓名欄位
+                    string strStudentEnglishNameSQL = "select id,english_name from student";
+                    System.Data.DataTable StudentEnglishName_dt = qh.Select(strStudentEnglishNameSQL);
+                    foreach (System.Data.DataRow dr in StudentEnglishName_dt.Rows)
+                    {
+                        var studentRecord = studentRecords.Find(s => s.StudentID == "" + dr["id"]);
+
+                        if (studentRecord != null)
+                        {
+                            if (studentRecord.StudentID == "" + dr["id"])
+                            {
+                                studentRecord.Fields.Add("英文姓名", "" + dr["english_name"]);
+                            }
+                        }                        
+                    }
+
                     Dictionary<string, Dictionary<string, Dictionary<string, ExamScoreInfo>>> studentExamSores = new Dictionary<string, Dictionary<string, Dictionary<string, ExamScoreInfo>>>();
                     Dictionary<string, Dictionary<string, ExamScoreInfo>> studentRefExamSores = new Dictionary<string, Dictionary<string, ExamScoreInfo>>();
                     ManualResetEvent scoreReady = new ManualResetEvent(false);
@@ -630,7 +650,7 @@ namespace SH_SemesterScoreReport
                                 sidList += (sidList == "" ? "" : ",") + stuRec.StudentID;
                                 stuDictionary.Add(stuRec.StudentID, stuRec);
                             }
-                            FISCA.Data.QueryHelper qh = new FISCA.Data.QueryHelper();
+                            
                             #region 學期學業成績排名
                             string strSQL = "select * from sems_entry_score where ref_student_id in (" + sidList + ") and school_year=" + sSchoolYear + " and semester=" + sSemester + "";
                             System.Data.DataTable dt = qh.Select(strSQL);
@@ -1598,6 +1618,7 @@ namespace SH_SemesterScoreReport
                             row["座號"] = stuRec.SeatNo;
                             row["學號"] = stuRec.StudentNumber;
                             row["姓名"] = stuRec.StudentName;
+                            row["英文姓名"] = stuRec.Fields.ContainsKey("英文姓名") ? stuRec.Fields["英文姓名"] : "";
                             row["定期評量"] = conf.ExamRecord.Name;
                             #endregion
                             #region 成績資料

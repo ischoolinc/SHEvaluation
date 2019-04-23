@@ -469,21 +469,21 @@ namespace 定期評量成績單
                     #region 偷跑取得考試成績
                     new Thread(new ThreadStart(delegate
                     {
-                            // 取得學生學期科目成績
-                            int sSchoolYear, sSemester;
+                        // 取得學生學期科目成績
+                        int sSchoolYear, sSemester;
                         int.TryParse(conf.SchoolYear, out sSchoolYear);
                         int.TryParse(conf.Semester, out sSemester);
-                            #region 整理學生定期評量成績
-                            #region 篩選課程學年度、學期、科目取得有可能有需要的資料
-                            List<CourseRecord> targetCourseList = new List<CourseRecord>();
+                        #region 整理學生定期評量成績
+                        #region 篩選課程學年度、學期、科目取得有可能有需要的資料
+                        List<CourseRecord> targetCourseList = new List<CourseRecord>();
                         try
                         {
                             foreach (var courseRecord in accessHelper.CourseHelper.GetAllCourse(sSchoolYear, sSemester))
                             {
-                                    //用科目濾出可能有用到的課程
-                                    if (conf.PrintSubjectList.Contains(courseRecord.Subject)
-                                        || conf.TagRank1SubjectList.Contains(courseRecord.Subject)
-                                        || conf.TagRank2SubjectList.Contains(courseRecord.Subject))
+                                //用科目濾出可能有用到的課程
+                                if (conf.PrintSubjectList.Contains(courseRecord.Subject)
+                                    || conf.TagRank1SubjectList.Contains(courseRecord.Subject)
+                                    || conf.TagRank2SubjectList.Contains(courseRecord.Subject))
                                     targetCourseList.Add(courseRecord);
                             }
                         }
@@ -491,8 +491,8 @@ namespace 定期評量成績單
                         {
                             exc = exception;
                         }
-                            #endregion
-                            try
+                        #endregion
+                        try
                         {
                             if (conf.ExamRecord != null || conf.RefenceExamRecord != null)
                             {
@@ -517,8 +517,8 @@ namespace 定期評量成績單
                                 accessHelper.CourseHelper.FillExamScore(tcList);
                                 foreach (var courseRecord in totalList)
                                 {
-                                        #region 整理本次定期評量成績
-                                        if (conf.ExamRecord != null && courseRecord.ExamList.Contains(conf.ExamRecord.Name))
+                                    #region 整理本次定期評量成績
+                                    if (conf.ExamRecord != null && courseRecord.ExamList.Contains(conf.ExamRecord.Name))
                                     {
                                         foreach (var attendStudent in courseRecord.StudentAttendList)
                                         {
@@ -534,9 +534,9 @@ namespace 定期評量成績單
                                             }
                                         }
                                     }
-                                        #endregion
-                                        #region 整理前次定期評量成績
-                                        if (conf.RefenceExamRecord != null && courseRecord.ExamList.Contains(conf.RefenceExamRecord.Name))
+                                    #endregion
+                                    #region 整理前次定期評量成績
+                                    if (conf.RefenceExamRecord != null && courseRecord.ExamList.Contains(conf.RefenceExamRecord.Name))
                                     {
                                         foreach (var examScoreRec in courseRecord.ExamScoreList)
                                         {
@@ -548,8 +548,8 @@ namespace 定期評量成績單
                                             }
                                         }
                                     }
-                                        #endregion
-                                    }
+                                    #endregion
+                                }
                             }
                         }
                         catch (Exception exception)
@@ -560,9 +560,9 @@ namespace 定期評量成績單
                         {
                             scoreReady.Set();
                         }
-                            #endregion
-                            #region 整理學生學期、學年成績
-                            try
+                        #endregion
+                        #region 整理學生學期、學年成績
+                        try
                         {
                             accessHelper.StudentHelper.FillAttendance(studentRecords);
                             accessHelper.StudentHelper.FillReward(studentRecords);
@@ -575,8 +575,8 @@ namespace 定期評量成績單
                         {
                             elseReady.Set();
                         }
-                            #endregion
-                        })).Start();
+                        #endregion
+                    })).Start();
                     #endregion
                     try
                     {
@@ -1404,7 +1404,7 @@ namespace 定期評量成績單
                             row["座號"] = stuRec.SeatNo;
                             row["學號"] = stuRec.StudentNumber;
                             row["姓名"] = stuRec.StudentName;
-                            row["系統編號"] = stuRec.StudentID;
+                            row["系統編號"] = "系統編號{" + stuRec.StudentID + "}";
                             row["定期評量"] = conf.ExamRecord.Name;
 
                             if (conf.ScoreCurDate != null)

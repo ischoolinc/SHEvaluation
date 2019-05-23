@@ -11,6 +11,7 @@ using System.Threading;
 using SmartSchool.Customization.Data.StudentExtension;
 using FISCA.Permission;
 using SmartSchool;
+using Campus.ePaperCloud;
 
 namespace SH_SemesterScoreReport
 {
@@ -21,7 +22,7 @@ namespace SH_SemesterScoreReport
         {
             var btn = K12.Presentation.NLDPanels.Student.RibbonBarItems["資料統計"]["報表"]["成績相關報表"]["期末成績通知單"];
             btn.Enable = false;
-            K12.Presentation.NLDPanels.Student.SelectedSourceChanged += delegate 
+            K12.Presentation.NLDPanels.Student.SelectedSourceChanged += delegate
             {
                 btn.Enable = Permissions.期末成績通知單權限 && (K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0);
             };
@@ -75,7 +76,7 @@ namespace SH_SemesterScoreReport
                 default:
                     levelNumber = "" + (p);
                     break;
-                #endregion
+                    #endregion
             }
             return levelNumber;
         }
@@ -97,9 +98,9 @@ namespace SH_SemesterScoreReport
             Dictionary<string, Dictionary<string, decimal>> StudentApplyLimitDict = Utility.GetStudentApplyLimitDict(lista);
 
 
-            ConfigForm form = new ConfigForm();            
+            ConfigForm form = new ConfigForm();
             if (form.ShowDialog() == DialogResult.OK)
-            {             
+            {
                 AccessHelper accessHelper = new AccessHelper();
                 //return;
                 List<StudentRecord> overflowRecords = new List<StudentRecord>();
@@ -129,6 +130,7 @@ namespace SH_SemesterScoreReport
                 table.Columns.Add("科別名稱");
                 table.Columns.Add("試別");
 
+                table.Columns.Add("系統編號");
                 table.Columns.Add("收件人");
                 table.Columns.Add("學年度");
                 table.Columns.Add("學期");
@@ -330,13 +332,13 @@ namespace SH_SemesterScoreReport
                 table.Columns.Add("本學期服務學習時數");
                 table.Columns.Add("學年服務學習時數");
 
-               // 缺曠統計
+                // 缺曠統計
                 // 動態新增缺曠統計，使用模式一般_曠課、一般_事假..
                 foreach (string name in Utility.GetATMappingKey())
                 {
-                    table.Columns.Add("前學期"+name);
-                    table.Columns.Add("本學期"+name);
-                    table.Columns.Add("學年"+name);
+                    table.Columns.Add("前學期" + name);
+                    table.Columns.Add("本學期" + name);
+                    table.Columns.Add("學年" + name);
                 }
                 // --
                 table.Columns.Add("加權總分");
@@ -423,7 +425,7 @@ namespace SH_SemesterScoreReport
                 System.ComponentModel.BackgroundWorker bkw = new System.ComponentModel.BackgroundWorker();
                 bkw.WorkerReportsProgress = true;
                 System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 期末成績單產生 S");
-                bkw.ProgressChanged += delegate(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+                bkw.ProgressChanged += delegate (object sender, System.ComponentModel.ProgressChangedEventArgs e)
                 {
                     FISCA.Presentation.MotherForm.SetStatusBarMessage("期末成績單產生中", e.ProgressPercentage);
                     System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 期末成績單產生 " + e.ProgressPercentage);
@@ -438,7 +440,7 @@ namespace SH_SemesterScoreReport
 
                     //sw.Close();
                     //#endregion
-   
+
 
                     System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 期末成績單產生 E");
                     string err = "下列學生因成績項目超過樣板支援上限，\n超出部分科目成績無法印出，建議調整樣板內容。";
@@ -450,7 +452,7 @@ namespace SH_SemesterScoreReport
                         }
                     }
                     #region 儲存檔案
-                    string inputReportName = "個人學期成績單";
+                    string inputReportName = conf.SchoolYear + "學年度第" + conf.Semester + "學期" + conf.ExamRecord.Name + "個人學期成績單";
                     string reportName = inputReportName;
 
                     string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");
@@ -472,31 +474,14 @@ namespace SH_SemesterScoreReport
                         }
                     }
 
-                    try
-                    {
-                        document.Save(path, Aspose.Words.SaveFormat.Doc);
-                        System.Diagnostics.Process.Start(path);
-                    }
-                    catch
-                    {
-                        System.Windows.Forms.SaveFileDialog sd = new System.Windows.Forms.SaveFileDialog();
-                        sd.Title = "另存新檔";
-                        sd.FileName = reportName + ".doc";
-                        sd.Filter = "Excel檔案 (*.doc)|*.doc|所有檔案 (*.*)|*.*";
-                        if (sd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                        {
-                            try
-                            {
-                                document.Save(sd.FileName, Aspose.Words.SaveFormat.Doc);
+                    MemoryStream memoryStream = new MemoryStream();
+                    document.Save(memoryStream, Aspose.Words.SaveFormat.Docx);
+                    ePaperCloud ePaperCloud = new ePaperCloud();
+                    int schoolYear, semester;
+                    schoolYear = Convert.ToInt32(conf.SchoolYear);
+                    semester = Convert.ToInt32(conf.Semester);
+                    ePaperCloud.upload_ePaper(schoolYear, semester, reportName, "", memoryStream, ePaperCloud.ViewerType.Student, ePaperCloud.FormatType.Docx);
 
-                            }
-                            catch
-                            {
-                                FISCA.Presentation.Controls.MsgBox.Show("指定路徑無法存取。", "建立檔案失敗", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                                return;
-                            }
-                        }
-                    }
                     #endregion
                     FISCA.Presentation.MotherForm.SetStatusBarMessage("期末成績單產生完成。", 100);
                     if (overflowRecords.Count > 0)
@@ -506,7 +491,7 @@ namespace SH_SemesterScoreReport
                         //throw new Exception("產生期末成績單發生錯誤", exc);
                     }
                 };
-                bkw.DoWork += delegate(object sender, System.ComponentModel.DoWorkEventArgs e)
+                bkw.DoWork += delegate (object sender, System.ComponentModel.DoWorkEventArgs e)
                 {
                     FISCA.Data.QueryHelper qh = new FISCA.Data.QueryHelper();
 
@@ -525,7 +510,7 @@ namespace SH_SemesterScoreReport
                             {
                                 studentRecord.Fields.Add("英文姓名", "" + dr["english_name"]);
                             }
-                        }                        
+                        }
                     }
 
                     Dictionary<string, Dictionary<string, Dictionary<string, ExamScoreInfo>>> studentExamSores = new Dictionary<string, Dictionary<string, Dictionary<string, ExamScoreInfo>>>();
@@ -650,7 +635,7 @@ namespace SH_SemesterScoreReport
                                 sidList += (sidList == "" ? "" : ",") + stuRec.StudentID;
                                 stuDictionary.Add(stuRec.StudentID, stuRec);
                             }
-                            
+
                             #region 學期學業成績排名
                             string strSQL = "select * from sems_entry_score where ref_student_id in (" + sidList + ") and school_year=" + sSchoolYear + " and semester=" + sSemester + "";
                             System.Data.DataTable dt = qh.Select(strSQL);
@@ -1474,7 +1459,7 @@ namespace SH_SemesterScoreReport
 
                         // 取得缺曠本學期
                         AttendanceCountDict2 = Utility.GetAttendanceCountBySchoolYearSemester(StudRecList, SchoolYear, Semester);
-                                                
+
                         if (Semester == 2)
                         {
                             // 前學期
@@ -1608,6 +1593,7 @@ namespace SH_SemesterScoreReport
                             row["科別名稱"] = stuRec.Department;
                             row["試別"] = conf.ExamRecord.Name;
 
+                            row["系統編號"] = "系統編號{" + stuRec.StudentID + "}";
                             row["學年度"] = conf.SchoolYear;
                             row["學期"] = conf.Semester;
                             row["系統學年度"] = K12.Data.School.DefaultSchoolYear;
@@ -1830,20 +1816,20 @@ namespace SH_SemesterScoreReport
                                 {
 
                                     // 本學期取得
-                                    if (semesterSubjectScore.SchoolYear.ToString()==conf.SchoolYear && semesterSubjectScore.Semester.ToString()==conf.Semester && semesterSubjectScore.Pass)
+                                    if (semesterSubjectScore.SchoolYear.ToString() == conf.SchoolYear && semesterSubjectScore.Semester.ToString() == conf.Semester && semesterSubjectScore.Pass)
                                         _studPassSumCreditDict1[stuRec.StudentID] += semesterSubjectScore.CreditDec();
 
                                     // 累計取得
                                     if (semesterSubjectScore.Pass)
                                     {
-                                         _studPassSumCreditDictAll[stuRec.StudentID] += semesterSubjectScore.CreditDec();
+                                        _studPassSumCreditDictAll[stuRec.StudentID] += semesterSubjectScore.CreditDec();
 
-                                        if(semesterSubjectScore.Require)
-                                             _studPassSumCreditDictC1[stuRec.StudentID] += semesterSubjectScore.CreditDec();
+                                        if (semesterSubjectScore.Require)
+                                            _studPassSumCreditDictC1[stuRec.StudentID] += semesterSubjectScore.CreditDec();
                                         else
                                             _studPassSumCreditDictC2[stuRec.StudentID] += semesterSubjectScore.CreditDec();
                                     }
-                                }                            
+                                }
                             }
 
                             row["本學期取得學分數"] = _studPassSumCreditDict1[stuRec.StudentID];
@@ -1880,14 +1866,14 @@ namespace SH_SemesterScoreReport
                                     bool findInExamScores = false;
                                     #region 本學期學期成績
                                     foreach (var semesterSubjectScore in stuRec.SemesterSubjectScoreList)
-                                    {                                        
+                                    {
                                         if (semesterSubjectScore.Detail.GetAttribute("不計學分") != "是"
                                             && semesterSubjectScore.Subject == subjectName
                                             && ("" + semesterSubjectScore.SchoolYear) == conf.SchoolYear
                                             && ("" + semesterSubjectScore.Semester) == conf.Semester)
                                         {
                                             findInSemesterSubjectScore = true;
-                                                                                    
+
 
                                             decimal level;
                                             subjectNumber = decimal.TryParse(semesterSubjectScore.Level, out level) ? (decimal?)level : null;

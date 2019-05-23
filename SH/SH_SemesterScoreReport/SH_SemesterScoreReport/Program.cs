@@ -452,7 +452,7 @@ namespace SH_SemesterScoreReport
                         }
                     }
                     #region 儲存檔案
-                    string inputReportName = conf.SchoolYear + "學年度第" + conf.Semester + "學期" + conf.ExamRecord.Name + "個人學期成績單";
+                    string inputReportName = conf.SchoolYear + "學年度第" + conf.Semester + "學期學期成績單";
                     string reportName = inputReportName;
 
                     string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");

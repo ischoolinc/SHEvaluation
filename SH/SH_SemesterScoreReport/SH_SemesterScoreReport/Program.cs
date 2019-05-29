@@ -475,7 +475,7 @@ namespace SH_SemesterScoreReport
                     }
 
                     MemoryStream memoryStream = new MemoryStream();
-                    document.Save(memoryStream, Aspose.Words.SaveFormat.Docx);
+                    document.Save(memoryStream, Aspose.Words.SaveFormat.Doc);
                     ePaperCloud ePaperCloud = new ePaperCloud();
                     int schoolYear, semester;
                     schoolYear = Convert.ToInt32(conf.SchoolYear);

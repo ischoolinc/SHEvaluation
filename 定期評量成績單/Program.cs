@@ -375,7 +375,7 @@ namespace 定期評量成績單
                         K12.Data.ExamRecord examRecord = conf.ExamRecord;
                         string newReportName = conf.SchoolYear + "學年度第" + conf.Semester + "學期" + examRecord.Name + "" + reportName;
                         MemoryStream memoryStream = new MemoryStream();
-                        document.Save(memoryStream, Aspose.Words.SaveFormat.Docx);
+                        document.Save(memoryStream, Aspose.Words.SaveFormat.Doc);
                         ePaperCloud ePaperCloud = new ePaperCloud();
                         ePaperCloud.upload_ePaper(Convert.ToInt32(conf.SchoolYear), Convert.ToInt32(conf.Semester), newReportName, "", memoryStream, ePaperCloud.ViewerType.Student, ePaperCloud.FormatType.Docx);
                     }

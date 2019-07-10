@@ -42,7 +42,9 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             afterXml.AddElement("SubjectCollection");
             afterXml.AddElement("EntryCollection");
             comboBoxEx3.Items.AddRange(new object[] { "1", "2", "3", "4" });
-            labelX10.Text = Student.Instance.Items[_StudentID].IDNumber + "  " + Student.Instance.Items[_StudentID].Name;
+
+            //2019/7/10 - 原本顯示身分證號,但是因該顯示學號 by俊威,佳樺
+            labelX10.Text = Student.Instance.Items[_StudentID].StudentNumber + "  " + Student.Instance.Items[_StudentID].Name;
             for (int s = 3; s > 0; s--)
             {
                 comboBoxEx1.Items.Add(CurrentUser.Instance.SchoolYear - s);
@@ -62,7 +64,10 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             afterXml.AddElement("EntryCollection");
             entityAction = EntityAction.Update;
             comboBoxEx3.Items.AddRange(new object[] { "1", "2", "3", "4" });
-            labelX10.Text = Student.Instance.Items[_StudentID].IDNumber + "  " + Student.Instance.Items[_StudentID].Name;
+
+            //2019/7/10 - 原本顯示身分證號,但是因該顯示學號 by俊威,佳樺
+            labelX10.Text = Student.Instance.Items[_StudentID].StudentNumber + "  " + Student.Instance.Items[_StudentID].Name;
+
             this.comboBoxEx1.Text = schoolYear;
             this.comboBoxEx3.Text = gradeyear;
             comboBoxEx1.Enabled = false;

@@ -37,6 +37,7 @@
             this.btnOK = new DevComponents.DotNetBar.ButtonX();
             this.btnCancel = new DevComponents.DotNetBar.ButtonX();
             this.errorProvider1 = new SmartSchool.Common.EnhancedErrorProvider();
+            this.chkCreateAll = new DevComponents.DotNetBar.Controls.CheckBoxX();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -44,9 +45,14 @@
             // 
             this.labelX1.AutoSize = true;
             this.labelX1.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX1.BackgroundStyle.Class = "";
+            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX1.Location = new System.Drawing.Point(9, 12);
             this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(60, 19);
+            this.labelX1.Size = new System.Drawing.Size(60, 21);
             this.labelX1.TabIndex = 0;
             this.labelX1.Text = "學年度：";
             // 
@@ -65,9 +71,14 @@
             // 
             this.labelX2.AutoSize = true;
             this.labelX2.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX2.BackgroundStyle.Class = "";
+            this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX2.Location = new System.Drawing.Point(156, 12);
             this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(47, 19);
+            this.labelX2.Size = new System.Drawing.Size(47, 21);
             this.labelX2.TabIndex = 0;
             this.labelX2.Text = "學期：";
             // 
@@ -123,16 +134,35 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
+            // chkCreateAll
+            // 
+            this.chkCreateAll.AutoSize = true;
+            this.chkCreateAll.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.chkCreateAll.BackgroundStyle.Class = "";
+            this.chkCreateAll.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.chkCreateAll.Location = new System.Drawing.Point(9, 49);
+            this.chkCreateAll.Name = "chkCreateAll";
+            this.chkCreateAll.Size = new System.Drawing.Size(80, 21);
+            this.chkCreateAll.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.chkCreateAll.TabIndex = 4;
+            this.chkCreateAll.Text = "含選修課";
+            this.chkCreateAll.CheckedChanged += new System.EventHandler(this.chkCreateAll_CheckedChanged);
+            // 
             // SelectSemesterForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(271, 77);
+            this.Controls.Add(this.chkCreateAll);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.cboSemester);
             this.Controls.Add(this.cboSchoolYear);
             this.Controls.Add(this.labelX2);
             this.Controls.Add(this.labelX1);
+            this.DoubleBuffered = true;
             this.Name = "SelectSemesterForm";
             this.Text = "SelectSemesterForm";
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
@@ -152,5 +182,6 @@
         private DevComponents.Editors.ComboItem comboItem1;
         private DevComponents.Editors.ComboItem comboItem2;
         private SmartSchool.Common.EnhancedErrorProvider errorProvider1;
+        private DevComponents.DotNetBar.Controls.CheckBoxX chkCreateAll;
     }
 }

@@ -60,7 +60,7 @@ namespace SmartSchool.Evaluation.Process
         {
             BackgroundWorker bkw = (BackgroundWorker)sender;
             SelectSemesterForm form = e.Argument as SelectSemesterForm;
-
+            
             AccessHelper accessHelper = new AccessHelper();
             bkw.ReportProgress(1);
             double totleClass = accessHelper.ClassHelper.GetSelectedClass().Count;
@@ -101,6 +101,13 @@ namespace SmartSchool.Evaluation.Process
                 {
                     foreach (GraduationPlanSubject gplanSubject in gplan.SemesterSubjects(gradeYear, form.Semester))
                     {
+                        // 如果開選課程沒有勾起，只開必修課程。
+                        if(!form.isCreateAll)
+                        {
+                            if (gplanSubject.Required == "選修")
+                                continue;
+                        }
+
                         string key = gplanSubject.SubjectName.Trim() + "^_^" + gplanSubject.Level;
                         if (!courseList.ContainsKey(key))
                         {
@@ -176,19 +183,24 @@ namespace SmartSchool.Evaluation.Process
                         {
                             string key = subject.SubjectName.Trim() + "^_^" + subject.Level;
                             bool found = false;
-                            foreach (StudentAttendCourseRecord attend in existSubject[key].StudentAttendList)
+                            if (existSubject.ContainsKey(key))
                             {
-                                if (attend.StudentID == studentRec.StudentID)
-                                    found = true;
-                            }
-                            if (!found)
-                            {
-                                XmlElement attend = insertSCAttendHelper.AddElement("Attend");
-                                DSXmlHelper.AppendChild(attend, "<RefStudentID>" + studentRec.StudentID + "</RefStudentID>");
-                                DSXmlHelper.AppendChild(attend, "<RefCourseID>" + existSubject[key].CourseID + "</RefCourseID>");
+                                foreach (StudentAttendCourseRecord attend in existSubject[key].StudentAttendList)
+                                {
+                                    if (attend.StudentID == studentRec.StudentID)
+                                        found = true;
+                                }
 
-                                //insertSCAttendHelper.AddElement(".", attend);
-                                addAttend = true;
+
+                                if (!found)
+                                {
+                                    XmlElement attend = insertSCAttendHelper.AddElement("Attend");
+                                    DSXmlHelper.AppendChild(attend, "<RefStudentID>" + studentRec.StudentID + "</RefStudentID>");
+                                    DSXmlHelper.AppendChild(attend, "<RefCourseID>" + existSubject[key].CourseID + "</RefCourseID>");
+
+                                    //insertSCAttendHelper.AddElement(".", attend);
+                                    addAttend = true;
+                                }
                             }
                         }
                     }

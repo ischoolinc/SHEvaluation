@@ -12,6 +12,10 @@ using K12.Data;
 using FISCA.Data;
 using SHSchool.Data;
 using SmartSchool.Customization.Data;
+using System.Xml.Linq;
+using System.Xml;
+using FISCA.DSAUtil;
+using SmartSchool.Evaluation.WearyDogComputerHelper;
 
 namespace StudentDuplicateSubjectCheck
 {
@@ -31,12 +35,12 @@ namespace StudentDuplicateSubjectCheck
         {
             InitializeComponent();
 
-            
+
             this.numericUpDown1.Minimum = 1;
             this.numericUpDown1.Maximum = 5;
             this.numericUpDown1.Value = 1;
 
-            labelX2.Text = "本功能將會對本學期學生的修課紀錄檢查，" + Environment.NewLine + "假若與先前的學期成績有重覆的科目級別則會列出，" + Environment.NewLine + "由人工設定計算方式。";
+            labelX2.Text = "本功能將會對本學期學生的修課紀錄有3項檢查：\n" + "1.檢查成績計算規則，並將及格標準、補考標準、學生身分寫入修課紀錄。\n2.檢查課程規劃，並將課程代碼寫入修課紀錄。" + Environment.NewLine + "3.假若與先前的學期成績有重覆的科目級別則會列出，由人工設定計算方式。";
 
             _backgroundWorker = new BackgroundWorker();
             _backgroundWorker.DoWork += new DoWorkEventHandler(_backgroundWorker_DoWork);
@@ -48,8 +52,8 @@ namespace StudentDuplicateSubjectCheck
 
         private void buttonX1_Click(object sender, EventArgs e)
         {
-            
-            targetGradeYear = ""+this.numericUpDown1.Value;
+
+            targetGradeYear = "" + this.numericUpDown1.Value;
             FreezeUI();
             _backgroundWorker.RunWorkerAsync();
         }
@@ -59,6 +63,11 @@ namespace StudentDuplicateSubjectCheck
             ActivateUI();
 
             FISCA.Presentation.MotherForm.SetStatusBarMessage("檢查本學期重覆修課完畢。");
+
+            //if (e.Cancelled)
+            //{
+            //    Console.WriteLine(e.Result);
+            //}
 
             // 有資料才show
             if (scaDuplicateList.Count != 0)
@@ -70,12 +79,38 @@ namespace StudentDuplicateSubjectCheck
             {
                 MsgBox.Show("本年級本學期並無重覆修課的紀錄。");
             }
-            
+
         }
 
         private void _backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            FISCA.Presentation.MotherForm.SetStatusBarMessage("取得重覆級別科目中...", e.ProgressPercentage);
+            if (e.ProgressPercentage == 10)
+            {
+                FISCA.Presentation.MotherForm.SetStatusBarMessage("取得基本資料中...", e.ProgressPercentage);
+            }
+            else if (e.ProgressPercentage == 20)
+            {
+                FISCA.Presentation.MotherForm.SetStatusBarMessage("取得修課資料中...", e.ProgressPercentage);
+            }
+            else if (e.ProgressPercentage == 40)
+            {
+                FISCA.Presentation.MotherForm.SetStatusBarMessage("取得成績計算規則資料中...", e.ProgressPercentage);
+            }
+            else if (e.ProgressPercentage == 50)
+            {
+                FISCA.Presentation.MotherForm.SetStatusBarMessage("寫入及格標準、補考標準、學生身分中...", e.ProgressPercentage);
+            }
+            else if (e.ProgressPercentage == 60)
+            {
+                FISCA.Presentation.MotherForm.SetStatusBarMessage("取得課程規劃資料中...", e.ProgressPercentage);
+            }
+            else if (e.ProgressPercentage == 70)
+            {
+                FISCA.Presentation.MotherForm.SetStatusBarMessage("寫入課程代碼中...", e.ProgressPercentage);
+            }
+
+            else
+            { FISCA.Presentation.MotherForm.SetStatusBarMessage("取得重覆級別科目中...", e.ProgressPercentage); }
         }
 
         private void _backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -98,7 +133,7 @@ namespace StudentDuplicateSubjectCheck
                 sidList.Add("" + dr["id"]);
             }
 
-            _backgroundWorker.ReportProgress(30);
+            _backgroundWorker.ReportProgress(20);
 
             #region 舊的抓取成績方式 (有問題!)
             // 2018/7/4 穎驊協助 嘉詮處理客服 https://ischool.zendesk.com/agent/tickets/6133 ，發現 ischool API  SHSemesterScore.SelectByStudentID 
@@ -159,8 +194,108 @@ namespace StudentDuplicateSubjectCheck
             // 預設會將 學期歷程重覆的 重讀學期資料濾掉， 需要設定為 false，才會有。
             accesshelper.StudentHelper.FillSemesterSubjectScore(false, students);
 
+
+
+            _backgroundWorker.ReportProgress(40);
+
+            Dictionary<string, decimal> passingStandardDict = new Dictionary<string, decimal>();
+            Dictionary<string, decimal> makeupStandardDict = new Dictionary<string, decimal>();
+            Dictionary<string, string> remarkDict = new Dictionary<string, string>();
+            Dictionary<string, string> studentGraduationPlanDict = new Dictionary<string, string>();
+            List<string> studentIDList = new List<string>();
+            bool chkCalcHasError = false;
             foreach (SmartSchool.Customization.Data.StudentRecord student in students)
             {
+                studentIDList.Add(student.StudentID);
+                XmlElement scoreCalcRule = SmartSchool.Evaluation.ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(student.StudentID) == null ? null : SmartSchool.Evaluation.ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(student.StudentID).ScoreCalcRuleElement;
+                if (scoreCalcRule == null)
+                {
+                    chkCalcHasError = true;
+                    // 沒有設定成績計算規則
+                    if (!remarkDict.ContainsKey(student.StudentID))
+                        remarkDict.Add(student.StudentID, "沒有設定成績計算規則");
+                }
+                else
+                {
+
+                    DSXmlHelper helper = new DSXmlHelper(scoreCalcRule);
+                    decimal passingStandard = -1;
+                    decimal makeupStandard = -1;
+
+                    foreach (XmlElement element in helper.GetElements("及格標準/學生類別"))
+                    {
+                        string cat = element.GetAttribute("類別");
+                        bool useful = false;
+                        //掃描學生的類別作比對
+                        foreach (CategoryInfo catinfo in student.StudentCategorys)
+                        {
+                            if (catinfo.Name == cat || catinfo.FullName == cat)
+                                useful = true;
+                        }
+
+                        if (useful)
+                        {
+                            if (!remarkDict.ContainsKey(student.StudentID))
+                            {
+                                remarkDict.Add(student.StudentID, "" + cat);
+                            }
+                            else
+                            {
+                                remarkDict[student.StudentID] += "," + cat;
+                            }
+                        }
+
+                        //學生是指定的類別或類別為"預設"
+                        if (cat == "預設" || useful)
+                        {
+                            switch (targetGradeYear)
+                            {
+                                case "1":
+                                    decimal.TryParse(element.GetAttribute("一年級及格標準"), out passingStandard);
+                                    decimal.TryParse(element.GetAttribute("一年級補考標準"), out makeupStandard);
+                                    break;
+                                case "2":
+                                    decimal.TryParse(element.GetAttribute("二年級及格標準"), out passingStandard);
+                                    decimal.TryParse(element.GetAttribute("二年級補考標準"), out makeupStandard);
+                                    break;
+                                case "3":
+                                    decimal.TryParse(element.GetAttribute("三年級及格標準"), out passingStandard);
+                                    decimal.TryParse(element.GetAttribute("三年級補考標準"), out makeupStandard);
+                                    break;
+                                case "4":
+                                    decimal.TryParse(element.GetAttribute("四年級及格標準"), out passingStandard);
+                                    decimal.TryParse(element.GetAttribute("四年級補考標準"), out makeupStandard);
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            if (passingStandardDict.ContainsKey(student.StudentID))
+                            {
+                                if (passingStandardDict[student.StudentID] > passingStandard)
+                                    passingStandardDict[student.StudentID] = passingStandard;
+                            }
+                            else
+                            {
+                                passingStandardDict.Add(student.StudentID, passingStandard);
+                            }
+
+                            if (makeupStandardDict.ContainsKey(student.StudentID))
+                            {
+                                if (makeupStandardDict[student.StudentID] > makeupStandard)
+                                {
+                                    makeupStandardDict[student.StudentID] = makeupStandard;
+                                }
+                            }
+                            else
+                            {
+                                makeupStandardDict.Add(student.StudentID, makeupStandard);
+                            }
+                        }
+                    }
+                }
+
+
                 foreach (SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo subjectScore in student.SemesterSubjectScoreList)
                 {
 
@@ -187,10 +322,225 @@ namespace StudentDuplicateSubjectCheck
                         }
                     }
                 }
-            } 
+            }
             #endregion
 
+
+            //if (chkCalcHasError)
+            //{
+            //    e.Result = "data";
+            //    e.Cancel = true;
+               
+            //}
+
+            // 取得學生當學期修課
+            QueryHelper qhScAttend = new QueryHelper();
+            string qryScAttend = "SELECT sc_attend.id AS sc_attend_id,course.id AS course_id,ref_student_id AS student_id,sc_attend.passing_standard,sc_attend.makeup_standard,sc_attend.remark FROM course INNER JOIN sc_attend ON course.id = sc_attend.ref_course_id WHERE ref_student_id IN(" + string.Join(",", studentIDList.ToArray()) + ") AND course.school_year = " + schoolYear + " AND course.semester = " + semester + "; ";
+
+            DataTable dtScAttend = qh1.Select(qryScAttend);
+
+            // 比對填入 data table
+            foreach (DataRow dr in dtScAttend.Rows)
+            {
+                string sid = dr["student_id"].ToString();
+
+                // 及格標準
+                if (passingStandardDict.ContainsKey(sid))
+                {
+                    dr["passing_standard"] = passingStandardDict[sid];
+                }
+
+                // 補考標準
+                if (makeupStandardDict.ContainsKey(sid))
+                {
+                    dr["makeup_standard"] = makeupStandardDict[sid];
+                }
+
+                // 備註
+                if (remarkDict.ContainsKey(sid))
+                {
+                    dr["remark"] = "學生身分：" + remarkDict[sid];
+                }
+            }
+
+            _backgroundWorker.ReportProgress(50);
+            // 更新修課紀錄
+            List<string> sbUpdateScAttend = new List<string>();
+
+            foreach (DataRow dr in dtScAttend.Rows)
+            {
+                string passing_standard = "null";
+                string makeup_standard = "null";
+                string rem = "";
+
+                if (dr["passing_standard"] != null)
+                    passing_standard = dr["passing_standard"].ToString();
+
+                if (dr["makeup_standard"] != null)
+                    makeup_standard = dr["makeup_standard"].ToString();
+
+                if (dr["remark"] != null)
+                    rem = dr["remark"].ToString();
+
+                string sc_id = dr["sc_attend_id"].ToString();
+                string updateStr = "" +
+                    "UPDATE sc_attend " +
+                    " SET passing_standard=" + passing_standard +
+                    ",makeup_standard =" + makeup_standard +
+                    ",remark='" + rem + "'" +
+                    " WHERE id=" + sc_id + ";";
+                sbUpdateScAttend.Add(updateStr);
+            }
+
+            // 更新修課
+            UpdateHelper upScattend = new UpdateHelper();
+            try
+            {
+                upScattend.Execute(sbUpdateScAttend);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+
             _backgroundWorker.ReportProgress(60);
+
+            // 學生取得課程規劃 
+            string qrygpPlan = "SELECT " +
+                "student.id AS student_id" +
+                ",student.ref_graduation_plan_id AS student_gp_id" +
+                ",class.ref_graduation_plan_id AS class_gp_id " +
+                "FROM student " +
+                "LEFT JOIN class " +
+                "ON student.ref_class_id = class.id " +
+                "WHERE student.id IN(" + string.Join(",", studentIDList.ToArray()) + ");";
+
+            QueryHelper qhGpPlan = new QueryHelper();
+            DataTable dtGpPlan = qhGpPlan.Select(qrygpPlan);
+            foreach (DataRow dr in dtGpPlan.Rows)
+            {
+                string sid = dr["student_id"].ToString();
+                string gpID = "";
+
+                // 如果學生有設以學生生身為主
+                if (dr["class_gp_id"] != null && dr["class_gp_id"].ToString() != "")
+                {
+                    gpID = dr["class_gp_id"].ToString();
+                }
+
+                if (dr["student_gp_id"] != null && dr["student_gp_id"].ToString() != "")
+                {
+                    gpID = dr["student_gp_id"].ToString();
+                }
+                if (!studentGraduationPlanDict.ContainsKey(sid))
+                    studentGraduationPlanDict.Add(sid, gpID);
+            }
+
+            // 分類有哪些課程規劃ID並取得資料
+            List<string> gpIDList = new List<string>();
+            foreach (string id in studentGraduationPlanDict.Values)
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    continue;
+
+                if (!gpIDList.Contains(id))
+                    gpIDList.Add(id);
+            }
+
+            // 取得課程規劃內容
+            string qryGpPlanData = "SELECT id,name,content FROM graduation_plan WHERE id IN(" + string.Join(",", gpIDList.ToArray()) + ") ";
+            DataTable dtGpPlanData = qhGpPlan.Select(qryGpPlanData);
+
+            Dictionary<string, XElement> gpDataDict = new Dictionary<string, XElement>();
+            foreach (DataRow dr in dtGpPlanData.Rows)
+            {
+                string id = dr["id"].ToString();
+                XElement elm = XElement.Parse(dr["content"].ToString());
+                gpDataDict.Add(id, elm);
+            }
+
+            // 取得學生修課科目代碼
+            string qryScAttendSubjectCode = "" +
+                "SELECT " +
+                "sc_attend.id AS sc_attend_id" +
+                ",course.id AS course_id" +
+                ",course.subject AS subject_name" +
+                ",course.subj_level AS subj_level" +
+                ",ref_student_id AS student_id" +
+                ",sc_attend.subject_code " +
+                "FROM " +
+                "course " +
+                "INNER JOIN sc_attend " +
+                "ON course.id = sc_attend.ref_course_id " +
+                "WHERE ref_student_id IN (" + string.Join(",", studentIDList.ToArray()) + ") " +
+                "AND course.school_year=" + schoolYear + " AND course.semester=" + semester + " AND subject is not null";
+            QueryHelper qhSubjectCode = new QueryHelper();
+            DataTable dtSubjectCode = qhSubjectCode.Select(qryScAttendSubjectCode);
+
+            foreach (DataRow dr in dtSubjectCode.Rows)
+            {
+                string sid = dr["student_id"].ToString();
+                if (studentGraduationPlanDict.ContainsKey(sid))
+                {
+                    string gpid = studentGraduationPlanDict[sid];
+                    if (gpDataDict.ContainsKey(gpid))
+                    {
+                        foreach (XElement elm in gpDataDict[gpid].Elements("Subject"))
+                        {
+                            string subjName = "", subjLevel = "", subjCode = "";
+                            if (elm.Attribute("SubjectName") != null)
+                                subjName = elm.Attribute("SubjectName").Value;
+                            if (elm.Attribute("Level") != null)
+                                subjLevel = elm.Attribute("Level").Value;
+
+                            if (elm.Attribute("課程代碼") != null)
+                                subjCode = elm.Attribute("課程代碼").Value;
+
+                            if (dr["subject_name"].ToString() == subjName && dr["subj_level"].ToString() == subjLevel)
+                                dr["subject_code"] = subjCode;
+                        }
+                    }
+                }
+            }
+
+            _backgroundWorker.ReportProgress(70);
+
+            // 回寫課程規劃課程代碼到修課紀錄上科目代碼
+            List<string> updateScSubjCodeList = new List<string>();
+            foreach (DataRow dr in dtSubjectCode.Rows)
+            {
+                string sc_id = dr["sc_attend_id"].ToString();
+                string subj_code = "";
+                if (dr["subject_code"] != null)
+                {
+                    subj_code = dr["subject_code"].ToString();
+                }
+
+                string updateStr = "UPDATE " +
+                    "sc_attend " +
+                    "SET subject_code = '" + subj_code + "' " +
+                    "WHERE " +
+                    "id =" + sc_id + ";";
+                updateScSubjCodeList.Add(updateStr);
+            }
+
+            if (updateScSubjCodeList.Count > 0)
+            {
+                try
+                {
+                    UpdateHelper uhSubj = new UpdateHelper();
+                    uhSubj.Execute(updateScSubjCodeList);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+
+            _backgroundWorker.ReportProgress(75);
 
             #region 舊寫法
             // 2018/5/23 穎驊 筆記 使用ischool API 抓不到 scattend 中的 extensions 資料，故採用SQL 來抓
@@ -279,15 +629,20 @@ namespace StudentDuplicateSubjectCheck
         }
 
         private void FreezeUI()
-        {            
+        {
             buttonX1.Enabled = false;
             buttonX2.Enabled = false;
         }
 
         private void ActivateUI()
-        {            
+        {
             buttonX1.Enabled = true;
             buttonX2.Enabled = true;
+        }
+
+        private void SelectGradeYear_Load(object sender, EventArgs e)
+        {
+            this.MinimumSize = this.MaximumSize = this.Size;
         }
     }
 }

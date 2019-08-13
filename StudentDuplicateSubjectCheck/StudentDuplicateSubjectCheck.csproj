@@ -55,6 +55,10 @@
       <HintPath>Library\FISCA.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="FISCA.DSAUtil, Version=3.9.0.10, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\FISCA.DSAUtil.dll</HintPath>
+    </Reference>
     <Reference Include="FISCA.LogAgent">
       <HintPath>Library\FISCA.LogAgent.dll</HintPath>
       <Private>False</Private>
@@ -93,6 +97,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\SmartSchool.Customization.PlugIn.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="SmartSchool.Evaluation.HS, Version=1.0.7.5, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\SmartSchool.Evaluation.HS.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -137,6 +145,9 @@
     <Content Include="Library\FISCA.Data.pdb" />
     <Content Include="Library\FISCA.Data.xml" />
     <Content Include="Library\FISCA.dll" />
+    <Content Include="Library\FISCA.DSAUtil.dll" />
+    <Content Include="Library\FISCA.DSAUtil.pdb" />
+    <Content Include="Library\FISCA.DSAUtil.xml" />
     <Content Include="Library\FISCA.pdb" />
     <Content Include="Library\FISCA.Permission.dll" />
     <Content Include="Library\FISCA.Permission.pdb" />
@@ -158,6 +169,8 @@
     <Content Include="Library\SmartSchool.Customization.Data.xml" />
     <Content Include="Library\SmartSchool.Customization.PlugIn.dll" />
     <Content Include="Library\SmartSchool.Customization.PlugIn.xml" />
+    <Content Include="Library\SmartSchool.Evaluation.HS.dll" />
+    <Content Include="Library\SmartSchool.Evaluation.HS.pdb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CheckCalculatedLogicForm.resx">

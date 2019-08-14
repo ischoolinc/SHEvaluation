@@ -127,6 +127,12 @@
       <DependentUpon>CompleteForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DataGridViewExport.cs" />
+    <Compile Include="ErrorMessageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ErrorMessageForm.Designer.cs">
+      <DependentUpon>ErrorMessageForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SelectGradeYear.cs">
@@ -179,6 +185,9 @@
     <EmbeddedResource Include="CompleteForm.resx">
       <DependentUpon>CompleteForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ErrorMessageForm.resx">
+      <DependentUpon>ErrorMessageForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SelectGradeYear.resx">
       <DependentUpon>SelectGradeYear.cs</DependentUpon>

@@ -27,6 +27,8 @@ namespace StudentDuplicateSubjectCheck
         string semester = School.DefaultSemester;
         private BackgroundWorker _backgroundWorker;
 
+        string errorMessage = "";
+        DataTable dtErrorTable = new DataTable();
         List<SCAttendRecord> scaDuplicateList = new List<SCAttendRecord>();
 
         Dictionary<string, List<string>> dataCompareDict = new Dictionary<string, List<string>>(); // <sid,<科目名稱 + _ + 級別>>
@@ -62,24 +64,40 @@ namespace StudentDuplicateSubjectCheck
         {
             ActivateUI();
 
-            FISCA.Presentation.MotherForm.SetStatusBarMessage("檢查本學期重覆修課完畢。");
-
-            //if (e.Cancelled)
-            //{
-            //    Console.WriteLine(e.Result);
-            //}
-
-            // 有資料才show
-            if (scaDuplicateList.Count != 0)
+            if (e.Cancelled)
             {
-                CheckCalculatedLogicForm cclf = new CheckCalculatedLogicForm(scaDuplicateList);
-                cclf.ShowDialog();
+                if (errorMessage != "")
+                {
+                    ErrorMessageForm emf = new ErrorMessageForm();
+                    emf.SetDataTable(dtErrorTable);
+                    emf.SetMessage(errorMessage);
+                    emf.ShowDialog();
+                    FISCA.Presentation.MotherForm.SetStatusBarMessage("檢查發生錯誤。");
+                }
             }
             else
             {
-                MsgBox.Show("本年級本學期並無重覆修課的紀錄。");
-            }
+                if (e.Error != null)
+                {
+                    MessageBox.Show("Error:" + e.Error.Message);
+                }
+                else
+                {
+                    FISCA.Presentation.MotherForm.SetStatusBarMessage("檢查本學期重覆修課完畢。");
 
+                    // 有資料才show
+                    if (scaDuplicateList.Count != 0)
+                    {
+                        CheckCalculatedLogicForm cclf = new CheckCalculatedLogicForm(scaDuplicateList);
+                        cclf.ShowDialog();
+                    }
+                    else
+                    {
+                        MsgBox.Show("本年級本學期並無重覆修課的紀錄。");
+                    }                    
+                }
+
+            }
         }
 
         private void _backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -109,12 +127,19 @@ namespace StudentDuplicateSubjectCheck
                 FISCA.Presentation.MotherForm.SetStatusBarMessage("寫入課程代碼中...", e.ProgressPercentage);
             }
 
-            else
+            else if (e.ProgressPercentage == 75)
             { FISCA.Presentation.MotherForm.SetStatusBarMessage("取得重覆級別科目中...", e.ProgressPercentage); }
+            else
+            {
+                FISCA.Presentation.MotherForm.SetStatusBarMessage("資料處理中...", e.ProgressPercentage);
+            }
         }
 
         private void _backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+            this.errorMessage = "";
+            this.dtErrorTable.Rows.Clear();
+
             _backgroundWorker.ReportProgress(10);
 
             //清空上次資料
@@ -202,6 +227,13 @@ namespace StudentDuplicateSubjectCheck
             Dictionary<string, decimal> makeupStandardDict = new Dictionary<string, decimal>();
             Dictionary<string, string> remarkDict = new Dictionary<string, string>();
             Dictionary<string, string> studentGraduationPlanDict = new Dictionary<string, string>();
+            dtErrorTable.Columns.Clear();
+            dtErrorTable.Columns.Add("student_number");
+            dtErrorTable.Columns.Add("class_name");
+            dtErrorTable.Columns.Add("seat_no");
+            dtErrorTable.Columns.Add("student_name");
+            dtErrorTable.Columns.Add("student_id");
+
             List<string> studentIDList = new List<string>();
             bool chkCalcHasError = false;
             foreach (SmartSchool.Customization.Data.StudentRecord student in students)
@@ -214,6 +246,15 @@ namespace StudentDuplicateSubjectCheck
                     // 沒有設定成績計算規則
                     if (!remarkDict.ContainsKey(student.StudentID))
                         remarkDict.Add(student.StudentID, "沒有設定成績計算規則");
+
+                    DataRow dr = this.dtErrorTable.NewRow();
+
+                    dr["student_number"] = student.StudentNumber;
+                    dr["class_name"] = student.RefClass.ClassName;
+                    dr["seat_no"] = student.SeatNo;
+                    dr["student_name"] = student.StudentName;
+                    dr["student_id"] = student.StudentID;
+                    this.dtErrorTable.Rows.Add(dr);
                 }
                 else
                 {
@@ -326,12 +367,12 @@ namespace StudentDuplicateSubjectCheck
             #endregion
 
 
-            //if (chkCalcHasError)
-            //{
-            //    e.Result = "data";
-            //    e.Cancel = true;
-               
-            //}
+            if (chkCalcHasError)
+            {
+                e.Cancel = true;
+                errorMessage = "沒有設定成績計算規則學生名單：";
+                return;
+            }
 
             // 取得學生當學期修課
             QueryHelper qhScAttend = new QueryHelper();
@@ -419,6 +460,7 @@ namespace StudentDuplicateSubjectCheck
 
             QueryHelper qhGpPlan = new QueryHelper();
             DataTable dtGpPlan = qhGpPlan.Select(qrygpPlan);
+            List<string> noGpPlanStudentIDList = new List<string>();
             foreach (DataRow dr in dtGpPlan.Rows)
             {
                 string sid = dr["student_id"].ToString();
@@ -434,8 +476,40 @@ namespace StudentDuplicateSubjectCheck
                 {
                     gpID = dr["student_gp_id"].ToString();
                 }
+
+                if (gpID == "")
+                    noGpPlanStudentIDList.Add(sid);
+
                 if (!studentGraduationPlanDict.ContainsKey(sid))
                     studentGraduationPlanDict.Add(sid, gpID);
+            }
+
+            // 有學生沒有課程規劃表
+            if (noGpPlanStudentIDList.Count > 0)
+            {
+                errorMessage = "沒有設定課程規劃表學生清單：";
+                dtErrorTable.Rows.Clear();
+                dtErrorTable.Columns.Clear();
+                this.dtErrorTable.Columns.Add("student_number");
+                this.dtErrorTable.Columns.Add("class_name");
+                this.dtErrorTable.Columns.Add("seat_no");
+                this.dtErrorTable.Columns.Add("student_name");
+                this.dtErrorTable.Columns.Add("student_id");
+                foreach (SmartSchool.Customization.Data.StudentRecord student in students)
+                {
+                    if (noGpPlanStudentIDList.Contains(student.StudentID))
+                    {
+                        DataRow dr = this.dtErrorTable.NewRow();
+                        dr["student_number"] = student.StudentNumber;
+                        dr["class_name"] = student.RefClass.ClassName;
+                        dr["seat_no"] = student.SeatNo;
+                        dr["student_name"] = student.StudentName;
+                        dr["student_id"] = student.StudentID;
+                        this.dtErrorTable.Rows.Add(dr);
+                    }
+                }
+                e.Cancel = true;
+                return;
             }
 
             // 分類有哪些課程規劃ID並取得資料

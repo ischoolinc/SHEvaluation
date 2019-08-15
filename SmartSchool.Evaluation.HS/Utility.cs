@@ -439,44 +439,47 @@ namespace SmartSchool.Evaluation
         {
             Dictionary<string, List<StudSemsSubjRatingXML>> _retValue = new Dictionary<string, List<StudSemsSubjRatingXML>>();
 
-
-            QueryHelper qh = new QueryHelper();
-            string query = "select ref_student_id as sid,school_year,semester,grade_year,class_rating,dept_rating,year_rating,group_rating from sems_subj_score where ref_student_id in (" + string.Join(",", StudentIDList.ToArray()) + ")  order by ref_student_id,grade_year,semester";
-
-            DataTable dt = qh.Select(query);
-            foreach (DataRow dr in dt.Rows)
+            if (StudentIDList.Count > 0)
             {
-                string sid = dr["sid"].ToString();
+                QueryHelper qh = new QueryHelper();
+                string query = "select ref_student_id as sid,school_year,semester,grade_year,class_rating,dept_rating,year_rating,group_rating from sems_subj_score where ref_student_id in (" + string.Join(",", StudentIDList.ToArray()) + ")  order by ref_student_id,grade_year,semester";
 
-                if (!_retValue.ContainsKey(sid))
-                    _retValue.Add(sid, new List<StudSemsSubjRatingXML>());
+                DataTable dt = qh.Select(query);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string sid = dr["sid"].ToString();
 
-                StudSemsSubjRatingXML sserx = new StudSemsSubjRatingXML();
-                sserx.StudentID = sid;
-                sserx.SchoolYear = dr["school_year"].ToString();
-                sserx.Semester = dr["semester"].ToString();
-                sserx.GradeYear = dr["grade_year"].ToString();
+                    if (!_retValue.ContainsKey(sid))
+                        _retValue.Add(sid, new List<StudSemsSubjRatingXML>());
 
-                if (dr["class_rating"].ToString() != "")
-                {
-                    sserx.ClassRankXML = XElement.Parse(dr["class_rating"].ToString());
+                    StudSemsSubjRatingXML sserx = new StudSemsSubjRatingXML();
+                    sserx.StudentID = sid;
+                    sserx.SchoolYear = dr["school_year"].ToString();
+                    sserx.Semester = dr["semester"].ToString();
+                    sserx.GradeYear = dr["grade_year"].ToString();
+
+                    if (dr["class_rating"].ToString() != "")
+                    {
+                        sserx.ClassRankXML = XElement.Parse(dr["class_rating"].ToString());
+                    }
+                    if (dr["dept_rating"].ToString() != "")
+                    {
+                        sserx.DeptRankXML = XElement.Parse(dr["dept_rating"].ToString());
+                    }
+                    if (dr["year_rating"].ToString() != "")
+                    {
+                        sserx.YearRankXML = XElement.Parse(dr["year_rating"].ToString());
+                    }
+                    if (dr["group_rating"].ToString() != "")
+                    {
+                        sserx.GroupRankXML = XElement.Parse(dr["group_rating"].ToString());
+                    }
+
+
+                    _retValue[sid].Add(sserx);
                 }
-                if (dr["dept_rating"].ToString() != "")
-                {
-                    sserx.DeptRankXML = XElement.Parse(dr["dept_rating"].ToString());
-                }
-                if (dr["year_rating"].ToString() != "")
-                {
-                    sserx.YearRankXML = XElement.Parse(dr["year_rating"].ToString());
-                }                               
-                if (dr["group_rating"].ToString() != "")
-                {
-                    sserx.GroupRankXML = XElement.Parse(dr["group_rating"].ToString());
-                }
-                
-               
-                _retValue[sid].Add(sserx);
             }
+         
             return _retValue;
         }
 

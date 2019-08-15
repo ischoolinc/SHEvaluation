@@ -221,7 +221,11 @@ namespace SmartSchool.Evaluation.ImportExport
                     string level = e.Data["科目級別"];
                     string schoolYear = e.Data["學年度"];
                     string semester = e.Data["學期"];
-                    string group = e.Data["類別"];
+                    string group = "";
+                    if (e.Data.ContainsKey("類別"))
+                        group = e.Data["類別"];
+
+
                     int? sy = null;
                     int? se = null;
                     int? le = null;

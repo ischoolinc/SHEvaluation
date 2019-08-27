@@ -38,9 +38,23 @@
             this.btnCalcScore = new DevComponents.DotNetBar.ButtonX();
             this.btnSave = new DevComponents.DotNetBar.ButtonX();
             this.groupPanel2 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.labelX12 = new DevComponents.DotNetBar.LabelX();
+            this.textBoxX8 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.labelX13 = new DevComponents.DotNetBar.LabelX();
+            this.textBoxX9 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.labelX14 = new DevComponents.DotNetBar.LabelX();
+            this.textBoxX10 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.labelX15 = new DevComponents.DotNetBar.LabelX();
+            this.labelX16 = new DevComponents.DotNetBar.LabelX();
+            this.textBoxX11 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.textBoxX12 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.labelX17 = new DevComponents.DotNetBar.LabelX();
+            this.textBoxX13 = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.buttonX4 = new DevComponents.DotNetBar.ButtonX();
             this.buttonItem3 = new DevComponents.DotNetBar.ButtonItem();
             this.buttonItem4 = new DevComponents.DotNetBar.ButtonItem();
+            this.labelX11 = new DevComponents.DotNetBar.LabelX();
+            this.textBoxX7 = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.labelX8 = new DevComponents.DotNetBar.LabelX();
             this.textBoxX6 = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.labelX6 = new DevComponents.DotNetBar.LabelX();
@@ -91,20 +105,11 @@
             this.Column17 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Column16 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.textBoxX7 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.labelX11 = new DevComponents.DotNetBar.LabelX();
-            this.labelX12 = new DevComponents.DotNetBar.LabelX();
-            this.textBoxX8 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.labelX13 = new DevComponents.DotNetBar.LabelX();
-            this.textBoxX9 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.labelX14 = new DevComponents.DotNetBar.LabelX();
-            this.textBoxX10 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.labelX15 = new DevComponents.DotNetBar.LabelX();
-            this.labelX16 = new DevComponents.DotNetBar.LabelX();
-            this.textBoxX11 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.textBoxX12 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.labelX17 = new DevComponents.DotNetBar.LabelX();
-            this.textBoxX13 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.colPassingStandard = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMakeupStandard = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDesignateFinalScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colRemark = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSubjectCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panelEx1.SuspendLayout();
             this.groupPanel2.SuspendLayout();
             this.groupPanel1.SuspendLayout();
@@ -263,6 +268,168 @@
             this.groupPanel2.TabIndex = 3;
             this.groupPanel2.Text = "學期分項成績";
             // 
+            // labelX12
+            // 
+            this.labelX12.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX12.BackgroundStyle.Class = "";
+            this.labelX12.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX12.Location = new System.Drawing.Point(237, 72);
+            this.labelX12.Name = "labelX12";
+            this.labelX12.Size = new System.Drawing.Size(109, 21);
+            this.labelX12.TabIndex = 9;
+            this.labelX12.Text = "專業科目(原始)：";
+            // 
+            // textBoxX8
+            // 
+            // 
+            // 
+            // 
+            this.textBoxX8.Border.Class = "TextBoxBorder";
+            this.textBoxX8.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX8.Location = new System.Drawing.Point(352, 70);
+            this.textBoxX8.Name = "textBoxX8";
+            this.textBoxX8.Size = new System.Drawing.Size(100, 25);
+            this.textBoxX8.TabIndex = 3;
+            this.textBoxX8.TextChanged += new System.EventHandler(this.entryScoreChanged);
+            // 
+            // labelX13
+            // 
+            this.labelX13.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX13.BackgroundStyle.Class = "";
+            this.labelX13.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX13.Location = new System.Drawing.Point(484, 72);
+            this.labelX13.Name = "labelX13";
+            this.labelX13.Size = new System.Drawing.Size(109, 21);
+            this.labelX13.TabIndex = 10;
+            this.labelX13.Text = "實習科目(原始)：";
+            // 
+            // textBoxX9
+            // 
+            // 
+            // 
+            // 
+            this.textBoxX9.Border.Class = "TextBoxBorder";
+            this.textBoxX9.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX9.Location = new System.Drawing.Point(599, 70);
+            this.textBoxX9.Name = "textBoxX9";
+            this.textBoxX9.Size = new System.Drawing.Size(100, 25);
+            this.textBoxX9.TabIndex = 4;
+            this.textBoxX9.TextChanged += new System.EventHandler(this.entryScoreChanged);
+            // 
+            // labelX14
+            // 
+            this.labelX14.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX14.BackgroundStyle.Class = "";
+            this.labelX14.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX14.Location = new System.Drawing.Point(484, 102);
+            this.labelX14.Name = "labelX14";
+            this.labelX14.Size = new System.Drawing.Size(109, 21);
+            this.labelX14.TabIndex = 11;
+            this.labelX14.Text = "國防通識(原始)：";
+            // 
+            // textBoxX10
+            // 
+            // 
+            // 
+            // 
+            this.textBoxX10.Border.Class = "TextBoxBorder";
+            this.textBoxX10.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX10.Location = new System.Drawing.Point(599, 100);
+            this.textBoxX10.Name = "textBoxX10";
+            this.textBoxX10.Size = new System.Drawing.Size(100, 25);
+            this.textBoxX10.TabIndex = 5;
+            this.textBoxX10.TextChanged += new System.EventHandler(this.entryScoreChanged);
+            // 
+            // labelX15
+            // 
+            this.labelX15.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX15.BackgroundStyle.Class = "";
+            this.labelX15.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX15.Location = new System.Drawing.Point(223, 102);
+            this.labelX15.Name = "labelX15";
+            this.labelX15.Size = new System.Drawing.Size(123, 21);
+            this.labelX15.TabIndex = 12;
+            this.labelX15.Text = "健康與護理(原始)：";
+            // 
+            // labelX16
+            // 
+            this.labelX16.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX16.BackgroundStyle.Class = "";
+            this.labelX16.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX16.Location = new System.Drawing.Point(3, 102);
+            this.labelX16.Name = "labelX16";
+            this.labelX16.Size = new System.Drawing.Size(109, 21);
+            this.labelX16.TabIndex = 13;
+            this.labelX16.Text = "體育成績(原始)：";
+            // 
+            // textBoxX11
+            // 
+            // 
+            // 
+            // 
+            this.textBoxX11.Border.Class = "TextBoxBorder";
+            this.textBoxX11.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX11.Location = new System.Drawing.Point(352, 100);
+            this.textBoxX11.Name = "textBoxX11";
+            this.textBoxX11.Size = new System.Drawing.Size(100, 25);
+            this.textBoxX11.TabIndex = 6;
+            this.textBoxX11.TextChanged += new System.EventHandler(this.entryScoreChanged);
+            // 
+            // textBoxX12
+            // 
+            // 
+            // 
+            // 
+            this.textBoxX12.Border.Class = "TextBoxBorder";
+            this.textBoxX12.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX12.Location = new System.Drawing.Point(118, 100);
+            this.textBoxX12.Name = "textBoxX12";
+            this.textBoxX12.Size = new System.Drawing.Size(100, 25);
+            this.textBoxX12.TabIndex = 7;
+            this.textBoxX12.TextChanged += new System.EventHandler(this.entryScoreChanged);
+            // 
+            // labelX17
+            // 
+            this.labelX17.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX17.BackgroundStyle.Class = "";
+            this.labelX17.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX17.Location = new System.Drawing.Point(3, 72);
+            this.labelX17.Name = "labelX17";
+            this.labelX17.Size = new System.Drawing.Size(109, 21);
+            this.labelX17.TabIndex = 14;
+            this.labelX17.Text = "學業成績(原始)：";
+            // 
+            // textBoxX13
+            // 
+            // 
+            // 
+            // 
+            this.textBoxX13.Border.Class = "TextBoxBorder";
+            this.textBoxX13.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX13.Location = new System.Drawing.Point(118, 70);
+            this.textBoxX13.Name = "textBoxX13";
+            this.textBoxX13.Size = new System.Drawing.Size(100, 25);
+            this.textBoxX13.TabIndex = 8;
+            this.textBoxX13.TextChanged += new System.EventHandler(this.entryScoreChanged);
+            // 
             // buttonX4
             // 
             this.buttonX4.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
@@ -293,6 +460,33 @@
             this.buttonItem4.OptionGroup = "重算成績";
             this.buttonItem4.Text = "不允許重算成績";
             this.buttonItem4.CheckedChanged += new System.EventHandler(this.buttonItem4_CheckedChanged);
+            // 
+            // labelX11
+            // 
+            this.labelX11.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX11.BackgroundStyle.Class = "";
+            this.labelX11.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX11.Location = new System.Drawing.Point(272, 12);
+            this.labelX11.Name = "labelX11";
+            this.labelX11.Size = new System.Drawing.Size(74, 21);
+            this.labelX11.TabIndex = 1;
+            this.labelX11.Text = "專業科目：";
+            // 
+            // textBoxX7
+            // 
+            // 
+            // 
+            // 
+            this.textBoxX7.Border.Class = "TextBoxBorder";
+            this.textBoxX7.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX7.Location = new System.Drawing.Point(352, 10);
+            this.textBoxX7.Name = "textBoxX7";
+            this.textBoxX7.Size = new System.Drawing.Size(100, 25);
+            this.textBoxX7.TabIndex = 0;
+            this.textBoxX7.TextChanged += new System.EventHandler(this.entryScoreChanged);
             // 
             // labelX8
             // 
@@ -549,7 +743,12 @@
             this.Column11,
             this.Column17,
             this.Column16,
-            this.Column12});
+            this.Column12,
+            this.colPassingStandard,
+            this.colMakeupStandard,
+            this.colDesignateFinalScore,
+            this.colRemark,
+            this.colSubjectCode});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -902,194 +1101,49 @@
             this.Column12.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.Column12.Width = 40;
             // 
-            // textBoxX7
-            // 
-            // 
-            // 
-            // 
-            this.textBoxX7.Border.Class = "TextBoxBorder";
-            this.textBoxX7.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX7.Location = new System.Drawing.Point(352, 10);
-            this.textBoxX7.Name = "textBoxX7";
-            this.textBoxX7.Size = new System.Drawing.Size(100, 25);
-            this.textBoxX7.TabIndex = 0;
-            this.textBoxX7.TextChanged += new System.EventHandler(this.entryScoreChanged);
-            // 
-            // labelX11
-            // 
-            this.labelX11.AutoSize = true;
-            // 
-            // 
-            // 
-            this.labelX11.BackgroundStyle.Class = "";
-            this.labelX11.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX11.Location = new System.Drawing.Point(272, 12);
-            this.labelX11.Name = "labelX11";
-            this.labelX11.Size = new System.Drawing.Size(74, 21);
-            this.labelX11.TabIndex = 1;
-            this.labelX11.Text = "專業科目：";
-            // 
-            // labelX12
-            // 
-            this.labelX12.AutoSize = true;
-            // 
-            // 
-            // 
-            this.labelX12.BackgroundStyle.Class = "";
-            this.labelX12.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX12.Location = new System.Drawing.Point(237, 72);
-            this.labelX12.Name = "labelX12";
-            this.labelX12.Size = new System.Drawing.Size(109, 21);
-            this.labelX12.TabIndex = 9;
-            this.labelX12.Text = "專業科目(原始)：";
-            // 
-            // textBoxX8
-            // 
-            // 
-            // 
-            // 
-            this.textBoxX8.Border.Class = "TextBoxBorder";
-            this.textBoxX8.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX8.Location = new System.Drawing.Point(352, 70);
-            this.textBoxX8.Name = "textBoxX8";
-            this.textBoxX8.Size = new System.Drawing.Size(100, 25);
-            this.textBoxX8.TabIndex = 3;
-            this.textBoxX8.TextChanged += new System.EventHandler(this.entryScoreChanged);
-            // 
-            // labelX13
-            // 
-            this.labelX13.AutoSize = true;
-            // 
-            // 
-            // 
-            this.labelX13.BackgroundStyle.Class = "";
-            this.labelX13.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX13.Location = new System.Drawing.Point(484, 72);
-            this.labelX13.Name = "labelX13";
-            this.labelX13.Size = new System.Drawing.Size(109, 21);
-            this.labelX13.TabIndex = 10;
-            this.labelX13.Text = "實習科目(原始)：";
-            // 
-            // textBoxX9
-            // 
-            // 
-            // 
-            // 
-            this.textBoxX9.Border.Class = "TextBoxBorder";
-            this.textBoxX9.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX9.Location = new System.Drawing.Point(599, 70);
-            this.textBoxX9.Name = "textBoxX9";
-            this.textBoxX9.Size = new System.Drawing.Size(100, 25);
-            this.textBoxX9.TabIndex = 4;
-            this.textBoxX9.TextChanged += new System.EventHandler(this.entryScoreChanged);
-            // 
-            // labelX14
-            // 
-            this.labelX14.AutoSize = true;
-            // 
-            // 
-            // 
-            this.labelX14.BackgroundStyle.Class = "";
-            this.labelX14.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX14.Location = new System.Drawing.Point(484, 102);
-            this.labelX14.Name = "labelX14";
-            this.labelX14.Size = new System.Drawing.Size(109, 21);
-            this.labelX14.TabIndex = 11;
-            this.labelX14.Text = "國防通識(原始)：";
-            // 
-            // textBoxX10
-            // 
-            // 
-            // 
-            // 
-            this.textBoxX10.Border.Class = "TextBoxBorder";
-            this.textBoxX10.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX10.Location = new System.Drawing.Point(599, 100);
-            this.textBoxX10.Name = "textBoxX10";
-            this.textBoxX10.Size = new System.Drawing.Size(100, 25);
-            this.textBoxX10.TabIndex = 5;
-            this.textBoxX10.TextChanged += new System.EventHandler(this.entryScoreChanged);
-            // 
-            // labelX15
-            // 
-            this.labelX15.AutoSize = true;
-            // 
-            // 
-            // 
-            this.labelX15.BackgroundStyle.Class = "";
-            this.labelX15.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX15.Location = new System.Drawing.Point(223, 102);
-            this.labelX15.Name = "labelX15";
-            this.labelX15.Size = new System.Drawing.Size(123, 21);
-            this.labelX15.TabIndex = 12;
-            this.labelX15.Text = "健康與護理(原始)：";
-            // 
-            // labelX16
-            // 
-            this.labelX16.AutoSize = true;
-            // 
-            // 
-            // 
-            this.labelX16.BackgroundStyle.Class = "";
-            this.labelX16.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX16.Location = new System.Drawing.Point(3, 102);
-            this.labelX16.Name = "labelX16";
-            this.labelX16.Size = new System.Drawing.Size(109, 21);
-            this.labelX16.TabIndex = 13;
-            this.labelX16.Text = "體育成績(原始)：";
-            // 
-            // textBoxX11
-            // 
-            // 
-            // 
-            // 
-            this.textBoxX11.Border.Class = "TextBoxBorder";
-            this.textBoxX11.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX11.Location = new System.Drawing.Point(352, 100);
-            this.textBoxX11.Name = "textBoxX11";
-            this.textBoxX11.Size = new System.Drawing.Size(100, 25);
-            this.textBoxX11.TabIndex = 6;
-            this.textBoxX11.TextChanged += new System.EventHandler(this.entryScoreChanged);
-            // 
-            // textBoxX12
-            // 
-            // 
-            // 
-            // 
-            this.textBoxX12.Border.Class = "TextBoxBorder";
-            this.textBoxX12.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX12.Location = new System.Drawing.Point(118, 100);
-            this.textBoxX12.Name = "textBoxX12";
-            this.textBoxX12.Size = new System.Drawing.Size(100, 25);
-            this.textBoxX12.TabIndex = 7;
-            this.textBoxX12.TextChanged += new System.EventHandler(this.entryScoreChanged);
-            // 
-            // labelX17
-            // 
-            this.labelX17.AutoSize = true;
-            // 
-            // 
-            // 
-            this.labelX17.BackgroundStyle.Class = "";
-            this.labelX17.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX17.Location = new System.Drawing.Point(3, 72);
-            this.labelX17.Name = "labelX17";
-            this.labelX17.Size = new System.Drawing.Size(109, 21);
-            this.labelX17.TabIndex = 14;
-            this.labelX17.Text = "學業成績(原始)：";
-            // 
-            // textBoxX13
-            // 
-            // 
-            // 
-            // 
-            this.textBoxX13.Border.Class = "TextBoxBorder";
-            this.textBoxX13.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX13.Location = new System.Drawing.Point(118, 70);
-            this.textBoxX13.Name = "textBoxX13";
-            this.textBoxX13.Size = new System.Drawing.Size(100, 25);
-            this.textBoxX13.TabIndex = 8;
-            this.textBoxX13.TextChanged += new System.EventHandler(this.entryScoreChanged);
+            // colPassingStandard
+            // 
+            this.colPassingStandard.HeaderText = "修課及格標準";
+            this.colPassingStandard.MinimumWidth = 55;
+            this.colPassingStandard.Name = "colPassingStandard";
+            this.colPassingStandard.ReadOnly = true;
+            this.colPassingStandard.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colPassingStandard.Width = 55;
+            // 
+            // colMakeupStandard
+            // 
+            this.colMakeupStandard.HeaderText = "修課補考標準";
+            this.colMakeupStandard.MinimumWidth = 55;
+            this.colMakeupStandard.Name = "colMakeupStandard";
+            this.colMakeupStandard.ReadOnly = true;
+            this.colMakeupStandard.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colMakeupStandard.Width = 55;
+            // 
+            // colDesignateFinalScore
+            // 
+            this.colDesignateFinalScore.HeaderText = "修課直接指定總成績";
+            this.colDesignateFinalScore.MinimumWidth = 75;
+            this.colDesignateFinalScore.Name = "colDesignateFinalScore";
+            this.colDesignateFinalScore.ReadOnly = true;
+            this.colDesignateFinalScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colDesignateFinalScore.Width = 75;
+            // 
+            // colRemark
+            // 
+            this.colRemark.HeaderText = "修課備註";
+            this.colRemark.MinimumWidth = 55;
+            this.colRemark.Name = "colRemark";
+            this.colRemark.ReadOnly = true;
+            this.colRemark.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colRemark.Width = 55;
+            // 
+            // colSubjectCode
+            // 
+            this.colSubjectCode.HeaderText = "修課科目代碼";
+            this.colSubjectCode.MinimumWidth = 55;
+            this.colSubjectCode.Name = "colSubjectCode";
+            this.colSubjectCode.ReadOnly = true;
+            this.colSubjectCode.Width = 55;
             // 
             // SemesterScoreEditor
             // 
@@ -1162,6 +1216,20 @@
         private DevComponents.DotNetBar.ButtonItem buttonItem2;
         private DevComponents.DotNetBar.ButtonItem buttonItem4;
         private DevComponents.DotNetBar.ButtonItem buttonItem3;
+        private DevComponents.DotNetBar.LabelX labelX12;
+        private DevComponents.DotNetBar.Controls.TextBoxX textBoxX8;
+        private DevComponents.DotNetBar.LabelX labelX13;
+        private DevComponents.DotNetBar.Controls.TextBoxX textBoxX9;
+        private DevComponents.DotNetBar.LabelX labelX14;
+        private DevComponents.DotNetBar.Controls.TextBoxX textBoxX10;
+        private DevComponents.DotNetBar.LabelX labelX15;
+        private DevComponents.DotNetBar.LabelX labelX16;
+        private DevComponents.DotNetBar.Controls.TextBoxX textBoxX11;
+        private DevComponents.DotNetBar.Controls.TextBoxX textBoxX12;
+        private DevComponents.DotNetBar.LabelX labelX17;
+        private DevComponents.DotNetBar.Controls.TextBoxX textBoxX13;
+        private DevComponents.DotNetBar.LabelX labelX11;
+        private DevComponents.DotNetBar.Controls.TextBoxX textBoxX7;
         private System.Windows.Forms.DataGridViewComboBoxColumn Column13;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
@@ -1177,19 +1245,10 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn Column17;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Column16;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column12;
-        private DevComponents.DotNetBar.LabelX labelX12;
-        private DevComponents.DotNetBar.Controls.TextBoxX textBoxX8;
-        private DevComponents.DotNetBar.LabelX labelX13;
-        private DevComponents.DotNetBar.Controls.TextBoxX textBoxX9;
-        private DevComponents.DotNetBar.LabelX labelX14;
-        private DevComponents.DotNetBar.Controls.TextBoxX textBoxX10;
-        private DevComponents.DotNetBar.LabelX labelX15;
-        private DevComponents.DotNetBar.LabelX labelX16;
-        private DevComponents.DotNetBar.Controls.TextBoxX textBoxX11;
-        private DevComponents.DotNetBar.Controls.TextBoxX textBoxX12;
-        private DevComponents.DotNetBar.LabelX labelX17;
-        private DevComponents.DotNetBar.Controls.TextBoxX textBoxX13;
-        private DevComponents.DotNetBar.LabelX labelX11;
-        private DevComponents.DotNetBar.Controls.TextBoxX textBoxX7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colPassingStandard;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMakeupStandard;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDesignateFinalScore;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colRemark;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSubjectCode;
     }
 }

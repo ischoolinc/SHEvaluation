@@ -91,7 +91,7 @@ namespace SmartSchool.Evaluation
 
             // 整理所欲計算學期科目學生的ID
             List<string> sidList = new List<string>();
-            
+
             foreach (StudentRecord sr in students)
             {
                 if (!sidList.Contains(sr.StudentID))
@@ -128,6 +128,48 @@ namespace SmartSchool.Evaluation
             QueryHelper qh1 = new QueryHelper();
 
             DataTable dt_SCAttend = qh1.Select(query2);
+
+            // 2019/8/23 by CT，取得學生有直接指定總成績，如果有將取代原始成績,key:student_id,subject+subjectLevel
+            Dictionary<string, Dictionary<string, DataRow>> studentFinalScoreDict = new Dictionary<string, Dictionary<string, DataRow>>();
+            string strFinalScore = "SELECT " +
+                "sc_attend.id AS sc_attend_id" +
+                ",student.id AS student_id" +
+                ",course.subject" +
+                ",course.subj_level" +
+                ",sc_attend.passing_standard" +
+                ",sc_attend.makeup_standard" +
+                ",sc_attend.remark" +
+                ",designate_final_score" +
+                ",sc_attend.subject_code AS subject_code " +
+                "FROM sc_attend " +
+                "INNER JOIN course " +
+                "ON sc_attend.ref_course_id = course.id " +
+                "INNER JOIN student " +
+                "ON sc_attend.ref_student_id = student.id " +
+                "WHERE " +
+                "course.school_year = " + schoolyear + " " +
+                "AND course.semester = " + semester + " " +
+                "AND student.id IN(" + sid + ") " +
+                ";";
+
+            DataTable dtFinalScore = qh1.Select(strFinalScore);
+
+            foreach (DataRow dr in dtFinalScore.Rows)
+            {
+                string student_id = dr["student_id"].ToString();
+                string level = "";
+                if (dr["subj_level"] != null)
+                    level = dr["subj_level"].ToString();
+                string key = dr["subject"].ToString() + "_" + level;
+                if (!studentFinalScoreDict.ContainsKey(student_id))
+                    studentFinalScoreDict.Add(student_id, new Dictionary<string, DataRow>());
+
+                if (!studentFinalScoreDict[student_id].ContainsKey(key))
+                    studentFinalScoreDict[student_id].Add(key, dr);
+                else
+                    studentFinalScoreDict[student_id][key] = dr;
+            }
+
 
             // 將學生本學期的修課紀錄整理出來 (包含了重覆科目級別的計算處理方式會在extensions內)
             foreach (DataRow dr in dt_SCAttend.Rows)
@@ -379,7 +421,7 @@ namespace SmartSchool.Evaluation
                         {
                             if (!_ErrorList.ContainsKey(var))
                                 _ErrorList.Add(var, new List<string>());
-                            _ErrorList[var].Add("" + sacRecord.CourseName + "沒有修課總成績，無法計算。"); 
+                            _ErrorList[var].Add("" + sacRecord.CourseName + "沒有修課總成績，無法計算。");
                             continue;
                         }
                         string key = sacRecord.Subject.Trim() + "_" + sacRecord.SubjectLevel.Trim();
@@ -395,7 +437,7 @@ namespace SmartSchool.Evaluation
                                     if (si.SchoolYear > sy || (si.SchoolYear == sy && si.Semester > se))
                                     {
                                         sy = si.SchoolYear;
-                                        se = si.Semester;                                        
+                                        se = si.Semester;
                                     }
                                 }
                             }
@@ -403,13 +445,13 @@ namespace SmartSchool.Evaluation
 
                             if (!_ErrorList.ContainsKey(var))
                                 _ErrorList.Add(var, new List<string>());
-                            _ErrorList[var].Add("課程名稱 :" + sacRecord.CourseName + "， 已於"+ sy +"學年度 第" +se +"學期修習過，請至 教務作業/成績作業 重覆修課採計方式 設定。");
+                            _ErrorList[var].Add("課程名稱 :" + sacRecord.CourseName + "， 已於" + sy + "學年度 第" + se + "學期修習過，請至 教務作業/成績作業 重覆修課採計方式 設定。");
                             continue;
                         }
 
                         //發現為重修科目
                         //if (writeToFirstSemester && restudySubjectScoreList.ContainsValue(key))
-                        if (duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(var.StudentID + "_" + key)?duplicateSubjectLevelMethodDict_Afterfilter[var.StudentID + "_" + key] == "重修(寫回原學期)" : false)// 因應[H成績][04] 計算學期科目成績調整
+                        if (duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(var.StudentID + "_" + key) ? duplicateSubjectLevelMethodDict_Afterfilter[var.StudentID + "_" + key] == "重修(寫回原學期)" : false)// 因應[H成績][04] 計算學期科目成績調整
                         {
                             #region 寫入重修成績回原學期
                             int sy = 0, se = 0;
@@ -441,9 +483,9 @@ namespace SmartSchool.Evaluation
 
                                 string[] scoreNames = new string[] { "原始成績", "學年調整成績", "擇優採計成績", "補考成績", "重修成績" };
 
-                              
 
-                                
+
+
                                 foreach (string scorename in scoreNames)
                                 {
                                     decimal s;
@@ -505,6 +547,61 @@ namespace SmartSchool.Evaluation
 
                                     #endregion
                                     updateScoreElement.SetAttribute("原始成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
+
+                                    // 當有直接指定總成績覆蓋
+                                    if (studentFinalScoreDict.ContainsKey(sacRecord.StudentID))
+                                    {
+                                        string sKey = sacRecord.Subject + "_" + sacRecord.SubjectLevel;
+
+                                        if (studentFinalScoreDict[sacRecord.StudentID].ContainsKey(sKey))
+                                        {
+                                            DataRow dr = studentFinalScoreDict[sacRecord.StudentID][sKey];
+
+                                            string passing_standard = "", makeup_standard = "", remark = "", designate_final_score = "", subject_code = "";
+
+                                            decimal passing_standard_score, makeup_standard_score, designate_final_score_score;
+
+                                            if (dr["passing_standard"] != null)
+                                                passing_standard = dr["passing_standard"].ToString();
+
+                                            if (dr["makeup_standard"] != null)
+                                                makeup_standard = dr["makeup_standard"].ToString();
+
+                                            if (dr["remark"] != null)
+                                                remark = dr["remark"].ToString();
+
+                                            if (dr["subject_code"] != null)
+                                                subject_code = dr["subject_code"].ToString();
+
+                                            if (dr["designate_final_score"] != null)
+                                                designate_final_score = dr["designate_final_score"].ToString();
+
+                                            if (decimal.TryParse(passing_standard, out passing_standard_score))
+                                                updateScoreElement.SetAttribute("修課及格標準", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(passing_standard_score, decimals, mode)));
+                                            else
+                                                updateScoreElement.SetAttribute("修課及格標準", "");
+
+                                            if (decimal.TryParse(makeup_standard, out makeup_standard_score))
+                                                updateScoreElement.SetAttribute("修課補考標準", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(makeup_standard_score, decimals, mode)));
+                                            else
+                                                updateScoreElement.SetAttribute("修課補考標準", "");
+
+                                            if (decimal.TryParse(designate_final_score, out designate_final_score_score))
+                                            {
+                                                updateScoreElement.SetAttribute("修課直接指定總成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(designate_final_score_score, decimals, mode)));
+                                                updateScoreElement.SetAttribute("原始成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(designate_final_score_score, decimals, mode)));
+                                                updateScoreElement.SetAttribute("註記", "修課成績：" + (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
+                                            }
+                                            else
+                                            {
+                                                updateScoreElement.SetAttribute("修課直接指定總成績", "");
+                                            }
+
+                                            updateScoreElement.SetAttribute("修課備註", remark);
+                                            updateScoreElement.SetAttribute("修課科目代碼", subject_code);
+                                        }
+                                    }
+
                                     //做取得學分判斷
                                     #region 做取得學分判斷及填入擇優採計成績
                                     //最高分
@@ -524,7 +621,7 @@ namespace SmartSchool.Evaluation
                                     }
                                     #endregion
                                     //如果有擇優採計成績且重讀學期有修過課
-                                    if (duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(var.StudentID + "_" + key) ? duplicateSubjectLevelMethodDict_Afterfilter[var.StudentID + "_" + key] == "重讀(擇優採計成績)":false)
+                                    if (duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(var.StudentID + "_" + key) ? duplicateSubjectLevelMethodDict_Afterfilter[var.StudentID + "_" + key] == "重讀(擇優採計成績)" : false)
                                     {
                                         #region 填入擇優採計成績
                                         foreach (SemesterSubjectScoreInfo s in repeatSubjectScoreList.Keys)
@@ -585,6 +682,62 @@ namespace SmartSchool.Evaluation
                                     newScoreInfo.SetAttribute("開課分項類別", sacRecord.Entry);
                                     newScoreInfo.SetAttribute("開課學分數", "" + sacRecord.CreditDec());
                                     newScoreInfo.SetAttribute("原始成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
+
+                                    // 當有直接指定總成績覆蓋
+                                    if (studentFinalScoreDict.ContainsKey(sacRecord.StudentID))
+                                    {
+                                        string sKey = sacRecord.Subject + "_" + sacRecord.SubjectLevel;
+
+                                        if (studentFinalScoreDict[sacRecord.StudentID].ContainsKey(sKey))
+                                        {
+                                            DataRow dr = studentFinalScoreDict[sacRecord.StudentID][sKey];
+
+                                            string passing_standard = "", makeup_standard = "", remark = "", designate_final_score = "",subject_code = "";
+
+                                            decimal passing_standard_score, makeup_standard_score, designate_final_score_score;
+
+                                            if (dr["passing_standard"] != null)
+                                                passing_standard = dr["passing_standard"].ToString();
+
+                                            if (dr["makeup_standard"] != null)
+                                                makeup_standard = dr["makeup_standard"].ToString();
+
+                                            if (dr["remark"] != null)
+                                                remark = dr["remark"].ToString();
+
+                                            if (dr["subject_code"] != null)
+                                                subject_code = dr["subject_code"].ToString();
+
+                                            if (dr["designate_final_score"] != null)
+                                                designate_final_score = dr["designate_final_score"].ToString();
+
+                                            if (decimal.TryParse(passing_standard, out passing_standard_score))
+                                                newScoreInfo.SetAttribute("修課及格標準", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(passing_standard_score, decimals, mode)));
+                                            else
+                                                newScoreInfo.SetAttribute("修課及格標準", "");
+
+                                            if (decimal.TryParse(makeup_standard, out makeup_standard_score))
+                                                newScoreInfo.SetAttribute("修課補考標準", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(makeup_standard_score, decimals, mode)));
+                                            else
+                                                newScoreInfo.SetAttribute("修課補考標準", "");
+
+                                            if (decimal.TryParse(designate_final_score, out designate_final_score_score))
+                                            {
+                                                newScoreInfo.SetAttribute("修課直接指定總成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(designate_final_score_score, decimals, mode)));
+
+                                                newScoreInfo.SetAttribute("原始成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(designate_final_score_score, decimals, mode)));
+                                                newScoreInfo.SetAttribute("註記", "修課成績：" + (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
+                                            }
+                                            else
+                                            {
+                                                newScoreInfo.SetAttribute("修課直接指定總成績", "");
+                                            }
+
+                                            newScoreInfo.SetAttribute("修課備註", remark);
+                                            newScoreInfo.SetAttribute("修課科目代碼", subject_code);
+                                        }
+                                    }
+
                                     newScoreInfo.SetAttribute("重修成績", "");
                                     newScoreInfo.SetAttribute("學年調整成績", "");
                                     newScoreInfo.SetAttribute("擇優採計成績", "");
@@ -1602,7 +1755,7 @@ namespace SmartSchool.Evaluation
                     }
                     // 2017/1/13 穎驊 與恩正討論 過後， 需要 再加上一個 若使用者都沒有 儲存設定 的預設， 此預設項目 與舊模式 相同，
                     // 也與  SmartSchool.Evaluation.Configuration.ScoreCalcRuleEditor 內的 使用者設定介面預設  一樣
-                    else 
+                    else
                     {
                         scoreTypeList.Add("原始成績");
                         scoreTypeList.Add("補考成績");
@@ -1676,7 +1829,7 @@ namespace SmartSchool.Evaluation
                             {
                                 //先判斷這筆科目成績能不能計算
                                 decimal maxscore = decimal.MinValue, tryParsedecimal;
-                                
+
                                 bool hasScore = false;
 
                                 // 2016/12/22 穎驊因應 客戶學校反映調整， 重修成績只能取得學分，不能納入計算分數， 恩正指示調整此處，移除 scoreType 重修成績。                                

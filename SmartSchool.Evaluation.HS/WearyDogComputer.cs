@@ -131,6 +131,13 @@ namespace SmartSchool.Evaluation
 
             // 2019/8/23 by CT，取得學生有直接指定總成績，如果有將取代原始成績,key:student_id,subject+subjectLevel
             Dictionary<string, Dictionary<string, DataRow>> studentFinalScoreDict = new Dictionary<string, Dictionary<string, DataRow>>();
+
+            // 各科及格標準
+            Dictionary<string, Dictionary<string, decimal>> studentPassScoreDict = new Dictionary<string, Dictionary<string, decimal>>();
+
+            // 學生有指定總成績
+            Dictionary<string, Dictionary<string, decimal>> studentHasFinalScoreDict = new Dictionary<string, Dictionary<string, decimal>>();
+
             string strFinalScore = "SELECT " +
                 "sc_attend.id AS sc_attend_id" +
                 ",student.id AS student_id" +
@@ -140,7 +147,8 @@ namespace SmartSchool.Evaluation
                 ",sc_attend.makeup_standard" +
                 ",sc_attend.remark" +
                 ",designate_final_score" +
-                ",sc_attend.subject_code AS subject_code " +
+                ",sc_attend.subject_code AS subject_code" +
+                ",course.course_name " +
                 "FROM sc_attend " +
                 "INNER JOIN course " +
                 "ON sc_attend.ref_course_id = course.id " +
@@ -159,8 +167,8 @@ namespace SmartSchool.Evaluation
                 string student_id = dr["student_id"].ToString();
                 string level = "";
                 if (dr["subj_level"] != null)
-                    level = dr["subj_level"].ToString();
-                string key = dr["subject"].ToString() + "_" + level;
+                    level = dr["subj_level"].ToString().Trim();
+                string key = dr["subject"].ToString().Trim() + "_" + level;
                 if (!studentFinalScoreDict.ContainsKey(student_id))
                     studentFinalScoreDict.Add(student_id, new Dictionary<string, DataRow>());
 
@@ -168,6 +176,43 @@ namespace SmartSchool.Evaluation
                     studentFinalScoreDict[student_id].Add(key, dr);
                 else
                     studentFinalScoreDict[student_id][key] = dr;
+
+
+                // 放入及格標準
+                if (!studentPassScoreDict.ContainsKey(student_id))
+                    studentPassScoreDict.Add(student_id, new Dictionary<string, decimal>());
+
+                // 放指定總成績
+                if (!studentHasFinalScoreDict.ContainsKey(student_id))
+                    studentHasFinalScoreDict.Add(student_id, new Dictionary<string, decimal>());
+
+                decimal passScore;
+                
+
+                if (!studentPassScoreDict[student_id].ContainsKey(key))
+                {                  
+                      studentPassScoreDict[student_id].Add(key, -1);
+                }
+                   
+
+                if (dr["passing_standard"] != null)
+                {
+                    if (decimal.TryParse(dr["passing_standard"].ToString(), out passScore))
+                    {
+                        studentPassScoreDict[student_id][key] = passScore;
+                    }
+                }
+
+                if (dr["designate_final_score"] != null)
+                {
+                    decimal finalScore;
+                    if (decimal.TryParse(dr["designate_final_score"].ToString(), out finalScore))
+                    {
+                        if (!studentHasFinalScoreDict[student_id].ContainsKey(key))
+                            studentHasFinalScoreDict[student_id].Add(key, finalScore);                       
+                    }
+                }
+
             }
 
 
@@ -254,6 +299,52 @@ namespace SmartSchool.Evaluation
                         }
                     }
                     #endregion
+
+
+                    #region 檢查修課及格標準
+                    if (studentPassScoreDict.ContainsKey(var.StudentID))
+                    {
+                        bool hasError = false;
+                        List<string> errorName = new List<string>();
+                        foreach (string key in studentPassScoreDict[var.StudentID].Keys)
+                        {
+                            // 分數 -1 沒設定
+                            if (studentPassScoreDict[var.StudentID][key] == -1)
+                            {
+                                string course_name = "";
+
+                                if (studentFinalScoreDict.ContainsKey(var.StudentID))
+                                {
+                                    if (studentFinalScoreDict[var.StudentID].ContainsKey(key))
+                                        course_name = studentFinalScoreDict[var.StudentID][key]["course_name"].ToString();
+                                }
+
+                                // 修課沒有設及格標準
+                                if (!_ErrorList.ContainsKey(var))
+                                    _ErrorList.Add(var, new List<string>());
+
+                                _ErrorList[var].Add("沒有" + course_name +"的修課及格標準，無法計算。");
+
+                                hasError = true;
+                            }
+                        }
+
+                        if (hasError)
+                        {
+                            canCalc = false;
+                        }
+                    }
+                    else
+                    {
+                        // 完全沒設
+                        if (!_ErrorList.ContainsKey(var))
+                            _ErrorList.Add(var, new List<string>());
+
+                        _ErrorList[var].Add("沒有" + schoolyear + "學年度第" + semester + "學期的修課及格標準，無法計算。");
+                        canCalc = false;
+                    }
+                    #endregion
+
                     #region 處理計算規則
                     XmlElement scoreCalcRule = ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var.StudentID) == null ? null : ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var.StudentID).ScoreCalcRuleElement;
                     if (scoreCalcRule == null)
@@ -417,14 +508,26 @@ namespace SmartSchool.Evaluation
                     #region 掃描修課紀錄填入新增或修改的清單中
                     foreach (StudentAttendCourseRecord sacRecord in var.AttendCourseList)
                     {
-                        if (!sacRecord.HasFinalScore && !sacRecord.NotIncludedInCalc)
-                        {
-                            if (!_ErrorList.ContainsKey(var))
-                                _ErrorList.Add(var, new List<string>());
-                            _ErrorList[var].Add("" + sacRecord.CourseName + "沒有修課總成績，無法計算。");
-                            continue;
-                        }
                         string key = sacRecord.Subject.Trim() + "_" + sacRecord.SubjectLevel.Trim();
+
+                        bool noFScore = true;
+                        // 檢查是否有指定總成績
+                        if (studentHasFinalScoreDict.ContainsKey(var.StudentID))
+                        {
+                            if (studentHasFinalScoreDict[var.StudentID].ContainsKey(key))
+                                noFScore = false;
+                        }
+
+                        if (noFScore)
+                        {
+                            if (!sacRecord.HasFinalScore && !sacRecord.NotIncludedInCalc)
+                            {
+                                if (!_ErrorList.ContainsKey(var))
+                                    _ErrorList.Add(var, new List<string>());
+                                _ErrorList[var].Add("" + sacRecord.CourseName + "沒有修課總成績，無法計算。");
+                                continue;
+                            }
+                        }                        
 
                         if (duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(var.StudentID + "_" + key) ? duplicateSubjectLevelMethodDict_Afterfilter[var.StudentID + "_" + key] == "" : false) // 如果使用者 沒有設定，要擋下，逼他們設定完畢才可以計算完畢
                         {
@@ -482,10 +585,7 @@ namespace SmartSchool.Evaluation
                                 #region 抓最高分
 
                                 string[] scoreNames = new string[] { "原始成績", "學年調整成績", "擇優採計成績", "補考成績", "重修成績" };
-
-
-
-
+                                
                                 foreach (string scorename in scoreNames)
                                 {
                                     decimal s;
@@ -499,10 +599,30 @@ namespace SmartSchool.Evaluation
                                 }
                                 #endregion
                                 decimal passscore;
-                                if (!applyLimit.ContainsKey(updateScoreInfo.GradeYear))
-                                    passscore = 60;
-                                else
-                                    passscore = applyLimit[updateScoreInfo.GradeYear];
+
+                                // 原本及格標準
+                                //if (!applyLimit.ContainsKey(updateScoreInfo.GradeYear))
+                                //    passscore = 60;
+                                //else
+                                //    passscore = applyLimit[updateScoreInfo.GradeYear];
+
+                                // 新寫及格標準
+                                passscore = 100;
+                                if (studentPassScoreDict.ContainsKey(var.StudentID))
+                                {
+                                    if (studentPassScoreDict[var.StudentID].ContainsKey(key))
+                                    {
+                                        passscore = studentPassScoreDict[var.StudentID][key];
+                                    }
+                                    else
+                                    {
+                                        if (!applyLimit.ContainsKey(updateScoreInfo.GradeYear))
+                                            passscore = 60;
+                                        else
+                                            passscore = applyLimit[updateScoreInfo.GradeYear];
+                                    }
+                                }
+
                                 updateScoreElement.SetAttribute("是否取得學分", (updateScoreElement.GetAttribute("不需評分") == "是" || maxScore >= passscore) ? "是" : "否");
                                 #endregion
                                 if (!updateSemesterSubjectScoreList.ContainsKey(sy)) updateSemesterSubjectScoreList.Add(sy, new Dictionary<int, Dictionary<string, XmlElement>>());
@@ -637,10 +757,27 @@ namespace SmartSchool.Evaluation
                                         #endregion
                                     }
                                     decimal passscore;
-                                    if (!applyLimit.ContainsKey(updateScoreInfo.GradeYear))
-                                        passscore = 60;
-                                    else
-                                        passscore = applyLimit[updateScoreInfo.GradeYear];
+                                    //if (!applyLimit.ContainsKey(updateScoreInfo.GradeYear))
+                                    //    passscore = 60;
+                                    //else
+                                    //    passscore = applyLimit[updateScoreInfo.GradeYear];
+                                    // 新寫及格標準
+                                    passscore = 100;
+                                    if (studentPassScoreDict.ContainsKey(var.StudentID))
+                                    {
+                                        if (studentPassScoreDict[var.StudentID].ContainsKey(key))
+                                        {
+                                            passscore = studentPassScoreDict[var.StudentID][key];
+                                        }
+                                        else
+                                        {
+                                            if (!applyLimit.ContainsKey(updateScoreInfo.GradeYear))
+                                                passscore = 60;
+                                            else
+                                                passscore = applyLimit[updateScoreInfo.GradeYear];
+                                        }
+                                    }
+
                                     updateScoreElement.SetAttribute("是否取得學分", (sacRecord.NotIncludedInCalc || maxScore >= passscore) ? "是" : "否");
                                     #endregion
                                     if (!updateSemesterSubjectScoreList.ContainsKey(sy)) updateSemesterSubjectScoreList.Add(sy, new Dictionary<int, Dictionary<string, XmlElement>>());
@@ -692,7 +829,7 @@ namespace SmartSchool.Evaluation
                                         {
                                             DataRow dr = studentFinalScoreDict[sacRecord.StudentID][sKey];
 
-                                            string passing_standard = "", makeup_standard = "", remark = "", designate_final_score = "",subject_code = "";
+                                            string passing_standard = "", makeup_standard = "", remark = "", designate_final_score = "", subject_code = "";
 
                                             decimal passing_standard_score, makeup_standard_score, designate_final_score_score;
 
@@ -779,10 +916,28 @@ namespace SmartSchool.Evaluation
                                         #endregion
                                     }
                                     decimal passscore;
-                                    if (!applyLimit.ContainsKey((int)gradeYear))
-                                        passscore = 60;
-                                    else
-                                        passscore = applyLimit[(int)gradeYear];
+                                    //if (!applyLimit.ContainsKey((int)gradeYear))
+                                    //    passscore = 60;
+                                    //else
+                                    //    passscore = applyLimit[(int)gradeYear];
+                                    // 新寫及格標準
+                                    passscore = 100;
+                                    if (studentPassScoreDict.ContainsKey(var.StudentID))
+                                    {
+                                        if (studentPassScoreDict[var.StudentID].ContainsKey(key))
+                                        {
+                                            passscore = studentPassScoreDict[var.StudentID][key];
+                                        }
+                                        else
+                                        {
+                                            if (!applyLimit.ContainsKey((int)gradeYear))
+                                                passscore = 60;
+                                            else
+                                                passscore = applyLimit[(int)gradeYear];
+                                        }
+                                    }
+
+
                                     #endregion
                                     newScoreInfo.SetAttribute("是否取得學分", (sacRecord.NotIncludedInCalc || maxScore >= passscore) ? "是" : "否");
                                     #endregion

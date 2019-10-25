@@ -19,8 +19,8 @@ namespace StudentDuplicateSubjectCheck
         {
             string regCode = "StudentDuplicateSubjectCheck";
             RibbonBarItem rptItem = MotherForm.RibbonBarItems["教務作業", "批次作業/檢視"];
-            rptItem["成績作業"]["重覆修課採計方式"].Enable = UserAcl.Current[regCode].Executable;
-            rptItem["成績作業"]["重覆修課採計方式"].Click += delegate
+            rptItem["成績作業"]["開課檢查"].Enable = UserAcl.Current[regCode].Executable;
+            rptItem["成績作業"]["開課檢查"].Click += delegate
             {
                 SelectGradeYear sgyf = new SelectGradeYear();
                 sgyf.ShowDialog();
@@ -28,7 +28,7 @@ namespace StudentDuplicateSubjectCheck
             };
             
             Catalog catalog1a = RoleAclSource.Instance["教務作業"]["功能按鈕"];
-            catalog1a.Add(new RibbonFeature(regCode, "重覆修課採計方式"));
+            catalog1a.Add(new RibbonFeature(regCode, "開課檢查"));
         }
     }
 }

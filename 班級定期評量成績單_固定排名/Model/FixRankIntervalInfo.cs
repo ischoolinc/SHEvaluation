@@ -146,7 +146,7 @@ namespace 班級定期評量成績單.Model
 
 
         public string _Level_lt10 { get; set; }
-        
+
 
 
         /// <summary>
@@ -162,7 +162,9 @@ namespace 班級定期評量成績單.Model
             set
             {
                 _Level_lt10 = value;
+                RoundNumber();
                 this.PutIvtervalValueToDic();
+                this.CaculateAll();
             }
         }
 
@@ -297,6 +299,59 @@ namespace 班級定期評量成績單.Model
             {
                 return 0;//轉型不成功 就回傳0
             }
+        }
+
+
+
+        private double ParseDouble(string count)
+        {
+            double countInt;
+
+            bool success = Double.TryParse(count, out countInt);
+
+            if (success)
+            {
+                return countInt;
+            }
+            else
+            {
+                return 0;//轉型不成功 就回傳0
+            }
+        }
+
+
+
+
+        /// <summary>
+        /// 計算所有的 把資料放進去
+        /// </summary>
+        private void CaculateAll()
+        {
+
+            foreach (int score in DicCaculateUPDown.Keys)
+            {
+
+                int upCount = CalculateUpdownCount("up", score);
+
+                this.DicCaculateUpResult.Add(score, upCount);
+
+                int downCount = CalculateUpdownCount("down", score);
+
+                this.DicCaculateDoownResult.Add(score, downCount);
+
+            }
+        }
+
+        /// <summary>
+        /// 處理四捨五入
+        /// </summary>
+        private void RoundNumber()
+        {
+            this.Avg_top_25 = Math.Round(ParseDouble(Avg_top_25), 2) == 0 ? "" : Math.Round(ParseDouble(Avg_top_25), 2).ToString();
+            this.Avg_top_50 = Math.Round(ParseDouble(Avg_top_50), 2) == 0 ? "" : Math.Round(ParseDouble(Avg_top_50), 2).ToString();
+            this.Avg = Math.Round(ParseDouble(Avg), 2) == 0 ? "" : Math.Round(ParseDouble(Avg), 2).ToString();
+            this.Avg_bottom_25 = Math.Round(ParseDouble(Avg_bottom_25), 2) == 0 ? "" : Math.Round(ParseDouble(Avg_top_50), 2).ToString();
+            this.Avg_bottom_50 = Math.Round(ParseDouble(Avg_bottom_50), 2) == 0 ? "" : Math.Round(ParseDouble(Avg_top_50), 2).ToString(); ;
         }
     }
 }

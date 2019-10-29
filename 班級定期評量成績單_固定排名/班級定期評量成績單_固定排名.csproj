@@ -127,7 +127,6 @@
     <Compile Include="Configure.cs" />
     <Compile Include="Model\Dept.cs" />
     <Compile Include="Model\FixRankIntervalInfo.cs" />
-    <Compile Include="Model\IntervalInfoByClass.cs" />
     <Compile Include="Model\RankInfo.cs" />
     <Compile Include="Model\StudentFixedRankInfo.cs" />
     <Compile Include="NewConfigure.cs">

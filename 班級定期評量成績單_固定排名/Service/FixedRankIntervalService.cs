@@ -118,7 +118,7 @@ FROM class
 			            AND ref_exam_id = {2}
 			            AND  school_year ='{0}'
 			            AND  semester = '{1}'
-                        AND ( rank_name = '{3}' OR rank_name = '{4}' OR rank_name = '{5}')
+                        AND ( rank_name = '{3}' OR rank_name = '{4}' OR rank_name = '{5}' OR rank_type LIKE'%類別%')
                         AND is_alive = true 
             )SELECT 
 	           *

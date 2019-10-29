@@ -41,6 +41,10 @@
             this.cboSemester = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnSaveConfig = new DevComponents.DotNetBar.ButtonX();
+            this.btnPrint = new DevComponents.DotNetBar.ButtonX();
+            this.circularProgress1 = new DevComponents.DotNetBar.Controls.CircularProgress();
+            this.btnCancel = new DevComponents.DotNetBar.ButtonX();
             this.iptRd = new DevComponents.Editors.IntegerInput();
             this.labelX13 = new DevComponents.DotNetBar.LabelX();
             this.labelX12 = new DevComponents.DotNetBar.LabelX();
@@ -52,11 +56,7 @@
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.labelX9 = new DevComponents.DotNetBar.LabelX();
             this.labelX11 = new DevComponents.DotNetBar.LabelX();
-            this.btnSaveConfig = new DevComponents.DotNetBar.ButtonX();
-            this.btnPrint = new DevComponents.DotNetBar.ButtonX();
-            this.btnCancel = new DevComponents.DotNetBar.ButtonX();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.circularProgress1 = new DevComponents.DotNetBar.Controls.CircularProgress();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iptRd)).BeginInit();
@@ -210,6 +210,7 @@
             this.cboSchoolYear.Size = new System.Drawing.Size(54, 25);
             this.cboSchoolYear.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.cboSchoolYear.TabIndex = 3;
+            this.cboSchoolYear.SelectedIndexChanged += new System.EventHandler(this.cboSchoolYear_SelectedIndexChanged);
             this.cboSchoolYear.TextChanged += new System.EventHandler(this.ExamChanged);
             // 
             // cboSemester
@@ -276,6 +277,71 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(550, 509);
             this.panel1.TabIndex = 0;
+            // 
+            // btnSaveConfig
+            // 
+            this.btnSaveConfig.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnSaveConfig.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnSaveConfig.Enabled = false;
+            this.btnSaveConfig.Location = new System.Drawing.Point(302, 452);
+            this.btnSaveConfig.Name = "btnSaveConfig";
+            this.btnSaveConfig.Size = new System.Drawing.Size(75, 23);
+            this.btnSaveConfig.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.btnSaveConfig.TabIndex = 0;
+            this.btnSaveConfig.Text = "儲存設定";
+            this.btnSaveConfig.Tooltip = "儲存當前的樣板設定。";
+            this.btnSaveConfig.Click += new System.EventHandler(this.SaveTemplate);
+            // 
+            // btnPrint
+            // 
+            this.btnPrint.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnPrint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPrint.BackColor = System.Drawing.Color.Transparent;
+            this.btnPrint.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnPrint.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnPrint.Enabled = false;
+            this.btnPrint.Location = new System.Drawing.Point(383, 452);
+            this.btnPrint.Name = "btnPrint";
+            this.btnPrint.Size = new System.Drawing.Size(75, 23);
+            this.btnPrint.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.btnPrint.TabIndex = 1;
+            this.btnPrint.Text = "確定";
+            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
+            // 
+            // circularProgress1
+            // 
+            this.circularProgress1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.circularProgress1.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.circularProgress1.BackgroundStyle.Class = "";
+            this.circularProgress1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.circularProgress1.FocusCuesEnabled = false;
+            this.circularProgress1.Location = new System.Drawing.Point(536, 141);
+            this.circularProgress1.Name = "circularProgress1";
+            this.circularProgress1.ProgressBarType = DevComponents.DotNetBar.eCircularProgressType.Dot;
+            this.circularProgress1.ProgressColor = System.Drawing.Color.LimeGreen;
+            this.circularProgress1.ProgressTextVisible = true;
+            this.circularProgress1.Size = new System.Drawing.Size(0, 75);
+            this.circularProgress1.Style = DevComponents.DotNetBar.eDotNetBarStyle.Windows7;
+            this.circularProgress1.TabIndex = 13;
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancel.BackColor = System.Drawing.Color.Transparent;
+            this.btnCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(464, 452);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.btnCancel.TabIndex = 2;
+            this.btnCancel.Text = "取消";
             // 
             // iptRd
             // 
@@ -430,50 +496,6 @@
             this.labelX11.TabIndex = 5;
             this.labelX11.Text = "樣板設定檔：";
             // 
-            // btnSaveConfig
-            // 
-            this.btnSaveConfig.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.btnSaveConfig.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnSaveConfig.Enabled = false;
-            this.btnSaveConfig.Location = new System.Drawing.Point(302, 452);
-            this.btnSaveConfig.Name = "btnSaveConfig";
-            this.btnSaveConfig.Size = new System.Drawing.Size(75, 23);
-            this.btnSaveConfig.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.btnSaveConfig.TabIndex = 0;
-            this.btnSaveConfig.Text = "儲存設定";
-            this.btnSaveConfig.Tooltip = "儲存當前的樣板設定。";
-            this.btnSaveConfig.Click += new System.EventHandler(this.SaveTemplate);
-            // 
-            // btnPrint
-            // 
-            this.btnPrint.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.btnPrint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPrint.BackColor = System.Drawing.Color.Transparent;
-            this.btnPrint.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnPrint.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnPrint.Enabled = false;
-            this.btnPrint.Location = new System.Drawing.Point(383, 452);
-            this.btnPrint.Name = "btnPrint";
-            this.btnPrint.Size = new System.Drawing.Size(75, 23);
-            this.btnPrint.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.btnPrint.TabIndex = 1;
-            this.btnPrint.Text = "確定";
-            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.BackColor = System.Drawing.Color.Transparent;
-            this.btnCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(464, 452);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.btnCancel.TabIndex = 2;
-            this.btnCancel.Text = "取消";
-            // 
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.Transparent;
@@ -481,27 +503,6 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(200, 100);
             this.panel4.TabIndex = 12;
-            // 
-            // circularProgress1
-            // 
-            this.circularProgress1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.circularProgress1.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.circularProgress1.BackgroundStyle.Class = "";
-            this.circularProgress1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.circularProgress1.FocusCuesEnabled = false;
-            this.circularProgress1.Location = new System.Drawing.Point(536, 141);
-            this.circularProgress1.Name = "circularProgress1";
-            this.circularProgress1.ProgressBarType = DevComponents.DotNetBar.eCircularProgressType.Dot;
-            this.circularProgress1.ProgressColor = System.Drawing.Color.LimeGreen;
-            this.circularProgress1.ProgressTextVisible = true;
-            this.circularProgress1.Size = new System.Drawing.Size(0, 75);
-            this.circularProgress1.Style = DevComponents.DotNetBar.eDotNetBarStyle.Windows7;
-            this.circularProgress1.TabIndex = 13;
             // 
             // ConfigForm
             // 

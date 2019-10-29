@@ -114,10 +114,12 @@ namespace 班級定期評量成績單_固定排名
                 int i;
                 if (int.TryParse(_DefalutSchoolYear, out i))
                 {
-                    for (int j = 0; j < 5; j++)
-                    {
-                        cboSchoolYear.Items.Add("" + (i - j));
-                    }
+                    //for (int j = 0; j < 5; j++)
+                    //{
+                    //    cboSchoolYear.Items.Add("" + (i - j));
+                    //}
+
+                    cboSchoolYear.Items.Add("" + (i));
                 }
                 cboSemester.Items.Add("1");
                 cboSemester.Items.Add("2");
@@ -575,6 +577,11 @@ namespace 班級定期評量成績單_固定排名
         private void linkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Program.CreateFieldTemplate();
+        }
+
+        private void cboSchoolYear_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

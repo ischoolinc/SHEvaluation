@@ -110,7 +110,7 @@ WITH  sp_rank_matrix  AS
 		AND semester = {1}
 		AND item_type = '{4}'	
 		AND is_alive = true 
-		--AND rank_name IN (SELECT  class_name FROM  class WHERE id = {3} ) --班級名稱
+		--AND( rank_name IN (SELECT  class_name FROM  class WHERE id = {3} ) OR  rank_type LIKE '%類別%') --班級名稱
 		AND ref_exam_id = {2} --某次定期評量
 
 )SELECT 
@@ -158,7 +158,7 @@ FROM  sp_rank_matrix
                 }
 
                 //取用處邏輯// "科目成績" + "^^^" + "班排名" + "grade" + stuRec.RefClass.GradeYear + "^^^" + stuRec.RefClass.ClassName + "^^^" + sceTakeRecord.Subject;//@@@@@ 取固定排名的key值
-                key = itemtype + "^^^" + rankType + "grade" + gradeYear + "^^^" + rankName + "^^^" + itemName;
+                key = itemtype + "^^^" + rankType+"^^^" + "grade" + gradeYear + "^^^" + rankName + "^^^" + itemName;
 
                 if (!rankInfo.ContainsKey(key))
                 {

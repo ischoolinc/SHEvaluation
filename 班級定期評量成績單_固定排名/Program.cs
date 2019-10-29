@@ -9,8 +9,8 @@ using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
 using SmartSchool;
 using FISCA.Permission;
-using 班級定期評量成績單.Service;
-using 班級定期評量成績單.Model;
+using 班級定期評量成績單_固定排名.Service;
+using 班級定期評量成績單_固定排名.Model;
 
 
 namespace 班級定期評量成績單_固定排名
@@ -1389,7 +1389,8 @@ namespace 班級定期評量成績單_固定排名
                                                                     {
                                                                         foreach (K12.Data.StudentTagRecord stuTag in studentTags[studentID])
                                                                         {
-                                                                            key = "科目成績" + "^^^" + "類別2排名" + "^^^" + "grade" + stuRec.RefClass.GradeYear + "^^^" + studentTags[studentID] + "^^^" + sceTakeRecord.Subject;//@@@@@ 取固定排名的key值
+                                                                            string studentTag = stuTag.Name;
+                                                                            key = "科目成績" + "^^^" + "類別2排名" + "^^^" + "grade" + stuRec.RefClass.GradeYear + "^^^" + studentTag + "^^^" + sceTakeRecord.Subject;//@@@@@ 取固定排名的key值
                                                                             if (dicFixedRankData.ContainsKey(stuRec.RefClass.ClassID)) //如果固定排名裡有學生的ID      
                                                                             {
                                                                                 if (dicFixedRankData[stuRec.RefClass.ClassID].ContainsKey(stuRec.StudentID))
@@ -2352,7 +2353,7 @@ namespace 班級定期評量成績單_固定排名
             #region 基本欄位
             builder.Writeln("基本欄位");
             builder.StartTable();
-            foreach (string field in new string[] { "學年度", "學期", "學校名稱", "學校地址", "學校電話", "科別名稱", "定期評量", "班級", "班導師", "類別排名1", "類別排名2" })
+            foreach (string field in new string[] { "學年度", "學期", "學校名稱", "學校地址", "學校電話", "科別名稱", "定期評量", "班級", "班導師" })
             {
                 builder.InsertCell();
                 builder.Write(field);
@@ -2624,19 +2625,19 @@ namespace 班級定期評量成績單_固定排名
             builder.InsertCell();
             builder.InsertCell();
             builder.InsertCell();
-            builder.Write("總分");
+            builder.Write("  ");
             builder.InsertCell();
             builder.Write("總分排名");
             builder.InsertCell();
-            builder.Write("平均");
+            builder.Write("  ");
             builder.InsertCell();
             builder.Write("平均排名");
             builder.InsertCell();
-            builder.Write("加權總分");
+            builder.Write("  ");
             builder.InsertCell();
             builder.Write("加權總分排名");
             builder.InsertCell();
-            builder.Write("加權平均");
+            builder.Write("  ");
             builder.InsertCell();
             builder.Write("加權平均排名");
             builder.EndRow();
@@ -2681,19 +2682,19 @@ namespace 班級定期評量成績單_固定排名
             builder.InsertCell();
             builder.InsertCell();
             builder.InsertCell();
-            builder.Write("總分");
+            builder.Write("  ");
             builder.InsertCell();
             builder.Write("總分排名");
             builder.InsertCell();
-            builder.Write("平均");
+            builder.Write("  ");
             builder.InsertCell();
             builder.Write("平均排名");
             builder.InsertCell();
-            builder.Write("加權總分");
+            builder.Write("  ");
             builder.InsertCell();
             builder.Write("加權總分排名");
             builder.InsertCell();
-            builder.Write("加權平均");
+            builder.Write("");
             builder.InsertCell();
             builder.Write("加權平均排名");
             builder.EndRow();
@@ -2753,6 +2754,14 @@ namespace 班級定期評量成績單_固定排名
                 //}
                 //builder.EndRow();
 
+
+                builder.InsertCell(); builder.Write("頂標");
+                for (int subjectIndex = 1; subjectIndex <= maxSubjectNum; subjectIndex++)
+                {
+                    builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "頂標" + subjectIndex + " \\* MERGEFORMAT ", "«C" + subjectIndex + "»");
+                }
+
+
                 builder.InsertCell(); builder.Write("高標");
                 for (int subjectIndex = 1; subjectIndex <= maxSubjectNum; subjectIndex++)
                 {
@@ -2771,6 +2780,15 @@ namespace 班級定期評量成績單_固定排名
                     builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "低標" + subjectIndex + " \\* MERGEFORMAT ", "«C" + subjectIndex + "»");
                 }
                 builder.EndRow();
+
+
+
+                builder.InsertCell(); builder.Write("底標");
+                for (int subjectIndex = 1; subjectIndex <= maxSubjectNum; subjectIndex++)
+                {
+                    builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "底標" + subjectIndex + " \\* MERGEFORMAT ", "«C" + subjectIndex + "»");
+                }
+
 
                 //Jean 增加固定排名邏輯 (頂標)
                 builder.InsertCell(); builder.Write("底標");
@@ -2969,6 +2987,12 @@ namespace 班級定期評量成績單_固定排名
                 builder.InsertCell(); builder.Write(key);
             }
             builder.EndRow();
+            builder.InsertCell(); builder.Write("頂標");
+            foreach (string key in new string[] { "總分班", "總分科", "總分年", "平均班", "平均科", "平均年", "加權總分班", "加權總分科", "加權總分年", "加權平均班", "加權平均科", "加權平均年", "類1總分", "類1平均", "類1加權總分", "類1加權平均", "類2總分", "類2平均", "類2加權總分", "類2加權平均" })
+            {
+                builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "高標 \\* MERGEFORMAT ", "«C»");
+            }
+            builder.EndRow();
             builder.InsertCell(); builder.Write("高標");
             foreach (string key in new string[] { "總分班", "總分科", "總分年", "平均班", "平均科", "平均年", "加權總分班", "加權總分科", "加權總分年", "加權平均班", "加權平均科", "加權平均年", "類1總分", "類1平均", "類1加權總分", "類1加權平均", "類2總分", "類2平均", "類2加權總分", "類2加權平均" })
             {
@@ -2987,12 +3011,20 @@ namespace 班級定期評量成績單_固定排名
                 builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "低標 \\* MERGEFORMAT ", "«C»");
             }
             builder.EndRow();
+            builder.InsertCell(); builder.Write("底標");
+            foreach (string key in new string[] { "總分班", "總分科", "總分年", "平均班", "平均科", "平均年", "加權總分班", "加權總分科", "加權總分年", "加權平均班", "加權平均科", "加權平均年", "類1總分", "類1平均", "類1加權總分", "類1加權平均", "類2總分", "類2平均", "類2加權總分", "類2加權平均" })
+            {
+                builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "底標 \\* MERGEFORMAT ", "«C»");
+            }
+
+
+            builder.EndRow();
             //builder.InsertCell(); builder.Write("標準差");
             //foreach (string key in new string[] { "總分班", "總分科", "總分年", "平均班", "平均科", "平均年", "加權總分班", "加權總分科", "加權總分年", "加權平均班", "加權平均科", "加權平均年", "類1總分", "類1平均", "類1加權總分", "類1加權平均", "類2總分", "類2平均", "類2加權總分", "類2加權平均" })
             //{
             //    builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "標準差 \\* MERGEFORMAT ", "«C»");
             //}
-            builder.EndRow();
+            //builder.EndRow();
             builder.InsertCell(); builder.Write("100以上");
             foreach (string key in new string[] { "總分班", "總分科", "總分年", "平均班", "平均科", "平均年", "加權總分班", "加權總分科", "加權總分年", "加權平均班", "加權平均科", "加權平均年", "類1總分", "類1平均", "類1加權總分", "類1加權平均", "類2總分", "類2平均", "類2加權總分", "類2加權平均" })
             {

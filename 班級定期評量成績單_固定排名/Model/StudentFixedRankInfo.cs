@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace 班級定期評量成績單.Model
+namespace 班級定期評量成績單_固定排名.Model
 {
 
 

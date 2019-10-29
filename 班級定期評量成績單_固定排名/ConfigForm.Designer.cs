@@ -410,7 +410,7 @@
             // 
             this.linkLabel4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel4.AutoSize = true;
-            this.linkLabel4.Location = new System.Drawing.Point(306, 50);
+            this.linkLabel4.Location = new System.Drawing.Point(464, 52);
             this.linkLabel4.Name = "linkLabel4";
             this.linkLabel4.Size = new System.Drawing.Size(73, 17);
             this.linkLabel4.TabIndex = 2;
@@ -422,7 +422,7 @@
             // 
             this.linkLabel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel3.AutoSize = true;
-            this.linkLabel3.Location = new System.Drawing.Point(227, 50);
+            this.linkLabel3.Location = new System.Drawing.Point(385, 52);
             this.linkLabel3.Name = "linkLabel3";
             this.linkLabel3.Size = new System.Drawing.Size(73, 17);
             this.linkLabel3.TabIndex = 1;
@@ -434,7 +434,7 @@
             // 
             this.linkLabel5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel5.AutoSize = true;
-            this.linkLabel5.Location = new System.Drawing.Point(267, 483);
+            this.linkLabel5.Location = new System.Drawing.Point(427, 483);
             this.linkLabel5.Name = "linkLabel5";
             this.linkLabel5.Size = new System.Drawing.Size(112, 17);
             this.linkLabel5.TabIndex = 11;

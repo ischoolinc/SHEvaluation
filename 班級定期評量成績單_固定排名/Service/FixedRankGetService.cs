@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
-using 班級定期評量成績單.Model;
+using 班級定期評量成績單_固定排名.Model;
 
-namespace 班級定期評量成績單.Service
+namespace 班級定期評量成績單_固定排名.Service
 {
     class FixedRankGetService
     {
@@ -118,7 +118,7 @@ WITH  sp_rank_matrix  AS
 		, rank_detail.ref_student_id 
 		, rank_detail.rank
 FROM  sp_rank_matrix
-	LEFT JOIN   ( SELECT * FROM rank_detail  WHERE ref_student_id IN  (SELECT id FROM student WHERE ref_class_id ={3}) )AS rank_detail    
+	INNER JOIN   ( SELECT * FROM rank_detail  WHERE ref_student_id IN  (SELECT id FROM student WHERE ref_class_id ={3}) )AS rank_detail    
     	ON rank_detail.ref_matrix_id = sp_rank_matrix.id 
 ";
             sql = string.Format(sql, this.SchoolYear, this.Semester, this.ExamID, classID, itemType);

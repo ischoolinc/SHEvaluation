@@ -6,7 +6,7 @@ using System.Text;
 using System.Reflection;
 
 
-namespace 班級定期評量成績單.Model
+namespace 班級定期評量成績單_固定排名.Model
 {
     /// <summary>
     /// 級距資訊

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using SmartSchool.Customization.Data;
 using System.Data;
-using 班級定期評量成績單.Model;
+using 班級定期評量成績單_固定排名.Model;
 
-namespace 班級定期評量成績單.Service
+namespace 班級定期評量成績單_固定排名.Service
 {
     /// <summary>
     /// 取得固定排名相關資料使用

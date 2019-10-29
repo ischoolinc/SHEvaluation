@@ -121,8 +121,8 @@ namespace 班級定期評量成績單_固定排名
 
                     cboSchoolYear.Items.Add("" + (i));
                 }
-                cboSemester.Items.Add("1");
-                cboSemester.Items.Add("2");
+                cboSemester.Items.Add(_DefaultSemester);
+                //cboSemester.Items.Add("2");
                 cboExam.Items.Clear();
                 cboRefExam.Items.Clear();
                 cboExam.Items.AddRange(exams.ToArray());

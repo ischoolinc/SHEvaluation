@@ -6,7 +6,7 @@ using System.IO;
 
 namespace 班級定期評量成績單_固定排名
 {
-    [FISCA.UDT.TableName("ischool.班級定期評量成績單.Configure")]
+    [FISCA.UDT.TableName("ischool.班級定期評量成績單_固定排名.Configure")]
     public class Configure : FISCA.UDT.ActiveRecord
     {
         public Configure()

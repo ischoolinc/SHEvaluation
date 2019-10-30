@@ -490,7 +490,7 @@ namespace 班級定期評量成績單_固定排名
                                                 if (!studentExamSores[attendStudent.StudentID].ContainsKey(courseRecord.Subject)) studentExamSores[attendStudent.StudentID].Add(courseRecord.Subject, new Dictionary<string, ExamScoreInfo>());
                                                 studentExamSores[attendStudent.StudentID][courseRecord.Subject].Add("" + attendStudent.CourseID, null);
                                             }
-                                            foreach (var examScoreRec in courseRecord.ExamScoreList)
+                                            foreach (var examScoreRec in courseRecord.ExamScoreList)//
                                             {
                                                 if (examScoreRec.ExamName == conf.ExamRecord.Name)
                                                 {

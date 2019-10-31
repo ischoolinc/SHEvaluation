@@ -130,6 +130,67 @@ namespace RegularAssessmentTranscriptFixedRank
                 table.Columns.Add("姓名");
                 table.Columns.Add("系統編號");
                 table.Columns.Add("定期評量");
+
+                // 新增合併欄位
+                List<string> r1List = new List<string>();
+                List<string> r2List = new List<string>();
+                List<string> r3List = new List<string>();
+
+                r1List.Add("總分班排名");
+                r1List.Add("總分科排名");
+                r1List.Add("總分全校排名");
+                r1List.Add("平均班排名");
+                r1List.Add("平均科排名");
+                r1List.Add("平均全校排名");
+                r1List.Add("加權總分班排名");
+                r1List.Add("加權總分科排名");
+                r1List.Add("加權總分全校排名");
+                r1List.Add("加權平均班排名");
+                r1List.Add("加權平均科排名");
+                r1List.Add("加權平均全校排名");
+                r1List.Add("類別1總分排名");
+                r1List.Add("類別1平均排名");
+                r1List.Add("類別1加權總分排名");
+                r1List.Add("類別1加權平均排名");
+                r1List.Add("類別2總分排名");
+                r1List.Add("類別2平均排名");
+                r1List.Add("類別2加權總分排名");
+                r1List.Add("類別2加權平均排名");
+
+                r2List.Add("pr");
+                r2List.Add("percentile");
+                r2List.Add("avg_top_25");
+                r2List.Add("avg_top_50");
+                r2List.Add("avg");
+                r2List.Add("avg_bottom_50");
+                r2List.Add("avg_bottom_25");
+                r2List.Add("level_gte100");
+                r2List.Add("level_90");
+                r2List.Add("level_80");
+                r2List.Add("level_70");
+                r2List.Add("level_60");
+                r2List.Add("level_50");
+                r2List.Add("level_40");
+                r2List.Add("level_30");
+                r2List.Add("level_20");
+                r2List.Add("level_10");
+                r2List.Add("level_lt10");
+
+                r3List.Add("班排名");
+                r3List.Add("科排名");
+                r3List.Add("全校排名");
+                r3List.Add("類別1排名");
+                r3List.Add("類別2排名");
+
+                foreach (string r1 in r1List)
+                {
+                    foreach (string r2 in r2List)
+                    {
+                        string it = r1 + "_" + r2;
+                        table.Columns.Add(it);
+                    }
+                }
+
                 for (int subjectIndex = 1; subjectIndex <= conf.SubjectLimit; subjectIndex++)
                 {
                     table.Columns.Add("科目名稱" + subjectIndex);
@@ -146,6 +207,16 @@ namespace RegularAssessmentTranscriptFixedRank
                     table.Columns.Add("類別2排名母數" + subjectIndex);
                     table.Columns.Add("全校排名" + subjectIndex);
                     table.Columns.Add("全校排名母數" + subjectIndex);
+
+                    foreach (string r3 in r3List)
+                    {
+                        foreach (string r2 in r2List)
+                        {
+                            string it = r3 + subjectIndex + "_" + r2;
+                            table.Columns.Add(it);
+                        }
+                    }
+
                 }
                 table.Columns.Add("總分");
                 table.Columns.Add("總分班排名");
@@ -265,6 +336,10 @@ namespace RegularAssessmentTranscriptFixedRank
                 // 新增服務學習欄位
                 table.Columns.Add("學習服務區間加總");
                 table.Columns.Add("學習服務當學期加總");
+
+                // 標頭
+                table.TableName = "ss";
+                table.WriteXmlSchema(Application.StartupPath + "\\sS.xml");
 
                 #endregion
                 //宣告產生的報表
@@ -693,8 +768,6 @@ namespace RegularAssessmentTranscriptFixedRank
                                                     //計算加權總分 - 2014/10/9 改為decimal
                                                     printSubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
                                                     printSubjectCreditSum += sceTakeRecord.CreditDec();
-
-                                                                                                       
                                                 }
                                                 else
                                                 {
@@ -715,9 +788,6 @@ namespace RegularAssessmentTranscriptFixedRank
                                                     //計算加權總分
                                                     tag1SubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
                                                     tag1SubjectCreditSum += sceTakeRecord.CreditDec();
-
-
-                                                
                                                 }
                                                 else
                                                 {
@@ -738,8 +808,6 @@ namespace RegularAssessmentTranscriptFixedRank
                                                     //計算加權總分
                                                     tag2SubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
                                                     tag2SubjectCreditSum += sceTakeRecord.CreditDec();
-
-                                                 
                                                 }
                                                 else
                                                 {
@@ -757,7 +825,7 @@ namespace RegularAssessmentTranscriptFixedRank
                                         studentPrintSubjectSum.Add(studentID, printSubjectSum);
                                         //平均四捨五入至小數點第二位
                                         studentPrintSubjectAvg.Add(studentID, Math.Round(printSubjectSum / printSubjectCount, AvgRd, MidpointRounding.AwayFromZero));
-                                       
+
                                         #endregion
                                         if (printSubjectCreditSum > 0)
                                         {
@@ -766,7 +834,7 @@ namespace RegularAssessmentTranscriptFixedRank
                                             studentPrintSubjectSumW.Add(studentID, printSubjectSumW);
                                             //加權平均四捨五入至小數點第二位
                                             studentPrintSubjectAvgW.Add(studentID, Math.Round(printSubjectSumW / printSubjectCreditSum, AvgRd, MidpointRounding.AwayFromZero));
-                                           
+
                                             #endregion
                                         }
                                     }
@@ -777,7 +845,7 @@ namespace RegularAssessmentTranscriptFixedRank
                                         studentTag1SubjectSum.Add(studentID, tag1SubjectSum);
                                         //平均四捨五入至小數點第二位
                                         studentTag1SubjectAvg.Add(studentID, Math.Round(tag1SubjectSum / tag1SubjectCount, AvgRd, MidpointRounding.AwayFromZero));
-                                       
+
                                     }
                                     //類別2總分平均排名
                                     if (tag2SubjectCount > 0)
@@ -786,7 +854,7 @@ namespace RegularAssessmentTranscriptFixedRank
                                         studentTag2SubjectSum.Add(studentID, tag2SubjectSum);
                                         //平均四捨五入至小數點第二位
                                         studentTag2SubjectAvg.Add(studentID, Math.Round(tag2SubjectSum / tag2SubjectCount, AvgRd, MidpointRounding.AwayFromZero));
-                                      
+
                                     }
                                 }
                                 progressCount++;
@@ -795,11 +863,7 @@ namespace RegularAssessmentTranscriptFixedRank
                         }
                         #endregion
 
-                        
-                        // 標頭
-                        table.TableName = "ss";
-                        table.WriteXmlSchema(Application.StartupPath + "\\sS.xml");
-                        
+
                         // 先取得 K12 StudentRec,因為後面透過 k12.data 取資料有的傳入ID,有的傳入 Record 有點亂
                         List<K12.Data.StudentRecord> StudRecList = new List<K12.Data.StudentRecord>();
                         List<string> StudIDList = (from data in studentRecords select data.StudentID).ToList();
@@ -1116,26 +1180,115 @@ namespace RegularAssessmentTranscriptFixedRank
                                                         row["學分數" + subjectIndex] = sceTakeRecord.CreditDec();
                                                         row["科目成績" + subjectIndex] = sceTakeRecord.SpecialCase == "" ? ("" + sceTakeRecord.ExamScore) : sceTakeRecord.SpecialCase;
                                                         #region 班排名及落點分析
-
+                                                        string k1 = "";
                                                         if (RankMatrixDataDict.ContainsKey(studentID))
                                                         {
+                                                            k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_班排名";
+                                                            if (RankMatrixDataDict[studentID].ContainsKey(k1))
+                                                            {
+                                                                if (RankMatrixDataDict[studentID][k1]["rank"] != null)
+                                                                    row["班排名" + subjectIndex] = RankMatrixDataDict[studentID][k1]["rank"].ToString();
+
+                                                                if (RankMatrixDataDict[studentID][k1]["matrix_count"] != null)
+                                                                    row["班排名母數" + subjectIndex] = RankMatrixDataDict[studentID][k1]["matrix_count"].ToString();
+
+                                                                // 五標PR填值
+                                                                foreach (string rItem in r2List)
+                                                                {
+                                                                    if (RankMatrixDataDict[studentID][k1][rItem] != null)
+                                                                        row["班排名" + subjectIndex + "_" + rItem] = RankMatrixDataDict[studentID][k1][rItem].ToString();
+                                                                }
+                                                            }
 
                                                         }
 
-
-
                                                         #endregion
                                                         #region 科排名及落點分析
+                                                        if (RankMatrixDataDict.ContainsKey(studentID))
+                                                        {
+                                                            k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_科排名";
+                                                            if (RankMatrixDataDict[studentID].ContainsKey(k1))
+                                                            {
+                                                                if (RankMatrixDataDict[studentID][k1]["rank"] != null)
+                                                                    row["科排名" + subjectIndex] = RankMatrixDataDict[studentID][k1]["rank"].ToString();
+
+                                                                if (RankMatrixDataDict[studentID][k1]["matrix_count"] != null)
+                                                                    row["科排名母數" + subjectIndex] = RankMatrixDataDict[studentID][k1]["matrix_count"].ToString();
+
+                                                                // 五標PR填值
+                                                                foreach (string rItem in r2List)
+                                                                {
+                                                                    if (RankMatrixDataDict[studentID][k1][rItem] != null)
+                                                                        row["科排名" + subjectIndex + "_" + rItem] = RankMatrixDataDict[studentID][k1][rItem].ToString();
+                                                                }
+                                                            }
+                                                        }
 
                                                         #endregion
+
                                                         #region 全校排名及落點分析
+                                                        if (RankMatrixDataDict.ContainsKey(studentID))
+                                                        {
+                                                            k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_年排名";
+                                                            if (RankMatrixDataDict[studentID].ContainsKey(k1))
+                                                            {
+                                                                if (RankMatrixDataDict[studentID][k1]["rank"] != null)
+                                                                    row["全校排名" + subjectIndex] = RankMatrixDataDict[studentID][k1]["rank"].ToString();
+
+                                                                if (RankMatrixDataDict[studentID][k1]["matrix_count"] != null)
+                                                                    row["全校排名母數" + subjectIndex] = RankMatrixDataDict[studentID][k1]["matrix_count"].ToString();
+
+                                                                // 五標PR填值
+                                                                foreach (string rItem in r2List)
+                                                                {
+                                                                    if (RankMatrixDataDict[studentID][k1][rItem] != null)
+                                                                        row["全校排名" + subjectIndex + "_" + rItem] = RankMatrixDataDict[studentID][k1][rItem].ToString();
+                                                                }
+                                                            }
+                                                        }
 
                                                         #endregion
                                                         #region 類別1排名及落點分析
+                                                        if (RankMatrixDataDict.ContainsKey(studentID))
+                                                        {
+                                                            k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_類別1排名";
+                                                            if (RankMatrixDataDict[studentID].ContainsKey(k1))
+                                                            {
+                                                                if (RankMatrixDataDict[studentID][k1]["rank"] != null)
+                                                                    row["類別1排名" + subjectIndex] = RankMatrixDataDict[studentID][k1]["rank"].ToString();
 
+                                                                if (RankMatrixDataDict[studentID][k1]["matrix_count"] != null)
+                                                                    row["類別1排名母數" + subjectIndex] = RankMatrixDataDict[studentID][k1]["matrix_count"].ToString();
+
+                                                                // 五標PR填值
+                                                                foreach (string rItem in r2List)
+                                                                {
+                                                                    if (RankMatrixDataDict[studentID][k1][rItem] != null)
+                                                                        row["類別1排名" + subjectIndex + "_" + rItem] = RankMatrixDataDict[studentID][k1][rItem].ToString();
+                                                                }
+                                                            }
+                                                        }
                                                         #endregion
                                                         #region 類別2排名及落點分析
+                                                        if (RankMatrixDataDict.ContainsKey(studentID))
+                                                        {
+                                                            k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_類別2排名";
+                                                            if (RankMatrixDataDict[studentID].ContainsKey(k1))
+                                                            {
+                                                                if (RankMatrixDataDict[studentID][k1]["rank"] != null)
+                                                                    row["類別2排名" + subjectIndex] = RankMatrixDataDict[studentID][k1]["rank"].ToString();
 
+                                                                if (RankMatrixDataDict[studentID][k1]["matrix_count"] != null)
+                                                                    row["類別2排名母數" + subjectIndex] = RankMatrixDataDict[studentID][k1]["matrix_count"].ToString();
+
+                                                                // 五標PR填值
+                                                                foreach (string rItem in r2List)
+                                                                {
+                                                                    if (RankMatrixDataDict[studentID][k1][rItem] != null)
+                                                                        row["類別2排名" + subjectIndex + "_" + rItem] = RankMatrixDataDict[studentID][k1][rItem].ToString();
+                                                                }
+                                                            }
+                                                        }
                                                         #endregion
                                                     }
                                                     else
@@ -1186,21 +1339,118 @@ namespace RegularAssessmentTranscriptFixedRank
 
                                 if (RankMatrixDataDict.ContainsKey(studentID))
                                 {
-                                    if (RankMatrixDataDict[studentID].ContainsKey("定期評量/總計成績_總分_班排名"))
+                                    string skey = "定期評量/總計成績_總分_班排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
                                     {
-                                        row["總分班排名"] = RankMatrixDataDict[studentID]["定期評量/總計成績_總分_班排名"]["rank"].ToString();
-                                        row["總分班排名母數"] = RankMatrixDataDict[studentID]["定期評量/總計成績_總分_班排名"]["matrix_count"].ToString();
-                                    }
-                                
-                                }
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["總分班排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
 
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["總分班排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["總分班排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+                                    }
+
+                                    skey = "定期評量/總計成績_總分_科排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["總分科排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["總分科排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["總分科排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+                                    }
+
+                                    skey = "定期評量/總計成績_總分_年排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["總分全校排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["總分全校排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["總分全校排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+                                    }
+                                }
                             }
                             #endregion
                             #region 平均
                             if (studentPrintSubjectAvg.ContainsKey(studentID))
                             {
                                 row["平均"] = studentPrintSubjectAvg[studentID];
+                                if (RankMatrixDataDict.ContainsKey(studentID))
+                                {
+                                    string skey = "定期評量/總計成績_平均_班排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["平均班排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
 
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["平均班排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["平均班排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+
+                                    }
+
+                                    skey = "定期評量/總計成績_平均_科排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["平均科排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["平均科排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["平均科排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+                                    }
+
+                                    skey = "定期評量/總計成績_平均_年排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["平均全校排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["平均全校排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["平均全校排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+
+                                    }
+                                }
 
                             }
                             #endregion
@@ -1208,78 +1458,249 @@ namespace RegularAssessmentTranscriptFixedRank
                             if (studentPrintSubjectSumW.ContainsKey(studentID))
                             {
                                 row["加權總分"] = studentPrintSubjectSumW[studentID];
+                                if (RankMatrixDataDict.ContainsKey(studentID))
+                                {
+                                    string skey = "定期評量/總計成績_加權總分_班排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["加權總分班排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["加權總分班排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["加權總分班排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+                                    }
+
+                                    skey = "定期評量/總計成績_加權總分_科排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["加權總分科排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["加權總分科排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["加權總分科排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+                                    }
+
+                                    skey = "定期評量/總計成績_加權總分_年排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["加權總分全校排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["加權總分全校排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["加權總分全校排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+
+                                    }
+                                }
                             }
                             #endregion
                             #region 加權平均
                             if (studentPrintSubjectAvgW.ContainsKey(studentID))
                             {
                                 row["加權平均"] = studentPrintSubjectAvgW[studentID];
+                                if (RankMatrixDataDict.ContainsKey(studentID))
+                                {
 
+                                    string skey = "定期評量/總計成績_加權平均_班排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["加權平均班排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["加權平均班排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["加權平均班排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+                                    }
+
+                                    skey = "定期評量/總計成績_加權平均_科排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["加權平均科排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["加權平均科排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["加權平均科排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+
+                                    }
+
+                                    skey = "定期評量/總計成績_加權平均_年排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["加權平均全校排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["加權平均全校排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["加權平均全校排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+                                    }
+
+                                }
                             }
                             #endregion
                             #region 類別1綜合成績
-                            if (studentTag1Group.ContainsKey(studentID))
+
+
+                            if (RankMatrixDataDict.ContainsKey(studentID))
                             {
-                                foreach (var tag in studentTags[studentID])
+                                string skey = "定期評量/總計成績_總分_類別1排名";
+                                if (RankMatrixDataDict[studentID].ContainsKey(skey))
                                 {
-                                    if (tag.RefTagID == studentTag1Group[studentID])
+                                    if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                        row["類別1總分排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                    if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                        row["類別1總分排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                    // 五標PR填值
+                                    foreach (string rItem in r2List)
                                     {
-                                        row["類別排名1"] = tag.Name;
+                                        if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                            row["類別1總分排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                    }
+
+                                }
+
+                                skey = "定期評量/總計成績_平均_類別1排名";
+                                if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                {
+                                    if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                        row["類別1平均排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                    if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                        row["類別1平均排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                    // 五標PR填值
+                                    foreach (string rItem in r2List)
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                            row["類別1平均排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
                                     }
                                 }
-                                if (studentTag1SubjectSum.ContainsKey(studentID))
+
+                                skey = "定期評量/總計成績_加權總分_類別1排名";
+                                if (RankMatrixDataDict[studentID].ContainsKey(skey))
                                 {
-                                    row["類別1總分"] = studentTag1SubjectSum[studentID];
+                                    if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                        row["類別1加權總分排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                    if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                        row["類別1加權總分排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                    // 五標PR填值
+                                    foreach (string rItem in r2List)
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                            row["類別1加權總分排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                    }
                                 }
-                                if (studentTag1SubjectAvg.ContainsKey(studentID))
+
+                                skey = "定期評量/總計成績_加權平均_類別1排名";
+                                if (RankMatrixDataDict.ContainsKey(studentID))
                                 {
-                                    row["類別1平均"] = studentTag1SubjectAvg[studentID];
-                                }
-                                if (studentTag1SubjectSumW.ContainsKey(studentID))
-                                {
-                                    row["類別1加權總分"] = studentTag1SubjectSumW[studentID];
-                                }
-                                if (studentTag1SubjectAvgW.ContainsKey(studentID))
-                                {
-                                    row["類別1加權平均"] = studentTag1SubjectAvgW[studentID];
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["類別1加權平均排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["類別1加權平均排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["類別1加權平均排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+
+                                    }
                                 }
                             }
+
                             #endregion
                             #region 類別2綜合成績
-                            if (studentTag2Group.ContainsKey(studentID))
+
+                            if (RankMatrixDataDict.ContainsKey(studentID))
                             {
-                                foreach (var tag in studentTags[studentID])
+                                string skey = "定期評量/總計成績_總分_類別2排名";
+                                if (RankMatrixDataDict[studentID].ContainsKey(skey))
                                 {
-                                    if (tag.RefTagID == studentTag2Group[studentID])
-                                    {
-                                        row["類別排名2"] = tag.Name;
-                                    }
-                                }
-                                if (studentTag2SubjectSum.ContainsKey(studentID))
-                                {
-                                    row["類別2總分"] = studentTag2SubjectSum[studentID];
+                                    if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                        row["類別2總分排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                    if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                        row["類別2總分排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
                                 }
 
-                                if (studentTag2SubjectAvg.ContainsKey(studentID))
+                                skey = "定期評量/總計成績_平均_類別2排名";
+                                if (RankMatrixDataDict[studentID].ContainsKey(skey))
                                 {
-                                    row["類別2平均"] = studentTag2SubjectAvg[studentID];
+                                    if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                        row["類別2平均排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                    if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                        row["類別2平均排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
                                 }
 
-                                if (studentTag2SubjectSumW.ContainsKey(studentID))
+                                skey = "定期評量/總計成績_加權總分_類別2排名";
+                                if (RankMatrixDataDict[studentID].ContainsKey(skey))
                                 {
-                                    row["類別2加權總分"] = studentTag2SubjectSumW[studentID];
+                                    if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                        row["類別2加權總分排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                    if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                        row["類別2加權總分排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
                                 }
-                                if (studentTag2SubjectAvgW.ContainsKey(studentID))
+
+                                skey = "定期評量/總計成績_加權平均_類別2排名";
+                                if (RankMatrixDataDict[studentID].ContainsKey(skey))
                                 {
-                                    row["類別2加權平均"] = studentTag2SubjectAvgW[studentID];
+                                    if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                        row["類別2加權平均排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                    if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                        row["類別2加權平均排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
                                 }
                             }
 
-
                             #endregion
-
-
-
 
 
                             #region 學務資料

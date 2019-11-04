@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using K12.Data;
 using System.IO;
+using FISCA.Data;
 
 namespace 班級定期評量成績單_固定排名
 {
@@ -20,6 +21,10 @@ namespace 班級定期評量成績單_固定排名
         private List<Configure> _Configures = new List<Configure>();
         private string _DefalutSchoolYear = "";
         private string _DefaultSemester = "";
+        private List<string> _FixedRankSubjects = new List<string>();
+
+
+        private QueryHelper _Qp = new QueryHelper();
 
         public ConfigForm()
         {
@@ -99,7 +104,7 @@ namespace 班級定期評量成績單_固定排名
 
             };
             bkw.WorkerReportsProgress = true;
-            bkw.ProgressChanged += delegate(object sender, ProgressChangedEventArgs e)
+            bkw.ProgressChanged += delegate (object sender, ProgressChangedEventArgs e)
             {
                 circularProgress1.Value = e.ProgressPercentage;
             };
@@ -177,7 +182,7 @@ namespace 班級定期評量成績單_固定排名
 
         private void btnPrint_Click(object sender, EventArgs e)
         {
-            SaveTemplate(null, null);            
+            SaveTemplate(null, null);
             Program.AvgRd = iptRd.Value;
             this.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.Close();
@@ -185,6 +190,69 @@ namespace 班級定期評量成績單_固定排名
 
         private void ExamChanged(object sender, EventArgs e)
         {
+            this._FixedRankSubjects.Clear();
+
+            if (!String.IsNullOrEmpty(this.cboSemester.Text) && !String.IsNullOrEmpty(this.cboSchoolYear.Text) && cboExam.SelectedItem != null)
+            {
+                #region 取得本次固定排名結算之科目
+
+                string sql = @"
+       
+SELECT 
+	item_name 	
+	,count (* )  
+FROM 
+	rank_matrix   
+WHERE 
+	ref_exam_id ={2}  AND item_type ='定期評量/科目成績'   AND school_year ={0} AND semester ={1}  AND is_alive =true 
+GROUP BY  item_name 
+";
+
+                sql = string.Format(sql, this.cboSchoolYear.Text, this.cboSemester.Text, ((ExamRecord)cboExam.SelectedItem).ID);
+
+                DataTable dt = _Qp.Select(sql);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string subj = "" + dr["item_name"];
+                    if (!_FixedRankSubjects.Contains(subj))
+                        _FixedRankSubjects.Add(subj);
+                }
+
+                _FixedRankSubjects.Sort(  new StringComparer("國文"
+                                                , "英文"
+                                                , "數學"
+                                                , "理化"
+                                                , "生物"
+                                                , "社會"
+                                                , "物理"
+                                                , "化學"
+                                                , "歷史"
+                                                , "地理"
+                                                , "公民"));
+
+
+
+                if (_FixedRankSubjects.Count > 0)
+                {
+                    labelX1.Text = $"{this.cboSchoolYear.Text}年{ this.cboSemester.Text}學期，{((ExamRecord)cboExam.SelectedItem).Name}固定排名結算科目(共{_FixedRankSubjects.Count()}科)：";
+                    if (_FixedRankSubjects.Count <= 8)
+                    {
+                        this.linkLabFixRankSubjInclude.Text = String.Join("、", _FixedRankSubjects);
+                    }
+                    else if (_FixedRankSubjects.Count > 8)
+                    {
+                        this.linkLabFixRankSubjInclude.Text = String.Join("、", _FixedRankSubjects.Take(8)) + "...";
+                    }
+
+                }
+                else
+                {
+                    labelX1.Text = $"{this.cboSchoolYear.Text}年{ this.cboSemester.Text}學期，{((ExamRecord)cboExam.SelectedItem).Name}固定排名結算科目：共{_FixedRankSubjects.Count()}科 【請檢查是否有算固定排名】";
+                }
+            }
+            #endregion
+
+
             string key = cboSchoolYear.Text + "^^" + cboSemester.Text + "^^" +
                 (cboExam.SelectedItem == null ? "" : ((ExamRecord)cboExam.SelectedItem).ID);
             listViewEx1.SuspendLayout();
@@ -215,8 +283,8 @@ namespace 班級定期評量成績單_固定排名
                 }
             }
             listViewEx1.ResumeLayout(true);
-         //   listViewEx2.ResumeLayout(true);
-         //   listViewEx3.ResumeLayout(true);
+            //   listViewEx2.ResumeLayout(true);
+            //   listViewEx3.ResumeLayout(true);
         }
 
         private void cboConfigure_SelectedIndexChanged(object sender, EventArgs e)
@@ -288,12 +356,12 @@ namespace 班級定期評量成績單_固定排名
                     {
                         item.Checked = Configure.PrintSubjectList.Contains(item.Text);
                     }
-                   // cboTagRank1.Text = Configure.TagRank1TagName;
-                 //   foreach (ListViewItem item in listViewEx2.Items)
-                   // {
-                  //      item.Checked = Configure.TagRank1SubjectList.Contains(item.Text);
-                  //  }
-                  //  cboTagRank2.Text = Configure.TagRank2TagName;
+                    // cboTagRank1.Text = Configure.TagRank1TagName;
+                    //   foreach (ListViewItem item in listViewEx2.Items)
+                    // {
+                    //      item.Checked = Configure.TagRank1SubjectList.Contains(item.Text);
+                    //  }
+                    //  cboTagRank2.Text = Configure.TagRank2TagName;
                     //foreach (ListViewItem item in listViewEx3.Items)
                     //{
                     //    item.Checked = Configure.TagRank2SubjectList.Contains(item.Text);
@@ -312,8 +380,8 @@ namespace 班級定期評量成績單_固定排名
                     cboExam.SelectedIndex = -1;
                     cboRefExam.SelectedIndex = -1;
                     cboRankRilter.SelectedIndex = -1;
-                   // cboTagRank1.SelectedIndex = -1;
-                  //  cboTagRank2.SelectedIndex = -1;
+                    // cboTagRank1.SelectedIndex = -1;
+                    //  cboTagRank2.SelectedIndex = -1;
                     foreach (ListViewItem item in listViewEx1.Items)
                     {
                         item.Checked = false;
@@ -580,6 +648,16 @@ namespace 班級定期評量成績單_固定排名
         }
 
         private void cboSchoolYear_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void linkLabFixRankSubjInclude_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            (new FixedRankInclued(this._FixedRankSubjects)).ShowDialog();
+        }
+
+        private void labelX1_Click(object sender, EventArgs e)
         {
 
         }

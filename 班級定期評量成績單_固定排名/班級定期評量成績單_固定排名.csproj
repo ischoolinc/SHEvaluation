@@ -42,10 +42,12 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Words, Version=4.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Aspose.Words">
       <HintPath>library\Aspose.Words.dll</HintPath>
-      <Private>False</Private>
+    </Reference>
+    <Reference Include="Aspose.Words_201402, Version=14.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>library\Aspose.Words_201402.dll</HintPath>
     </Reference>
     <Reference Include="DevComponents.DotNetBar2, Version=9.5.0.1, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -125,6 +127,12 @@
       <DependentUpon>ConfigForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Configure.cs" />
+    <Compile Include="FixedRankInclued.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FixedRankInclued.Designer.cs">
+      <DependentUpon>FixedRankInclued.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\Dept.cs" />
     <Compile Include="Model\FixRankIntervalInfo.cs" />
     <Compile Include="Model\RankInfo.cs" />
@@ -145,6 +153,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigForm.resx">
       <DependentUpon>ConfigForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FixedRankInclued.resx">
+      <DependentUpon>FixedRankInclued.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NewConfigure.resx">
       <DependentUpon>NewConfigure.cs</DependentUpon>
@@ -172,10 +183,8 @@
     <None Include="Resources\高中班級考試成績單樣版.doc" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="library\Aspose.Words.dll" />
-    <Content Include="library\Aspose.Words.xml">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="library\Aspose.Words_201402.dll" />
+    <Content Include="library\Aspose.Words_201402.xml" />
     <Content Include="library\DevComponents.DotNetBar2.dll" />
     <Content Include="library\DevComponents.DotNetBar2.xml" />
     <Content Include="library\FISCA.Data.dll" />

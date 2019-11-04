@@ -41,6 +41,8 @@
             this.cboSemester = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.linkLabFixRankSubjInclude = new System.Windows.Forms.LinkLabel();
+            this.labelX1 = new DevComponents.DotNetBar.LabelX();
             this.btnSaveConfig = new DevComponents.DotNetBar.ButtonX();
             this.btnPrint = new DevComponents.DotNetBar.ButtonX();
             this.circularProgress1 = new DevComponents.DotNetBar.Controls.CircularProgress();
@@ -89,9 +91,9 @@
             this.listViewEx1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.listViewEx1.CheckBoxes = true;
             this.listViewEx1.HideSelection = false;
-            this.listViewEx1.Location = new System.Drawing.Point(13, 232);
+            this.listViewEx1.Location = new System.Drawing.Point(13, 305);
             this.listViewEx1.Name = "listViewEx1";
-            this.listViewEx1.Size = new System.Drawing.Size(524, 214);
+            this.listViewEx1.Size = new System.Drawing.Size(524, 210);
             this.listViewEx1.TabIndex = 8;
             this.listViewEx1.UseCompatibleStateImageBehavior = false;
             this.listViewEx1.View = System.Windows.Forms.View.List;
@@ -239,12 +241,14 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 509F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(550, 509);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 578F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(550, 578);
             this.tableLayoutPanel1.TabIndex = 11;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.linkLabFixRankSubjInclude);
+            this.panel1.Controls.Add(this.labelX1);
             this.panel1.Controls.Add(this.btnSaveConfig);
             this.panel1.Controls.Add(this.btnPrint);
             this.panel1.Controls.Add(this.circularProgress1);
@@ -275,15 +279,42 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(550, 509);
+            this.panel1.Size = new System.Drawing.Size(550, 578);
             this.panel1.TabIndex = 0;
+            // 
+            // linkLabFixRankSubjInclude
+            // 
+            this.linkLabFixRankSubjInclude.AutoSize = true;
+            this.linkLabFixRankSubjInclude.Location = new System.Drawing.Point(12, 262);
+            this.linkLabFixRankSubjInclude.MaximumSize = new System.Drawing.Size(524, 0);
+            this.linkLabFixRankSubjInclude.Name = "linkLabFixRankSubjInclude";
+            this.linkLabFixRankSubjInclude.Size = new System.Drawing.Size(26, 17);
+            this.linkLabFixRankSubjInclude.TabIndex = 19;
+            this.linkLabFixRankSubjInclude.TabStop = true;
+            this.linkLabFixRankSubjInclude.Text = "......";
+            this.linkLabFixRankSubjInclude.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabFixRankSubjInclude_LinkClicked);
+            // 
+            // labelX1
+            // 
+            // 
+            // 
+            // 
+            this.labelX1.BackgroundStyle.Class = "";
+            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX1.Location = new System.Drawing.Point(13, 233);
+            this.labelX1.Name = "labelX1";
+            this.labelX1.Size = new System.Drawing.Size(504, 23);
+            this.labelX1.TabIndex = 17;
+            this.labelX1.Text = "固定排名計算科目:";
+            this.labelX1.Click += new System.EventHandler(this.labelX1_Click);
             // 
             // btnSaveConfig
             // 
             this.btnSaveConfig.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnSaveConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSaveConfig.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnSaveConfig.Enabled = false;
-            this.btnSaveConfig.Location = new System.Drawing.Point(302, 452);
+            this.btnSaveConfig.Location = new System.Drawing.Point(302, 521);
             this.btnSaveConfig.Name = "btnSaveConfig";
             this.btnSaveConfig.Size = new System.Drawing.Size(75, 23);
             this.btnSaveConfig.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -300,7 +331,7 @@
             this.btnPrint.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnPrint.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnPrint.Enabled = false;
-            this.btnPrint.Location = new System.Drawing.Point(383, 452);
+            this.btnPrint.Location = new System.Drawing.Point(383, 521);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(75, 23);
             this.btnPrint.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -325,7 +356,7 @@
             this.circularProgress1.ProgressBarType = DevComponents.DotNetBar.eCircularProgressType.Dot;
             this.circularProgress1.ProgressColor = System.Drawing.Color.LimeGreen;
             this.circularProgress1.ProgressTextVisible = true;
-            this.circularProgress1.Size = new System.Drawing.Size(0, 75);
+            this.circularProgress1.Size = new System.Drawing.Size(0, 144);
             this.circularProgress1.Style = DevComponents.DotNetBar.eDotNetBarStyle.Windows7;
             this.circularProgress1.TabIndex = 13;
             // 
@@ -336,7 +367,7 @@
             this.btnCancel.BackColor = System.Drawing.Color.Transparent;
             this.btnCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(464, 452);
+            this.btnCancel.Location = new System.Drawing.Point(464, 521);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -408,7 +439,7 @@
             // 
             // linkLabel4
             // 
-            this.linkLabel4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.linkLabel4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel4.AutoSize = true;
             this.linkLabel4.Location = new System.Drawing.Point(464, 52);
             this.linkLabel4.Name = "linkLabel4";
@@ -420,7 +451,7 @@
             // 
             // linkLabel3
             // 
-            this.linkLabel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.linkLabel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel3.AutoSize = true;
             this.linkLabel3.Location = new System.Drawing.Point(385, 52);
             this.linkLabel3.Name = "linkLabel3";
@@ -434,7 +465,7 @@
             // 
             this.linkLabel5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel5.AutoSize = true;
-            this.linkLabel5.Location = new System.Drawing.Point(427, 483);
+            this.linkLabel5.Location = new System.Drawing.Point(427, 552);
             this.linkLabel5.Name = "linkLabel5";
             this.linkLabel5.Size = new System.Drawing.Size(112, 17);
             this.linkLabel5.TabIndex = 11;
@@ -446,7 +477,7 @@
             // 
             this.linkLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(102, 483);
+            this.linkLabel2.Location = new System.Drawing.Point(102, 552);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(86, 17);
             this.linkLabel2.TabIndex = 10;
@@ -458,7 +489,7 @@
             // 
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(10, 483);
+            this.linkLabel1.Location = new System.Drawing.Point(10, 552);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(86, 17);
             this.linkLabel1.TabIndex = 9;
@@ -509,7 +540,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(550, 509);
+            this.ClientSize = new System.Drawing.Size(550, 578);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.tableLayoutPanel1);
             this.DoubleBuffered = true;
@@ -554,6 +585,8 @@
         private DevComponents.Editors.IntegerInput iptRd;
         private DevComponents.DotNetBar.LabelX labelX13;
         private DevComponents.DotNetBar.LabelX labelX12;
+        private DevComponents.DotNetBar.LabelX labelX1;
+        private System.Windows.Forms.LinkLabel linkLabFixRankSubjInclude;
     }
 }
 

@@ -40,21 +40,5 @@ namespace 班級定期評量成績單_固定排名.Model
             this.DicSubjectFixRank = new Dictionary<string, RankInfo>();
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }

@@ -350,8 +350,8 @@ namespace 班級定期評量成績單_固定排名.Model
             this.Avg_top_25 = Math.Round(ParseDouble(Avg_top_25), 2) == 0 ? "" : Math.Round(ParseDouble(Avg_top_25), 2).ToString();
             this.Avg_top_50 = Math.Round(ParseDouble(Avg_top_50), 2) == 0 ? "" : Math.Round(ParseDouble(Avg_top_50), 2).ToString();
             this.Avg = Math.Round(ParseDouble(Avg), 2) == 0 ? "" : Math.Round(ParseDouble(Avg), 2).ToString();
-            this.Avg_bottom_25 = Math.Round(ParseDouble(Avg_bottom_25), 2) == 0 ? "" : Math.Round(ParseDouble(Avg_top_50), 2).ToString();
-            this.Avg_bottom_50 = Math.Round(ParseDouble(Avg_bottom_50), 2) == 0 ? "" : Math.Round(ParseDouble(Avg_top_50), 2).ToString(); ;
+            this.Avg_bottom_25 = Math.Round(ParseDouble(Avg_bottom_25), 2) == 0 ? "" : Math.Round(ParseDouble(Avg_bottom_25), 2).ToString();
+            this.Avg_bottom_50 = Math.Round(ParseDouble(Avg_bottom_50), 2) == 0 ? "" : Math.Round(ParseDouble(Avg_bottom_50), 2).ToString(); ;
         }
     }
 }

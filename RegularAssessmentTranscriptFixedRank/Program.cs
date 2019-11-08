@@ -1667,6 +1667,13 @@ namespace RegularAssessmentTranscriptFixedRank
 
                                     if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
                                         row["類別2總分排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                    // 五標PR填值
+                                    foreach (string rItem in r2List)
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                            row["類別2總分排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                    }
                                 }
 
                                 skey = "定期評量/總計成績_平均_類別2排名";
@@ -1677,6 +1684,13 @@ namespace RegularAssessmentTranscriptFixedRank
 
                                     if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
                                         row["類別2平均排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                    // 五標PR填值
+                                    foreach (string rItem in r2List)
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                            row["類別2平均排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                    }
                                 }
 
                                 skey = "定期評量/總計成績_加權總分_類別2排名";
@@ -1687,6 +1701,13 @@ namespace RegularAssessmentTranscriptFixedRank
 
                                     if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
                                         row["類別2加權總分排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                    // 五標PR填值
+                                    foreach (string rItem in r2List)
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                            row["類別2加權總分排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                    }
                                 }
 
                                 skey = "定期評量/總計成績_加權平均_類別2排名";
@@ -1697,6 +1718,13 @@ namespace RegularAssessmentTranscriptFixedRank
 
                                     if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
                                         row["類別2加權平均排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                    // 五標PR填值
+                                    foreach (string rItem in r2List)
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                            row["類別2加權平均排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                    }
                                 }
                             }
 
@@ -1788,9 +1816,9 @@ namespace RegularAssessmentTranscriptFixedRank
                         document = conf.Template;
                         document.MailMerge.Execute(table);
 
-                        // debug
-                        table.TableName = "dt";
-                        table.WriteXml(Application.StartupPath + "\\dTxml.xml");
+                        //// debug
+                        //table.TableName = "dt";
+                        //table.WriteXml(Application.StartupPath + "\\dTxml.xml");
                     }
                     catch (Exception exception)
                     {

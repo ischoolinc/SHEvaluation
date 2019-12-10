@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using K12.Data;
 using System.IO;
 using FISCA.Data;
+using static K12.Data.StudentRecord;
 
 namespace 班級定期評量成績單_固定排名
 {
@@ -22,14 +23,15 @@ namespace 班級定期評量成績單_固定排名
         private string _DefalutSchoolYear = "";
         private string _DefaultSemester = "";
         private List<string> _FixedRankSubjects = new List<string>();
-
-
+        private List<string> _SelectClassGrade;
         private QueryHelper _Qp = new QueryHelper();
+        
 
-        public ConfigForm()
+        public ConfigForm(List<string> seletClassGrades)
         {
             InitializeComponent();
             List<ExamRecord> exams = new List<ExamRecord>();
+            this._SelectClassGrade = seletClassGrades;
             BackgroundWorker bkw = new BackgroundWorker();
             bkw.DoWork += delegate
             {
@@ -49,7 +51,7 @@ namespace 班級定期評量成績單_固定排名
                 var AssessmentSetupRecords = K12.Data.AssessmentSetup.SelectAll();
                 bkw.ReportProgress(40);
                 List<string> courseIDs = new List<string>();
-                foreach (var scattentRecord in K12.Data.SCAttend.SelectByStudentIDs(K12.Presentation.NLDPanels.Student.SelectedSource))
+                foreach (var scattentRecord in K12.Data.SCAttend.SelectByStudentIDs(K12.Data.Student.SelectByClassIDs( K12.Presentation.NLDPanels.Class.SelectedSource).Where(x=>x.Status == StudentStatus.一般 || x.Status == StudentStatus.延修).Select(x=>x.ID)))
                 {
                     if (!courseIDs.Contains(scattentRecord.RefCourseID))
                         courseIDs.Add(scattentRecord.RefCourseID);
@@ -117,17 +119,15 @@ namespace 班級定期評量成績單_固定排名
                 }
                 cboConfigure.Items.Add(new Configure() { Name = "新增" });
                 int i;
-                if (int.TryParse(_DefalutSchoolYear, out i))
-                {
-                    //for (int j = 0; j < 5; j++)
-                    //{
-                    //    cboSchoolYear.Items.Add("" + (i - j));
-                    //}
+            
+                cboSchoolYear.Items.Clear();
+                cboSchoolYear.Items.Add(_DefalutSchoolYear);
+                cboSchoolYear.SelectedIndex = cboSchoolYear.Items.IndexOf(_DefaultSemester);
 
-                    cboSchoolYear.Items.Add("" + (i));
-                }
+                cboSemester.Items.Clear();
                 cboSemester.Items.Add(_DefaultSemester);
-                //cboSemester.Items.Add("2");
+                cboSemester.SelectedIndex = cboSemester.Items.IndexOf(_DefaultSemester);
+
                 cboExam.Items.Clear();
                 cboRefExam.Items.Clear();
                 cboExam.Items.AddRange(exams.ToArray());
@@ -147,24 +147,7 @@ namespace 班級定期評量成績單_固定排名
                         tag.Add(item.Name);
                     }
                 }
-                cboRankRilter.Items.Clear();
-                //cboTagRank1.Items.Clear();
-                //cboTagRank2.Items.Clear();
-                //cboRankRilter.Items.Add("");
-                //cboTagRank1.Items.Add("");
-                //cboTagRank2.Items.Add("");
-                foreach (var s in prefix)
-                {
-                    cboRankRilter.Items.Add("[" + s + "]");
-                    //cboTagRank1.Items.Add("[" + s + "]");
-                    //cboTagRank2.Items.Add("[" + s + "]");
-                }
-                foreach (var s in tag)
-                {
-                    cboRankRilter.Items.Add(s);
-                    //cboTagRank1.Items.Add(s);
-                    //cboTagRank2.Items.Add(s);
-                }
+         
                 circularProgress1.Hide();
                 if (_Configures.Count > 0)
                 {
@@ -197,18 +180,22 @@ namespace 班級定期評量成績單_固定排名
                 #region 取得本次固定排名結算之科目
 
                 string sql = @"
-       
 SELECT 
 	item_name 	
 	,count (* )  
 FROM 
 	rank_matrix   
 WHERE 
-	ref_exam_id ={2}  AND item_type ='定期評量/科目成績'   AND school_year ={0} AND semester ={1}  AND is_alive =true 
+	ref_exam_id ={2}  
+    AND item_type ='定期評量/科目成績'   
+    AND school_year ={0} 
+    AND semester = {1}  
+    AND is_alive = true 
+    AND grade_year IN ({3})
 GROUP BY  item_name 
 ";
 
-                sql = string.Format(sql, this.cboSchoolYear.Text, this.cboSemester.Text, ((ExamRecord)cboExam.SelectedItem).ID);
+                sql = string.Format(sql, this.cboSchoolYear.Text, this.cboSemester.Text, ((ExamRecord)cboExam.SelectedItem).ID , this._SelectClassGrade!=null? String.Join(",", _SelectClassGrade):"");
 
                 DataTable dt = _Qp.Select(sql);
                 foreach (DataRow dr in dt.Rows)
@@ -234,20 +221,20 @@ GROUP BY  item_name
 
                 if (_FixedRankSubjects.Count > 0)
                 {
-                    labelX1.Text = $"{this.cboSchoolYear.Text}年{ this.cboSemester.Text}學期，{((ExamRecord)cboExam.SelectedItem).Name}固定排名結算科目(共{_FixedRankSubjects.Count()}科)：";
+                    labelX1.Text = $"{this.cboSchoolYear.Text}年 第{ this.cboSemester.Text}學期 {((ExamRecord)cboExam.SelectedItem).Name} {String.Join("、", _SelectClassGrade):''}年級   固定排名結算科目(共{_FixedRankSubjects.Count()}科)：";
                     if (_FixedRankSubjects.Count <= 8)
                     {
                         this.linkLabFixRankSubjInclude.Text = String.Join("、", _FixedRankSubjects);
                     }
                     else if (_FixedRankSubjects.Count > 8)
                     {
-                        this.linkLabFixRankSubjInclude.Text = String.Join("、", _FixedRankSubjects.Take(8)) + "...";
+                        this.linkLabFixRankSubjInclude.Text = String.Join("、", _FixedRankSubjects.Take(8)) + " ...";
                     }
 
                 }
                 else
                 {
-                    labelX1.Text = $"{this.cboSchoolYear.Text}年{ this.cboSemester.Text}學期，{((ExamRecord)cboExam.SelectedItem).Name}固定排名結算科目：共{_FixedRankSubjects.Count()}科 【請檢查是否有算固定排名】";
+                    labelX1.Text = $"{this.cboSchoolYear.Text}年 第{ this.cboSemester.Text}學期 {((ExamRecord)cboExam.SelectedItem).Name} {String.Join("、", _SelectClassGrade):''}年級   固定排名結算科目(共{_FixedRankSubjects.Count()}科)：";
                 }
             }
             #endregion
@@ -255,36 +242,23 @@ GROUP BY  item_name
 
             string key = cboSchoolYear.Text + "^^" + cboSemester.Text + "^^" +
                 (cboExam.SelectedItem == null ? "" : ((ExamRecord)cboExam.SelectedItem).ID);
+
             listViewEx1.SuspendLayout();
-            //listViewEx2.SuspendLayout();
-            //listViewEx3.SuspendLayout();
-            //listViewEx1.Items.Clear();
-            //listViewEx2.Items.Clear();
-            //listViewEx3.Items.Clear();
+            listViewEx1.Items.Clear();
             if (_ExamSubjectFull.ContainsKey(key))
             {
                 foreach (var subject in _ExamSubjectFull[key])
                 {
                     var i1 = listViewEx1.Items.Add(subject);
-                    //var i2 = listViewEx2.Items.Add(subject);
-                    //var i3 = listViewEx3.Items.Add(subject);
-                    //if (Configure != null && Configure.PrintSubjectList.Contains(subject))
-                    //    i1.Checked = true;
-                    //if (Configure != null && Configure.TagRank1SubjectList.Contains(subject))
-                    //    i2.Checked = true;
-                    //if (Configure != null && Configure.TagRank2SubjectList.Contains(subject))
-                    //    i3.Checked = true;
-                    //if (_ExamSubjects.ContainsKey(key) && !_ExamSubjects[key].Contains(subject))
-                    //{
-                    //    i1.ForeColor = Color.DarkGray;
-                    //    i2.ForeColor = Color.DarkGray;
-                    //    i3.ForeColor = Color.DarkGray;
-                    //}
+               
+                   if (_ExamSubjects.ContainsKey(key) && !_ExamSubjects[key].Contains(subject))
+                    {
+                        i1.ForeColor = Color.DarkGray;
+                    }
                 }
             }
             listViewEx1.ResumeLayout(true);
-            //   listViewEx2.ResumeLayout(true);
-            //   listViewEx3.ResumeLayout(true);
+         
         }
 
         private void cboConfigure_SelectedIndexChanged(object sender, EventArgs e)
@@ -351,21 +325,12 @@ GROUP BY  item_name
                             }
                         }
                     }
-                    cboRankRilter.Text = Configure.RankFilterTagName;
+                   
                     foreach (ListViewItem item in listViewEx1.Items)
                     {
                         item.Checked = Configure.PrintSubjectList.Contains(item.Text);
                     }
-                    // cboTagRank1.Text = Configure.TagRank1TagName;
-                    //   foreach (ListViewItem item in listViewEx2.Items)
-                    // {
-                    //      item.Checked = Configure.TagRank1SubjectList.Contains(item.Text);
-                    //  }
-                    //  cboTagRank2.Text = Configure.TagRank2TagName;
-                    //foreach (ListViewItem item in listViewEx3.Items)
-                    //{
-                    //    item.Checked = Configure.TagRank2SubjectList.Contains(item.Text);
-                    //}
+                
 
                     if (Configure.AvgRd.HasValue)
                         iptRd.Value = Configure.AvgRd.Value;
@@ -379,21 +344,12 @@ GROUP BY  item_name
                     cboSemester.SelectedIndex = -1;
                     cboExam.SelectedIndex = -1;
                     cboRefExam.SelectedIndex = -1;
-                    cboRankRilter.SelectedIndex = -1;
-                    // cboTagRank1.SelectedIndex = -1;
-                    //  cboTagRank2.SelectedIndex = -1;
+            
                     foreach (ListViewItem item in listViewEx1.Items)
                     {
                         item.Checked = false;
                     }
-                    //foreach (ListViewItem item in listViewEx2.Items)
-                    //{
-                    //    item.Checked = false;
-                    //}
-                    //foreach (ListViewItem item in listViewEx3.Items)
-                    //{
-                    //    item.Checked = false;
-                    //}
+        
                 }
             }
         }
@@ -569,72 +525,40 @@ GROUP BY  item_name
             {
                 if (item.Prefix != "")
                 {
-                    //if (cboTagRank1.Text == "[" + item.Prefix + "]")
-                    //    Configure.TagRank1TagList.Add(item.ID);
+                   
                 }
                 else
                 {
-                    //if (cboTagRank1.Text == item.Name)
-                    //    Configure.TagRank1TagList.Add(item.ID);
+                  
                 }
             }
-            //foreach (ListViewItem item in listViewEx2.Items)
-            //{
-            //    if (item.Checked)
-            //    {
-            //        if (!Configure.TagRank1SubjectList.Contains(item.Text))
-            //            Configure.TagRank1SubjectList.Add(item.Text);
-            //    }
-            //    else
-            //    {
-            //        if (Configure.TagRank1SubjectList.Contains(item.Text))
-            //            Configure.TagRank1SubjectList.Remove(item.Text);
-            //    }
-            //}
+  
 
             Configure.AvgRd = iptRd.Value;
-            //Configure.TagRank2TagName = cboTagRank2.Text;
+        
             Configure.TagRank2TagList.Clear();
             foreach (var item in _TagConfigRecords)
             {
                 if (item.Prefix != "")
                 {
-                    //if (cboTagRank2.Text == "[" + item.Prefix + "]")
-                    //    Configure.TagRank2TagList.Add(item.ID);
+                   
                 }
                 else
                 {
-                    //if (cboTagRank2.Text == item.Name)
-                    //    Configure.TagRank2TagList.Add(item.ID);
+       
                 }
             }
-            //foreach (ListViewItem item in listViewEx3.Items)
-            //{
-            //    if (item.Checked)
-            //    {
-            //        if (!Configure.TagRank2SubjectList.Contains(item.Text))
-            //            Configure.TagRank2SubjectList.Add(item.Text);
-            //    }
-            //    else
-            //    {
-            //        if (Configure.TagRank2SubjectList.Contains(item.Text))
-            //            Configure.TagRank2SubjectList.Remove(item.Text);
-            //    }
-            //}
-
-            Configure.RankFilterTagName = cboRankRilter.Text;
+         
             Configure.RankFilterTagList.Clear();
             foreach (var item in _TagConfigRecords)
             {
                 if (item.Prefix != "")
                 {
-                    if (cboRankRilter.Text == "[" + item.Prefix + "]")
-                        Configure.RankFilterTagList.Add(item.ID);
+          
                 }
                 else
                 {
-                    if (cboRankRilter.Text == item.Name)
-                        Configure.RankFilterTagList.Add(item.ID);
+               
                 }
             }
 

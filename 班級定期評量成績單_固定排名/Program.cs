@@ -89,27 +89,37 @@ namespace 班級定期評量成績單_固定排名
 
         private static void Program_Click(object sender_, EventArgs e_)
         {
+            AccessHelper accessHelper = new AccessHelper();
+            List<ClassRecord> selectedClasses = accessHelper.ClassHelper.GetSelectedClass();
+            List<string> selectGrades = new List<string>();//選取之班級的年級
+            foreach (ClassRecord classRecord in selectedClasses)
+            {
+                if(!selectGrades.Contains(classRecord.GradeYear))
+                selectGrades.Add(classRecord.GradeYear);
+            }
 
-            ConfigForm form = new ConfigForm();
+            ConfigForm form = new ConfigForm(selectGrades);
             if (form.ShowDialog() == DialogResult.OK)
             {
                 /// <summary>
                 ///  此功能直接重原始定期評量成績單(及時排名)修改來。
                 /// </summary>
-                Dictionary<string, Dictionary<string, FixRankIntervalInfo>> IntervalInfos;// 級距 by 班級 @@
-                Dictionary<string, Dictionary<string, StudentFixedRankInfo>> dicFixedRankData;// 級距 by 班級 學生 Jean
-                AccessHelper accessHelper = new AccessHelper();
-                QueryHelper 吳淑芬 = new QueryHelper();
+                Dictionary<string, Dictionary<string, FixRankIntervalInfo>> IntervalInfos;// 級距 by 班級 
+                Dictionary<string, Dictionary<string, StudentFixedRankInfo>> dicFixedRankData;// 級距 by 班級 學生 
 
+         
+               // QueryHelper 吳淑芬 = new QueryHelper();
                 List<ClassRecord> overflowRecords = new List<ClassRecord>();
                 Exception exc = null;
                 //取得列印設定
                 Configure conf = form.Configure;
                 //建立測試的選取學生
-                List<ClassRecord> selectedClasses = accessHelper.ClassHelper.GetSelectedClass();
+            
                 List<StudentRecord> selectedStudents = new List<StudentRecord>();
+
                 foreach (ClassRecord classRec in selectedClasses)
                 {
+                    
                     foreach (StudentRecord stuRec in classRec.Students)
                     {
                         if (!selectedStudents.Contains(stuRec))
@@ -1969,11 +1979,10 @@ namespace 班級定期評量成績單_固定排名
                         bkw.ReportProgress(90);
                         document = conf.Template;
 
-                        ////Jean 看看
+                   
                         document.MailMerge.Execute(table);
 
-                        //table.TableName = "測試";
-                        //table.WriteXml(Application.StartupPath + "\\test.xml");
+                      
                     }
                     catch (Exception exception)
                     {

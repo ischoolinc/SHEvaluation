@@ -72,7 +72,7 @@
             this.Controls.Add(this.dataGridViewX1);
             this.DoubleBuffered = true;
             this.Name = "FixedRankInclued";
-            this.Text = "固定結算科目";
+            this.Text = "固定排名結算科目";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewX1)).EndInit();
             this.ResumeLayout(false);
 

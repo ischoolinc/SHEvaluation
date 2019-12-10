@@ -30,8 +30,6 @@
         {
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
             this.listViewEx1 = new DevComponents.DotNetBar.Controls.ListViewEx();
-            this.labelX3 = new DevComponents.DotNetBar.LabelX();
-            this.cboRankRilter = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.cboExam = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.labelX4 = new DevComponents.DotNetBar.LabelX();
             this.labelX7 = new DevComponents.DotNetBar.LabelX();
@@ -73,7 +71,7 @@
             // 
             this.labelX2.BackgroundStyle.Class = "";
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(13, 205);
+            this.labelX2.Location = new System.Drawing.Point(15, 258);
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(74, 21);
             this.labelX2.TabIndex = 5;
@@ -91,40 +89,12 @@
             this.listViewEx1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.listViewEx1.CheckBoxes = true;
             this.listViewEx1.HideSelection = false;
-            this.listViewEx1.Location = new System.Drawing.Point(13, 305);
+            this.listViewEx1.Location = new System.Drawing.Point(12, 285);
             this.listViewEx1.Name = "listViewEx1";
-            this.listViewEx1.Size = new System.Drawing.Size(524, 210);
+            this.listViewEx1.Size = new System.Drawing.Size(524, 186);
             this.listViewEx1.TabIndex = 8;
             this.listViewEx1.UseCompatibleStateImageBehavior = false;
             this.listViewEx1.View = System.Windows.Forms.View.List;
-            // 
-            // labelX3
-            // 
-            this.labelX3.AutoSize = true;
-            this.labelX3.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX3.BackgroundStyle.Class = "";
-            this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX3.Location = new System.Drawing.Point(13, 174);
-            this.labelX3.Name = "labelX3";
-            this.labelX3.Size = new System.Drawing.Size(114, 21);
-            this.labelX3.TabIndex = 5;
-            this.labelX3.Text = "不排名學生類別：";
-            // 
-            // cboRankRilter
-            // 
-            this.cboRankRilter.DisplayMember = "Text";
-            this.cboRankRilter.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboRankRilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboRankRilter.FormattingEnabled = true;
-            this.cboRankRilter.ItemHeight = 19;
-            this.cboRankRilter.Location = new System.Drawing.Point(134, 172);
-            this.cboRankRilter.Name = "cboRankRilter";
-            this.cboRankRilter.Size = new System.Drawing.Size(160, 25);
-            this.cboRankRilter.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.cboRankRilter.TabIndex = 7;
             // 
             // cboExam
             // 
@@ -241,8 +211,8 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 578F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(550, 578);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 494F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(550, 547);
             this.tableLayoutPanel1.TabIndex = 11;
             // 
             // panel1
@@ -264,8 +234,6 @@
             this.panel1.Controls.Add(this.linkLabel1);
             this.panel1.Controls.Add(this.listViewEx1);
             this.panel1.Controls.Add(this.labelX2);
-            this.panel1.Controls.Add(this.cboRankRilter);
-            this.panel1.Controls.Add(this.labelX3);
             this.panel1.Controls.Add(this.cboSemester);
             this.panel1.Controls.Add(this.labelX9);
             this.panel1.Controls.Add(this.labelX11);
@@ -279,13 +247,13 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(550, 578);
+            this.panel1.Size = new System.Drawing.Size(550, 547);
             this.panel1.TabIndex = 0;
             // 
             // linkLabFixRankSubjInclude
             // 
             this.linkLabFixRankSubjInclude.AutoSize = true;
-            this.linkLabFixRankSubjInclude.Location = new System.Drawing.Point(12, 262);
+            this.linkLabFixRankSubjInclude.Location = new System.Drawing.Point(12, 225);
             this.linkLabFixRankSubjInclude.MaximumSize = new System.Drawing.Size(524, 0);
             this.linkLabFixRankSubjInclude.Name = "linkLabFixRankSubjInclude";
             this.linkLabFixRankSubjInclude.Size = new System.Drawing.Size(26, 17);
@@ -301,7 +269,7 @@
             // 
             this.labelX1.BackgroundStyle.Class = "";
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX1.Location = new System.Drawing.Point(13, 233);
+            this.labelX1.Location = new System.Drawing.Point(12, 203);
             this.labelX1.Name = "labelX1";
             this.labelX1.Size = new System.Drawing.Size(504, 23);
             this.labelX1.TabIndex = 17;
@@ -314,7 +282,7 @@
             this.btnSaveConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSaveConfig.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnSaveConfig.Enabled = false;
-            this.btnSaveConfig.Location = new System.Drawing.Point(302, 521);
+            this.btnSaveConfig.Location = new System.Drawing.Point(305, 484);
             this.btnSaveConfig.Name = "btnSaveConfig";
             this.btnSaveConfig.Size = new System.Drawing.Size(75, 23);
             this.btnSaveConfig.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -331,7 +299,7 @@
             this.btnPrint.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnPrint.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnPrint.Enabled = false;
-            this.btnPrint.Location = new System.Drawing.Point(383, 521);
+            this.btnPrint.Location = new System.Drawing.Point(386, 484);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(75, 23);
             this.btnPrint.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -356,7 +324,7 @@
             this.circularProgress1.ProgressBarType = DevComponents.DotNetBar.eCircularProgressType.Dot;
             this.circularProgress1.ProgressColor = System.Drawing.Color.LimeGreen;
             this.circularProgress1.ProgressTextVisible = true;
-            this.circularProgress1.Size = new System.Drawing.Size(0, 144);
+            this.circularProgress1.Size = new System.Drawing.Size(0, 113);
             this.circularProgress1.Style = DevComponents.DotNetBar.eDotNetBarStyle.Windows7;
             this.circularProgress1.TabIndex = 13;
             // 
@@ -367,7 +335,7 @@
             this.btnCancel.BackColor = System.Drawing.Color.Transparent;
             this.btnCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(464, 521);
+            this.btnCancel.Location = new System.Drawing.Point(467, 484);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -382,7 +350,7 @@
             this.iptRd.BackgroundStyle.Class = "DateTimeInputBackground";
             this.iptRd.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.iptRd.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
-            this.iptRd.Location = new System.Drawing.Point(224, 203);
+            this.iptRd.Location = new System.Drawing.Point(148, 172);
             this.iptRd.MaxValue = 10;
             this.iptRd.MinValue = 0;
             this.iptRd.Name = "iptRd";
@@ -400,7 +368,7 @@
             // 
             this.labelX13.BackgroundStyle.Class = "";
             this.labelX13.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX13.Location = new System.Drawing.Point(285, 205);
+            this.labelX13.Location = new System.Drawing.Point(208, 174);
             this.labelX13.Name = "labelX13";
             this.labelX13.Size = new System.Drawing.Size(74, 21);
             this.labelX13.TabIndex = 15;
@@ -415,7 +383,7 @@
             // 
             this.labelX12.BackgroundStyle.Class = "";
             this.labelX12.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX12.Location = new System.Drawing.Point(93, 205);
+            this.labelX12.Location = new System.Drawing.Point(12, 174);
             this.labelX12.Name = "labelX12";
             this.labelX12.Size = new System.Drawing.Size(127, 21);
             this.labelX12.TabIndex = 14;
@@ -465,7 +433,7 @@
             // 
             this.linkLabel5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel5.AutoSize = true;
-            this.linkLabel5.Location = new System.Drawing.Point(427, 552);
+            this.linkLabel5.Location = new System.Drawing.Point(432, 511);
             this.linkLabel5.Name = "linkLabel5";
             this.linkLabel5.Size = new System.Drawing.Size(112, 17);
             this.linkLabel5.TabIndex = 11;
@@ -477,7 +445,7 @@
             // 
             this.linkLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(102, 552);
+            this.linkLabel2.Location = new System.Drawing.Point(103, 511);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(86, 17);
             this.linkLabel2.TabIndex = 10;
@@ -489,7 +457,7 @@
             // 
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(10, 552);
+            this.linkLabel1.Location = new System.Drawing.Point(12, 511);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(86, 17);
             this.linkLabel1.TabIndex = 9;
@@ -540,7 +508,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(550, 578);
+            this.ClientSize = new System.Drawing.Size(550, 547);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.tableLayoutPanel1);
             this.DoubleBuffered = true;
@@ -558,8 +526,6 @@
         #endregion
         private DevComponents.DotNetBar.LabelX labelX2;
         private DevComponents.DotNetBar.Controls.ListViewEx listViewEx1;
-        private DevComponents.DotNetBar.LabelX labelX3;
-        private DevComponents.DotNetBar.Controls.ComboBoxEx cboRankRilter;
         private DevComponents.DotNetBar.Controls.ComboBoxEx cboExam;
         private DevComponents.DotNetBar.LabelX labelX4;
         private DevComponents.DotNetBar.LabelX labelX7;

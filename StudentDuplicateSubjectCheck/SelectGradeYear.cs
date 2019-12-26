@@ -29,6 +29,7 @@ namespace StudentDuplicateSubjectCheck
 
         string errorMessage = "";
         DataTable dtErrorTable = new DataTable();
+        List<DataRow> hasScoreList = new List<DataRow>();
         List<SCAttendRecord> scaDuplicateList = new List<SCAttendRecord>();
 
         Dictionary<string, List<string>> dataCompareDict = new Dictionary<string, List<string>>(); // <sid,<科目名稱 + _ + 級別>>
@@ -83,6 +84,15 @@ namespace StudentDuplicateSubjectCheck
                 }
                 else
                 {
+                    // 已有及格補考標準
+                    if (hasScoreList.Count > 0)
+                    {
+                        HasPassScoreForm hpsf = new HasPassScoreForm();
+                        hpsf.SetDataRows(hasScoreList);
+                        hpsf.ShowDialog();
+                    }
+
+
                     FISCA.Presentation.MotherForm.SetStatusBarMessage("檢查本學期重覆修課完畢。");
 
                     // 有資料才show
@@ -94,7 +104,7 @@ namespace StudentDuplicateSubjectCheck
                     else
                     {
                         MsgBox.Show("本年級本學期並無重覆修課的紀錄。");
-                    }                    
+                    }
                 }
 
             }
@@ -218,6 +228,7 @@ namespace StudentDuplicateSubjectCheck
 
             // 預設會將 學期歷程重覆的 重讀學期資料濾掉， 需要設定為 false，才會有。
             accesshelper.StudentHelper.FillSemesterSubjectScore(false, students);
+            _backgroundWorker.ReportProgress(30);
 
 
 
@@ -376,39 +387,78 @@ namespace StudentDuplicateSubjectCheck
 
             // 取得學生當學期修課
             QueryHelper qhScAttend = new QueryHelper();
-            string qryScAttend = "SELECT sc_attend.id AS sc_attend_id,course.id AS course_id,ref_student_id AS student_id,sc_attend.passing_standard,sc_attend.makeup_standard,sc_attend.remark FROM course INNER JOIN sc_attend ON course.id = sc_attend.ref_course_id WHERE ref_student_id IN(" + string.Join(",", studentIDList.ToArray()) + ") AND course.school_year = " + schoolYear + " AND course.semester = " + semester + "; ";
+            string qryScAttend = "SELECT " +
+                "sc_attend.id AS sc_attend_id" +
+                ",course.id AS course_id" +
+                ",course.school_year AS school_year" +
+                ",course.semester AS semester" +
+                ",course.course_name AS course_name" +
+                ",student.id AS student_id" +
+                ",student.name AS student_name" +
+                ",student.student_number AS student_number" +
+                ",sc_attend.passing_standard" +
+                ",sc_attend.makeup_standard" +
+                ",sc_attend.remark" +
+                " FROM " +
+                "course INNER JOIN sc_attend" +
+                " ON course.id = sc_attend.ref_course_id INNER JOIN" +
+                " student ON sc_attend.ref_student_id = student.id " +
+                " WHERE student.id IN(" + string.Join(",", studentIDList.ToArray()) + ") AND course.school_year = " + schoolYear + " AND course.semester = " + semester + "; ";
 
             DataTable dtScAttend = qh1.Select(qryScAttend);
+
+            List<DataRow> updateScoreList = new List<DataRow>();
+            hasScoreList.Clear();
 
             // 比對填入 data table
             foreach (DataRow dr in dtScAttend.Rows)
             {
                 string sid = dr["student_id"].ToString();
-
+                bool hasScore = false;
+                // 已有及格標準或補考標準不寫入
                 // 及格標準
-                if (passingStandardDict.ContainsKey(sid))
-                {
-                    dr["passing_standard"] = passingStandardDict[sid];
-                }
+                if (dr["passing_standard"] != null)
+                    if (dr["passing_standard"].ToString() != "")
+                        hasScore = true;
 
                 // 補考標準
-                if (makeupStandardDict.ContainsKey(sid))
+                if (dr["makeup_standard"] != null)
+                    if (dr["makeup_standard"].ToString() != "")
+                        hasScore = true;
+
+                if (hasScore)
                 {
-                    dr["makeup_standard"] = makeupStandardDict[sid];
+                    hasScoreList.Add(dr);
+                }
+                else
+                {
+                    // 及格標準
+                    if (passingStandardDict.ContainsKey(sid))
+                    {
+                        dr["passing_standard"] = passingStandardDict[sid];
+                    }
+
+                    // 補考標準
+                    if (makeupStandardDict.ContainsKey(sid))
+                    {
+                        dr["makeup_standard"] = makeupStandardDict[sid];
+                    }
+
+                    // 備註
+                    if (remarkDict.ContainsKey(sid))
+                    {
+                        dr["remark"] = "學生身分：" + remarkDict[sid];
+                    }
+                    updateScoreList.Add(dr);
                 }
 
-                // 備註
-                if (remarkDict.ContainsKey(sid))
-                {
-                    dr["remark"] = "學生身分：" + remarkDict[sid];
-                }
             }
 
             _backgroundWorker.ReportProgress(50);
             // 更新修課紀錄
             List<string> sbUpdateScAttend = new List<string>();
-
-            foreach (DataRow dr in dtScAttend.Rows)
+            // 只更新沒有及格補考標準
+            foreach (DataRow dr in updateScoreList)
             {
                 string passing_standard = "null";
                 string makeup_standard = "null";

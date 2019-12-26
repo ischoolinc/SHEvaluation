@@ -40,7 +40,8 @@ namespace StudentDuplicateSubjectCheck
                 int rowIdx = dgData.Rows.Add();
                 string sid = dr["student_id"].ToString();
                 dgData.Rows[rowIdx].Tag = sid;
-                studentIDList.Add(sid);
+                if (!studentIDList.Contains(sid))
+                  studentIDList.Add(sid);
                 dgData.Rows[rowIdx].Cells[colStudentNumber.Index].Value = dr["student_number"].ToString();
                 dgData.Rows[rowIdx].Cells[colClassName.Index].Value = dr["class_name"].ToString();
                 dgData.Rows[rowIdx].Cells[colSeatNo.Index].Value = dr["seat_no"].ToString();
@@ -55,9 +56,17 @@ namespace StudentDuplicateSubjectCheck
 
         private void btnAddTemp_Click(object sender, EventArgs e)
         {
+            List<string> addIDList = new List<string>();
+
             if (studentIDList.Count> 0)
             {
-                K12.Presentation.NLDPanels.Student.AddToTemp(studentIDList);
+                foreach (string id in studentIDList)
+                {
+                    if (!K12.Presentation.NLDPanels.Student.TempSource.Contains(id))
+                        addIDList.Add(id);
+                }
+
+                K12.Presentation.NLDPanels.Student.AddToTemp(addIDList);
                 MsgBox.Show("已於[學生待處理]加入" + studentIDList.Count + "名學生");
             }
         }

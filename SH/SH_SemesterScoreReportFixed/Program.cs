@@ -100,12 +100,20 @@ namespace SH_SemesterScoreReportFixed
             if (form.ShowDialog() == DialogResult.OK)
             {
                 AccessHelper accessHelper = new AccessHelper();
+
+
                 //return;
                 List<StudentRecord> overflowRecords = new List<StudentRecord>();
                 //取得列印設定
                 Configure conf = form.Configure;
                 //建立測試的選取學生(先期不管怎麼選就是印這些人)
                 List<string> selectedStudents = K12.Presentation.NLDPanels.Student.SelectedSource;
+
+                // 取得評量成績排名、五標、分數區間
+                Dictionary<string, Dictionary<string, DataRow>> RankMatrixDataDict = Utility.GetRankMatrixData(conf.SchoolYear, conf.Semester, conf.ExamRecord.ID, selectedStudents);
+
+
+
                 //建立合併欄位總表
                 DataTable table = new DataTable();
                 #region 所有的合併欄位
@@ -146,6 +154,66 @@ namespace SH_SemesterScoreReportFixed
                 table.Columns.Add("累計取得選修學分");
                 table.Columns.Add("系統學年度");
                 table.Columns.Add("系統學期");
+
+                // 新增合併欄位
+                List<string> r1List = new List<string>();
+                List<string> r2List = new List<string>();
+                List<string> r3List = new List<string>();
+
+                r1List.Add("總分班排名");
+                r1List.Add("總分科排名");
+                r1List.Add("總分全校排名");
+                r1List.Add("平均班排名");
+                r1List.Add("平均科排名");
+                r1List.Add("平均全校排名");
+                r1List.Add("加權總分班排名");
+                r1List.Add("加權總分科排名");
+                r1List.Add("加權總分全校排名");
+                r1List.Add("加權平均班排名");
+                r1List.Add("加權平均科排名");
+                r1List.Add("加權平均全校排名");
+                r1List.Add("類別1總分排名");
+                r1List.Add("類別1平均排名");
+                r1List.Add("類別1加權總分排名");
+                r1List.Add("類別1加權平均排名");
+                r1List.Add("類別2總分排名");
+                r1List.Add("類別2平均排名");
+                r1List.Add("類別2加權總分排名");
+                r1List.Add("類別2加權平均排名");
+
+                r2List.Add("pr");
+                r2List.Add("percentile");
+                r2List.Add("avg_top_25");
+                r2List.Add("avg_top_50");
+                r2List.Add("avg");
+                r2List.Add("avg_bottom_50");
+                r2List.Add("avg_bottom_25");
+                r2List.Add("level_gte100");
+                r2List.Add("level_90");
+                r2List.Add("level_80");
+                r2List.Add("level_70");
+                r2List.Add("level_60");
+                r2List.Add("level_50");
+                r2List.Add("level_40");
+                r2List.Add("level_30");
+                r2List.Add("level_20");
+                r2List.Add("level_10");
+                r2List.Add("level_lt10");
+
+                r3List.Add("班排名");
+                r3List.Add("科排名");
+                r3List.Add("全校排名");
+                r3List.Add("類別1排名");
+                r3List.Add("類別2排名");
+
+                foreach (string r1 in r1List)
+                {
+                    foreach (string r2 in r2List)
+                    {
+                        string it = r1 + "_" + r2;
+                        table.Columns.Add(it);
+                    }
+                }
 
                 for (int subjectIndex = 1; subjectIndex <= conf.SubjectLimit; subjectIndex++)
                 {
@@ -203,7 +271,7 @@ namespace SH_SemesterScoreReportFixed
 
                     // 新增學年科目成績--
                     table.Columns.Add("學年科目成績" + subjectIndex);
-                    //定期評量成績個項欄位--
+
                     table.Columns.Add("班排名" + subjectIndex);
                     table.Columns.Add("班排名母數" + subjectIndex);
                     table.Columns.Add("科排名" + subjectIndex);
@@ -214,41 +282,19 @@ namespace SH_SemesterScoreReportFixed
                     table.Columns.Add("類別2排名母數" + subjectIndex);
                     table.Columns.Add("全校排名" + subjectIndex);
                     table.Columns.Add("全校排名母數" + subjectIndex);
-                    #region 瘋狂的組距及分析
-                    table.Columns.Add("班高標" + subjectIndex); table.Columns.Add("科高標" + subjectIndex); table.Columns.Add("校高標" + subjectIndex); table.Columns.Add("類1高標" + subjectIndex); table.Columns.Add("類2高標" + subjectIndex);
-                    table.Columns.Add("班均標" + subjectIndex); table.Columns.Add("科均標" + subjectIndex); table.Columns.Add("校均標" + subjectIndex); table.Columns.Add("類1均標" + subjectIndex); table.Columns.Add("類2均標" + subjectIndex);
-                    table.Columns.Add("班低標" + subjectIndex); table.Columns.Add("科低標" + subjectIndex); table.Columns.Add("校低標" + subjectIndex); table.Columns.Add("類1低標" + subjectIndex); table.Columns.Add("類2低標" + subjectIndex);
-                    table.Columns.Add("班標準差" + subjectIndex); table.Columns.Add("科標準差" + subjectIndex); table.Columns.Add("校標準差" + subjectIndex); table.Columns.Add("類1標準差" + subjectIndex); table.Columns.Add("類2標準差" + subjectIndex);
-                    table.Columns.Add("班組距" + subjectIndex + "count90"); table.Columns.Add("科組距" + subjectIndex + "count90"); table.Columns.Add("校組距" + subjectIndex + "count90"); table.Columns.Add("類1組距" + subjectIndex + "count90"); table.Columns.Add("類2組距" + subjectIndex + "count90");
-                    table.Columns.Add("班組距" + subjectIndex + "count80"); table.Columns.Add("科組距" + subjectIndex + "count80"); table.Columns.Add("校組距" + subjectIndex + "count80"); table.Columns.Add("類1組距" + subjectIndex + "count80"); table.Columns.Add("類2組距" + subjectIndex + "count80");
-                    table.Columns.Add("班組距" + subjectIndex + "count70"); table.Columns.Add("科組距" + subjectIndex + "count70"); table.Columns.Add("校組距" + subjectIndex + "count70"); table.Columns.Add("類1組距" + subjectIndex + "count70"); table.Columns.Add("類2組距" + subjectIndex + "count70");
-                    table.Columns.Add("班組距" + subjectIndex + "count60"); table.Columns.Add("科組距" + subjectIndex + "count60"); table.Columns.Add("校組距" + subjectIndex + "count60"); table.Columns.Add("類1組距" + subjectIndex + "count60"); table.Columns.Add("類2組距" + subjectIndex + "count60");
-                    table.Columns.Add("班組距" + subjectIndex + "count50"); table.Columns.Add("科組距" + subjectIndex + "count50"); table.Columns.Add("校組距" + subjectIndex + "count50"); table.Columns.Add("類1組距" + subjectIndex + "count50"); table.Columns.Add("類2組距" + subjectIndex + "count50");
-                    table.Columns.Add("班組距" + subjectIndex + "count40"); table.Columns.Add("科組距" + subjectIndex + "count40"); table.Columns.Add("校組距" + subjectIndex + "count40"); table.Columns.Add("類1組距" + subjectIndex + "count40"); table.Columns.Add("類2組距" + subjectIndex + "count40");
-                    table.Columns.Add("班組距" + subjectIndex + "count30"); table.Columns.Add("科組距" + subjectIndex + "count30"); table.Columns.Add("校組距" + subjectIndex + "count30"); table.Columns.Add("類1組距" + subjectIndex + "count30"); table.Columns.Add("類2組距" + subjectIndex + "count30");
-                    table.Columns.Add("班組距" + subjectIndex + "count20"); table.Columns.Add("科組距" + subjectIndex + "count20"); table.Columns.Add("校組距" + subjectIndex + "count20"); table.Columns.Add("類1組距" + subjectIndex + "count20"); table.Columns.Add("類2組距" + subjectIndex + "count20");
-                    table.Columns.Add("班組距" + subjectIndex + "count10"); table.Columns.Add("科組距" + subjectIndex + "count10"); table.Columns.Add("校組距" + subjectIndex + "count10"); table.Columns.Add("類1組距" + subjectIndex + "count10"); table.Columns.Add("類2組距" + subjectIndex + "count10");
-                    table.Columns.Add("班組距" + subjectIndex + "count100Up"); table.Columns.Add("科組距" + subjectIndex + "count100Up"); table.Columns.Add("校組距" + subjectIndex + "count100Up"); table.Columns.Add("類1組距" + subjectIndex + "count100Up"); table.Columns.Add("類2組距" + subjectIndex + "count100Up");
-                    table.Columns.Add("班組距" + subjectIndex + "count90Up"); table.Columns.Add("科組距" + subjectIndex + "count90Up"); table.Columns.Add("校組距" + subjectIndex + "count90Up"); table.Columns.Add("類1組距" + subjectIndex + "count90Up"); table.Columns.Add("類2組距" + subjectIndex + "count90Up");
-                    table.Columns.Add("班組距" + subjectIndex + "count80Up"); table.Columns.Add("科組距" + subjectIndex + "count80Up"); table.Columns.Add("校組距" + subjectIndex + "count80Up"); table.Columns.Add("類1組距" + subjectIndex + "count80Up"); table.Columns.Add("類2組距" + subjectIndex + "count80Up");
-                    table.Columns.Add("班組距" + subjectIndex + "count70Up"); table.Columns.Add("科組距" + subjectIndex + "count70Up"); table.Columns.Add("校組距" + subjectIndex + "count70Up"); table.Columns.Add("類1組距" + subjectIndex + "count70Up"); table.Columns.Add("類2組距" + subjectIndex + "count70Up");
-                    table.Columns.Add("班組距" + subjectIndex + "count60Up"); table.Columns.Add("科組距" + subjectIndex + "count60Up"); table.Columns.Add("校組距" + subjectIndex + "count60Up"); table.Columns.Add("類1組距" + subjectIndex + "count60Up"); table.Columns.Add("類2組距" + subjectIndex + "count60Up");
-                    table.Columns.Add("班組距" + subjectIndex + "count50Up"); table.Columns.Add("科組距" + subjectIndex + "count50Up"); table.Columns.Add("校組距" + subjectIndex + "count50Up"); table.Columns.Add("類1組距" + subjectIndex + "count50Up"); table.Columns.Add("類2組距" + subjectIndex + "count50Up");
-                    table.Columns.Add("班組距" + subjectIndex + "count40Up"); table.Columns.Add("科組距" + subjectIndex + "count40Up"); table.Columns.Add("校組距" + subjectIndex + "count40Up"); table.Columns.Add("類1組距" + subjectIndex + "count40Up"); table.Columns.Add("類2組距" + subjectIndex + "count40Up");
-                    table.Columns.Add("班組距" + subjectIndex + "count30Up"); table.Columns.Add("科組距" + subjectIndex + "count30Up"); table.Columns.Add("校組距" + subjectIndex + "count30Up"); table.Columns.Add("類1組距" + subjectIndex + "count30Up"); table.Columns.Add("類2組距" + subjectIndex + "count30Up");
-                    table.Columns.Add("班組距" + subjectIndex + "count20Up"); table.Columns.Add("科組距" + subjectIndex + "count20Up"); table.Columns.Add("校組距" + subjectIndex + "count20Up"); table.Columns.Add("類1組距" + subjectIndex + "count20Up"); table.Columns.Add("類2組距" + subjectIndex + "count20Up");
-                    table.Columns.Add("班組距" + subjectIndex + "count10Up"); table.Columns.Add("科組距" + subjectIndex + "count10Up"); table.Columns.Add("校組距" + subjectIndex + "count10Up"); table.Columns.Add("類1組距" + subjectIndex + "count10Up"); table.Columns.Add("類2組距" + subjectIndex + "count10Up");
-                    table.Columns.Add("班組距" + subjectIndex + "count90Down"); table.Columns.Add("科組距" + subjectIndex + "count90Down"); table.Columns.Add("校組距" + subjectIndex + "count90Down"); table.Columns.Add("類1組距" + subjectIndex + "count90Down"); table.Columns.Add("類2組距" + subjectIndex + "count90Down");
-                    table.Columns.Add("班組距" + subjectIndex + "count80Down"); table.Columns.Add("科組距" + subjectIndex + "count80Down"); table.Columns.Add("校組距" + subjectIndex + "count80Down"); table.Columns.Add("類1組距" + subjectIndex + "count80Down"); table.Columns.Add("類2組距" + subjectIndex + "count80Down");
-                    table.Columns.Add("班組距" + subjectIndex + "count70Down"); table.Columns.Add("科組距" + subjectIndex + "count70Down"); table.Columns.Add("校組距" + subjectIndex + "count70Down"); table.Columns.Add("類1組距" + subjectIndex + "count70Down"); table.Columns.Add("類2組距" + subjectIndex + "count70Down");
-                    table.Columns.Add("班組距" + subjectIndex + "count60Down"); table.Columns.Add("科組距" + subjectIndex + "count60Down"); table.Columns.Add("校組距" + subjectIndex + "count60Down"); table.Columns.Add("類1組距" + subjectIndex + "count60Down"); table.Columns.Add("類2組距" + subjectIndex + "count60Down");
-                    table.Columns.Add("班組距" + subjectIndex + "count50Down"); table.Columns.Add("科組距" + subjectIndex + "count50Down"); table.Columns.Add("校組距" + subjectIndex + "count50Down"); table.Columns.Add("類1組距" + subjectIndex + "count50Down"); table.Columns.Add("類2組距" + subjectIndex + "count50Down");
-                    table.Columns.Add("班組距" + subjectIndex + "count40Down"); table.Columns.Add("科組距" + subjectIndex + "count40Down"); table.Columns.Add("校組距" + subjectIndex + "count40Down"); table.Columns.Add("類1組距" + subjectIndex + "count40Down"); table.Columns.Add("類2組距" + subjectIndex + "count40Down");
-                    table.Columns.Add("班組距" + subjectIndex + "count30Down"); table.Columns.Add("科組距" + subjectIndex + "count30Down"); table.Columns.Add("校組距" + subjectIndex + "count30Down"); table.Columns.Add("類1組距" + subjectIndex + "count30Down"); table.Columns.Add("類2組距" + subjectIndex + "count30Down");
-                    table.Columns.Add("班組距" + subjectIndex + "count20Down"); table.Columns.Add("科組距" + subjectIndex + "count20Down"); table.Columns.Add("校組距" + subjectIndex + "count20Down"); table.Columns.Add("類1組距" + subjectIndex + "count20Down"); table.Columns.Add("類2組距" + subjectIndex + "count20Down");
-                    table.Columns.Add("班組距" + subjectIndex + "count10Down"); table.Columns.Add("科組距" + subjectIndex + "count10Down"); table.Columns.Add("校組距" + subjectIndex + "count10Down"); table.Columns.Add("類1組距" + subjectIndex + "count10Down"); table.Columns.Add("類2組距" + subjectIndex + "count10Down");
-                    #endregion
+
+                    foreach (string r3 in r3List)
+                    {
+                        foreach (string r2 in r2List)
+                        {
+                            string it = r3 + subjectIndex + "_" + r2;
+                            table.Columns.Add(it);
+                        }
+                    }
                 }
+
+
+
                 table.Columns.Add("總分");
                 table.Columns.Add("總分班排名");
                 table.Columns.Add("總分班排名母數");
@@ -263,6 +309,51 @@ namespace SH_SemesterScoreReportFixed
                 table.Columns.Add("平均科排名母數");
                 table.Columns.Add("平均全校排名");
                 table.Columns.Add("平均全校排名母數");
+
+                table.Columns.Add("加權總分");
+                table.Columns.Add("加權總分班排名");
+                table.Columns.Add("加權總分班排名母數");
+                table.Columns.Add("加權總分科排名");
+                table.Columns.Add("加權總分科排名母數");
+                table.Columns.Add("加權總分全校排名");
+                table.Columns.Add("加權總分全校排名母數");
+                table.Columns.Add("加權平均");
+                table.Columns.Add("加權平均班排名");
+                table.Columns.Add("加權平均班排名母數");
+                table.Columns.Add("加權平均科排名");
+                table.Columns.Add("加權平均科排名母數");
+                table.Columns.Add("加權平均全校排名");
+                table.Columns.Add("加權平均全校排名母數");
+
+                table.Columns.Add("類別排名1");
+                table.Columns.Add("類別1總分");
+                table.Columns.Add("類別1總分排名");
+                table.Columns.Add("類別1總分排名母數");
+                table.Columns.Add("類別1平均");
+                table.Columns.Add("類別1平均排名");
+                table.Columns.Add("類別1平均排名母數");
+                table.Columns.Add("類別1加權總分");
+                table.Columns.Add("類別1加權總分排名");
+                table.Columns.Add("類別1加權總分排名母數");
+                table.Columns.Add("類別1加權平均");
+                table.Columns.Add("類別1加權平均排名");
+                table.Columns.Add("類別1加權平均排名母數");
+
+                table.Columns.Add("類別排名2");
+                table.Columns.Add("類別2總分");
+                table.Columns.Add("類別2總分排名");
+                table.Columns.Add("類別2總分排名母數");
+                table.Columns.Add("類別2平均");
+                table.Columns.Add("類別2平均排名");
+                table.Columns.Add("類別2平均排名母數");
+                table.Columns.Add("類別2加權總分");
+                table.Columns.Add("類別2加權總分排名");
+                table.Columns.Add("類別2加權總分排名母數");
+                table.Columns.Add("類別2加權平均");
+                table.Columns.Add("類別2加權平均排名");
+                table.Columns.Add("類別2加權平均排名母數");
+
+
                 // 學期分項成績 --
                 table.Columns.Add("學期學業成績");
                 table.Columns.Add("學期體育成績");
@@ -338,84 +429,8 @@ namespace SH_SemesterScoreReportFixed
                     table.Columns.Add("本學期" + name);
                     table.Columns.Add("學年" + name);
                 }
-                // --
-                table.Columns.Add("加權總分");
-                table.Columns.Add("加權總分班排名");
-                table.Columns.Add("加權總分班排名母數");
-                table.Columns.Add("加權總分科排名");
-                table.Columns.Add("加權總分科排名母數");
-                table.Columns.Add("加權總分全校排名");
-                table.Columns.Add("加權總分全校排名母數");
-                table.Columns.Add("加權平均");
-                table.Columns.Add("加權平均班排名");
-                table.Columns.Add("加權平均班排名母數");
-                table.Columns.Add("加權平均科排名");
-                table.Columns.Add("加權平均科排名母數");
-                table.Columns.Add("加權平均全校排名");
-                table.Columns.Add("加權平均全校排名母數");
+          
 
-                table.Columns.Add("類別排名1");
-                table.Columns.Add("類別1總分");
-                table.Columns.Add("類別1總分排名");
-                table.Columns.Add("類別1總分排名母數");
-                table.Columns.Add("類別1平均");
-                table.Columns.Add("類別1平均排名");
-                table.Columns.Add("類別1平均排名母數");
-                table.Columns.Add("類別1加權總分");
-                table.Columns.Add("類別1加權總分排名");
-                table.Columns.Add("類別1加權總分排名母數");
-                table.Columns.Add("類別1加權平均");
-                table.Columns.Add("類別1加權平均排名");
-                table.Columns.Add("類別1加權平均排名母數");
-
-                table.Columns.Add("類別排名2");
-                table.Columns.Add("類別2總分");
-                table.Columns.Add("類別2總分排名");
-                table.Columns.Add("類別2總分排名母數");
-                table.Columns.Add("類別2平均");
-                table.Columns.Add("類別2平均排名");
-                table.Columns.Add("類別2平均排名母數");
-                table.Columns.Add("類別2加權總分");
-                table.Columns.Add("類別2加權總分排名");
-                table.Columns.Add("類別2加權總分排名母數");
-                table.Columns.Add("類別2加權平均");
-                table.Columns.Add("類別2加權平均排名");
-                table.Columns.Add("類別2加權平均排名母數");
-
-                #region 瘋狂的組距及分析
-                table.Columns.Add("總分班高標"); table.Columns.Add("總分科高標"); table.Columns.Add("總分校高標"); table.Columns.Add("平均班高標"); table.Columns.Add("平均科高標"); table.Columns.Add("平均校高標"); table.Columns.Add("加權總分班高標"); table.Columns.Add("加權總分科高標"); table.Columns.Add("加權總分校高標"); table.Columns.Add("加權平均班高標"); table.Columns.Add("加權平均科高標"); table.Columns.Add("加權平均校高標"); table.Columns.Add("類1總分高標"); table.Columns.Add("類1平均高標"); table.Columns.Add("類1加權總分高標"); table.Columns.Add("類1加權平均高標"); table.Columns.Add("類2總分高標"); table.Columns.Add("類2平均高標"); table.Columns.Add("類2加權總分高標"); table.Columns.Add("類2加權平均高標");
-                table.Columns.Add("總分班均標"); table.Columns.Add("總分科均標"); table.Columns.Add("總分校均標"); table.Columns.Add("平均班均標"); table.Columns.Add("平均科均標"); table.Columns.Add("平均校均標"); table.Columns.Add("加權總分班均標"); table.Columns.Add("加權總分科均標"); table.Columns.Add("加權總分校均標"); table.Columns.Add("加權平均班均標"); table.Columns.Add("加權平均科均標"); table.Columns.Add("加權平均校均標"); table.Columns.Add("類1總分均標"); table.Columns.Add("類1平均均標"); table.Columns.Add("類1加權總分均標"); table.Columns.Add("類1加權平均均標"); table.Columns.Add("類2總分均標"); table.Columns.Add("類2平均均標"); table.Columns.Add("類2加權總分均標"); table.Columns.Add("類2加權平均均標");
-                table.Columns.Add("總分班低標"); table.Columns.Add("總分科低標"); table.Columns.Add("總分校低標"); table.Columns.Add("平均班低標"); table.Columns.Add("平均科低標"); table.Columns.Add("平均校低標"); table.Columns.Add("加權總分班低標"); table.Columns.Add("加權總分科低標"); table.Columns.Add("加權總分校低標"); table.Columns.Add("加權平均班低標"); table.Columns.Add("加權平均科低標"); table.Columns.Add("加權平均校低標"); table.Columns.Add("類1總分低標"); table.Columns.Add("類1平均低標"); table.Columns.Add("類1加權總分低標"); table.Columns.Add("類1加權平均低標"); table.Columns.Add("類2總分低標"); table.Columns.Add("類2平均低標"); table.Columns.Add("類2加權總分低標"); table.Columns.Add("類2加權平均低標");
-                table.Columns.Add("總分班標準差"); table.Columns.Add("總分科標準差"); table.Columns.Add("總分校標準差"); table.Columns.Add("平均班標準差"); table.Columns.Add("平均科標準差"); table.Columns.Add("平均校標準差"); table.Columns.Add("加權總分班標準差"); table.Columns.Add("加權總分科標準差"); table.Columns.Add("加權總分校標準差"); table.Columns.Add("加權平均班標準差"); table.Columns.Add("加權平均科標準差"); table.Columns.Add("加權平均校標準差"); table.Columns.Add("類1總分標準差"); table.Columns.Add("類1平均標準差"); table.Columns.Add("類1加權總分標準差"); table.Columns.Add("類1加權平均標準差"); table.Columns.Add("類2總分標準差"); table.Columns.Add("類2平均標準差"); table.Columns.Add("類2加權總分標準差"); table.Columns.Add("類2加權平均標準差");
-                table.Columns.Add("總分班組距count90"); table.Columns.Add("總分科組距count90"); table.Columns.Add("總分校組距count90"); table.Columns.Add("平均班組距count90"); table.Columns.Add("平均科組距count90"); table.Columns.Add("平均校組距count90"); table.Columns.Add("加權總分班組距count90"); table.Columns.Add("加權總分科組距count90"); table.Columns.Add("加權總分校組距count90"); table.Columns.Add("加權平均班組距count90"); table.Columns.Add("加權平均科組距count90"); table.Columns.Add("加權平均校組距count90"); table.Columns.Add("類1總分組距count90"); table.Columns.Add("類1平均組距count90"); table.Columns.Add("類1加權總分組距count90"); table.Columns.Add("類1加權平均組距count90"); table.Columns.Add("類2總分組距count90"); table.Columns.Add("類2平均組距count90"); table.Columns.Add("類2加權總分組距count90"); table.Columns.Add("類2加權平均組距count90");
-                table.Columns.Add("總分班組距count80"); table.Columns.Add("總分科組距count80"); table.Columns.Add("總分校組距count80"); table.Columns.Add("平均班組距count80"); table.Columns.Add("平均科組距count80"); table.Columns.Add("平均校組距count80"); table.Columns.Add("加權總分班組距count80"); table.Columns.Add("加權總分科組距count80"); table.Columns.Add("加權總分校組距count80"); table.Columns.Add("加權平均班組距count80"); table.Columns.Add("加權平均科組距count80"); table.Columns.Add("加權平均校組距count80"); table.Columns.Add("類1總分組距count80"); table.Columns.Add("類1平均組距count80"); table.Columns.Add("類1加權總分組距count80"); table.Columns.Add("類1加權平均組距count80"); table.Columns.Add("類2總分組距count80"); table.Columns.Add("類2平均組距count80"); table.Columns.Add("類2加權總分組距count80"); table.Columns.Add("類2加權平均組距count80");
-                table.Columns.Add("總分班組距count70"); table.Columns.Add("總分科組距count70"); table.Columns.Add("總分校組距count70"); table.Columns.Add("平均班組距count70"); table.Columns.Add("平均科組距count70"); table.Columns.Add("平均校組距count70"); table.Columns.Add("加權總分班組距count70"); table.Columns.Add("加權總分科組距count70"); table.Columns.Add("加權總分校組距count70"); table.Columns.Add("加權平均班組距count70"); table.Columns.Add("加權平均科組距count70"); table.Columns.Add("加權平均校組距count70"); table.Columns.Add("類1總分組距count70"); table.Columns.Add("類1平均組距count70"); table.Columns.Add("類1加權總分組距count70"); table.Columns.Add("類1加權平均組距count70"); table.Columns.Add("類2總分組距count70"); table.Columns.Add("類2平均組距count70"); table.Columns.Add("類2加權總分組距count70"); table.Columns.Add("類2加權平均組距count70");
-                table.Columns.Add("總分班組距count60"); table.Columns.Add("總分科組距count60"); table.Columns.Add("總分校組距count60"); table.Columns.Add("平均班組距count60"); table.Columns.Add("平均科組距count60"); table.Columns.Add("平均校組距count60"); table.Columns.Add("加權總分班組距count60"); table.Columns.Add("加權總分科組距count60"); table.Columns.Add("加權總分校組距count60"); table.Columns.Add("加權平均班組距count60"); table.Columns.Add("加權平均科組距count60"); table.Columns.Add("加權平均校組距count60"); table.Columns.Add("類1總分組距count60"); table.Columns.Add("類1平均組距count60"); table.Columns.Add("類1加權總分組距count60"); table.Columns.Add("類1加權平均組距count60"); table.Columns.Add("類2總分組距count60"); table.Columns.Add("類2平均組距count60"); table.Columns.Add("類2加權總分組距count60"); table.Columns.Add("類2加權平均組距count60");
-                table.Columns.Add("總分班組距count50"); table.Columns.Add("總分科組距count50"); table.Columns.Add("總分校組距count50"); table.Columns.Add("平均班組距count50"); table.Columns.Add("平均科組距count50"); table.Columns.Add("平均校組距count50"); table.Columns.Add("加權總分班組距count50"); table.Columns.Add("加權總分科組距count50"); table.Columns.Add("加權總分校組距count50"); table.Columns.Add("加權平均班組距count50"); table.Columns.Add("加權平均科組距count50"); table.Columns.Add("加權平均校組距count50"); table.Columns.Add("類1總分組距count50"); table.Columns.Add("類1平均組距count50"); table.Columns.Add("類1加權總分組距count50"); table.Columns.Add("類1加權平均組距count50"); table.Columns.Add("類2總分組距count50"); table.Columns.Add("類2平均組距count50"); table.Columns.Add("類2加權總分組距count50"); table.Columns.Add("類2加權平均組距count50");
-                table.Columns.Add("總分班組距count40"); table.Columns.Add("總分科組距count40"); table.Columns.Add("總分校組距count40"); table.Columns.Add("平均班組距count40"); table.Columns.Add("平均科組距count40"); table.Columns.Add("平均校組距count40"); table.Columns.Add("加權總分班組距count40"); table.Columns.Add("加權總分科組距count40"); table.Columns.Add("加權總分校組距count40"); table.Columns.Add("加權平均班組距count40"); table.Columns.Add("加權平均科組距count40"); table.Columns.Add("加權平均校組距count40"); table.Columns.Add("類1總分組距count40"); table.Columns.Add("類1平均組距count40"); table.Columns.Add("類1加權總分組距count40"); table.Columns.Add("類1加權平均組距count40"); table.Columns.Add("類2總分組距count40"); table.Columns.Add("類2平均組距count40"); table.Columns.Add("類2加權總分組距count40"); table.Columns.Add("類2加權平均組距count40");
-                table.Columns.Add("總分班組距count30"); table.Columns.Add("總分科組距count30"); table.Columns.Add("總分校組距count30"); table.Columns.Add("平均班組距count30"); table.Columns.Add("平均科組距count30"); table.Columns.Add("平均校組距count30"); table.Columns.Add("加權總分班組距count30"); table.Columns.Add("加權總分科組距count30"); table.Columns.Add("加權總分校組距count30"); table.Columns.Add("加權平均班組距count30"); table.Columns.Add("加權平均科組距count30"); table.Columns.Add("加權平均校組距count30"); table.Columns.Add("類1總分組距count30"); table.Columns.Add("類1平均組距count30"); table.Columns.Add("類1加權總分組距count30"); table.Columns.Add("類1加權平均組距count30"); table.Columns.Add("類2總分組距count30"); table.Columns.Add("類2平均組距count30"); table.Columns.Add("類2加權總分組距count30"); table.Columns.Add("類2加權平均組距count30");
-                table.Columns.Add("總分班組距count20"); table.Columns.Add("總分科組距count20"); table.Columns.Add("總分校組距count20"); table.Columns.Add("平均班組距count20"); table.Columns.Add("平均科組距count20"); table.Columns.Add("平均校組距count20"); table.Columns.Add("加權總分班組距count20"); table.Columns.Add("加權總分科組距count20"); table.Columns.Add("加權總分校組距count20"); table.Columns.Add("加權平均班組距count20"); table.Columns.Add("加權平均科組距count20"); table.Columns.Add("加權平均校組距count20"); table.Columns.Add("類1總分組距count20"); table.Columns.Add("類1平均組距count20"); table.Columns.Add("類1加權總分組距count20"); table.Columns.Add("類1加權平均組距count20"); table.Columns.Add("類2總分組距count20"); table.Columns.Add("類2平均組距count20"); table.Columns.Add("類2加權總分組距count20"); table.Columns.Add("類2加權平均組距count20");
-                table.Columns.Add("總分班組距count10"); table.Columns.Add("總分科組距count10"); table.Columns.Add("總分校組距count10"); table.Columns.Add("平均班組距count10"); table.Columns.Add("平均科組距count10"); table.Columns.Add("平均校組距count10"); table.Columns.Add("加權總分班組距count10"); table.Columns.Add("加權總分科組距count10"); table.Columns.Add("加權總分校組距count10"); table.Columns.Add("加權平均班組距count10"); table.Columns.Add("加權平均科組距count10"); table.Columns.Add("加權平均校組距count10"); table.Columns.Add("類1總分組距count10"); table.Columns.Add("類1平均組距count10"); table.Columns.Add("類1加權總分組距count10"); table.Columns.Add("類1加權平均組距count10"); table.Columns.Add("類2總分組距count10"); table.Columns.Add("類2平均組距count10"); table.Columns.Add("類2加權總分組距count10"); table.Columns.Add("類2加權平均組距count10");
-                table.Columns.Add("總分班組距count100Up"); table.Columns.Add("總分科組距count100Up"); table.Columns.Add("總分校組距count100Up"); table.Columns.Add("平均班組距count100Up"); table.Columns.Add("平均科組距count100Up"); table.Columns.Add("平均校組距count100Up"); table.Columns.Add("加權總分班組距count100Up"); table.Columns.Add("加權總分科組距count100Up"); table.Columns.Add("加權總分校組距count100Up"); table.Columns.Add("加權平均班組距count100Up"); table.Columns.Add("加權平均科組距count100Up"); table.Columns.Add("加權平均校組距count100Up"); table.Columns.Add("類1總分組距count100Up"); table.Columns.Add("類1平均組距count100Up"); table.Columns.Add("類1加權總分組距count100Up"); table.Columns.Add("類1加權平均組距count100Up"); table.Columns.Add("類2總分組距count100Up"); table.Columns.Add("類2平均組距count100Up"); table.Columns.Add("類2加權總分組距count100Up"); table.Columns.Add("類2加權平均組距count100Up");
-                table.Columns.Add("總分班組距count90Up"); table.Columns.Add("總分科組距count90Up"); table.Columns.Add("總分校組距count90Up"); table.Columns.Add("平均班組距count90Up"); table.Columns.Add("平均科組距count90Up"); table.Columns.Add("平均校組距count90Up"); table.Columns.Add("加權總分班組距count90Up"); table.Columns.Add("加權總分科組距count90Up"); table.Columns.Add("加權總分校組距count90Up"); table.Columns.Add("加權平均班組距count90Up"); table.Columns.Add("加權平均科組距count90Up"); table.Columns.Add("加權平均校組距count90Up"); table.Columns.Add("類1總分組距count90Up"); table.Columns.Add("類1平均組距count90Up"); table.Columns.Add("類1加權總分組距count90Up"); table.Columns.Add("類1加權平均組距count90Up"); table.Columns.Add("類2總分組距count90Up"); table.Columns.Add("類2平均組距count90Up"); table.Columns.Add("類2加權總分組距count90Up"); table.Columns.Add("類2加權平均組距count90Up");
-                table.Columns.Add("總分班組距count80Up"); table.Columns.Add("總分科組距count80Up"); table.Columns.Add("總分校組距count80Up"); table.Columns.Add("平均班組距count80Up"); table.Columns.Add("平均科組距count80Up"); table.Columns.Add("平均校組距count80Up"); table.Columns.Add("加權總分班組距count80Up"); table.Columns.Add("加權總分科組距count80Up"); table.Columns.Add("加權總分校組距count80Up"); table.Columns.Add("加權平均班組距count80Up"); table.Columns.Add("加權平均科組距count80Up"); table.Columns.Add("加權平均校組距count80Up"); table.Columns.Add("類1總分組距count80Up"); table.Columns.Add("類1平均組距count80Up"); table.Columns.Add("類1加權總分組距count80Up"); table.Columns.Add("類1加權平均組距count80Up"); table.Columns.Add("類2總分組距count80Up"); table.Columns.Add("類2平均組距count80Up"); table.Columns.Add("類2加權總分組距count80Up"); table.Columns.Add("類2加權平均組距count80Up");
-                table.Columns.Add("總分班組距count70Up"); table.Columns.Add("總分科組距count70Up"); table.Columns.Add("總分校組距count70Up"); table.Columns.Add("平均班組距count70Up"); table.Columns.Add("平均科組距count70Up"); table.Columns.Add("平均校組距count70Up"); table.Columns.Add("加權總分班組距count70Up"); table.Columns.Add("加權總分科組距count70Up"); table.Columns.Add("加權總分校組距count70Up"); table.Columns.Add("加權平均班組距count70Up"); table.Columns.Add("加權平均科組距count70Up"); table.Columns.Add("加權平均校組距count70Up"); table.Columns.Add("類1總分組距count70Up"); table.Columns.Add("類1平均組距count70Up"); table.Columns.Add("類1加權總分組距count70Up"); table.Columns.Add("類1加權平均組距count70Up"); table.Columns.Add("類2總分組距count70Up"); table.Columns.Add("類2平均組距count70Up"); table.Columns.Add("類2加權總分組距count70Up"); table.Columns.Add("類2加權平均組距count70Up");
-                table.Columns.Add("總分班組距count60Up"); table.Columns.Add("總分科組距count60Up"); table.Columns.Add("總分校組距count60Up"); table.Columns.Add("平均班組距count60Up"); table.Columns.Add("平均科組距count60Up"); table.Columns.Add("平均校組距count60Up"); table.Columns.Add("加權總分班組距count60Up"); table.Columns.Add("加權總分科組距count60Up"); table.Columns.Add("加權總分校組距count60Up"); table.Columns.Add("加權平均班組距count60Up"); table.Columns.Add("加權平均科組距count60Up"); table.Columns.Add("加權平均校組距count60Up"); table.Columns.Add("類1總分組距count60Up"); table.Columns.Add("類1平均組距count60Up"); table.Columns.Add("類1加權總分組距count60Up"); table.Columns.Add("類1加權平均組距count60Up"); table.Columns.Add("類2總分組距count60Up"); table.Columns.Add("類2平均組距count60Up"); table.Columns.Add("類2加權總分組距count60Up"); table.Columns.Add("類2加權平均組距count60Up");
-                table.Columns.Add("總分班組距count50Up"); table.Columns.Add("總分科組距count50Up"); table.Columns.Add("總分校組距count50Up"); table.Columns.Add("平均班組距count50Up"); table.Columns.Add("平均科組距count50Up"); table.Columns.Add("平均校組距count50Up"); table.Columns.Add("加權總分班組距count50Up"); table.Columns.Add("加權總分科組距count50Up"); table.Columns.Add("加權總分校組距count50Up"); table.Columns.Add("加權平均班組距count50Up"); table.Columns.Add("加權平均科組距count50Up"); table.Columns.Add("加權平均校組距count50Up"); table.Columns.Add("類1總分組距count50Up"); table.Columns.Add("類1平均組距count50Up"); table.Columns.Add("類1加權總分組距count50Up"); table.Columns.Add("類1加權平均組距count50Up"); table.Columns.Add("類2總分組距count50Up"); table.Columns.Add("類2平均組距count50Up"); table.Columns.Add("類2加權總分組距count50Up"); table.Columns.Add("類2加權平均組距count50Up");
-                table.Columns.Add("總分班組距count40Up"); table.Columns.Add("總分科組距count40Up"); table.Columns.Add("總分校組距count40Up"); table.Columns.Add("平均班組距count40Up"); table.Columns.Add("平均科組距count40Up"); table.Columns.Add("平均校組距count40Up"); table.Columns.Add("加權總分班組距count40Up"); table.Columns.Add("加權總分科組距count40Up"); table.Columns.Add("加權總分校組距count40Up"); table.Columns.Add("加權平均班組距count40Up"); table.Columns.Add("加權平均科組距count40Up"); table.Columns.Add("加權平均校組距count40Up"); table.Columns.Add("類1總分組距count40Up"); table.Columns.Add("類1平均組距count40Up"); table.Columns.Add("類1加權總分組距count40Up"); table.Columns.Add("類1加權平均組距count40Up"); table.Columns.Add("類2總分組距count40Up"); table.Columns.Add("類2平均組距count40Up"); table.Columns.Add("類2加權總分組距count40Up"); table.Columns.Add("類2加權平均組距count40Up");
-                table.Columns.Add("總分班組距count30Up"); table.Columns.Add("總分科組距count30Up"); table.Columns.Add("總分校組距count30Up"); table.Columns.Add("平均班組距count30Up"); table.Columns.Add("平均科組距count30Up"); table.Columns.Add("平均校組距count30Up"); table.Columns.Add("加權總分班組距count30Up"); table.Columns.Add("加權總分科組距count30Up"); table.Columns.Add("加權總分校組距count30Up"); table.Columns.Add("加權平均班組距count30Up"); table.Columns.Add("加權平均科組距count30Up"); table.Columns.Add("加權平均校組距count30Up"); table.Columns.Add("類1總分組距count30Up"); table.Columns.Add("類1平均組距count30Up"); table.Columns.Add("類1加權總分組距count30Up"); table.Columns.Add("類1加權平均組距count30Up"); table.Columns.Add("類2總分組距count30Up"); table.Columns.Add("類2平均組距count30Up"); table.Columns.Add("類2加權總分組距count30Up"); table.Columns.Add("類2加權平均組距count30Up");
-                table.Columns.Add("總分班組距count20Up"); table.Columns.Add("總分科組距count20Up"); table.Columns.Add("總分校組距count20Up"); table.Columns.Add("平均班組距count20Up"); table.Columns.Add("平均科組距count20Up"); table.Columns.Add("平均校組距count20Up"); table.Columns.Add("加權總分班組距count20Up"); table.Columns.Add("加權總分科組距count20Up"); table.Columns.Add("加權總分校組距count20Up"); table.Columns.Add("加權平均班組距count20Up"); table.Columns.Add("加權平均科組距count20Up"); table.Columns.Add("加權平均校組距count20Up"); table.Columns.Add("類1總分組距count20Up"); table.Columns.Add("類1平均組距count20Up"); table.Columns.Add("類1加權總分組距count20Up"); table.Columns.Add("類1加權平均組距count20Up"); table.Columns.Add("類2總分組距count20Up"); table.Columns.Add("類2平均組距count20Up"); table.Columns.Add("類2加權總分組距count20Up"); table.Columns.Add("類2加權平均組距count20Up");
-                table.Columns.Add("總分班組距count10Up"); table.Columns.Add("總分科組距count10Up"); table.Columns.Add("總分校組距count10Up"); table.Columns.Add("平均班組距count10Up"); table.Columns.Add("平均科組距count10Up"); table.Columns.Add("平均校組距count10Up"); table.Columns.Add("加權總分班組距count10Up"); table.Columns.Add("加權總分科組距count10Up"); table.Columns.Add("加權總分校組距count10Up"); table.Columns.Add("加權平均班組距count10Up"); table.Columns.Add("加權平均科組距count10Up"); table.Columns.Add("加權平均校組距count10Up"); table.Columns.Add("類1總分組距count10Up"); table.Columns.Add("類1平均組距count10Up"); table.Columns.Add("類1加權總分組距count10Up"); table.Columns.Add("類1加權平均組距count10Up"); table.Columns.Add("類2總分組距count10Up"); table.Columns.Add("類2平均組距count10Up"); table.Columns.Add("類2加權總分組距count10Up"); table.Columns.Add("類2加權平均組距count10Up");
-                table.Columns.Add("總分班組距count90Down"); table.Columns.Add("總分科組距count90Down"); table.Columns.Add("總分校組距count90Down"); table.Columns.Add("平均班組距count90Down"); table.Columns.Add("平均科組距count90Down"); table.Columns.Add("平均校組距count90Down"); table.Columns.Add("加權總分班組距count90Down"); table.Columns.Add("加權總分科組距count90Down"); table.Columns.Add("加權總分校組距count90Down"); table.Columns.Add("加權平均班組距count90Down"); table.Columns.Add("加權平均科組距count90Down"); table.Columns.Add("加權平均校組距count90Down"); table.Columns.Add("類1總分組距count90Down"); table.Columns.Add("類1平均組距count90Down"); table.Columns.Add("類1加權總分組距count90Down"); table.Columns.Add("類1加權平均組距count90Down"); table.Columns.Add("類2總分組距count90Down"); table.Columns.Add("類2平均組距count90Down"); table.Columns.Add("類2加權總分組距count90Down"); table.Columns.Add("類2加權平均組距count90Down");
-                table.Columns.Add("總分班組距count80Down"); table.Columns.Add("總分科組距count80Down"); table.Columns.Add("總分校組距count80Down"); table.Columns.Add("平均班組距count80Down"); table.Columns.Add("平均科組距count80Down"); table.Columns.Add("平均校組距count80Down"); table.Columns.Add("加權總分班組距count80Down"); table.Columns.Add("加權總分科組距count80Down"); table.Columns.Add("加權總分校組距count80Down"); table.Columns.Add("加權平均班組距count80Down"); table.Columns.Add("加權平均科組距count80Down"); table.Columns.Add("加權平均校組距count80Down"); table.Columns.Add("類1總分組距count80Down"); table.Columns.Add("類1平均組距count80Down"); table.Columns.Add("類1加權總分組距count80Down"); table.Columns.Add("類1加權平均組距count80Down"); table.Columns.Add("類2總分組距count80Down"); table.Columns.Add("類2平均組距count80Down"); table.Columns.Add("類2加權總分組距count80Down"); table.Columns.Add("類2加權平均組距count80Down");
-                table.Columns.Add("總分班組距count70Down"); table.Columns.Add("總分科組距count70Down"); table.Columns.Add("總分校組距count70Down"); table.Columns.Add("平均班組距count70Down"); table.Columns.Add("平均科組距count70Down"); table.Columns.Add("平均校組距count70Down"); table.Columns.Add("加權總分班組距count70Down"); table.Columns.Add("加權總分科組距count70Down"); table.Columns.Add("加權總分校組距count70Down"); table.Columns.Add("加權平均班組距count70Down"); table.Columns.Add("加權平均科組距count70Down"); table.Columns.Add("加權平均校組距count70Down"); table.Columns.Add("類1總分組距count70Down"); table.Columns.Add("類1平均組距count70Down"); table.Columns.Add("類1加權總分組距count70Down"); table.Columns.Add("類1加權平均組距count70Down"); table.Columns.Add("類2總分組距count70Down"); table.Columns.Add("類2平均組距count70Down"); table.Columns.Add("類2加權總分組距count70Down"); table.Columns.Add("類2加權平均組距count70Down");
-                table.Columns.Add("總分班組距count60Down"); table.Columns.Add("總分科組距count60Down"); table.Columns.Add("總分校組距count60Down"); table.Columns.Add("平均班組距count60Down"); table.Columns.Add("平均科組距count60Down"); table.Columns.Add("平均校組距count60Down"); table.Columns.Add("加權總分班組距count60Down"); table.Columns.Add("加權總分科組距count60Down"); table.Columns.Add("加權總分校組距count60Down"); table.Columns.Add("加權平均班組距count60Down"); table.Columns.Add("加權平均科組距count60Down"); table.Columns.Add("加權平均校組距count60Down"); table.Columns.Add("類1總分組距count60Down"); table.Columns.Add("類1平均組距count60Down"); table.Columns.Add("類1加權總分組距count60Down"); table.Columns.Add("類1加權平均組距count60Down"); table.Columns.Add("類2總分組距count60Down"); table.Columns.Add("類2平均組距count60Down"); table.Columns.Add("類2加權總分組距count60Down"); table.Columns.Add("類2加權平均組距count60Down");
-                table.Columns.Add("總分班組距count50Down"); table.Columns.Add("總分科組距count50Down"); table.Columns.Add("總分校組距count50Down"); table.Columns.Add("平均班組距count50Down"); table.Columns.Add("平均科組距count50Down"); table.Columns.Add("平均校組距count50Down"); table.Columns.Add("加權總分班組距count50Down"); table.Columns.Add("加權總分科組距count50Down"); table.Columns.Add("加權總分校組距count50Down"); table.Columns.Add("加權平均班組距count50Down"); table.Columns.Add("加權平均科組距count50Down"); table.Columns.Add("加權平均校組距count50Down"); table.Columns.Add("類1總分組距count50Down"); table.Columns.Add("類1平均組距count50Down"); table.Columns.Add("類1加權總分組距count50Down"); table.Columns.Add("類1加權平均組距count50Down"); table.Columns.Add("類2總分組距count50Down"); table.Columns.Add("類2平均組距count50Down"); table.Columns.Add("類2加權總分組距count50Down"); table.Columns.Add("類2加權平均組距count50Down");
-                table.Columns.Add("總分班組距count40Down"); table.Columns.Add("總分科組距count40Down"); table.Columns.Add("總分校組距count40Down"); table.Columns.Add("平均班組距count40Down"); table.Columns.Add("平均科組距count40Down"); table.Columns.Add("平均校組距count40Down"); table.Columns.Add("加權總分班組距count40Down"); table.Columns.Add("加權總分科組距count40Down"); table.Columns.Add("加權總分校組距count40Down"); table.Columns.Add("加權平均班組距count40Down"); table.Columns.Add("加權平均科組距count40Down"); table.Columns.Add("加權平均校組距count40Down"); table.Columns.Add("類1總分組距count40Down"); table.Columns.Add("類1平均組距count40Down"); table.Columns.Add("類1加權總分組距count40Down"); table.Columns.Add("類1加權平均組距count40Down"); table.Columns.Add("類2總分組距count40Down"); table.Columns.Add("類2平均組距count40Down"); table.Columns.Add("類2加權總分組距count40Down"); table.Columns.Add("類2加權平均組距count40Down");
-                table.Columns.Add("總分班組距count30Down"); table.Columns.Add("總分科組距count30Down"); table.Columns.Add("總分校組距count30Down"); table.Columns.Add("平均班組距count30Down"); table.Columns.Add("平均科組距count30Down"); table.Columns.Add("平均校組距count30Down"); table.Columns.Add("加權總分班組距count30Down"); table.Columns.Add("加權總分科組距count30Down"); table.Columns.Add("加權總分校組距count30Down"); table.Columns.Add("加權平均班組距count30Down"); table.Columns.Add("加權平均科組距count30Down"); table.Columns.Add("加權平均校組距count30Down"); table.Columns.Add("類1總分組距count30Down"); table.Columns.Add("類1平均組距count30Down"); table.Columns.Add("類1加權總分組距count30Down"); table.Columns.Add("類1加權平均組距count30Down"); table.Columns.Add("類2總分組距count30Down"); table.Columns.Add("類2平均組距count30Down"); table.Columns.Add("類2加權總分組距count30Down"); table.Columns.Add("類2加權平均組距count30Down");
-                table.Columns.Add("總分班組距count20Down"); table.Columns.Add("總分科組距count20Down"); table.Columns.Add("總分校組距count20Down"); table.Columns.Add("平均班組距count20Down"); table.Columns.Add("平均科組距count20Down"); table.Columns.Add("平均校組距count20Down"); table.Columns.Add("加權總分班組距count20Down"); table.Columns.Add("加權總分科組距count20Down"); table.Columns.Add("加權總分校組距count20Down"); table.Columns.Add("加權平均班組距count20Down"); table.Columns.Add("加權平均科組距count20Down"); table.Columns.Add("加權平均校組距count20Down"); table.Columns.Add("類1總分組距count20Down"); table.Columns.Add("類1平均組距count20Down"); table.Columns.Add("類1加權總分組距count20Down"); table.Columns.Add("類1加權平均組距count20Down"); table.Columns.Add("類2總分組距count20Down"); table.Columns.Add("類2平均組距count20Down"); table.Columns.Add("類2加權總分組距count20Down"); table.Columns.Add("類2加權平均組距count20Down");
-                table.Columns.Add("總分班組距count10Down"); table.Columns.Add("總分科組距count10Down"); table.Columns.Add("總分校組距count10Down"); table.Columns.Add("平均班組距count10Down"); table.Columns.Add("平均科組距count10Down"); table.Columns.Add("平均校組距count10Down"); table.Columns.Add("加權總分班組距count10Down"); table.Columns.Add("加權總分科組距count10Down"); table.Columns.Add("加權總分校組距count10Down"); table.Columns.Add("加權平均班組距count10Down"); table.Columns.Add("加權平均科組距count10Down"); table.Columns.Add("加權平均校組距count10Down"); table.Columns.Add("類1總分組距count10Down"); table.Columns.Add("類1平均組距count10Down"); table.Columns.Add("類1加權總分組距count10Down"); table.Columns.Add("類1加權平均組距count10Down"); table.Columns.Add("類2總分組距count10Down"); table.Columns.Add("類2平均組距count10Down"); table.Columns.Add("類2加權總分組距count10Down"); table.Columns.Add("類2加權平均組距count10Down");
-                #endregion
                 #endregion
                 //宣告產生的報表
                 Aspose.Words.Document document = new Aspose.Words.Document();
@@ -431,13 +446,13 @@ namespace SH_SemesterScoreReportFixed
                 Exception exc = null;
                 bkw.RunWorkerCompleted += delegate
                 {
-                    //#region 將 DataTable 內合併欄位產生出來
-                    //StreamWriter sw = new StreamWriter(Application.StartupPath + "\\期末學期成績單合併欄位.txt");
-                    //foreach (DataColumn dc in table.Columns)
-                    //    sw.WriteLine(dc.Caption);
+                    #region 將 DataTable 內合併欄位產生出來
+                    StreamWriter sw = new StreamWriter(Application.StartupPath + "\\期末學期成績單合併欄位.txt");
+                    foreach (DataColumn dc in table.Columns)
+                        sw.WriteLine(dc.Caption);
 
-                    //sw.Close();
-                    //#endregion
+                    sw.Close();
+                    #endregion
 
 
                     System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 期末成績單產生 E");
@@ -920,10 +935,10 @@ namespace SH_SemesterScoreReportFixed
                         bkw.ReportProgress(35);
                         int progressCount = 0;
                         #region 計算總分及各項目排名
-                        Dictionary<string, string> studentTag1Group = new Dictionary<string, string>();
-                        Dictionary<string, string> studentTag2Group = new Dictionary<string, string>();
-                        Dictionary<string, List<decimal>> ranks = new Dictionary<string, List<decimal>>();
-                        Dictionary<string, List<string>> rankStudents = new Dictionary<string, List<string>>();
+                        //Dictionary<string, string> studentTag1Group = new Dictionary<string, string>();
+                        //Dictionary<string, string> studentTag2Group = new Dictionary<string, string>();
+                        //Dictionary<string, List<decimal>> ranks = new Dictionary<string, List<decimal>>();
+                        //Dictionary<string, List<string>> rankStudents = new Dictionary<string, List<string>>();
                         Dictionary<string, decimal> studentPrintSubjectSum = new Dictionary<string, decimal>();
                         Dictionary<string, decimal> studentTag1SubjectSum = new Dictionary<string, decimal>();
                         Dictionary<string, decimal> studentTag2SubjectSum = new Dictionary<string, decimal>();
@@ -936,7 +951,7 @@ namespace SH_SemesterScoreReportFixed
                         Dictionary<string, decimal> studentPrintSubjectAvgW = new Dictionary<string, decimal>();
                         Dictionary<string, decimal> studentTag1SubjectAvgW = new Dictionary<string, decimal>();
                         Dictionary<string, decimal> studentTag2SubjectAvgW = new Dictionary<string, decimal>();
-                        Dictionary<string, decimal> analytics = new Dictionary<string, decimal>();
+                        //Dictionary<string, decimal> analytics = new Dictionary<string, decimal>();
                         int total = 0;
                         foreach (var gss in gradeyearStudents.Values)
                         {
@@ -950,36 +965,7 @@ namespace SH_SemesterScoreReportFixed
                             {
                                 string studentID = studentRec.StudentID;
                                 bool rank = true;
-                                string tag1ID = "";
-                                string tag2ID = "";
-                                #region 分析學生所屬類別
-                                if (studentTags.ContainsKey(studentID))
-                                {
-                                    foreach (var tag in studentTags[studentID])
-                                    {
-                                        #region 判斷學生是否屬於不排名類別
-                                        if (conf.RankFilterTagList.Contains(tag.RefTagID))
-                                        {
-                                            rank = false;
-                                        }
-                                        #endregion
-                                        #region 判斷學生在類別排名1中所屬的類別
-                                        if (tag1ID == "" && conf.TagRank1TagList.Contains(tag.RefTagID))
-                                        {
-                                            tag1ID = tag.RefTagID;
-                                            studentTag1Group.Add(studentID, tag1ID);
-                                        }
-                                        #endregion
-                                        #region 判斷學生在類別排名2中所屬的類別
-                                        if (tag2ID == "" && conf.TagRank2TagList.Contains(tag.RefTagID))
-                                        {
-                                            tag2ID = tag.RefTagID;
-                                            studentTag2Group.Add(studentID, tag2ID);
-                                        }
-                                        #endregion
-                                    }
-                                }
-                                #endregion
+                               
                                 bool summaryRank = true;
                                 bool tag1SummaryRank = true;
                                 bool tag2SummaryRank = true;
@@ -1011,33 +997,7 @@ namespace SH_SemesterScoreReportFixed
                                                     //計算加權總分
                                                     printSubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
                                                     printSubjectCreditSum += sceTakeRecord.CreditDec();
-                                                    if (rank && sceTakeRecord.Status == "一般")//不在過濾名單且為一般生才做排名
-                                                    {
-                                                        if (sceTakeRecord.RefClass != null)
-                                                        {
-                                                            //各科目班排名
-                                                            key = "班排名" + sceTakeRecord.RefClass.ClassID + "^^^" + sceTakeRecord.Subject + "^^^" + sceTakeRecord.SubjectLevel;
-                                                            if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                                            if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                            ranks[key].Add(sceTakeRecord.ExamScore);
-                                                            rankStudents[key].Add(studentID);
-                                                        }
-                                                        if (sceTakeRecord.Department != "")
-                                                        {
-                                                            //各科目科排名
-                                                            key = "科排名" + sceTakeRecord.Department + "^^^" + gradeyear + "^^^" + sceTakeRecord.Subject + "^^^" + sceTakeRecord.SubjectLevel;
-                                                            if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                                            if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                            ranks[key].Add(sceTakeRecord.ExamScore);
-                                                            rankStudents[key].Add(studentID);
-                                                        }
-                                                        //各科目全校排名
-                                                        key = "全校排名" + gradeyear + "^^^" + sceTakeRecord.Subject + "^^^" + sceTakeRecord.SubjectLevel;
-                                                        if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                                        if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                        ranks[key].Add(sceTakeRecord.ExamScore);
-                                                        rankStudents[key].Add(studentID);
-                                                    }
+                                                   
                                                 }
                                                 else
                                                 {
@@ -1045,71 +1005,7 @@ namespace SH_SemesterScoreReportFixed
                                                 }
                                             }
                                             #endregion
-                                        }
-                                        if (tag1ID != "" && conf.TagRank1SubjectList.Contains(subjectName))
-                                        {
-                                            #region 有Tag1且是排名科目
-                                            foreach (var sceTakeRecord in studentExamSores[studentID][subjectName].Values)
-                                            {
-                                                if (sceTakeRecord != null && sceTakeRecord.SpecialCase == "")
-                                                {
-                                                    tag1SubjectSum += sceTakeRecord.ExamScore;//計算總分
-                                                    tag1SubjectCount++;
-                                                    //計算加權總分
-                                                    tag1SubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
-                                                    tag1SubjectCreditSum += sceTakeRecord.CreditDec();
-                                                    //各科目類別1排名
-                                                    if (rank && sceTakeRecord.Status == "一般")//不在過濾名單且為一般生才做排名
-                                                    {
-                                                        if (conf.PrintSubjectList.Contains(subjectName))//是列印科目才算科目排名                                                
-                                                        {
-                                                            key = "類別1排名" + tag1ID + "^^^" + gradeyear + "^^^" + sceTakeRecord.Subject + "^^^" + sceTakeRecord.SubjectLevel;
-                                                            if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                                            if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                            ranks[key].Add(sceTakeRecord.ExamScore);
-                                                            rankStudents[key].Add(studentID);
-                                                        }
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    tag1SummaryRank = false;
-                                                }
-                                            }
-                                            #endregion
-                                        }
-                                        if (tag2ID != "" && conf.TagRank2SubjectList.Contains(subjectName))
-                                        {
-                                            #region 有Tag2且是排名科目
-                                            foreach (var sceTakeRecord in studentExamSores[studentID][subjectName].Values)
-                                            {
-                                                if (sceTakeRecord != null && sceTakeRecord.SpecialCase == "")
-                                                {
-                                                    tag2SubjectSum += sceTakeRecord.ExamScore;//計算總分
-                                                    tag2SubjectCount++;
-                                                    //計算加權總分
-                                                    tag2SubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
-                                                    tag2SubjectCreditSum += sceTakeRecord.CreditDec();
-                                                    //各科目類別2排名
-                                                    if (rank && sceTakeRecord.Status == "一般")//不在過濾名單且為一般生才做排名
-                                                    {
-                                                        if (conf.PrintSubjectList.Contains(subjectName))//是列印科目才算科目排名                                                
-                                                        {
-                                                            key = "類別2排名" + tag2ID + "^^^" + gradeyear + "^^^" + sceTakeRecord.Subject + "^^^" + sceTakeRecord.SubjectLevel;
-                                                            if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                                            if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                            ranks[key].Add(sceTakeRecord.ExamScore);
-                                                            rankStudents[key].Add(studentID);
-                                                        }
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    tag2SummaryRank = false;
-                                                }
-                                            }
-                                            #endregion
-                                        }
+                                        }                                      
 
                                     }
                                     if (printSubjectCount > 0)
@@ -1119,45 +1015,7 @@ namespace SH_SemesterScoreReportFixed
                                         studentPrintSubjectSum.Add(studentID, printSubjectSum);
                                         //平均四捨五入至小數點第二位
                                         studentPrintSubjectAvg.Add(studentID, Math.Round(printSubjectSum / printSubjectCount, 2, MidpointRounding.AwayFromZero));
-                                        if (rank && studentRec.Status == "一般" && summaryRank == true)//不在過濾名單且沒有特殊成績狀況且為一般生才做排名
-                                        {
-                                            //總分班排名
-                                            key = "總分班排名" + studentRec.RefClass.ClassID;
-                                            if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                            if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                            ranks[key].Add(printSubjectSum);
-                                            rankStudents[key].Add(studentID);
-                                            //總分科排名
-                                            key = "總分科排名" + studentRec.Department + "^^^" + gradeyear;
-                                            if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                            if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                            ranks[key].Add(printSubjectSum);
-                                            rankStudents[key].Add(studentID);
-                                            //總分全校排名
-                                            key = "總分全校排名" + gradeyear;
-                                            if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                            if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                            ranks[key].Add(printSubjectSum);
-                                            rankStudents[key].Add(studentID);
-                                            //平均班排名
-                                            key = "平均班排名" + studentRec.RefClass.ClassID;
-                                            if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                            if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                            ranks[key].Add(Math.Round(printSubjectSum / printSubjectCount, 2, MidpointRounding.AwayFromZero));
-                                            rankStudents[key].Add(studentID);
-                                            //平均科排名
-                                            key = "平均科排名" + studentRec.Department + "^^^" + gradeyear;
-                                            if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                            if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                            ranks[key].Add(Math.Round(printSubjectSum / printSubjectCount, 2, MidpointRounding.AwayFromZero));
-                                            rankStudents[key].Add(studentID);
-                                            //平均全校排名
-                                            key = "平均全校排名" + gradeyear;
-                                            if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                            if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                            ranks[key].Add(Math.Round(printSubjectSum / printSubjectCount, 2, MidpointRounding.AwayFromZero));
-                                            rankStudents[key].Add(studentID);
-                                        }
+                                        
                                         #endregion
                                         if (printSubjectCreditSum > 0)
                                         {
@@ -1166,45 +1024,7 @@ namespace SH_SemesterScoreReportFixed
                                             studentPrintSubjectSumW.Add(studentID, printSubjectSumW);
                                             //加權平均四捨五入至小數點第二位
                                             studentPrintSubjectAvgW.Add(studentID, Math.Round(printSubjectSumW / printSubjectCreditSum, 2, MidpointRounding.AwayFromZero));
-                                            if (rank && studentRec.Status == "一般" && summaryRank == true)//不在過濾名單且為一般生才做排名
-                                            {
-                                                //加權總分班排名
-                                                key = "加權總分班排名" + studentRec.RefClass.ClassID;
-                                                if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                                if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                ranks[key].Add(printSubjectSumW);
-                                                rankStudents[key].Add(studentID);
-                                                //加權總分科排名
-                                                key = "加權總分科排名" + studentRec.Department + "^^^" + gradeyear;
-                                                if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                                if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                ranks[key].Add(printSubjectSumW);
-                                                rankStudents[key].Add(studentID);
-                                                //加權總分全校排名
-                                                key = "加權總分全校排名" + gradeyear;
-                                                if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                                if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                ranks[key].Add(printSubjectSumW);
-                                                rankStudents[key].Add(studentID);
-                                                //加權平均班排名
-                                                key = "加權平均班排名" + studentRec.RefClass.ClassID;
-                                                if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                                if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                ranks[key].Add(Math.Round(printSubjectSumW / printSubjectCreditSum, 2, MidpointRounding.AwayFromZero));
-                                                rankStudents[key].Add(studentID);
-                                                //加權平均科排名
-                                                key = "加權平均科排名" + studentRec.Department + "^^^" + gradeyear;
-                                                if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                                if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                ranks[key].Add(Math.Round(printSubjectSumW / printSubjectCreditSum, 2, MidpointRounding.AwayFromZero));
-                                                rankStudents[key].Add(studentID);
-                                                //加權平均全校排名
-                                                key = "加權平均全校排名" + gradeyear;
-                                                if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                                if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                ranks[key].Add(Math.Round(printSubjectSumW / printSubjectCreditSum, 2, MidpointRounding.AwayFromZero));
-                                                rankStudents[key].Add(studentID);
-                                            }
+                                          
                                             #endregion
                                         }
                                     }
@@ -1215,40 +1035,8 @@ namespace SH_SemesterScoreReportFixed
                                         studentTag1SubjectSum.Add(studentID, tag1SubjectSum);
                                         //平均四捨五入至小數點第二位
                                         studentTag1SubjectAvg.Add(studentID, Math.Round(tag1SubjectSum / tag1SubjectCount, 2, MidpointRounding.AwayFromZero));
-                                        if (rank && studentRec.Status == "一般" && tag1SummaryRank == true)//不在過濾名單且為一般生才做排名
-                                        {
-                                            key = "類別1總分排名" + "^^^" + gradeyear + "^^^" + tag1ID;
-                                            if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                            if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                            ranks[key].Add(tag1SubjectSum);
-                                            rankStudents[key].Add(studentID);
-
-                                            key = "類別1平均排名" + "^^^" + gradeyear + "^^^" + tag1ID;
-                                            if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                            if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                            ranks[key].Add(Math.Round(tag1SubjectSum / tag1SubjectCount, 2, MidpointRounding.AwayFromZero));
-                                            rankStudents[key].Add(studentID);
-                                        }
-                                        //類別1加權總分平均排名
-                                        if (tag1SubjectCreditSum > 0)
-                                        {
-                                            studentTag1SubjectSumW.Add(studentID, tag1SubjectSumW);
-                                            studentTag1SubjectAvgW.Add(studentID, Math.Round(tag1SubjectSumW / tag1SubjectCreditSum, 2, MidpointRounding.AwayFromZero));
-                                            if (rank && studentRec.Status == "一般" && tag1SummaryRank == true)//不在過濾名單且為一般生才做排名
-                                            {
-                                                key = "類別1加權總分排名" + "^^^" + gradeyear + "^^^" + tag1ID;
-                                                if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                                if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                ranks[key].Add(tag1SubjectSumW);
-                                                rankStudents[key].Add(studentID);
-
-                                                key = "類別1加權平均排名" + "^^^" + gradeyear + "^^^" + tag1ID;
-                                                if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                                if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                ranks[key].Add(Math.Round(tag1SubjectSumW / tag1SubjectCreditSum, 2, MidpointRounding.AwayFromZero));
-                                                rankStudents[key].Add(studentID);
-                                            }
-                                        }
+                                       
+                                       
                                     }
                                     //類別2總分平均排名
                                     if (tag2SubjectCount > 0)
@@ -1257,38 +1045,13 @@ namespace SH_SemesterScoreReportFixed
                                         studentTag2SubjectSum.Add(studentID, tag2SubjectSum);
                                         //平均四捨五入至小數點第二位
                                         studentTag2SubjectAvg.Add(studentID, Math.Round(tag2SubjectSum / tag2SubjectCount, 2, MidpointRounding.AwayFromZero));
-                                        if (rank && studentRec.Status == "一般" && tag2SummaryRank == true)//不在過濾名單且為一般生才做排名
-                                        {
-                                            key = "類別2總分排名" + "^^^" + gradeyear + "^^^" + tag2ID;
-                                            if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                            if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                            ranks[key].Add(tag2SubjectSum);
-                                            rankStudents[key].Add(studentID);
-                                            key = "類別2平均排名" + "^^^" + gradeyear + "^^^" + tag2ID;
-                                            if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                            if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                            ranks[key].Add(Math.Round(tag2SubjectSum / tag2SubjectCount, 2, MidpointRounding.AwayFromZero));
-                                            rankStudents[key].Add(studentID);
-                                        }
+                                      
                                         //類別2加權總分平均排名
                                         if (tag2SubjectCreditSum > 0)
                                         {
                                             studentTag2SubjectSumW.Add(studentID, tag2SubjectSumW);
                                             studentTag2SubjectAvgW.Add(studentID, Math.Round(tag2SubjectSumW / tag2SubjectCreditSum, 2, MidpointRounding.AwayFromZero));
-                                            if (rank && studentRec.Status == "一般" && tag2SummaryRank == true)//不在過濾名單且為一般生才做排名
-                                            {
-                                                key = "類別2加權總分排名" + "^^^" + gradeyear + "^^^" + tag2ID;
-                                                if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                                if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                ranks[key].Add(tag2SubjectSumW);
-                                                rankStudents[key].Add(studentID);
-
-                                                key = "類別2加權平均排名" + "^^^" + gradeyear + "^^^" + tag2ID;
-                                                if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                                if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
-                                                ranks[key].Add(Math.Round(tag2SubjectSumW / tag2SubjectCreditSum, 2, MidpointRounding.AwayFromZero));
-                                                rankStudents[key].Add(studentID);
-                                            }
+                                      
                                         }
                                     }
                                 }
@@ -1296,143 +1059,7 @@ namespace SH_SemesterScoreReportFixed
                                 bkw.ReportProgress(40 + progressCount * 30 / total);
                             }
                         }
-                        foreach (var k in ranks.Keys)
-                        {
-                            var rankscores = ranks[k];
-                            //排序
-                            rankscores.Sort();
-                            rankscores.Reverse();
-                            //高均標、組距
-                            if (rankscores.Count > 0)
-                            {
-                                #region 算高標的中點
-                                int middleIndex = 0;
-                                int count = 1;
-                                var score = rankscores[0];
-                                while (rankscores.Count > middleIndex)
-                                {
-                                    if (score != rankscores[middleIndex])
-                                    {
-                                        if (count * 2 >= rankscores.Count) break;
-                                        score = rankscores[middleIndex];
-                                    }
-                                    middleIndex++;
-                                    count++;
-                                }
-                                if (rankscores.Count == middleIndex)
-                                {
-                                    middleIndex--;
-                                    count--;
-                                }
-                                #endregion
-                                analytics.Add(k + "^^^高標", Math.Round(rankscores.GetRange(0, count).Average(), 2, MidpointRounding.AwayFromZero));
-                                analytics.Add(k + "^^^均標", Math.Round(rankscores.Average(), 2, MidpointRounding.AwayFromZero));
-                                #region 算低標的中點
-                                middleIndex = rankscores.Count - 1;
-                                count = 1;
-                                score = rankscores[middleIndex];
-                                while (middleIndex >= 0)
-                                {
-                                    if (score != rankscores[middleIndex])
-                                    {
-                                        if (count * 2 >= rankscores.Count) break;
-                                        score = rankscores[middleIndex];
-                                    }
-                                    middleIndex--;
-                                    count++;
-                                }
-                                if (middleIndex < 0)
-                                {
-                                    middleIndex++;
-                                    count--;
-                                }
-                                #endregion
-                                analytics.Add(k + "^^^低標", Math.Round(rankscores.GetRange(middleIndex, count).Average(), 2, MidpointRounding.AwayFromZero));
-                                //Compute the Average      
-                                var avg = (double)rankscores.Average();
-                                //Perform the Sum of (value-avg)_2_2      
-                                var sum = (double)rankscores.Sum(d => Math.Pow((double)d - avg, 2));
-                                //Put it all together      
-                                analytics.Add(k + "^^^標準差", Math.Round((decimal)Math.Sqrt((sum) / rankscores.Count()), 2, MidpointRounding.AwayFromZero));
-                            }
-                            #region 計算級距
-                            int count90 = 0, count80 = 0, count70 = 0, count60 = 0, count50 = 0, count40 = 0, count30 = 0, count20 = 0, count10 = 0;
-                            int count100Up = 0, count90Up = 0, count80Up = 0, count70Up = 0, count60Up = 0, count50Up = 0, count40Up = 0, count30Up = 0, count20Up = 0, count10Up = 0;
-                            int count90Down = 0, count80Down = 0, count70Down = 0, count60Down = 0, count50Down = 0, count40Down = 0, count30Down = 0, count20Down = 0, count10Down = 0;
-                            foreach (var score in rankscores)
-                            {
-                                if (score >= 100)
-                                    count100Up++;
-                                else if (score >= 90)
-                                    count90++;
-                                else if (score >= 80)
-                                    count80++;
-                                else if (score >= 70)
-                                    count70++;
-                                else if (score >= 60)
-                                    count60++;
-                                else if (score >= 50)
-                                    count50++;
-                                else if (score >= 40)
-                                    count40++;
-                                else if (score >= 30)
-                                    count30++;
-                                else if (score >= 20)
-                                    count20++;
-                                else if (score >= 10)
-                                    count10++;
-                                else
-                                    count10Down++;
-                            }
-                            count90Up = count100Up + count90;
-                            count80Up = count90Up + count80;
-                            count70Up = count80Up + count70;
-                            count60Up = count70Up + count60;
-                            count50Up = count60Up + count50;
-                            count40Up = count50Up + count40;
-                            count30Up = count40Up + count30;
-                            count20Up = count30Up + count20;
-                            count10Up = count20Up + count10;
-
-                            count20Down = count10Down + count10;
-                            count30Down = count20Down + count20;
-                            count40Down = count30Down + count30;
-                            count50Down = count40Down + count40;
-                            count60Down = count50Down + count50;
-                            count70Down = count60Down + count60;
-                            count80Down = count70Down + count70;
-                            count90Down = count80Down + count80;
-
-                            analytics.Add(k + "^^^count90", count90);
-                            analytics.Add(k + "^^^count80", count80);
-                            analytics.Add(k + "^^^count70", count70);
-                            analytics.Add(k + "^^^count60", count60);
-                            analytics.Add(k + "^^^count50", count50);
-                            analytics.Add(k + "^^^count40", count40);
-                            analytics.Add(k + "^^^count30", count30);
-                            analytics.Add(k + "^^^count20", count20);
-                            analytics.Add(k + "^^^count10", count10);
-                            analytics.Add(k + "^^^count100Up", count100Up);
-                            analytics.Add(k + "^^^count90Up", count90Up);
-                            analytics.Add(k + "^^^count80Up", count80Up);
-                            analytics.Add(k + "^^^count70Up", count70Up);
-                            analytics.Add(k + "^^^count60Up", count60Up);
-                            analytics.Add(k + "^^^count50Up", count50Up);
-                            analytics.Add(k + "^^^count40Up", count40Up);
-                            analytics.Add(k + "^^^count30Up", count30Up);
-                            analytics.Add(k + "^^^count20Up", count20Up);
-                            analytics.Add(k + "^^^count10Up", count10Up);
-                            analytics.Add(k + "^^^count90Down", count90Down);
-                            analytics.Add(k + "^^^count80Down", count80Down);
-                            analytics.Add(k + "^^^count70Down", count70Down);
-                            analytics.Add(k + "^^^count60Down", count60Down);
-                            analytics.Add(k + "^^^count50Down", count50Down);
-                            analytics.Add(k + "^^^count40Down", count40Down);
-                            analytics.Add(k + "^^^count30Down", count30Down);
-                            analytics.Add(k + "^^^count20Down", count20Down);
-                            analytics.Add(k + "^^^count10Down", count10Down);
-                            #endregion
-                        }
+                       
                         #endregion
 
                         // 先取得 K12 StudentRec,因為後面透過 k12.data 取資料有的傳入ID,有的傳入 Record 有點亂
@@ -1633,40 +1260,40 @@ namespace SH_SemesterScoreReportFixed
                                 if (stuRec.Fields.ContainsKey("學期學業成績" + k + "排名")) row["學期學業成績" + k + "排名"] = "" + stuRec.Fields["學期學業成績" + k + "排名"];
                                 if (stuRec.Fields.ContainsKey("學期學業成績" + k + "排名母數")) row["學期學業成績" + k + "排名母數"] = "" + stuRec.Fields["學期學業成績" + k + "排名母數"];
                             }
-                            //類別1
-                            if (studentTag1Group.ContainsKey(studentID))
-                            {
-                                foreach (var tag in studentTags[studentID])
-                                {
-                                    if (tag.RefTagID == studentTag1Group[studentID])
-                                    {
-                                        key = "學期學業成績" + tag.Name + "排名";
-                                        if (stuRec.Fields.ContainsKey(key))
-                                            row["學期學業成績類別1排名"] = "" + stuRec.Fields[key];
-                                        key = "學期學業成績" + tag.Name + "排名母數";
-                                        if (stuRec.Fields.ContainsKey(key))
-                                            row["學期學業成績類別1排名母數"] = "" + stuRec.Fields[key];
-                                        break;
-                                    }
-                                }
-                            }
-                            //類別2
-                            if (studentTag2Group.ContainsKey(studentID))
-                            {
-                                foreach (var tag in studentTags[studentID])
-                                {
-                                    if (tag.RefTagID == studentTag2Group[studentID])
-                                    {
-                                        key = "學期學業成績" + tag.Name + "排名";
-                                        if (stuRec.Fields.ContainsKey(key))
-                                            row["學期學業成績類別2排名"] = "" + stuRec.Fields[key];
-                                        key = "學期學業成績" + tag.Name + "排名母數";
-                                        if (stuRec.Fields.ContainsKey(key))
-                                            row["學期學業成績類別2排名母數"] = "" + stuRec.Fields[key];
-                                        break;
-                                    }
-                                }
-                            }
+                            ////類別1 待改
+                            //if (studentTag1Group.ContainsKey(studentID))
+                            //{
+                            //    foreach (var tag in studentTags[studentID])
+                            //    {
+                            //        if (tag.RefTagID == studentTag1Group[studentID])
+                            //        {
+                            //            key = "學期學業成績" + tag.Name + "排名";
+                            //            if (stuRec.Fields.ContainsKey(key))
+                            //                row["學期學業成績類別1排名"] = "" + stuRec.Fields[key];
+                            //            key = "學期學業成績" + tag.Name + "排名母數";
+                            //            if (stuRec.Fields.ContainsKey(key))
+                            //                row["學期學業成績類別1排名母數"] = "" + stuRec.Fields[key];
+                            //            break;
+                            //        }
+                            //    }
+                            //}
+                            //類別2 待改
+                            //if (studentTag2Group.ContainsKey(studentID))
+                            //{
+                            //    foreach (var tag in studentTags[studentID])
+                            //    {
+                            //        if (tag.RefTagID == studentTag2Group[studentID])
+                            //        {
+                            //            key = "學期學業成績" + tag.Name + "排名";
+                            //            if (stuRec.Fields.ContainsKey(key))
+                            //                row["學期學業成績類別2排名"] = "" + stuRec.Fields[key];
+                            //            key = "學期學業成績" + tag.Name + "排名母數";
+                            //            if (stuRec.Fields.ContainsKey(key))
+                            //                row["學期學業成績類別2排名母數"] = "" + stuRec.Fields[key];
+                            //            break;
+                            //        }
+                            //    }
+                            //}
                             #endregion
 
                             if (conf.Semester == "2")
@@ -1945,40 +1572,42 @@ namespace SH_SemesterScoreReportFixed
                                             key = "學期科目科校名母數" + semesterSubjectScore.Subject + "^^^" + semesterSubjectScore.Level;
                                             if (stuRec.Fields.ContainsKey(key))
                                                 row["學期科目全校排名母數" + subjectIndex] = "" + stuRec.Fields[key];
-                                            //類別1
-                                            if (studentTag1Group.ContainsKey(studentID))
-                                            {
-                                                foreach (var tag in studentTags[studentID])
-                                                {
-                                                    if (tag.RefTagID == studentTag1Group[studentID])
-                                                    {
-                                                        key = "學期科目成績" + tag.Name + "排名" + semesterSubjectScore.Subject + "^^^" + semesterSubjectScore.Level;
-                                                        if (stuRec.Fields.ContainsKey(key))
-                                                            row["學期科目類別1排名" + subjectIndex] = "" + stuRec.Fields[key];
-                                                        key = "學期科目成績" + tag.Name + "排名母數" + semesterSubjectScore.Subject + "^^^" + semesterSubjectScore.Level;
-                                                        if (stuRec.Fields.ContainsKey(key))
-                                                            row["學期科目類別1排名母數" + subjectIndex] = "" + stuRec.Fields[key];
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                            //類別2
-                                            if (studentTag2Group.ContainsKey(studentID))
-                                            {
-                                                foreach (var tag in studentTags[studentID])
-                                                {
-                                                    if (tag.RefTagID == studentTag2Group[studentID])
-                                                    {
-                                                        key = "學期科目成績" + tag.Name + "排名" + semesterSubjectScore.Subject + "^^^" + semesterSubjectScore.Level;
-                                                        if (stuRec.Fields.ContainsKey(key))
-                                                            row["學期科目類別2排名" + subjectIndex] = "" + stuRec.Fields[key];
-                                                        key = "學期科目成績" + tag.Name + "排名母數" + semesterSubjectScore.Subject + "^^^" + semesterSubjectScore.Level;
-                                                        if (stuRec.Fields.ContainsKey(key))
-                                                            row["學期科目類別2排名母數" + subjectIndex] = "" + stuRec.Fields[key];
-                                                        break;
-                                                    }
-                                                }
-                                            }
+
+
+                                            ////類別1 待改
+                                            //if (studentTag1Group.ContainsKey(studentID))
+                                            //{
+                                            //    foreach (var tag in studentTags[studentID])
+                                            //    {
+                                            //        if (tag.RefTagID == studentTag1Group[studentID])
+                                            //        {
+                                            //            key = "學期科目成績" + tag.Name + "排名" + semesterSubjectScore.Subject + "^^^" + semesterSubjectScore.Level;
+                                            //            if (stuRec.Fields.ContainsKey(key))
+                                            //                row["學期科目類別1排名" + subjectIndex] = "" + stuRec.Fields[key];
+                                            //            key = "學期科目成績" + tag.Name + "排名母數" + semesterSubjectScore.Subject + "^^^" + semesterSubjectScore.Level;
+                                            //            if (stuRec.Fields.ContainsKey(key))
+                                            //                row["學期科目類別1排名母數" + subjectIndex] = "" + stuRec.Fields[key];
+                                            //            break;
+                                            //        }
+                                            //    }
+                                            //}
+                                            ////類別2
+                                            //if (studentTag2Group.ContainsKey(studentID))
+                                            //{
+                                            //    foreach (var tag in studentTags[studentID])
+                                            //    {
+                                            //        if (tag.RefTagID == studentTag2Group[studentID])
+                                            //        {
+                                            //            key = "學期科目成績" + tag.Name + "排名" + semesterSubjectScore.Subject + "^^^" + semesterSubjectScore.Level;
+                                            //            if (stuRec.Fields.ContainsKey(key))
+                                            //                row["學期科目類別2排名" + subjectIndex] = "" + stuRec.Fields[key];
+                                            //            key = "學期科目成績" + tag.Name + "排名母數" + semesterSubjectScore.Subject + "^^^" + semesterSubjectScore.Level;
+                                            //            if (stuRec.Fields.ContainsKey(key))
+                                            //                row["學期科目類別2排名母數" + subjectIndex] = "" + stuRec.Fields[key];
+                                            //            break;
+                                            //        }
+                                            //    }
+                                            //}
                                             #endregion
                                             stuRec.SemesterSubjectScoreList.Remove(semesterSubjectScore);
                                             break;
@@ -2015,229 +1644,109 @@ namespace SH_SemesterScoreReportFixed
                                                         }
                                                         row["科目成績" + subjectIndex] = sceTakeRecord.SpecialCase == "" ? ("" + sceTakeRecord.ExamScore) : sceTakeRecord.SpecialCase;
                                                         #region 班排名及落點分析
-                                                        if (stuRec.RefClass != null)
+                                                        string k1 = "";
+                                                        if (RankMatrixDataDict.ContainsKey(studentID))
                                                         {
-                                                            key = "班排名" + stuRec.RefClass.ClassID + "^^^" + sceTakeRecord.Subject + "^^^" + sceTakeRecord.SubjectLevel;
-                                                            if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))//明確判斷學生是否參與排名
+                                                            k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_班排名";
+                                                            if (RankMatrixDataDict[studentID].ContainsKey(k1))
                                                             {
-                                                                row["班排名" + subjectIndex] = ranks[key].IndexOf(sceTakeRecord.ExamScore) + 1;
-                                                                row["班排名母數" + subjectIndex] = ranks[key].Count;
+                                                                if (RankMatrixDataDict[studentID][k1]["rank"] != null)
+                                                                    row["班排名" + subjectIndex] = RankMatrixDataDict[studentID][k1]["rank"].ToString();
+
+                                                                if (RankMatrixDataDict[studentID][k1]["matrix_count"] != null)
+                                                                    row["班排名母數" + subjectIndex] = RankMatrixDataDict[studentID][k1]["matrix_count"].ToString();
+
+                                                                // 五標PR填值
+                                                                foreach (string rItem in r2List)
+                                                                {
+                                                                    if (RankMatrixDataDict[studentID][k1][rItem] != null)
+                                                                        row["班排名" + subjectIndex + "_" + rItem] = RankMatrixDataDict[studentID][k1][rItem].ToString();
+                                                                }
                                                             }
-                                                            if (rankStudents.ContainsKey(key))
-                                                            {
-                                                                row["班高標" + subjectIndex] = analytics[key + "^^^高標"];
-                                                                row["班均標" + subjectIndex] = analytics[key + "^^^均標"];
-                                                                row["班低標" + subjectIndex] = analytics[key + "^^^低標"];
-                                                                row["班標準差" + subjectIndex] = analytics[key + "^^^標準差"];
-                                                                row["班組距" + subjectIndex + "count90"] = analytics[key + "^^^count90"];
-                                                                row["班組距" + subjectIndex + "count80"] = analytics[key + "^^^count80"];
-                                                                row["班組距" + subjectIndex + "count70"] = analytics[key + "^^^count70"];
-                                                                row["班組距" + subjectIndex + "count60"] = analytics[key + "^^^count60"];
-                                                                row["班組距" + subjectIndex + "count50"] = analytics[key + "^^^count50"];
-                                                                row["班組距" + subjectIndex + "count40"] = analytics[key + "^^^count40"];
-                                                                row["班組距" + subjectIndex + "count30"] = analytics[key + "^^^count30"];
-                                                                row["班組距" + subjectIndex + "count20"] = analytics[key + "^^^count20"];
-                                                                row["班組距" + subjectIndex + "count10"] = analytics[key + "^^^count10"];
-                                                                row["班組距" + subjectIndex + "count100Up"] = analytics[key + "^^^count100Up"];
-                                                                row["班組距" + subjectIndex + "count90Up"] = analytics[key + "^^^count90Up"];
-                                                                row["班組距" + subjectIndex + "count80Up"] = analytics[key + "^^^count80Up"];
-                                                                row["班組距" + subjectIndex + "count70Up"] = analytics[key + "^^^count70Up"];
-                                                                row["班組距" + subjectIndex + "count60Up"] = analytics[key + "^^^count60Up"];
-                                                                row["班組距" + subjectIndex + "count50Up"] = analytics[key + "^^^count50Up"];
-                                                                row["班組距" + subjectIndex + "count40Up"] = analytics[key + "^^^count40Up"];
-                                                                row["班組距" + subjectIndex + "count30Up"] = analytics[key + "^^^count30Up"];
-                                                                row["班組距" + subjectIndex + "count20Up"] = analytics[key + "^^^count20Up"];
-                                                                row["班組距" + subjectIndex + "count10Up"] = analytics[key + "^^^count10Up"];
-                                                                row["班組距" + subjectIndex + "count90Down"] = analytics[key + "^^^count90Down"];
-                                                                row["班組距" + subjectIndex + "count80Down"] = analytics[key + "^^^count80Down"];
-                                                                row["班組距" + subjectIndex + "count70Down"] = analytics[key + "^^^count70Down"];
-                                                                row["班組距" + subjectIndex + "count60Down"] = analytics[key + "^^^count60Down"];
-                                                                row["班組距" + subjectIndex + "count50Down"] = analytics[key + "^^^count50Down"];
-                                                                row["班組距" + subjectIndex + "count40Down"] = analytics[key + "^^^count40Down"];
-                                                                row["班組距" + subjectIndex + "count30Down"] = analytics[key + "^^^count30Down"];
-                                                                row["班組距" + subjectIndex + "count20Down"] = analytics[key + "^^^count20Down"];
-                                                                row["班組距" + subjectIndex + "count10Down"] = analytics[key + "^^^count10Down"];
-                                                            }
+
                                                         }
                                                         #endregion
                                                         #region 科排名及落點分析
-                                                        if (stuRec.Department != "")
+                                                        if (RankMatrixDataDict.ContainsKey(studentID))
                                                         {
-                                                            key = "科排名" + stuRec.Department + "^^^" + gradeYear + "^^^" + sceTakeRecord.Subject + "^^^" + sceTakeRecord.SubjectLevel;
-                                                            if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))//明確判斷學生是否參與排名
+                                                            k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_科排名";
+                                                            if (RankMatrixDataDict[studentID].ContainsKey(k1))
                                                             {
-                                                                row["科排名" + subjectIndex] = ranks[key].IndexOf(sceTakeRecord.ExamScore) + 1;
-                                                                row["科排名母數" + subjectIndex] = ranks[key].Count;
-                                                            }
-                                                            if (rankStudents.ContainsKey(key))
-                                                            {
-                                                                row["科高標" + subjectIndex] = analytics[key + "^^^高標"];
-                                                                row["科均標" + subjectIndex] = analytics[key + "^^^均標"];
-                                                                row["科低標" + subjectIndex] = analytics[key + "^^^低標"];
-                                                                row["科標準差" + subjectIndex] = analytics[key + "^^^標準差"];
-                                                                row["科組距" + subjectIndex + "count90"] = analytics[key + "^^^count90"];
-                                                                row["科組距" + subjectIndex + "count80"] = analytics[key + "^^^count80"];
-                                                                row["科組距" + subjectIndex + "count70"] = analytics[key + "^^^count70"];
-                                                                row["科組距" + subjectIndex + "count60"] = analytics[key + "^^^count60"];
-                                                                row["科組距" + subjectIndex + "count50"] = analytics[key + "^^^count50"];
-                                                                row["科組距" + subjectIndex + "count40"] = analytics[key + "^^^count40"];
-                                                                row["科組距" + subjectIndex + "count30"] = analytics[key + "^^^count30"];
-                                                                row["科組距" + subjectIndex + "count20"] = analytics[key + "^^^count20"];
-                                                                row["科組距" + subjectIndex + "count10"] = analytics[key + "^^^count10"];
-                                                                row["科組距" + subjectIndex + "count100Up"] = analytics[key + "^^^count100Up"];
-                                                                row["科組距" + subjectIndex + "count90Up"] = analytics[key + "^^^count90Up"];
-                                                                row["科組距" + subjectIndex + "count80Up"] = analytics[key + "^^^count80Up"];
-                                                                row["科組距" + subjectIndex + "count70Up"] = analytics[key + "^^^count70Up"];
-                                                                row["科組距" + subjectIndex + "count60Up"] = analytics[key + "^^^count60Up"];
-                                                                row["科組距" + subjectIndex + "count50Up"] = analytics[key + "^^^count50Up"];
-                                                                row["科組距" + subjectIndex + "count40Up"] = analytics[key + "^^^count40Up"];
-                                                                row["科組距" + subjectIndex + "count30Up"] = analytics[key + "^^^count30Up"];
-                                                                row["科組距" + subjectIndex + "count20Up"] = analytics[key + "^^^count20Up"];
-                                                                row["科組距" + subjectIndex + "count10Up"] = analytics[key + "^^^count10Up"];
-                                                                row["科組距" + subjectIndex + "count90Down"] = analytics[key + "^^^count90Down"];
-                                                                row["科組距" + subjectIndex + "count80Down"] = analytics[key + "^^^count80Down"];
-                                                                row["科組距" + subjectIndex + "count70Down"] = analytics[key + "^^^count70Down"];
-                                                                row["科組距" + subjectIndex + "count60Down"] = analytics[key + "^^^count60Down"];
-                                                                row["科組距" + subjectIndex + "count50Down"] = analytics[key + "^^^count50Down"];
-                                                                row["科組距" + subjectIndex + "count40Down"] = analytics[key + "^^^count40Down"];
-                                                                row["科組距" + subjectIndex + "count30Down"] = analytics[key + "^^^count30Down"];
-                                                                row["科組距" + subjectIndex + "count20Down"] = analytics[key + "^^^count20Down"];
-                                                                row["科組距" + subjectIndex + "count10Down"] = analytics[key + "^^^count10Down"];
+                                                                if (RankMatrixDataDict[studentID][k1]["rank"] != null)
+                                                                    row["科排名" + subjectIndex] = RankMatrixDataDict[studentID][k1]["rank"].ToString();
+
+                                                                if (RankMatrixDataDict[studentID][k1]["matrix_count"] != null)
+                                                                    row["科排名母數" + subjectIndex] = RankMatrixDataDict[studentID][k1]["matrix_count"].ToString();
+
+                                                                // 五標PR填值
+                                                                foreach (string rItem in r2List)
+                                                                {
+                                                                    if (RankMatrixDataDict[studentID][k1][rItem] != null)
+                                                                        row["科排名" + subjectIndex + "_" + rItem] = RankMatrixDataDict[studentID][k1][rItem].ToString();
+                                                                }
                                                             }
                                                         }
                                                         #endregion
                                                         #region 全校排名及落點分析
-                                                        key = "全校排名" + gradeYear + "^^^" + sceTakeRecord.Subject + "^^^" + sceTakeRecord.SubjectLevel;
-                                                        if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))//明確判斷學生是否參與排名
+                                                        if (RankMatrixDataDict.ContainsKey(studentID))
                                                         {
-                                                            row["全校排名" + subjectIndex] = ranks[key].IndexOf(sceTakeRecord.ExamScore) + 1;
-                                                            row["全校排名母數" + subjectIndex] = ranks[key].Count;
-                                                        }
-                                                        if (rankStudents.ContainsKey(key))
-                                                        {
-                                                            row["校高標" + subjectIndex] = analytics[key + "^^^高標"];
-                                                            row["校均標" + subjectIndex] = analytics[key + "^^^均標"];
-                                                            row["校低標" + subjectIndex] = analytics[key + "^^^低標"];
-                                                            row["校標準差" + subjectIndex] = analytics[key + "^^^標準差"];
-                                                            row["校組距" + subjectIndex + "count90"] = analytics[key + "^^^count90"];
-                                                            row["校組距" + subjectIndex + "count80"] = analytics[key + "^^^count80"];
-                                                            row["校組距" + subjectIndex + "count70"] = analytics[key + "^^^count70"];
-                                                            row["校組距" + subjectIndex + "count60"] = analytics[key + "^^^count60"];
-                                                            row["校組距" + subjectIndex + "count50"] = analytics[key + "^^^count50"];
-                                                            row["校組距" + subjectIndex + "count40"] = analytics[key + "^^^count40"];
-                                                            row["校組距" + subjectIndex + "count30"] = analytics[key + "^^^count30"];
-                                                            row["校組距" + subjectIndex + "count20"] = analytics[key + "^^^count20"];
-                                                            row["校組距" + subjectIndex + "count10"] = analytics[key + "^^^count10"];
-                                                            row["校組距" + subjectIndex + "count100Up"] = analytics[key + "^^^count100Up"];
-                                                            row["校組距" + subjectIndex + "count90Up"] = analytics[key + "^^^count90Up"];
-                                                            row["校組距" + subjectIndex + "count80Up"] = analytics[key + "^^^count80Up"];
-                                                            row["校組距" + subjectIndex + "count70Up"] = analytics[key + "^^^count70Up"];
-                                                            row["校組距" + subjectIndex + "count60Up"] = analytics[key + "^^^count60Up"];
-                                                            row["校組距" + subjectIndex + "count50Up"] = analytics[key + "^^^count50Up"];
-                                                            row["校組距" + subjectIndex + "count40Up"] = analytics[key + "^^^count40Up"];
-                                                            row["校組距" + subjectIndex + "count30Up"] = analytics[key + "^^^count30Up"];
-                                                            row["校組距" + subjectIndex + "count20Up"] = analytics[key + "^^^count20Up"];
-                                                            row["校組距" + subjectIndex + "count10Up"] = analytics[key + "^^^count10Up"];
-                                                            row["校組距" + subjectIndex + "count90Down"] = analytics[key + "^^^count90Down"];
-                                                            row["校組距" + subjectIndex + "count80Down"] = analytics[key + "^^^count80Down"];
-                                                            row["校組距" + subjectIndex + "count70Down"] = analytics[key + "^^^count70Down"];
-                                                            row["校組距" + subjectIndex + "count60Down"] = analytics[key + "^^^count60Down"];
-                                                            row["校組距" + subjectIndex + "count50Down"] = analytics[key + "^^^count50Down"];
-                                                            row["校組距" + subjectIndex + "count40Down"] = analytics[key + "^^^count40Down"];
-                                                            row["校組距" + subjectIndex + "count30Down"] = analytics[key + "^^^count30Down"];
-                                                            row["校組距" + subjectIndex + "count20Down"] = analytics[key + "^^^count20Down"];
-                                                            row["校組距" + subjectIndex + "count10Down"] = analytics[key + "^^^count10Down"];
+                                                            k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_年排名";
+                                                            if (RankMatrixDataDict[studentID].ContainsKey(k1))
+                                                            {
+                                                                if (RankMatrixDataDict[studentID][k1]["rank"] != null)
+                                                                    row["全校排名" + subjectIndex] = RankMatrixDataDict[studentID][k1]["rank"].ToString();
+
+                                                                if (RankMatrixDataDict[studentID][k1]["matrix_count"] != null)
+                                                                    row["全校排名母數" + subjectIndex] = RankMatrixDataDict[studentID][k1]["matrix_count"].ToString();
+
+                                                                // 五標PR填值
+                                                                foreach (string rItem in r2List)
+                                                                {
+                                                                    if (RankMatrixDataDict[studentID][k1][rItem] != null)
+                                                                        row["全校排名" + subjectIndex + "_" + rItem] = RankMatrixDataDict[studentID][k1][rItem].ToString();
+                                                                }
+                                                            }
                                                         }
                                                         #endregion
                                                         #region 類別1排名及落點分析
-                                                        if (studentTag1Group.ContainsKey(studentID) && conf.TagRank1SubjectList.Contains(subjectName))
+                                                        if (RankMatrixDataDict.ContainsKey(studentID))
                                                         {
-                                                            key = "類別1排名" + studentTag1Group[studentID] + "^^^" + gradeYear + "^^^" + sceTakeRecord.Subject + "^^^" + sceTakeRecord.SubjectLevel;
-                                                            if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))//明確判斷學生是否參與排名
+                                                            k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_類別1排名";
+                                                            if (RankMatrixDataDict[studentID].ContainsKey(k1))
                                                             {
-                                                                row["類別1排名" + subjectIndex] = ranks[key].IndexOf(sceTakeRecord.ExamScore) + 1;
-                                                                row["類別1排名母數" + subjectIndex] = ranks[key].Count;
-                                                            }
-                                                            if (rankStudents.ContainsKey(key))
-                                                            {
-                                                                row["類1高標" + subjectIndex] = analytics[key + "^^^高標"];
-                                                                row["類1均標" + subjectIndex] = analytics[key + "^^^均標"];
-                                                                row["類1低標" + subjectIndex] = analytics[key + "^^^低標"];
-                                                                row["類1標準差" + subjectIndex] = analytics[key + "^^^標準差"];
-                                                                row["類1組距" + subjectIndex + "count90"] = analytics[key + "^^^count90"];
-                                                                row["類1組距" + subjectIndex + "count80"] = analytics[key + "^^^count80"];
-                                                                row["類1組距" + subjectIndex + "count70"] = analytics[key + "^^^count70"];
-                                                                row["類1組距" + subjectIndex + "count60"] = analytics[key + "^^^count60"];
-                                                                row["類1組距" + subjectIndex + "count50"] = analytics[key + "^^^count50"];
-                                                                row["類1組距" + subjectIndex + "count40"] = analytics[key + "^^^count40"];
-                                                                row["類1組距" + subjectIndex + "count30"] = analytics[key + "^^^count30"];
-                                                                row["類1組距" + subjectIndex + "count20"] = analytics[key + "^^^count20"];
-                                                                row["類1組距" + subjectIndex + "count10"] = analytics[key + "^^^count10"];
-                                                                row["類1組距" + subjectIndex + "count100Up"] = analytics[key + "^^^count100Up"];
-                                                                row["類1組距" + subjectIndex + "count90Up"] = analytics[key + "^^^count90Up"];
-                                                                row["類1組距" + subjectIndex + "count80Up"] = analytics[key + "^^^count80Up"];
-                                                                row["類1組距" + subjectIndex + "count70Up"] = analytics[key + "^^^count70Up"];
-                                                                row["類1組距" + subjectIndex + "count60Up"] = analytics[key + "^^^count60Up"];
-                                                                row["類1組距" + subjectIndex + "count50Up"] = analytics[key + "^^^count50Up"];
-                                                                row["類1組距" + subjectIndex + "count40Up"] = analytics[key + "^^^count40Up"];
-                                                                row["類1組距" + subjectIndex + "count30Up"] = analytics[key + "^^^count30Up"];
-                                                                row["類1組距" + subjectIndex + "count20Up"] = analytics[key + "^^^count20Up"];
-                                                                row["類1組距" + subjectIndex + "count10Up"] = analytics[key + "^^^count10Up"];
-                                                                row["類1組距" + subjectIndex + "count90Down"] = analytics[key + "^^^count90Down"];
-                                                                row["類1組距" + subjectIndex + "count80Down"] = analytics[key + "^^^count80Down"];
-                                                                row["類1組距" + subjectIndex + "count70Down"] = analytics[key + "^^^count70Down"];
-                                                                row["類1組距" + subjectIndex + "count60Down"] = analytics[key + "^^^count60Down"];
-                                                                row["類1組距" + subjectIndex + "count50Down"] = analytics[key + "^^^count50Down"];
-                                                                row["類1組距" + subjectIndex + "count40Down"] = analytics[key + "^^^count40Down"];
-                                                                row["類1組距" + subjectIndex + "count30Down"] = analytics[key + "^^^count30Down"];
-                                                                row["類1組距" + subjectIndex + "count20Down"] = analytics[key + "^^^count20Down"];
-                                                                row["類1組距" + subjectIndex + "count10Down"] = analytics[key + "^^^count10Down"];
+                                                                if (RankMatrixDataDict[studentID][k1]["rank"] != null)
+                                                                    row["類別1排名" + subjectIndex] = RankMatrixDataDict[studentID][k1]["rank"].ToString();
+
+                                                                if (RankMatrixDataDict[studentID][k1]["matrix_count"] != null)
+                                                                    row["類別1排名母數" + subjectIndex] = RankMatrixDataDict[studentID][k1]["matrix_count"].ToString();
+
+                                                                // 五標PR填值
+                                                                foreach (string rItem in r2List)
+                                                                {
+                                                                    if (RankMatrixDataDict[studentID][k1][rItem] != null)
+                                                                        row["類別1排名" + subjectIndex + "_" + rItem] = RankMatrixDataDict[studentID][k1][rItem].ToString();
+                                                                }
                                                             }
                                                         }
                                                         #endregion
                                                         #region 類別2排名及落點分析
-                                                        if (studentTag2Group.ContainsKey(studentID) && conf.TagRank2SubjectList.Contains(subjectName))
+                                                        if (RankMatrixDataDict.ContainsKey(studentID))
                                                         {
-                                                            key = "類別2排名" + studentTag2Group[studentID] + "^^^" + gradeYear + "^^^" + sceTakeRecord.Subject + "^^^" + sceTakeRecord.SubjectLevel;
-                                                            if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))//明確判斷學生是否參與排名
+                                                            k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_類別2排名";
+                                                            if (RankMatrixDataDict[studentID].ContainsKey(k1))
                                                             {
-                                                                row["類別2排名" + subjectIndex] = ranks[key].IndexOf(sceTakeRecord.ExamScore) + 1;
-                                                                row["類別2排名母數" + subjectIndex] = ranks[key].Count;
-                                                            }
-                                                            if (rankStudents.ContainsKey(key))
-                                                            {
-                                                                row["類2高標" + subjectIndex] = analytics[key + "^^^高標"];
-                                                                row["類2均標" + subjectIndex] = analytics[key + "^^^均標"];
-                                                                row["類2低標" + subjectIndex] = analytics[key + "^^^低標"];
-                                                                row["類2標準差" + subjectIndex] = analytics[key + "^^^標準差"];
-                                                                row["類2組距" + subjectIndex + "count90"] = analytics[key + "^^^count90"];
-                                                                row["類2組距" + subjectIndex + "count80"] = analytics[key + "^^^count80"];
-                                                                row["類2組距" + subjectIndex + "count70"] = analytics[key + "^^^count70"];
-                                                                row["類2組距" + subjectIndex + "count60"] = analytics[key + "^^^count60"];
-                                                                row["類2組距" + subjectIndex + "count50"] = analytics[key + "^^^count50"];
-                                                                row["類2組距" + subjectIndex + "count40"] = analytics[key + "^^^count40"];
-                                                                row["類2組距" + subjectIndex + "count30"] = analytics[key + "^^^count30"];
-                                                                row["類2組距" + subjectIndex + "count20"] = analytics[key + "^^^count20"];
-                                                                row["類2組距" + subjectIndex + "count10"] = analytics[key + "^^^count10"];
-                                                                row["類2組距" + subjectIndex + "count100Up"] = analytics[key + "^^^count100Up"];
-                                                                row["類2組距" + subjectIndex + "count90Up"] = analytics[key + "^^^count90Up"];
-                                                                row["類2組距" + subjectIndex + "count80Up"] = analytics[key + "^^^count80Up"];
-                                                                row["類2組距" + subjectIndex + "count70Up"] = analytics[key + "^^^count70Up"];
-                                                                row["類2組距" + subjectIndex + "count60Up"] = analytics[key + "^^^count60Up"];
-                                                                row["類2組距" + subjectIndex + "count50Up"] = analytics[key + "^^^count50Up"];
-                                                                row["類2組距" + subjectIndex + "count40Up"] = analytics[key + "^^^count40Up"];
-                                                                row["類2組距" + subjectIndex + "count30Up"] = analytics[key + "^^^count30Up"];
-                                                                row["類2組距" + subjectIndex + "count20Up"] = analytics[key + "^^^count20Up"];
-                                                                row["類2組距" + subjectIndex + "count10Up"] = analytics[key + "^^^count10Up"];
-                                                                row["類2組距" + subjectIndex + "count90Down"] = analytics[key + "^^^count90Down"];
-                                                                row["類2組距" + subjectIndex + "count80Down"] = analytics[key + "^^^count80Down"];
-                                                                row["類2組距" + subjectIndex + "count70Down"] = analytics[key + "^^^count70Down"];
-                                                                row["類2組距" + subjectIndex + "count60Down"] = analytics[key + "^^^count60Down"];
-                                                                row["類2組距" + subjectIndex + "count50Down"] = analytics[key + "^^^count50Down"];
-                                                                row["類2組距" + subjectIndex + "count40Down"] = analytics[key + "^^^count40Down"];
-                                                                row["類2組距" + subjectIndex + "count30Down"] = analytics[key + "^^^count30Down"];
-                                                                row["類2組距" + subjectIndex + "count20Down"] = analytics[key + "^^^count20Down"];
-                                                                row["類2組距" + subjectIndex + "count10Down"] = analytics[key + "^^^count10Down"];
+                                                                if (RankMatrixDataDict[studentID][k1]["rank"] != null)
+                                                                    row["類別2排名" + subjectIndex] = RankMatrixDataDict[studentID][k1]["rank"].ToString();
+
+                                                                if (RankMatrixDataDict[studentID][k1]["matrix_count"] != null)
+                                                                    row["類別2排名母數" + subjectIndex] = RankMatrixDataDict[studentID][k1]["matrix_count"].ToString();
+
+                                                                // 五標PR填值
+                                                                foreach (string rItem in r2List)
+                                                                {
+                                                                    if (RankMatrixDataDict[studentID][k1][rItem] != null)
+                                                                        row["類別2排名" + subjectIndex + "_" + rItem] = RankMatrixDataDict[studentID][k1][rItem].ToString();
+                                                                }
                                                             }
                                                         }
                                                         #endregion
@@ -2378,135 +1887,64 @@ namespace SH_SemesterScoreReportFixed
                                 }
                             }
                             #endregion
+
                             #region 總分
                             if (studentPrintSubjectSum.ContainsKey(studentID))
                             {
                                 row["總分"] = studentPrintSubjectSum[studentID];
-                                //總分班排名                                
-                                key = "總分班排名" + stuRec.RefClass.ClassID;
-                                if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))//明確判斷學生是否參與排名
+
+                                if (RankMatrixDataDict.ContainsKey(studentID))
                                 {
-                                    row["總分班排名"] = ranks[key].IndexOf(studentPrintSubjectSum[studentID]) + 1;
-                                    row["總分班排名母數"] = ranks[key].Count;
-                                }
-                                if (rankStudents.ContainsKey(key))
-                                {
-                                    row["總分班高標"] = analytics[key + "^^^高標"];
-                                    row["總分班均標"] = analytics[key + "^^^均標"];
-                                    row["總分班低標"] = analytics[key + "^^^低標"];
-                                    row["總分班標準差"] = analytics[key + "^^^標準差"];
-                                    row["總分班組距count90"] = analytics[key + "^^^count90"];
-                                    row["總分班組距count80"] = analytics[key + "^^^count80"];
-                                    row["總分班組距count70"] = analytics[key + "^^^count70"];
-                                    row["總分班組距count60"] = analytics[key + "^^^count60"];
-                                    row["總分班組距count50"] = analytics[key + "^^^count50"];
-                                    row["總分班組距count40"] = analytics[key + "^^^count40"];
-                                    row["總分班組距count30"] = analytics[key + "^^^count30"];
-                                    row["總分班組距count20"] = analytics[key + "^^^count20"];
-                                    row["總分班組距count10"] = analytics[key + "^^^count10"];
-                                    row["總分班組距count100Up"] = analytics[key + "^^^count100Up"];
-                                    row["總分班組距count90Up"] = analytics[key + "^^^count90Up"];
-                                    row["總分班組距count80Up"] = analytics[key + "^^^count80Up"];
-                                    row["總分班組距count70Up"] = analytics[key + "^^^count70Up"];
-                                    row["總分班組距count60Up"] = analytics[key + "^^^count60Up"];
-                                    row["總分班組距count50Up"] = analytics[key + "^^^count50Up"];
-                                    row["總分班組距count40Up"] = analytics[key + "^^^count40Up"];
-                                    row["總分班組距count30Up"] = analytics[key + "^^^count30Up"];
-                                    row["總分班組距count20Up"] = analytics[key + "^^^count20Up"];
-                                    row["總分班組距count10Up"] = analytics[key + "^^^count10Up"];
-                                    row["總分班組距count90Down"] = analytics[key + "^^^count90Down"];
-                                    row["總分班組距count80Down"] = analytics[key + "^^^count80Down"];
-                                    row["總分班組距count70Down"] = analytics[key + "^^^count70Down"];
-                                    row["總分班組距count60Down"] = analytics[key + "^^^count60Down"];
-                                    row["總分班組距count50Down"] = analytics[key + "^^^count50Down"];
-                                    row["總分班組距count40Down"] = analytics[key + "^^^count40Down"];
-                                    row["總分班組距count30Down"] = analytics[key + "^^^count30Down"];
-                                    row["總分班組距count20Down"] = analytics[key + "^^^count20Down"];
-                                    row["總分班組距count10Down"] = analytics[key + "^^^count10Down"];
-                                }
-                                //總分科排名
-                                key = "總分科排名" + stuRec.Department + "^^^" + gradeYear;
-                                if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))//明確判斷學生是否參與排名
-                                {
-                                    row["總分科排名"] = ranks[key].IndexOf(studentPrintSubjectSum[studentID]) + 1;
-                                    row["總分科排名母數"] = ranks[key].Count;
-                                }
-                                if (rankStudents.ContainsKey(key))
-                                {
-                                    row["總分科高標"] = analytics[key + "^^^高標"];
-                                    row["總分科均標"] = analytics[key + "^^^均標"];
-                                    row["總分科低標"] = analytics[key + "^^^低標"];
-                                    row["總分科標準差"] = analytics[key + "^^^標準差"];
-                                    row["總分科組距count90"] = analytics[key + "^^^count90"];
-                                    row["總分科組距count80"] = analytics[key + "^^^count80"];
-                                    row["總分科組距count70"] = analytics[key + "^^^count70"];
-                                    row["總分科組距count60"] = analytics[key + "^^^count60"];
-                                    row["總分科組距count50"] = analytics[key + "^^^count50"];
-                                    row["總分科組距count40"] = analytics[key + "^^^count40"];
-                                    row["總分科組距count30"] = analytics[key + "^^^count30"];
-                                    row["總分科組距count20"] = analytics[key + "^^^count20"];
-                                    row["總分科組距count10"] = analytics[key + "^^^count10"];
-                                    row["總分科組距count100Up"] = analytics[key + "^^^count100Up"];
-                                    row["總分科組距count90Up"] = analytics[key + "^^^count90Up"];
-                                    row["總分科組距count80Up"] = analytics[key + "^^^count80Up"];
-                                    row["總分科組距count70Up"] = analytics[key + "^^^count70Up"];
-                                    row["總分科組距count60Up"] = analytics[key + "^^^count60Up"];
-                                    row["總分科組距count50Up"] = analytics[key + "^^^count50Up"];
-                                    row["總分科組距count40Up"] = analytics[key + "^^^count40Up"];
-                                    row["總分科組距count30Up"] = analytics[key + "^^^count30Up"];
-                                    row["總分科組距count20Up"] = analytics[key + "^^^count20Up"];
-                                    row["總分科組距count10Up"] = analytics[key + "^^^count10Up"];
-                                    row["總分科組距count90Down"] = analytics[key + "^^^count90Down"];
-                                    row["總分科組距count80Down"] = analytics[key + "^^^count80Down"];
-                                    row["總分科組距count70Down"] = analytics[key + "^^^count70Down"];
-                                    row["總分科組距count60Down"] = analytics[key + "^^^count60Down"];
-                                    row["總分科組距count50Down"] = analytics[key + "^^^count50Down"];
-                                    row["總分科組距count40Down"] = analytics[key + "^^^count40Down"];
-                                    row["總分科組距count30Down"] = analytics[key + "^^^count30Down"];
-                                    row["總分科組距count20Down"] = analytics[key + "^^^count20Down"];
-                                    row["總分科組距count10Down"] = analytics[key + "^^^count10Down"];
-                                }
-                                //總分全校排名
-                                key = "總分全校排名" + gradeYear;
-                                if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))//明確判斷學生是否參與排名
-                                {
-                                    row["總分全校排名"] = ranks[key].IndexOf(studentPrintSubjectSum[studentID]) + 1;
-                                    row["總分全校排名母數"] = ranks[key].Count;
-                                }
-                                if (rankStudents.ContainsKey(key))
-                                {
-                                    row["總分校高標"] = analytics[key + "^^^高標"];
-                                    row["總分校均標"] = analytics[key + "^^^均標"];
-                                    row["總分校低標"] = analytics[key + "^^^低標"];
-                                    row["總分校標準差"] = analytics[key + "^^^標準差"];
-                                    row["總分校組距count90"] = analytics[key + "^^^count90"];
-                                    row["總分校組距count80"] = analytics[key + "^^^count80"];
-                                    row["總分校組距count70"] = analytics[key + "^^^count70"];
-                                    row["總分校組距count60"] = analytics[key + "^^^count60"];
-                                    row["總分校組距count50"] = analytics[key + "^^^count50"];
-                                    row["總分校組距count40"] = analytics[key + "^^^count40"];
-                                    row["總分校組距count30"] = analytics[key + "^^^count30"];
-                                    row["總分校組距count20"] = analytics[key + "^^^count20"];
-                                    row["總分校組距count10"] = analytics[key + "^^^count10"];
-                                    row["總分校組距count100Up"] = analytics[key + "^^^count100Up"];
-                                    row["總分校組距count90Up"] = analytics[key + "^^^count90Up"];
-                                    row["總分校組距count80Up"] = analytics[key + "^^^count80Up"];
-                                    row["總分校組距count70Up"] = analytics[key + "^^^count70Up"];
-                                    row["總分校組距count60Up"] = analytics[key + "^^^count60Up"];
-                                    row["總分校組距count50Up"] = analytics[key + "^^^count50Up"];
-                                    row["總分校組距count40Up"] = analytics[key + "^^^count40Up"];
-                                    row["總分校組距count30Up"] = analytics[key + "^^^count30Up"];
-                                    row["總分校組距count20Up"] = analytics[key + "^^^count20Up"];
-                                    row["總分校組距count10Up"] = analytics[key + "^^^count10Up"];
-                                    row["總分校組距count90Down"] = analytics[key + "^^^count90Down"];
-                                    row["總分校組距count80Down"] = analytics[key + "^^^count80Down"];
-                                    row["總分校組距count70Down"] = analytics[key + "^^^count70Down"];
-                                    row["總分校組距count60Down"] = analytics[key + "^^^count60Down"];
-                                    row["總分校組距count50Down"] = analytics[key + "^^^count50Down"];
-                                    row["總分校組距count40Down"] = analytics[key + "^^^count40Down"];
-                                    row["總分校組距count30Down"] = analytics[key + "^^^count30Down"];
-                                    row["總分校組距count20Down"] = analytics[key + "^^^count20Down"];
-                                    row["總分校組距count10Down"] = analytics[key + "^^^count10Down"];
+                                    string skey = "定期評量/總計成績_總分_班排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["總分班排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["總分班排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["總分班排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+                                    }
+
+                                    skey = "定期評量/總計成績_總分_科排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["總分科排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["總分科排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["總分科排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+                                    }
+
+                                    skey = "定期評量/總計成績_總分_年排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["總分全校排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["總分全校排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["總分全校排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+                                    }
                                 }
                             }
                             #endregion
@@ -2514,257 +1952,121 @@ namespace SH_SemesterScoreReportFixed
                             if (studentPrintSubjectAvg.ContainsKey(studentID))
                             {
                                 row["平均"] = studentPrintSubjectAvg[studentID];
-                                key = "平均班排名" + stuRec.RefClass.ClassID;
-                                if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))//明確判斷學生是否參與排名
+                                if (RankMatrixDataDict.ContainsKey(studentID))
                                 {
-                                    row["平均班排名"] = ranks[key].IndexOf(studentPrintSubjectAvg[studentID]) + 1;
-                                    row["平均班排名母數"] = ranks[key].Count;
+                                    string skey = "定期評量/總計成績_平均_班排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["平均班排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["平均班排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["平均班排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+
+                                    }
+
+                                    skey = "定期評量/總計成績_平均_科排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["平均科排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["平均科排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["平均科排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+                                    }
+
+                                    skey = "定期評量/總計成績_平均_年排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["平均全校排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["平均全校排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["平均全校排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+
+                                    }
                                 }
-                                if (rankStudents.ContainsKey(key))
-                                {
-                                    row["平均班高標"] = analytics[key + "^^^高標"];
-                                    row["平均班均標"] = analytics[key + "^^^均標"];
-                                    row["平均班低標"] = analytics[key + "^^^低標"];
-                                    row["平均班標準差"] = analytics[key + "^^^標準差"];
-                                    row["平均班組距count90"] = analytics[key + "^^^count90"];
-                                    row["平均班組距count80"] = analytics[key + "^^^count80"];
-                                    row["平均班組距count70"] = analytics[key + "^^^count70"];
-                                    row["平均班組距count60"] = analytics[key + "^^^count60"];
-                                    row["平均班組距count50"] = analytics[key + "^^^count50"];
-                                    row["平均班組距count40"] = analytics[key + "^^^count40"];
-                                    row["平均班組距count30"] = analytics[key + "^^^count30"];
-                                    row["平均班組距count20"] = analytics[key + "^^^count20"];
-                                    row["平均班組距count10"] = analytics[key + "^^^count10"];
-                                    row["平均班組距count100Up"] = analytics[key + "^^^count100Up"];
-                                    row["平均班組距count90Up"] = analytics[key + "^^^count90Up"];
-                                    row["平均班組距count80Up"] = analytics[key + "^^^count80Up"];
-                                    row["平均班組距count70Up"] = analytics[key + "^^^count70Up"];
-                                    row["平均班組距count60Up"] = analytics[key + "^^^count60Up"];
-                                    row["平均班組距count50Up"] = analytics[key + "^^^count50Up"];
-                                    row["平均班組距count40Up"] = analytics[key + "^^^count40Up"];
-                                    row["平均班組距count30Up"] = analytics[key + "^^^count30Up"];
-                                    row["平均班組距count20Up"] = analytics[key + "^^^count20Up"];
-                                    row["平均班組距count10Up"] = analytics[key + "^^^count10Up"];
-                                    row["平均班組距count90Down"] = analytics[key + "^^^count90Down"];
-                                    row["平均班組距count80Down"] = analytics[key + "^^^count80Down"];
-                                    row["平均班組距count70Down"] = analytics[key + "^^^count70Down"];
-                                    row["平均班組距count60Down"] = analytics[key + "^^^count60Down"];
-                                    row["平均班組距count50Down"] = analytics[key + "^^^count50Down"];
-                                    row["平均班組距count40Down"] = analytics[key + "^^^count40Down"];
-                                    row["平均班組距count30Down"] = analytics[key + "^^^count30Down"];
-                                    row["平均班組距count20Down"] = analytics[key + "^^^count20Down"];
-                                    row["平均班組距count10Down"] = analytics[key + "^^^count10Down"];
-                                }
-                                key = "平均科排名" + stuRec.Department + "^^^" + gradeYear;
-                                if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))//明確判斷學生是否參與排名
-                                {
-                                    row["平均科排名"] = ranks[key].IndexOf(studentPrintSubjectAvg[studentID]) + 1;
-                                    row["平均科排名母數"] = ranks[key].Count;
-                                }
-                                if (rankStudents.ContainsKey(key))
-                                {
-                                    row["平均科高標"] = analytics[key + "^^^高標"];
-                                    row["平均科均標"] = analytics[key + "^^^均標"];
-                                    row["平均科低標"] = analytics[key + "^^^低標"];
-                                    row["平均科標準差"] = analytics[key + "^^^標準差"];
-                                    row["平均科組距count90"] = analytics[key + "^^^count90"];
-                                    row["平均科組距count80"] = analytics[key + "^^^count80"];
-                                    row["平均科組距count70"] = analytics[key + "^^^count70"];
-                                    row["平均科組距count60"] = analytics[key + "^^^count60"];
-                                    row["平均科組距count50"] = analytics[key + "^^^count50"];
-                                    row["平均科組距count40"] = analytics[key + "^^^count40"];
-                                    row["平均科組距count30"] = analytics[key + "^^^count30"];
-                                    row["平均科組距count20"] = analytics[key + "^^^count20"];
-                                    row["平均科組距count10"] = analytics[key + "^^^count10"];
-                                    row["平均科組距count100Up"] = analytics[key + "^^^count100Up"];
-                                    row["平均科組距count90Up"] = analytics[key + "^^^count90Up"];
-                                    row["平均科組距count80Up"] = analytics[key + "^^^count80Up"];
-                                    row["平均科組距count70Up"] = analytics[key + "^^^count70Up"];
-                                    row["平均科組距count60Up"] = analytics[key + "^^^count60Up"];
-                                    row["平均科組距count50Up"] = analytics[key + "^^^count50Up"];
-                                    row["平均科組距count40Up"] = analytics[key + "^^^count40Up"];
-                                    row["平均科組距count30Up"] = analytics[key + "^^^count30Up"];
-                                    row["平均科組距count20Up"] = analytics[key + "^^^count20Up"];
-                                    row["平均科組距count10Up"] = analytics[key + "^^^count10Up"];
-                                    row["平均科組距count90Down"] = analytics[key + "^^^count90Down"];
-                                    row["平均科組距count80Down"] = analytics[key + "^^^count80Down"];
-                                    row["平均科組距count70Down"] = analytics[key + "^^^count70Down"];
-                                    row["平均科組距count60Down"] = analytics[key + "^^^count60Down"];
-                                    row["平均科組距count50Down"] = analytics[key + "^^^count50Down"];
-                                    row["平均科組距count40Down"] = analytics[key + "^^^count40Down"];
-                                    row["平均科組距count30Down"] = analytics[key + "^^^count30Down"];
-                                    row["平均科組距count20Down"] = analytics[key + "^^^count20Down"];
-                                    row["平均科組距count10Down"] = analytics[key + "^^^count10Down"];
-                                }
-                                key = "平均全校排名" + gradeYear;
-                                if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))//明確判斷學生是否參與排名
-                                {
-                                    row["平均全校排名"] = ranks[key].IndexOf(studentPrintSubjectAvg[studentID]) + 1;
-                                    row["平均全校排名母數"] = ranks[key].Count;
-                                }
-                                if (rankStudents.ContainsKey(key))
-                                {
-                                    row["平均校高標"] = analytics[key + "^^^高標"];
-                                    row["平均校均標"] = analytics[key + "^^^均標"];
-                                    row["平均校低標"] = analytics[key + "^^^低標"];
-                                    row["平均校標準差"] = analytics[key + "^^^標準差"];
-                                    row["平均校組距count90"] = analytics[key + "^^^count90"];
-                                    row["平均校組距count80"] = analytics[key + "^^^count80"];
-                                    row["平均校組距count70"] = analytics[key + "^^^count70"];
-                                    row["平均校組距count60"] = analytics[key + "^^^count60"];
-                                    row["平均校組距count50"] = analytics[key + "^^^count50"];
-                                    row["平均校組距count40"] = analytics[key + "^^^count40"];
-                                    row["平均校組距count30"] = analytics[key + "^^^count30"];
-                                    row["平均校組距count20"] = analytics[key + "^^^count20"];
-                                    row["平均校組距count10"] = analytics[key + "^^^count10"];
-                                    row["平均校組距count100Up"] = analytics[key + "^^^count100Up"];
-                                    row["平均校組距count90Up"] = analytics[key + "^^^count90Up"];
-                                    row["平均校組距count80Up"] = analytics[key + "^^^count80Up"];
-                                    row["平均校組距count70Up"] = analytics[key + "^^^count70Up"];
-                                    row["平均校組距count60Up"] = analytics[key + "^^^count60Up"];
-                                    row["平均校組距count50Up"] = analytics[key + "^^^count50Up"];
-                                    row["平均校組距count40Up"] = analytics[key + "^^^count40Up"];
-                                    row["平均校組距count30Up"] = analytics[key + "^^^count30Up"];
-                                    row["平均校組距count20Up"] = analytics[key + "^^^count20Up"];
-                                    row["平均校組距count10Up"] = analytics[key + "^^^count10Up"];
-                                    row["平均校組距count90Down"] = analytics[key + "^^^count90Down"];
-                                    row["平均校組距count80Down"] = analytics[key + "^^^count80Down"];
-                                    row["平均校組距count70Down"] = analytics[key + "^^^count70Down"];
-                                    row["平均校組距count60Down"] = analytics[key + "^^^count60Down"];
-                                    row["平均校組距count50Down"] = analytics[key + "^^^count50Down"];
-                                    row["平均校組距count40Down"] = analytics[key + "^^^count40Down"];
-                                    row["平均校組距count30Down"] = analytics[key + "^^^count30Down"];
-                                    row["平均校組距count20Down"] = analytics[key + "^^^count20Down"];
-                                    row["平均校組距count10Down"] = analytics[key + "^^^count10Down"];
-                                }
+
                             }
                             #endregion
                             #region 加權總分
                             if (studentPrintSubjectSumW.ContainsKey(studentID))
                             {
                                 row["加權總分"] = studentPrintSubjectSumW[studentID];
-                                key = "加權總分班排名" + stuRec.RefClass.ClassID;
-                                if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))//明確判斷學生是否參與排名
+                                if (RankMatrixDataDict.ContainsKey(studentID))
                                 {
-                                    row["加權總分班排名"] = ranks[key].IndexOf(studentPrintSubjectSumW[studentID]) + 1;
-                                    row["加權總分班排名母數"] = ranks[key].Count;
-                                }
-                                if (rankStudents.ContainsKey(key))
-                                {
-                                    row["加權總分班高標"] = analytics[key + "^^^高標"];
-                                    row["加權總分班均標"] = analytics[key + "^^^均標"];
-                                    row["加權總分班低標"] = analytics[key + "^^^低標"];
-                                    row["加權總分班標準差"] = analytics[key + "^^^標準差"];
-                                    row["加權總分班組距count90"] = analytics[key + "^^^count90"];
-                                    row["加權總分班組距count80"] = analytics[key + "^^^count80"];
-                                    row["加權總分班組距count70"] = analytics[key + "^^^count70"];
-                                    row["加權總分班組距count60"] = analytics[key + "^^^count60"];
-                                    row["加權總分班組距count50"] = analytics[key + "^^^count50"];
-                                    row["加權總分班組距count40"] = analytics[key + "^^^count40"];
-                                    row["加權總分班組距count30"] = analytics[key + "^^^count30"];
-                                    row["加權總分班組距count20"] = analytics[key + "^^^count20"];
-                                    row["加權總分班組距count10"] = analytics[key + "^^^count10"];
-                                    row["加權總分班組距count100Up"] = analytics[key + "^^^count100Up"];
-                                    row["加權總分班組距count90Up"] = analytics[key + "^^^count90Up"];
-                                    row["加權總分班組距count80Up"] = analytics[key + "^^^count80Up"];
-                                    row["加權總分班組距count70Up"] = analytics[key + "^^^count70Up"];
-                                    row["加權總分班組距count60Up"] = analytics[key + "^^^count60Up"];
-                                    row["加權總分班組距count50Up"] = analytics[key + "^^^count50Up"];
-                                    row["加權總分班組距count40Up"] = analytics[key + "^^^count40Up"];
-                                    row["加權總分班組距count30Up"] = analytics[key + "^^^count30Up"];
-                                    row["加權總分班組距count20Up"] = analytics[key + "^^^count20Up"];
-                                    row["加權總分班組距count10Up"] = analytics[key + "^^^count10Up"];
-                                    row["加權總分班組距count90Down"] = analytics[key + "^^^count90Down"];
-                                    row["加權總分班組距count80Down"] = analytics[key + "^^^count80Down"];
-                                    row["加權總分班組距count70Down"] = analytics[key + "^^^count70Down"];
-                                    row["加權總分班組距count60Down"] = analytics[key + "^^^count60Down"];
-                                    row["加權總分班組距count50Down"] = analytics[key + "^^^count50Down"];
-                                    row["加權總分班組距count40Down"] = analytics[key + "^^^count40Down"];
-                                    row["加權總分班組距count30Down"] = analytics[key + "^^^count30Down"];
-                                    row["加權總分班組距count20Down"] = analytics[key + "^^^count20Down"];
-                                    row["加權總分班組距count10Down"] = analytics[key + "^^^count10Down"];
-                                }
-                                key = "加權總分科排名" + stuRec.Department + "^^^" + gradeYear;
-                                if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))//明確判斷學生是否參與排名
-                                {
-                                    row["加權總分科排名"] = ranks[key].IndexOf(studentPrintSubjectSumW[studentID]) + 1;
-                                    row["加權總分科排名母數"] = ranks[key].Count;
-                                }
-                                if (rankStudents.ContainsKey(key))
-                                {
-                                    row["加權總分科高標"] = analytics[key + "^^^高標"];
-                                    row["加權總分科均標"] = analytics[key + "^^^均標"];
-                                    row["加權總分科低標"] = analytics[key + "^^^低標"];
-                                    row["加權總分科標準差"] = analytics[key + "^^^標準差"];
-                                    row["加權總分科組距count90"] = analytics[key + "^^^count90"];
-                                    row["加權總分科組距count80"] = analytics[key + "^^^count80"];
-                                    row["加權總分科組距count70"] = analytics[key + "^^^count70"];
-                                    row["加權總分科組距count60"] = analytics[key + "^^^count60"];
-                                    row["加權總分科組距count50"] = analytics[key + "^^^count50"];
-                                    row["加權總分科組距count40"] = analytics[key + "^^^count40"];
-                                    row["加權總分科組距count30"] = analytics[key + "^^^count30"];
-                                    row["加權總分科組距count20"] = analytics[key + "^^^count20"];
-                                    row["加權總分科組距count10"] = analytics[key + "^^^count10"];
-                                    row["加權總分科組距count100Up"] = analytics[key + "^^^count100Up"];
-                                    row["加權總分科組距count90Up"] = analytics[key + "^^^count90Up"];
-                                    row["加權總分科組距count80Up"] = analytics[key + "^^^count80Up"];
-                                    row["加權總分科組距count70Up"] = analytics[key + "^^^count70Up"];
-                                    row["加權總分科組距count60Up"] = analytics[key + "^^^count60Up"];
-                                    row["加權總分科組距count50Up"] = analytics[key + "^^^count50Up"];
-                                    row["加權總分科組距count40Up"] = analytics[key + "^^^count40Up"];
-                                    row["加權總分科組距count30Up"] = analytics[key + "^^^count30Up"];
-                                    row["加權總分科組距count20Up"] = analytics[key + "^^^count20Up"];
-                                    row["加權總分科組距count10Up"] = analytics[key + "^^^count10Up"];
-                                    row["加權總分科組距count90Down"] = analytics[key + "^^^count90Down"];
-                                    row["加權總分科組距count80Down"] = analytics[key + "^^^count80Down"];
-                                    row["加權總分科組距count70Down"] = analytics[key + "^^^count70Down"];
-                                    row["加權總分科組距count60Down"] = analytics[key + "^^^count60Down"];
-                                    row["加權總分科組距count50Down"] = analytics[key + "^^^count50Down"];
-                                    row["加權總分科組距count40Down"] = analytics[key + "^^^count40Down"];
-                                    row["加權總分科組距count30Down"] = analytics[key + "^^^count30Down"];
-                                    row["加權總分科組距count20Down"] = analytics[key + "^^^count20Down"];
-                                    row["加權總分科組距count10Down"] = analytics[key + "^^^count10Down"];
-                                }
-                                key = "加權總分全校排名" + gradeYear;
-                                if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))//明確判斷學生是否參與排名
-                                {
-                                    row["加權總分全校排名"] = ranks[key].IndexOf(studentPrintSubjectSumW[studentID]) + 1;
-                                    row["加權總分全校排名母數"] = ranks[key].Count;
-                                }
-                                if (rankStudents.ContainsKey(key))
-                                {
-                                    row["加權總分校高標"] = analytics[key + "^^^高標"];
-                                    row["加權總分校均標"] = analytics[key + "^^^均標"];
-                                    row["加權總分校低標"] = analytics[key + "^^^低標"];
-                                    row["加權總分校標準差"] = analytics[key + "^^^標準差"];
-                                    row["加權總分校組距count90"] = analytics[key + "^^^count90"];
-                                    row["加權總分校組距count80"] = analytics[key + "^^^count80"];
-                                    row["加權總分校組距count70"] = analytics[key + "^^^count70"];
-                                    row["加權總分校組距count60"] = analytics[key + "^^^count60"];
-                                    row["加權總分校組距count50"] = analytics[key + "^^^count50"];
-                                    row["加權總分校組距count40"] = analytics[key + "^^^count40"];
-                                    row["加權總分校組距count30"] = analytics[key + "^^^count30"];
-                                    row["加權總分校組距count20"] = analytics[key + "^^^count20"];
-                                    row["加權總分校組距count10"] = analytics[key + "^^^count10"];
-                                    row["加權總分校組距count100Up"] = analytics[key + "^^^count100Up"];
-                                    row["加權總分校組距count90Up"] = analytics[key + "^^^count90Up"];
-                                    row["加權總分校組距count80Up"] = analytics[key + "^^^count80Up"];
-                                    row["加權總分校組距count70Up"] = analytics[key + "^^^count70Up"];
-                                    row["加權總分校組距count60Up"] = analytics[key + "^^^count60Up"];
-                                    row["加權總分校組距count50Up"] = analytics[key + "^^^count50Up"];
-                                    row["加權總分校組距count40Up"] = analytics[key + "^^^count40Up"];
-                                    row["加權總分校組距count30Up"] = analytics[key + "^^^count30Up"];
-                                    row["加權總分校組距count20Up"] = analytics[key + "^^^count20Up"];
-                                    row["加權總分校組距count10Up"] = analytics[key + "^^^count10Up"];
-                                    row["加權總分校組距count90Down"] = analytics[key + "^^^count90Down"];
-                                    row["加權總分校組距count80Down"] = analytics[key + "^^^count80Down"];
-                                    row["加權總分校組距count70Down"] = analytics[key + "^^^count70Down"];
-                                    row["加權總分校組距count60Down"] = analytics[key + "^^^count60Down"];
-                                    row["加權總分校組距count50Down"] = analytics[key + "^^^count50Down"];
-                                    row["加權總分校組距count40Down"] = analytics[key + "^^^count40Down"];
-                                    row["加權總分校組距count30Down"] = analytics[key + "^^^count30Down"];
-                                    row["加權總分校組距count20Down"] = analytics[key + "^^^count20Down"];
-                                    row["加權總分校組距count10Down"] = analytics[key + "^^^count10Down"];
+                                    string skey = "定期評量/總計成績_加權總分_班排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["加權總分班排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["加權總分班排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["加權總分班排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+                                    }
+
+                                    skey = "定期評量/總計成績_加權總分_科排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["加權總分科排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["加權總分科排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["加權總分科排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+                                    }
+
+                                    skey = "定期評量/總計成績_加權總分_年排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["加權總分全校排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["加權總分全校排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["加權總分全校排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+
+                                    }
                                 }
                             }
                             #endregion
@@ -2772,515 +2074,219 @@ namespace SH_SemesterScoreReportFixed
                             if (studentPrintSubjectAvgW.ContainsKey(studentID))
                             {
                                 row["加權平均"] = studentPrintSubjectAvgW[studentID];
-                                key = "加權平均班排名" + stuRec.RefClass.ClassID;
-                                if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))//明確判斷學生是否參與排名
+                                if (RankMatrixDataDict.ContainsKey(studentID))
                                 {
-                                    row["加權平均班排名"] = ranks[key].IndexOf(studentPrintSubjectAvgW[studentID]) + 1;
-                                    row["加權平均班排名母數"] = ranks[key].Count;
-                                }
-                                if (rankStudents.ContainsKey(key))
-                                {
-                                    row["加權平均班高標"] = analytics[key + "^^^高標"];
-                                    row["加權平均班均標"] = analytics[key + "^^^均標"];
-                                    row["加權平均班低標"] = analytics[key + "^^^低標"];
-                                    row["加權平均班標準差"] = analytics[key + "^^^標準差"];
-                                    row["加權平均班組距count90"] = analytics[key + "^^^count90"];
-                                    row["加權平均班組距count80"] = analytics[key + "^^^count80"];
-                                    row["加權平均班組距count70"] = analytics[key + "^^^count70"];
-                                    row["加權平均班組距count60"] = analytics[key + "^^^count60"];
-                                    row["加權平均班組距count50"] = analytics[key + "^^^count50"];
-                                    row["加權平均班組距count40"] = analytics[key + "^^^count40"];
-                                    row["加權平均班組距count30"] = analytics[key + "^^^count30"];
-                                    row["加權平均班組距count20"] = analytics[key + "^^^count20"];
-                                    row["加權平均班組距count10"] = analytics[key + "^^^count10"];
-                                    row["加權平均班組距count100Up"] = analytics[key + "^^^count100Up"];
-                                    row["加權平均班組距count90Up"] = analytics[key + "^^^count90Up"];
-                                    row["加權平均班組距count80Up"] = analytics[key + "^^^count80Up"];
-                                    row["加權平均班組距count70Up"] = analytics[key + "^^^count70Up"];
-                                    row["加權平均班組距count60Up"] = analytics[key + "^^^count60Up"];
-                                    row["加權平均班組距count50Up"] = analytics[key + "^^^count50Up"];
-                                    row["加權平均班組距count40Up"] = analytics[key + "^^^count40Up"];
-                                    row["加權平均班組距count30Up"] = analytics[key + "^^^count30Up"];
-                                    row["加權平均班組距count20Up"] = analytics[key + "^^^count20Up"];
-                                    row["加權平均班組距count10Up"] = analytics[key + "^^^count10Up"];
-                                    row["加權平均班組距count90Down"] = analytics[key + "^^^count90Down"];
-                                    row["加權平均班組距count80Down"] = analytics[key + "^^^count80Down"];
-                                    row["加權平均班組距count70Down"] = analytics[key + "^^^count70Down"];
-                                    row["加權平均班組距count60Down"] = analytics[key + "^^^count60Down"];
-                                    row["加權平均班組距count50Down"] = analytics[key + "^^^count50Down"];
-                                    row["加權平均班組距count40Down"] = analytics[key + "^^^count40Down"];
-                                    row["加權平均班組距count30Down"] = analytics[key + "^^^count30Down"];
-                                    row["加權平均班組距count20Down"] = analytics[key + "^^^count20Down"];
-                                    row["加權平均班組距count10Down"] = analytics[key + "^^^count10Down"];
-                                }
-                                key = "加權平均科排名" + stuRec.Department + "^^^" + gradeYear;
-                                if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))//明確判斷學生是否參與排名
-                                {
-                                    row["加權平均科排名"] = ranks[key].IndexOf(studentPrintSubjectAvgW[studentID]) + 1;
-                                    row["加權平均科排名母數"] = ranks[key].Count;
-                                }
-                                if (rankStudents.ContainsKey(key))
-                                {
-                                    row["加權平均科高標"] = analytics[key + "^^^高標"];
-                                    row["加權平均科均標"] = analytics[key + "^^^均標"];
-                                    row["加權平均科低標"] = analytics[key + "^^^低標"];
-                                    row["加權平均科標準差"] = analytics[key + "^^^標準差"];
-                                    row["加權平均科組距count90"] = analytics[key + "^^^count90"];
-                                    row["加權平均科組距count80"] = analytics[key + "^^^count80"];
-                                    row["加權平均科組距count70"] = analytics[key + "^^^count70"];
-                                    row["加權平均科組距count60"] = analytics[key + "^^^count60"];
-                                    row["加權平均科組距count50"] = analytics[key + "^^^count50"];
-                                    row["加權平均科組距count40"] = analytics[key + "^^^count40"];
-                                    row["加權平均科組距count30"] = analytics[key + "^^^count30"];
-                                    row["加權平均科組距count20"] = analytics[key + "^^^count20"];
-                                    row["加權平均科組距count10"] = analytics[key + "^^^count10"];
-                                    row["加權平均科組距count100Up"] = analytics[key + "^^^count100Up"];
-                                    row["加權平均科組距count90Up"] = analytics[key + "^^^count90Up"];
-                                    row["加權平均科組距count80Up"] = analytics[key + "^^^count80Up"];
-                                    row["加權平均科組距count70Up"] = analytics[key + "^^^count70Up"];
-                                    row["加權平均科組距count60Up"] = analytics[key + "^^^count60Up"];
-                                    row["加權平均科組距count50Up"] = analytics[key + "^^^count50Up"];
-                                    row["加權平均科組距count40Up"] = analytics[key + "^^^count40Up"];
-                                    row["加權平均科組距count30Up"] = analytics[key + "^^^count30Up"];
-                                    row["加權平均科組距count20Up"] = analytics[key + "^^^count20Up"];
-                                    row["加權平均科組距count10Up"] = analytics[key + "^^^count10Up"];
-                                    row["加權平均科組距count90Down"] = analytics[key + "^^^count90Down"];
-                                    row["加權平均科組距count80Down"] = analytics[key + "^^^count80Down"];
-                                    row["加權平均科組距count70Down"] = analytics[key + "^^^count70Down"];
-                                    row["加權平均科組距count60Down"] = analytics[key + "^^^count60Down"];
-                                    row["加權平均科組距count50Down"] = analytics[key + "^^^count50Down"];
-                                    row["加權平均科組距count40Down"] = analytics[key + "^^^count40Down"];
-                                    row["加權平均科組距count30Down"] = analytics[key + "^^^count30Down"];
-                                    row["加權平均科組距count20Down"] = analytics[key + "^^^count20Down"];
-                                    row["加權平均科組距count10Down"] = analytics[key + "^^^count10Down"];
-                                }
-                                key = "加權平均全校排名" + gradeYear;
-                                if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))//明確判斷學生是否參與排名
-                                {
-                                    row["加權平均全校排名"] = ranks[key].IndexOf(studentPrintSubjectAvgW[studentID]) + 1;
-                                    row["加權平均全校排名母數"] = ranks[key].Count;
-                                }
-                                if (rankStudents.ContainsKey(key))
-                                {
-                                    row["加權平均校高標"] = analytics[key + "^^^高標"];
-                                    row["加權平均校均標"] = analytics[key + "^^^均標"];
-                                    row["加權平均校低標"] = analytics[key + "^^^低標"];
-                                    row["加權平均校標準差"] = analytics[key + "^^^標準差"];
-                                    row["加權平均校組距count90"] = analytics[key + "^^^count90"];
-                                    row["加權平均校組距count80"] = analytics[key + "^^^count80"];
-                                    row["加權平均校組距count70"] = analytics[key + "^^^count70"];
-                                    row["加權平均校組距count60"] = analytics[key + "^^^count60"];
-                                    row["加權平均校組距count50"] = analytics[key + "^^^count50"];
-                                    row["加權平均校組距count40"] = analytics[key + "^^^count40"];
-                                    row["加權平均校組距count30"] = analytics[key + "^^^count30"];
-                                    row["加權平均校組距count20"] = analytics[key + "^^^count20"];
-                                    row["加權平均校組距count10"] = analytics[key + "^^^count10"];
-                                    row["加權平均校組距count100Up"] = analytics[key + "^^^count100Up"];
-                                    row["加權平均校組距count90Up"] = analytics[key + "^^^count90Up"];
-                                    row["加權平均校組距count80Up"] = analytics[key + "^^^count80Up"];
-                                    row["加權平均校組距count70Up"] = analytics[key + "^^^count70Up"];
-                                    row["加權平均校組距count60Up"] = analytics[key + "^^^count60Up"];
-                                    row["加權平均校組距count50Up"] = analytics[key + "^^^count50Up"];
-                                    row["加權平均校組距count40Up"] = analytics[key + "^^^count40Up"];
-                                    row["加權平均校組距count30Up"] = analytics[key + "^^^count30Up"];
-                                    row["加權平均校組距count20Up"] = analytics[key + "^^^count20Up"];
-                                    row["加權平均校組距count10Up"] = analytics[key + "^^^count10Up"];
-                                    row["加權平均校組距count90Down"] = analytics[key + "^^^count90Down"];
-                                    row["加權平均校組距count80Down"] = analytics[key + "^^^count80Down"];
-                                    row["加權平均校組距count70Down"] = analytics[key + "^^^count70Down"];
-                                    row["加權平均校組距count60Down"] = analytics[key + "^^^count60Down"];
-                                    row["加權平均校組距count50Down"] = analytics[key + "^^^count50Down"];
-                                    row["加權平均校組距count40Down"] = analytics[key + "^^^count40Down"];
-                                    row["加權平均校組距count30Down"] = analytics[key + "^^^count30Down"];
-                                    row["加權平均校組距count20Down"] = analytics[key + "^^^count20Down"];
-                                    row["加權平均校組距count10Down"] = analytics[key + "^^^count10Down"];
+
+                                    string skey = "定期評量/總計成績_加權平均_班排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["加權平均班排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["加權平均班排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["加權平均班排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+                                    }
+
+                                    skey = "定期評量/總計成績_加權平均_科排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["加權平均科排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["加權平均科排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["加權平均科排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+
+                                    }
+
+                                    skey = "定期評量/總計成績_加權平均_年排名";
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["加權平均全校排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["加權平均全校排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["加權平均全校排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+                                    }
+
                                 }
                             }
                             #endregion
                             #region 類別1綜合成績
-                            if (studentTag1Group.ContainsKey(studentID))
+
+
+                            if (RankMatrixDataDict.ContainsKey(studentID))
                             {
-                                foreach (var tag in studentTags[studentID])
+                                string skey = "定期評量/總計成績_總分_類別1排名";
+                                if (RankMatrixDataDict[studentID].ContainsKey(skey))
                                 {
-                                    if (tag.RefTagID == studentTag1Group[studentID])
+                                    if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                        row["類別1總分排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                    if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                        row["類別1總分排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                    // 五標PR填值
+                                    foreach (string rItem in r2List)
                                     {
-                                        row["類別排名1"] = tag.Name;
+                                        if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                            row["類別1總分排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                    }
+
+                                }
+
+                                skey = "定期評量/總計成績_平均_類別1排名";
+                                if (RankMatrixDataDict[studentID].ContainsKey(skey))
+                                {
+                                    if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                        row["類別1平均排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                    if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                        row["類別1平均排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                    // 五標PR填值
+                                    foreach (string rItem in r2List)
+                                    {
+                                        if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                            row["類別1平均排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
                                     }
                                 }
-                                if (studentTag1SubjectSum.ContainsKey(studentID))
+
+                                skey = "定期評量/總計成績_加權總分_類別1排名";
+                                if (RankMatrixDataDict[studentID].ContainsKey(skey))
                                 {
-                                    row["類別1總分"] = studentTag1SubjectSum[studentID];
-                                    key = "類別1總分排名" + "^^^" + gradeYear + "^^^" + studentTag1Group[studentID];
-                                    if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))
+                                    if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                        row["類別1加權總分排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                    if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                        row["類別1加權總分排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                    // 五標PR填值
+                                    foreach (string rItem in r2List)
                                     {
-                                        row["類別1總分排名"] = ranks[key].IndexOf(studentTag1SubjectSum[studentID]) + 1;
-                                        row["類別1總分排名母數"] = ranks[key].Count;
-                                    }
-                                    if (rankStudents.ContainsKey(key))
-                                    {
-                                        row["類1總分高標"] = analytics[key + "^^^高標"];
-                                        row["類1總分均標"] = analytics[key + "^^^均標"];
-                                        row["類1總分低標"] = analytics[key + "^^^低標"];
-                                        row["類1總分標準差"] = analytics[key + "^^^標準差"];
-                                        row["類1總分組距count90"] = analytics[key + "^^^count90"];
-                                        row["類1總分組距count80"] = analytics[key + "^^^count80"];
-                                        row["類1總分組距count70"] = analytics[key + "^^^count70"];
-                                        row["類1總分組距count60"] = analytics[key + "^^^count60"];
-                                        row["類1總分組距count50"] = analytics[key + "^^^count50"];
-                                        row["類1總分組距count40"] = analytics[key + "^^^count40"];
-                                        row["類1總分組距count30"] = analytics[key + "^^^count30"];
-                                        row["類1總分組距count20"] = analytics[key + "^^^count20"];
-                                        row["類1總分組距count10"] = analytics[key + "^^^count10"];
-                                        row["類1總分組距count100Up"] = analytics[key + "^^^count100Up"];
-                                        row["類1總分組距count90Up"] = analytics[key + "^^^count90Up"];
-                                        row["類1總分組距count80Up"] = analytics[key + "^^^count80Up"];
-                                        row["類1總分組距count70Up"] = analytics[key + "^^^count70Up"];
-                                        row["類1總分組距count60Up"] = analytics[key + "^^^count60Up"];
-                                        row["類1總分組距count50Up"] = analytics[key + "^^^count50Up"];
-                                        row["類1總分組距count40Up"] = analytics[key + "^^^count40Up"];
-                                        row["類1總分組距count30Up"] = analytics[key + "^^^count30Up"];
-                                        row["類1總分組距count20Up"] = analytics[key + "^^^count20Up"];
-                                        row["類1總分組距count10Up"] = analytics[key + "^^^count10Up"];
-                                        row["類1總分組距count90Down"] = analytics[key + "^^^count90Down"];
-                                        row["類1總分組距count80Down"] = analytics[key + "^^^count80Down"];
-                                        row["類1總分組距count70Down"] = analytics[key + "^^^count70Down"];
-                                        row["類1總分組距count60Down"] = analytics[key + "^^^count60Down"];
-                                        row["類1總分組距count50Down"] = analytics[key + "^^^count50Down"];
-                                        row["類1總分組距count40Down"] = analytics[key + "^^^count40Down"];
-                                        row["類1總分組距count30Down"] = analytics[key + "^^^count30Down"];
-                                        row["類1總分組距count20Down"] = analytics[key + "^^^count20Down"];
-                                        row["類1總分組距count10Down"] = analytics[key + "^^^count10Down"];
+                                        if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                            row["類別1加權總分排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
                                     }
                                 }
-                                if (studentTag1SubjectAvg.ContainsKey(studentID))
+
+                                skey = "定期評量/總計成績_加權平均_類別1排名";
+                                if (RankMatrixDataDict.ContainsKey(studentID))
                                 {
-                                    row["類別1平均"] = studentTag1SubjectAvg[studentID];
-                                    key = "類別1平均排名" + "^^^" + gradeYear + "^^^" + studentTag1Group[studentID];
-                                    if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))
+                                    if (RankMatrixDataDict[studentID].ContainsKey(skey))
                                     {
-                                        row["類別1平均排名"] = ranks[key].IndexOf(studentTag1SubjectAvg[studentID]) + 1; ;
-                                        row["類別1平均排名母數"] = ranks[key].Count;
-                                    }
-                                    if (rankStudents.ContainsKey(key))
-                                    {
-                                        row["類1平均高標"] = analytics[key + "^^^高標"];
-                                        row["類1平均均標"] = analytics[key + "^^^均標"];
-                                        row["類1平均低標"] = analytics[key + "^^^低標"];
-                                        row["類1平均標準差"] = analytics[key + "^^^標準差"];
-                                        row["類1平均組距count90"] = analytics[key + "^^^count90"];
-                                        row["類1平均組距count80"] = analytics[key + "^^^count80"];
-                                        row["類1平均組距count70"] = analytics[key + "^^^count70"];
-                                        row["類1平均組距count60"] = analytics[key + "^^^count60"];
-                                        row["類1平均組距count50"] = analytics[key + "^^^count50"];
-                                        row["類1平均組距count40"] = analytics[key + "^^^count40"];
-                                        row["類1平均組距count30"] = analytics[key + "^^^count30"];
-                                        row["類1平均組距count20"] = analytics[key + "^^^count20"];
-                                        row["類1平均組距count10"] = analytics[key + "^^^count10"];
-                                        row["類1平均組距count100Up"] = analytics[key + "^^^count100Up"];
-                                        row["類1平均組距count90Up"] = analytics[key + "^^^count90Up"];
-                                        row["類1平均組距count80Up"] = analytics[key + "^^^count80Up"];
-                                        row["類1平均組距count70Up"] = analytics[key + "^^^count70Up"];
-                                        row["類1平均組距count60Up"] = analytics[key + "^^^count60Up"];
-                                        row["類1平均組距count50Up"] = analytics[key + "^^^count50Up"];
-                                        row["類1平均組距count40Up"] = analytics[key + "^^^count40Up"];
-                                        row["類1平均組距count30Up"] = analytics[key + "^^^count30Up"];
-                                        row["類1平均組距count20Up"] = analytics[key + "^^^count20Up"];
-                                        row["類1平均組距count10Up"] = analytics[key + "^^^count10Up"];
-                                        row["類1平均組距count90Down"] = analytics[key + "^^^count90Down"];
-                                        row["類1平均組距count80Down"] = analytics[key + "^^^count80Down"];
-                                        row["類1平均組距count70Down"] = analytics[key + "^^^count70Down"];
-                                        row["類1平均組距count60Down"] = analytics[key + "^^^count60Down"];
-                                        row["類1平均組距count50Down"] = analytics[key + "^^^count50Down"];
-                                        row["類1平均組距count40Down"] = analytics[key + "^^^count40Down"];
-                                        row["類1平均組距count30Down"] = analytics[key + "^^^count30Down"];
-                                        row["類1平均組距count20Down"] = analytics[key + "^^^count20Down"];
-                                        row["類1平均組距count10Down"] = analytics[key + "^^^count10Down"];
-                                    }
-                                }
-                                if (studentTag1SubjectSumW.ContainsKey(studentID))
-                                {
-                                    row["類別1加權總分"] = studentTag1SubjectSumW[studentID];
-                                    key = "類別1加權總分排名" + "^^^" + gradeYear + "^^^" + studentTag1Group[studentID];
-                                    if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))
-                                    {
-                                        row["類別1加權總分排名"] = ranks[key].IndexOf(studentTag1SubjectSumW[studentID]) + 1; ;
-                                        row["類別1加權總分排名母數"] = ranks[key].Count;
-                                    }
-                                    if (rankStudents.ContainsKey(key))
-                                    {
-                                        row["類1加權總分高標"] = analytics[key + "^^^高標"];
-                                        row["類1加權總分均標"] = analytics[key + "^^^均標"];
-                                        row["類1加權總分低標"] = analytics[key + "^^^低標"];
-                                        row["類1加權總分標準差"] = analytics[key + "^^^標準差"];
-                                        row["類1加權總分組距count90"] = analytics[key + "^^^count90"];
-                                        row["類1加權總分組距count80"] = analytics[key + "^^^count80"];
-                                        row["類1加權總分組距count70"] = analytics[key + "^^^count70"];
-                                        row["類1加權總分組距count60"] = analytics[key + "^^^count60"];
-                                        row["類1加權總分組距count50"] = analytics[key + "^^^count50"];
-                                        row["類1加權總分組距count40"] = analytics[key + "^^^count40"];
-                                        row["類1加權總分組距count30"] = analytics[key + "^^^count30"];
-                                        row["類1加權總分組距count20"] = analytics[key + "^^^count20"];
-                                        row["類1加權總分組距count10"] = analytics[key + "^^^count10"];
-                                        row["類1加權總分組距count100Up"] = analytics[key + "^^^count100Up"];
-                                        row["類1加權總分組距count90Up"] = analytics[key + "^^^count90Up"];
-                                        row["類1加權總分組距count80Up"] = analytics[key + "^^^count80Up"];
-                                        row["類1加權總分組距count70Up"] = analytics[key + "^^^count70Up"];
-                                        row["類1加權總分組距count60Up"] = analytics[key + "^^^count60Up"];
-                                        row["類1加權總分組距count50Up"] = analytics[key + "^^^count50Up"];
-                                        row["類1加權總分組距count40Up"] = analytics[key + "^^^count40Up"];
-                                        row["類1加權總分組距count30Up"] = analytics[key + "^^^count30Up"];
-                                        row["類1加權總分組距count20Up"] = analytics[key + "^^^count20Up"];
-                                        row["類1加權總分組距count10Up"] = analytics[key + "^^^count10Up"];
-                                        row["類1加權總分組距count90Down"] = analytics[key + "^^^count90Down"];
-                                        row["類1加權總分組距count80Down"] = analytics[key + "^^^count80Down"];
-                                        row["類1加權總分組距count70Down"] = analytics[key + "^^^count70Down"];
-                                        row["類1加權總分組距count60Down"] = analytics[key + "^^^count60Down"];
-                                        row["類1加權總分組距count50Down"] = analytics[key + "^^^count50Down"];
-                                        row["類1加權總分組距count40Down"] = analytics[key + "^^^count40Down"];
-                                        row["類1加權總分組距count30Down"] = analytics[key + "^^^count30Down"];
-                                        row["類1加權總分組距count20Down"] = analytics[key + "^^^count20Down"];
-                                        row["類1加權總分組距count10Down"] = analytics[key + "^^^count10Down"];
-                                    }
-                                }
-                                if (studentTag1SubjectAvgW.ContainsKey(studentID))
-                                {
-                                    row["類別1加權平均"] = studentTag1SubjectAvgW[studentID];
-                                    key = "類別1加權平均排名" + "^^^" + gradeYear + "^^^" + studentTag1Group[studentID];
-                                    if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))
-                                    {
-                                        row["類別1加權平均排名"] = ranks[key].IndexOf(studentTag1SubjectAvgW[studentID]) + 1; ;
-                                        row["類別1加權平均排名母數"] = ranks[key].Count;
-                                    }
-                                    if (rankStudents.ContainsKey(key))
-                                    {
-                                        row["類1加權平均高標"] = analytics[key + "^^^高標"];
-                                        row["類1加權平均均標"] = analytics[key + "^^^均標"];
-                                        row["類1加權平均低標"] = analytics[key + "^^^低標"];
-                                        row["類1加權平均標準差"] = analytics[key + "^^^標準差"];
-                                        row["類1加權平均組距count90"] = analytics[key + "^^^count90"];
-                                        row["類1加權平均組距count80"] = analytics[key + "^^^count80"];
-                                        row["類1加權平均組距count70"] = analytics[key + "^^^count70"];
-                                        row["類1加權平均組距count60"] = analytics[key + "^^^count60"];
-                                        row["類1加權平均組距count50"] = analytics[key + "^^^count50"];
-                                        row["類1加權平均組距count40"] = analytics[key + "^^^count40"];
-                                        row["類1加權平均組距count30"] = analytics[key + "^^^count30"];
-                                        row["類1加權平均組距count20"] = analytics[key + "^^^count20"];
-                                        row["類1加權平均組距count10"] = analytics[key + "^^^count10"];
-                                        row["類1加權平均組距count100Up"] = analytics[key + "^^^count100Up"];
-                                        row["類1加權平均組距count90Up"] = analytics[key + "^^^count90Up"];
-                                        row["類1加權平均組距count80Up"] = analytics[key + "^^^count80Up"];
-                                        row["類1加權平均組距count70Up"] = analytics[key + "^^^count70Up"];
-                                        row["類1加權平均組距count60Up"] = analytics[key + "^^^count60Up"];
-                                        row["類1加權平均組距count50Up"] = analytics[key + "^^^count50Up"];
-                                        row["類1加權平均組距count40Up"] = analytics[key + "^^^count40Up"];
-                                        row["類1加權平均組距count30Up"] = analytics[key + "^^^count30Up"];
-                                        row["類1加權平均組距count20Up"] = analytics[key + "^^^count20Up"];
-                                        row["類1加權平均組距count10Up"] = analytics[key + "^^^count10Up"];
-                                        row["類1加權平均組距count90Down"] = analytics[key + "^^^count90Down"];
-                                        row["類1加權平均組距count80Down"] = analytics[key + "^^^count80Down"];
-                                        row["類1加權平均組距count70Down"] = analytics[key + "^^^count70Down"];
-                                        row["類1加權平均組距count60Down"] = analytics[key + "^^^count60Down"];
-                                        row["類1加權平均組距count50Down"] = analytics[key + "^^^count50Down"];
-                                        row["類1加權平均組距count40Down"] = analytics[key + "^^^count40Down"];
-                                        row["類1加權平均組距count30Down"] = analytics[key + "^^^count30Down"];
-                                        row["類1加權平均組距count20Down"] = analytics[key + "^^^count20Down"];
-                                        row["類1加權平均組距count10Down"] = analytics[key + "^^^count10Down"];
+                                        if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["類別1加權平均排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["類別1加權平均排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標PR填值
+                                        foreach (string rItem in r2List)
+                                        {
+                                            if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                                row["類別1加權平均排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
+                                        }
+
                                     }
                                 }
                             }
+
                             #endregion
                             #region 類別2綜合成績
-                            if (studentTag2Group.ContainsKey(studentID))
+
+                            if (RankMatrixDataDict.ContainsKey(studentID))
                             {
-                                foreach (var tag in studentTags[studentID])
+                                string skey = "定期評量/總計成績_總分_類別2排名";
+                                if (RankMatrixDataDict[studentID].ContainsKey(skey))
                                 {
-                                    if (tag.RefTagID == studentTag2Group[studentID])
+                                    if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                        row["類別2總分排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                    if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                        row["類別2總分排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                    // 五標PR填值
+                                    foreach (string rItem in r2List)
                                     {
-                                        row["類別排名2"] = tag.Name;
+                                        if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                            row["類別2總分排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
                                     }
                                 }
-                                if (studentTag2SubjectSum.ContainsKey(studentID))
+
+                                skey = "定期評量/總計成績_平均_類別2排名";
+                                if (RankMatrixDataDict[studentID].ContainsKey(skey))
                                 {
-                                    row["類別2總分"] = studentTag2SubjectSum[studentID];
-                                    key = "類別2總分排名" + "^^^" + gradeYear + "^^^" + studentTag2Group[studentID];
-                                    if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))
+                                    if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                        row["類別2平均排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                    if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                        row["類別2平均排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                    // 五標PR填值
+                                    foreach (string rItem in r2List)
                                     {
-                                        row["類別2總分排名"] = ranks[key].IndexOf(studentTag2SubjectSum[studentID]) + 1;
-                                        row["類別2總分排名母數"] = ranks[key].Count;
-                                    }
-                                    if (rankStudents.ContainsKey(key))
-                                    {
-                                        row["類2總分高標"] = analytics[key + "^^^高標"];
-                                        row["類2總分均標"] = analytics[key + "^^^均標"];
-                                        row["類2總分低標"] = analytics[key + "^^^低標"];
-                                        row["類2總分標準差"] = analytics[key + "^^^標準差"];
-                                        row["類2總分組距count90"] = analytics[key + "^^^count90"];
-                                        row["類2總分組距count80"] = analytics[key + "^^^count80"];
-                                        row["類2總分組距count70"] = analytics[key + "^^^count70"];
-                                        row["類2總分組距count60"] = analytics[key + "^^^count60"];
-                                        row["類2總分組距count50"] = analytics[key + "^^^count50"];
-                                        row["類2總分組距count40"] = analytics[key + "^^^count40"];
-                                        row["類2總分組距count30"] = analytics[key + "^^^count30"];
-                                        row["類2總分組距count20"] = analytics[key + "^^^count20"];
-                                        row["類2總分組距count10"] = analytics[key + "^^^count10"];
-                                        row["類2總分組距count100Up"] = analytics[key + "^^^count100Up"];
-                                        row["類2總分組距count90Up"] = analytics[key + "^^^count90Up"];
-                                        row["類2總分組距count80Up"] = analytics[key + "^^^count80Up"];
-                                        row["類2總分組距count70Up"] = analytics[key + "^^^count70Up"];
-                                        row["類2總分組距count60Up"] = analytics[key + "^^^count60Up"];
-                                        row["類2總分組距count50Up"] = analytics[key + "^^^count50Up"];
-                                        row["類2總分組距count40Up"] = analytics[key + "^^^count40Up"];
-                                        row["類2總分組距count30Up"] = analytics[key + "^^^count30Up"];
-                                        row["類2總分組距count20Up"] = analytics[key + "^^^count20Up"];
-                                        row["類2總分組距count10Up"] = analytics[key + "^^^count10Up"];
-                                        row["類2總分組距count90Down"] = analytics[key + "^^^count90Down"];
-                                        row["類2總分組距count80Down"] = analytics[key + "^^^count80Down"];
-                                        row["類2總分組距count70Down"] = analytics[key + "^^^count70Down"];
-                                        row["類2總分組距count60Down"] = analytics[key + "^^^count60Down"];
-                                        row["類2總分組距count50Down"] = analytics[key + "^^^count50Down"];
-                                        row["類2總分組距count40Down"] = analytics[key + "^^^count40Down"];
-                                        row["類2總分組距count30Down"] = analytics[key + "^^^count30Down"];
-                                        row["類2總分組距count20Down"] = analytics[key + "^^^count20Down"];
-                                        row["類2總分組距count10Down"] = analytics[key + "^^^count10Down"];
+                                        if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                            row["類別2平均排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
                                     }
                                 }
-                                if (studentTag2SubjectAvg.ContainsKey(studentID))
+
+                                skey = "定期評量/總計成績_加權總分_類別2排名";
+                                if (RankMatrixDataDict[studentID].ContainsKey(skey))
                                 {
-                                    row["類別2平均"] = studentTag2SubjectAvg[studentID];
-                                    key = "類別2平均排名" + "^^^" + gradeYear + "^^^" + studentTag2Group[studentID];
-                                    if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))
+                                    if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                        row["類別2加權總分排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                    if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                        row["類別2加權總分排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                    // 五標PR填值
+                                    foreach (string rItem in r2List)
                                     {
-                                        row["類別2平均排名"] = ranks[key].IndexOf(studentTag2SubjectAvg[studentID]) + 1; ;
-                                        row["類別2平均排名母數"] = ranks[key].Count;
-                                    }
-                                    if (rankStudents.ContainsKey(key))
-                                    {
-                                        row["類2平均高標"] = analytics[key + "^^^高標"];
-                                        row["類2平均均標"] = analytics[key + "^^^均標"];
-                                        row["類2平均低標"] = analytics[key + "^^^低標"];
-                                        row["類2平均標準差"] = analytics[key + "^^^標準差"];
-                                        row["類2平均組距count90"] = analytics[key + "^^^count90"];
-                                        row["類2平均組距count80"] = analytics[key + "^^^count80"];
-                                        row["類2平均組距count70"] = analytics[key + "^^^count70"];
-                                        row["類2平均組距count60"] = analytics[key + "^^^count60"];
-                                        row["類2平均組距count50"] = analytics[key + "^^^count50"];
-                                        row["類2平均組距count40"] = analytics[key + "^^^count40"];
-                                        row["類2平均組距count30"] = analytics[key + "^^^count30"];
-                                        row["類2平均組距count20"] = analytics[key + "^^^count20"];
-                                        row["類2平均組距count10"] = analytics[key + "^^^count10"];
-                                        row["類2平均組距count100Up"] = analytics[key + "^^^count100Up"];
-                                        row["類2平均組距count90Up"] = analytics[key + "^^^count90Up"];
-                                        row["類2平均組距count80Up"] = analytics[key + "^^^count80Up"];
-                                        row["類2平均組距count70Up"] = analytics[key + "^^^count70Up"];
-                                        row["類2平均組距count60Up"] = analytics[key + "^^^count60Up"];
-                                        row["類2平均組距count50Up"] = analytics[key + "^^^count50Up"];
-                                        row["類2平均組距count40Up"] = analytics[key + "^^^count40Up"];
-                                        row["類2平均組距count30Up"] = analytics[key + "^^^count30Up"];
-                                        row["類2平均組距count20Up"] = analytics[key + "^^^count20Up"];
-                                        row["類2平均組距count10Up"] = analytics[key + "^^^count10Up"];
-                                        row["類2平均組距count90Down"] = analytics[key + "^^^count90Down"];
-                                        row["類2平均組距count80Down"] = analytics[key + "^^^count80Down"];
-                                        row["類2平均組距count70Down"] = analytics[key + "^^^count70Down"];
-                                        row["類2平均組距count60Down"] = analytics[key + "^^^count60Down"];
-                                        row["類2平均組距count50Down"] = analytics[key + "^^^count50Down"];
-                                        row["類2平均組距count40Down"] = analytics[key + "^^^count40Down"];
-                                        row["類2平均組距count30Down"] = analytics[key + "^^^count30Down"];
-                                        row["類2平均組距count20Down"] = analytics[key + "^^^count20Down"];
-                                        row["類2平均組距count10Down"] = analytics[key + "^^^count10Down"];
+                                        if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                            row["類別2加權總分排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
                                     }
                                 }
-                                if (studentTag2SubjectSumW.ContainsKey(studentID))
+
+                                skey = "定期評量/總計成績_加權平均_類別2排名";
+                                if (RankMatrixDataDict[studentID].ContainsKey(skey))
                                 {
-                                    row["類別2加權總分"] = studentTag2SubjectSumW[studentID];
-                                    key = "類別2加權總分排名" + "^^^" + gradeYear + "^^^" + studentTag2Group[studentID];
-                                    if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))
+                                    if (RankMatrixDataDict[studentID][skey]["rank"] != null)
+                                        row["類別2加權平均排名"] = RankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                    if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                        row["類別2加權平均排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                    // 五標PR填值
+                                    foreach (string rItem in r2List)
                                     {
-                                        row["類別2加權總分排名"] = ranks[key].IndexOf(studentTag2SubjectSumW[studentID]) + 1; ;
-                                        row["類別2加權總分排名母數"] = ranks[key].Count;
-                                    }
-                                    if (rankStudents.ContainsKey(key))
-                                    {
-                                        row["類2加權總分高標"] = analytics[key + "^^^高標"];
-                                        row["類2加權總分均標"] = analytics[key + "^^^均標"];
-                                        row["類2加權總分低標"] = analytics[key + "^^^低標"];
-                                        row["類2加權總分標準差"] = analytics[key + "^^^標準差"];
-                                        row["類2加權總分組距count90"] = analytics[key + "^^^count90"];
-                                        row["類2加權總分組距count80"] = analytics[key + "^^^count80"];
-                                        row["類2加權總分組距count70"] = analytics[key + "^^^count70"];
-                                        row["類2加權總分組距count60"] = analytics[key + "^^^count60"];
-                                        row["類2加權總分組距count50"] = analytics[key + "^^^count50"];
-                                        row["類2加權總分組距count40"] = analytics[key + "^^^count40"];
-                                        row["類2加權總分組距count30"] = analytics[key + "^^^count30"];
-                                        row["類2加權總分組距count20"] = analytics[key + "^^^count20"];
-                                        row["類2加權總分組距count10"] = analytics[key + "^^^count10"];
-                                        row["類2加權總分組距count100Up"] = analytics[key + "^^^count100Up"];
-                                        row["類2加權總分組距count90Up"] = analytics[key + "^^^count90Up"];
-                                        row["類2加權總分組距count80Up"] = analytics[key + "^^^count80Up"];
-                                        row["類2加權總分組距count70Up"] = analytics[key + "^^^count70Up"];
-                                        row["類2加權總分組距count60Up"] = analytics[key + "^^^count60Up"];
-                                        row["類2加權總分組距count50Up"] = analytics[key + "^^^count50Up"];
-                                        row["類2加權總分組距count40Up"] = analytics[key + "^^^count40Up"];
-                                        row["類2加權總分組距count30Up"] = analytics[key + "^^^count30Up"];
-                                        row["類2加權總分組距count20Up"] = analytics[key + "^^^count20Up"];
-                                        row["類2加權總分組距count10Up"] = analytics[key + "^^^count10Up"];
-                                        row["類2加權總分組距count90Down"] = analytics[key + "^^^count90Down"];
-                                        row["類2加權總分組距count80Down"] = analytics[key + "^^^count80Down"];
-                                        row["類2加權總分組距count70Down"] = analytics[key + "^^^count70Down"];
-                                        row["類2加權總分組距count60Down"] = analytics[key + "^^^count60Down"];
-                                        row["類2加權總分組距count50Down"] = analytics[key + "^^^count50Down"];
-                                        row["類2加權總分組距count40Down"] = analytics[key + "^^^count40Down"];
-                                        row["類2加權總分組距count30Down"] = analytics[key + "^^^count30Down"];
-                                        row["類2加權總分組距count20Down"] = analytics[key + "^^^count20Down"];
-                                        row["類2加權總分組距count10Down"] = analytics[key + "^^^count10Down"];
-                                    }
-                                }
-                                if (studentTag2SubjectAvgW.ContainsKey(studentID))
-                                {
-                                    row["類別2加權平均"] = studentTag2SubjectAvgW[studentID];
-                                    key = "類別2加權平均排名" + "^^^" + gradeYear + "^^^" + studentTag2Group[studentID];
-                                    if (rankStudents.ContainsKey(key) && rankStudents[key].Contains(studentID))
-                                    {
-                                        row["類別2加權平均排名"] = ranks[key].IndexOf(studentTag2SubjectAvgW[studentID]) + 1; ;
-                                        row["類別2加權平均排名母數"] = ranks[key].Count;
-                                    }
-                                    if (rankStudents.ContainsKey(key))
-                                    {
-                                        row["類2加權平均高標"] = analytics[key + "^^^高標"];
-                                        row["類2加權平均均標"] = analytics[key + "^^^均標"];
-                                        row["類2加權平均低標"] = analytics[key + "^^^低標"];
-                                        row["類2加權平均標準差"] = analytics[key + "^^^標準差"];
-                                        row["類2加權平均組距count90"] = analytics[key + "^^^count90"];
-                                        row["類2加權平均組距count80"] = analytics[key + "^^^count80"];
-                                        row["類2加權平均組距count70"] = analytics[key + "^^^count70"];
-                                        row["類2加權平均組距count60"] = analytics[key + "^^^count60"];
-                                        row["類2加權平均組距count50"] = analytics[key + "^^^count50"];
-                                        row["類2加權平均組距count40"] = analytics[key + "^^^count40"];
-                                        row["類2加權平均組距count30"] = analytics[key + "^^^count30"];
-                                        row["類2加權平均組距count20"] = analytics[key + "^^^count20"];
-                                        row["類2加權平均組距count10"] = analytics[key + "^^^count10"];
-                                        row["類2加權平均組距count100Up"] = analytics[key + "^^^count100Up"];
-                                        row["類2加權平均組距count90Up"] = analytics[key + "^^^count90Up"];
-                                        row["類2加權平均組距count80Up"] = analytics[key + "^^^count80Up"];
-                                        row["類2加權平均組距count70Up"] = analytics[key + "^^^count70Up"];
-                                        row["類2加權平均組距count60Up"] = analytics[key + "^^^count60Up"];
-                                        row["類2加權平均組距count50Up"] = analytics[key + "^^^count50Up"];
-                                        row["類2加權平均組距count40Up"] = analytics[key + "^^^count40Up"];
-                                        row["類2加權平均組距count30Up"] = analytics[key + "^^^count30Up"];
-                                        row["類2加權平均組距count20Up"] = analytics[key + "^^^count20Up"];
-                                        row["類2加權平均組距count10Up"] = analytics[key + "^^^count10Up"];
-                                        row["類2加權平均組距count90Down"] = analytics[key + "^^^count90Down"];
-                                        row["類2加權平均組距count80Down"] = analytics[key + "^^^count80Down"];
-                                        row["類2加權平均組距count70Down"] = analytics[key + "^^^count70Down"];
-                                        row["類2加權平均組距count60Down"] = analytics[key + "^^^count60Down"];
-                                        row["類2加權平均組距count50Down"] = analytics[key + "^^^count50Down"];
-                                        row["類2加權平均組距count40Down"] = analytics[key + "^^^count40Down"];
-                                        row["類2加權平均組距count30Down"] = analytics[key + "^^^count30Down"];
-                                        row["類2加權平均組距count20Down"] = analytics[key + "^^^count20Down"];
-                                        row["類2加權平均組距count10Down"] = analytics[key + "^^^count10Down"];
+                                        if (RankMatrixDataDict[studentID][skey][rItem] != null)
+                                            row["類別2加權平均排名_" + rItem] = RankMatrixDataDict[studentID][skey][rItem].ToString();
                                     }
                                 }
                             }
+
                             #endregion
+
+
                             #endregion
                             #region 學務資料
                             #region 綜合表現

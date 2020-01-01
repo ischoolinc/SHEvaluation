@@ -71,6 +71,7 @@
             this.btnSaveConfig.TabIndex = 9;
             this.btnSaveConfig.Text = "儲存設定";
             this.btnSaveConfig.Tooltip = "儲存當前的樣板設定。";
+            this.btnSaveConfig.Click += new System.EventHandler(this.btnSaveConfig_Click);
             // 
             // btnPrint
             // 
@@ -133,7 +134,7 @@
             this.cboConfigure.Size = new System.Drawing.Size(358, 25);
             this.cboConfigure.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.cboConfigure.TabIndex = 0;
-            this.cboConfigure.SelectedIndexChanged += new System.EventHandler(this.cboConfigure_SelectedIndexChanged_1);
+            this.cboConfigure.SelectedIndexChanged += new System.EventHandler(this.cboConfigure_SelectedIndexChanged);
             // 
             // linkLabel4
             // 

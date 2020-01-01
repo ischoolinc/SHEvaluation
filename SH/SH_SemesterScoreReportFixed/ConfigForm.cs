@@ -123,7 +123,6 @@ namespace SH_SemesterScoreReportFixed
                 cboExam.Items.Clear();
                 cboExam.Items.AddRange(exams.ToArray());
 
-               
                 List<string> prefix = new List<string>();
                 List<string> tag = new List<string>();
                
@@ -261,7 +260,10 @@ namespace SH_SemesterScoreReportFixed
             Configure.SchoolYear = cboSchoolYear.Text;
             Configure.Semester = cboSemester.Text;
             Configure.ExamRecord = ((ExamRecord)cboExam.SelectedItem);
-          
+            Configure.NeedReScoreMark = txtNeedReScoreMark.Text;
+            Configure.ReScoreMark = txtReScoreMark.Text;
+            Configure.FailScoreMark = txtFailScoreMark.Text;
+
             if (Configure.RefenceExamRecord != null && Configure.RefenceExamRecord.Name == "")
                 Configure.RefenceExamRecord = null;
             foreach (ListViewItem item in listViewEx1.Items)
@@ -515,86 +517,23 @@ namespace SH_SemesterScoreReportFixed
             }
         }
 
-        private void cboConfigure_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-            if (cboConfigure.SelectedIndex == cboConfigure.Items.Count - 1)
-            {
-                //新增
-                btnSaveConfig.Enabled = btnPrint.Enabled = false;
-                NewConfigure dialog = new NewConfigure();
-                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    Configure = new Configure();
-                    Configure.Name = dialog.ConfigName;
-                    Configure.Template = dialog.Template;
-                    Configure.SubjectLimit = dialog.SubjectLimit;
-                    Configure.SchoolYear = _DefalutSchoolYear;
-                    Configure.Semester = _DefaultSemester;
-                    if (cboExam.Items.Count > 0)
-                        Configure.ExamRecord = (ExamRecord)cboExam.Items[0];
-                    _Configures.Add(Configure);
-                    cboConfigure.Items.Insert(cboConfigure.SelectedIndex, Configure);
-                    cboConfigure.SelectedIndex = cboConfigure.SelectedIndex - 1;
-                    Configure.WithSchoolYearScore = dialog.WithSchoolYearScore;
-                    Configure.WithPrevSemesterScore = dialog.WithPrevSemesterScore;
-                    Configure.Encode();
-                    Configure.Save();
-                }
-                else
-                {
-                    cboConfigure.SelectedIndex = -1;
-                }
-            }
-            else
-            {
-                if (cboConfigure.SelectedIndex >= 0)
-                {
-                    btnSaveConfig.Enabled = btnPrint.Enabled = true;
-                    Configure = _Configures[cboConfigure.SelectedIndex];
-                    if (Configure.Template == null)
-                        Configure.Decode();
-                    if (!cboSchoolYear.Items.Contains(Configure.SchoolYear))
-                        cboSchoolYear.Items.Add(Configure.SchoolYear);
-                    cboSchoolYear.Text = Configure.SchoolYear;
-                    cboSemester.Text = Configure.Semester;
-                    if (Configure.ExamRecord != null)
-                    {
-                        foreach (var item in cboExam.Items)
-                        {
-                            if (((ExamRecord)item).ID == Configure.ExamRecord.ID)
-                            {
-                                cboExam.SelectedIndex = cboExam.Items.IndexOf(item);
-                                break;
-                            }
-                        }
-                    }
-                 
-                 
-                    foreach (ListViewItem item in listViewEx1.Items)
-                    {
-                        item.Checked = Configure.PrintSubjectList.Contains(item.Text);
-                    }
-                  
-                }
-                else
-                {
-                    Configure = null;
-                    cboSchoolYear.SelectedIndex = -1;
-                    cboSemester.SelectedIndex = -1;
-                    cboExam.SelectedIndex = -1;
-                 
-                    foreach (ListViewItem item in listViewEx1.Items)
-                    {
-                        item.Checked = false;
-                    }
-                   
-                }
-            }
-        }
 
         private void ConfigForm_Load(object sender, EventArgs e)
         {
             this.MaximumSize = this.MinimumSize = this.Size;
+        }
+
+        private void btnSaveConfig_Click(object sender, EventArgs e)
+        {
+            // 檢查設定學年度學期與目前系統預設是否相同
+            string s1 = cboSchoolYear.Text + cboSemester.Text;
+            string s2 = School.DefaultSchoolYear + School.DefaultSemester;
+
+            if (s1 != s2)
+                if (FISCA.Presentation.Controls.MsgBox.Show("畫面上學年度學期與系統學年度學期不相同，請問是否繼續?", "學年度學期不同", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.No)
+                    return;
+
+            SaveTemplate(null, null);
         }
     }
 }

@@ -240,6 +240,11 @@ namespace SH_SemesterScoreReportFixed
                     table.Columns.Add("學期科目學年成績註記" + subjectIndex);
                     table.Columns.Add("學期科目需要補考註記" + subjectIndex);
                     table.Columns.Add("學期科目需要重修註記" + subjectIndex);
+                    table.Columns.Add("學期科目需要補考標示" + subjectIndex);
+                    table.Columns.Add("學期科目補考成績標示" + subjectIndex);
+                    table.Columns.Add("學期科目不及格標示" + subjectIndex);
+
+
                     // 新增學期科目排名
                     table.Columns.Add("學期科目排名成績" + subjectIndex);
                     table.Columns.Add("學期科目班排名" + subjectIndex);
@@ -268,6 +273,10 @@ namespace SH_SemesterScoreReportFixed
                     table.Columns.Add("上學期科目未取得學分註記" + subjectIndex);
                     table.Columns.Add("上學期科目需要補考註記" + subjectIndex);
                     table.Columns.Add("上學期科目需要重修註記" + subjectIndex);
+                    table.Columns.Add("上學期科目需要補考標示" + subjectIndex);
+                    table.Columns.Add("上學期科目補考成績標示" + subjectIndex);
+                    table.Columns.Add("上學期科目不及格標示" + subjectIndex);
+
 
                     // 新增學年科目成績--
                     table.Columns.Add("學年科目成績" + subjectIndex);
@@ -1523,7 +1532,10 @@ namespace SH_SemesterScoreReportFixed
                                                 if ("" + semesterSubjectScore.Score == semesterSubjectScore.Detail.GetAttribute("原始成績"))
                                                     row["學期科目原始成績註記" + subjectIndex] = "\f";
                                                 if ("" + semesterSubjectScore.Score == semesterSubjectScore.Detail.GetAttribute("補考成績"))
+                                                {
                                                     row["學期科目補考成績註記" + subjectIndex] = "\f";
+                                                    row["學期科目補考成績標示" + subjectIndex] = conf.ReScoreMark;
+                                                }                                                   
                                                 if ("" + semesterSubjectScore.Score == semesterSubjectScore.Detail.GetAttribute("重修成績"))
                                                     row["學期科目重修成績註記" + subjectIndex] = "\f";
                                                 if ("" + semesterSubjectScore.Score == semesterSubjectScore.Detail.GetAttribute("擇優採計成績"))
@@ -1534,11 +1546,12 @@ namespace SH_SemesterScoreReportFixed
                                                 // 不及格
                                                 if (semesterSubjectScore.Score < scA)
                                                 {
+                                                    row["學期科目不及格標示" + subjectIndex] = conf.FailScoreMark;
                                                     // 可補考
                                                     if (semesterSubjectScore.Score >= scB)
-                                                    {
-
+                                                    { 
                                                         row["學期科目需要補考註記" + subjectIndex] = "\f";
+                                                        row["學期科目需要補考標示" + subjectIndex] = conf.NeedReScoreMark;
                                                     }
                                                     else
                                                     {
@@ -1827,7 +1840,11 @@ namespace SH_SemesterScoreReportFixed
                                                     if ("" + semesterSubjectScore.Score == semesterSubjectScore.Detail.GetAttribute("原始成績"))
                                                         row["上學期科目原始成績註記" + subjectIndex] = "\f";
                                                     if ("" + semesterSubjectScore.Score == semesterSubjectScore.Detail.GetAttribute("補考成績"))
+                                                    {
                                                         row["上學期科目補考成績註記" + subjectIndex] = "\f";
+                                                        row["上學期科目補考成績標示" + subjectIndex] = conf.ReScoreMark;
+                                                    }
+
                                                     if ("" + semesterSubjectScore.Score == semesterSubjectScore.Detail.GetAttribute("重修成績"))
                                                         row["上學期科目重修成績註記" + subjectIndex] = "\f";
                                                     if ("" + semesterSubjectScore.Score == semesterSubjectScore.Detail.GetAttribute("擇優採計成績"))
@@ -1838,10 +1855,12 @@ namespace SH_SemesterScoreReportFixed
                                                     // 不及格
                                                     if (semesterSubjectScore.Score < scA)
                                                     {
+                                                        row["上學期科目不及格標示" + subjectIndex] = conf.FailScoreMark;
                                                         // 可補考
                                                         if (semesterSubjectScore.Score >= scB)
                                                         {
                                                             row["上學期科目需要補考註記" + subjectIndex] = "\f";
+                                                            row["上學期科目需要補考標示" + subjectIndex] = conf.NeedReScoreMark;
                                                         }
                                                         else
                                                         {

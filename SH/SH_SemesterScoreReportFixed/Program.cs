@@ -87,6 +87,27 @@ namespace SH_SemesterScoreReportFixed
         // 累計取得選修學分
         static Dictionary<string, decimal> _studPassSumCreditDictC2 = new Dictionary<string, decimal>();
 
+        // 本學期已修必修學分
+        static Dictionary<string, decimal> StudentSemsReqSumCreditsDict = new Dictionary<string, decimal>();
+
+        // 本學期已修選修學分
+        static Dictionary<string, decimal> StudentSemsSelSumCreditsDict = new Dictionary<string, decimal>();
+
+        // 本學期實得必修學分
+        static Dictionary<string, decimal> StudentSemsPassReqSumCreditsDict = new Dictionary<string, decimal>();
+
+        // 本學期實得選修學分
+        static Dictionary<string, decimal> StudentSemsPassSelSumCreditsDict = new Dictionary<string, decimal>();
+
+        // 在校期間實得必修學分
+        static Dictionary<string, decimal> StudentAllPassReqSumCreditsDict = new Dictionary<string, decimal>();
+
+        // 在校期間實得選修學分
+        static Dictionary<string, decimal> StudentAllPassSelSumCreditsDict = new Dictionary<string, decimal>();
+
+
+
+
         static void Program_Click(object sender_, EventArgs e_)
         {
             AccessHelper helper = new AccessHelper();
@@ -112,7 +133,8 @@ namespace SH_SemesterScoreReportFixed
                 // 取得評量成績排名、五標、分數區間
                 Dictionary<string, Dictionary<string, DataRow>> RankMatrixDataDict = Utility.GetRankMatrixData(conf.SchoolYear, conf.Semester, conf.ExamRecord.ID, selectedStudents);
 
-
+                // 取得學期成績排名、五標、分數區間
+                Dictionary<string, Dictionary<string, DataRow>> SemsScoreRankMatrixDataDict = Utility.GetSemsScoreRankMatrixData(conf.SchoolYear, conf.Semester, selectedStudents);
 
                 //建立合併欄位總表
                 DataTable table = new DataTable();
@@ -154,6 +176,13 @@ namespace SH_SemesterScoreReportFixed
                 table.Columns.Add("累計取得選修學分");
                 table.Columns.Add("系統學年度");
                 table.Columns.Add("系統學期");
+
+                table.Columns.Add("本學期已修必修學分");
+                table.Columns.Add("本學期已修選修學分");
+                table.Columns.Add("本學期實得必修學分");
+                table.Columns.Add("本學期實得選修學分");
+                table.Columns.Add("在校期間實得必修學分");
+                table.Columns.Add("在校期間實得選修學分");
 
                 // 新增合併欄位
                 List<string> r1List = new List<string>();
@@ -438,7 +467,7 @@ namespace SH_SemesterScoreReportFixed
                     table.Columns.Add("本學期" + name);
                     table.Columns.Add("學年" + name);
                 }
-          
+
 
                 #endregion
                 //宣告產生的報表
@@ -737,6 +766,8 @@ namespace SH_SemesterScoreReportFixed
                             }
                             #endregion
                             #region 學期科目成績排名
+
+
                             strSQL = "select * from sems_subj_score where ref_student_id in (" + sidList + ") and school_year=" + sSchoolYear + " and semester=" + sSemester + "";
                             dt = qh.Select(strSQL);
                             foreach (System.Data.DataRow dr in dt.Rows)
@@ -811,6 +842,9 @@ namespace SH_SemesterScoreReportFixed
                                     }
                                 }
                             }
+
+
+
                             #endregion
                             accessHelper.StudentHelper.FillAttendance(studentRecords);
                             accessHelper.StudentHelper.FillReward(studentRecords);
@@ -974,7 +1008,7 @@ namespace SH_SemesterScoreReportFixed
                             {
                                 string studentID = studentRec.StudentID;
                                 bool rank = true;
-                               
+
                                 bool summaryRank = true;
                                 bool tag1SummaryRank = true;
                                 bool tag2SummaryRank = true;
@@ -1006,7 +1040,7 @@ namespace SH_SemesterScoreReportFixed
                                                     //計算加權總分
                                                     printSubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
                                                     printSubjectCreditSum += sceTakeRecord.CreditDec();
-                                                   
+
                                                 }
                                                 else
                                                 {
@@ -1014,7 +1048,7 @@ namespace SH_SemesterScoreReportFixed
                                                 }
                                             }
                                             #endregion
-                                        }                                      
+                                        }
 
                                     }
                                     if (printSubjectCount > 0)
@@ -1024,7 +1058,7 @@ namespace SH_SemesterScoreReportFixed
                                         studentPrintSubjectSum.Add(studentID, printSubjectSum);
                                         //平均四捨五入至小數點第二位
                                         studentPrintSubjectAvg.Add(studentID, Math.Round(printSubjectSum / printSubjectCount, 2, MidpointRounding.AwayFromZero));
-                                        
+
                                         #endregion
                                         if (printSubjectCreditSum > 0)
                                         {
@@ -1033,7 +1067,7 @@ namespace SH_SemesterScoreReportFixed
                                             studentPrintSubjectSumW.Add(studentID, printSubjectSumW);
                                             //加權平均四捨五入至小數點第二位
                                             studentPrintSubjectAvgW.Add(studentID, Math.Round(printSubjectSumW / printSubjectCreditSum, 2, MidpointRounding.AwayFromZero));
-                                          
+
                                             #endregion
                                         }
                                     }
@@ -1044,8 +1078,8 @@ namespace SH_SemesterScoreReportFixed
                                         studentTag1SubjectSum.Add(studentID, tag1SubjectSum);
                                         //平均四捨五入至小數點第二位
                                         studentTag1SubjectAvg.Add(studentID, Math.Round(tag1SubjectSum / tag1SubjectCount, 2, MidpointRounding.AwayFromZero));
-                                       
-                                       
+
+
                                     }
                                     //類別2總分平均排名
                                     if (tag2SubjectCount > 0)
@@ -1054,13 +1088,13 @@ namespace SH_SemesterScoreReportFixed
                                         studentTag2SubjectSum.Add(studentID, tag2SubjectSum);
                                         //平均四捨五入至小數點第二位
                                         studentTag2SubjectAvg.Add(studentID, Math.Round(tag2SubjectSum / tag2SubjectCount, 2, MidpointRounding.AwayFromZero));
-                                      
+
                                         //類別2加權總分平均排名
                                         if (tag2SubjectCreditSum > 0)
                                         {
                                             studentTag2SubjectSumW.Add(studentID, tag2SubjectSumW);
                                             studentTag2SubjectAvgW.Add(studentID, Math.Round(tag2SubjectSumW / tag2SubjectCreditSum, 2, MidpointRounding.AwayFromZero));
-                                      
+
                                         }
                                     }
                                 }
@@ -1068,7 +1102,7 @@ namespace SH_SemesterScoreReportFixed
                                 bkw.ReportProgress(40 + progressCount * 30 / total);
                             }
                         }
-                       
+
                         #endregion
 
                         // 先取得 K12 StudentRec,因為後面透過 k12.data 取資料有的傳入ID,有的傳入 Record 有點亂
@@ -1125,6 +1159,14 @@ namespace SH_SemesterScoreReportFixed
                         _studPassSumCreditDictC1.Clear();
                         _studPassSumCreditDictC2.Clear();
 
+                        StudentSemsReqSumCreditsDict.Clear();
+                        StudentSemsSelSumCreditsDict.Clear();
+                        StudentSemsPassReqSumCreditsDict.Clear();
+                        StudentSemsPassSelSumCreditsDict.Clear();
+                        StudentAllPassReqSumCreditsDict.Clear();
+                        StudentAllPassSelSumCreditsDict.Clear();
+
+
                         progressCount = 0;
                         #region 填入資料表
                         foreach (var stuRec in studentRecords)
@@ -1142,6 +1184,22 @@ namespace SH_SemesterScoreReportFixed
 
                             if (!_studPassSumCreditDictC2.ContainsKey(stuRec.StudentID))
                                 _studPassSumCreditDictC2.Add(stuRec.StudentID, 0);
+
+
+                            if (!StudentSemsReqSumCreditsDict.ContainsKey(stuRec.StudentID))
+                                StudentSemsReqSumCreditsDict.Add(stuRec.StudentID, 0);
+                            if (!StudentSemsSelSumCreditsDict.ContainsKey(stuRec.StudentID))
+                                StudentSemsSelSumCreditsDict.Add(stuRec.StudentID, 0);
+                            if (!StudentSemsPassReqSumCreditsDict.ContainsKey(stuRec.StudentID))
+                                StudentSemsPassReqSumCreditsDict.Add(stuRec.StudentID, 0);
+                            if (!StudentSemsPassSelSumCreditsDict.ContainsKey(stuRec.StudentID))
+                                StudentSemsPassSelSumCreditsDict.Add(stuRec.StudentID, 0);
+                            if (!StudentAllPassReqSumCreditsDict.ContainsKey(stuRec.StudentID))
+                                StudentAllPassReqSumCreditsDict.Add(stuRec.StudentID, 0);
+                            if (!StudentAllPassSelSumCreditsDict.ContainsKey(stuRec.StudentID))
+                                StudentAllPassSelSumCreditsDict.Add(stuRec.StudentID, 0);
+
+
 
                             string studentID = stuRec.StudentID;
                             string gradeYear = (stuRec.RefClass == null ? "" : "" + stuRec.RefClass.GradeYear);
@@ -1253,56 +1311,10 @@ namespace SH_SemesterScoreReportFixed
                                     currentGradeYear = semesterEntryScore.GradeYear;
                                 }
                             }
+
                             #region 學期學業成績排名
-                            //if (stuRec.Fields.ContainsKey("SemesterEntryClassRating"))
-                            //{
-                            //    System.Xml.XmlElement _sems_ratings = stuRec.Fields["SemesterEntryClassRating"] as System.Xml.XmlElement;
-                            //    string path = string.Format("SemesterEntryScore[SchoolYear='{0}' and Semester='{1}']/ClassRating/Rating/Item[@分項='學業']/@排名", conf.SchoolYear, conf.Semester);
-                            //    System.Xml.XmlNode result = _sems_ratings.SelectSingleNode(path);
-                            //    if (result != null)
-                            //    {
-                            //        row["學期學業成績班排名"] = result.InnerText;
-                            //    }
-                            //}
-                            foreach (var k in new string[] { "班", "科", "校" })
-                            {
-                                if (stuRec.Fields.ContainsKey("學期學業成績" + k + "排名")) row["學期學業成績" + k + "排名"] = "" + stuRec.Fields["學期學業成績" + k + "排名"];
-                                if (stuRec.Fields.ContainsKey("學期學業成績" + k + "排名母數")) row["學期學業成績" + k + "排名母數"] = "" + stuRec.Fields["學期學業成績" + k + "排名母數"];
-                            }
-                            ////類別1 待改
-                            //if (studentTag1Group.ContainsKey(studentID))
-                            //{
-                            //    foreach (var tag in studentTags[studentID])
-                            //    {
-                            //        if (tag.RefTagID == studentTag1Group[studentID])
-                            //        {
-                            //            key = "學期學業成績" + tag.Name + "排名";
-                            //            if (stuRec.Fields.ContainsKey(key))
-                            //                row["學期學業成績類別1排名"] = "" + stuRec.Fields[key];
-                            //            key = "學期學業成績" + tag.Name + "排名母數";
-                            //            if (stuRec.Fields.ContainsKey(key))
-                            //                row["學期學業成績類別1排名母數"] = "" + stuRec.Fields[key];
-                            //            break;
-                            //        }
-                            //    }
-                            //}
-                            //類別2 待改
-                            //if (studentTag2Group.ContainsKey(studentID))
-                            //{
-                            //    foreach (var tag in studentTags[studentID])
-                            //    {
-                            //        if (tag.RefTagID == studentTag2Group[studentID])
-                            //        {
-                            //            key = "學期學業成績" + tag.Name + "排名";
-                            //            if (stuRec.Fields.ContainsKey(key))
-                            //                row["學期學業成績類別2排名"] = "" + stuRec.Fields[key];
-                            //            key = "學期學業成績" + tag.Name + "排名母數";
-                            //            if (stuRec.Fields.ContainsKey(key))
-                            //                row["學期學業成績類別2排名母數"] = "" + stuRec.Fields[key];
-                            //            break;
-                            //        }
-                            //    }
-                            //}
+
+
                             #endregion
 
                             if (conf.Semester == "2")
@@ -1448,10 +1460,27 @@ namespace SH_SemesterScoreReportFixed
                             {
                                 if (semesterSubjectScore.Detail.GetAttribute("不計學分") != "是")
                                 {
+                                    // 本學期已修
+                                    if (semesterSubjectScore.SchoolYear.ToString() == conf.SchoolYear && semesterSubjectScore.Semester.ToString() == conf.Semester)
+                                    {
+                                        if (semesterSubjectScore.Require)
+                                            StudentSemsReqSumCreditsDict[stuRec.StudentID] += semesterSubjectScore.CreditDec();
+                                        else
+                                            StudentSemsSelSumCreditsDict[stuRec.StudentID] += semesterSubjectScore.CreditDec();
+                                    }
+
 
                                     // 本學期取得
                                     if (semesterSubjectScore.SchoolYear.ToString() == conf.SchoolYear && semesterSubjectScore.Semester.ToString() == conf.Semester && semesterSubjectScore.Pass)
+                                    {
                                         _studPassSumCreditDict1[stuRec.StudentID] += semesterSubjectScore.CreditDec();
+
+                                        if (semesterSubjectScore.Require)
+                                            StudentSemsPassReqSumCreditsDict[stuRec.StudentID] += semesterSubjectScore.CreditDec();
+                                        else
+                                            StudentSemsPassSelSumCreditsDict[stuRec.StudentID] += semesterSubjectScore.CreditDec();
+                                    }
+
 
                                     // 累計取得
                                     if (semesterSubjectScore.Pass)
@@ -1459,9 +1488,15 @@ namespace SH_SemesterScoreReportFixed
                                         _studPassSumCreditDictAll[stuRec.StudentID] += semesterSubjectScore.CreditDec();
 
                                         if (semesterSubjectScore.Require)
+                                        {
                                             _studPassSumCreditDictC1[stuRec.StudentID] += semesterSubjectScore.CreditDec();
+                                            StudentAllPassReqSumCreditsDict[stuRec.StudentID] += semesterSubjectScore.CreditDec();
+                                        }
                                         else
+                                        {
                                             _studPassSumCreditDictC2[stuRec.StudentID] += semesterSubjectScore.CreditDec();
+                                            StudentAllPassSelSumCreditsDict[stuRec.StudentID] += semesterSubjectScore.CreditDec();
+                                        }
                                     }
                                 }
                             }
@@ -1470,6 +1505,13 @@ namespace SH_SemesterScoreReportFixed
                             row["累計取得學分數"] = _studPassSumCreditDictAll[stuRec.StudentID];
                             row["累計取得必修學分"] = _studPassSumCreditDictC1[stuRec.StudentID];
                             row["累計取得選修學分"] = _studPassSumCreditDictC2[stuRec.StudentID];
+
+                            row["本學期已修必修學分"] = StudentSemsReqSumCreditsDict[stuRec.StudentID];
+                            row["本學期已修選修學分"] = StudentSemsSelSumCreditsDict[stuRec.StudentID];
+                            row["本學期實得必修學分"] = StudentSemsPassReqSumCreditsDict[stuRec.StudentID];
+                            row["本學期實得選修學分"] = StudentSemsPassSelSumCreditsDict[stuRec.StudentID];
+                            row["在校期間實得必修學分"] = StudentAllPassReqSumCreditsDict[stuRec.StudentID];
+                            row["在校期間實得選修學分"] = StudentAllPassSelSumCreditsDict[stuRec.StudentID];
 
                             // 取得學生及格與補考標準
                             // 及格
@@ -1535,7 +1577,7 @@ namespace SH_SemesterScoreReportFixed
                                                 {
                                                     row["學期科目補考成績註記" + subjectIndex] = "\f";
                                                     row["學期科目補考成績標示" + subjectIndex] = conf.ReScoreMark;
-                                                }                                                   
+                                                }
                                                 if ("" + semesterSubjectScore.Score == semesterSubjectScore.Detail.GetAttribute("重修成績"))
                                                     row["學期科目重修成績註記" + subjectIndex] = "\f";
                                                 if ("" + semesterSubjectScore.Score == semesterSubjectScore.Detail.GetAttribute("擇優採計成績"))
@@ -1549,7 +1591,7 @@ namespace SH_SemesterScoreReportFixed
                                                     row["學期科目不及格標示" + subjectIndex] = conf.FailScoreMark;
                                                     // 可補考
                                                     if (semesterSubjectScore.Score >= scB)
-                                                    { 
+                                                    {
                                                         row["學期科目需要補考註記" + subjectIndex] = "\f";
                                                         row["學期科目需要補考標示" + subjectIndex] = conf.NeedReScoreMark;
                                                     }

@@ -276,6 +276,7 @@ namespace SH_SemesterScoreReportFixed
 
                     // 新增學期科目排名
                     table.Columns.Add("學期科目排名成績" + subjectIndex);
+
                     table.Columns.Add("學期科目班排名" + subjectIndex);
                     table.Columns.Add("學期科目班排名母數" + subjectIndex);
                     table.Columns.Add("學期科目科排名" + subjectIndex);
@@ -286,6 +287,34 @@ namespace SH_SemesterScoreReportFixed
                     table.Columns.Add("學期科目類別2排名母數" + subjectIndex);
                     table.Columns.Add("學期科目全校排名" + subjectIndex);
                     table.Columns.Add("學期科目全校排名母數" + subjectIndex);
+                    table.Columns.Add("學期科目(原始)班排名" + subjectIndex);
+                    table.Columns.Add("學期科目(原始)班排名母數" + subjectIndex);
+                    table.Columns.Add("學期科目(原始)科排名" + subjectIndex);
+                    table.Columns.Add("學期科目(原始)科排名母數" + subjectIndex);
+                    table.Columns.Add("學期科目(原始)類別1排名" + subjectIndex);
+                    table.Columns.Add("學期科目(原始)類別1排名母數" + subjectIndex);
+                    table.Columns.Add("學期科目(原始)類別2排名" + subjectIndex);
+                    table.Columns.Add("學期科目(原始)類別2排名母數" + subjectIndex);
+                    table.Columns.Add("學期科目(原始)全校排名" + subjectIndex);
+                    table.Columns.Add("學期科目(原始)全校排名母數" + subjectIndex);
+
+                    // 學期科目五標與組距 
+                    foreach (string item2 in r2List)
+                    {
+                        table.Columns.Add("學期科目班排名" + subjectIndex + "_" + item2);
+                        table.Columns.Add("學期科目科排名" + subjectIndex + "_" + item2);
+                        table.Columns.Add("學期科目類別1排名" + subjectIndex + "_" + item2);
+                        table.Columns.Add("學期科目類別2排名" + subjectIndex + "_" + item2);
+                        table.Columns.Add("學期科目全校排名" + subjectIndex + "_" + item2);
+                        table.Columns.Add("學期科目(原始)班排名" + subjectIndex + "_" + item2);
+                        table.Columns.Add("學期科目(原始)科排名" + subjectIndex + "_" + item2);
+                        table.Columns.Add("學期科目(原始)類別1排名" + subjectIndex + "_" + item2);
+                        table.Columns.Add("學期科目(原始)類別2排名" + subjectIndex + "_" + item2);
+                        table.Columns.Add("學期科目(原始)全校排名" + subjectIndex + "_" + item2);
+
+                    }
+
+
                     // 新增上學期科目相關成績--
                     table.Columns.Add("上學期科目原始成績" + subjectIndex);
                     table.Columns.Add("上學期科目補考成績" + subjectIndex);
@@ -405,19 +434,8 @@ namespace SH_SemesterScoreReportFixed
                 table.Columns.Add("學期實習科目(原始)成績");
                 table.Columns.Add("學期專業科目成績");
                 table.Columns.Add("學期專業科目(原始)成績");
-
                 table.Columns.Add("學期德行成績");
-                // 學期學業成績排名
-                table.Columns.Add("學期學業成績班排名");
-                table.Columns.Add("學期學業成績科排名");
-                table.Columns.Add("學期學業成績類別1排名");
-                table.Columns.Add("學期學業成績類別2排名");
-                table.Columns.Add("學期學業成績校排名");
-                table.Columns.Add("學期學業成績班排名母數");
-                table.Columns.Add("學期學業成績科排名母數");
-                table.Columns.Add("學期學業成績類別1排名母數");
-                table.Columns.Add("學期學業成績類別2排名母數");
-                table.Columns.Add("學期學業成績校排名母數");
+
                 // 導師評語 --
                 table.Columns.Add("導師評語");
                 // 獎懲統計 --
@@ -468,6 +486,51 @@ namespace SH_SemesterScoreReportFixed
                     table.Columns.Add("學年" + name);
                 }
 
+                //  動態產生學期科目與學期分項合併欄位
+                List<string> SemsItemNameList = new List<string>();
+
+                SemsItemNameList.Add("學業");
+                SemsItemNameList.Add("專業科目");
+                SemsItemNameList.Add("實習科目");
+
+                foreach (string name in SemsItemNameList)
+                {
+                    table.Columns.Add("學期" + name + "成績班排名");
+                    table.Columns.Add("學期" + name + "成績科排名");
+                    table.Columns.Add("學期" + name + "成績全校排名");
+                    table.Columns.Add("學期" + name + "成績類別1排名");
+                    table.Columns.Add("學期" + name + "成績類別2排名");
+                    table.Columns.Add("學期" + name + "成績班排名母數");
+                    table.Columns.Add("學期" + name + "成績科排名母數");
+                    table.Columns.Add("學期" + name + "成績全校排名母數");
+                    table.Columns.Add("學期" + name + "成績類別1排名母數");
+                    table.Columns.Add("學期" + name + "成績類別2排名母數");
+                    table.Columns.Add("學期" + name + "(原始)成績班排名");
+                    table.Columns.Add("學期" + name + "(原始)成績科排名");
+                    table.Columns.Add("學期" + name + "(原始)成績全校排名");
+                    table.Columns.Add("學期" + name + "(原始)成績類別1排名");
+                    table.Columns.Add("學期" + name + "(原始)成績類別2排名");
+                    table.Columns.Add("學期" + name + "(原始)成績班排名母數");
+                    table.Columns.Add("學期" + name + "(原始)成績科排名母數");
+                    table.Columns.Add("學期" + name + "(原始)成績全校排名母數");
+                    table.Columns.Add("學期" + name + "(原始)成績類別1排名母數");
+                    table.Columns.Add("學期" + name + "(原始)成績類別2排名母數");
+
+                    // 五標與組距
+                    foreach (string item2 in r2List)
+                    {
+                        table.Columns.Add("學期" + name + "成績班排名" + "_" + item2);
+                        table.Columns.Add("學期" + name + "成績科排名" + "_" + item2);
+                        table.Columns.Add("學期" + name + "成績全校排名" + "_" + item2);
+                        table.Columns.Add("學期" + name + "成績類別1排名" + "_" + item2);
+                        table.Columns.Add("學期" + name + "成績類別2排名" + "_" + item2);
+                        table.Columns.Add("學期" + name + "(原始)成績班排名" + "_" + item2);
+                        table.Columns.Add("學期" + name + "(原始)成績科排名" + "_" + item2);
+                        table.Columns.Add("學期" + name + "(原始)成績全校排名" + "_" + item2);
+                        table.Columns.Add("學期" + name + "(原始)成績類別1排名" + "_" + item2);
+                        table.Columns.Add("學期" + name + "(原始)成績類別2排名" + "_" + item2);
+                    }
+                }
 
                 #endregion
                 //宣告產生的報表
@@ -688,160 +751,15 @@ namespace SH_SemesterScoreReportFixed
                             }
 
                             #region 學期學業成績排名
-                            string strSQL = "select * from sems_entry_score where ref_student_id in (" + sidList + ") and school_year=" + sSchoolYear + " and semester=" + sSemester + "";
-                            System.Data.DataTable dt = qh.Select(strSQL);
-                            foreach (System.Data.DataRow dr in dt.Rows)
-                            {
-                                if ("" + dr["entry_group"] != "1") continue;
-                                StudentRecord rec = stuDictionary["" + dr["ref_student_id"]];
-                                if ("" + dr["class_rating"] != "")
-                                {
-                                    //學期學業成績班排名
-                                    doc.LoadXml("" + dr["class_rating"]);
-                                    System.Xml.XmlElement ele = (System.Xml.XmlElement)doc.SelectSingleNode("Rating/Item[@分項='學業']");
-                                    if (ele != null)
-                                    {
-                                        //<Item 分項="學業" 成績="90.6" 成績人數="35" 排名="2"/>
-                                        rec.Fields.Add("學期學業成績班排名", ele.GetAttribute("排名"));
-                                        rec.Fields.Add("學期學業成績班排名母數", ele.GetAttribute("成績人數"));
-                                    }
-                                }
-                                //學期學業成績科排名
 
-                                if ("" + dr["dept_rating"] != "")
-                                {
-                                    doc.LoadXml("" + dr["dept_rating"]);
-                                    System.Xml.XmlElement ele = (System.Xml.XmlElement)doc.SelectSingleNode("Rating/Item[@分項='學業']");
-                                    if (ele != null)
-                                    {
-                                        //<Item 分項="學業" 成績="90.6" 成績人數="35" 排名="2"/>
-                                        rec.Fields.Add("學期學業成績科排名", ele.GetAttribute("排名"));
-                                        rec.Fields.Add("學期學業成績科排名母數", ele.GetAttribute("成績人數"));
-                                    }
-                                }
-                                //學期學業成績類別1排名
-                                //學期學業成績類別2排名
 
-                                if ("" + dr["group_rating"] != "")
-                                {
-                                    doc.LoadXml("" + dr["group_rating"]);
-                                    foreach (System.Xml.XmlElement element in doc.SelectNodes("Ratings/Rating"))
-                                    {
-                                        System.Xml.XmlElement ele = (System.Xml.XmlElement)element.SelectSingleNode("Item[@分項='學業']");
-                                        if (ele != null)
-                                        {
-                                            if (!rec.Fields.ContainsKey("學期學業成績類別1"))
-                                            {
-                                                rec.Fields.Add("學期學業成績類別1", element.GetAttribute("類別"));
-                                                if (!rec.Fields.ContainsKey("學期學業成績" + element.GetAttribute("類別") + "排名"))
-                                                {
-                                                    rec.Fields.Add("學期學業成績" + element.GetAttribute("類別") + "排名", ele.GetAttribute("排名"));
-                                                    rec.Fields.Add("學期學業成績" + element.GetAttribute("類別") + "排名母數", ele.GetAttribute("成績人數"));
-                                                }
-                                            }
-                                            else
-                                            {
-                                                rec.Fields.Add("學期學業成績類別2", element.GetAttribute("類別"));
-                                                if (!rec.Fields.ContainsKey("學期學業成績" + element.GetAttribute("類別") + "排名"))
-                                                {
-                                                    rec.Fields.Add("學期學業成績" + element.GetAttribute("類別") + "排名", ele.GetAttribute("排名"));
-                                                    rec.Fields.Add("學期學業成績" + element.GetAttribute("類別") + "排名母數", ele.GetAttribute("成績人數"));
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                //學期學業成績校排名
-                                if ("" + dr["year_rating"] != "")
-                                {
-                                    doc.LoadXml("" + dr["year_rating"]);
-                                    System.Xml.XmlElement ele = (System.Xml.XmlElement)doc.SelectSingleNode("Rating/Item[@分項='學業']");
-                                    if (ele != null)
-                                    {
-                                        //<Item 分項="學業" 成績="90.6" 成績人數="35" 排名="2"/>
-                                        rec.Fields.Add("學期學業成績校排名", ele.GetAttribute("排名"));
-                                        rec.Fields.Add("學期學業成績校排名母數", ele.GetAttribute("成績人數"));
-                                    }
-                                }
-                            }
+
+
                             #endregion
                             #region 學期科目成績排名
 
 
-                            strSQL = "select * from sems_subj_score where ref_student_id in (" + sidList + ") and school_year=" + sSchoolYear + " and semester=" + sSemester + "";
-                            dt = qh.Select(strSQL);
-                            foreach (System.Data.DataRow dr in dt.Rows)
-                            {
-                                StudentRecord rec = stuDictionary["" + dr["ref_student_id"]];
-                                //學期學業成績班排名
-                                if ("" + dr["class_rating"] != "")
-                                {
-                                    doc.LoadXml("" + dr["class_rating"]);
-                                    foreach (System.Xml.XmlElement ele in doc.SelectNodes("Rating/Item"))
-                                    {
-                                        //<Item 成績="83" 成績人數="50" 排名="33" 科目="公民與社會" 科目級別="1"/>
-                                        rec.Fields.Add("學期科目排名成績" + ele.GetAttribute("科目") + "^^^" + ele.GetAttribute("科目級別"), ele.GetAttribute("成績"));
-                                        rec.Fields.Add("學期科目班排名" + ele.GetAttribute("科目") + "^^^" + ele.GetAttribute("科目級別"), ele.GetAttribute("排名"));
-                                        rec.Fields.Add("學期科目班排名母數" + ele.GetAttribute("科目") + "^^^" + ele.GetAttribute("科目級別"), ele.GetAttribute("成績人數"));
-                                    }
-                                }
-                                //學期學業成績科排名
-                                if ("" + dr["dept_rating"] != "")
-                                {
-                                    doc.LoadXml("" + dr["dept_rating"]);
-                                    foreach (System.Xml.XmlElement ele in doc.SelectNodes("Rating/Item"))
-                                    {
-                                        //<Item 分項="學業" 成績="90.6" 成績人數="35" 排名="2"/>
-                                        rec.Fields.Add("學期科目科排名" + ele.GetAttribute("科目") + "^^^" + ele.GetAttribute("科目級別"), ele.GetAttribute("排名"));
-                                        rec.Fields.Add("學期科目科排名母數" + ele.GetAttribute("科目") + "^^^" + ele.GetAttribute("科目級別"), ele.GetAttribute("成績人數"));
-                                    }
-                                }
-                                //學期學業成績類別1排名
-                                //學期學業成績類別2排名
-                                if ("" + dr["group_rating"] != "")
-                                {
-                                    doc.LoadXml("" + dr["group_rating"]);
-                                    foreach (System.Xml.XmlElement element in doc.SelectNodes("Ratings/Rating"))
-                                    {
-                                        string cat = element.GetAttribute("類別");
-                                        if (!rec.Fields.ContainsKey("學期科目成績類別1"))
-                                        {
-                                            rec.Fields.Add("學期科目成績類別1", cat);
-                                            foreach (System.Xml.XmlElement ele in element.SelectNodes("Item"))
-                                            {
-                                                if (!rec.Fields.ContainsKey("學期科目成績" + cat + "排名" + ele.GetAttribute("科目") + "^^^" + ele.GetAttribute("科目級別")))
-                                                {
-                                                    rec.Fields.Add("學期科目成績" + cat + "排名" + ele.GetAttribute("科目") + "^^^" + ele.GetAttribute("科目級別"), ele.GetAttribute("排名"));
-                                                    rec.Fields.Add("學期科目成績" + cat + "排名母數" + ele.GetAttribute("科目") + "^^^" + ele.GetAttribute("科目級別"), ele.GetAttribute("成績人數"));
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            rec.Fields.Add("學期科目成績類別2", cat);
-                                            foreach (System.Xml.XmlElement ele in element.SelectNodes("Item"))
-                                            {
-                                                if (!rec.Fields.ContainsKey("學期科目成績" + cat + "排名" + ele.GetAttribute("科目") + "^^^" + ele.GetAttribute("科目級別")))
-                                                {
-                                                    rec.Fields.Add("學期科目成績" + cat + "排名" + ele.GetAttribute("科目") + "^^^" + ele.GetAttribute("科目級別"), ele.GetAttribute("排名"));
-                                                    rec.Fields.Add("學期科目成績" + cat + "排名母數" + ele.GetAttribute("科目") + "^^^" + ele.GetAttribute("科目級別"), ele.GetAttribute("成績人數"));
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                //學期學業成績校排名
-                                if ("" + dr["year_rating"] != "")
-                                {
-                                    doc.LoadXml("" + dr["year_rating"]);
-                                    foreach (System.Xml.XmlElement ele in doc.SelectNodes("Rating/Item"))
-                                    {
-                                        //<Item 分項="學業" 成績="90.6" 成績人數="35" 排名="2"/>
-                                        rec.Fields.Add("學期科目校排名" + ele.GetAttribute("科目") + "^^^" + ele.GetAttribute("科目級別"), ele.GetAttribute("排名"));
-                                        rec.Fields.Add("學期科目校排名母數" + ele.GetAttribute("科目") + "^^^" + ele.GetAttribute("科目級別"), ele.GetAttribute("成績人數"));
-                                    }
-                                }
-                            }
+
 
 
 
@@ -1602,67 +1520,195 @@ namespace SH_SemesterScoreReportFixed
                                                     }
                                                 }
                                             }
-                                            #region 學期科目班、科、校、類別1、類別2排名
+
+                                            #region 學期科目班、科、校、類別1、類別2排名、五標、組距
+
                                             key = "學期科目排名成績" + semesterSubjectScore.Subject + "^^^" + semesterSubjectScore.Level;
                                             if (stuRec.Fields.ContainsKey(key))
                                                 row["學期科目排名成績" + subjectIndex] = "" + stuRec.Fields[key];
-                                            //班
-                                            key = "學期科目班排名" + semesterSubjectScore.Subject + "^^^" + semesterSubjectScore.Level;
-                                            if (stuRec.Fields.ContainsKey(key))
-                                                row["學期科目班排名" + subjectIndex] = "" + stuRec.Fields[key];
-                                            key = "學期科目班排名母數" + semesterSubjectScore.Subject + "^^^" + semesterSubjectScore.Level;
-                                            if (stuRec.Fields.ContainsKey(key))
-                                                row["學期科目班排名母數" + subjectIndex] = "" + stuRec.Fields[key];
-                                            //科
-                                            key = "學期科目科排名" + semesterSubjectScore.Subject + "^^^" + semesterSubjectScore.Level;
-                                            if (stuRec.Fields.ContainsKey(key))
-                                                row["學期科目科排名" + subjectIndex] = "" + stuRec.Fields[key];
-                                            key = "學期科目班科名母數" + semesterSubjectScore.Subject + "^^^" + semesterSubjectScore.Level;
-                                            if (stuRec.Fields.ContainsKey(key))
-                                                row["學期科目科排名母數" + subjectIndex] = "" + stuRec.Fields[key];
-                                            //校
-                                            key = "學期科目校排名" + semesterSubjectScore.Subject + "^^^" + semesterSubjectScore.Level;
-                                            if (stuRec.Fields.ContainsKey(key))
-                                                row["學期科目全校排名" + subjectIndex] = "" + stuRec.Fields[key];
-                                            key = "學期科目科校名母數" + semesterSubjectScore.Subject + "^^^" + semesterSubjectScore.Level;
-                                            if (stuRec.Fields.ContainsKey(key))
-                                                row["學期科目全校排名母數" + subjectIndex] = "" + stuRec.Fields[key];
 
+                                            string ssKey = "";
 
-                                            ////類別1 待改
-                                            //if (studentTag1Group.ContainsKey(studentID))
-                                            //{
-                                            //    foreach (var tag in studentTags[studentID])
-                                            //    {
-                                            //        if (tag.RefTagID == studentTag1Group[studentID])
-                                            //        {
-                                            //            key = "學期科目成績" + tag.Name + "排名" + semesterSubjectScore.Subject + "^^^" + semesterSubjectScore.Level;
-                                            //            if (stuRec.Fields.ContainsKey(key))
-                                            //                row["學期科目類別1排名" + subjectIndex] = "" + stuRec.Fields[key];
-                                            //            key = "學期科目成績" + tag.Name + "排名母數" + semesterSubjectScore.Subject + "^^^" + semesterSubjectScore.Level;
-                                            //            if (stuRec.Fields.ContainsKey(key))
-                                            //                row["學期科目類別1排名母數" + subjectIndex] = "" + stuRec.Fields[key];
-                                            //            break;
-                                            //        }
-                                            //    }
-                                            //}
-                                            ////類別2
-                                            //if (studentTag2Group.ContainsKey(studentID))
-                                            //{
-                                            //    foreach (var tag in studentTags[studentID])
-                                            //    {
-                                            //        if (tag.RefTagID == studentTag2Group[studentID])
-                                            //        {
-                                            //            key = "學期科目成績" + tag.Name + "排名" + semesterSubjectScore.Subject + "^^^" + semesterSubjectScore.Level;
-                                            //            if (stuRec.Fields.ContainsKey(key))
-                                            //                row["學期科目類別2排名" + subjectIndex] = "" + stuRec.Fields[key];
-                                            //            key = "學期科目成績" + tag.Name + "排名母數" + semesterSubjectScore.Subject + "^^^" + semesterSubjectScore.Level;
-                                            //            if (stuRec.Fields.ContainsKey(key))
-                                            //                row["學期科目類別2排名母數" + subjectIndex] = "" + stuRec.Fields[key];
-                                            //            break;
-                                            //        }
-                                            //    }
-                                            //}
+                                            #region 班排
+                                            ssKey = "學期/科目成績_" + semesterSubjectScore.Subject + "_班排名";
+                                            if (SemsScoreRankMatrixDataDict[studentID].ContainsKey(ssKey))
+                                            {
+                                                if (SemsScoreRankMatrixDataDict[studentID][ssKey]["rank"] != null)
+                                                    row["學期科目班排名" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][ssKey]["rank"].ToString();
+
+                                                if (SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"] != null)
+                                                    row["學期科目班排名母數" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"].ToString();
+
+                                                // 五標、組距
+                                                foreach (string item2 in r2List)
+                                                {
+                                                    if (SemsScoreRankMatrixDataDict[studentID][ssKey][item2] != null)
+                                                        row["學期科目班排名" + subjectIndex + "_" + item2] = SemsScoreRankMatrixDataDict[studentID][ssKey][item2].ToString();
+                                                }
+                                            }
+
+                                            ssKey = "學期/科目成績(原始)_" + semesterSubjectScore.Subject + "_班排名";
+                                            if (SemsScoreRankMatrixDataDict[studentID].ContainsKey(ssKey))
+                                            {
+                                                if (SemsScoreRankMatrixDataDict[studentID][ssKey]["rank"] != null)
+                                                    row["學期科目(原始)班排名" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][ssKey]["rank"].ToString();
+
+                                                if (SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"] != null)
+                                                    row["學期科目(原始)班排名母數" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"].ToString();
+
+                                                // 五標、組距
+                                                foreach (string item2 in r2List)
+                                                {
+                                                    if (SemsScoreRankMatrixDataDict[studentID][ssKey][item2] != null)
+                                                        row["學期科目(原始)班排名" + subjectIndex + "_" + item2] = SemsScoreRankMatrixDataDict[studentID][ssKey][item2].ToString();
+                                                }
+                                            }
+                                            #endregion
+
+                                            #region 科排
+                                            ssKey = "學期/科目成績_" + semesterSubjectScore.Subject + "_科排名";
+                                            if (SemsScoreRankMatrixDataDict[studentID].ContainsKey(ssKey))
+                                            {
+                                                if (SemsScoreRankMatrixDataDict[studentID][ssKey]["rank"] != null)
+                                                    row["學期科目科排名" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][ssKey]["rank"].ToString();
+
+                                                if (SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"] != null)
+                                                    row["學期科目科排名母數" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"].ToString();
+
+                                                // 五標、組距
+                                                foreach (string item2 in r2List)
+                                                {
+                                                    if (SemsScoreRankMatrixDataDict[studentID][ssKey][item2] != null)
+                                                        row["學期科目科排名" + subjectIndex + "_" + item2] = SemsScoreRankMatrixDataDict[studentID][ssKey][item2].ToString();
+                                                }
+                                            }
+
+                                            ssKey = "學期/科目成績(原始)_" + semesterSubjectScore.Subject + "_科排名";
+                                            if (SemsScoreRankMatrixDataDict[studentID].ContainsKey(ssKey))
+                                            {
+                                                if (SemsScoreRankMatrixDataDict[studentID][ssKey]["rank"] != null)
+                                                    row["學期科目(原始)科排名" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][ssKey]["rank"].ToString();
+
+                                                if (SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"] != null)
+                                                    row["學期科目(原始)科排名母數" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"].ToString();
+
+                                                // 五標、組距
+                                                foreach (string item2 in r2List)
+                                                {
+                                                    if (SemsScoreRankMatrixDataDict[studentID][ssKey][item2] != null)
+                                                        row["學期科目(原始)科排名" + subjectIndex + "_" + item2] = SemsScoreRankMatrixDataDict[studentID][ssKey][item2].ToString();
+                                                }
+                                            }
+                                            #endregion
+
+                                            #region 校排
+                                            ssKey = "學期/科目成績_" + semesterSubjectScore.Subject + "_年排名";
+                                            if (SemsScoreRankMatrixDataDict[studentID].ContainsKey(ssKey))
+                                            {
+                                                if (SemsScoreRankMatrixDataDict[studentID][ssKey]["rank"] != null)
+                                                    row["學期科目全校排名" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][ssKey]["rank"].ToString();
+
+                                                if (SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"] != null)
+                                                    row["學期科目全校排名母數" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"].ToString();
+
+                                                // 五標、組距
+                                                foreach (string item2 in r2List)
+                                                {
+                                                    if (SemsScoreRankMatrixDataDict[studentID][ssKey][item2] != null)
+                                                        row["學期科目全校排名" + subjectIndex + "_" + item2] = SemsScoreRankMatrixDataDict[studentID][ssKey][item2].ToString();
+                                                }
+                                            }
+
+                                            ssKey = "學期/科目成績(原始)_" + semesterSubjectScore.Subject + "_年排名";
+                                            if (SemsScoreRankMatrixDataDict[studentID].ContainsKey(ssKey))
+                                            {
+                                                if (SemsScoreRankMatrixDataDict[studentID][ssKey]["rank"] != null)
+                                                    row["學期科目(原始)全校排名" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][ssKey]["rank"].ToString();
+
+                                                if (SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"] != null)
+                                                    row["學期科目(原始)全校排名母數" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"].ToString();
+
+                                                // 五標、組距
+                                                foreach (string item2 in r2List)
+                                                {
+                                                    if (SemsScoreRankMatrixDataDict[studentID][ssKey][item2] != null)
+                                                        row["學期科目(原始)全校排名" + subjectIndex + "_" + item2] = SemsScoreRankMatrixDataDict[studentID][ssKey][item2].ToString();
+                                                }
+                                            }
+                                            #endregion
+
+                                            #region 類1
+                                            ssKey = "學期/科目成績_" + semesterSubjectScore.Subject + "_類別1排名";
+                                            if (SemsScoreRankMatrixDataDict[studentID].ContainsKey(ssKey))
+                                            {
+                                                if (SemsScoreRankMatrixDataDict[studentID][ssKey]["rank"] != null)
+                                                    row["學期科目類別1排名" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][ssKey]["rank"].ToString();
+
+                                                if (SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"] != null)
+                                                    row["學期科目類別1排名母數" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"].ToString();
+
+                                                // 五標、組距
+                                                foreach (string item2 in r2List)
+                                                {
+                                                    if (SemsScoreRankMatrixDataDict[studentID][ssKey][item2] != null)
+                                                        row["學期科目類別1排名" + subjectIndex + "_" + item2] = SemsScoreRankMatrixDataDict[studentID][ssKey][item2].ToString();
+                                                }
+                                            }
+
+                                            ssKey = "學期/科目成績(原始)_" + semesterSubjectScore.Subject + "_類別1排名";
+                                            if (SemsScoreRankMatrixDataDict[studentID].ContainsKey(ssKey))
+                                            {
+                                                if (SemsScoreRankMatrixDataDict[studentID][ssKey]["rank"] != null)
+                                                    row["學期科目(原始)類別1排名" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][ssKey]["rank"].ToString();
+
+                                                if (SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"] != null)
+                                                    row["學期科目(原始)類別1排名母數" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"].ToString();
+
+                                                // 五標、組距
+                                                foreach (string item2 in r2List)
+                                                {
+                                                    if (SemsScoreRankMatrixDataDict[studentID][ssKey][item2] != null)
+                                                        row["學期科目(原始)類別1排名" + subjectIndex + "_" + item2] = SemsScoreRankMatrixDataDict[studentID][ssKey][item2].ToString();
+                                                }
+                                            }
+                                            #endregion
+
+                                            #region 類2
+                                            ssKey = "學期/科目成績_" + semesterSubjectScore.Subject + "_類別2排名";
+                                            if (SemsScoreRankMatrixDataDict[studentID].ContainsKey(ssKey))
+                                            {
+                                                if (SemsScoreRankMatrixDataDict[studentID][ssKey]["rank"] != null)
+                                                    row["學期科目類別2排名" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][ssKey]["rank"].ToString();
+
+                                                if (SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"] != null)
+                                                    row["學期科目類別2排名母數" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"].ToString();
+
+                                                // 五標、組距
+                                                foreach (string item2 in r2List)
+                                                {
+                                                    if (SemsScoreRankMatrixDataDict[studentID][ssKey][item2] != null)
+                                                        row["學期科目類別2排名" + subjectIndex + "_" + item2] = SemsScoreRankMatrixDataDict[studentID][ssKey][item2].ToString();
+                                                }
+                                            }
+
+                                            ssKey = "學期/科目成績(原始)_" + semesterSubjectScore.Subject + "_類別2排名";
+                                            if (SemsScoreRankMatrixDataDict[studentID].ContainsKey(ssKey))
+                                            {
+                                                if (SemsScoreRankMatrixDataDict[studentID][ssKey]["rank"] != null)
+                                                    row["學期科目(原始)類別2排名" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][ssKey]["rank"].ToString();
+
+                                                if (SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"] != null)
+                                                    row["學期科目(原始)類別2排名母數" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"].ToString();
+
+                                                // 五標、組距
+                                                foreach (string item2 in r2List)
+                                                {
+                                                    if (SemsScoreRankMatrixDataDict[studentID][ssKey][item2] != null)
+                                                        row["學期科目(原始)類別2排名" + subjectIndex + "_" + item2] = SemsScoreRankMatrixDataDict[studentID][ssKey][item2].ToString();
+                                                }
+                                            }
+                                            #endregion
+                                            
                                             #endregion
                                             stuRec.SemesterSubjectScoreList.Remove(semesterSubjectScore);
                                             break;
@@ -2194,7 +2240,7 @@ namespace SH_SemesterScoreReportFixed
                             #endregion
                             #region 類別1綜合成績
 
-
+                            // 評量成績排名、五標、組距
                             if (RankMatrixDataDict.ContainsKey(studentID))
                             {
                                 string skey = "定期評量/總計成績_總分_類別1排名";
@@ -2270,6 +2316,7 @@ namespace SH_SemesterScoreReportFixed
                                     }
                                 }
                             }
+
 
                             #endregion
                             #region 類別2綜合成績
@@ -2347,6 +2394,202 @@ namespace SH_SemesterScoreReportFixed
 
                             #endregion
 
+
+
+                            #region 學期分項成績
+
+
+                            // 學期分項成績排名、五標、組距
+                            if (SemsScoreRankMatrixDataDict.ContainsKey(studentID))
+                            {
+                                // 分項
+                                foreach (string sname in SemsItemNameList)
+                                {
+                                    string skey = "";
+
+                                    #region 班排名
+                                    skey = "學期/分項成績_" + sname + "_班排名";
+                                    if (SemsScoreRankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (SemsScoreRankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["學期" + sname + "成績班排名"] = SemsScoreRankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (SemsScoreRankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["學期" + sname + "成績班排名母數"] = SemsScoreRankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標、組距
+                                        foreach (string item2 in r2List)
+                                        {
+                                            if (SemsScoreRankMatrixDataDict[studentID][skey][item2] != null)
+                                                row["學期" + sname + "成績班排名_" + item2] = SemsScoreRankMatrixDataDict[studentID][skey][item2].ToString();
+                                        }
+
+                                    }
+
+                                    skey = "學期/分項成績(原始)_" + sname + "_班排名";
+                                    if (SemsScoreRankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (SemsScoreRankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["學期" + sname + "(原始)成績班排名"] = SemsScoreRankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (SemsScoreRankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["學期" + sname + "(原始)成績班排名母數"] = SemsScoreRankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標、組距
+                                        foreach (string item2 in r2List)
+                                        {
+                                            if (SemsScoreRankMatrixDataDict[studentID][skey][item2] != null)
+                                                row["學期" + sname + "(原始)成績班排名_" + item2] = SemsScoreRankMatrixDataDict[studentID][skey][item2].ToString();
+                                        }
+                                    }
+                                    #endregion
+
+
+                                    #region 科排名
+                                    skey = "學期/分項成績_" + sname + "_科排名";
+                                    if (SemsScoreRankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (SemsScoreRankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["學期" + sname + "成績科排名"] = SemsScoreRankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (SemsScoreRankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["學期" + sname + "成績科排名母數"] = SemsScoreRankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標、組距
+                                        foreach (string item2 in r2List)
+                                        {
+                                            if (SemsScoreRankMatrixDataDict[studentID][skey][item2] != null)
+                                                row["學期" + sname + "成績科排名_" + item2] = SemsScoreRankMatrixDataDict[studentID][skey][item2].ToString();
+                                        }
+
+                                    }
+
+                                    skey = "學期/分項成績(原始)_" + sname + "_科排名";
+                                    if (SemsScoreRankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (SemsScoreRankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["學期" + sname + "(原始)成績科排名"] = SemsScoreRankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (SemsScoreRankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["學期" + sname + "(原始)成績科排名母數"] = SemsScoreRankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+
+                                        // 五標、組距
+                                        foreach (string item2 in r2List)
+                                        {
+                                            if (SemsScoreRankMatrixDataDict[studentID][skey][item2] != null)
+                                                row["學期" + sname + "(原始)成績科排名_" + item2] = SemsScoreRankMatrixDataDict[studentID][skey][item2].ToString();
+                                        }
+                                    }
+                                    #endregion
+
+                                    #region 年排名
+                                    skey = "學期/分項成績_" + sname + "_年排名";
+                                    if (SemsScoreRankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (SemsScoreRankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["學期" + sname + "成績全校排名"] = SemsScoreRankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (SemsScoreRankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["學期" + sname + "成績全校排名母數"] = SemsScoreRankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+                                        // 五標、組距
+                                        foreach (string item2 in r2List)
+                                        {
+                                            if (SemsScoreRankMatrixDataDict[studentID][skey][item2] != null)
+                                                row["學期" + sname + "成績全校排名_" + item2] = SemsScoreRankMatrixDataDict[studentID][skey][item2].ToString();
+                                        }
+                                    }
+
+                                    skey = "學期/分項成績(原始)_" + sname + "_年排名";
+                                    if (SemsScoreRankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (SemsScoreRankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["學期" + sname + "(原始)成績全校排名"] = SemsScoreRankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (SemsScoreRankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["學期" + sname + "(原始)成績全校排名母數"] = SemsScoreRankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+                                        // 五標、組距
+                                        foreach (string item2 in r2List)
+                                        {
+                                            if (SemsScoreRankMatrixDataDict[studentID][skey][item2] != null)
+                                                row["學期" + sname + "(原始)成績全校排名_" + item2] = SemsScoreRankMatrixDataDict[studentID][skey][item2].ToString();
+                                        }
+                                    }
+                                    #endregion
+
+                                    #region 類1排名
+                                    skey = "學期/分項成績_" + sname + "_類別1排名";
+                                    if (SemsScoreRankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (SemsScoreRankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["學期" + sname + "成績類別1排名"] = SemsScoreRankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (SemsScoreRankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["學期" + sname + "成績類別1排名母數"] = SemsScoreRankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+                                        // 五標、組距
+                                        foreach (string item2 in r2List)
+                                        {
+                                            if (SemsScoreRankMatrixDataDict[studentID][skey][item2] != null)
+                                                row["學期" + sname + "成績類別1排名_" + item2] = SemsScoreRankMatrixDataDict[studentID][skey][item2].ToString();
+                                        }
+
+                                    }
+
+                                    skey = "學期/分項成績(原始)_" + sname + "_類別1排名";
+                                    if (SemsScoreRankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (SemsScoreRankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["學期" + sname + "(原始)成績類別1排名"] = SemsScoreRankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (SemsScoreRankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["學期" + sname + "(原始)成績類別1排名母數"] = SemsScoreRankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+                                        // 五標、組距
+                                        foreach (string item2 in r2List)
+                                        {
+                                            if (SemsScoreRankMatrixDataDict[studentID][skey][item2] != null)
+                                                row["學期" + sname + "(原始)成績類別1排名_" + item2] = SemsScoreRankMatrixDataDict[studentID][skey][item2].ToString();
+                                        }
+                                    }
+                                    #endregion
+
+                                    #region 類2排名
+                                    skey = "學期/分項成績_" + sname + "_類別2排名";
+                                    if (SemsScoreRankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (SemsScoreRankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["學期" + sname + "成績類別2排名"] = SemsScoreRankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (SemsScoreRankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["學期" + sname + "成績類別2排名母數"] = SemsScoreRankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+                                        // 五標、組距
+                                        foreach (string item2 in r2List)
+                                        {
+                                            if (SemsScoreRankMatrixDataDict[studentID][skey][item2] != null)
+                                                row["學期" + sname + "成績類別2排名_" + item2] = SemsScoreRankMatrixDataDict[studentID][skey][item2].ToString();
+                                        }
+
+                                    }
+
+                                    skey = "學期/分項成績(原始)_" + sname + "_類別2排名";
+                                    if (SemsScoreRankMatrixDataDict[studentID].ContainsKey(skey))
+                                    {
+                                        if (SemsScoreRankMatrixDataDict[studentID][skey]["rank"] != null)
+                                            row["學期" + sname + "(原始)成績類別2排名"] = SemsScoreRankMatrixDataDict[studentID][skey]["rank"].ToString();
+
+                                        if (SemsScoreRankMatrixDataDict[studentID][skey]["matrix_count"] != null)
+                                            row["學期" + sname + "(原始)成績類別2排名母數"] = SemsScoreRankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+                                        // 五標、組距
+                                        foreach (string item2 in r2List)
+                                        {
+                                            if (SemsScoreRankMatrixDataDict[studentID][skey][item2] != null)
+                                                row["學期" + sname + "(原始)成績類別2排名_" + item2] = SemsScoreRankMatrixDataDict[studentID][skey][item2].ToString();
+                                        }
+                                    }
+                                    #endregion
+
+                                }
+
+                            }
+                            #endregion
 
                             #endregion
                             #region 學務資料
@@ -2434,10 +2677,13 @@ namespace SH_SemesterScoreReportFixed
                         bkw.ReportProgress(90);
                         document = conf.Template;
                         document.MailMerge.Execute(table);
+                        table.TableName = "test";
+                        table.WriteXml(Application.StartupPath + "\\debug.xml");
                     }
                     catch (Exception exception)
                     {
-                        exc = exception;
+                        //  exc = exception
+                        throw exception;
                     }
                 };
                 bkw.RunWorkerAsync();

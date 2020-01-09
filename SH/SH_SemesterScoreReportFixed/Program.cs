@@ -404,6 +404,7 @@ namespace SH_SemesterScoreReportFixed
                 table.Columns.Add("加權平均全校排名母數");
 
                 table.Columns.Add("類別排名1");
+                table.Columns.Add("學期類別排名1");
                 table.Columns.Add("類別1總分");
                 table.Columns.Add("類別1總分排名");
                 table.Columns.Add("類別1總分排名母數");
@@ -418,6 +419,7 @@ namespace SH_SemesterScoreReportFixed
                 table.Columns.Add("類別1加權平均排名母數");
 
                 table.Columns.Add("類別排名2");
+                table.Columns.Add("學期類別排名2");
                 table.Columns.Add("類別2總分");
                 table.Columns.Add("類別2總分排名");
                 table.Columns.Add("類別2總分排名母數");
@@ -561,13 +563,13 @@ namespace SH_SemesterScoreReportFixed
                 Exception exc = null;
                 bkw.RunWorkerCompleted += delegate
                 {
-                    #region 將 DataTable 內合併欄位產生出來
-                    StreamWriter sw = new StreamWriter(Application.StartupPath + "\\期末學期成績單合併欄位.txt");
-                    foreach (DataColumn dc in table.Columns)
-                        sw.WriteLine(dc.Caption);
+                    //#region 將 DataTable 內合併欄位產生出來
+                    //StreamWriter sw = new StreamWriter(Application.StartupPath + "\\期末學期成績單合併欄位.txt");
+                    //foreach (DataColumn dc in table.Columns)
+                    //    sw.WriteLine(dc.Caption);
 
-                    sw.Close();
-                    #endregion
+                    //sw.Close();
+                    //#endregion
 
 
                     System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 期末成績單產生 E");
@@ -2724,9 +2726,9 @@ namespace SH_SemesterScoreReportFixed
                                 {
                                     if (RankMatrixDataDict[studentID].ContainsKey(skey))
                                     {
-                                        if (SemsScoreRankMatrixDataDict[studentID][skey]["rank_name"] != null)
+                                        if (RankMatrixDataDict[studentID][skey]["rank_name"] != null)
                                         {
-                                            row["類別排名1"] = SemsScoreRankMatrixDataDict[studentID][skey]["rank_name"].ToString();
+                                            row["類別排名1"] = RankMatrixDataDict[studentID][skey]["rank_name"].ToString();
                                         }
 
                                         if (RankMatrixDataDict[studentID][skey]["rank"] != null)
@@ -2859,9 +2861,9 @@ namespace SH_SemesterScoreReportFixed
                                 if (RankMatrixDataDict[studentID].ContainsKey(skey))
                                 {
 
-                                    if (SemsScoreRankMatrixDataDict[studentID][skey]["rank_name"] != null)
+                                    if (RankMatrixDataDict[studentID][skey]["rank_name"] != null)
                                     {
-                                        row["類別排名2"] = SemsScoreRankMatrixDataDict[studentID][skey]["rank_name"].ToString();
+                                        row["類別排名2"] = RankMatrixDataDict[studentID][skey]["rank_name"].ToString();
                                     }
 
                                     if (RankMatrixDataDict[studentID][skey]["rank"] != null)
@@ -3164,7 +3166,7 @@ namespace SH_SemesterScoreReportFixed
                                             {
                                                 if (SemsScoreRankMatrixDataDict[studentID][skey]["rank_name"] != null)
                                                 {
-                                                    row["類別排名2"] = SemsScoreRankMatrixDataDict[studentID][skey]["rank_name"].ToString();
+                                                    row["學期類別排名2"] = SemsScoreRankMatrixDataDict[studentID][skey]["rank_name"].ToString();
                                                 }
                                             }
 
@@ -3325,8 +3327,8 @@ namespace SH_SemesterScoreReportFixed
                             bkw.ReportProgress(90);
                             document = conf.Template;
                             document.MailMerge.Execute(table);
-                            table.TableName = "test";
-                            table.WriteXml(Application.StartupPath + "\\debug.xml");
+                            //table.TableName = "test";
+                            //table.WriteXml(Application.StartupPath + "\\debug.xml");
                         }
                     }
                     catch (Exception exception)

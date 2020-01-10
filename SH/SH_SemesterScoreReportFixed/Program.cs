@@ -3324,12 +3324,14 @@ namespace SH_SemesterScoreReportFixed
                             progressCount++;
                             bkw.ReportProgress(70 + progressCount * 20 / selectedStudents.Count);
 
-                            bkw.ReportProgress(90);
-                            document = conf.Template;
-                            document.MailMerge.Execute(table);
+                          
                             //table.TableName = "test";
                             //table.WriteXml(Application.StartupPath + "\\debug.xml");
                         }
+                        bkw.ReportProgress(90);
+                        document = conf.Template;
+                        document.MailMerge.Execute(table);
+
                     }
                     catch (Exception exception)
                     {

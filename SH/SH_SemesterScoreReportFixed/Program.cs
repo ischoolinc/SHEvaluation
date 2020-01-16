@@ -258,6 +258,8 @@ namespace SH_SemesterScoreReportFixed
                 for (int subjectIndex = 1; subjectIndex <= conf.SubjectLimit; subjectIndex++)
                 {
                     table.Columns.Add("科目名稱" + subjectIndex);
+                    table.Columns.Add("科目" + subjectIndex);
+                    table.Columns.Add("科目級別" + subjectIndex);
                     table.Columns.Add("學分數" + subjectIndex);
                     table.Columns.Add("前次成績" + subjectIndex);
                     table.Columns.Add("科目成績" + subjectIndex);
@@ -1488,6 +1490,8 @@ namespace SH_SemesterScoreReportFixed
                                             decimal level;
                                             subjectNumber = decimal.TryParse(semesterSubjectScore.Level, out level) ? (decimal?)level : null;
                                             row["科目名稱" + subjectIndex] = semesterSubjectScore.Subject + GetNumber(subjectNumber);
+                                            row["科目" + subjectIndex] = semesterSubjectScore.Subject;
+                                            row["科目級別" + subjectIndex] = GetNumber(subjectNumber);
                                             row["學分數" + subjectIndex] = semesterSubjectScore.CreditDec();
                                             row["科目必選修" + subjectIndex] = semesterSubjectScore.Require ? "必修" : "選修";
                                             row["科目校部定" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("修課校部訂");
@@ -1904,6 +1908,9 @@ namespace SH_SemesterScoreReportFixed
                                                             decimal level;
                                                             subjectNumber = decimal.TryParse(sceTakeRecord.SubjectLevel, out level) ? (decimal?)level : null;
                                                             row["科目名稱" + subjectIndex] = sceTakeRecord.Subject + GetNumber(subjectNumber);
+                                                            row["科目" + subjectIndex] = sceTakeRecord.Subject;
+                                                            row["科目級別" + subjectIndex] = GetNumber(subjectNumber);
+
                                                             row["學分數" + subjectIndex] = sceTakeRecord.CreditDec();
                                                         }
                                                         row["科目成績" + subjectIndex] = sceTakeRecord.SpecialCase == "" ? ("" + sceTakeRecord.ExamScore) : sceTakeRecord.SpecialCase;
@@ -2102,6 +2109,8 @@ namespace SH_SemesterScoreReportFixed
                                                                 decimal level;
                                                                 subjectNumber = decimal.TryParse(courseRec.SubjectLevel, out level) ? (decimal?)level : null;
                                                                 row["科目名稱" + subjectIndex] = courseRec.Subject + GetNumber(subjectNumber);
+                                                                row["科目" + subjectIndex] = courseRec.Subject;
+                                                                row["科目級別" + subjectIndex] = GetNumber(subjectNumber);
                                                                 row["學分數" + subjectIndex] = courseRec.CreditDec();
                                                             }
                                                             row["科目成績" + subjectIndex] = "未輸入";
@@ -2138,6 +2147,8 @@ namespace SH_SemesterScoreReportFixed
                                                     decimal level;
                                                     subjectNumber = decimal.TryParse(semesterSubjectScore.Level, out level) ? (decimal?)level : null;
                                                     row["科目名稱" + subjectIndex] = semesterSubjectScore.Subject + GetNumber(subjectNumber);
+                                                    row["科目" + subjectIndex] = semesterSubjectScore.Subject;
+                                                    row["科目級別" + subjectIndex] = GetNumber(subjectNumber);
                                                     row["學分數" + subjectIndex] = semesterSubjectScore.CreditDec();
                                                     row["科目必選修" + subjectIndex] = semesterSubjectScore.Require ? "必修" : "選修";
                                                     row["科目校部定" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("修課校部訂");
@@ -3324,7 +3335,7 @@ namespace SH_SemesterScoreReportFixed
                             progressCount++;
                             bkw.ReportProgress(70 + progressCount * 20 / selectedStudents.Count);
 
-                          
+
                             //table.TableName = "test";
                             //table.WriteXml(Application.StartupPath + "\\debug.xml");
                         }

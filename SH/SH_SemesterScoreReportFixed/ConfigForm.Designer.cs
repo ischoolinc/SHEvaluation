@@ -379,7 +379,7 @@
             this.gp1.StyleMouseOver.Class = "";
             this.gp1.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.gp1.TabIndex = 58;
-            this.gp1.Text = "成績標示";
+            this.gp1.Text = "成績未取得學分狀態標示設定";
             // 
             // txtFailScoreMark
             // 
@@ -388,9 +388,9 @@
             // 
             this.txtFailScoreMark.Border.Class = "TextBoxBorder";
             this.txtFailScoreMark.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.txtFailScoreMark.Location = new System.Drawing.Point(465, 10);
+            this.txtFailScoreMark.Location = new System.Drawing.Point(512, 10);
             this.txtFailScoreMark.Name = "txtFailScoreMark";
-            this.txtFailScoreMark.Size = new System.Drawing.Size(100, 25);
+            this.txtFailScoreMark.Size = new System.Drawing.Size(50, 25);
             this.txtFailScoreMark.TabIndex = 2;
             // 
             // txtReScoreMark
@@ -400,9 +400,9 @@
             // 
             this.txtReScoreMark.Border.Class = "TextBoxBorder";
             this.txtReScoreMark.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.txtReScoreMark.Location = new System.Drawing.Point(277, 10);
+            this.txtReScoreMark.Location = new System.Drawing.Point(299, 10);
             this.txtReScoreMark.Name = "txtReScoreMark";
-            this.txtReScoreMark.Size = new System.Drawing.Size(100, 25);
+            this.txtReScoreMark.Size = new System.Drawing.Size(50, 25);
             this.txtReScoreMark.TabIndex = 1;
             // 
             // txtNeedReScoreMark
@@ -412,9 +412,9 @@
             // 
             this.txtNeedReScoreMark.Border.Class = "TextBoxBorder";
             this.txtNeedReScoreMark.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.txtNeedReScoreMark.Location = new System.Drawing.Point(88, 10);
+            this.txtNeedReScoreMark.Location = new System.Drawing.Point(138, 10);
             this.txtNeedReScoreMark.Name = "txtNeedReScoreMark";
-            this.txtNeedReScoreMark.Size = new System.Drawing.Size(100, 25);
+            this.txtNeedReScoreMark.Size = new System.Drawing.Size(50, 25);
             this.txtNeedReScoreMark.TabIndex = 0;
             // 
             // labelX5
@@ -428,9 +428,9 @@
             this.labelX5.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX5.Location = new System.Drawing.Point(412, 12);
             this.labelX5.Name = "labelX5";
-            this.labelX5.Size = new System.Drawing.Size(47, 21);
+            this.labelX5.Size = new System.Drawing.Size(101, 21);
             this.labelX5.TabIndex = 44;
-            this.labelX5.Text = "不及格";
+            this.labelX5.Text = "不及格成績加註";
             // 
             // labelX3
             // 
@@ -443,9 +443,9 @@
             this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX3.Location = new System.Drawing.Point(211, 12);
             this.labelX3.Name = "labelX3";
-            this.labelX3.Size = new System.Drawing.Size(60, 21);
+            this.labelX3.Size = new System.Drawing.Size(87, 21);
             this.labelX3.TabIndex = 43;
-            this.labelX3.Text = "補考成績";
+            this.labelX3.Text = "補考成績加註";
             // 
             // labelX1
             // 
@@ -458,9 +458,9 @@
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX1.Location = new System.Drawing.Point(35, 12);
             this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(47, 21);
+            this.labelX1.Size = new System.Drawing.Size(101, 21);
             this.labelX1.TabIndex = 42;
-            this.labelX1.Text = "需補考";
+            this.labelX1.Text = "需補考成績加註";
             // 
             // ConfigForm
             // 

@@ -1569,7 +1569,7 @@ namespace SH_SemesterScoreReportFixed
 
                                                                 if (decimal.TryParse(SemsScoreRankMatrixDataDict[studentID][ssKey][item2].ToString(), out dd))
                                                                 {
-                                                                    row["學期科目班排名" + subjectIndex + "_" + item2] = Math.Round(dd, r2ParseN);
+                                                                    row["學期科目班排名" + subjectIndex + "_" + item2] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                                 }
                                                             }
                                                             else
@@ -1601,7 +1601,7 @@ namespace SH_SemesterScoreReportFixed
 
                                                                 if (decimal.TryParse(SemsScoreRankMatrixDataDict[studentID][ssKey][item2].ToString(), out dd))
                                                                 {
-                                                                    row["學期科目(原始)班排名" + subjectIndex + "_" + item2] = Math.Round(dd, r2ParseN);
+                                                                    row["學期科目(原始)班排名" + subjectIndex + "_" + item2] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                                 }
                                                             }
                                                             else
@@ -1634,7 +1634,7 @@ namespace SH_SemesterScoreReportFixed
 
                                                                 if (decimal.TryParse(SemsScoreRankMatrixDataDict[studentID][ssKey][item2].ToString(), out dd))
                                                                 {
-                                                                    row["學期科目科排名" + subjectIndex + "_" + item2] = Math.Round(dd, r2ParseN);
+                                                                    row["學期科目科排名" + subjectIndex + "_" + item2] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                                 }
                                                             }
                                                             else
@@ -1665,7 +1665,7 @@ namespace SH_SemesterScoreReportFixed
 
                                                                 if (decimal.TryParse(SemsScoreRankMatrixDataDict[studentID][ssKey][item2].ToString(), out dd))
                                                                 {
-                                                                    row["學期科目(原始)科排名" + subjectIndex + "_" + item2] = Math.Round(dd, r2ParseN);
+                                                                    row["學期科目(原始)科排名" + subjectIndex + "_" + item2] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                                 }
                                                             }
                                                             else
@@ -1698,7 +1698,7 @@ namespace SH_SemesterScoreReportFixed
 
                                                                 if (decimal.TryParse(SemsScoreRankMatrixDataDict[studentID][ssKey][item2].ToString(), out dd))
                                                                 {
-                                                                    row["學期科目全校排名" + subjectIndex + "_" + item2] = Math.Round(dd, r2ParseN);
+                                                                    row["學期科目全校排名" + subjectIndex + "_" + item2] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                                 }
                                                             }
                                                             else
@@ -1729,7 +1729,7 @@ namespace SH_SemesterScoreReportFixed
 
                                                                 if (decimal.TryParse(SemsScoreRankMatrixDataDict[studentID][ssKey][item2].ToString(), out dd))
                                                                 {
-                                                                    row["學期科目(原始)全校排名" + subjectIndex + "_" + item2] = Math.Round(dd, r2ParseN);
+                                                                    row["學期科目(原始)全校排名" + subjectIndex + "_" + item2] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                                 }
                                                             }
                                                             else
@@ -1762,7 +1762,7 @@ namespace SH_SemesterScoreReportFixed
 
                                                                 if (decimal.TryParse(SemsScoreRankMatrixDataDict[studentID][ssKey][item2].ToString(), out dd))
                                                                 {
-                                                                    row["學期科目類別1排名" + subjectIndex + "_" + item2] = Math.Round(dd, r2ParseN);
+                                                                    row["學期科目類別1排名" + subjectIndex + "_" + item2] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                                 }
                                                             }
                                                             else
@@ -1794,7 +1794,7 @@ namespace SH_SemesterScoreReportFixed
 
                                                                 if (decimal.TryParse(SemsScoreRankMatrixDataDict[studentID][ssKey][item2].ToString(), out dd))
                                                                 {
-                                                                    row["學期科目(原始)類別1排名" + subjectIndex + "_" + item2] = Math.Round(dd, r2ParseN);
+                                                                    row["學期科目(原始)類別1排名" + subjectIndex + "_" + item2] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                                 }
                                                             }
                                                             else
@@ -1827,7 +1827,7 @@ namespace SH_SemesterScoreReportFixed
 
                                                                 if (decimal.TryParse(SemsScoreRankMatrixDataDict[studentID][ssKey][item2].ToString(), out dd))
                                                                 {
-                                                                    row["學期科目類別2排名" + subjectIndex + "_" + item2] = Math.Round(dd, r2ParseN);
+                                                                    row["學期科目類別2排名" + subjectIndex + "_" + item2] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                                 }
                                                             }
                                                             else
@@ -1858,7 +1858,7 @@ namespace SH_SemesterScoreReportFixed
 
                                                                 if (decimal.TryParse(SemsScoreRankMatrixDataDict[studentID][ssKey][item2].ToString(), out dd))
                                                                 {
-                                                                    row["學期科目(原始)類別2排名" + subjectIndex + "_" + item2] = Math.Round(dd, r2ParseN);
+                                                                    row["學期科目(原始)類別2排名" + subjectIndex + "_" + item2] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                                 }
                                                             }
                                                             else
@@ -1933,7 +1933,7 @@ namespace SH_SemesterScoreReportFixed
                                                                             decimal dd;
                                                                             if (decimal.TryParse(RankMatrixDataDict[studentID][k1][rItem].ToString(), out dd))
                                                                             {
-                                                                                row["班排名" + subjectIndex + "_" + rItem] = Math.Round(dd, r2ParseN);
+                                                                                row["班排名" + subjectIndex + "_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                                             }
                                                                         }
                                                                         else
@@ -1968,7 +1968,7 @@ namespace SH_SemesterScoreReportFixed
                                                                             decimal dd;
                                                                             if (decimal.TryParse(RankMatrixDataDict[studentID][k1][rItem].ToString(), out dd))
                                                                             {
-                                                                                row["科排名" + subjectIndex + "_" + rItem] = Math.Round(dd, r2ParseN);
+                                                                                row["科排名" + subjectIndex + "_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                                             }
                                                                         }
                                                                         else
@@ -2002,7 +2002,7 @@ namespace SH_SemesterScoreReportFixed
                                                                             decimal dd;
                                                                             if (decimal.TryParse(RankMatrixDataDict[studentID][k1][rItem].ToString(), out dd))
                                                                             {
-                                                                                row["全校排名" + subjectIndex + "_" + rItem] = Math.Round(dd, r2ParseN);
+                                                                                row["全校排名" + subjectIndex + "_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                                             }
                                                                         }
                                                                         else
@@ -2036,7 +2036,7 @@ namespace SH_SemesterScoreReportFixed
                                                                             decimal dd;
                                                                             if (decimal.TryParse(RankMatrixDataDict[studentID][k1][rItem].ToString(), out dd))
                                                                             {
-                                                                                row["類別1排名" + subjectIndex + "_" + rItem] = Math.Round(dd, r2ParseN);
+                                                                                row["類別1排名" + subjectIndex + "_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                                             }
                                                                         }
                                                                         else
@@ -2070,7 +2070,7 @@ namespace SH_SemesterScoreReportFixed
                                                                             decimal dd;
                                                                             if (decimal.TryParse(RankMatrixDataDict[studentID][k1][rItem].ToString(), out dd))
                                                                             {
-                                                                                row["類別2排名" + subjectIndex + "_" + rItem] = Math.Round(dd, r2ParseN);
+                                                                                row["類別2排名" + subjectIndex + "_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                                             }
                                                                         }
                                                                         else
@@ -2252,7 +2252,7 @@ namespace SH_SemesterScoreReportFixed
                                                     decimal dd;
                                                     if (decimal.TryParse(RankMatrixDataDict[studentID][skey][rItem].ToString(), out dd))
                                                     {
-                                                        row["總分班排名_" + rItem] = Math.Round(dd, r2ParseN);
+                                                        row["總分班排名_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                     }
                                                 }
                                                 else
@@ -2282,7 +2282,7 @@ namespace SH_SemesterScoreReportFixed
                                                     decimal dd;
                                                     if (decimal.TryParse(RankMatrixDataDict[studentID][skey][rItem].ToString(), out dd))
                                                     {
-                                                        row["總分科排名_" + rItem] = Math.Round(dd, r2ParseN);
+                                                        row["總分科排名_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                     }
                                                 }
                                                 else
@@ -2312,7 +2312,7 @@ namespace SH_SemesterScoreReportFixed
                                                     decimal dd;
                                                     if (decimal.TryParse(RankMatrixDataDict[studentID][skey][rItem].ToString(), out dd))
                                                     {
-                                                        row["總分全校排名_" + rItem] = Math.Round(dd, r2ParseN);
+                                                        row["總分全校排名_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                     }
                                                 }
                                                 else
@@ -2350,7 +2350,7 @@ namespace SH_SemesterScoreReportFixed
                                                     decimal dd;
                                                     if (decimal.TryParse(RankMatrixDataDict[studentID][skey][rItem].ToString(), out dd))
                                                     {
-                                                        row["平均班排名_" + rItem] = Math.Round(dd, r2ParseN);
+                                                        row["平均班排名_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                     }
                                                 }
                                                 else
@@ -2381,7 +2381,7 @@ namespace SH_SemesterScoreReportFixed
                                                     decimal dd;
                                                     if (decimal.TryParse(RankMatrixDataDict[studentID][skey][rItem].ToString(), out dd))
                                                     {
-                                                        row["平均科排名_" + rItem] = Math.Round(dd, r2ParseN);
+                                                        row["平均科排名_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                     }
                                                 }
                                                 else
@@ -2411,7 +2411,7 @@ namespace SH_SemesterScoreReportFixed
                                                     decimal dd;
                                                     if (decimal.TryParse(RankMatrixDataDict[studentID][skey][rItem].ToString(), out dd))
                                                     {
-                                                        row["平均全校排名_" + rItem] = Math.Round(dd, r2ParseN);
+                                                        row["平均全校排名_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                     }
                                                 }
                                                 else
@@ -2451,7 +2451,7 @@ namespace SH_SemesterScoreReportFixed
                                                     decimal dd;
                                                     if (decimal.TryParse(RankMatrixDataDict[studentID][skey][rItem].ToString(), out dd))
                                                     {
-                                                        row["加權總分班排名_" + rItem] = Math.Round(dd, r2ParseN);
+                                                        row["加權總分班排名_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                     }
                                                 }
                                                 else
@@ -2481,7 +2481,7 @@ namespace SH_SemesterScoreReportFixed
                                                     decimal dd;
                                                     if (decimal.TryParse(RankMatrixDataDict[studentID][skey][rItem].ToString(), out dd))
                                                     {
-                                                        row["加權總分科排名_" + rItem] = Math.Round(dd, r2ParseN);
+                                                        row["加權總分科排名_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                     }
                                                 }
                                                 else
@@ -2511,7 +2511,7 @@ namespace SH_SemesterScoreReportFixed
                                                     decimal dd;
                                                     if (decimal.TryParse(RankMatrixDataDict[studentID][skey][rItem].ToString(), out dd))
                                                     {
-                                                        row["加權總分全校排名_" + rItem] = Math.Round(dd, r2ParseN);
+                                                        row["加權總分全校排名_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                     }
                                                 }
                                                 else
@@ -2551,7 +2551,7 @@ namespace SH_SemesterScoreReportFixed
                                                     decimal dd;
                                                     if (decimal.TryParse(RankMatrixDataDict[studentID][skey][rItem].ToString(), out dd))
                                                     {
-                                                        row["加權平均班排名_" + rItem] = Math.Round(dd, r2ParseN);
+                                                        row["加權平均班排名_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                     }
                                                 }
                                                 else
@@ -2581,7 +2581,7 @@ namespace SH_SemesterScoreReportFixed
                                                     decimal dd;
                                                     if (decimal.TryParse(RankMatrixDataDict[studentID][skey][rItem].ToString(), out dd))
                                                     {
-                                                        row["加權平均科排名_" + rItem] = Math.Round(dd, r2ParseN);
+                                                        row["加權平均科排名_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                     }
                                                 }
                                                 else
@@ -2611,7 +2611,7 @@ namespace SH_SemesterScoreReportFixed
                                                     decimal dd;
                                                     if (decimal.TryParse(RankMatrixDataDict[studentID][skey][rItem].ToString(), out dd))
                                                     {
-                                                        row["加權平均全校排名_" + rItem] = Math.Round(dd, r2ParseN);
+                                                        row["加權平均全校排名_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                     }
                                                 }
                                                 else
@@ -2649,7 +2649,7 @@ namespace SH_SemesterScoreReportFixed
                                                 decimal dd;
                                                 if (decimal.TryParse(RankMatrixDataDict[studentID][skey][rItem].ToString(), out dd))
                                                 {
-                                                    row["類別1總分排名_" + rItem] = Math.Round(dd, r2ParseN);
+                                                    row["類別1總分排名_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                 }
                                             }
                                             else
@@ -2680,7 +2680,7 @@ namespace SH_SemesterScoreReportFixed
                                                 decimal dd;
                                                 if (decimal.TryParse(RankMatrixDataDict[studentID][skey][rItem].ToString(), out dd))
                                                 {
-                                                    row["類別1平均排名_" + rItem] = Math.Round(dd, r2ParseN);
+                                                    row["類別1平均排名_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                 }
                                             }
                                             else
@@ -2710,7 +2710,7 @@ namespace SH_SemesterScoreReportFixed
                                                 decimal dd;
                                                 if (decimal.TryParse(RankMatrixDataDict[studentID][skey][rItem].ToString(), out dd))
                                                 {
-                                                    row["類別1加權總分排名_" + rItem] = Math.Round(dd, r2ParseN);
+                                                    row["類別1加權總分排名_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                 }
                                             }
                                             else
@@ -2747,7 +2747,7 @@ namespace SH_SemesterScoreReportFixed
                                                     decimal dd;
                                                     if (decimal.TryParse(RankMatrixDataDict[studentID][skey][rItem].ToString(), out dd))
                                                     {
-                                                        row["類別1加權平均排名_" + rItem] = Math.Round(dd, r2ParseN);
+                                                        row["類別1加權平均排名_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                     }
                                                 }
                                                 else
@@ -2786,7 +2786,7 @@ namespace SH_SemesterScoreReportFixed
                                                 decimal dd;
                                                 if (decimal.TryParse(RankMatrixDataDict[studentID][skey][rItem].ToString(), out dd))
                                                 {
-                                                    row["類別2總分排名_" + rItem] = Math.Round(dd, r2ParseN);
+                                                    row["類別2總分排名_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                 }
                                             }
                                             else
@@ -2816,7 +2816,7 @@ namespace SH_SemesterScoreReportFixed
                                                 decimal dd;
                                                 if (decimal.TryParse(RankMatrixDataDict[studentID][skey][rItem].ToString(), out dd))
                                                 {
-                                                    row["類別2平均排名_" + rItem] = Math.Round(dd, r2ParseN);
+                                                    row["類別2平均排名_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                 }
                                             }
                                             else
@@ -2846,7 +2846,7 @@ namespace SH_SemesterScoreReportFixed
                                                 decimal dd;
                                                 if (decimal.TryParse(RankMatrixDataDict[studentID][skey][rItem].ToString(), out dd))
                                                 {
-                                                    row["類別2加權總分排名_" + rItem] = Math.Round(dd, r2ParseN);
+                                                    row["類別2加權總分排名_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                 }
                                             }
                                             else
@@ -2882,7 +2882,7 @@ namespace SH_SemesterScoreReportFixed
                                                 decimal dd;
                                                 if (decimal.TryParse(RankMatrixDataDict[studentID][skey][rItem].ToString(), out dd))
                                                 {
-                                                    row["類別2加權平均排名_" + rItem] = Math.Round(dd, r2ParseN);
+                                                    row["類別2加權平均排名_" + rItem] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                 }
                                             }
                                             else
@@ -2930,7 +2930,7 @@ namespace SH_SemesterScoreReportFixed
                                                     if (decimal.TryParse(SemsScoreRankMatrixDataDict[studentID][skey][item2].ToString(), out dd))
                                                     {
 
-                                                        row["學期" + sname + "成績班排名_" + item2] = Math.Round(dd, r2ParseN);
+                                                        row["學期" + sname + "成績班排名_" + item2] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                     }
                                                     else
                                                     {
@@ -2960,7 +2960,7 @@ namespace SH_SemesterScoreReportFixed
                                                         if (decimal.TryParse(SemsScoreRankMatrixDataDict[studentID][skey][item2].ToString(), out dd))
                                                         {
 
-                                                            row["學期" + sname + "(原始)成績班排名_" + item2] = Math.Round(dd, r2ParseN);
+                                                            row["學期" + sname + "(原始)成績班排名_" + item2] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                         }
                                                         else
                                                         {
@@ -3012,7 +3012,7 @@ namespace SH_SemesterScoreReportFixed
                                                         if (decimal.TryParse(SemsScoreRankMatrixDataDict[studentID][skey][item2].ToString(), out dd))
                                                         {
 
-                                                            row["學期" + sname + "(原始)成績科排名_" + item2] = Math.Round(dd, r2ParseN);
+                                                            row["學期" + sname + "(原始)成績科排名_" + item2] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                         }
                                                         else
                                                         {
@@ -3044,7 +3044,7 @@ namespace SH_SemesterScoreReportFixed
                                                         if (decimal.TryParse(SemsScoreRankMatrixDataDict[studentID][skey][item2].ToString(), out dd))
                                                         {
 
-                                                            row["學期" + sname + "成績全校排名_" + item2] = Math.Round(dd, r2ParseN);
+                                                            row["學期" + sname + "成績全校排名_" + item2] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                         }
                                                         else
                                                         {
@@ -3074,7 +3074,7 @@ namespace SH_SemesterScoreReportFixed
                                                         if (decimal.TryParse(SemsScoreRankMatrixDataDict[studentID][skey][item2].ToString(), out dd))
                                                         {
 
-                                                            row["學期" + sname + "(原始)成績全校排名_" + item2] = Math.Round(dd, r2ParseN);
+                                                            row["學期" + sname + "(原始)成績全校排名_" + item2] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                         }
                                                         else
                                                         {
@@ -3094,7 +3094,7 @@ namespace SH_SemesterScoreReportFixed
                                             {
                                                 if (SemsScoreRankMatrixDataDict[studentID][skey]["rank_name"] != null)
                                                 {
-                                                    row["類別排名1"] = SemsScoreRankMatrixDataDict[studentID][skey]["rank_name"].ToString();
+                                                    row["學期類別排名1"] = SemsScoreRankMatrixDataDict[studentID][skey]["rank_name"].ToString();
                                                 }
                                             }
 
@@ -3115,7 +3115,7 @@ namespace SH_SemesterScoreReportFixed
                                                         if (decimal.TryParse(SemsScoreRankMatrixDataDict[studentID][skey][item2].ToString(), out dd))
                                                         {
 
-                                                            row["學期" + sname + "成績類別1排名_" + item2] = Math.Round(dd, r2ParseN);
+                                                            row["學期" + sname + "成績類別1排名_" + item2] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                         }
                                                         else
                                                         {
@@ -3146,7 +3146,7 @@ namespace SH_SemesterScoreReportFixed
                                                         if (decimal.TryParse(SemsScoreRankMatrixDataDict[studentID][skey][item2].ToString(), out dd))
                                                         {
 
-                                                            row["學期" + sname + "(原始)成績類別1排名_" + item2] = Math.Round(dd, r2ParseN);
+                                                            row["學期" + sname + "(原始)成績類別1排名_" + item2] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                         }
                                                         else
                                                         {
@@ -3186,7 +3186,7 @@ namespace SH_SemesterScoreReportFixed
                                                         if (decimal.TryParse(SemsScoreRankMatrixDataDict[studentID][skey][item2].ToString(), out dd))
                                                         {
 
-                                                            row["學期" + sname + "成績類別2排名_" + item2] = Math.Round(dd, r2ParseN);
+                                                            row["學期" + sname + "成績類別2排名_" + item2] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                         }
                                                         else
                                                         {
@@ -3217,7 +3217,7 @@ namespace SH_SemesterScoreReportFixed
                                                         if (decimal.TryParse(SemsScoreRankMatrixDataDict[studentID][skey][item2].ToString(), out dd))
                                                         {
 
-                                                            row["學期" + sname + "(原始)成績類別2排名_" + item2] = Math.Round(dd, r2ParseN);
+                                                            row["學期" + sname + "(原始)成績類別2排名_" + item2] = Math.Round(dd, r2ParseN,MidpointRounding.AwayFromZero);
                                                         }
                                                         else
                                                         {

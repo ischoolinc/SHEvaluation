@@ -1322,7 +1322,7 @@ namespace ClassSemesterScoreReportFixed_SH
                 builder.InsertField("MERGEFIELD 姓名" + stuIndex + " \\* MERGEFORMAT ", "«姓名" + stuIndex + "»");
 
                 builder.InsertCell();
-                builder.InsertField("MERGEFIELD 加權平均" + stuIndex + " \\* MERGEFORMAT ", "«平均»");
+                builder.InsertField("MERGEFIELD 加權平均(原始)" + stuIndex + " \\* MERGEFORMAT ", "«平均»");
                 builder.InsertCell();
                 builder.InsertField("MERGEFIELD 加權平均班排名(原始)" + stuIndex + " \\* MERGEFORMAT ", "«RA»");
                 builder.InsertField("MERGEFIELD 加權平均班排名(原始)母數" + stuIndex + " \\b /  \\* MERGEFORMAT ", "/«TA»");

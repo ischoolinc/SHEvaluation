@@ -36,6 +36,11 @@ namespace ClassSemesterScoreReportFixed_SH
 
         #endregion
 
+        /// <summary>
+        /// 學生各項學期成績
+        /// </summary>
+        public static Dictionary<string, Dictionary<string, decimal>> _TempStudentSemesScoreDict = new Dictionary<string, Dictionary<string, decimal>>();
+
 
         /// <summary>
         /// 班排名

@@ -1106,7 +1106,6 @@
             this.colPassingStandard.HeaderText = "修課及格標準";
             this.colPassingStandard.MinimumWidth = 55;
             this.colPassingStandard.Name = "colPassingStandard";
-            this.colPassingStandard.ReadOnly = true;
             this.colPassingStandard.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.colPassingStandard.Width = 55;
             // 
@@ -1115,7 +1114,6 @@
             this.colMakeupStandard.HeaderText = "修課補考標準";
             this.colMakeupStandard.MinimumWidth = 55;
             this.colMakeupStandard.Name = "colMakeupStandard";
-            this.colMakeupStandard.ReadOnly = true;
             this.colMakeupStandard.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.colMakeupStandard.Width = 55;
             // 
@@ -1124,7 +1122,6 @@
             this.colDesignateFinalScore.HeaderText = "修課直接指定總成績";
             this.colDesignateFinalScore.MinimumWidth = 75;
             this.colDesignateFinalScore.Name = "colDesignateFinalScore";
-            this.colDesignateFinalScore.ReadOnly = true;
             this.colDesignateFinalScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.colDesignateFinalScore.Width = 75;
             // 
@@ -1133,7 +1130,6 @@
             this.colRemark.HeaderText = "修課備註";
             this.colRemark.MinimumWidth = 55;
             this.colRemark.Name = "colRemark";
-            this.colRemark.ReadOnly = true;
             this.colRemark.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.colRemark.Width = 55;
             // 
@@ -1142,7 +1138,6 @@
             this.colSubjectCode.HeaderText = "修課科目代碼";
             this.colSubjectCode.MinimumWidth = 55;
             this.colSubjectCode.Name = "colSubjectCode";
-            this.colSubjectCode.ReadOnly = true;
             this.colSubjectCode.Width = 55;
             // 
             // SemesterScoreEditor

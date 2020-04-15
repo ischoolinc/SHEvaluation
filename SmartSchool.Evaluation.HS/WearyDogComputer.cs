@@ -187,13 +187,13 @@ namespace SmartSchool.Evaluation
                     studentHasFinalScoreDict.Add(student_id, new Dictionary<string, decimal>());
 
                 decimal passScore;
-                
+
 
                 if (!studentPassScoreDict[student_id].ContainsKey(key))
-                {                  
-                      studentPassScoreDict[student_id].Add(key, -1);
+                {
+                    studentPassScoreDict[student_id].Add(key, -1);
                 }
-                   
+
 
                 if (dr["passing_standard"] != null)
                 {
@@ -209,7 +209,7 @@ namespace SmartSchool.Evaluation
                     if (decimal.TryParse(dr["designate_final_score"].ToString(), out finalScore))
                     {
                         if (!studentHasFinalScoreDict[student_id].ContainsKey(key))
-                            studentHasFinalScoreDict[student_id].Add(key, finalScore);                       
+                            studentHasFinalScoreDict[student_id].Add(key, finalScore);
                     }
                 }
 
@@ -323,7 +323,7 @@ namespace SmartSchool.Evaluation
                                 if (!_ErrorList.ContainsKey(var))
                                     _ErrorList.Add(var, new List<string>());
 
-                                _ErrorList[var].Add("沒有" + course_name +"的修課及格標準，無法計算。");
+                                _ErrorList[var].Add("沒有" + course_name + "的修課及格標準，無法計算。");
 
                                 hasError = true;
                             }
@@ -527,7 +527,7 @@ namespace SmartSchool.Evaluation
                                 _ErrorList[var].Add("" + sacRecord.CourseName + "沒有修課總成績，無法計算。");
                                 continue;
                             }
-                        }                        
+                        }
 
                         if (duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(var.StudentID + "_" + key) ? duplicateSubjectLevelMethodDict_Afterfilter[var.StudentID + "_" + key] == "" : false) // 如果使用者 沒有設定，要擋下，逼他們設定完畢才可以計算完畢
                         {
@@ -573,62 +573,67 @@ namespace SmartSchool.Evaluation
                                 }
                             }
                             #endregion
-                            if (!updateSemesterSubjectScoreList.ContainsKey(sy) || !updateSemesterSubjectScoreList[sy].ContainsKey(se) || !updateSemesterSubjectScoreList[sy][se].ContainsKey(key))
-                            {
-                                //寫入重修紀錄
-                                XmlElement updateScoreElement = updateScoreInfo.Detail;
-                                updateScoreElement.SetAttribute("重修成績", "" + GetRoundScore(sacRecord.FinalScore, decimals, mode));
-                                //做取得學分判斷
-                                #region 做取得學分判斷
-                                //最高分
-                                decimal maxScore = sacRecord.FinalScore;
-                                #region 抓最高分
 
-                                string[] scoreNames = new string[] { "原始成績", "學年調整成績", "擇優採計成績", "補考成績", "重修成績" };
-                                
-                                foreach (string scorename in scoreNames)
+                            if (updateScoreInfo != null)
+                            {
+                                if (!updateSemesterSubjectScoreList.ContainsKey(sy) || !updateSemesterSubjectScoreList[sy].ContainsKey(se) || !updateSemesterSubjectScoreList[sy][se].ContainsKey(key))
                                 {
-                                    decimal s;
-                                    if (decimal.TryParse(updateScoreElement.GetAttribute(scorename), out s))
+                                    //寫入重修紀錄
+                                    XmlElement updateScoreElement = updateScoreInfo.Detail;
+                                    updateScoreElement.SetAttribute("重修成績", "" + GetRoundScore(sacRecord.FinalScore, decimals, mode));
+                                    //做取得學分判斷
+                                    #region 做取得學分判斷
+                                    //最高分
+                                    decimal maxScore = sacRecord.FinalScore;
+                                    #region 抓最高分
+
+                                    string[] scoreNames = new string[] { "原始成績", "學年調整成績", "擇優採計成績", "補考成績", "重修成績" };
+
+                                    foreach (string scorename in scoreNames)
                                     {
-                                        if (s > maxScore)
+                                        decimal s;
+                                        if (decimal.TryParse(updateScoreElement.GetAttribute(scorename), out s))
                                         {
-                                            maxScore = s;
+                                            if (s > maxScore)
+                                            {
+                                                maxScore = s;
+                                            }
                                         }
                                     }
-                                }
-                                #endregion
-                                decimal passscore;
+                                    #endregion
+                                    decimal passscore;
 
-                                // 原本及格標準
-                                //if (!applyLimit.ContainsKey(updateScoreInfo.GradeYear))
-                                //    passscore = 60;
-                                //else
-                                //    passscore = applyLimit[updateScoreInfo.GradeYear];
+                                    // 原本及格標準
+                                    //if (!applyLimit.ContainsKey(updateScoreInfo.GradeYear))
+                                    //    passscore = 60;
+                                    //else
+                                    //    passscore = applyLimit[updateScoreInfo.GradeYear];
 
-                                // 新寫及格標準
-                                passscore = 100;
-                                if (studentPassScoreDict.ContainsKey(var.StudentID))
-                                {
-                                    if (studentPassScoreDict[var.StudentID].ContainsKey(key))
+                                    // 新寫及格標準
+                                    passscore = 100;
+                                    if (studentPassScoreDict.ContainsKey(var.StudentID))
                                     {
-                                        passscore = studentPassScoreDict[var.StudentID][key];
-                                    }
-                                    else
-                                    {
-                                        if (!applyLimit.ContainsKey(updateScoreInfo.GradeYear))
-                                            passscore = 60;
+                                        if (studentPassScoreDict[var.StudentID].ContainsKey(key))
+                                        {
+                                            passscore = studentPassScoreDict[var.StudentID][key];
+                                        }
                                         else
-                                            passscore = applyLimit[updateScoreInfo.GradeYear];
+                                        {
+                                            if (!applyLimit.ContainsKey(updateScoreInfo.GradeYear))
+                                                passscore = 60;
+                                            else
+                                                passscore = applyLimit[updateScoreInfo.GradeYear];
+                                        }
                                     }
-                                }
 
-                                updateScoreElement.SetAttribute("是否取得學分", (updateScoreElement.GetAttribute("不需評分") == "是" || maxScore >= passscore) ? "是" : "否");
-                                #endregion
-                                if (!updateSemesterSubjectScoreList.ContainsKey(sy)) updateSemesterSubjectScoreList.Add(sy, new Dictionary<int, Dictionary<string, XmlElement>>());
-                                if (!updateSemesterSubjectScoreList[sy].ContainsKey(se)) updateSemesterSubjectScoreList[sy].Add(se, new Dictionary<string, XmlElement>());
-                                updateSemesterSubjectScoreList[sy][se].Add(key, updateScoreElement);
+                                    updateScoreElement.SetAttribute("是否取得學分", (updateScoreElement.GetAttribute("不需評分") == "是" || maxScore >= passscore) ? "是" : "否");
+                                    #endregion
+                                    if (!updateSemesterSubjectScoreList.ContainsKey(sy)) updateSemesterSubjectScoreList.Add(sy, new Dictionary<int, Dictionary<string, XmlElement>>());
+                                    if (!updateSemesterSubjectScoreList[sy].ContainsKey(se)) updateSemesterSubjectScoreList[sy].Add(se, new Dictionary<string, XmlElement>());
+                                    updateSemesterSubjectScoreList[sy][se].Add(key, updateScoreElement);
+                                }
                             }
+
                             #endregion
                         }
                         else

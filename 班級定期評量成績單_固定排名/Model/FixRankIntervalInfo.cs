@@ -13,7 +13,9 @@ namespace 班級定期評量成績單_固定排名.Model
     /// </summary>
     class FixRankIntervalInfo
     {
-
+        /// <summary>
+        ///  $"{itemType}^^^{intervalInfo.RankType}^^^grade{intervalInfo.GradeYear}^^^{intervalInfo.RankName}^^^{intervalInfo.ItemName}";
+        /// </summary>
         public string Key { get; set; }
 
         /// <summary>

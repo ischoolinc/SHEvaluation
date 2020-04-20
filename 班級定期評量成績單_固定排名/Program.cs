@@ -94,8 +94,8 @@ namespace 班級定期評量成績單_固定排名
             List<string> selectGrades = new List<string>();//選取之班級的年級
             foreach (ClassRecord classRecord in selectedClasses)
             {
-                if(!selectGrades.Contains(classRecord.GradeYear))
-                selectGrades.Add(classRecord.GradeYear);
+                if (!selectGrades.Contains(classRecord.GradeYear))
+                    selectGrades.Add(classRecord.GradeYear);
             }
 
             ConfigForm form = new ConfigForm(selectGrades);
@@ -107,19 +107,19 @@ namespace 班級定期評量成績單_固定排名
                 Dictionary<string, Dictionary<string, FixRankIntervalInfo>> IntervalInfos;// 級距 by 班級 
                 Dictionary<string, Dictionary<string, StudentFixedRankInfo>> dicFixedRankData;// 級距 by 班級 學生 
 
-         
-               // QueryHelper 吳淑芬 = new QueryHelper();
+
+                // QueryHelper 吳淑芬 = new QueryHelper();
                 List<ClassRecord> overflowRecords = new List<ClassRecord>();
                 Exception exc = null;
                 //取得列印設定
                 Configure conf = form.Configure;
                 //建立測試的選取學生
-            
+
                 List<StudentRecord> selectedStudents = new List<StudentRecord>();
 
                 foreach (ClassRecord classRec in selectedClasses)
                 {
-                    
+
                     foreach (StudentRecord stuRec in classRec.Students)
                     {
                         if (!selectedStudents.Contains(stuRec))
@@ -428,7 +428,7 @@ namespace 班級定期評量成績單_固定排名
                                 document.Save(sd.FileName, Aspose.Words.SaveFormat.Doc);
 
                             }
-                            catch
+                            catch(Exception ex)
                             {
                                 FISCA.Presentation.Controls.MsgBox.Show("指定路徑無法存取。", "建立檔案失敗", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                                 return;
@@ -1559,7 +1559,7 @@ namespace 班級定期評量成績單_固定排名
                                                 #region 校組距及高低標 【科目成績】
 
                                                 key = $"科目成績^^^年排名^^^grade{classRec.GradeYear}^^^{classRec.GradeYear}年級^^^{subjectName}";
-                                             
+
                                                 if (IntervalInfos.ContainsKey(classRec.ClassID) && IntervalInfos[classRec.ClassID].ContainsKey(key))
                                                 {
                                                     row["年頂標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Avg_top_25;
@@ -1618,29 +1618,34 @@ namespace 班級定期評量成績單_固定排名
                             #endregion
                             #region 總分
                             ClassStuNum = 0;
-                            foreach (StudentRecord stuRec in classRec.Students)
-                            {
-                                ClassStuNum++;
-                                if (ClassStuNum > conf.StudentLimit)
-                                    break;
-                                string studentID = stuRec.StudentID;
-                                if (studentPrintSubjectSum.ContainsKey(studentID))
+                            string _studentID = "";
+                       
+
+                                foreach (StudentRecord stuRec in classRec.Students)
                                 {
-                                    row["總分" + ClassStuNum] = studentPrintSubjectSum[studentID];
+                                    ClassStuNum++;
+                                    if (ClassStuNum > conf.StudentLimit)
+                                        break;
+                                    _studentID = stuRec.StudentID;
+                                    if (studentPrintSubjectSum.ContainsKey(_studentID))
+                                    {
+                                        row["總分" + ClassStuNum] = studentPrintSubjectSum[_studentID];
 
-                                    key = "總計成績" + "^^^" + "班排名" + "^^^" + "grade" + gradeYear + "^^^" + stuRec.RefClass.ClassName + "^^^" + "總分";
+                                        key = "總計成績" + "^^^" + "班排名" + "^^^" + "grade" + gradeYear + "^^^" + stuRec.RefClass.ClassName + "^^^" + "總分";
 
-                                    row = PutRankValueToTable(dicFixedRankData, row, stuRec, "總分", "班", ClassStuNum, key);
+                                        row = PutRankValueToTable(dicFixedRankData, row, stuRec, "總分", "班", ClassStuNum, key);
 
-                                    key = "總計成績" + "^^^" + "科排名" + "^^^" + "grade" + gradeYear + "^^^" + stuRec.RefClass.Department + "^^^" + "總分";
+                                        key = "總計成績" + "^^^" + "科排名" + "^^^" + "grade" + gradeYear + "^^^" + stuRec.RefClass.Department + "^^^" + "總分";
 
-                                    row = PutRankValueToTable(dicFixedRankData, row, stuRec, "總分", "科", ClassStuNum, key);
+                                        row = PutRankValueToTable(dicFixedRankData, row, stuRec, "總分", "科", ClassStuNum, key);
 
-                                    key = "總計成績" + "^^^" + "年排名" + "^^^" + "grade" + gradeYear + "^^^" + stuRec.RefClass.GradeYear + "年級" + "^^^" + "總分";
+                                        key = "總計成績" + "^^^" + "年排名" + "^^^" + "grade" + gradeYear + "^^^" + stuRec.RefClass.GradeYear + "年級" + "^^^" + "總分";
 
-                                    row = PutRankValueToTable(dicFixedRankData, row, stuRec, "總分", "年", ClassStuNum, key);
+                                        row = PutRankValueToTable(dicFixedRankData, row, stuRec, "總分", "年", ClassStuNum, key);
+                                    }
                                 }
-                            }
+                        
+
                             #region 總分班組距及高低標 【總分】【班】【級距】
 
                             key = $"總計成績^^^班排名^^^grade{classRec.GradeYear}^^^{classRec.ClassName}^^^總分";
@@ -1979,10 +1984,10 @@ namespace 班級定期評量成績單_固定排名
                         bkw.ReportProgress(90);
                         document = conf.Template;
 
-                   
+
                         document.MailMerge.Execute(table);
 
-                      
+
                     }
                     catch (Exception exception)
                     {
@@ -2780,7 +2785,7 @@ namespace 班級定期評量成績單_固定排名
                 {
                     builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "組距count70Up \\* MERGEFORMAT ", "«C»");
                 }
-                 else
+                else
                 {
                     builder.InsertCell();
                 }
@@ -2794,8 +2799,9 @@ namespace 班級定期評量成績單_固定排名
                 {
                     builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "組距count70 \\* MERGEFORMAT ", "«C»");
                 }
-                else {
-                     builder.InsertCell();
+                else
+                {
+                    builder.InsertCell();
                 }
             }
             builder.EndRow();
@@ -3040,7 +3046,7 @@ namespace 班級定期評量成績單_固定排名
             {
                 if (!key.Contains("總分"))
                 {
-                builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "組距count10Down \\* MERGEFORMAT ", "«C»");
+                    builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "組距count10Down \\* MERGEFORMAT ", "«C»");
                 }
                 else
                 {
@@ -3198,10 +3204,18 @@ namespace 班級定期評量成績單_固定排名
         private static DataRow PutRankValueToTable(Dictionary<string, Dictionary<string, StudentFixedRankInfo>> dicFixedRankData, DataRow row, StudentRecord stuRec, string itemName, string rankType, int ClassStuNum, string key)
         {
 
-            if (dicFixedRankData.ContainsKey(stuRec.RefClass.ClassID) && dicFixedRankData[stuRec.RefClass.ClassID][stuRec.StudentID].DicSubjectTotalFixRank.ContainsKey(key))
+            if (dicFixedRankData.ContainsKey(stuRec.RefClass.ClassID) && dicFixedRankData[stuRec.RefClass.ClassID].ContainsKey(stuRec.StudentID) && dicFixedRankData[stuRec.RefClass.ClassID][stuRec.StudentID].DicSubjectTotalFixRank.ContainsKey(key))
             {
-                row[$"{itemName}{rankType}排名" + ClassStuNum] = dicFixedRankData[stuRec.RefClass.ClassID][stuRec.StudentID].DicSubjectTotalFixRank[key].Rank;
-                row[$"{itemName}{rankType}排名母數" + ClassStuNum] = dicFixedRankData[stuRec.RefClass.ClassID][stuRec.StudentID].DicSubjectTotalFixRank[key].MatrixCount;
+                // todo 
+                try
+                {
+                    row[$"{itemName}{rankType}排名母數" + ClassStuNum] = dicFixedRankData[stuRec.RefClass.ClassID][stuRec.StudentID].DicSubjectTotalFixRank[key].MatrixCount;
+                    row[$"{itemName}{rankType}排名" + ClassStuNum] = dicFixedRankData[stuRec.RefClass.ClassID][stuRec.StudentID].DicSubjectTotalFixRank[key].Rank;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("錯誤");
+                }
             }
             return row;
         }

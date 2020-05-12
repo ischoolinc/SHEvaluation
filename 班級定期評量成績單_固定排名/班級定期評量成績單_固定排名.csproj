@@ -137,6 +137,7 @@
     </Compile>
     <Compile Include="Model\Dept.cs" />
     <Compile Include="Model\FixRankIntervalInfo.cs" />
+    <Compile Include="Model\FormParam.cs" />
     <Compile Include="Model\RankInfo.cs" />
     <Compile Include="Model\StudentFixedRankInfo.cs" />
     <Compile Include="NewConfigure.cs">
@@ -150,6 +151,7 @@
     <Compile Include="Service\FixedRankGetService.cs" />
     <Compile Include="Service\FixedRankIntervalService.cs" />
     <Compile Include="StringComparer.cs" />
+    <Compile Include="Utility.cs" />
     <EmbeddedResource Include="CloneConfigure.resx">
       <DependentUpon>CloneConfigure.cs</DependentUpon>
     </EmbeddedResource>
@@ -215,6 +217,7 @@
     <Content Include="library\SmartSchool.Core.pdb" />
     <Content Include="library\SmartSchool.Customization.Data.dll" />
     <Content Include="library\SmartSchool.Customization.Data.xml" />
+    <None Include="Resources\loading.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

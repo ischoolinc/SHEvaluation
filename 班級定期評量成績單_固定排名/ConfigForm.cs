@@ -9,13 +9,16 @@ using System.Windows.Forms;
 using K12.Data;
 using System.IO;
 using FISCA.Data;
+//using SmartSchool.Customization.Data;
 using static K12.Data.StudentRecord;
+using FISCA.Presentation.Controls;
 
 namespace 班級定期評量成績單_固定排名
 {
     public partial class ConfigForm : FISCA.Presentation.Controls.BaseForm
     {
         private FISCA.UDT.AccessHelper _AccessHelper = new FISCA.UDT.AccessHelper();
+        private SmartSchool.Customization.Data.AccessHelper _smartAccessHelper = new SmartSchool.Customization.Data.AccessHelper();
         private Dictionary<string, List<string>> _ExamSubjects = new Dictionary<string, List<string>>();
         private Dictionary<string, List<string>> _ExamSubjectFull = new Dictionary<string, List<string>>();
         private List<TagConfigRecord> _TagConfigRecords = new List<TagConfigRecord>();
@@ -23,15 +26,24 @@ namespace 班級定期評量成績單_固定排名
         private string _DefalutSchoolYear = "";
         private string _DefaultSemester = "";
         private List<string> _FixedRankSubjects = new List<string>();
-        private List<string> _SelectClassGrade;
+       // private List<string> _SelectClassGrade;
         private QueryHelper _Qp = new QueryHelper();
-        
+        private List<string> _SelectedClasses; // 取得選擇學生
 
-        public ConfigForm(List<string> seletClassGrades)
+        public Dictionary<string, List<string>> FixedRankCumputeSubject = new Dictionary<string, List<string>>();
+        /// <summary>
+        /// 用來記錄此學年度 學期  此班級 結算的類別是否只有一種 只有一種( 可能情境: 1.自然組 、 2.社會組)
+        /// </summary>
+        private Dictionary<string, List<string>> FixedRankTags;
+
+
+        public ConfigForm(List<String> selectClasses)
         {
             InitializeComponent();
+            List<SmartSchool.Customization.Data.ClassRecord> _SelectedClasses = this._smartAccessHelper.ClassHelper.GetSelectedClass(); ; //取得所選班級
             List<ExamRecord> exams = new List<ExamRecord>();
-            this._SelectClassGrade = seletClassGrades;
+            this._SelectedClasses = selectClasses;
+
             BackgroundWorker bkw = new BackgroundWorker();
             bkw.DoWork += delegate
             {
@@ -51,7 +63,7 @@ namespace 班級定期評量成績單_固定排名
                 var AssessmentSetupRecords = K12.Data.AssessmentSetup.SelectAll();
                 bkw.ReportProgress(40);
                 List<string> courseIDs = new List<string>();
-                foreach (var scattentRecord in K12.Data.SCAttend.SelectByStudentIDs(K12.Data.Student.SelectByClassIDs( K12.Presentation.NLDPanels.Class.SelectedSource).Where(x=>x.Status == StudentStatus.一般 || x.Status == StudentStatus.延修).Select(x=>x.ID)))
+                foreach (var scattentRecord in K12.Data.SCAttend.SelectByStudentIDs(K12.Data.Student.SelectByClassIDs(K12.Presentation.NLDPanels.Class.SelectedSource).Where(x => x.Status == StudentStatus.一般 || x.Status == StudentStatus.延修).Select(x => x.ID)))
                 {
                     if (!courseIDs.Contains(scattentRecord.RefCourseID))
                         courseIDs.Add(scattentRecord.RefCourseID);
@@ -119,7 +131,7 @@ namespace 班級定期評量成績單_固定排名
                 }
                 cboConfigure.Items.Add(new Configure() { Name = "新增" });
                 int i;
-            
+
                 cboSchoolYear.Items.Clear();
                 cboSchoolYear.Items.Add(_DefalutSchoolYear);
                 cboSchoolYear.SelectedIndex = cboSchoolYear.Items.IndexOf(_DefaultSemester);
@@ -147,7 +159,7 @@ namespace 班級定期評量成績單_固定排名
                         tag.Add(item.Name);
                     }
                 }
-         
+
                 circularProgress1.Hide();
                 if (_Configures.Count > 0)
                 {
@@ -157,14 +169,23 @@ namespace 班級定期評量成績單_固定排名
                 {
                     cboConfigure.SelectedIndex = -1;
                 }
+                // 畫面初始化完後 依據條件(學年度 、學期 、試別、所選班級 等) select 回 固定排名之 科目
+                GetFixRankSubjectsInclude(this.cboSchoolYear.Text, this.cboSemester.Text, ((ExamRecord)cboExam.SelectedItem).ID, this._SelectedClasses);
+                this.pictureBox1.Visible = false;
             };
             bkw.RunWorkerAsync();
+
+
         }
 
         public Configure Configure { get; private set; }
 
         private void btnPrint_Click(object sender, EventArgs e)
         {
+            if (!CheckFixRankSubIsSameAndBack()) 
+            {
+                return;
+            }
             SaveTemplate(null, null);
             Program.AvgRd = iptRd.Value;
             this.DialogResult = System.Windows.Forms.DialogResult.OK;
@@ -179,63 +200,8 @@ namespace 班級定期評量成績單_固定排名
             {
                 #region 取得本次固定排名結算之科目
 
-                string sql = @"
-SELECT 
-	item_name 	
-	,count (* )  
-FROM 
-	rank_matrix   
-WHERE 
-	ref_exam_id ={2}  
-    AND item_type ='定期評量/科目成績'   
-    AND school_year ={0} 
-    AND semester = {1}  
-    AND is_alive = true 
-    AND grade_year IN ({3})
-GROUP BY  item_name 
-";
-
-                sql = string.Format(sql, this.cboSchoolYear.Text, this.cboSemester.Text, ((ExamRecord)cboExam.SelectedItem).ID , this._SelectClassGrade!=null? String.Join(",", _SelectClassGrade):"");
-
-                DataTable dt = _Qp.Select(sql);
-                foreach (DataRow dr in dt.Rows)
-                {
-                    string subj = "" + dr["item_name"];
-                    if (!_FixedRankSubjects.Contains(subj))
-                        _FixedRankSubjects.Add(subj);
-                }
-
-                _FixedRankSubjects.Sort(  new StringComparer("國文"
-                                                , "英文"
-                                                , "數學"
-                                                , "理化"
-                                                , "生物"
-                                                , "社會"
-                                                , "物理"
-                                                , "化學"
-                                                , "歷史"
-                                                , "地理"
-                                                , "公民"));
-
-
-
-                if (_FixedRankSubjects.Count > 0)
-                {
-                    labelX1.Text = $"{this.cboSchoolYear.Text}年 第{ this.cboSemester.Text}學期 {((ExamRecord)cboExam.SelectedItem).Name} {String.Join("、", _SelectClassGrade):''}年級   固定排名結算科目(共{_FixedRankSubjects.Count()}科)：";
-                    if (_FixedRankSubjects.Count <= 8)
-                    {
-                        this.linkLabFixRankSubjInclude.Text = String.Join("、", _FixedRankSubjects);
-                    }
-                    else if (_FixedRankSubjects.Count > 8)
-                    {
-                        this.linkLabFixRankSubjInclude.Text = String.Join("、", _FixedRankSubjects.Take(8)) + " ...";
-                    }
-
-                }
-                else
-                {
-                    labelX1.Text = $"{this.cboSchoolYear.Text}年 第{ this.cboSemester.Text}學期 {((ExamRecord)cboExam.SelectedItem).Name} {String.Join("、", _SelectClassGrade):''}年級   固定排名結算科目(共{_FixedRankSubjects.Count()}科)：";
-                }
+                GetFixRankSubjectsInclude(this.cboSchoolYear.Text, this.cboSemester.Text, ((ExamRecord)cboExam.SelectedItem).ID, this._SelectedClasses);
+            
             }
             #endregion
 
@@ -250,19 +216,20 @@ GROUP BY  item_name
                 foreach (var subject in _ExamSubjectFull[key])
                 {
                     var i1 = listViewEx1.Items.Add(subject);
-               
-                   if (_ExamSubjects.ContainsKey(key) && !_ExamSubjects[key].Contains(subject))
+
+                    if (_ExamSubjects.ContainsKey(key) && !_ExamSubjects[key].Contains(subject))
                     {
                         i1.ForeColor = Color.DarkGray;
                     }
                 }
             }
             listViewEx1.ResumeLayout(true);
-         
+
         }
 
         private void cboConfigure_SelectedIndexChanged(object sender, EventArgs e)
         {
+            this.pictureBox1.Visible = true;
             if (cboConfigure.SelectedIndex == cboConfigure.Items.Count - 1)
             {
                 //新增
@@ -325,12 +292,12 @@ GROUP BY  item_name
                             }
                         }
                     }
-                   
+
                     foreach (ListViewItem item in listViewEx1.Items)
                     {
                         item.Checked = Configure.PrintSubjectList.Contains(item.Text);
                     }
-                
+
 
                     if (Configure.AvgRd.HasValue)
                         iptRd.Value = Configure.AvgRd.Value;
@@ -344,14 +311,15 @@ GROUP BY  item_name
                     cboSemester.SelectedIndex = -1;
                     cboExam.SelectedIndex = -1;
                     cboRefExam.SelectedIndex = -1;
-            
+
                     foreach (ListViewItem item in listViewEx1.Items)
                     {
                         item.Checked = false;
                     }
-        
+
                 }
             }
+            this.pictureBox1.Visible = false;
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -497,7 +465,10 @@ GROUP BY  item_name
             }
         }
 
-        private void SaveTemplate(object sender, EventArgs e)
+        /// <summary>
+        /// 收集 configure 會儲存之資料
+        /// </summary>
+        private void CollectConfigure()
         {
             if (Configure == null) return;
             Configure.SchoolYear = cboSchoolYear.Text;
@@ -506,6 +477,12 @@ GROUP BY  item_name
             Configure.RefenceExamRecord = ((ExamRecord)cboRefExam.SelectedItem);
             if (Configure.RefenceExamRecord != null && Configure.RefenceExamRecord.Name == "")
                 Configure.RefenceExamRecord = null;
+
+        }
+
+        private void SaveTemplate(object sender, EventArgs e)
+        {
+            this.CollectConfigure();
             foreach (ListViewItem item in listViewEx1.Items)
             {
                 if (item.Checked)
@@ -520,45 +497,47 @@ GROUP BY  item_name
                 }
             }
             //Configure.TagRank1TagName = cboTagRank1.Text;
+
+            // 處理 tag 
             Configure.TagRank1TagList.Clear();
             foreach (var item in _TagConfigRecords)
             {
                 if (item.Prefix != "")
                 {
-                   
+
                 }
                 else
                 {
-                  
+
                 }
             }
-  
+
 
             Configure.AvgRd = iptRd.Value;
-        
+
             Configure.TagRank2TagList.Clear();
             foreach (var item in _TagConfigRecords)
             {
                 if (item.Prefix != "")
                 {
-                   
+
                 }
                 else
                 {
-       
+
                 }
             }
-         
+
             Configure.RankFilterTagList.Clear();
             foreach (var item in _TagConfigRecords)
             {
                 if (item.Prefix != "")
                 {
-          
+
                 }
                 else
                 {
-               
+
                 }
             }
 
@@ -568,7 +547,8 @@ GROUP BY  item_name
 
         private void linkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Program.CreateFieldTemplate();
+            this.CollectConfigure();
+            Utility.CreateFieldTemplate();
         }
 
         private void cboSchoolYear_SelectedIndexChanged(object sender, EventArgs e)
@@ -578,12 +558,139 @@ GROUP BY  item_name
 
         private void linkLabFixRankSubjInclude_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            (new FixedRankInclued(this._FixedRankSubjects)).ShowDialog();
+            FixedRankInclued fixedRankInclued = new FixedRankInclued(FixedRankCumputeSubject,this._SelectedClasses);
+            fixedRankInclued.ShowDialog();
+            if (fixedRankInclued.BringSelectedSubj) //如果有要帶入
+            {
+                foreach (ListViewItem item in listViewEx1.Items)
+                {
+                    if (fixedRankInclued.SelectSubjucts.Contains(item.Text))
+                    {
+                        item.Checked = true;
+                    }
+                    else
+                    {
+                        item.Checked = false;
+                    }
+                }
+
+
+            }
         }
 
         private void labelX1_Click(object sender, EventArgs e)
         {
 
         }
+
+
+        /// <summary>
+        /// 取得最新結算之固定排名 第一層 key值 【"年、科、班排名" 、"類別1排名" 、"類別2排名"】
+        /// </summary>
+        /// <param name="schoolYear">學年度</param>
+        /// <param name="semester">學期</param>
+        /// <param name="refExamID">試別</param>
+        /// <param name="grades">年級s</param>
+        private void GetFixRankSubjectsInclude(string schoolYear, string semester, string refExamID, List<string> selectClasseIDs)
+        {
+            QueryHelper queryHelper = new QueryHelper();
+            this.FixedRankCumputeSubject.Clear();
+            string sql = @"
+SELECT 
+	item_name
+	, rank_type
+	, count (*)  
+FROM 
+	rank_matrix  
+	INNER JOIN  
+	( SELECT * FROM rank_detail  WHERE ref_student_id  IN ( SELECT id FROM student WHERE ref_class_id  IN ({3}) AND status = 1) ) AS rank_detail 
+	ON rank_matrix.id =rank_detail.ref_matrix_id 
+WHERE 
+	ref_exam_id = {2}  
+    AND item_type ='定期評量/科目成績'   
+    AND school_year = {0} 
+    AND semester = {1}  
+    AND is_alive = true 
+GROUP BY 
+	item_name 
+	, rank_type
+";
+            sql = string.Format(sql, schoolYear, semester, refExamID, string.Join(",", selectClasseIDs));
+
+            DataTable dt = queryHelper.Select(sql);
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                string rankType = "" + dr["rank_type"]; 
+                 
+                string itemName = "" + dr["item_name"];
+
+                if(rankType== "年排名"|| rankType =="科排名" ||rankType =="班排名") 
+                {
+                    rankType = "年、科、班排名";
+                }
+
+                if (!this.FixedRankCumputeSubject.ContainsKey(rankType))
+                {
+                    this.FixedRankCumputeSubject.Add(rankType, new List<string>());
+                }
+                if (!this.FixedRankCumputeSubject[rankType].Contains(itemName)) 
+                {
+                    this.FixedRankCumputeSubject[rankType].Add(itemName);
+                }
+            }
+        }
+
+        
+        /// <summary>
+        /// 確認是所勾選科目否一致
+        /// </summary>
+        private Boolean CheckFixRankSubIsSameAndBack() 
+        {
+            Boolean normalWarmHasShowed = false; // 紀錄 是否跳出ㄊㄧ
+            Boolean Tag1WarnHasShowed = false;
+            Boolean Tag2WarnHasShowed = false;
+
+            Boolean result = true;
+
+            int selectSubjCount = this.listViewEx1.CheckedItems.Count;
+
+            foreach (ListViewItem subj in this.listViewEx1.CheckedItems)
+            {
+                // 班科年
+                if (!normalWarmHasShowed &&(!this.FixedRankCumputeSubject["年、科、班排名"].Contains(subj.Text) || selectSubjCount!= this.FixedRankCumputeSubject["年、科、班排名"].Count ))
+                {
+                    normalWarmHasShowed = true;
+                    if (DialogResult.No == MsgBox.Show("勾選之列印科目與固定排名計算(班、科、年)之科目不一致。 \n可能導致相關變數有誤，確定列印 ?", MessageBoxButtons.YesNo))
+                    {
+                        result = false;
+                    }
+                  
+                }
+                // 類別1
+                if (Tag1WarnHasShowed &&(!this.FixedRankCumputeSubject["類別1排名"].Contains(subj.Text) || selectSubjCount!= this.FixedRankCumputeSubject["類別1排名"].Count ) )
+                {
+                    Tag1WarnHasShowed = true;
+
+                    if (DialogResult.No == MsgBox.Show("勾選之列印科目與固定排名計算(類別1排名)之科目不一致。 \n可能導致相關變數有誤 ，確定列印 ?", MessageBoxButtons.YesNo))
+                    {
+                        result = false;
+                    }
+                }
+                // 類別2
+                if (Tag2WarnHasShowed && (!this.FixedRankCumputeSubject["類別2排名"].Contains(subj.Text) || selectSubjCount != this.FixedRankCumputeSubject["類別2排名"].Count)) 
+                {
+                    Tag2WarnHasShowed = true;
+                    if (DialogResult.No == MsgBox.Show("勾選之列印科目與固定排名計算(類別2排名)之科目不一致。 \n可能導致相關變數有誤 ，確定列印 ?", MessageBoxButtons.YesNo))
+                    {
+                        result = false;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+  
     }
 }

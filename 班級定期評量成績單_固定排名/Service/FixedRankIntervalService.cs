@@ -62,14 +62,14 @@ namespace 班級定期評量成績單_固定排名.Service
             this.Semester = semester;
             this.ExamID = examID;
             this.DicEachClassSubjectInteval = new Dictionary<string, Dictionary<string, FixRankIntervalInfo>>();
-            GetDepInfo(); //取得班級科別對照表
+            GetDeptInfo(); //取得班級科別對照表
         }
 
 
         /// <summary>
         /// 載入班級>科別對照表
         /// </summary>
-        public void GetDepInfo()
+        public void GetDeptInfo()
         {
             this.DicClassDeptMapping = new Dictionary<string, string>();
             string sql = @"
@@ -88,7 +88,6 @@ FROM class
             {
                 this.DicClassDeptMapping.Add("" + dr["id"], "" + dr["dept_name"]);
             }
-
         }
 
 
@@ -141,7 +140,7 @@ FROM class
                     string rankName = "" + dr["rank_name"];
                     string gradeYear = "" + dr["grade_year"];
 
-                    
+
                     FixRankIntervalInfo intervalInfo = new FixRankIntervalInfo(rankType, rankName, gradeYear, itemName);
                     intervalInfo.Matrix_count = "" + dr["matrix_Count"];
                     intervalInfo.ItemName = "" + dr["item_name"];
@@ -192,9 +191,19 @@ FROM class
         }
 
         /// <summary>
-        ///  取得所有班級之級距
-        ///  班排名、科排名、校排名
+        /// 取得  本學期
         /// </summary>
+        /// <returns></returns>
+     
+
+
+
+
+
+        /// <summary>
+        ///  取得所有班級之級距
+        ///  班排名、科排名、校排名'、'類別1'、'類別2'
+        ///  </summary>
         public Dictionary<string, Dictionary<string, FixRankIntervalInfo>> GetAllClassInterval(List<ClassRecord> courseList)
         {
             foreach (ClassRecord classInfo in courseList)

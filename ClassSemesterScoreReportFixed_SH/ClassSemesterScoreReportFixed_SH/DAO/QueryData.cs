@@ -11,10 +11,15 @@ namespace ClassSemesterScoreReportFixed_SH.DAO
     public class QueryData
     {
 
-        // 類別1名稱
-        public static Dictionary<string, string> StudentTag1Dict = new Dictionary<string, string>();
-        // 類別2名稱
-        public static Dictionary<string, string> StudentTag2Dict = new Dictionary<string, string>();
+        // 類別1名稱 StudentID
+        public static Dictionary<string, string> StudentIDTag1Dict = new Dictionary<string, string>();
+        // 類別2名稱 StudentID
+        public static Dictionary<string, string> StudentIDTag2Dict = new Dictionary<string, string>();
+
+        // 類別1名稱 Student ClassID
+        public static Dictionary<string, string> StudentClassIDTag1Dict = new Dictionary<string, string>();
+        // 類別2名稱 Student ClassID 
+        public static Dictionary<string, string> StudentClassIDTag2Dict = new Dictionary<string, string>();
 
         /// <summary>
         /// 透過班級編號取得該班級學生系統編號(一般生)
@@ -344,26 +349,29 @@ namespace ClassSemesterScoreReportFixed_SH.DAO
                             int cnCount = 1;
                             foreach (XElement elmA in elmGroup1.Elements("Rating"))
                             {
-                                string Group = elmA.Attribute("類別").Value;
-                                foreach (XElement elm in elmA.Elements("Item"))
+                                if (elmA.Attribute("類別") != null)
                                 {
-                                    int g1, g2;
-                                    decimal c1;
-                                    string key = elm.Attribute("分項").Value + "_類別" + cnCount;
-                                    ScoreItem si = new ScoreItem();
-                                    si.Name = Group;
-                                    if (!Global._TempGroup1RankDict[id].ContainsKey(key))
+                                    string Group = elmA.Attribute("類別").Value;
+                                    foreach (XElement elm in elmA.Elements("Item"))
                                     {
-                                        int.TryParse(elm.Attribute("排名").Value, out g1);
-                                        int.TryParse(elm.Attribute("成績人數").Value, out g2);
-                                        decimal.TryParse(elm.Attribute("成績").Value, out c1);
-                                        si.Rank = g1;
-                                        si.RankT = g2;
-                                        si.Score = c1;
-                                        Global._TempGroup1RankDict[id].Add(key, si);
+                                        int g1, g2;
+                                        decimal c1;
+                                        string key = elm.Attribute("分項").Value + "_類別" + cnCount;
+                                        ScoreItem si = new ScoreItem();
+                                        si.Name = Group;
+                                        if (!Global._TempGroup1RankDict[id].ContainsKey(key))
+                                        {
+                                            int.TryParse(elm.Attribute("排名").Value, out g1);
+                                            int.TryParse(elm.Attribute("成績人數").Value, out g2);
+                                            decimal.TryParse(elm.Attribute("成績").Value, out c1);
+                                            si.Rank = g1;
+                                            si.RankT = g2;
+                                            si.Score = c1;
+                                            Global._TempGroup1RankDict[id].Add(key, si);
+                                        }
                                     }
-                                }
-                                cnCount++;
+                                    cnCount++;
+                                }                               
                             }
                         }
                     #endregion
@@ -492,8 +500,8 @@ namespace ClassSemesterScoreReportFixed_SH.DAO
                 {
                     if (dr["rank_name"] != null)
                     {
-                        if (!StudentTag1Dict.ContainsKey(sid))
-                            StudentTag1Dict.Add(sid, dr["rank_name"].ToString());
+                        if (!StudentIDTag1Dict.ContainsKey(sid))
+                            StudentIDTag1Dict.Add(sid, dr["rank_name"].ToString());
                     }
                 }
 
@@ -501,8 +509,8 @@ namespace ClassSemesterScoreReportFixed_SH.DAO
                 {
                     if (dr["rank_name"] != null)
                     {
-                        if (!StudentTag2Dict.ContainsKey(sid))
-                            StudentTag2Dict.Add(sid, dr["rank_name"].ToString());
+                        if (!StudentIDTag2Dict.ContainsKey(sid))
+                            StudentIDTag2Dict.Add(sid, dr["rank_name"].ToString());
                     }
                 }
                 if (!value[sid].ContainsKey(key))
@@ -630,8 +638,8 @@ namespace ClassSemesterScoreReportFixed_SH.DAO
                 {
                     if (dr["rank_name"] != null)
                     {
-                        if (!StudentTag1Dict.ContainsKey(cid))
-                            StudentTag1Dict.Add(cid, dr["rank_name"].ToString());
+                        if (!StudentClassIDTag1Dict.ContainsKey(cid))
+                            StudentClassIDTag1Dict.Add(cid, dr["rank_name"].ToString());
                     }
                 }
 
@@ -639,8 +647,8 @@ namespace ClassSemesterScoreReportFixed_SH.DAO
                 {
                     if (dr["rank_name"] != null)
                     {
-                        if (!StudentTag2Dict.ContainsKey(cid))
-                            StudentTag2Dict.Add(cid, dr["rank_name"].ToString());
+                        if (!StudentClassIDTag2Dict.ContainsKey(cid))
+                            StudentClassIDTag2Dict.Add(cid, dr["rank_name"].ToString());
                     }
                 }
                 if (!value[cid].ContainsKey(key))

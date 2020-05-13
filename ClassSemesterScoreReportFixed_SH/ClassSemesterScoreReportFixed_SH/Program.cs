@@ -134,6 +134,8 @@ namespace ClassSemesterScoreReportFixed_SH
                     table.Columns.Add("座號" + i);
                     table.Columns.Add("學號" + i);
                     table.Columns.Add("姓名" + i);
+                    table.Columns.Add("學生類別排名1名稱" + i);
+                    table.Columns.Add("學生類別排名2名稱" + i);
                 }
 
                 List<string> itemNameList = new List<string>();
@@ -162,8 +164,6 @@ namespace ClassSemesterScoreReportFixed_SH
                 rankTypeList.Add("年排名");
                 rankTypeList.Add("類別1排名");
                 rankTypeList.Add("類別2排名");
-
-
 
                 // 排名、五標、組距
                 List<string> r2List = new List<string>();
@@ -427,7 +427,7 @@ namespace ClassSemesterScoreReportFixed_SH
                         document.Save(path, Aspose.Words.SaveFormat.Doc);
                         System.Diagnostics.Process.Start(path);
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         System.Windows.Forms.SaveFileDialog sd = new System.Windows.Forms.SaveFileDialog();
                         sd.Title = "另存新檔";
@@ -950,6 +950,17 @@ namespace ClassSemesterScoreReportFixed_SH
                                         {
                                             if (rt.Contains("類"))
                                             {
+                                                // 類1,類2名稱
+                                                if (DAO.QueryData.StudentIDTag1Dict.ContainsKey(studentID))
+                                                {
+                                                    row["學生類別排名1名稱" + ClassStuNum] = DAO.QueryData.StudentIDTag1Dict[studentID];
+                                                }
+
+                                                if (DAO.QueryData.StudentIDTag2Dict.ContainsKey(studentID))
+                                                {
+                                                    row["學生類別排名2名稱" + ClassStuNum] = DAO.QueryData.StudentIDTag2Dict[studentID];
+                                                }
+
                                                 if (SemsScoreRankMatrixDataDict[studentID][sk1].ContainsKey("rank"))
                                                     row[rankTypeMapDict[rt] + "加權平均排名" + ClassStuNum] = SemsScoreRankMatrixDataDict[studentID][sk1]["rank"];
                                                 if (SemsScoreRankMatrixDataDict[studentID][sk1].ContainsKey("matrix_count"))
@@ -1020,14 +1031,14 @@ namespace ClassSemesterScoreReportFixed_SH
                             if (SemsScoreRankMatrixDataClassDict.ContainsKey(classRec.ClassID))
                             {
 
-                                if (DAO.QueryData.StudentTag1Dict.ContainsKey(classRec.ClassID))
+                                if (DAO.QueryData.StudentClassIDTag1Dict.ContainsKey(classRec.ClassID))
                                 {
-                                    row["類別排名1"] = DAO.QueryData.StudentTag1Dict[classRec.ClassID];
+                                    row["類別排名1"] = DAO.QueryData.StudentClassIDTag1Dict[classRec.ClassID];
                                 }
 
-                                if (DAO.QueryData.StudentTag2Dict.ContainsKey(classRec.ClassID))
+                                if (DAO.QueryData.StudentClassIDTag2Dict.ContainsKey(classRec.ClassID))
                                 {
-                                    row["類別排名2"] = DAO.QueryData.StudentTag2Dict[classRec.ClassID];
+                                    row["類別排名2"] = DAO.QueryData.StudentClassIDTag2Dict[classRec.ClassID];
                                 }
 
                                 foreach (string s1 in itemNameList)
@@ -1690,6 +1701,42 @@ namespace ClassSemesterScoreReportFixed_SH
 
             }
             #endregion
+
+
+            #region 學生學業 類別1,2名稱 
+
+            builder.InsertBreak(Aspose.Words.BreakType.PageBreak);
+            builder.Writeln("學生類別排名1名稱,類別排名2名稱");
+            builder.StartTable();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.Write("類別排名1名稱");
+            builder.InsertCell();
+            builder.Write("類別排名2名稱");         
+            builder.EndRow();
+
+            for (int stuIndex = 1; stuIndex <= maxStuNum; stuIndex++)
+            {
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 學號" + stuIndex + " \\* MERGEFORMAT ", "«學號" + stuIndex + "»");
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 座號" + stuIndex + " \\* MERGEFORMAT ", "«座號" + stuIndex + "»");
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 姓名" + stuIndex + " \\* MERGEFORMAT ", "«姓名" + stuIndex + "»");
+
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 學生類別排名1名稱" + stuIndex + " \\* MERGEFORMAT ", "«類1_" + stuIndex + "»");
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 學生類別排名2名稱" + stuIndex + " \\* MERGEFORMAT ", "«類2_" + stuIndex + "»");
+
+                builder.EndRow();
+            }
+            builder.EndTable();
+
+            #endregion
+
 
 
 

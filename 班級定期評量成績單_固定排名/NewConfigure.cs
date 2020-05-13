@@ -16,8 +16,9 @@ namespace 班級定期評量成績單_固定排名
         public int SubjectLimit { get; private set; }
         public int StudentLimit { get; private set; }
         public string ConfigName { get; private set; }
+       
 
-        public NewConfigure()
+        public NewConfigure( Configure config =null)
         {
             InitializeComponent();
             checkBoxX1.CheckedChanged += new EventHandler(SetupTemplate);
@@ -144,7 +145,8 @@ namespace 班級定期評量成績單_固定排名
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Program.CreateFieldTemplate();
+
+            Utility.CreateFieldTemplate();
         }
 
         private void btnSubmit_Click(object sender, EventArgs e)

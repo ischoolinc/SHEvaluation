@@ -151,6 +151,7 @@
     <Compile Include="Service\FixedRankGetService.cs" />
     <Compile Include="Service\FixedRankIntervalService.cs" />
     <Compile Include="StringComparer.cs" />
+    <Compile Include="Tool.cs" />
     <Compile Include="Utility.cs" />
     <EmbeddedResource Include="CloneConfigure.resx">
       <DependentUpon>CloneConfigure.cs</DependentUpon>

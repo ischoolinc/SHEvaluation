@@ -293,7 +293,6 @@
             this.btnPrint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnPrint.BackColor = System.Drawing.Color.Transparent;
             this.btnPrint.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnPrint.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnPrint.Enabled = false;
             this.btnPrint.Location = new System.Drawing.Point(386, 403);
             this.btnPrint.Name = "btnPrint";
@@ -511,7 +510,7 @@
             this.MaximizeBox = true;
             this.Name = "ConfigForm";
             this.Text = "班級定期評量成績單";
-            //this.Load += new System.EventHandler(this.ConfigForm_Load);
+            this.Load += new System.EventHandler(this.ConfigForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

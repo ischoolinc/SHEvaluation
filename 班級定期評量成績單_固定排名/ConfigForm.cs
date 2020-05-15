@@ -26,7 +26,7 @@ namespace 班級定期評量成績單_固定排名
         private string _DefalutSchoolYear = "";
         private string _DefaultSemester = "";
         private List<string> _FixedRankSubjects = new List<string>();
-       // private List<string> _SelectClassGrade;
+        // private List<string> _SelectClassGrade;
         private QueryHelper _Qp = new QueryHelper();
         private List<string> _SelectedClasses; // 取得選擇學生
 
@@ -180,17 +180,7 @@ namespace 班級定期評量成績單_固定排名
 
         public Configure Configure { get; private set; }
 
-        private void btnPrint_Click(object sender, EventArgs e)
-        {
-            if (!CheckFixRankSubIsSameAndBack()) 
-            {
-                return;
-            }
-            SaveTemplate(null, null);
-            Program.AvgRd = iptRd.Value;
-            this.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.Close();
-        }
+
 
         private void ExamChanged(object sender, EventArgs e)
         {
@@ -201,7 +191,7 @@ namespace 班級定期評量成績單_固定排名
                 #region 取得本次固定排名結算之科目
 
                 GetFixRankSubjectsInclude(this.cboSchoolYear.Text, this.cboSemester.Text, ((ExamRecord)cboExam.SelectedItem).ID, this._SelectedClasses);
-            
+
             }
             #endregion
 
@@ -558,7 +548,7 @@ namespace 班級定期評量成績單_固定排名
 
         private void linkLabFixRankSubjInclude_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            FixedRankInclued fixedRankInclued = new FixedRankInclued(FixedRankCumputeSubject,this._SelectedClasses);
+            FixedRankInclued fixedRankInclued = new FixedRankInclued(FixedRankCumputeSubject, this._SelectedClasses);
             fixedRankInclued.ShowDialog();
             if (fixedRankInclued.BringSelectedSubj) //如果有要帶入
             {
@@ -595,6 +585,13 @@ namespace 班級定期評量成績單_固定排名
         {
             QueryHelper queryHelper = new QueryHelper();
             this.FixedRankCumputeSubject.Clear();
+           
+            // 將 Dictionary 第一層初始化
+            foreach (string _rankType in new string[] { "年、科、班排名", "類別1排名", "類別2排名" })
+            {
+                this.FixedRankCumputeSubject.Add(_rankType, new List<string>());
+            }
+
             string sql = @"
 SELECT 
 	item_name
@@ -619,37 +616,40 @@ GROUP BY
 
             DataTable dt = queryHelper.Select(sql);
 
+        
             foreach (DataRow dr in dt.Rows)
             {
-                string rankType = "" + dr["rank_type"]; 
-                 
+                string rankType = "" + dr["rank_type"];
+
                 string itemName = "" + dr["item_name"];
 
-                if(rankType== "年排名"|| rankType =="科排名" ||rankType =="班排名") 
+                if (rankType == "年排名" || rankType == "科排名" || rankType == "班排名")
                 {
                     rankType = "年、科、班排名";
                 }
 
-                if (!this.FixedRankCumputeSubject.ContainsKey(rankType))
-                {
-                    this.FixedRankCumputeSubject.Add(rankType, new List<string>());
-                }
-                if (!this.FixedRankCumputeSubject[rankType].Contains(itemName)) 
+              
+              
+                if (!this.FixedRankCumputeSubject[rankType].Contains(itemName))
                 {
                     this.FixedRankCumputeSubject[rankType].Add(itemName);
                 }
             }
         }
 
-        
+
         /// <summary>
         /// 確認是所勾選科目否一致
         /// </summary>
-        private Boolean CheckFixRankSubIsSameAndBack() 
+        private Boolean CheckFixRankSubIsSameAndBack()
         {
             Boolean normalWarmHasShowed = false; // 紀錄 是否跳出ㄊㄧ
             Boolean Tag1WarnHasShowed = false;
             Boolean Tag2WarnHasShowed = false;
+
+            
+
+
 
             Boolean result = true;
 
@@ -657,18 +657,19 @@ GROUP BY
 
             foreach (ListViewItem subj in this.listViewEx1.CheckedItems)
             {
+
                 // 班科年
-                if (!normalWarmHasShowed &&(!this.FixedRankCumputeSubject["年、科、班排名"].Contains(subj.Text) || selectSubjCount!= this.FixedRankCumputeSubject["年、科、班排名"].Count ))
+                if (!normalWarmHasShowed && (!this.FixedRankCumputeSubject["年、科、班排名"].Contains(subj.Text) || selectSubjCount != this.FixedRankCumputeSubject["年、科、班排名"].Count))
                 {
                     normalWarmHasShowed = true;
                     if (DialogResult.No == MsgBox.Show("勾選之列印科目與固定排名計算(班、科、年)之科目不一致。 \n可能導致相關變數有誤，確定列印 ?", MessageBoxButtons.YesNo))
                     {
                         result = false;
                     }
-                  
+
                 }
                 // 類別1
-                if (Tag1WarnHasShowed &&(!this.FixedRankCumputeSubject["類別1排名"].Contains(subj.Text) || selectSubjCount!= this.FixedRankCumputeSubject["類別1排名"].Count ) )
+                if (Tag1WarnHasShowed && (!this.FixedRankCumputeSubject["類別1排名"].Contains(subj.Text) || selectSubjCount != this.FixedRankCumputeSubject["類別1排名"].Count))
                 {
                     Tag1WarnHasShowed = true;
 
@@ -678,7 +679,7 @@ GROUP BY
                     }
                 }
                 // 類別2
-                if (Tag2WarnHasShowed && (!this.FixedRankCumputeSubject["類別2排名"].Contains(subj.Text) || selectSubjCount != this.FixedRankCumputeSubject["類別2排名"].Count)) 
+                if (Tag2WarnHasShowed && (!this.FixedRankCumputeSubject["類別2排名"].Contains(subj.Text) || selectSubjCount != this.FixedRankCumputeSubject["類別2排名"].Count))
                 {
                     Tag2WarnHasShowed = true;
                     if (DialogResult.No == MsgBox.Show("勾選之列印科目與固定排名計算(類別2排名)之科目不一致。 \n可能導致相關變數有誤 ，確定列印 ?", MessageBoxButtons.YesNo))
@@ -691,6 +692,25 @@ GROUP BY
             return result;
         }
 
-  
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+            if (!CheckFixRankSubIsSameAndBack())
+            {
+                return;
+            }
+            else
+            {
+                SaveTemplate(null, null);
+                Program.AvgRd = iptRd.Value;
+                this.DialogResult = System.Windows.Forms.DialogResult.OK;
+                this.Close();
+
+            }
+        }
+
+        private void ConfigForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

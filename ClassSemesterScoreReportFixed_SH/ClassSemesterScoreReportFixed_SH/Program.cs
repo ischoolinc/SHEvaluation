@@ -576,7 +576,7 @@ namespace ClassSemesterScoreReportFixed_SH
                         bkw.ReportProgress(35);
                         int progressCount = 0;
 
-
+                      
                         Dictionary<string, Dictionary<string, SemesterSubjectScoreInfo>> SemesterSubjectScoreInfoDict = new Dictionary<string, Dictionary<string, SemesterSubjectScoreInfo>>();
 
                         #region 學生學期科目成績並整理

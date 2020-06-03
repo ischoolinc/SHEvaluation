@@ -44,9 +44,7 @@ namespace SmartSchool.Evaluation.ImportExport
                 , "取得學分"
                 , "不計學分"
                 , "不需評分"
-                , "註記"
-                , "計算規則-及格標準"
-                , "計算規則-補考標準"
+                , "註記"               
                 , "畢業採計-學分數"
                 , "畢業採計-分項類別"
                 , "畢業採計-必選修"
@@ -128,10 +126,10 @@ namespace SmartSchool.Evaluation.ImportExport
                 {
                     _AccessHelper.StudentHelper.FillSemesterSubjectScore(false, students);
                 }
-                if (e.ExportFields.Contains("計算規則-及格標準"))
-                    _AccessHelper.StudentHelper.FillField("及格標準", students);
-                if (e.ExportFields.Contains("計算規則-補考標準"))
-                    _AccessHelper.StudentHelper.FillField("補考標準", students);
+                //if (e.ExportFields.Contains("計算規則-及格標準"))
+                //    _AccessHelper.StudentHelper.FillField("及格標準", students);
+                //if (e.ExportFields.Contains("計算規則-補考標準"))
+                //    _AccessHelper.StudentHelper.FillField("補考標準", students);
                 foreach (StudentRecord stu in students)
                 {
                     foreach (SemesterSubjectScoreInfo var in stu.SemesterSubjectScoreList)
@@ -165,43 +163,43 @@ namespace SmartSchool.Evaluation.ImportExport
                                     case "不需評分": row.Add(field, var.Detail.GetAttribute("不需評分") == "是" ? "是" : ""); break;
                                     case "註記": row.Add(field, var.Detail.HasAttribute("註記") ? var.Detail.GetAttribute("註記") : ""); break;
 
-                                    case "計算規則-及格標準":
-                                        if (stu.Fields.ContainsKey("及格標準") && stu.Fields["及格標準"] is Dictionary<int, decimal>)
-                                        {
-                                            Dictionary<int, decimal> applyLimit = (Dictionary<int, decimal>)stu.Fields["及格標準"];
-                                            if (applyLimit.ContainsKey(var.GradeYear))
-                                            {
-                                                row.Add(field, "" + applyLimit[var.GradeYear]);
-                                            }
-                                            else
-                                            {
-                                                row.Add(field, "無法判斷");
-                                            }
-                                        }
-                                        else
-                                        {
-                                            row.Add(field, "沒有成績計算規則");
-                                        }
-                                        break;
+                                    //case "計算規則-及格標準":
+                                    //    if (stu.Fields.ContainsKey("及格標準") && stu.Fields["及格標準"] is Dictionary<int, decimal>)
+                                    //    {
+                                    //        Dictionary<int, decimal> applyLimit = (Dictionary<int, decimal>)stu.Fields["及格標準"];
+                                    //        if (applyLimit.ContainsKey(var.GradeYear))
+                                    //        {
+                                    //            row.Add(field, "" + applyLimit[var.GradeYear]);
+                                    //        }
+                                    //        else
+                                    //        {
+                                    //            row.Add(field, "無法判斷");
+                                    //        }
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        row.Add(field, "沒有成績計算規則");
+                                    //    }
+                                    //    break;
 
-                                    case "計算規則-補考標準":
-                                        if (stu.Fields.ContainsKey("補考標準") && stu.Fields["補考標準"] is Dictionary<int, decimal>)
-                                        {
-                                            Dictionary<int, decimal> reexamLimit = (Dictionary<int, decimal>)stu.Fields["補考標準"];
-                                            if (reexamLimit.ContainsKey(var.GradeYear))
-                                            {
-                                                row.Add(field, "" + reexamLimit[var.GradeYear]);
-                                            }
-                                            else
-                                            {
-                                                row.Add(field, "無法判斷");
-                                            }
-                                        }
-                                        else
-                                        {
-                                            row.Add(field, "沒有成績計算規則");
-                                        }
-                                        break;
+                                    //case "計算規則-補考標準":
+                                    //    if (stu.Fields.ContainsKey("補考標準") && stu.Fields["補考標準"] is Dictionary<int, decimal>)
+                                    //    {
+                                    //        Dictionary<int, decimal> reexamLimit = (Dictionary<int, decimal>)stu.Fields["補考標準"];
+                                    //        if (reexamLimit.ContainsKey(var.GradeYear))
+                                    //        {
+                                    //            row.Add(field, "" + reexamLimit[var.GradeYear]);
+                                    //        }
+                                    //        else
+                                    //        {
+                                    //            row.Add(field, "無法判斷");
+                                    //        }
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        row.Add(field, "沒有成績計算規則");
+                                    //    }
+                                    //    break;
 
                                     case "畢業採計-學分數":
                                     case "畢業採計-分項類別":

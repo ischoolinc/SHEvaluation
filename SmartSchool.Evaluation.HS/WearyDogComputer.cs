@@ -2780,11 +2780,19 @@ namespace SmartSchool.Evaluation
                 {
                     bool canResit = false;
                     decimal s = 0;
-                    decimal limit = 40;
+                    //  decimal limit = 40;
+                    decimal limit = 0;
                     if (decimal.TryParse(score.Detail.GetAttribute("原始成績"), out s))
                     {
-                        if (resitLimit.ContainsKey(score.GradeYear)) limit = resitLimit[score.GradeYear];
-                        canResit = (s >= limit);
+                        //if (resitLimit.ContainsKey(score.GradeYear)) limit = resitLimit[score.GradeYear];
+                        //canResit = (s >= limit);
+
+                        decimal rs = 0;
+                        if (decimal.TryParse(score.Detail.GetAttribute("修課補考標準"), out rs))
+                        {
+                            canResit = (s >= rs);
+                        }
+
                     }
                     score.Detail.SetAttribute("達補考標準", canResit ? "是" : "否");
                     score.Detail.SetAttribute("補考標準", limit.ToString());

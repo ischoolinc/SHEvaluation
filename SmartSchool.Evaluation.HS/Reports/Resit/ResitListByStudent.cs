@@ -287,8 +287,8 @@ namespace SmartSchool.Evaluation.Reports
                                 levelString = GetNumber(level);
                             string credit = info.CreditDec().ToString();
                             string score = info.Detail.GetAttribute("﹍Θ罿");
-                            string limit = info.Detail.GetAttribute("干σ夹非");
-
+                            // string limit = info.Detail.GetAttribute("干σ夹非");
+                            string limit = info.Detail.GetAttribute("揭干σ夹非");
                             ws.Cells.CreateRange(index, 1, false).Copy(eachRow);
                             ws.Cells[index, 0].PutValue(className);
                             ws.Cells[index, 1].PutValue(seatNo);

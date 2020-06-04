@@ -382,11 +382,19 @@ namespace SmartSchool.Evaluation.Reports
             aInfo.Add("ゲ匡", info.Require ? "ゲ" : "匡");
             aInfo.Add("场璹", info.Detail.HasAttribute("揭场璹") ? info.Detail.GetAttribute("揭场璹") : "");
             aInfo.Add("﹍Θ罿", info.Detail.HasAttribute("﹍Θ罿") ? info.Detail.GetAttribute("﹍Θ罿") : "");
-            aInfo.Add("干σ夹非", info.Detail.HasAttribute("干σ夹非") ? info.Detail.GetAttribute("干σ夹非") : "");
+
+          //  aInfo.Add("干σ夹非", info.Detail.HasAttribute("干σ夹非") ? info.Detail.GetAttribute("干σ夹非") : "");
+
+            aInfo.Add("干σ夹非", info.Detail.HasAttribute("揭干σ夹非") ? info.Detail.GetAttribute("揭干σ夹非") : "");
+
+
             aInfo.Add("干σΘ罿", info.Detail.HasAttribute("干σΘ罿") ? info.Detail.GetAttribute("干σΘ罿") : "");
-            
-            Dictionary<int, decimal> std = student.Fields["の夹非"] as Dictionary<int, decimal>;
-            aInfo.Add("の夹非", std[info.GradeYear].ToString());
+
+            //       Dictionary<int, decimal> std = student.Fields["の夹非"] as Dictionary<int, decimal>;
+            //       aInfo.Add("の夹非", std[info.GradeYear].ToString());
+
+            aInfo.Add("の夹非", info.Detail.HasAttribute("揭の夹非") ? info.Detail.GetAttribute("揭の夹非") : "");
+
             aInfo.Add("甭揭毙畍", info.Detail.HasAttribute("甭揭毙畍") ? info.Detail.GetAttribute("甭揭毙畍") : "");
             aInfo.Add("眔厩だ", "");
 

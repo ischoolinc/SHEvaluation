@@ -360,10 +360,12 @@ namespace SmartSchool.Evaluation.Reports
                 aInfo.Add("原始成績", info.Detail.HasAttribute("原始成績") ? info.Detail.GetAttribute("原始成績") : "");
                 //aInfo.Add("及格標準", info.Detail.HasAttribute("及格標準") ? info.Detail.GetAttribute("及格標準") : "");
 
-                if (student.Fields.ContainsKey("及格標準") && (student.Fields["及格標準"] as Dictionary<int, decimal>).ContainsKey(info.GradeYear))
-                    aInfo.Add("及格標準", (student.Fields["及格標準"] as Dictionary<int, decimal>)[info.GradeYear].ToString());
-                else
-                    aInfo.Add("及格標準", "");
+                //if (student.Fields.ContainsKey("及格標準") && (student.Fields["及格標準"] as Dictionary<int, decimal>).ContainsKey(info.GradeYear))
+                //    aInfo.Add("及格標準", (student.Fields["及格標準"] as Dictionary<int, decimal>)[info.GradeYear].ToString());
+                //else
+                //    aInfo.Add("及格標準", "");
+
+                aInfo.Add("及格標準", info.Detail.HasAttribute("修課及格標準") ? info.Detail.GetAttribute("修課及格標準") : "");
 
                 aInfo.Add("重修成績", info.Detail.HasAttribute("重修成績") ? info.Detail.GetAttribute("重修成績") : "");
                 aInfo.Add("取得學分", "");

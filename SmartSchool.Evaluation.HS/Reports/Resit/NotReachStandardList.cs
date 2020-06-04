@@ -362,7 +362,8 @@ namespace SmartSchool.Evaluation.Reports
                             data.Add("學號", studentNumber);
                             data.Add("必選修", info.Require ? "必修" : "選修");
                             data.Add("校部訂", info.Detail.HasAttribute("修課校部訂") ? info.Detail.GetAttribute("修課校部訂") : "");
-                            data.Add("補考標準", info.Detail.HasAttribute("補考標準") ? info.Detail.GetAttribute("補考標準") : "");
+                            //   data.Add("補考標準", info.Detail.HasAttribute("補考標準") ? info.Detail.GetAttribute("補考標準") : "");
+                            data.Add("補考標準", info.Detail.HasAttribute("修課補考標準") ? info.Detail.GetAttribute("修課補考標準") : "");
                             data.Add("原始成績", info.Detail.HasAttribute("原始成績") ? info.Detail.GetAttribute("原始成績") : "");
 
                             subjectStudentList[sl].Add(data);

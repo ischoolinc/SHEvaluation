@@ -361,7 +361,9 @@ namespace SmartSchool.Evaluation.Reports
                             data.Add("厩腹", studentNumber);
                             data.Add("ゲ匡", info.Require ? "ゲ" : "匡");
                             data.Add("场璹", info.Detail.HasAttribute("揭场璹") ? info.Detail.GetAttribute("揭场璹") : "");
-                            data.Add("干σ夹非", info.Detail.HasAttribute("干σ夹非") ? info.Detail.GetAttribute("干σ夹非") : "");
+                            //      data.Add("干σ夹非", info.Detail.HasAttribute("干σ夹非") ? info.Detail.GetAttribute("干σ夹非") : "");
+                            
+                            data.Add("干σ夹非", info.Detail.HasAttribute("揭干σ夹非") ? info.Detail.GetAttribute("揭干σ夹非") : "");
                             data.Add("﹍Θ罿", info.Detail.HasAttribute("﹍Θ罿") ? info.Detail.GetAttribute("﹍Θ罿") : "");
 
                             subjectStudentList[sl].Add(data);

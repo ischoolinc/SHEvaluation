@@ -327,11 +327,20 @@ namespace SmartSchool.Evaluation.Reports
 
                         report.Worksheets[0].Cells[index, 10].PutValue("" + maxScore);//學期成績
 
-                        int gradeyear;
-                        if (ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(studentKey.ID) != null && int.TryParse(subjectElement.GetAttribute("年級"), out gradeyear))
-                            report.Worksheets[0].Cells[index, 11].PutValue(ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(studentKey.ID).GetStudentPassScore(studentKey, gradeyear));//及格基分
+                        //int gradeyear;
+                        //if (ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(studentKey.ID) != null && int.TryParse(subjectElement.GetAttribute("年級"), out gradeyear))
+                        //    report.Worksheets[0].Cells[index, 11].PutValue(ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(studentKey.ID).GetStudentPassScore(studentKey, gradeyear));//及格基分
+                        //else
+                        //    report.Worksheets[0].Cells[index, 11].PutValue("--");//及格基分                        
+
+                        if (subjectElement.GetAttribute("修課及格標準") != "")
+                        {
+                            report.Worksheets[0].Cells[index, 11].PutValue(subjectElement.GetAttribute("修課及格標準"));
+                        }
                         else
-                            report.Worksheets[0].Cells[index, 11].PutValue("--");//及格基分                        
+                        {
+                            report.Worksheets[0].Cells[index, 11].PutValue("--");//及格基分
+                        }
 
                         index++;
                     }
@@ -389,7 +398,7 @@ namespace SmartSchool.Evaluation.Reports
                 default:
                     levelNumber = "" + (p);
                     break;
-                #endregion
+                    #endregion
             }
             return levelNumber;
         }

@@ -584,7 +584,7 @@ namespace SmartSchool.Evaluation
                                     //做取得學分判斷
                                     #region 做取得學分判斷
                                     //最高分
-                                    decimal maxScore = sacRecord.FinalScore;
+                                    decimal maxScore = 0;// = sacRecord.FinalScore;
                                     #region 抓最高分
 
                                     string[] scoreNames = new string[] { "原始成績", "學年調整成績", "擇優採計成績", "補考成績", "重修成績" };
@@ -730,7 +730,7 @@ namespace SmartSchool.Evaluation
                                     //做取得學分判斷
                                     #region 做取得學分判斷及填入擇優採計成績
                                     //最高分
-                                    decimal maxScore = sacRecord.FinalScore;
+                                    decimal maxScore = 0;// sacRecord.FinalScore;
                                     #region 抓最高分
                                     string[] scoreNames = new string[] { "原始成績", "學年調整成績", "擇優採計成績", "補考成績", "重修成績" };
                                     foreach (string scorename in scoreNames)
@@ -887,7 +887,7 @@ namespace SmartSchool.Evaluation
                                     //做取得學分判斷
                                     #region 做取得學分判斷及填入擇優採計成績
                                     //最高分
-                                    decimal maxScore = sacRecord.FinalScore;
+                                    decimal maxScore = 0;// = sacRecord.FinalScore;
                                     #region 抓最高分
                                     string[] scoreNames = new string[] { "原始成績", "學年調整成績", "擇優採計成績", "補考成績", "重修成績" };
                                     foreach (string scorename in scoreNames)

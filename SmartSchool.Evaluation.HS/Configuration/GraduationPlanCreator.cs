@@ -11,7 +11,7 @@ namespace SmartSchool.Evaluation.Configuration
     {
         private BackgroundWorker _BKWGraduationPlanLoader;
 
-        private XmlElement _CopyElement;
+        internal XmlElement _CopyElement;
 
         public GraduationPlanCreator()
         {

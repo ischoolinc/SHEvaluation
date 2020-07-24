@@ -125,7 +125,7 @@
             this.comboItem1});
             this.comboBoxEx1.Location = new System.Drawing.Point(82, 71);
             this.comboBoxEx1.Name = "comboBoxEx1";
-            this.comboBoxEx1.Size = new System.Drawing.Size(144, 25);
+            this.comboBoxEx1.Size = new System.Drawing.Size(144, 26);
             this.comboBoxEx1.TabIndex = 1;
             this.comboBoxEx1.SelectedIndexChanged += new System.EventHandler(this.comboBoxEx1_SelectedIndexChanged);
             // 
@@ -194,6 +194,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(240, 135);
             this.Controls.Add(this.panelEx1);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "SubjectTableCreator";
             this.Text = "";

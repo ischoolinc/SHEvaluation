@@ -285,11 +285,13 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.graduationPlanEditor1.Font = new System.Drawing.Font("微軟正黑體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.graduationPlanEditor1.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.graduationPlanEditor1.Location = new System.Drawing.Point(1, 35);
             this.graduationPlanEditor1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.graduationPlanEditor1.Name = "graduationPlanEditor1";
             this.graduationPlanEditor1.Size = new System.Drawing.Size(782, 496);
             this.graduationPlanEditor1.TabIndex = 0;
+            this.graduationPlanEditor1.Load += new System.EventHandler(this.graduationPlanEditor1_Load);
             // 
             // tabItem1
             // 
@@ -418,6 +420,7 @@
             this.MaximizeBox = true;
             this.Name = "FrmGraduationPlanConfiguration";
             this.Text = "班級課程規劃表";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmGraduationPlanConfiguration_FormClosing);
             this.Load += new System.EventHandler(this.FrmGraduationPlanConfiguration_Load);
             this.controlPanel.ResumeLayout(false);
             this.navigationPanePanel1.ResumeLayout(false);

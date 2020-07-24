@@ -74,8 +74,11 @@ namespace SmartSchool.Evaluation.GraduationPlan
                     return var;
                 }
             }
+            //todo 讀近來
             XmlDocument doc = new XmlDocument();
-            doc.LoadXml("<Subject Category=\"\" Credit=\"0\" Domain=\"\" Entry=\"學業\" FullName=\"預設\" Level=\"\" NotIncludedInCalc=\"False\" NotIncludedInCredit=\"False\" Required=\"選修\" RequiredBy=\"校訂\" SubjectName=\"預設\"/>");
+            //doc.LoadXml("<Subject Category=\"\" Credit=\"0\" Domain=\"\" Entry=\"學業\" FullName=\"預設\" Level=\"\" NotIncludedInCalc=\"False\" NotIncludedInCredit=\"False\" Required=\"選修\" RequiredBy=\"校訂\" SubjectName=\"預設\"/>");
+            doc.LoadXml("<Subject Category=\"\" Credit=\"0\" Domain=\"\" Entry=\"學業\" FullName=\"預設\" Level=\"\" NotIncludedInCalc=\"False\" NotIncludedInCredit=\"False\" Required=\"選修\" RequiredBy=\"校訂\" SubjectName=\"預設\" 課程類別=\"\" 開課方式=\"\" 科目屬性=\"\" 學分=\"\" 領域名稱=\"\" 課程名稱=\"\"  授課學期學分=\"\" 課程代碼=\"\"/>");
+
             GraduationPlanSubject defaultResponse =new GraduationPlanSubject(doc.DocumentElement);
             foreach (XmlNode var in GraduationPlan.Instance.CommonPlan.SelectNodes("Subject"))
             {

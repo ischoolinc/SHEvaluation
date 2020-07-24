@@ -62,7 +62,8 @@ namespace SmartSchool.Evaluation.Configuration
 
         private void FrmGraduationPlanConfiguration_Load(object sender, EventArgs e)
         {
-            LoadGraduationPlan(false);
+            //LoadGraduationPlan(false);
+            LoadGraduationPlan(true);
 
         }
 
@@ -187,9 +188,21 @@ namespace SmartSchool.Evaluation.Configuration
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            SaveAdvTreeExpandStatus();
-            if (new GraduationPlanCreator().ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (_GraduationPlanEditor.IsDirty)
             {
+                if (DialogResult.No == MsgBox.Show("變更尚未儲存，確定離開？", MessageBoxButtons.YesNo))
+                {
+                 
+                    return;
+                }
+            }
+            GraduationPlanInfo info = (GraduationPlanInfo)this.advTree1.SelectedNode.Tag;
+            _GraduationPlanEditor.SetSource(info.GraduationPlanElement);
+            SaveAdvTreeExpandStatus();
+            GraduationPlanCreator graduationPlanCreator  =  new GraduationPlanCreator();
+            if (graduationPlanCreator.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                _GraduationPlanEditor.SetSource(graduationPlanCreator._CopyElement);
                 _SelectItem = null;
             }
         }
@@ -211,7 +224,7 @@ namespace SmartSchool.Evaluation.Configuration
             string name = schoolYear + (_SelectItem.Tag as GraduationPlanInfo).TrimName;
 
             EditGraduationPlan.Update(_SelectItem.Name, _GraduationPlanEditor.GetSource(schoolYear));
-
+            this._GraduationPlanEditor.SetSource((_SelectItem.Tag as GraduationPlanInfo).GraduationPlanElement);
             EventHub.Instance.InvokGraduationPlanUpdated(_SelectItem.Name);
         }
 
@@ -311,7 +324,7 @@ namespace SmartSchool.Evaluation.Configuration
             // 針對學年度排序
             #region 針對學年度排序
             List<string> sortedKey = itemNodes.Keys.ToList<string>();
-            sortedKey.Sort(delegate(string key1, string key2)
+            sortedKey.Sort(delegate (string key1, string key2)
             {
                 if (key1 == "未分類") return 1;
                 if (key2 == "未分類") return -1;
@@ -354,6 +367,15 @@ namespace SmartSchool.Evaluation.Configuration
         /// <param name="e"></param>
         private void advTree1_NodeClick(object sender, TreeNodeMouseEventArgs e)
         {
+            if (_GraduationPlanEditor.IsDirty)
+            {
+                if (DialogResult.No == MsgBox.Show("變更尚未儲存，確定離開？", MessageBoxButtons.YesNo))
+                {
+                    return;
+                }
+            }
+
+
             if (!(e.Node.Tag is GraduationPlanInfo))
             {
                 // 假如使用者點到母節點, 清掉選擇選項, 以免有問題
@@ -574,6 +596,7 @@ namespace SmartSchool.Evaluation.Configuration
         private void btnEditName_Click(object sender, EventArgs e)
         {
             if (_SelectItem == null) return;
+
             SaveAdvTreeExpandStatus();
             FrmReviseRuleName frm = new FrmReviseRuleName(
                                     "修改課程規劃表名稱",
@@ -639,5 +662,22 @@ namespace SmartSchool.Evaluation.Configuration
         }
         #endregion 處理名稱修改
 
+        private void graduationPlanEditor1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void FrmGraduationPlanConfiguration_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (_GraduationPlanEditor.IsDirty)
+            {
+                if (DialogResult.No == MsgBox.Show("變更尚未儲存，確定離開？", MessageBoxButtons.YesNo))
+                {
+                    e.Cancel = true;
+                    return;
+                }
+
+            }
+        }
     }
 }

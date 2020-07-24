@@ -243,6 +243,9 @@ namespace SmartSchool.Evaluation.GraduationPlan
             }
         }
 
+        /// <summary>
+        /// 所有課程規劃表Collections
+        /// </summary>
         public GraduationPlanInfoCollection Items
         {
             get

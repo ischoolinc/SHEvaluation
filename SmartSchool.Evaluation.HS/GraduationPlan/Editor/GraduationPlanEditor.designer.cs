@@ -66,6 +66,14 @@
             this.Column15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column17 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Column16 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.SubjectCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.課程類別 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.開課方式 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.科目屬性 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.課程名稱 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.領域名稱 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.學分 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.授課學期學分 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewX1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -100,7 +108,15 @@
             this.Column14,
             this.Column15,
             this.Column17,
-            this.Column16});
+            this.Column16,
+            this.SubjectCode,
+            this.課程類別,
+            this.開課方式,
+            this.科目屬性,
+            this.課程名稱,
+            this.領域名稱,
+            this.學分,
+            this.授課學期學分});
             dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle10.Font = new System.Drawing.Font("微軟正黑體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -112,6 +128,7 @@
             this.dataGridViewX1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewX1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dataGridViewX1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
+            this.dataGridViewX1.ImeMode = System.Windows.Forms.ImeMode.On;
             this.dataGridViewX1.Location = new System.Drawing.Point(0, 0);
             this.dataGridViewX1.Name = "dataGridViewX1";
             this.dataGridViewX1.RowHeadersWidth = 24;
@@ -119,6 +136,7 @@
             this.dataGridViewX1.Size = new System.Drawing.Size(928, 515);
             this.dataGridViewX1.TabIndex = 0;
             this.dataGridViewX1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridViewX1_CellBeginEdit);
+            this.dataGridViewX1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewX1_CellContentClick);
             this.dataGridViewX1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewX1_CellEndEdit);
             this.dataGridViewX1.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewX1_CellEnter);
             this.dataGridViewX1.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewX1_CellMouseClick);
@@ -163,7 +181,7 @@
             // 
             // Column1
             // 
-            this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.Column1.FillWeight = 80F;
             this.Column1.HeaderText = "類別";
             this.Column1.MinimumWidth = 74;
@@ -171,21 +189,23 @@
             this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.Column1.Visible = false;
+            this.Column1.Width = 74;
             // 
             // Column2
             // 
-            this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.Column2.FillWeight = 80F;
             this.Column2.HeaderText = "領域";
             this.Column2.MinimumWidth = 60;
             this.Column2.Name = "Column2";
             this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column2.Width = 60;
             // 
             // Column13
             // 
             this.Column13.AutoComplete = false;
-            this.Column13.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column13.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.Column13.DisplayStyleForCurrentCellOnly = true;
             this.Column13.FillWeight = 80F;
             this.Column13.HeaderText = "分項類別";
@@ -198,6 +218,7 @@
             "專業科目"});
             this.Column13.MinimumWidth = 85;
             this.Column13.Name = "Column13";
+            this.Column13.Width = 85;
             // 
             // Column5
             // 
@@ -348,6 +369,56 @@
             this.Column16.Name = "Column16";
             this.Column16.Width = 40;
             // 
+            // SubjectCode
+            // 
+            this.SubjectCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.SubjectCode.HeaderText = "科目代碼";
+            this.SubjectCode.Name = "SubjectCode";
+            this.SubjectCode.ReadOnly = true;
+            this.SubjectCode.Width = 64;
+            // 
+            // 課程類別
+            // 
+            this.課程類別.HeaderText = "課程類別";
+            this.課程類別.Name = "課程類別";
+            this.課程類別.Visible = false;
+            // 
+            // 開課方式
+            // 
+            this.開課方式.HeaderText = "開課方式";
+            this.開課方式.Name = "開課方式";
+            this.開課方式.Visible = false;
+            // 
+            // 科目屬性
+            // 
+            this.科目屬性.HeaderText = "科目屬性";
+            this.科目屬性.Name = "科目屬性";
+            this.科目屬性.Visible = false;
+            // 
+            // 課程名稱
+            // 
+            this.課程名稱.HeaderText = "課程名稱";
+            this.課程名稱.Name = "課程名稱";
+            this.課程名稱.Visible = false;
+            // 
+            // 領域名稱
+            // 
+            this.領域名稱.HeaderText = "領域名稱";
+            this.領域名稱.Name = "領域名稱";
+            this.領域名稱.Visible = false;
+            // 
+            // 學分
+            // 
+            this.學分.HeaderText = "學分";
+            this.學分.Name = "學分";
+            this.學分.Visible = false;
+            // 
+            // 授課學期學分
+            // 
+            this.授課學期學分.HeaderText = "授課學期學分";
+            this.授課學期學分.Name = "授課學期學分";
+            this.授課學期學分.Visible = false;
+            // 
             // GraduationPlanEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -388,7 +459,14 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column15;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Column17;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Column16;
-
+        private System.Windows.Forms.DataGridViewTextBoxColumn SubjectCode;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 課程類別;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 開課方式;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 科目屬性;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 課程名稱;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 領域名稱;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 學分;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 授課學期學分;
     }
 }
 

@@ -11,16 +11,17 @@ using FISCA.Presentation.Controls;
 using Aspose.Cells;
 using System.IO;
 
+
 namespace StudentDuplicateSubjectCheck
 {
-    public partial class HasPassScoreForm : BaseForm
+    public partial class hasSubjectCodeForm : BaseForm
     {
         List<string> studentIDList = new List<string>();
         BackgroundWorker _bgExport = new BackgroundWorker();
         List<DataRow> _dataRowList = new List<DataRow>();
 
 
-        public HasPassScoreForm()
+        public hasSubjectCodeForm()
         {
             InitializeComponent();
             _bgExport.DoWork += _bgExport_DoWork;
@@ -39,12 +40,12 @@ namespace StudentDuplicateSubjectCheck
             if (e.Error == null)
             {
                 Workbook wb = e.Result as Workbook;
-                wb.FileName = "已有及格補考標準清單";
+                wb.FileName = "已有課程代碼清單";
 
                 string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
-                path = Path.Combine(path, "已有及格補考標準清單" + ".xlsx");
+                path = Path.Combine(path, "已有課程代碼清單" + ".xlsx");
 
                 if (File.Exists(path))
                 {
@@ -69,7 +70,7 @@ namespace StudentDuplicateSubjectCheck
                 {
                     System.Windows.Forms.SaveFileDialog sd = new System.Windows.Forms.SaveFileDialog();
                     sd.Title = "另存新檔";
-                    sd.FileName = "已有及格補考標準清單.xlsx";
+                    sd.FileName = "已有課程代碼清單.xlsx";
                     sd.Filter = "Excel檔案 (*.xlsx)|*.xlsx|所有檔案 (*.*)|*.*";
                     if (sd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
@@ -95,7 +96,7 @@ namespace StudentDuplicateSubjectCheck
         {
             try
             {
-                Workbook wb = new Workbook(new System.IO.MemoryStream(Properties.Resources.已有及格補考標準清單));
+                Workbook wb = new Workbook(new System.IO.MemoryStream(Properties.Resources.已有課程代碼清單));
                 int rowIdx = 1;
                 foreach (DataRow dr in _dataRowList)
                 {
@@ -104,9 +105,8 @@ namespace StudentDuplicateSubjectCheck
                     wb.Worksheets[0].Cells[rowIdx, 2].PutValue(dr["course_name"].ToString());
                     wb.Worksheets[0].Cells[rowIdx, 3].PutValue(dr["student_name"].ToString());
                     wb.Worksheets[0].Cells[rowIdx, 4].PutValue(dr["student_number"].ToString());
-                    wb.Worksheets[0].Cells[rowIdx, 5].PutValue(dr["passing_standard"].ToString());
-                    wb.Worksheets[0].Cells[rowIdx, 6].PutValue(dr["makeup_standard"].ToString());
-                    wb.Worksheets[0].Cells[rowIdx, 7].PutValue(dr["remark"].ToString());
+                    wb.Worksheets[0].Cells[rowIdx, 5].PutValue(dr["subject_code"].ToString());
+
                     rowIdx++;
                 }
 
@@ -120,7 +120,7 @@ namespace StudentDuplicateSubjectCheck
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.Yes;
+            DialogResult = DialogResult.Cancel;
         }
 
         private void btnAddTemp_Click(object sender, EventArgs e)
@@ -158,9 +158,7 @@ namespace StudentDuplicateSubjectCheck
                 dgData.Rows[rowIdx].Cells[colCourseName.Index].Value = dr["course_name"].ToString();
                 dgData.Rows[rowIdx].Cells[colStudentName.Index].Value = dr["student_name"].ToString();
                 dgData.Rows[rowIdx].Cells[colStudentNumber.Index].Value = dr["student_number"].ToString();
-                dgData.Rows[rowIdx].Cells[colPassingStandard.Index].Value = dr["passing_standard"].ToString();
-                dgData.Rows[rowIdx].Cells[colMakeupStandard.Index].Value = dr["makeup_standard"].ToString();
-                dgData.Rows[rowIdx].Cells[colRemark.Index].Value = dr["remark"].ToString();
+                dgData.Rows[rowIdx].Cells[colSubjCode.Index].Value = dr["subject_code"].ToString();
             }
         }
 
@@ -178,6 +176,11 @@ namespace StudentDuplicateSubjectCheck
         private void lblMsg_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnWrite_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Yes;
         }
     }
 }

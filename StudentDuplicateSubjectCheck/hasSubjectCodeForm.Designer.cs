@@ -1,6 +1,6 @@
 ﻿namespace StudentDuplicateSubjectCheck
 {
-    partial class HasPassScoreForm
+    partial class hasSubjectCodeForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,20 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgData = new DevComponents.DotNetBar.Controls.DataGridViewX();
             this.colSchoolYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSemester = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCourseName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colStudentName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colStudentNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colPassingStandard = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMakeupStandard = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colRemark = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSubjCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnAddTemp = new DevComponents.DotNetBar.ButtonX();
             this.btnExportList = new DevComponents.DotNetBar.ButtonX();
             this.btnExit = new DevComponents.DotNetBar.ButtonX();
             this.lblMsg = new DevComponents.DotNetBar.LabelX();
+            this.btnWrite = new DevComponents.DotNetBar.ButtonX();
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).BeginInit();
             this.SuspendLayout();
             // 
@@ -61,17 +60,15 @@
             this.colCourseName,
             this.colStudentName,
             this.colStudentNumber,
-            this.colPassingStandard,
-            this.colMakeupStandard,
-            this.colRemark});
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgData.DefaultCellStyle = dataGridViewCellStyle1;
+            this.colSubjCode});
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgData.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgData.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dgData.Location = new System.Drawing.Point(22, 23);
             this.dgData.Name = "dgData";
@@ -112,23 +109,13 @@
             this.colStudentNumber.Name = "colStudentNumber";
             this.colStudentNumber.ReadOnly = true;
             // 
-            // colPassingStandard
+            // colSubjCode
             // 
-            this.colPassingStandard.HeaderText = "及格標準";
-            this.colPassingStandard.Name = "colPassingStandard";
-            this.colPassingStandard.ReadOnly = true;
-            // 
-            // colMakeupStandard
-            // 
-            this.colMakeupStandard.HeaderText = "補考標準";
-            this.colMakeupStandard.Name = "colMakeupStandard";
-            this.colMakeupStandard.ReadOnly = true;
-            // 
-            // colRemark
-            // 
-            this.colRemark.HeaderText = "備註";
-            this.colRemark.Name = "colRemark";
-            this.colRemark.ReadOnly = true;
+            this.colSubjCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colSubjCode.HeaderText = "課程代碼";
+            this.colSubjCode.Name = "colSubjCode";
+            this.colSubjCode.ReadOnly = true;
+            this.colSubjCode.Width = 85;
             // 
             // btnAddTemp
             // 
@@ -171,7 +158,7 @@
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 25);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.btnExit.TabIndex = 3;
+            this.btnExit.TabIndex = 4;
             this.btnExit.Text = " 離開";
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
@@ -187,23 +174,39 @@
             this.lblMsg.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.lblMsg.Location = new System.Drawing.Point(262, 279);
             this.lblMsg.Name = "lblMsg";
-            this.lblMsg.Size = new System.Drawing.Size(529, 23);
+            this.lblMsg.Size = new System.Drawing.Size(459, 23);
             this.lblMsg.TabIndex = 4;
             this.lblMsg.Click += new System.EventHandler(this.lblMsg_Click);
             // 
-            // HasPassScoreForm
+            // btnWrite
+            // 
+            this.btnWrite.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnWrite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnWrite.AutoSize = true;
+            this.btnWrite.BackColor = System.Drawing.Color.Transparent;
+            this.btnWrite.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnWrite.Location = new System.Drawing.Point(735, 278);
+            this.btnWrite.Name = "btnWrite";
+            this.btnWrite.Size = new System.Drawing.Size(75, 25);
+            this.btnWrite.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.btnWrite.TabIndex = 3;
+            this.btnWrite.Text = "覆蓋";
+            this.btnWrite.Click += new System.EventHandler(this.btnWrite_Click);
+            // 
+            // hasSubjectCodeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(903, 315);
+            this.Controls.Add(this.btnWrite);
             this.Controls.Add(this.lblMsg);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnExportList);
             this.Controls.Add(this.btnAddTemp);
             this.Controls.Add(this.dgData);
             this.DoubleBuffered = true;
-            this.Name = "HasPassScoreForm";
-            this.Text = "已有及格標準或補考標準學生清單";
+            this.Name = "hasSubjectCodeForm";
+            this.Text = "已有課程代碼學生清單";
             this.Load += new System.EventHandler(this.HasPassScoreForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).EndInit();
             this.ResumeLayout(false);
@@ -217,14 +220,13 @@
         private DevComponents.DotNetBar.ButtonX btnAddTemp;
         private DevComponents.DotNetBar.ButtonX btnExportList;
         private DevComponents.DotNetBar.ButtonX btnExit;
+        private DevComponents.DotNetBar.LabelX lblMsg;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSchoolYear;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSemester;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCourseName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colStudentName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colStudentNumber;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colPassingStandard;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colMakeupStandard;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colRemark;
-        private DevComponents.DotNetBar.LabelX lblMsg;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSubjCode;
+        private DevComponents.DotNetBar.ButtonX btnWrite;
     }
 }

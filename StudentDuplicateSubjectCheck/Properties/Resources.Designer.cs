@@ -69,5 +69,15 @@ namespace StudentDuplicateSubjectCheck.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   查詢類型 System.Byte[] 的當地語系化資源。
+        /// </summary>
+        internal static byte[] 已有課程代碼清單 {
+            get {
+                object obj = ResourceManager.GetObject("已有課程代碼清單", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

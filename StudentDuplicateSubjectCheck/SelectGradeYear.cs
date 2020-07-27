@@ -30,8 +30,12 @@ namespace StudentDuplicateSubjectCheck
         string errorMessage = "";
         DataTable dtErrorTable = new DataTable();
         List<DataRow> hasScoreList = new List<DataRow>();
+        List<DataRow> hasSubjectCodeList = new List<DataRow>();
+        DataTable dtSubjectCode = new DataTable();
+
         List<SCAttendRecord> scaDuplicateList = new List<SCAttendRecord>();
 
+        bool checkStandSocrePass = false;
         Dictionary<string, List<string>> dataCompareDict = new Dictionary<string, List<string>>(); // <sid,<科目名稱 + _ + 級別>>
 
         public SelectGradeYear()
@@ -84,14 +88,6 @@ namespace StudentDuplicateSubjectCheck
                 }
                 else
                 {
-                    // 已有及格補考標準
-                    if (hasScoreList.Count > 0)
-                    {
-                        HasPassScoreForm hpsf = new HasPassScoreForm();
-                        hpsf.SetDataRows(hasScoreList);
-                        hpsf.ShowDialog();
-                    }
-
 
                     FISCA.Presentation.MotherForm.SetStatusBarMessage("檢查本學期重覆修課完畢。");
 
@@ -115,6 +111,7 @@ namespace StudentDuplicateSubjectCheck
             if (e.ProgressPercentage == 10)
             {
                 FISCA.Presentation.MotherForm.SetStatusBarMessage("取得基本資料中...", e.ProgressPercentage);
+
             }
             else if (e.ProgressPercentage == 20)
             {
@@ -131,6 +128,7 @@ namespace StudentDuplicateSubjectCheck
             else if (e.ProgressPercentage == 60)
             {
                 FISCA.Presentation.MotherForm.SetStatusBarMessage("取得課程規劃資料中...", e.ProgressPercentage);
+
             }
             else if (e.ProgressPercentage == 70)
             {
@@ -143,13 +141,86 @@ namespace StudentDuplicateSubjectCheck
             {
                 FISCA.Presentation.MotherForm.SetStatusBarMessage("資料處理中...", e.ProgressPercentage);
             }
+
+
+            MyUserState mus = e.UserState as MyUserState;
+            if (mus != null)
+            {
+                if (mus.Name == "及格補考標準")
+                {
+                    if (hasScoreList.Count > 0)
+                    {
+                        HasPassScoreForm hpsf = new HasPassScoreForm();
+                        hpsf.StartPosition = FormStartPosition.CenterScreen;
+                        hpsf.SetDataRows(hasScoreList);
+                        hpsf.ShowDialog();
+                    }
+                }
+
+                if (mus.Name == "課程代碼")
+                {
+
+                    bool isUpdate = false;
+                    if (hasSubjectCodeList.Count > 0)
+                    {
+                        hasSubjectCodeForm hscf = new hasSubjectCodeForm();
+                        hscf.StartPosition = FormStartPosition.CenterScreen;
+                        hscf.SetDataRows(hasSubjectCodeList);
+                        // 確定覆蓋
+                        if (hscf.ShowDialog() == DialogResult.Yes)
+                        {
+                            isUpdate = true;
+                        }
+                    }
+                    else
+                    {
+                        isUpdate = true;
+                    }
+
+                    if (isUpdate)
+                    {
+                        // 回寫課程規劃課程代碼到修課紀錄上科目代碼
+                        List<string> updateScSubjCodeList = new List<string>();
+                        foreach (DataRow dr in dtSubjectCode.Rows)
+                        {
+                            string sc_id = dr["sc_attend_id"].ToString();
+                            string subj_code = "";
+                            if (dr["subject_code"] != null)
+                            {
+                                subj_code = dr["subject_code"].ToString();
+                            }
+
+                            string updateStr = "UPDATE " +
+                                "sc_attend " +
+                                "SET subject_code = '" + subj_code + "' " +
+                                "WHERE " +
+                                "id =" + sc_id + ";";
+                            updateScSubjCodeList.Add(updateStr);
+                        }
+
+                        if (updateScSubjCodeList.Count > 0)
+                        {
+                            try
+                            {
+                                UpdateHelper uhSubj = new UpdateHelper();
+                                uhSubj.Execute(updateScSubjCodeList);
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("覆蓋課程代碼發生錯誤" + ex.Message);
+
+                                //Console.WriteLine(ex.Message);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         private void _backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             this.errorMessage = "";
             this.dtErrorTable.Rows.Clear();
-
             _backgroundWorker.ReportProgress(10);
 
             //清空上次資料
@@ -399,6 +470,7 @@ namespace StudentDuplicateSubjectCheck
                 ",sc_attend.passing_standard" +
                 ",sc_attend.makeup_standard" +
                 ",sc_attend.remark" +
+                ",sc_attend.subject_code" +
                 " FROM " +
                 "course INNER JOIN sc_attend" +
                 " ON course.id = sc_attend.ref_course_id INNER JOIN" +
@@ -409,7 +481,7 @@ namespace StudentDuplicateSubjectCheck
 
             List<DataRow> updateScoreList = new List<DataRow>();
             hasScoreList.Clear();
-
+            hasSubjectCodeList.Clear();
             // 比對填入 data table
             foreach (DataRow dr in dtScAttend.Rows)
             {
@@ -425,6 +497,22 @@ namespace StudentDuplicateSubjectCheck
                 if (dr["makeup_standard"] != null)
                     if (dr["makeup_standard"].ToString() != "")
                         hasScore = true;
+
+
+                // 是否有課程代碼
+                bool hasSubjectCode = false;
+
+                if (dr["subject_code"] != null)
+                {
+                    if (dr["subject_code"].ToString() != "")
+                        hasSubjectCode = true;
+                }
+
+                if (hasSubjectCode)
+                {
+                    hasSubjectCodeList.Add(dr);
+                }
+
 
                 if (hasScore)
                 {
@@ -454,7 +542,13 @@ namespace StudentDuplicateSubjectCheck
 
             }
 
-            _backgroundWorker.ReportProgress(50);
+            MyUserState mus = new MyUserState();
+            mus.Name = "及格補考標準";
+            mus.Value = "50";
+            _backgroundWorker.ReportProgress(50, mus);
+            // _backgroundWorker.ReportProgress(50);
+
+
             // 更新修課紀錄
             List<string> sbUpdateScAttend = new List<string>();
             // 只更新沒有及格補考標準
@@ -497,6 +591,10 @@ namespace StudentDuplicateSubjectCheck
 
 
             _backgroundWorker.ReportProgress(60);
+
+            // 處理課程代碼
+
+
 
             // 學生取得課程規劃 
             string qrygpPlan = "SELECT " +
@@ -601,7 +699,7 @@ namespace StudentDuplicateSubjectCheck
                 "WHERE ref_student_id IN (" + string.Join(",", studentIDList.ToArray()) + ") " +
                 "AND course.school_year=" + schoolYear + " AND course.semester=" + semester + " AND subject is not null";
             QueryHelper qhSubjectCode = new QueryHelper();
-            DataTable dtSubjectCode = qhSubjectCode.Select(qryScAttendSubjectCode);
+            dtSubjectCode = qhSubjectCode.Select(qryScAttendSubjectCode);
 
             foreach (DataRow dr in dtSubjectCode.Rows)
             {
@@ -622,46 +720,50 @@ namespace StudentDuplicateSubjectCheck
                             if (elm.Attribute("課程代碼") != null)
                                 subjCode = elm.Attribute("課程代碼").Value;
 
-                            if (dr["subject_name"].ToString() == subjName && dr["subj_level"].ToString() == subjLevel)
+                            if (dr["subject_name"].ToString() == subjName)
                                 dr["subject_code"] = subjCode;
                         }
                     }
                 }
             }
 
-            _backgroundWorker.ReportProgress(70);
+            MyUserState mus1 = new MyUserState();
+            mus1.Name = "課程代碼";
+            mus1.Value = "70";
+            _backgroundWorker.ReportProgress(70, mus1);
 
-            // 回寫課程規劃課程代碼到修課紀錄上科目代碼
-            List<string> updateScSubjCodeList = new List<string>();
-            foreach (DataRow dr in dtSubjectCode.Rows)
-            {
-                string sc_id = dr["sc_attend_id"].ToString();
-                string subj_code = "";
-                if (dr["subject_code"] != null)
-                {
-                    subj_code = dr["subject_code"].ToString();
-                }
 
-                string updateStr = "UPDATE " +
-                    "sc_attend " +
-                    "SET subject_code = '" + subj_code + "' " +
-                    "WHERE " +
-                    "id =" + sc_id + ";";
-                updateScSubjCodeList.Add(updateStr);
-            }
+            //// 回寫課程規劃課程代碼到修課紀錄上科目代碼
+            //List<string> updateScSubjCodeList = new List<string>();
+            //foreach (DataRow dr in dtSubjectCode.Rows)
+            //{
+            //    string sc_id = dr["sc_attend_id"].ToString();
+            //    string subj_code = "";
+            //    if (dr["subject_code"] != null)
+            //    {
+            //        subj_code = dr["subject_code"].ToString();
+            //    }
 
-            if (updateScSubjCodeList.Count > 0)
-            {
-                try
-                {
-                    UpdateHelper uhSubj = new UpdateHelper();
-                    uhSubj.Execute(updateScSubjCodeList);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
+            //    string updateStr = "UPDATE " +
+            //        "sc_attend " +
+            //        "SET subject_code = '" + subj_code + "' " +
+            //        "WHERE " +
+            //        "id =" + sc_id + ";";
+            //    updateScSubjCodeList.Add(updateStr);
+            //}
+
+            //if (updateScSubjCodeList.Count > 0)
+            //{
+            //    try
+            //    {
+            //        UpdateHelper uhSubj = new UpdateHelper();
+            //        uhSubj.Execute(updateScSubjCodeList);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Console.WriteLine(ex.Message);
+            //    }
+            //}
 
 
             _backgroundWorker.ReportProgress(75);

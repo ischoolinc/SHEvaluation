@@ -141,6 +141,13 @@
     <Compile Include="HasPassScoreForm.Designer.cs">
       <DependentUpon>HasPassScoreForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="hasSubjectCodeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="hasSubjectCodeForm.Designer.cs">
+      <DependentUpon>hasSubjectCodeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MyUserState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -205,6 +212,9 @@
     <EmbeddedResource Include="HasPassScoreForm.resx">
       <DependentUpon>HasPassScoreForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="hasSubjectCodeForm.resx">
+      <DependentUpon>hasSubjectCodeForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -216,6 +226,7 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="Template\已有及格補考標準清單.xls" />
+    <None Include="Template\已有課程代碼清單.xls" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -52,9 +52,8 @@ namespace SmartSchool.Evaluation.ImportExport
             };
             wizard.Options.AddRange(autoCheckPass, manulCheckPass);
             wizard.PackageLimit = 3000;
-            wizard.ImportableFields.AddRange("科目", "科目級別", "學年度", "學期", "英文名稱", "學分數", "分項類別", "成績年級", "必選修", "校部訂", "原始成績", "補考成績", "重修成績", "手動調整成績", "學年調整成績", "取得學分", "不計學分", "不需評分", "註記", "是否補修成績", "重修學年度", "重修學期");
+            wizard.ImportableFields.AddRange("科目", "科目級別", "學年度", "學期", "英文名稱", "學分數", "分項類別", "成績年級", "必選修", "校部訂", "原始成績", "補考成績", "重修成績", "手動調整成績", "學年調整成績", "取得學分", "不計學分", "不需評分", "註記", "是否補修成績", "重修學年度", "重修學期", "修課及格標準", "修課補考標準", "修課科目代碼", "修課備註", "修課直接指定總成績");
             wizard.RequiredFields.AddRange("科目", "科目級別", "學年度", "學期");
-
             wizard.ValidateStart += delegate (object sender, SmartSchool.API.PlugIn.Import.ValidateStartEventArgs e)
             {
                 #region ValidateStart
@@ -146,6 +145,9 @@ namespace SmartSchool.Evaluation.ImportExport
                         case "重修成績":
                         case "手動調整成績":
                         case "學年調整成績":
+                        case "修課及格標準":
+                        case "修課補考標準":
+                        case "修課直接指定總成績":
                             if (value != "" && !decimal.TryParse(value, out d))
                             {
                                 inputFormatPass &= false;
@@ -562,6 +564,17 @@ namespace SmartSchool.Evaluation.ImportExport
                                                         hasChanged = true;
                                                     }
                                                     break;
+                                                case "修課及格標準":
+                                                case "修課補考標準":
+                                                case "修課直接指定總成績":
+                                                case "修課備註":
+                                                case "修課科目代碼":
+                                                    if (score.Detail.GetAttribute(field) != value)
+                                                    {
+                                                        score.Detail.SetAttribute(field, value);
+                                                        hasChanged = true;
+                                                    }
+                                                    break;
 
                                             }
                                         }
@@ -689,6 +702,11 @@ namespace SmartSchool.Evaluation.ImportExport
                                                 case "補考成績":
                                                 case "重修成績":
                                                 case "學年調整成績":
+                                                case "修課及格標準":
+                                                case "修課補考標準":
+                                                case "修課直接指定總成績":
+                                                case "修課備註":
+                                                case "修課科目代碼":
                                                     newScore.SetAttribute(field, value);
                                                     break;
                                                 case "不計學分":

@@ -160,6 +160,7 @@ namespace StudentDuplicateSubjectCheck
                 if (mus.Name == "課程代碼")
                 {
 
+                    bool isUpdateNull = false;
                     bool isUpdate = false;
                     if (hasSubjectCodeList.Count > 0)
                     {
@@ -171,16 +172,22 @@ namespace StudentDuplicateSubjectCheck
                         {
                             isUpdate = true;
                         }
+                        else
+                        {
+                            // 當選離開時，只更新有空值得課程代碼。
+                            isUpdateNull = true;
+                        }
                     }
                     else
                     {
                         isUpdate = true;
                     }
 
+                    List<string> updateScSubjCodeList = new List<string>();
+
                     if (isUpdate)
                     {
-                        // 回寫課程規劃課程代碼到修課紀錄上科目代碼
-                        List<string> updateScSubjCodeList = new List<string>();
+                        // 回寫課程規劃課程代碼到修課紀錄上科目代碼                        
                         foreach (DataRow dr in dtSubjectCode.Rows)
                         {
                             string sc_id = dr["sc_attend_id"].ToString();
@@ -197,22 +204,56 @@ namespace StudentDuplicateSubjectCheck
                                 "id =" + sc_id + ";";
                             updateScSubjCodeList.Add(updateStr);
                         }
+                    }
 
-                        if (updateScSubjCodeList.Count > 0)
+                    if (isUpdateNull)
+                    {
+                        // 回寫課程規劃課程代碼到修課紀錄上科目代碼空值                        
+                        foreach (DataRow dr in dtSubjectCode.Rows)
                         {
-                            try
+                            bool add = true;
+                            string sc_id = dr["sc_attend_id"].ToString();
+                            string subj_code = "";
+                            if (dr["subject_code"] != null)
                             {
-                                UpdateHelper uhSubj = new UpdateHelper();
-                                uhSubj.Execute(updateScSubjCodeList);
+                                subj_code = dr["subject_code"].ToString();
                             }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show("覆蓋課程代碼發生錯誤" + ex.Message);
 
-                                //Console.WriteLine(ex.Message);
+                            // 原資料
+                            if (dr["subject_code_old"] != null)
+                            {
+                                if (!string.IsNullOrWhiteSpace(dr["subject_code_old"].ToString()) || string.IsNullOrWhiteSpace(subj_code))
+                                    add = false;
+                            }
+
+
+                            if (add)
+                            {
+                                string updateStr = "UPDATE " +
+                               "sc_attend " +
+                               "SET subject_code = '" + subj_code + "' " +
+                               "WHERE " +
+                               "id =" + sc_id + ";";
+                                updateScSubjCodeList.Add(updateStr);
                             }
                         }
                     }
+
+                    if (updateScSubjCodeList.Count > 0)
+                    {
+                        try
+                        {
+                            UpdateHelper uhSubj = new UpdateHelper();
+                            uhSubj.Execute(updateScSubjCodeList);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("覆蓋課程代碼發生錯誤" + ex.Message);
+
+                            //Console.WriteLine(ex.Message);
+                        }
+                    }
+
                 }
             }
         }
@@ -692,6 +733,7 @@ namespace StudentDuplicateSubjectCheck
                 ",course.subj_level AS subj_level" +
                 ",ref_student_id AS student_id" +
                 ",sc_attend.subject_code " +
+                ", sc_attend.subject_code AS subject_code_old " +
                 "FROM " +
                 "course " +
                 "INNER JOIN sc_attend " +

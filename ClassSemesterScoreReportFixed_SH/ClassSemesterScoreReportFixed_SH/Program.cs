@@ -603,15 +603,7 @@ namespace ClassSemesterScoreReportFixed_SH
                                         continue;
 
                                     if (smScore.Detail.GetAttribute("不計學分") == "是")
-                                        continue;
-
-                                    // 建立學生學期成績索引
-                                    if (!SemesterSubjectScoreInfoDict.ContainsKey(stud.StudentID))
-                                        SemesterSubjectScoreInfoDict.Add(stud.StudentID, new Dictionary<string, SemesterSubjectScoreInfo>());
-
-                                    string subjKey = smScore.Subject + smScore.Level;
-                                    if (!SemesterSubjectScoreInfoDict[stud.StudentID].ContainsKey(subjKey))
-                                        SemesterSubjectScoreInfoDict[stud.StudentID].Add(subjKey, smScore);
+                                        continue;                                  
 
                                     // 累計應得學分
                                     Global._StudCreditDict[stud.StudentID].shouldGetTotalCredit += smScore.Credit;
@@ -622,6 +614,14 @@ namespace ClassSemesterScoreReportFixed_SH
 
                                     if (smScore.SchoolYear == sSchoolYear && smScore.Semester == sSemester)
                                     {
+                                        // 建立學生學期成績索引
+                                        if (!SemesterSubjectScoreInfoDict.ContainsKey(stud.StudentID))
+                                            SemesterSubjectScoreInfoDict.Add(stud.StudentID, new Dictionary<string, SemesterSubjectScoreInfo>());
+
+                                        string subjKey = smScore.Subject + smScore.Level;
+                                        if (!SemesterSubjectScoreInfoDict[stud.StudentID].ContainsKey(subjKey))
+                                            SemesterSubjectScoreInfoDict[stud.StudentID].Add(subjKey, smScore);
+
                                         // 學期應得學分
                                         Global._StudCreditDict[stud.StudentID].shouldGetCredit += smScore.Credit;
 
@@ -711,17 +711,22 @@ namespace ClassSemesterScoreReportFixed_SH
                                     {
                                         foreach (SemesterSubjectScoreInfo subjScore in studentSubjectScoreDict[studentID][subjectName].Values)
                                         {
-                                            string subjectLevel = subjScore.Level;
-                                            string credit = "" + subjScore.Credit;
-                                            if (conf.PrintSubjectList.Contains(subjectName))
+                                            // 過濾畫面上選的學年度學期
+                                            if (subjScore.SchoolYear == sSchoolYear && subjScore.Semester == sSemester)
                                             {
-                                                if (!classSubjects.ContainsKey(subjectName))
-                                                    classSubjects.Add(subjectName, new Dictionary<string, List<string>>());
-                                                if (!classSubjects[subjectName].ContainsKey(subjectLevel))
-                                                    classSubjects[subjectName].Add(subjectLevel, new List<string>());
-                                                if (!classSubjects[subjectName][subjectLevel].Contains(credit))
-                                                    classSubjects[subjectName][subjectLevel].Add(credit);
+                                                string subjectLevel = subjScore.Level;
+                                                string credit = "" + subjScore.Credit;
+                                                if (conf.PrintSubjectList.Contains(subjectName))
+                                                {
+                                                    if (!classSubjects.ContainsKey(subjectName))
+                                                        classSubjects.Add(subjectName, new Dictionary<string, List<string>>());
+                                                    if (!classSubjects[subjectName].ContainsKey(subjectLevel))
+                                                        classSubjects[subjectName].Add(subjectLevel, new List<string>());
+                                                    if (!classSubjects[subjectName][subjectLevel].Contains(credit))
+                                                        classSubjects[subjectName][subjectLevel].Add(credit);
+                                                }
                                             }
+                                            
                                         }
                                     }
                                 }

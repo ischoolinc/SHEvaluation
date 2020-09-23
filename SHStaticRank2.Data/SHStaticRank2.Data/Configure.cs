@@ -310,5 +310,12 @@ namespace SHStaticRank2.Data
         /// </summary>
         [FISCA.UDT.Field]
         public bool CheckExportSubjectMapping { get; set; }
+
+        /// <summary>
+        /// 用來存取其他設定資料
+        /// </summary>
+        [FISCA.UDT.Field]
+        public string OtherConfigData { get; set; }
+
     }
 }

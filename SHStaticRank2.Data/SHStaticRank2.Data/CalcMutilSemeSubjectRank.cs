@@ -99,8 +99,17 @@ namespace SHStaticRank2.Data
                     int yearCount = 0;
                     bkw.ReportProgress(1);
 
-                    if (setting.Name != "班級歷年成績單")
+                    if (setting.Name == "班級歷年成績單" || setting.Name == "教務作業_報表_班級歷年成績單")
+                    {
+                        setting.CheckExportStudent = false;
+                    }
+                    else
+                    {
                         setting.CheckExportStudent = true;
+                    }
+
+
+
 
                     #region 整各年級學生
                     foreach (var studentRec in accessHelper.StudentHelper.GetAllStudent())
@@ -5534,6 +5543,8 @@ namespace SHStaticRank2.Data
                         _table.Columns.Add("座號");
                         _table.Columns.Add("學號");
                         _table.Columns.Add("學生系統編號");
+                        _table.Columns.Add("教師系統編號");
+                        _table.Columns.Add("教師姓名");
                         _table.Columns.Add("姓名");
                         _table.Columns.Add("類別一分類");
                         _table.Columns.Add("類別二分類");
@@ -6520,6 +6531,13 @@ namespace SHStaticRank2.Data
                                 row["座號"] = studRec.SeatNo;
                                 row["學號"] = studRec.StudentNumber;
                                 row["學生系統編號"] = studRec.StudentID;
+                                row["教師系統編號"] = "";
+                                row["教師姓名"] = "";
+                                if (studRec.RefClass.RefTeacher != null)
+                                {
+                                    row["教師系統編號"] = studRec.RefClass.RefTeacher.TeacherID;
+                                    row["教師姓名"] = studRec.RefClass.RefTeacher.TeacherName;
+                                }
                                 row["姓名"] = studRec.StudentName;
                                 row["科別"] = studRec.Department;
                                 row["類別一分類"] = (cat1Dict.ContainsKey(studRec.StudentID)) ? cat1Dict[studRec.StudentID] : "";
@@ -9856,6 +9874,13 @@ namespace SHStaticRank2.Data
                                         row["座號"] = studRec.SeatNo;
                                         row["學號"] = studRec.StudentNumber;
                                         row["學生系統編號"] = studRec.StudentID;
+                                        row["教師系統編號"] = "";
+                                        row["教師姓名"] = "";
+                                        if (studRec.RefClass.RefTeacher != null)
+                                        {
+                                            row["教師系統編號"] = studRec.RefClass.RefTeacher.TeacherID;
+                                            row["教師姓名"] = studRec.RefClass.RefTeacher.TeacherName;
+                                        }
                                         row["姓名"] = studRec.StudentName;
                                         row["科別"] = studRec.Department;
                                         row["類別一分類"] = (cat1Dict.ContainsKey(studRec.StudentID)) ? cat1Dict[studRec.StudentID] : "";

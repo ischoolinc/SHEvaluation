@@ -17,10 +17,14 @@ namespace SHStaticRank2.Data
     {
         public delegate void OneClassCompleteDelegate();
         public static event OneClassCompleteDelegate OneClassCompleted;
+
+        public delegate void OneClassCompleteDelegate1(int startIdx, int endIdx);
+        public static event OneClassCompleteDelegate1 OneClassCompleted1;
+
+
         public static DataTable _table = new DataTable();
         public static string FolderName = "";
         static Dictionary<string, List<string>> SubjMappingDict = new Dictionary<string, List<string>>();
-
 
         public static void Setup(SHStaticRank2.Data.Configure setting)
         {
@@ -5545,6 +5549,7 @@ namespace SHStaticRank2.Data
                         _table.Columns.Add("學生系統編號");
                         _table.Columns.Add("教師系統編號");
                         _table.Columns.Add("教師姓名");
+                        _table.Columns.Add("系統學年度");
                         _table.Columns.Add("姓名");
                         _table.Columns.Add("類別一分類");
                         _table.Columns.Add("類別二分類");
@@ -6533,6 +6538,7 @@ namespace SHStaticRank2.Data
                                 row["學生系統編號"] = studRec.StudentID;
                                 row["教師系統編號"] = "";
                                 row["教師姓名"] = "";
+                                row["系統學年度"] = K12.Data.School.DefaultSchoolYear;
                                 if (studRec.RefClass.RefTeacher != null)
                                 {
                                     row["教師系統編號"] = studRec.RefClass.RefTeacher.TeacherID;
@@ -9761,6 +9767,9 @@ namespace SHStaticRank2.Data
 
                                     if (OneClassCompleted != null)
                                         OneClassCompleted();
+
+                                    if (OneClassCompleted1 != null)
+                                        OneClassCompleted1(1, 1);
                                     //List<string> fields = new List<string>(docTemplate.MailMerge.GetFieldNames());
                                     //List<string> rmColumns = new List<string>();
 
@@ -9836,6 +9845,7 @@ namespace SHStaticRank2.Data
                         {
                             #region 產生 Word 檔案
                             int ClassCountStart = 0, ClassSumCount = classNameList.Count;
+
                             foreach (string className in classNameList)
                             {
 
@@ -9876,6 +9886,7 @@ namespace SHStaticRank2.Data
                                         row["學生系統編號"] = studRec.StudentID;
                                         row["教師系統編號"] = "";
                                         row["教師姓名"] = "";
+                                        row["系統學年度"] = K12.Data.School.DefaultSchoolYear;
                                         if (studRec.RefClass.RefTeacher != null)
                                         {
                                             row["教師系統編號"] = studRec.RefClass.RefTeacher.TeacherID;
@@ -13105,7 +13116,92 @@ namespace SHStaticRank2.Data
                                 } // data row
 
                                 if (OneClassCompleted != null)
+                                {
                                     OneClassCompleted();
+
+                                    if (_table.Rows.Count > 0)
+                                    {
+                                        _table.Rows.Clear();
+                                    }
+                                    int xx = (int)(100d / ClassSumCount * ClassCountStart);
+                                    FISCA.RTContext.Invoke(new Action<string, int>(Word_Msg), new object[] { "產生班級Word檔中...", xx });
+                                    ClassCountStart++;
+                                }
+                                else if (OneClassCompleted1 != null)
+                                {
+                                    OneClassCompleted1(ClassCountStart + 1, ClassSumCount);
+
+                                    if (_table.Rows.Count > 0)
+                                    {
+                                        _table.Rows.Clear();
+                                    }
+                                    int xx = (int)(100d / ClassSumCount * ClassCountStart);
+                                    FISCA.RTContext.Invoke(new Action<string, int>(Word_Msg), new object[] { "產生班級Word檔中...", xx });
+
+
+                                    ClassCountStart++;
+
+                                }
+                                else
+                                {
+                                    if (_table.Rows.Count > 0)
+                                    {
+
+                                        Aspose.Words.Document document = new Aspose.Words.Document();
+                                        document = docTemplate;
+                                        doc.Sections.Add(doc.ImportNode(document.Sections[0], true));
+
+                                        doc.MailMerge.Execute(_table);
+                                        doc.MailMerge.RemoveEmptyParagraphs = true;
+                                        doc.MailMerge.DeleteFields();
+
+                                        _table.Rows.Clear();
+
+                                        #region Word 存檔
+                                        string reportNameW = "W_" + className + "-多學期科目成績固定排名成績單";
+                                        string pathW = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports", FolderName);
+                                        if (!Directory.Exists(pathW))
+                                            Directory.CreateDirectory(pathW);
+                                        pathW = Path.Combine(pathW, reportNameW + ".doc");
+
+                                        if (File.Exists(pathW))
+                                        {
+                                            int i = 1;
+                                            while (true)
+                                            {
+                                                string newPathW = Path.GetDirectoryName(pathW) + "\\" + Path.GetFileNameWithoutExtension(pathW) + (i++) + Path.GetExtension(pathW);
+                                                if (!File.Exists(newPathW))
+                                                {
+                                                    pathW = newPathW;
+                                                    break;
+                                                }
+                                            }
+                                        }
+
+
+
+                                        try
+                                        {
+                                            if (setting.CheckExportStudent)
+                                            {
+                                                doc.Save(pathW, Aspose.Words.SaveFormat.Doc);
+                                            }
+
+                                            int xx = (int)(100d / ClassSumCount * ClassCountStart);
+                                            FISCA.RTContext.Invoke(new Action<string, int>(Word_Msg), new object[] { "產生班級Word檔中...", xx });
+                                            ClassCountStart++;
+
+                                        }
+                                        catch (OutOfMemoryException exow)
+                                        {
+                                            exc = exow;
+                                        }
+                                        doc = null;
+                                        GC.Collect();
+                                        #endregion
+                                    }
+                                }
+
 
                                 //List<string> fields = new List<string>(docTemplate.MailMerge.GetFieldNames());
                                 //List<string> rmColumns = new List<string>();
@@ -13129,61 +13225,7 @@ namespace SHStaticRank2.Data
                                 //_table.WriteXml(pathAA);
 
                                 // 當 table 有資料再合併
-                                if (_table.Rows.Count > 0)
-                                {
 
-                                    Aspose.Words.Document document = new Aspose.Words.Document();
-                                    document = docTemplate;
-                                    doc.Sections.Add(doc.ImportNode(document.Sections[0], true));
-
-                                    doc.MailMerge.Execute(_table);
-                                    doc.MailMerge.RemoveEmptyParagraphs = true;
-                                    doc.MailMerge.DeleteFields();
-
-                                    _table.Rows.Clear();
-
-                                    #region Word 存檔
-                                    string reportNameW = "W_" + className + "-多學期科目成績固定排名成績單";
-                                    string pathW = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports", FolderName);
-                                    if (!Directory.Exists(pathW))
-                                        Directory.CreateDirectory(pathW);
-                                    pathW = Path.Combine(pathW, reportNameW + ".doc");
-
-                                    if (File.Exists(pathW))
-                                    {
-                                        int i = 1;
-                                        while (true)
-                                        {
-                                            string newPathW = Path.GetDirectoryName(pathW) + "\\" + Path.GetFileNameWithoutExtension(pathW) + (i++) + Path.GetExtension(pathW);
-                                            if (!File.Exists(newPathW))
-                                            {
-                                                pathW = newPathW;
-                                                break;
-                                            }
-                                        }
-                                    }
-
-
-                                    try
-                                    {
-                                        if (setting.CheckExportStudent)
-                                        {
-                                            doc.Save(pathW, Aspose.Words.SaveFormat.Doc);
-                                        }
-
-                                        int xx = (int)(100d / ClassSumCount * ClassCountStart);
-                                        FISCA.RTContext.Invoke(new Action<string, int>(Word_Msg), new object[] { "產生班級Word檔中...", xx });
-                                        ClassCountStart++;
-
-                                    }
-                                    catch (OutOfMemoryException exow)
-                                    {
-                                        exc = exow;
-                                    }
-                                    doc = null;
-                                    GC.Collect();
-                                    #endregion
-                                }
 
                             }// doc
                             #endregion

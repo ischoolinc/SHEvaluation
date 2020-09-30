@@ -9845,6 +9845,7 @@ namespace SHStaticRank2.Data
                         {
                             #region 產生 Word 檔案
                             int ClassCountStart = 0, ClassSumCount = classNameList.Count;
+                            int ClassStart = 0;
 
                             foreach (string className in classNameList)
                             {
@@ -13115,7 +13116,21 @@ namespace SHStaticRank2.Data
                                     }
                                 } // data row
 
-                                if (OneClassCompleted != null)
+                                if (OneClassCompleted1 != null)
+                                {
+                                    OneClassCompleted1(ClassStart + 1, ClassSumCount);
+
+                                    if (_table.Rows.Count > 0)
+                                    {
+                                        _table.Rows.Clear();
+                                    }
+                                    int xx = (int)(100d / ClassSumCount * ClassStart);
+                                    FISCA.RTContext.Invoke(new Action<string, int>(Word_Msg), new object[] { "產生班級Word檔中...", xx });
+
+
+                                    ClassStart++;
+
+                                }else if (OneClassCompleted != null)
                                 {
                                     OneClassCompleted();
 
@@ -13126,22 +13141,7 @@ namespace SHStaticRank2.Data
                                     int xx = (int)(100d / ClassSumCount * ClassCountStart);
                                     FISCA.RTContext.Invoke(new Action<string, int>(Word_Msg), new object[] { "產生班級Word檔中...", xx });
                                     ClassCountStart++;
-                                }
-                                else if (OneClassCompleted1 != null)
-                                {
-                                    OneClassCompleted1(ClassCountStart + 1, ClassSumCount);
-
-                                    if (_table.Rows.Count > 0)
-                                    {
-                                        _table.Rows.Clear();
-                                    }
-                                    int xx = (int)(100d / ClassSumCount * ClassCountStart);
-                                    FISCA.RTContext.Invoke(new Action<string, int>(Word_Msg), new object[] { "產生班級Word檔中...", xx });
-
-
-                                    ClassCountStart++;
-
-                                }
+                                }                              
                                 else
                                 {
                                     if (_table.Rows.Count > 0)

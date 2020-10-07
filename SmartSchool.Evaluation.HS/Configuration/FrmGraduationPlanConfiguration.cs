@@ -195,10 +195,10 @@ namespace SmartSchool.Evaluation.Configuration
                  
                     return;
                 }
+                GraduationPlanInfo info = (GraduationPlanInfo)this.advTree1.SelectedNode.Tag;
+                _GraduationPlanEditor.SetSource(info.GraduationPlanElement);
+                SaveAdvTreeExpandStatus();
             }
-            GraduationPlanInfo info = (GraduationPlanInfo)this.advTree1.SelectedNode.Tag;
-            _GraduationPlanEditor.SetSource(info.GraduationPlanElement);
-            SaveAdvTreeExpandStatus();
             GraduationPlanCreator graduationPlanCreator  =  new GraduationPlanCreator();
             if (graduationPlanCreator.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {

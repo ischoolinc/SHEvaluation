@@ -159,7 +159,10 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                         var.GetAttribute("修課補考標準"),
                         var.GetAttribute("修課直接指定總成績"),
                         var.GetAttribute("修課備註"),
-                        var.GetAttribute("修課科目代碼")
+                        var.GetAttribute("修課科目代碼"),
+                        var.GetAttribute("是否補修成績") == "是",
+                        var.GetAttribute("重修學年度"),
+                        var.GetAttribute("重修學期")
                         );
                     row.Cells[SubjectColumn].ToolTipText = GetSubjectScorePlace(row);
                     dataGridViewX1.Rows.Add(row);
@@ -784,6 +787,10 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 subjectElement.SetAttribute("修課直接指定總成績", "" + row.Cells[colDesignateFinalScore.Index].Value);
                 subjectElement.SetAttribute("修課備註", "" + row.Cells[colRemark.Index].Value);
                 subjectElement.SetAttribute("修課科目代碼", "" + row.Cells[colSubjectCode.Index].Value);
+
+                subjectElement.SetAttribute("是否補修成績", (row.Cells[colIsMakeupScore.Index].Value != null && (bool)row.Cells[colIsMakeupScore.Index].Value) ? "是" : "否");
+                subjectElement.SetAttribute("重修學年度", "" + row.Cells[colRetakeSchoolYear.Index].Value);
+                subjectElement.SetAttribute("重修學期", "" + row.Cells[colRetakeSemester.Index].Value);
 
                 subjectScoreInfo.AppendChild(subjectElement);
 

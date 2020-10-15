@@ -110,6 +110,9 @@
             this.colDesignateFinalScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colRemark = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSubjectCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colIsMakeupScore = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colRetakeSchoolYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colRetakeSemester = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panelEx1.SuspendLayout();
             this.groupPanel2.SuspendLayout();
             this.groupPanel1.SuspendLayout();
@@ -748,7 +751,10 @@
             this.colMakeupStandard,
             this.colDesignateFinalScore,
             this.colRemark,
-            this.colSubjectCode});
+            this.colSubjectCode,
+            this.colIsMakeupScore,
+            this.colRetakeSchoolYear,
+            this.colRetakeSemester});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -1140,6 +1146,29 @@
             this.colSubjectCode.Name = "colSubjectCode";
             this.colSubjectCode.Width = 55;
             // 
+            // colIsMakeupScore
+            // 
+            this.colIsMakeupScore.HeaderText = "是否補修成績";
+            this.colIsMakeupScore.MinimumWidth = 40;
+            this.colIsMakeupScore.Name = "colIsMakeupScore";
+            this.colIsMakeupScore.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.colIsMakeupScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.colIsMakeupScore.Width = 40;
+            // 
+            // colRetakeSchoolYear
+            // 
+            this.colRetakeSchoolYear.HeaderText = "重修學年度";
+            this.colRetakeSchoolYear.MinimumWidth = 55;
+            this.colRetakeSchoolYear.Name = "colRetakeSchoolYear";
+            this.colRetakeSchoolYear.Width = 55;
+            // 
+            // colRetakeSemester
+            // 
+            this.colRetakeSemester.HeaderText = "重修學期";
+            this.colRetakeSemester.MinimumWidth = 55;
+            this.colRetakeSemester.Name = "colRetakeSemester";
+            this.colRetakeSemester.Width = 55;
+            // 
             // SemesterScoreEditor
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1245,5 +1274,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colDesignateFinalScore;
         private System.Windows.Forms.DataGridViewTextBoxColumn colRemark;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSubjectCode;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colIsMakeupScore;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colRetakeSchoolYear;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colRetakeSemester;
     }
 }

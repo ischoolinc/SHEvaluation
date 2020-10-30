@@ -134,7 +134,7 @@ namespace 班級定期評量成績單_固定排名
 
                 cboSchoolYear.Items.Clear();
                 cboSchoolYear.Items.Add(_DefalutSchoolYear);
-                cboSchoolYear.SelectedIndex = cboSchoolYear.Items.IndexOf(_DefaultSemester);
+                cboSchoolYear.SelectedIndex = cboSchoolYear.Items.IndexOf(_DefalutSchoolYear);
 
                 cboSemester.Items.Clear();
                 cboSemester.Items.Add(_DefaultSemester);
@@ -170,7 +170,11 @@ namespace 班級定期評量成績單_固定排名
                     cboConfigure.SelectedIndex = -1;
                 }
                 // 畫面初始化完後 依據條件(學年度 、學期 、試別、所選班級 等) select 回 固定排名之 科目
-                GetFixRankSubjectsInclude(this.cboSchoolYear.Text, this.cboSemester.Text, ((ExamRecord)cboExam.SelectedItem).ID, this._SelectedClasses);
+                if (cboExam.SelectedIndex > -1 && this._SelectedClasses.Count > 0)
+                {
+                    GetFixRankSubjectsInclude(this.cboSchoolYear.Text, this.cboSemester.Text, ((ExamRecord)cboExam.SelectedItem).ID, this._SelectedClasses);
+                }
+              
                 this.pictureBox1.Visible = false;
             };
             bkw.RunWorkerAsync();

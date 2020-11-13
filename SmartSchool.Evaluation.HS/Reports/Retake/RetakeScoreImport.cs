@@ -370,6 +370,8 @@ namespace SmartSchool.Evaluation.Reports
                 aInfo.Add("重修成績", info.Detail.HasAttribute("重修成績") ? info.Detail.GetAttribute("重修成績") : "");
                 aInfo.Add("取得學分", "");
 
+                aInfo.Add("重修學年度", info.Detail.HasAttribute("重修學年度") ? info.Detail.GetAttribute("重修學年度") : "");
+                aInfo.Add("重修學期", info.Detail.HasAttribute("重修學期") ? info.Detail.GetAttribute("重修學期") : "");
                 subjectInfo.Add(aInfo);
 
                 if (!subjectCheckList.Contains(student.StudentNumber + ":" + student.StudentName + ":" + info.Subject + ":" + info.Level))

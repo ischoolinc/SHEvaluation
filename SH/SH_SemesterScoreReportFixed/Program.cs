@@ -113,6 +113,12 @@ namespace SH_SemesterScoreReportFixed
             AccessHelper helper = new AccessHelper();
             List<StudentRecord> lista = helper.StudentHelper.GetSelectedStudent();
 
+            List<string> StudentIDList = new List<string>();
+            foreach (StudentRecord stud in lista)
+                StudentIDList.Add(stud.StudentID);
+            // 取得學生修課及格標準
+            Dictionary<string, Dictionary<string, decimal>> StudentSCAttendApplyLimitDict = Utility.GetStudentSCAttendApplyLimitDict(StudentIDList);
+
             // 取得學生及格與補考標準
             Dictionary<string, Dictionary<string, decimal>> StudentApplyLimitDict = Utility.GetStudentApplyLimitDict(lista);
 
@@ -285,7 +291,8 @@ namespace SH_SemesterScoreReportFixed
                     table.Columns.Add("學期科目需要補考標示" + subjectIndex);
                     table.Columns.Add("學期科目補考成績標示" + subjectIndex);
                     table.Columns.Add("學期科目不及格標示" + subjectIndex);
-
+                    table.Columns.Add("學期科目需要重修標示" + subjectIndex);
+                    table.Columns.Add("學期科目重修成績標示" + subjectIndex);
 
                     // 新增學期科目排名
                     table.Columns.Add("學期科目排名成績" + subjectIndex);
@@ -347,7 +354,8 @@ namespace SH_SemesterScoreReportFixed
                     table.Columns.Add("上學期科目需要補考標示" + subjectIndex);
                     table.Columns.Add("上學期科目補考成績標示" + subjectIndex);
                     table.Columns.Add("上學期科目不及格標示" + subjectIndex);
-
+                    table.Columns.Add("上學期科目需要重修標示" + subjectIndex);
+                    table.Columns.Add("上學期科目重修成績標示" + subjectIndex);
 
                     // 新增學年科目成績--
                     table.Columns.Add("學年科目成績" + subjectIndex);
@@ -1463,19 +1471,19 @@ namespace SH_SemesterScoreReportFixed
 
                             // 取得學生及格與補考標準
                             // 及格
-                            decimal scA = 0;
+                            decimal o_scA = 0;
                             // 補考
-                            decimal scB = 0;
+                            decimal o_scB = 0;
                             if (StudentApplyLimitDict.ContainsKey(stuRec.StudentID))
                             {
                                 string sA = stuRec.RefClass.GradeYear + "_及";
                                 string sB = stuRec.RefClass.GradeYear + "_補";
 
                                 if (StudentApplyLimitDict[stuRec.StudentID].ContainsKey(sA))
-                                    scA = StudentApplyLimitDict[stuRec.StudentID][sA];
+                                    o_scA = StudentApplyLimitDict[stuRec.StudentID][sA];
 
                                 if (StudentApplyLimitDict[stuRec.StudentID].ContainsKey(sB))
-                                    scB = StudentApplyLimitDict[stuRec.StudentID][sB];
+                                    o_scB = StudentApplyLimitDict[stuRec.StudentID][sB];
                             }
 
                             int subjectIndex = 1;
@@ -1529,11 +1537,30 @@ namespace SH_SemesterScoreReportFixed
                                                     row["學期科目補考成績標示" + subjectIndex] = conf.ReScoreMark;
                                                 }
                                                 if ("" + semesterSubjectScore.Score == semesterSubjectScore.Detail.GetAttribute("重修成績"))
+                                                {
                                                     row["學期科目重修成績註記" + subjectIndex] = "\f";
+                                                    row["學期科目重修成績標示" + subjectIndex] = conf.RereadScoreMark;
+                                                }
+
                                                 if ("" + semesterSubjectScore.Score == semesterSubjectScore.Detail.GetAttribute("擇優採計成績"))
                                                     row["學期科目手動成績註記" + subjectIndex] = "\f";
                                                 if ("" + semesterSubjectScore.Score == semesterSubjectScore.Detail.GetAttribute("學年調整成績"))
                                                     row["學期科目學年成績註記" + subjectIndex] = "\f";
+
+                                                decimal scA = o_scA;
+                                                decimal scB = o_scB;
+                                                string keySa = semesterSubjectScore.SchoolYear + "_" + semesterSubjectScore.Semester + "_" + semesterSubjectScore.Subject + "_" + semesterSubjectScore.Level + "_及";
+                                                string keySb = semesterSubjectScore.SchoolYear + "_" + semesterSubjectScore.Semester + "_" + semesterSubjectScore.Subject + "_" + semesterSubjectScore.Level + "_補";
+
+                                                if (StudentSCAttendApplyLimitDict.ContainsKey(stuRec.StudentID))
+                                                {
+                                                    if (StudentSCAttendApplyLimitDict[stuRec.StudentID].ContainsKey(keySa))
+                                                        scA = StudentSCAttendApplyLimitDict[stuRec.StudentID][keySa];
+
+                                                    if (StudentSCAttendApplyLimitDict[stuRec.StudentID].ContainsKey(keySb))
+                                                        scB = StudentSCAttendApplyLimitDict[stuRec.StudentID][keySb];
+                                                }
+
 
                                                 // 不及格
                                                 if (semesterSubjectScore.Score < scA)
@@ -1545,11 +1572,15 @@ namespace SH_SemesterScoreReportFixed
                                                         row["學期科目需要補考註記" + subjectIndex] = "\f";
                                                         row["學期科目需要補考標示" + subjectIndex] = conf.NeedReScoreMark;
                                                     }
-                                                    else
+
+                                                    if (semesterSubjectScore.Pass == false)
                                                     {
-                                                        // 不可補考，須重修
+                                                        // 不可補考，須重修，加入沒有取得學分才需要重修
                                                         row["學期科目需要重修註記" + subjectIndex] = "\f";
+                                                        row["學期科目需要重修標示" + subjectIndex] = conf.NeedRereadScoreMark;
                                                     }
+
+
                                                 }
                                             }
 
@@ -2188,11 +2219,29 @@ namespace SH_SemesterScoreReportFixed
                                                     }
 
                                                     if ("" + semesterSubjectScore.Score == semesterSubjectScore.Detail.GetAttribute("重修成績"))
+                                                    {
                                                         row["上學期科目重修成績註記" + subjectIndex] = "\f";
+                                                        row["上學期科目重修成績標示" + subjectIndex] = conf.RereadScoreMark;
+                                                    }
+
                                                     if ("" + semesterSubjectScore.Score == semesterSubjectScore.Detail.GetAttribute("擇優採計成績"))
                                                         row["上學期科目手動成績註記" + subjectIndex] = "\f";
                                                     if ("" + semesterSubjectScore.Score == semesterSubjectScore.Detail.GetAttribute("學年調整成績"))
                                                         row["上學期科目學年成績註記" + subjectIndex] = "\f";
+
+                                                    decimal scA = o_scA;
+                                                    decimal scB = o_scB;
+                                                    string keySa = semesterSubjectScore.SchoolYear + "_" + semesterSubjectScore.Semester + "_" + semesterSubjectScore.Subject + "_" + semesterSubjectScore.Level + "_及";
+                                                    string keySb = semesterSubjectScore.SchoolYear + "_" + semesterSubjectScore.Semester + "_" + semesterSubjectScore.Subject + "_" + semesterSubjectScore.Level + "_補";
+
+                                                    if (StudentSCAttendApplyLimitDict.ContainsKey(stuRec.StudentID))
+                                                    {
+                                                        if (StudentSCAttendApplyLimitDict[stuRec.StudentID].ContainsKey(keySa))
+                                                            scA = StudentSCAttendApplyLimitDict[stuRec.StudentID][keySa];
+
+                                                        if (StudentSCAttendApplyLimitDict[stuRec.StudentID].ContainsKey(keySb))
+                                                            scB = StudentSCAttendApplyLimitDict[stuRec.StudentID][keySb];
+                                                    }
 
                                                     // 不及格
                                                     if (semesterSubjectScore.Score < scA)
@@ -2204,11 +2253,15 @@ namespace SH_SemesterScoreReportFixed
                                                             row["上學期科目需要補考註記" + subjectIndex] = "\f";
                                                             row["上學期科目需要補考標示" + subjectIndex] = conf.NeedReScoreMark;
                                                         }
-                                                        else
+
+
+                                                        // 不可補考需要重修，沒有取得學分才需要重修
+                                                        if (semesterSubjectScore.Pass == false)
                                                         {
-                                                            // 不可補考需要重修
                                                             row["上學期科目需要重修註記" + subjectIndex] = "\f";
+                                                            row["上學期科目需要重修標示" + subjectIndex] = conf.NeedRereadScoreMark;
                                                         }
+
                                                     }
                                                 }
                                                 stuRec.SemesterSubjectScoreList.Remove(semesterSubjectScore);
@@ -3348,8 +3401,8 @@ namespace SH_SemesterScoreReportFixed
                             bkw.ReportProgress(70 + progressCount * 20 / selectedStudents.Count);
 
 
-                            table.TableName = "test";
-                            table.WriteXml(Application.StartupPath + "\\debug.xml");
+                            //table.TableName = "test";
+                            //table.WriteXml(Application.StartupPath + "\\debug.xml");
                         }
                         bkw.ReportProgress(90);
                         document = conf.Template;

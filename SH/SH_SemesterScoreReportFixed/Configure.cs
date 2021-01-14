@@ -121,8 +121,18 @@ namespace SH_SemesterScoreReportFixed
         /// </summary>
         [FISCA.UDT.Field]
         public string FailScoreMark { get; set; }
+        
+        /// <summary>
+        /// 需重修標示
+        /// </summary>
+        [FISCA.UDT.Field]
+        public string NeedRereadScoreMark { get; set; }
 
-
+        /// <summary>
+        /// 重修成績標示
+        /// </summary>
+        [FISCA.UDT.Field]
+        public string RereadScoreMark { get; set; }
 
         /// <summary>
         /// 在儲存前，把資料填入儲存欄位中

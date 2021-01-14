@@ -189,6 +189,9 @@ namespace SH_SemesterScoreReportFixed
                     Configure.ReScoreMark = txtReScoreMark.Text;
                     Configure.FailScoreMark = txtFailScoreMark.Text;
 
+                    Configure.NeedRereadScoreMark = txtNeedRereadScoreMark.Text;
+                    Configure.RereadScoreMark = txtRereadScoreMark.Text;
+
                     if (cboExam.Items.Count > 0)
                         Configure.ExamRecord = (ExamRecord)cboExam.Items[0];
                     _Configures.Add(Configure);
@@ -219,6 +222,9 @@ namespace SH_SemesterScoreReportFixed
                     txtNeedReScoreMark.Text = Configure.NeedReScoreMark;
                     txtReScoreMark.Text = Configure.ReScoreMark;
                     txtFailScoreMark.Text = Configure.FailScoreMark;
+
+                    txtNeedRereadScoreMark.Text = Configure.NeedRereadScoreMark;
+                    txtRereadScoreMark.Text = Configure.RereadScoreMark;
 
                     if (Configure.ExamRecord != null)
                     {
@@ -263,6 +269,9 @@ namespace SH_SemesterScoreReportFixed
             Configure.NeedReScoreMark = txtNeedReScoreMark.Text;
             Configure.ReScoreMark = txtReScoreMark.Text;
             Configure.FailScoreMark = txtFailScoreMark.Text;
+
+            Configure.NeedRereadScoreMark = txtNeedRereadScoreMark.Text;
+            Configure.RereadScoreMark = txtRereadScoreMark.Text;
 
             if (Configure.RefenceExamRecord != null && Configure.RefenceExamRecord.Name == "")
                 Configure.RefenceExamRecord = null;

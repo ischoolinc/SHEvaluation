@@ -48,6 +48,10 @@
             this.labelX4 = new DevComponents.DotNetBar.LabelX();
             this.cboExam = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.gp1 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.txtRereadScoreMark = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.txtNeedRereadScoreMark = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.labelX6 = new DevComponents.DotNetBar.LabelX();
+            this.labelX8 = new DevComponents.DotNetBar.LabelX();
             this.txtFailScoreMark = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.txtReScoreMark = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.txtNeedReScoreMark = new DevComponents.DotNetBar.Controls.TextBoxX();
@@ -64,11 +68,11 @@
             this.btnSaveConfig.BackColor = System.Drawing.Color.Transparent;
             this.btnSaveConfig.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnSaveConfig.Enabled = false;
-            this.btnSaveConfig.Location = new System.Drawing.Point(409, 497);
+            this.btnSaveConfig.Location = new System.Drawing.Point(409, 517);
             this.btnSaveConfig.Name = "btnSaveConfig";
             this.btnSaveConfig.Size = new System.Drawing.Size(75, 25);
             this.btnSaveConfig.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.btnSaveConfig.TabIndex = 9;
+            this.btnSaveConfig.TabIndex = 8;
             this.btnSaveConfig.Text = "儲存設定";
             this.btnSaveConfig.Tooltip = "儲存當前的樣板設定。";
             this.btnSaveConfig.Click += new System.EventHandler(this.btnSaveConfig_Click);
@@ -81,11 +85,11 @@
             this.btnPrint.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnPrint.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnPrint.Enabled = false;
-            this.btnPrint.Location = new System.Drawing.Point(505, 497);
+            this.btnPrint.Location = new System.Drawing.Point(505, 517);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(75, 25);
             this.btnPrint.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.btnPrint.TabIndex = 10;
+            this.btnPrint.TabIndex = 9;
             this.btnPrint.Text = "列印";
             this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
             // 
@@ -96,11 +100,11 @@
             this.btnCancel.BackColor = System.Drawing.Color.Transparent;
             this.btnCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(586, 497);
+            this.btnCancel.Location = new System.Drawing.Point(586, 517);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 25);
             this.btnCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.btnCancel.TabIndex = 11;
+            this.btnCancel.TabIndex = 10;
             this.btnCancel.Text = "離開";
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
@@ -113,7 +117,7 @@
             this.circularProgress1.BackgroundStyle.Class = "";
             this.circularProgress1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.circularProgress1.FocusCuesEnabled = false;
-            this.circularProgress1.Location = new System.Drawing.Point(301, 292);
+            this.circularProgress1.Location = new System.Drawing.Point(301, 320);
             this.circularProgress1.Name = "circularProgress1";
             this.circularProgress1.ProgressBarType = DevComponents.DotNetBar.eCircularProgressType.Dot;
             this.circularProgress1.ProgressColor = System.Drawing.Color.LimeGreen;
@@ -167,10 +171,10 @@
             this.linkLabel5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel5.AutoSize = true;
             this.linkLabel5.BackColor = System.Drawing.Color.Transparent;
-            this.linkLabel5.Location = new System.Drawing.Point(226, 499);
+            this.linkLabel5.Location = new System.Drawing.Point(226, 521);
             this.linkLabel5.Name = "linkLabel5";
             this.linkLabel5.Size = new System.Drawing.Size(112, 17);
-            this.linkLabel5.TabIndex = 8;
+            this.linkLabel5.TabIndex = 7;
             this.linkLabel5.TabStop = true;
             this.linkLabel5.Text = "下載合併欄位總表";
             this.linkLabel5.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel5_LinkClicked);
@@ -180,10 +184,10 @@
             this.linkLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel2.AutoSize = true;
             this.linkLabel2.BackColor = System.Drawing.Color.Transparent;
-            this.linkLabel2.Location = new System.Drawing.Point(122, 499);
+            this.linkLabel2.Location = new System.Drawing.Point(122, 521);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(86, 17);
-            this.linkLabel2.TabIndex = 7;
+            this.linkLabel2.TabIndex = 6;
             this.linkLabel2.TabStop = true;
             this.linkLabel2.Text = "變更套印樣板";
             this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
@@ -193,10 +197,10 @@
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.BackColor = System.Drawing.Color.Transparent;
-            this.linkLabel1.Location = new System.Drawing.Point(30, 499);
+            this.linkLabel1.Location = new System.Drawing.Point(30, 521);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(86, 17);
-            this.linkLabel1.TabIndex = 6;
+            this.linkLabel1.TabIndex = 5;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "檢視套印樣板";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
@@ -209,7 +213,7 @@
             this.listViewEx1.Border.Class = "ListViewBorder";
             this.listViewEx1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.listViewEx1.CheckBoxes = true;
-            this.listViewEx1.Location = new System.Drawing.Point(33, 226);
+            this.listViewEx1.Location = new System.Drawing.Point(33, 254);
             this.listViewEx1.Name = "listViewEx1";
             this.listViewEx1.Size = new System.Drawing.Size(626, 248);
             this.listViewEx1.TabIndex = 5;
@@ -225,7 +229,7 @@
             // 
             this.labelX2.BackgroundStyle.Class = "";
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(33, 199);
+            this.labelX2.Location = new System.Drawing.Point(33, 227);
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(60, 21);
             this.labelX2.TabIndex = 45;
@@ -242,7 +246,7 @@
             this.cboSemester.Name = "cboSemester";
             this.cboSemester.Size = new System.Drawing.Size(54, 25);
             this.cboSemester.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.cboSemester.TabIndex = 3;
+            this.cboSemester.TabIndex = 2;
             this.cboSemester.TextChanged += new System.EventHandler(this.ExamChanged);
             // 
             // labelX9
@@ -330,7 +334,7 @@
             this.cboExam.Name = "cboExam";
             this.cboExam.Size = new System.Drawing.Size(222, 25);
             this.cboExam.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.cboExam.TabIndex = 4;
+            this.cboExam.TabIndex = 3;
             this.cboExam.ValueMember = "ID";
             this.cboExam.SelectedIndexChanged += new System.EventHandler(this.ExamChanged);
             // 
@@ -339,6 +343,10 @@
             this.gp1.BackColor = System.Drawing.Color.Transparent;
             this.gp1.CanvasColor = System.Drawing.SystemColors.Control;
             this.gp1.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.gp1.Controls.Add(this.txtRereadScoreMark);
+            this.gp1.Controls.Add(this.txtNeedRereadScoreMark);
+            this.gp1.Controls.Add(this.labelX6);
+            this.gp1.Controls.Add(this.labelX8);
             this.gp1.Controls.Add(this.txtFailScoreMark);
             this.gp1.Controls.Add(this.txtReScoreMark);
             this.gp1.Controls.Add(this.txtNeedReScoreMark);
@@ -347,7 +355,7 @@
             this.gp1.Controls.Add(this.labelX1);
             this.gp1.Location = new System.Drawing.Point(33, 113);
             this.gp1.Name = "gp1";
-            this.gp1.Size = new System.Drawing.Size(626, 74);
+            this.gp1.Size = new System.Drawing.Size(626, 105);
             // 
             // 
             // 
@@ -378,8 +386,64 @@
             // 
             this.gp1.StyleMouseOver.Class = "";
             this.gp1.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.gp1.TabIndex = 58;
+            this.gp1.TabIndex = 4;
             this.gp1.Text = "成績未取得學分狀態標示設定";
+            // 
+            // txtRereadScoreMark
+            // 
+            // 
+            // 
+            // 
+            this.txtRereadScoreMark.Border.Class = "TextBoxBorder";
+            this.txtRereadScoreMark.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtRereadScoreMark.ImeMode = System.Windows.Forms.ImeMode.Close;
+            this.txtRereadScoreMark.Location = new System.Drawing.Point(299, 45);
+            this.txtRereadScoreMark.Name = "txtRereadScoreMark";
+            this.txtRereadScoreMark.Size = new System.Drawing.Size(50, 25);
+            this.txtRereadScoreMark.TabIndex = 5;
+            // 
+            // txtNeedRereadScoreMark
+            // 
+            // 
+            // 
+            // 
+            this.txtNeedRereadScoreMark.Border.Class = "TextBoxBorder";
+            this.txtNeedRereadScoreMark.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtNeedRereadScoreMark.ImeMode = System.Windows.Forms.ImeMode.Close;
+            this.txtNeedRereadScoreMark.Location = new System.Drawing.Point(138, 45);
+            this.txtNeedRereadScoreMark.Name = "txtNeedRereadScoreMark";
+            this.txtNeedRereadScoreMark.Size = new System.Drawing.Size(50, 25);
+            this.txtNeedRereadScoreMark.TabIndex = 3;
+            // 
+            // labelX6
+            // 
+            this.labelX6.AutoSize = true;
+            this.labelX6.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX6.BackgroundStyle.Class = "";
+            this.labelX6.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX6.Location = new System.Drawing.Point(211, 47);
+            this.labelX6.Name = "labelX6";
+            this.labelX6.Size = new System.Drawing.Size(87, 21);
+            this.labelX6.TabIndex = 4;
+            this.labelX6.Text = "重修成績加註";
+            // 
+            // labelX8
+            // 
+            this.labelX8.AutoSize = true;
+            this.labelX8.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX8.BackgroundStyle.Class = "";
+            this.labelX8.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX8.Location = new System.Drawing.Point(35, 47);
+            this.labelX8.Name = "labelX8";
+            this.labelX8.Size = new System.Drawing.Size(101, 21);
+            this.labelX8.TabIndex = 47;
+            this.labelX8.Text = "需重修成績加註";
             // 
             // txtFailScoreMark
             // 
@@ -388,6 +452,7 @@
             // 
             this.txtFailScoreMark.Border.Class = "TextBoxBorder";
             this.txtFailScoreMark.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtFailScoreMark.ImeMode = System.Windows.Forms.ImeMode.Close;
             this.txtFailScoreMark.Location = new System.Drawing.Point(512, 10);
             this.txtFailScoreMark.Name = "txtFailScoreMark";
             this.txtFailScoreMark.Size = new System.Drawing.Size(50, 25);
@@ -400,6 +465,7 @@
             // 
             this.txtReScoreMark.Border.Class = "TextBoxBorder";
             this.txtReScoreMark.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtReScoreMark.ImeMode = System.Windows.Forms.ImeMode.Close;
             this.txtReScoreMark.Location = new System.Drawing.Point(299, 10);
             this.txtReScoreMark.Name = "txtReScoreMark";
             this.txtReScoreMark.Size = new System.Drawing.Size(50, 25);
@@ -412,6 +478,7 @@
             // 
             this.txtNeedReScoreMark.Border.Class = "TextBoxBorder";
             this.txtNeedReScoreMark.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtNeedReScoreMark.ImeMode = System.Windows.Forms.ImeMode.Close;
             this.txtNeedReScoreMark.Location = new System.Drawing.Point(138, 10);
             this.txtNeedReScoreMark.Name = "txtNeedReScoreMark";
             this.txtNeedReScoreMark.Size = new System.Drawing.Size(50, 25);
@@ -444,7 +511,7 @@
             this.labelX3.Location = new System.Drawing.Point(211, 12);
             this.labelX3.Name = "labelX3";
             this.labelX3.Size = new System.Drawing.Size(87, 21);
-            this.labelX3.TabIndex = 43;
+            this.labelX3.TabIndex = 1;
             this.labelX3.Text = "補考成績加註";
             // 
             // labelX1
@@ -466,7 +533,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(694, 545);
+            this.ClientSize = new System.Drawing.Size(694, 556);
             this.Controls.Add(this.gp1);
             this.Controls.Add(this.btnSaveConfig);
             this.Controls.Add(this.btnPrint);
@@ -527,5 +594,9 @@
         private DevComponents.DotNetBar.LabelX labelX5;
         private DevComponents.DotNetBar.LabelX labelX3;
         private DevComponents.DotNetBar.LabelX labelX1;
+        private DevComponents.DotNetBar.Controls.TextBoxX txtRereadScoreMark;
+        private DevComponents.DotNetBar.Controls.TextBoxX txtNeedRereadScoreMark;
+        private DevComponents.DotNetBar.LabelX labelX6;
+        private DevComponents.DotNetBar.LabelX labelX8;
     }
 }

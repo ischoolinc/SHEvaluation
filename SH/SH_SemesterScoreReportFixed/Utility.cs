@@ -539,7 +539,7 @@ namespace SH_SemesterScoreReportFixed
         /// </summary>
         /// <param name="StudentIDList"></param>
         /// <returns></returns>
-        public static Dictionary<string, Dictionary<string, DataRow>> GetSemsScoreRankMatrixData(string SchoolYear, string Semester,  List<string> StudentIDList)
+        public static Dictionary<string, Dictionary<string, DataRow>> GetSemsScoreRankMatrixData(string SchoolYear, string Semester, List<string> StudentIDList)
         {
             Dictionary<string, Dictionary<string, DataRow>> value = new Dictionary<string, Dictionary<string, DataRow>>();
 
@@ -631,5 +631,66 @@ namespace SH_SemesterScoreReportFixed
         }
 
 
+        /// <summary>
+        /// 透過學生ID取得學生修課及格標準
+        /// </summary>
+        /// <param name="StudentIDList"></param>
+        /// <returns></returns>
+        public static Dictionary<string, Dictionary<string, decimal>> GetStudentSCAttendApplyLimitDict(List<string> StudentIDList)
+        {
+            Dictionary<string, Dictionary<string, decimal>> value = new Dictionary<string, Dictionary<string, decimal>>();
+            try
+            {
+                if (StudentIDList.Count > 0)
+                {
+                    QueryHelper qh = new QueryHelper();
+
+                    string query = "" +
+        "SELECT " +
+        "	ref_student_id AS student_id" +
+        "	,course.school_year" +
+        "   ,course.semester" +
+        "	,course.subject" +
+        "	,course.subj_level " +
+        "	,sc_attend.passing_standard" +
+        "	,sc_attend.makeup_standard" +
+        " FROM course " +
+        "	INNER JOIN sc_attend " +
+        "	ON sc_attend.ref_course_id = course.id " +
+        "	WHERE sc_attend.ref_student_id IN(" + string.Join(",", StudentIDList.ToArray()) + ") " +
+        " ORDER BY ref_student_id,school_year,semester;";
+
+                    DataTable dt = qh.Select(query);
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        string sid = dr["student_id"] + "";
+                        if (!value.ContainsKey(sid))
+                            value.Add(sid, new Dictionary<string, decimal>());
+
+                        decimal p, m;
+                        // 及格
+                        if (decimal.TryParse(dr["passing_standard"] + "", out p))
+                        {
+                            string p_k = dr["school_year"] + "_" + dr["semester"] + "_" + dr["subject"] + "_" + dr["subj_level"] + "_及";
+                            if (!value[sid].ContainsKey(p_k))
+                                value[sid].Add(p_k, p);
+                        }
+
+                        // 可補考
+                        if (decimal.TryParse(dr["makeup_standard"] + "", out m))
+                        {
+                            string m_k = dr["school_year"] + "_" + dr["semester"] + "_" + dr["subject"] + "_" + dr["subj_level"] + "_補";
+                            if (!value[sid].ContainsKey(m_k))
+                                value[sid].Add(m_k, m);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return value;
+        }
     }
 }

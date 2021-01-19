@@ -497,7 +497,7 @@
             this.labelX5.Name = "labelX5";
             this.labelX5.Size = new System.Drawing.Size(101, 21);
             this.labelX5.TabIndex = 44;
-            this.labelX5.Text = "不及格成績加註";
+            this.labelX5.Text = "未取得學分加註";
             // 
             // labelX3
             // 

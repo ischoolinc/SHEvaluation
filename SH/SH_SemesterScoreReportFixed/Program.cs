@@ -114,10 +114,10 @@ namespace SH_SemesterScoreReportFixed
             List<StudentRecord> lista = helper.StudentHelper.GetSelectedStudent();
 
             List<string> StudentIDList = new List<string>();
-            foreach (StudentRecord stud in lista)
-                StudentIDList.Add(stud.StudentID);
-            // 取得學生修課及格標準
-            Dictionary<string, Dictionary<string, decimal>> StudentSCAttendApplyLimitDict = Utility.GetStudentSCAttendApplyLimitDict(StudentIDList);
+            //foreach (StudentRecord stud in lista)
+            //    StudentIDList.Add(stud.StudentID);
+            //// 取得學生修課及格標準
+            //Dictionary<string, Dictionary<string, decimal>> StudentSCAttendApplyLimitDict = Utility.GetStudentSCAttendApplyLimitDict(StudentIDList);
 
             // 取得學生及格與補考標準
             Dictionary<string, Dictionary<string, decimal>> StudentApplyLimitDict = Utility.GetStudentApplyLimitDict(lista);
@@ -290,7 +290,7 @@ namespace SH_SemesterScoreReportFixed
                     table.Columns.Add("學期科目需要重修註記" + subjectIndex);
                     table.Columns.Add("學期科目需要補考標示" + subjectIndex);
                     table.Columns.Add("學期科目補考成績標示" + subjectIndex);
-                    table.Columns.Add("學期科目不及格標示" + subjectIndex);
+                    table.Columns.Add("學期科目未取得學分標示" + subjectIndex);
                     table.Columns.Add("學期科目需要重修標示" + subjectIndex);
                     table.Columns.Add("學期科目重修成績標示" + subjectIndex);
 
@@ -353,7 +353,7 @@ namespace SH_SemesterScoreReportFixed
                     table.Columns.Add("上學期科目需要重修註記" + subjectIndex);
                     table.Columns.Add("上學期科目需要補考標示" + subjectIndex);
                     table.Columns.Add("上學期科目補考成績標示" + subjectIndex);
-                    table.Columns.Add("上學期科目不及格標示" + subjectIndex);
+                    table.Columns.Add("上學期科目未取得學分標示" + subjectIndex);
                     table.Columns.Add("上學期科目需要重修標示" + subjectIndex);
                     table.Columns.Add("上學期科目重修成績標示" + subjectIndex);
 
@@ -1522,12 +1522,18 @@ namespace SH_SemesterScoreReportFixed
                                             //"原始成績", "學年調整成績", "擇優採計成績", "補考成績", "重修成績"
                                             if (semesterSubjectScore.Detail.GetAttribute("不需評分") != "是")
                                             {
+                                                if (semesterSubjectScore.Pass == false)
+                                                {
+                                                    row["學期科目未取得學分標示" + subjectIndex] = conf.FailScoreMark;
+                                                }
+
                                                 row["學期科目原始成績" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("原始成績");
                                                 row["學期科目補考成績" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("補考成績");
                                                 row["學期科目重修成績" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("重修成績");
                                                 row["學期科目手動調整成績" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("擇優採計成績");
                                                 row["學期科目學年調整成績" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("學年調整成績");
                                                 row["學期科目成績" + subjectIndex] = semesterSubjectScore.Score;
+
 
                                                 if ("" + semesterSubjectScore.Score == semesterSubjectScore.Detail.GetAttribute("原始成績"))
                                                     row["學期科目原始成績註記" + subjectIndex] = "\f";
@@ -1549,35 +1555,49 @@ namespace SH_SemesterScoreReportFixed
 
                                                 decimal scA = o_scA;
                                                 decimal scB = o_scB;
-                                                string keySa = semesterSubjectScore.SchoolYear + "_" + semesterSubjectScore.Semester + "_" + semesterSubjectScore.Subject + "_" + semesterSubjectScore.Level + "_及";
-                                                string keySb = semesterSubjectScore.SchoolYear + "_" + semesterSubjectScore.Semester + "_" + semesterSubjectScore.Subject + "_" + semesterSubjectScore.Level + "_補";
+                                                //string keySa = semesterSubjectScore.SchoolYear + "_" + semesterSubjectScore.Semester + "_" + semesterSubjectScore.Subject + "_" + semesterSubjectScore.Level + "_及";
+                                                //string keySb = semesterSubjectScore.SchoolYear + "_" + semesterSubjectScore.Semester + "_" + semesterSubjectScore.Subject + "_" + semesterSubjectScore.Level + "_補";
 
-                                                if (StudentSCAttendApplyLimitDict.ContainsKey(stuRec.StudentID))
-                                                {
-                                                    if (StudentSCAttendApplyLimitDict[stuRec.StudentID].ContainsKey(keySa))
-                                                        scA = StudentSCAttendApplyLimitDict[stuRec.StudentID][keySa];
+                                                //if (StudentSCAttendApplyLimitDict.ContainsKey(stuRec.StudentID))
+                                                //{
+                                                //    if (StudentSCAttendApplyLimitDict[stuRec.StudentID].ContainsKey(keySa))
+                                                //        scA = StudentSCAttendApplyLimitDict[stuRec.StudentID][keySa];
 
-                                                    if (StudentSCAttendApplyLimitDict[stuRec.StudentID].ContainsKey(keySb))
-                                                        scB = StudentSCAttendApplyLimitDict[stuRec.StudentID][keySb];
-                                                }
+                                                //    if (StudentSCAttendApplyLimitDict[stuRec.StudentID].ContainsKey(keySb))
+                                                //        scB = StudentSCAttendApplyLimitDict[stuRec.StudentID][keySb];
+                                                //}
 
+                                                decimal.TryParse(semesterSubjectScore.Detail.GetAttribute("修課及格標準"), out scA);
+                                                decimal.TryParse(semesterSubjectScore.Detail.GetAttribute("修課補考標準"), out scB);
 
                                                 // 不及格
                                                 if (semesterSubjectScore.Score < scA)
                                                 {
-                                                    row["學期科目不及格標示" + subjectIndex] = conf.FailScoreMark;
+
                                                     // 可補考
                                                     if (semesterSubjectScore.Score >= scB)
                                                     {
-                                                        row["學期科目需要補考註記" + subjectIndex] = "\f";
-                                                        row["學期科目需要補考標示" + subjectIndex] = conf.NeedReScoreMark;
+                                                        // 未取得學分、沒有補考成績、沒有重修成績才需要標示
+                                                        if (semesterSubjectScore.Detail.GetAttribute("補考成績") == "" && semesterSubjectScore.Detail.GetAttribute("重修成績") == "" && semesterSubjectScore.Pass == false)
+                                                        {
+                                                            row["學期科目需要補考註記" + subjectIndex] = "\f";
+                                                            row["學期科目需要補考標示" + subjectIndex] = conf.NeedReScoreMark;
+                                                        }
+
                                                     }
 
-                                                    if (semesterSubjectScore.Pass == false)
+                                                    decimal ss = 0;
+                                                    decimal.TryParse(semesterSubjectScore.Detail.GetAttribute("原始成績"), out ss);
+
+
+                                                    if ((ss < scB || semesterSubjectScore.Detail.GetAttribute("補考成績") != "" || semesterSubjectScore.Detail.GetAttribute("重修成績") != "") && semesterSubjectScore.Pass == false)
                                                     {
-                                                        // 不可補考，須重修，加入沒有取得學分才需要重修
+                                                        // 不可補考，須重修，加入沒有取得學分，需要重修
+
+                                                        row["學期科目需要補考標示" + subjectIndex] = "";
                                                         row["學期科目需要重修註記" + subjectIndex] = "\f";
                                                         row["學期科目需要重修標示" + subjectIndex] = conf.NeedRereadScoreMark;
+
                                                     }
 
 
@@ -2203,6 +2223,12 @@ namespace SH_SemesterScoreReportFixed
                                                 //"原始成績", "學年調整成績", "擇優採計成績", "補考成績", "重修成績"
                                                 if (semesterSubjectScore.Detail.GetAttribute("不需評分") != "是")
                                                 {
+
+                                                    if (semesterSubjectScore.Pass == false)
+                                                    {
+                                                        row["上學期科目未取得學分標示" + subjectIndex] = conf.FailScoreMark;
+                                                    }
+
                                                     row["上學期科目原始成績" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("原始成績");
                                                     row["上學期科目補考成績" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("補考成績");
                                                     row["上學期科目重修成績" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("重修成績");
@@ -2231,35 +2257,47 @@ namespace SH_SemesterScoreReportFixed
 
                                                     decimal scA = o_scA;
                                                     decimal scB = o_scB;
-                                                    string keySa = semesterSubjectScore.SchoolYear + "_" + semesterSubjectScore.Semester + "_" + semesterSubjectScore.Subject + "_" + semesterSubjectScore.Level + "_及";
-                                                    string keySb = semesterSubjectScore.SchoolYear + "_" + semesterSubjectScore.Semester + "_" + semesterSubjectScore.Subject + "_" + semesterSubjectScore.Level + "_補";
+                                                    //string keySa = semesterSubjectScore.SchoolYear + "_" + semesterSubjectScore.Semester + "_" + semesterSubjectScore.Subject + "_" + semesterSubjectScore.Level + "_及";
+                                                    //string keySb = semesterSubjectScore.SchoolYear + "_" + semesterSubjectScore.Semester + "_" + semesterSubjectScore.Subject + "_" + semesterSubjectScore.Level + "_補";
 
-                                                    if (StudentSCAttendApplyLimitDict.ContainsKey(stuRec.StudentID))
-                                                    {
-                                                        if (StudentSCAttendApplyLimitDict[stuRec.StudentID].ContainsKey(keySa))
-                                                            scA = StudentSCAttendApplyLimitDict[stuRec.StudentID][keySa];
+                                                    //if (StudentSCAttendApplyLimitDict.ContainsKey(stuRec.StudentID))
+                                                    //{
+                                                    //    if (StudentSCAttendApplyLimitDict[stuRec.StudentID].ContainsKey(keySa))
+                                                    //        scA = StudentSCAttendApplyLimitDict[stuRec.StudentID][keySa];
 
-                                                        if (StudentSCAttendApplyLimitDict[stuRec.StudentID].ContainsKey(keySb))
-                                                            scB = StudentSCAttendApplyLimitDict[stuRec.StudentID][keySb];
-                                                    }
+                                                    //    if (StudentSCAttendApplyLimitDict[stuRec.StudentID].ContainsKey(keySb))
+                                                    //        scB = StudentSCAttendApplyLimitDict[stuRec.StudentID][keySb];
+                                                    //}
+
+                                                    decimal.TryParse(semesterSubjectScore.Detail.GetAttribute("修課及格標準"), out scA);
+                                                    decimal.TryParse(semesterSubjectScore.Detail.GetAttribute("修課補考標準"), out scB);
 
                                                     // 不及格
                                                     if (semesterSubjectScore.Score < scA)
                                                     {
-                                                        row["上學期科目不及格標示" + subjectIndex] = conf.FailScoreMark;
+
                                                         // 可補考
                                                         if (semesterSubjectScore.Score >= scB)
                                                         {
-                                                            row["上學期科目需要補考註記" + subjectIndex] = "\f";
-                                                            row["上學期科目需要補考標示" + subjectIndex] = conf.NeedReScoreMark;
+                                                            if (semesterSubjectScore.Detail.GetAttribute("補考成績") == "" && semesterSubjectScore.Detail.GetAttribute("重修成績") == "" && semesterSubjectScore.Pass == false)
+                                                            {
+                                                                row["上學期科目需要補考註記" + subjectIndex] = "\f";
+                                                                row["上學期科目需要補考標示" + subjectIndex] = conf.NeedReScoreMark;
+                                                            }
+
                                                         }
+
+                                                        decimal ss = 0;
+                                                        decimal.TryParse(semesterSubjectScore.Detail.GetAttribute("原始成績"), out ss);
 
 
                                                         // 不可補考需要重修，沒有取得學分才需要重修
-                                                        if (semesterSubjectScore.Pass == false)
+                                                        if ((ss < scB || semesterSubjectScore.Detail.GetAttribute("補考成績") != "" || semesterSubjectScore.Detail.GetAttribute("重修成績") != "") && semesterSubjectScore.Pass == false)
                                                         {
+                                                            row["上學期科目需要補考標示" + subjectIndex] = "";
                                                             row["上學期科目需要重修註記" + subjectIndex] = "\f";
                                                             row["上學期科目需要重修標示" + subjectIndex] = conf.NeedRereadScoreMark;
+
                                                         }
 
                                                     }

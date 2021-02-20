@@ -10,6 +10,7 @@ using SmartSchool.Customization.Data;
 using System.Xml;
 using DevComponents.DotNetBar.Rendering;
 using FISCA.DSAUtil;
+using FISCA.Data;
 
 namespace SmartSchool.Evaluation.Process.Wizards
 {
@@ -19,7 +20,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
 
         private ErrorViewer _ErrorViewer = new ErrorViewer();
         private WarnViewer _WarnViewer;
-        
+
         private BackgroundWorker runningBackgroundWorker = new BackgroundWorker();
 
         private SelectType _Type;
@@ -169,6 +170,10 @@ namespace SmartSchool.Evaluation.Process.Wizards
             int packageCount = 0;
             List<StudentRecord> package = null;
             List<List<StudentRecord>> packages = new List<List<StudentRecord>>();
+            // 學生系統編號
+            List<string> studIDList = new List<string>();
+            // 學生課程規畫表群組代碼對照用
+            Dictionary<string, string> studCourseGroupCodeDict = new Dictionary<string, string>();
             foreach (StudentRecord s in selectedStudents)
             {
                 if (packageCount == 0)
@@ -195,6 +200,57 @@ namespace SmartSchool.Evaluation.Process.Wizards
                 {
                     if (var.Count > 0)
                     {
+                        // 取得學生群組代碼
+                        studIDList.Clear();
+                        studCourseGroupCodeDict.Clear();
+
+                        foreach (StudentRecord rec in var)
+                            studIDList.Add(rec.StudentID);
+
+                        try
+                        {
+                            QueryHelper qh = new QueryHelper();
+                            string qry = "" +
+                              "WITH StudentGradPlan AS ( " +
+"SELECT  " +
+"student.id AS student_id " +
+",COALESCE(class.grade_year,0) AS grade_year " +
+",COALESCE(student.ref_graduation_plan_id,class.ref_graduation_plan_id) as graduation_id  " +
+" FROM student  " +
+" LEFT JOIN class ON student.ref_class_id = class.id  " +
+" WHERE student.id IN(" + string.Join(",", studIDList.ToArray()) + ") " +
+") " +
+"SELECT student_id,grade_year,graduation_plan.name,graduation_plan.moe_group_code,graduation_plan.moe_group_code_1 FROM StudentGradPlan INNER JOIN graduation_plan ON StudentGradPlan.graduation_id = graduation_plan.id ";
+
+                            DataTable dt = qh.Select(qry);
+
+                            foreach (DataRow dr in dt.Rows)
+                            {
+                                string sid = dr["student_id"] + "";
+                                string grade_year = dr["grade_year"] + "";
+                                string groupCode = "";
+
+                                if (dr["moe_group_code"] != null)
+                                    groupCode = dr["moe_group_code"] + "";
+
+                                // 一年級需要判斷綜高
+                                if (grade_year == "1")
+                                {
+                                    if (dr["moe_group_code_1"] != null)
+                                        groupCode = dr["moe_group_code_1"] + "";
+                                }
+
+                                if (!studCourseGroupCodeDict.ContainsKey(sid))
+                                    studCourseGroupCodeDict.Add(sid, groupCode);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+
+
+
                         helper.StudentHelper.FillField("SemesterHistory", var);
                         List<StudentRecord> editList = new List<StudentRecord>();
                         #region 檢查並編及每個選取學生的學期歷程
@@ -224,6 +280,10 @@ namespace SmartSchool.Evaluation.Process.Wizards
                                 string seatNo = string.Empty;
                                 string teacherName = string.Empty;
 
+                                // 2021/2/19
+                                string StudentNumber = string.Empty;
+                                string CourseGroupCode = string.Empty;
+
                                 if (stu.RefClass != null)
                                 {
                                     className = stu.RefClass.ClassName;
@@ -231,7 +291,17 @@ namespace SmartSchool.Evaluation.Process.Wizards
                                     if (stu.RefClass.RefTeacher != null)
                                         teacherName = stu.RefClass.RefTeacher.TeacherName;
                                 }
+                                // 座號
                                 seatNo = stu.SeatNo;
+                                // 學號
+                                StudentNumber = stu.StudentNumber;
+
+                                // 課程群組代碼(由課程規劃表來)
+                                CourseGroupCode = "";
+                                if (studCourseGroupCodeDict.ContainsKey(stu.StudentID))
+                                {
+                                    CourseGroupCode = studCourseGroupCodeDict[stu.StudentID];
+                                }
 
                                 if (historyElement == null)
                                 {
@@ -244,6 +314,8 @@ namespace SmartSchool.Evaluation.Process.Wizards
                                     historyElement.SetAttribute("DeptName", deptName);
                                     historyElement.SetAttribute("SeatNo", seatNo);
                                     historyElement.SetAttribute("Teacher", teacherName);
+                                    historyElement.SetAttribute("CourseGroupCode", CourseGroupCode);
+                                    historyElement.SetAttribute("StudentNumber", StudentNumber);
 
                                     semesterHistory.AppendChild(historyElement);
                                     editList.Add(stu);
@@ -288,6 +360,23 @@ namespace SmartSchool.Evaluation.Process.Wizards
                                         isRevised = true;
                                     }
 
+                                    // 課程群組代碼
+                                    if (!string.IsNullOrEmpty(CourseGroupCode) &&
+         historyElement.GetAttribute("CourseGroupCode") != CourseGroupCode)
+                                    {
+                                        historyElement.SetAttribute("CourseGroupCode", CourseGroupCode);
+                                        isRevised = true;
+                                    }
+
+                                    // 學號
+                                    if (!string.IsNullOrEmpty(StudentNumber) &&
+        historyElement.GetAttribute("StudentNumber") != StudentNumber)
+                                    {
+                                        historyElement.SetAttribute("StudentNumber", StudentNumber);
+                                        isRevised = true;
+                                    }
+
+
                                     if (isRevised == true)
                                         editList.Add(stu);
                                     #endregion 判斷那些欄位需要更新
@@ -324,7 +413,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
                 hasWarning = true;
                 foreach (string s in computer._WarningList) // 這邊先整理好有疑慮的課程警告名單，等全部都做完後一併處理
                 {
-                    warningList.Add(s);                
+                    warningList.Add(s);
                 }
             }
 
@@ -357,7 +446,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
                 }
 
                 foreach (string s in warningList)
-                {                    
+                {
                     _WarnViewer.SetMessage("課程:" + s, "科目名稱或分項類別有錯誤, 故此課程不列入計算");
                 }
 
@@ -377,14 +466,14 @@ namespace SmartSchool.Evaluation.Process.Wizards
                 {
                     linkLabel2.Visible = true; // 不再主動跳出視窗，警告訊息放在這裡供使用者點選打開檢查
                     labelX4.Text = "計算成功，請檢查警告訊息後，上傳成績";
-                    resultList = (List<StudentRecord>) e.Result;
+                    resultList = (List<StudentRecord>)e.Result;
                 }
                 else // 沒錯誤 沒警告
                 {
                     wizard1.SelectedPage = wizardPage4;
                     upLoad((List<StudentRecord>)e.Result);
                 }
-                
+
             }
         }
 

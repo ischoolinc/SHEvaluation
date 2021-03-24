@@ -427,6 +427,7 @@
             this.listViewEx1.Border.Class = "ListViewBorder";
             this.listViewEx1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.listViewEx1.CheckBoxes = true;
+            this.listViewEx1.HideSelection = false;
             this.listViewEx1.Location = new System.Drawing.Point(84, 186);
             this.listViewEx1.Name = "listViewEx1";
             this.listViewEx1.Size = new System.Drawing.Size(366, 191);
@@ -854,7 +855,7 @@
             this.DoubleBuffered = true;
             this.MaximizeBox = true;
             this.Name = "ConfigForm";
-            this.Text = "定期評量成績單";
+            this.Text = "定期評量成績單(固定排名)";
             this.Load += new System.EventHandler(this.ConfigForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).EndInit();
             this.tabControl1.ResumeLayout(false);

@@ -152,6 +152,7 @@
     <None Include="Resources\個人學期成績單%28學生清單%29.xls" />
     <None Include="Resources\個人學期成績單樣板%28高中%29.doc" />
     <None Include="Resources\個人學期成績單樣板.doc" />
+    <None Include="Resources\個人定期成績單樣板20210324.doc" />
     <None Include="Resources\歡樂的合併欄位總表.doc" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

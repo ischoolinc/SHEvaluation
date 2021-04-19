@@ -288,6 +288,15 @@ namespace SmartSchool.Evaluation
             //處理取得系統相關資訊
             SmartSchool.Customization.Data.SystemInformation.GettingField += new EventHandler<GetFieldEventArgs>(SystemInformation_GettingField);
             //SmartSchool.API.Provider.SystemProvider.GetField += new EventHandler<SmartSchool.API.Provider.GetSystemFieldEventArgs>(SystemProvider_GetField);
+
+            #region 學期成績(封存)
+            Catalog ribbon = RoleAclSource.Instance["學生"]["資料項目"];
+            ribbon.Add(new DetailItemFeature(Permissions.學期成績封存, "學期成績(封存)"));
+
+            FISCA.Permission.FeatureAce UserPermission = FISCA.Permission.UserAcl.Current[Permissions.學期成績封存];  //資料項目權限
+            if (UserPermission.Editable || UserPermission.Viewable)
+                K12.Presentation.NLDPanels.Student.AddDetailBulider(new FISCA.Presentation.DetailBulider<SemesterScoreDataAchive>());
+            #endregion
         }
 
         static void SystemInformation_GettingField(object sender, GetFieldEventArgs e)

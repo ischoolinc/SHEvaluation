@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
+using FISCA.Data;
 using FISCA.DSAUtil;
 using SmartSchool.AccessControl;
 using SmartSchool.ApplicationLog;
@@ -16,6 +18,7 @@ namespace SmartSchool.Evaluation.Content
     [FeatureCode("Content0100")]
     public partial class SemesterScorePalmerworm : UserControl, SmartSchool.Customization.PlugIn.ExtendedContent.IContentItem, IPreference
     {
+
         BackgroundWorker _bkwEntryLoader = new BackgroundWorker();
 
         BackgroundWorker _bkwSubjectLoader = new BackgroundWorker();
@@ -31,7 +34,7 @@ namespace SmartSchool.Evaluation.Content
         DSResponse _SubjectResponse;
 
         bool Reload = false;
-
+        bool ArchiveReload = true;  //Cynthia
         private bool WaitingPicVisible { set { this.picWaiting.Visible = value; } }
 
         public static string FeatureCode = "";
@@ -61,6 +64,11 @@ namespace SmartSchool.Evaluation.Content
             btnModify.Visible = _permission.Editable;
 
             btnView.Visible = !_permission.Editable;
+
+            //學期成績(封存)
+            btnArchive.Visible = FISCA.Permission.UserAcl.Current[Permissions.學期成績封存].Editable;
+            linkLabel1.Visible = FISCA.Permission.UserAcl.Current[Permissions.學期成績封存].Editable;
+
         }
 
         void Application_Idle(object sender, EventArgs e)
@@ -249,7 +257,7 @@ namespace SmartSchool.Evaluation.Content
 
         public void LoadContent(string id)
         {
-            btnModify.Enabled = btnDelete.Enabled = false;
+            btnModify.Enabled = btnDelete.Enabled = btnArchive.Enabled = false;
             listView1.Items.Clear();
             _CurrentID = id;
             if (!_bkwEntryLoader.IsBusy)
@@ -328,6 +336,7 @@ namespace SmartSchool.Evaluation.Content
             btnView.Enabled = (listView1.SelectedIndices.Count == 1);
             btnModify.Enabled = (listView1.SelectedIndices.Count == 1 && _permission.Viewable);
             btnDelete.Enabled = (listView1.SelectedIndices.Count == 1 && _permission.Editable);
+            btnArchive.Enabled = (listView1.SelectedIndices.Count == 1 && FISCA.Permission.UserAcl.Current[Permissions.學期成績封存].Editable);
         }
 
         private void buttonX3_Click(object sender, EventArgs e)
@@ -427,8 +436,92 @@ namespace SmartSchool.Evaluation.Content
             return new SemesterScorePalmerworm();
         }
 
+
         #endregion
 
+        private void btnArchive_Click(object sender, EventArgs e)
+        {
+            //寫入log
+            StringBuilder sb_log = new StringBuilder();
+            //封存 (複製sems_subj_score 和 sems_entry_score)
 
+            if (MsgBox.Show("確定將" + listView1.SelectedItems[0].SubItems[0].Text + "-" + listView1.SelectedItems[0].SubItems[1].Text + "學期成績，複製到「學期成績(封存)」？", "", MessageBoxButtons.YesNo) == DialogResult.No) return;
+
+            UpdateHelper updateHelper = new UpdateHelper();
+            QueryHelper qh = new QueryHelper();
+            int uid = 0;
+
+            string searchSql = "SELECT id FROM sems_subj_score WHERE ref_student_id ={0} AND school_year={1} AND semester={2}";
+            searchSql = string.Format(searchSql, _CurrentID, listView1.SelectedItems[0].SubItems[0].Text, listView1.SelectedItems[0].SubItems[1].Text);
+           
+            
+            DataTable searchIDdt = qh.Select(searchSql);
+            if (searchIDdt.Rows.Count>0)
+            {
+            try
+            {
+                foreach (XmlElement var in QueryScore.GetSemesterEntryScoreBySemester(int.Parse(listView1.SelectedItems[0].SubItems[0].Text), int.Parse(listView1.SelectedItems[0].SubItems[1].Text), _CurrentID).GetContent().GetElements("SemesterEntryScore"))
+                {
+                    //複製學期分項成績(不複製德行成績)
+                    string sql = @"INSERT INTO $semester_entry_score_archive (ref_student_id,school_year,semester, grade_year, score_info) 
+                                                    SELECT ref_student_id,school_year,semester, grade_year, score_info 
+                                                    FROM sems_entry_score 
+                                                    WHERE entry_group=1  AND id={0}
+                                                    RETURNING uid";
+
+                    sql = string.Format(sql, var.SelectSingleNode("@ID").InnerText);
+                    //updateHelper.Execute(sql);
+                    //取得回傳的uid讓$semester_subject_score_archive 寫入ref_sems_entry_uid
+                    DataTable dt = qh.Select(sql);
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        uid = int.Parse(dr["uid"].ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MsgBox.Show("取得學生學期分項成績發生錯誤。");
+            }
+
+            try
+            {
+                foreach (XmlElement var in QueryScore.GetSemesterSubjectScoreBySemester(int.Parse(listView1.SelectedItems[0].SubItems[0].Text), int.Parse(listView1.SelectedItems[0].SubItems[1].Text), _CurrentID).GetContent().GetElements("SemesterSubjectScore"))
+                {
+                    //複製學期科目成績
+                    string sql = @"INSERT INTO $semester_subject_score_archive (ref_student_id,school_year,semester, grade_year, score_info,ref_sems_entry_uid) 
+                                                    SELECT ref_student_id,school_year,semester, grade_year, score_info ,{0}
+                                                    FROM sems_subj_score 
+                                                    WHERE  id={1} ";
+
+                    sql = string.Format(sql, uid, var.SelectSingleNode("@ID").InnerText);
+
+                    updateHelper.Execute(sql);
+                }
+            }
+            catch (Exception ex)
+            {
+                MsgBox.Show("取得學生學期科目成績發生錯誤。");
+                return;
+            }
+            sb_log.AppendLine("複製學生「" + Student.Instance.Items[_CurrentID].Name + "(學號" + Student.Instance.Items[_CurrentID].StudentNumber + ")」" + listView1.SelectedItems[0].SubItems[0].Text + "學年度第" + listView1.SelectedItems[0].SubItems[1].Text + "學期的學期成績至「學期成績(封存)」。");
+            FISCA.LogAgent.ApplicationLog.Log("學期成績", "封存", "學生", Student.Instance.Items[_CurrentID].ID, sb_log.ToString());
+            MsgBox.Show("封存成功。");
+
+            //todo 封存後，更新封存資料項目。
+            EventHub.OnArchiveChanged(); //Cynthia
+            }else
+                MsgBox.Show(listView1.SelectedItems[0].SubItems[0].Text + "學年度第" + listView1.SelectedItems[0].SubItems[1].Text+"學期沒有科目成績。");
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            MsgBox.Show("\r\n" +
+                "1. 需要有「學期成績(封存)」的編輯權限才能使用。\r\n\r\n" +
+                "2. 此功能運用在「校內轉科」，用來保留學生轉科後被判定為不可抵免的科目成績。\r\n\r\n" +
+                "3. 封存的成績不可修改。\r\n\r\n" +
+                "4. 德行成績已過時，故不在封存範圍。\r\n\r\n" +
+                "5. 建議流程：封存轉科生當前所有的學期成績至「學期成績(封存)」，再將不可抵免的科目自學期成績中刪除。", "學期成績(封存)說明", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
     }
 }

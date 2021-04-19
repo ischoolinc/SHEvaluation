@@ -36,10 +36,11 @@
             this.colSemester = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cboGradeYear = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.col學業成績 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.col實習科目 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.col專業科目 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.col體育成績 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.col國防通識 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.col健康與護理 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.col實習科目 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.col德行成績 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.col實得學分 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
@@ -49,7 +50,8 @@
             this.btnDelete = new DevComponents.DotNetBar.ButtonX();
             this.picWaiting = new System.Windows.Forms.PictureBox();
             this.btnView = new DevComponents.DotNetBar.ButtonX();
-            this.col專業科目 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.btnArchive = new DevComponents.DotNetBar.ButtonX();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.picWaiting)).BeginInit();
             this.SuspendLayout();
             // 
@@ -109,6 +111,16 @@
             this.col學業成績.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.col學業成績.Width = 85;
             // 
+            // col實習科目
+            // 
+            this.col實習科目.Text = "實習科目";
+            this.col實習科目.Width = 85;
+            // 
+            // col專業科目
+            // 
+            this.col專業科目.Text = "專業科目";
+            this.col專業科目.Width = 85;
+            // 
             // col體育成績
             // 
             this.col體育成績.Text = "體育成績";
@@ -124,11 +136,6 @@
             this.col健康與護理.Text = "健康與護理";
             this.col健康與護理.Width = 85;
             // 
-            // col實習科目
-            // 
-            this.col實習科目.Text = "實習科目";
-            this.col實習科目.Width = 85;
-            // 
             // col德行成績
             // 
             this.col德行成績.Text = "德行成績";
@@ -140,11 +147,6 @@
             this.col實得學分.Text = "實得學分";
             this.col實得學分.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.col實得學分.Width = 85;
-            // 
-            // col專業科目
-            // 
-            this.col專業科目.Text = "專業科目";
-            this.col專業科目.Width = 85;
             // 
             // imageList1
             // 
@@ -220,9 +222,34 @@
             this.btnView.Text = "檢視";
             this.btnView.Click += new System.EventHandler(this.btnView_Click);
             // 
+            // btnArchive
+            // 
+            this.btnArchive.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnArchive.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnArchive.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnArchive.Location = new System.Drawing.Point(260, 195);
+            this.btnArchive.Name = "btnArchive";
+            this.btnArchive.Size = new System.Drawing.Size(75, 23);
+            this.btnArchive.TabIndex = 6;
+            this.btnArchive.Text = "封存";
+            this.btnArchive.Click += new System.EventHandler(this.btnArchive_Click);
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(495, 198);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(37, 15);
+            this.linkLabel1.TabIndex = 11;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "說明";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
             // SemesterScorePalmerworm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.Controls.Add(this.linkLabel1);
+            this.Controls.Add(this.btnArchive);
             this.Controls.Add(this.picWaiting);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnModify);
@@ -258,5 +285,7 @@
         protected System.Windows.Forms.PictureBox picWaiting;
         private DevComponents.DotNetBar.ButtonX btnView;
         private System.Windows.Forms.ColumnHeader col專業科目;
+        private DevComponents.DotNetBar.ButtonX btnArchive;
+        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }

@@ -106,6 +106,7 @@ WHERE ref_student_id = {0} AND uid = {1}";
 	, array_to_string(xpath('//Subject/@修課補考標準', subj_score_ele), '')::text AS 修課補考標準
 	, array_to_string(xpath('//Subject/@修課直接指定總成績', subj_score_ele), '')::text AS 修課直接指定總成績
 	, array_to_string(xpath('//Subject/@修課備註', subj_score_ele), '')::text AS 修課備註
+	, array_to_string(xpath('//Subject/@修課科目代碼', subj_score_ele), '')::text AS 修課科目代碼
 	, array_to_string(xpath('//Subject/@是否補修成績', subj_score_ele), '')::text AS 是否補修成績
 	, array_to_string(xpath('//Subject/@重修學年度', subj_score_ele), '')::text AS 重修學年度
 	, array_to_string(xpath('//Subject/@重修學期', subj_score_ele), '')::text AS 重修學期 
@@ -153,9 +154,10 @@ FROM (
                     dataGridView_Archive.Rows[i].Cells[16].Value = dr["修課補考標準"].ToString();
                     dataGridView_Archive.Rows[i].Cells[17].Value = dr["修課直接指定總成績"].ToString();
                     dataGridView_Archive.Rows[i].Cells[18].Value = dr["修課備註"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[19].Value = dr["是否補修成績"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[20].Value = dr["重修學年度"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[21].Value = dr["重修學期"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[19].Value = dr["修課科目代碼"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[20].Value = dr["是否補修成績"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[21].Value = dr["重修學年度"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[22].Value = dr["重修學期"].ToString();
 
                     i++;
                 }

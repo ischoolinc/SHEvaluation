@@ -518,10 +518,13 @@ namespace SmartSchool.Evaluation.Content
         {
             MsgBox.Show("\r\n" +
                 "1. 需要有「學期成績(封存)」的編輯權限才能使用。\r\n\r\n" +
-                "2. 此功能運用在「校內轉科」，用來保留學生轉科後被判定為不可抵免的科目成績。\r\n\r\n" +
+                "2. 此功能運用在「校內轉科」，用來保留學生當時的學期科目成績及課程代碼。\r\n\r\n" +
                 "3. 封存的成績不可修改。\r\n\r\n" +
                 "4. 德行成績已過時，故不在封存範圍。\r\n\r\n" +
-                "5. 建議流程：封存轉科生當前所有的學期成績至「學期成績(封存)」，再將不可抵免的科目自學期成績中刪除。", "學期成績(封存)說明", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                "5. 流程：\r\n" +
+                "　　(1) 請先封存學生當前所有的學期成績至「學期成績(封存)」。\r\n" +
+                "　　(2) 進行轉科異動作業。\r\n" +
+                "　　(3) 將不可抵免的科目自學期成績中刪除。", "學期成績(封存)說明", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

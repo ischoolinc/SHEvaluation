@@ -373,15 +373,15 @@ namespace ClassSemesterScoreReportFixed_SH
                 //用一個BackgroundWorker包起來
                 System.ComponentModel.BackgroundWorker bkw = new System.ComponentModel.BackgroundWorker();
                 bkw.WorkerReportsProgress = true;
-                System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 班級學期成績單產生 S");
+                System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 班級學期成績單(固定排名)產生 S");
                 bkw.ProgressChanged += delegate (object sender, System.ComponentModel.ProgressChangedEventArgs e)
                 {
                     FISCA.Presentation.MotherForm.SetStatusBarMessage(" 班級學期成績單產生中", e.ProgressPercentage);
-                    System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 班級學期成績單產生 " + e.ProgressPercentage);
+                    System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + "班級學期成績單(固定排名)產生 " + e.ProgressPercentage);
                 };
                 bkw.RunWorkerCompleted += delegate
                 {
-                    System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 班級學期成績單產生 E");
+                    System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 班級學期成績單(固定排名)產生 E");
                     string err = "下列班級因成績項目超過樣板支援上限，\n或者班級學生數超過樣板支援上限，\n超出部分科目成績無法印出，建議調整樣板內容。";
                     if (overflowRecords.Count > 0)
                     {
@@ -394,7 +394,7 @@ namespace ClassSemesterScoreReportFixed_SH
 
                     if (exc != null)
                     {
-                        FISCA.Presentation.Controls.MsgBox.Show("產生班級學期成績單發生錯誤", exc.Message);
+                        FISCA.Presentation.Controls.MsgBox.Show("產生班級學期成績單(固定排名)發生錯誤", exc.Message);
 
                         // throw new Exception("產生班級學期成績單發生錯誤", exc);
                     }
@@ -448,7 +448,7 @@ namespace ClassSemesterScoreReportFixed_SH
                         }
                     }
                     #endregion
-                    FISCA.Presentation.MotherForm.SetStatusBarMessage("班級學期成績單產生完成。", 100);
+                    FISCA.Presentation.MotherForm.SetStatusBarMessage("班級學期成績單(固定排名)產生完成。", 100);
                     if (overflowRecords.Count > 0)
                         MessageBox.Show(err);
                 };
@@ -1748,7 +1748,7 @@ namespace ClassSemesterScoreReportFixed_SH
             #endregion
 
             #region 儲存檔案
-            string inputReportName = "班級學期成績單合併欄位總表";
+            string inputReportName = "班級學期成績單(固定排名)合併欄位總表";
             string reportName = inputReportName;
 
             string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");

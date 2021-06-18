@@ -454,7 +454,7 @@ namespace ClassSemesterScoreReportFixed_SH
             if (this.Configure == null) return;
             lnkDownloadTemplate.Enabled = false;
             #region 儲存檔案
-            string inputReportName = "個人學期成績單樣板(" + this.Configure.Name + ").doc";
+            string inputReportName = "班級學期成績單(固定排名)樣板(" + this.Configure.Name + ").doc";
             string reportName =  Utility.ParseFileName(inputReportName);
 
             string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");

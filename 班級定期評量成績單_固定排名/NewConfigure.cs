@@ -85,7 +85,7 @@ namespace 班級定期評量成績單_固定排名
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             #region 儲存檔案
-            string inputReportName = "班級考試成績單樣版.doc";
+            string inputReportName = "班級定期評量成績單(固定排名)樣板.doc";
             string reportName = inputReportName;
 
             string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");

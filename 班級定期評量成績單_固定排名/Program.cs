@@ -141,15 +141,15 @@ namespace 班級定期評量成績單_固定排名
                 //用一個BackgroundWorker包起來
                 System.ComponentModel.BackgroundWorker bkw = new System.ComponentModel.BackgroundWorker();
                 bkw.WorkerReportsProgress = true;
-                System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 班級評量成績單產生 S");
+                System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 班級定期評量成績單(固定排名)產生 S");
                 bkw.ProgressChanged += delegate (object sender, System.ComponentModel.ProgressChangedEventArgs e)
                 {
                     FISCA.Presentation.MotherForm.SetStatusBarMessage(" 班級評量成績單產生中", e.ProgressPercentage);
-                    System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 班級評量成績單產生 " + e.ProgressPercentage);
+                    System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 班級定期評量成績單(固定排名)產生 " + e.ProgressPercentage);
                 };
                 bkw.RunWorkerCompleted += delegate
                 {
-                    System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 班級評量成績單產生 E");
+                    System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 班級定期評量成績單(固定排名)產生 E");
                     string err = "下列班級因成績項目超過樣板支援上限，\n或者班級學生數超過樣板支援上限，\n超出部分科目成績無法印出，建議調整樣板內容。";
                     if (overflowRecords.Count > 0)
                     {
@@ -160,7 +160,7 @@ namespace 班級定期評量成績單_固定排名
                     }
                     if (exc != null)
                     {
-                        throw new Exception("產生班級評量成績單發生錯誤", exc);
+                        throw new Exception("產生班級定期評量成績單(固定排名)發生錯誤", exc);
                     }
                     #region 儲存檔案
                     string inputReportName = "班級評量成績單";
@@ -211,7 +211,7 @@ namespace 班級定期評量成績單_固定排名
                         }
                     }
                     #endregion
-                    FISCA.Presentation.MotherForm.SetStatusBarMessage("班級評量成績單產生完成。", 100);
+                    FISCA.Presentation.MotherForm.SetStatusBarMessage("班級定期評量成績單(固定排名)產生完成。", 100);
                     if (overflowRecords.Count > 0)
                         MessageBox.Show(err);
                 };

@@ -326,7 +326,7 @@ namespace 班級定期評量成績單_固定排名
         {
             if (this.Configure == null) return;
             #region 儲存檔案
-            string inputReportName = "個人學期成績單樣板(" + this.Configure.Name + ").doc";
+            string inputReportName = "班級學期成績單樣板(" + this.Configure.Name + ").doc";
             string reportName = inputReportName;
 
             string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");

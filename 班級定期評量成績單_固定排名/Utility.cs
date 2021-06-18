@@ -1197,7 +1197,7 @@ namespace 班級定期評量成績單_固定排名
                         ,{"40以上小於50"                  ,"組距count40"   }
                         ,{"小於40"                        ,"組距count40Down"   }
                         ,{"30以上"                        ,"組距count30Up"   }
-                        ,{"30以上小於40"                  ,"組距count30Down"   }
+                        ,{"30以上小於40"                  ,"組距count30"   }
                         ,{"小於30"                        ,"組距count30Down"   }
                         ,{"20以上"                        ,"組距count20Up"   }
                         ,{"20以上小於30"                  ,"組距count20"   }
@@ -1262,7 +1262,7 @@ namespace 班級定期評量成績單_固定排名
 
 
             #region 儲存檔案
-            string inputReportName = "班級評量成績單合併欄位總表";
+            string inputReportName = "班級定期評量成績單(固定排名)合併欄位總表";
             string reportName = inputReportName;
 
             string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");

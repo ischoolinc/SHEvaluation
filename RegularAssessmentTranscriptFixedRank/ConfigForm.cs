@@ -396,7 +396,7 @@ namespace RegularAssessmentTranscriptFixedRank
 
             #region 儲存檔案
             //string inputReportName = "個人學期成績單樣板(" + this.Configure.Name + ").doc";
-            string inputReportName = "學生定期評量成績單樣板(" + this.Configure.Name + ").doc";
+            string inputReportName = "學生定期評量成績單(固定排名)樣板(" + this.Configure.Name + ").doc";
 
             string reportName = inputReportName;
 
@@ -604,7 +604,7 @@ namespace RegularAssessmentTranscriptFixedRank
         {
             #region 儲存檔案
             //string inputReportName = "個人學期成績單合併欄位總表.doc";
-            string inputReportName = "學生定期評量成績單合併欄位總表.doc";
+            string inputReportName = "學生定期評量成績單(固定排名)合併欄位總表.doc";
 
             string reportName = inputReportName;
 

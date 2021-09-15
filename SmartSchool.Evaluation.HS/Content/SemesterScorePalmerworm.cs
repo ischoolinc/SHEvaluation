@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Xml;
 using FISCA.Data;
 using FISCA.DSAUtil;
+using FISCA.UDT;
 using SmartSchool.AccessControl;
 using SmartSchool.ApplicationLog;
 using SmartSchool.Common;
@@ -439,12 +440,25 @@ namespace SmartSchool.Evaluation.Content
 
         #endregion
 
+        /// <summary>
+        /// 建立UDT
+        /// </summary>
+        public static void CreateUDTTable()
+        {
+            FISCA.UDT.SchemaManager Manager = new SchemaManager(new DSConnection(FISCA.Authentication.DSAServices.DefaultDataSource));
+            Manager.SyncSchema(new SemesterSubjectScoreArchive());
+            Manager.SyncSchema(new SemesterEntryScoreArchive());
+        }
+
+
         private void btnArchive_Click(object sender, EventArgs e)
         {
+            CreateUDTTable();
+
             //寫入log
             StringBuilder sb_log = new StringBuilder();
             //封存 (複製sems_subj_score 和 sems_entry_score)
-
+            
             if (MsgBox.Show("確定將" + listView1.SelectedItems[0].SubItems[0].Text + "-" + listView1.SelectedItems[0].SubItems[1].Text + "學期成績，複製到「學期成績(封存)」？", "", MessageBoxButtons.YesNo) == DialogResult.No) return;
 
             UpdateHelper updateHelper = new UpdateHelper();
@@ -481,7 +495,7 @@ namespace SmartSchool.Evaluation.Content
             }
             catch (Exception ex)
             {
-                MsgBox.Show("取得學生學期分項成績發生錯誤。");
+                MsgBox.Show("取得學生學期分項成績發生錯誤。"+ex.Message);
             }
 
             try
@@ -501,7 +515,7 @@ namespace SmartSchool.Evaluation.Content
             }
             catch (Exception ex)
             {
-                MsgBox.Show("取得學生學期科目成績發生錯誤。");
+                MsgBox.Show("取得學生學期科目成績發生錯誤。" + ex.Message);
                 return;
             }
             sb_log.AppendLine("複製學生「" + Student.Instance.Items[_CurrentID].Name + "(學號" + Student.Instance.Items[_CurrentID].StudentNumber + ")」" + listView1.SelectedItems[0].SubItems[0].Text + "學年度第" + listView1.SelectedItems[0].SubItems[1].Text + "學期的學期成績至「學期成績(封存)」。");

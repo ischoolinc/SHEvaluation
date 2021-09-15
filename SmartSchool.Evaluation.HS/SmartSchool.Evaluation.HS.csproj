@@ -55,6 +55,7 @@
     <Reference Include="DevComponents.DotNetBar2, Version=9.5.0.1, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\DevComponents.DotNetBar2.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="FISCA, Version=2.1.1.22, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -82,6 +83,7 @@
     </Reference>
     <Reference Include="FISCA.LogAgent">
       <HintPath>Library\FISCA.LogAgent.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="FISCA.Permission, Version=1.2.0.2, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -95,6 +97,7 @@
     </Reference>
     <Reference Include="FISCA.UDT">
       <HintPath>Library\FISCA.UDT.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="IntelliSchool.DSA.ClientFramework, Version=1.2.2.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

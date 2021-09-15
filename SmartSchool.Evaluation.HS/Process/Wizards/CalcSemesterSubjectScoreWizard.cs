@@ -173,7 +173,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
             // 學生系統編號
             List<string> studIDList = new List<string>();
             // 學生課程規畫表群組代碼對照用
-            Dictionary<string, string> studCourseGroupCodeDict = new Dictionary<string, string>();
+            Dictionary<string, string> studGDCCodeDict = new Dictionary<string, string>();
             foreach (StudentRecord s in selectedStudents)
             {
                 if (packageCount == 0)
@@ -202,7 +202,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
                     {
                         // 取得學生群組代碼
                         studIDList.Clear();
-                        studCourseGroupCodeDict.Clear();
+                        studGDCCodeDict.Clear();
 
                         foreach (StudentRecord rec in var)
                             studIDList.Add(rec.StudentID);
@@ -210,38 +210,25 @@ namespace SmartSchool.Evaluation.Process.Wizards
                         try
                         {
                             QueryHelper qh = new QueryHelper();
-                            string qry = "" +
-                              "WITH StudentGradPlan AS ( " +
-"SELECT  " +
-"student.id AS student_id " +
-",COALESCE(class.grade_year,0) AS grade_year " +
-",COALESCE(student.ref_graduation_plan_id,class.ref_graduation_plan_id) as graduation_id  " +
-" FROM student  " +
-" LEFT JOIN class ON student.ref_class_id = class.id  " +
-" WHERE student.id IN(" + string.Join(",", studIDList.ToArray()) + ") " +
-") " +
-"SELECT student_id,grade_year,graduation_plan.name,graduation_plan.moe_group_code,graduation_plan.moe_group_code_1 FROM StudentGradPlan INNER JOIN graduation_plan ON StudentGradPlan.graduation_id = graduation_plan.id ";
+                            // 取得學生群組代碼
+                            string qry = "SELECT " +
+                                "student.id AS student_id" +
+                                ",COALESCE(student.gdc_code,class.gdc_code) AS gdc_code " +
+                                "FROM student " +
+                                "LEFT OUTER JOIN " +
+                                "class " +
+                                " ON student.ref_class_id = class.id " +
+                                " WHERE student.id IN("+string.Join(",",studIDList.ToArray())+");"; 
+             
 
                             DataTable dt = qh.Select(qry);
 
                             foreach (DataRow dr in dt.Rows)
                             {
                                 string sid = dr["student_id"] + "";
-                                string grade_year = dr["grade_year"] + "";
-                                string groupCode = "";
-
-                                if (dr["moe_group_code"] != null)
-                                    groupCode = dr["moe_group_code"] + "";
-
-                                // 一年級需要判斷綜高
-                                if (grade_year == "1")
-                                {
-                                    if (dr["moe_group_code_1"] != null)
-                                        groupCode = dr["moe_group_code_1"] + "";
-                                }
-
-                                if (!studCourseGroupCodeDict.ContainsKey(sid))
-                                    studCourseGroupCodeDict.Add(sid, groupCode);
+                                string groupCode = dr["gdc_code"] +"";
+                                if (!studGDCCodeDict.ContainsKey(sid))
+                                    studGDCCodeDict.Add(sid, groupCode);
                             }
                         }
                         catch (Exception ex)
@@ -282,11 +269,12 @@ namespace SmartSchool.Evaluation.Process.Wizards
 
                                 // 2021/2/19
                                 string StudentNumber = string.Empty;
-                                string CourseGroupCode = string.Empty;
-
+                                string GDCCode = string.Empty;
+                                string ClassID = "";
                                 if (stu.RefClass != null)
                                 {
                                     className = stu.RefClass.ClassName;
+                                    ClassID = stu.RefClass.ClassID;
                                     deptName = stu.RefClass.Department;
                                     if (stu.RefClass.RefTeacher != null)
                                         teacherName = stu.RefClass.RefTeacher.TeacherName;
@@ -297,10 +285,10 @@ namespace SmartSchool.Evaluation.Process.Wizards
                                 StudentNumber = stu.StudentNumber;
 
                                 // 課程群組代碼(由課程規劃表來)
-                                CourseGroupCode = "";
-                                if (studCourseGroupCodeDict.ContainsKey(stu.StudentID))
+                                GDCCode = "";
+                                if (studGDCCodeDict.ContainsKey(stu.StudentID))
                                 {
-                                    CourseGroupCode = studCourseGroupCodeDict[stu.StudentID];
+                                    GDCCode = studGDCCodeDict[stu.StudentID];
                                 }
 
                                 if (historyElement == null)
@@ -314,7 +302,8 @@ namespace SmartSchool.Evaluation.Process.Wizards
                                     historyElement.SetAttribute("DeptName", deptName);
                                     historyElement.SetAttribute("SeatNo", seatNo);
                                     historyElement.SetAttribute("Teacher", teacherName);
-                                    historyElement.SetAttribute("CourseGroupCode", CourseGroupCode);
+                                    historyElement.SetAttribute("GDCCode", GDCCode);
+                                    historyElement.SetAttribute("ClassID", ClassID);
                                     historyElement.SetAttribute("StudentNumber", StudentNumber);
 
                                     semesterHistory.AppendChild(historyElement);
@@ -361,10 +350,10 @@ namespace SmartSchool.Evaluation.Process.Wizards
                                     }
 
                                     // 課程群組代碼
-                                    if (!string.IsNullOrEmpty(CourseGroupCode) &&
-         historyElement.GetAttribute("CourseGroupCode") != CourseGroupCode)
+                                    if (!string.IsNullOrEmpty(GDCCode) &&
+         historyElement.GetAttribute("GDCCode") != GDCCode)
                                     {
-                                        historyElement.SetAttribute("CourseGroupCode", CourseGroupCode);
+                                        historyElement.SetAttribute("GDCCode", GDCCode);
                                         isRevised = true;
                                     }
 
@@ -373,6 +362,14 @@ namespace SmartSchool.Evaluation.Process.Wizards
         historyElement.GetAttribute("StudentNumber") != StudentNumber)
                                     {
                                         historyElement.SetAttribute("StudentNumber", StudentNumber);
+                                        isRevised = true;
+                                    }
+
+                                    // 班級編號
+                                    if (!string.IsNullOrEmpty(ClassID) &&
+         historyElement.GetAttribute("ClassID") != ClassID)
+                                    {
+                                        historyElement.SetAttribute("ClassID", ClassID);
                                         isRevised = true;
                                     }
 

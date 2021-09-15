@@ -8,6 +8,7 @@ using SmartSchool.AccessControl;
 using SmartSchool.API.PlugIn;
 using System.Xml;
 using FISCA.DSAUtil;
+//using SHCourseGroupCodeDAL;
 
 namespace SmartSchool.Evaluation.ImportExport
 {
@@ -44,7 +45,7 @@ namespace SmartSchool.Evaluation.ImportExport
                 , "取得學分"
                 , "不計學分"
                 , "不需評分"
-                , "註記"               
+                , "註記"
                 , "畢業採計-學分數"
                 , "畢業採計-分項類別"
                 , "畢業採計-必選修"
@@ -56,9 +57,10 @@ namespace SmartSchool.Evaluation.ImportExport
                 , "重修學期"
                 , "修課及格標準"
                 , "修課補考標準"
-                , "修課科目代碼"
                 , "修課備註"
-                , "修課直接指定總成績"
+                , "修課直接指定總成績"                
+                , "免修"
+                , "抵免"
                 );
             filterRepeat.CheckedChanged += delegate
             {
@@ -130,10 +132,27 @@ namespace SmartSchool.Evaluation.ImportExport
                 //    _AccessHelper.StudentHelper.FillField("及格標準", students);
                 //if (e.ExportFields.Contains("計算規則-補考標準"))
                 //    _AccessHelper.StudentHelper.FillField("補考標準", students);
+
+                //// 取得學生課程代碼相關對照         
+                //CourseCodeTransfer cct = new CourseCodeTransfer();
+                //// 取得學生課程代碼
+                //Dictionary<string, StudentCourseCodeInfo> studCodeInfoDict = cct.GetStundetCourseCodeDict(e.List);
+
+                string subjectCode = "";
+
                 foreach (StudentRecord stu in students)
                 {
                     foreach (SemesterSubjectScoreInfo var in stu.SemesterSubjectScoreList)
                     {
+                        subjectCode = "";
+
+                        //if (studCodeInfoDict.ContainsKey(stu.StudentID))
+                        //{
+                        //    StudentCourseCodeInfo item = studCodeInfoDict[stu.StudentID];
+
+                        //    string req = var.Require ? "必修" : "選修";
+                        //    subjectCode = item.GetCourseCode(var.Subject, var.Detail.GetAttribute("修課校部訂"), req);
+                        //}
                         RowData row = new RowData();
                         row.ID = stu.StudentID;
                         foreach (string field in e.ExportFields)
@@ -220,9 +239,13 @@ namespace SmartSchool.Evaluation.ImportExport
                                     case "重修學期": row.Add(field, var.Detail.GetAttribute("重修學期")); break;
                                     case "修課及格標準": row.Add(field, var.Detail.GetAttribute("修課及格標準")); break;
                                     case "修課補考標準": row.Add(field, var.Detail.GetAttribute("修課補考標準")); break;
-                                    case "修課科目代碼": row.Add(field, var.Detail.GetAttribute("修課科目代碼")); break;
+                                    //                                    case "修課科目代碼": row.Add(field, var.Detail.GetAttribute("修課科目代碼")); break;
                                     case "修課備註": row.Add(field, var.Detail.GetAttribute("修課備註")); break;
                                     case "修課直接指定總成績": row.Add(field, var.Detail.GetAttribute("修課直接指定總成績")); break;
+                                    //case "應修學期": row.Add(field, var.Detail.GetAttribute("應修學期")); break;
+                                    case "免修": row.Add(field, var.Detail.GetAttribute("免修") == "是" ? "是" : ""); break;
+                                    case "抵免": row.Add(field, var.Detail.GetAttribute("抵免") == "是" ? "是" : ""); break;
+
                                 }
                             }
                         }

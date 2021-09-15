@@ -52,7 +52,7 @@ namespace SmartSchool.Evaluation.ImportExport
             };
             wizard.Options.AddRange(autoCheckPass, manulCheckPass);
             wizard.PackageLimit = 3000;
-            wizard.ImportableFields.AddRange("科目", "科目級別", "學年度", "學期", "英文名稱", "學分數", "分項類別", "成績年級", "必選修", "校部訂", "原始成績", "補考成績", "重修成績", "手動調整成績", "學年調整成績", "取得學分", "不計學分", "不需評分", "註記", "是否補修成績", "重修學年度", "重修學期", "修課及格標準", "修課補考標準", "修課科目代碼", "修課備註", "修課直接指定總成績");
+            wizard.ImportableFields.AddRange("科目", "科目級別", "學年度", "學期", "英文名稱", "學分數", "分項類別", "成績年級", "必選修", "校部訂", "原始成績", "補考成績", "重修成績", "手動調整成績", "學年調整成績", "取得學分", "不計學分", "不需評分", "註記", "是否補修成績", "重修學年度", "重修學期", "修課及格標準", "修課補考標準", "修課備註", "修課直接指定總成績", "免修", "抵免");
             wizard.RequiredFields.AddRange("科目", "科目級別", "學年度", "學期");
             wizard.ValidateStart += delegate (object sender, SmartSchool.API.PlugIn.Import.ValidateStartEventArgs e)
             {
@@ -148,6 +148,7 @@ namespace SmartSchool.Evaluation.ImportExport
                         case "修課及格標準":
                         case "修課補考標準":
                         case "修課直接指定總成績":
+                            //case "應修學期":
                             if (value != "" && !decimal.TryParse(value, out d))
                             {
                                 inputFormatPass &= false;
@@ -168,6 +169,8 @@ namespace SmartSchool.Evaluation.ImportExport
                             break;
                         case "不需評分":
                         case "不計學分":
+                        case "免修":
+                        case "抵免":
                             if (value != "是" && value != "否" && value != "")
                             {
                                 inputFormatPass &= false;
@@ -195,6 +198,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                 e.ErrorFields.Add(field, "必須填入 學業、體育、國防通識、健康與護理、專業科目或實習科目");
                             }
                             break;
+
                     }
                 }
                 #endregion
@@ -532,6 +536,8 @@ namespace SmartSchool.Evaluation.ImportExport
                                                     break;
                                                 case "不計學分":
                                                 case "不需評分":
+                                                case "免修":
+                                                case "抵免":
                                                 case "是否補修成績":
                                                     value = (value == "" ? "否" : value);
                                                     if (score.Detail.GetAttribute(field) != value)
@@ -567,8 +573,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                                 case "修課及格標準":
                                                 case "修課補考標準":
                                                 case "修課直接指定總成績":
-                                                case "修課備註":
-                                                case "修課科目代碼":
+                                                case "修課備註":                                            
                                                     if (score.Detail.GetAttribute(field) != value)
                                                     {
                                                         score.Detail.SetAttribute(field, value);
@@ -657,7 +662,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                 {
                                     XmlElement newScore = doc.CreateElement("Subject");
                                     #region 建立newScore
-                                    foreach (string field in new string[] { "科目", "科目級別", "學分數", "分項類別", "必選修", "校部訂", "原始成績", "補考成績", "重修成績", "手動調整成績", "學年調整成績", "取得學分", "不計學分", "不需評分" })
+                                    foreach (string field in new string[] { "科目", "科目級別", "學分數", "分項類別", "必選修", "校部訂", "原始成績", "補考成績", "重修成績", "手動調整成績", "學年調整成績", "取得學分", "不計學分", "不需評分", "免修", "抵免" })
                                     {
                                         if (e.ImportFields.Contains(field))
                                         {
@@ -705,12 +710,13 @@ namespace SmartSchool.Evaluation.ImportExport
                                                 case "修課及格標準":
                                                 case "修課補考標準":
                                                 case "修課直接指定總成績":
-                                                case "修課備註":
-                                                case "修課科目代碼":
+                                                case "修課備註":                                              
                                                     newScore.SetAttribute(field, value);
                                                     break;
                                                 case "不計學分":
                                                 case "不需評分":
+                                                case "免修":
+                                                case "抵免":
                                                 case "是否補修成績":
                                                     value = (value == "" ? "否" : value);
                                                     newScore.SetAttribute(field, value);
@@ -770,7 +776,7 @@ namespace SmartSchool.Evaluation.ImportExport
                             {
                                 XmlElement newScore = doc.CreateElement("Subject");
                                 #region 建立newScore
-                                foreach (string field in new string[] { "科目", "科目級別", "學分數", "分項類別", "必選修", "校部訂", "原始成績", "補考成績", "重修成績", "手動調整成績", "學年調整成績", "取得學分", "不計學分", "不需評分", "是否補修成績", "重修學年度", "重修學期" })
+                                foreach (string field in new string[] { "科目", "科目級別", "學分數", "分項類別", "必選修", "校部訂", "原始成績", "補考成績", "重修成績", "手動調整成績", "學年調整成績", "取得學分", "不計學分", "不需評分", "是否補修成績", "重修學年度", "重修學期", "免修", "抵免" })
                                 {
                                     if (e.ImportFields.Contains(field))
                                     {
@@ -817,6 +823,8 @@ namespace SmartSchool.Evaluation.ImportExport
                                                 break;
                                             case "不計學分":
                                             case "不需評分":
+                                            case "免修":
+                                            case "抵免":
                                             case "是否補修成績":
                                                 value = (value == "" ? "否" : value);
                                                 newScore.SetAttribute(field, value);

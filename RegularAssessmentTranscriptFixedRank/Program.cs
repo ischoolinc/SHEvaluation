@@ -130,6 +130,8 @@ namespace RegularAssessmentTranscriptFixedRank
                 table.Columns.Add("姓名");
                 table.Columns.Add("系統編號");
                 table.Columns.Add("定期評量");
+                table.Columns.Add("類別1名稱");
+                table.Columns.Add("類別2名稱");
 
                 // 新增合併欄位
                 List<string> r1List = new List<string>();
@@ -175,6 +177,8 @@ namespace RegularAssessmentTranscriptFixedRank
                 r2List.Add("level_20");
                 r2List.Add("level_10");
                 r2List.Add("level_lt10");
+                r2List.Add("level_60up");
+                r2List.Add("level_60down");
 
                 r3List.Add("班排名");
                 r3List.Add("科排名");
@@ -347,11 +351,11 @@ namespace RegularAssessmentTranscriptFixedRank
                 //用一個BackgroundWorker包起來
                 System.ComponentModel.BackgroundWorker bkw = new System.ComponentModel.BackgroundWorker();
                 bkw.WorkerReportsProgress = true;
-                System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 個人評量成績單產生 S");
+                System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 學生定期評量成績單(固定排名)產生 S");
                 bkw.ProgressChanged += delegate (object sender, System.ComponentModel.ProgressChangedEventArgs e)
                 {
-                    FISCA.Presentation.MotherForm.SetStatusBarMessage("個人評量成績單產生中", e.ProgressPercentage);
-                    System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 個人評量成績單產生 " + e.ProgressPercentage);
+                    FISCA.Presentation.MotherForm.SetStatusBarMessage("學生定期評量成績單(固定排名)產生中", e.ProgressPercentage);
+                    System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 學生定期評量成績單(固定排名)產生 " + e.ProgressPercentage);
                 };
                 Exception exc = null;
                 bkw.RunWorkerCompleted += delegate
@@ -365,7 +369,7 @@ namespace RegularAssessmentTranscriptFixedRank
                     //#endregion
 
 
-                    System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 個人評量成績單產生 E");
+                    System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " 學生定期評量成績單(固定排名)產生 E");
                     string err = "下列學生因成績項目超過樣板支援上限，\n超出部分科目成績無法印出，建議調整樣板內容。";
                     if (overflowRecords.Count > 0)
                     {
@@ -375,7 +379,7 @@ namespace RegularAssessmentTranscriptFixedRank
                         }
                     }
                     #region 儲存檔案
-                    string inputReportName = "個人評量成績單";
+                    string inputReportName = "定期評量成績單(固定排名)";
                     string reportName = inputReportName;
 
                     try
@@ -396,7 +400,7 @@ namespace RegularAssessmentTranscriptFixedRank
                     // 檢查是否需要產生學生清單
                     if (form.GetisExportStudentList())
                     {
-                        string ExportReportName = "個人評量成績單(學生清單)";
+                        string ExportReportName = "定期評量成績單(固定排名)學生清單";
 
                         string pathxls = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");
                         if (!Directory.Exists(pathxls))
@@ -445,12 +449,12 @@ namespace RegularAssessmentTranscriptFixedRank
                         }
                     }
 
-                    FISCA.Presentation.MotherForm.SetStatusBarMessage("個人評量成績單產生完成。", 100);
+                    FISCA.Presentation.MotherForm.SetStatusBarMessage("學生定期評量成績單(固定排名)產生完成。", 100);
                     if (overflowRecords.Count > 0)
                         MessageBox.Show(err);
                     if (exc != null)
                     {
-                        throw new Exception("產生期末成績單發生錯誤", exc);
+                        throw new Exception("產生學生定期評量成績單(固定排名)發生錯誤", exc);
                     }
                 };
                 bkw.DoWork += delegate (object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -1251,7 +1255,7 @@ namespace RegularAssessmentTranscriptFixedRank
                                                         #region 類別1排名及落點分析
                                                         if (RankMatrixDataDict.ContainsKey(studentID))
                                                         {
-                                                            k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_類別1排名";
+                                                                k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_類別1排名";
                                                             if (RankMatrixDataDict[studentID].ContainsKey(k1))
                                                             {
                                                                 if (RankMatrixDataDict[studentID][k1]["rank"] != null)
@@ -1589,6 +1593,9 @@ namespace RegularAssessmentTranscriptFixedRank
                                     if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
                                         row["類別1總分排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
 
+                                    if (RankMatrixDataDict[studentID][skey]["rank_name"] != null)
+                                        row["類別1名稱"] = RankMatrixDataDict[studentID][skey]["rank_name"].ToString();
+
                                     // 五標PR填值
                                     foreach (string rItem in r2List)
                                     {
@@ -1667,6 +1674,8 @@ namespace RegularAssessmentTranscriptFixedRank
 
                                     if (RankMatrixDataDict[studentID][skey]["matrix_count"] != null)
                                         row["類別2總分排名母數"] = RankMatrixDataDict[studentID][skey]["matrix_count"].ToString();
+                                    if (RankMatrixDataDict[studentID][skey]["rank_name"] != null)
+                                        row["類別2名稱"] = RankMatrixDataDict[studentID][skey]["rank_name"].ToString();
 
                                     // 五標PR填值
                                     foreach (string rItem in r2List)

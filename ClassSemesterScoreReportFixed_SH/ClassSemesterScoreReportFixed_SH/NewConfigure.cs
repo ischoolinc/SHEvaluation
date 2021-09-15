@@ -130,7 +130,7 @@ namespace ClassSemesterScoreReportFixed_SH
         {
             lnkViewTemplate.Enabled = false;
             #region 儲存檔案
-            string inputReportName = "班級學期成績單樣版.doc";
+            string inputReportName = "班級學期成績單(固定排名)樣板.doc";
             string reportName = inputReportName;
 
             string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");

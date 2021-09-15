@@ -332,7 +332,7 @@ namespace 班級定期評量成績單
         {
             if (this.Configure == null) return;
             #region 儲存檔案
-            string inputReportName = "個人學期成績單樣板(" + this.Configure.Name + ").doc";
+            string inputReportName = "班級定期評量成績單(測試版)樣板(" + this.Configure.Name + ").doc";
             string reportName = inputReportName;
 
             string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");

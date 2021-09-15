@@ -200,7 +200,7 @@
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(286, 74);
             this.labelX2.TabIndex = 5;
-            this.labelX2.Text = "透過自訂樣板可以將報表設定成最符合使用情境的樣貌。但樣板中合併欄位非常的多，建議從合併欄位總表中，利用複製貼上的方式填入您的樣板，如此將可保障樣板的正確性。";
+            this.labelX2.Text = "透過自訂樣板可以將報表設定成最符合使用情境的樣貌。請從合併欄位總表中，以複製貼上的方式編輯您的自訂樣板，如此將可保障樣板的正確性。";
             this.labelX2.WordWrap = true;
             // 
             // lnkMore

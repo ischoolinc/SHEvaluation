@@ -31,6 +31,13 @@ namespace SmartSchool.Evaluation
             }
         }
 
+        public static event EventHandler ArchiveChanged; //Cyn
+
+        public static void OnArchiveChanged()  //Cyn
+        {
+            if (ArchiveChanged != null)
+                ArchiveChanged(null, EventArgs.Empty);
+        }
 
         public event EventHandler CommonPlanUpdated;
         public void InvokCommonPlanUpdated()

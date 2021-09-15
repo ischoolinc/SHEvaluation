@@ -99,8 +99,12 @@ namespace 班級定期評量成績單_固定排名
                 {
                     #region 排序
                     list.Sort(new StringComparer("國文"
+                                    , "國語文"
                                     , "英文"
+                                    , "英語文"
                                     , "數學"
+                                    , "數學甲"
+                                    , "數學乙"
                                     , "理化"
                                     , "生物"
                                     , "社會"
@@ -137,7 +141,9 @@ namespace 班級定期評量成績單_固定排名
                 cboSchoolYear.SelectedIndex = cboSchoolYear.Items.IndexOf(_DefalutSchoolYear);
 
                 cboSemester.Items.Clear();
-                cboSemester.Items.Add(_DefaultSemester);
+               //cboSemester.Items.Add(_DefaultSemester);
+                cboSemester.Items.Add("1");
+                cboSemester.Items.Add("2");
                 cboSemester.SelectedIndex = cboSemester.Items.IndexOf(_DefaultSemester);
 
                 cboExam.Items.Clear();
@@ -320,7 +326,7 @@ namespace 班級定期評量成績單_固定排名
         {
             if (this.Configure == null) return;
             #region 儲存檔案
-            string inputReportName = "個人學期成績單樣板(" + this.Configure.Name + ").doc";
+            string inputReportName = "班級學期成績單樣板(" + this.Configure.Name + ").doc";
             string reportName = inputReportName;
 
             string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");

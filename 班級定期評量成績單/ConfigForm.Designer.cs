@@ -47,6 +47,9 @@
             this.cboSemester = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.iptRd = new DevComponents.Editors.IntegerInput();
+            this.labelX13 = new DevComponents.DotNetBar.LabelX();
+            this.labelX12 = new DevComponents.DotNetBar.LabelX();
             this.cboConfigure = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.linkLabel4 = new System.Windows.Forms.LinkLabel();
             this.linkLabel3 = new System.Windows.Forms.LinkLabel();
@@ -66,16 +69,13 @@
             this.btnCancel = new DevComponents.DotNetBar.ButtonX();
             this.panel4 = new System.Windows.Forms.Panel();
             this.circularProgress1 = new DevComponents.DotNetBar.Controls.CircularProgress();
-            this.labelX12 = new DevComponents.DotNetBar.LabelX();
-            this.labelX13 = new DevComponents.DotNetBar.LabelX();
-            this.iptRd = new DevComponents.Editors.IntegerInput();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.iptRd)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.iptRd)).BeginInit();
             this.SuspendLayout();
             // 
             // cboTagRank1
@@ -132,6 +132,7 @@
             this.listViewEx1.Border.Class = "ListViewBorder";
             this.listViewEx1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.listViewEx1.CheckBoxes = true;
+            this.listViewEx1.HideSelection = false;
             this.listViewEx1.Location = new System.Drawing.Point(13, 232);
             this.listViewEx1.Name = "listViewEx1";
             this.listViewEx1.Size = new System.Drawing.Size(366, 248);
@@ -178,6 +179,7 @@
             this.listViewEx2.Border.Class = "ListViewBorder";
             this.listViewEx2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.listViewEx2.CheckBoxes = true;
+            this.listViewEx2.HideSelection = false;
             this.listViewEx2.Location = new System.Drawing.Point(13, 79);
             this.listViewEx2.Name = "listViewEx2";
             this.listViewEx2.Size = new System.Drawing.Size(370, 147);
@@ -254,6 +256,7 @@
             this.listViewEx3.Border.Class = "ListViewBorder";
             this.listViewEx3.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.listViewEx3.CheckBoxes = true;
+            this.listViewEx3.HideSelection = false;
             this.listViewEx3.Location = new System.Drawing.Point(13, 79);
             this.listViewEx3.Name = "listViewEx3";
             this.listViewEx3.Size = new System.Drawing.Size(370, 147);
@@ -381,6 +384,53 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(392, 509);
             this.panel1.TabIndex = 0;
+            // 
+            // iptRd
+            // 
+            // 
+            // 
+            // 
+            this.iptRd.BackgroundStyle.Class = "DateTimeInputBackground";
+            this.iptRd.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.iptRd.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
+            this.iptRd.Location = new System.Drawing.Point(224, 203);
+            this.iptRd.MaxValue = 10;
+            this.iptRd.MinValue = 0;
+            this.iptRd.Name = "iptRd";
+            this.iptRd.ShowUpDown = true;
+            this.iptRd.Size = new System.Drawing.Size(54, 25);
+            this.iptRd.TabIndex = 16;
+            this.iptRd.Value = 2;
+            // 
+            // labelX13
+            // 
+            this.labelX13.AutoSize = true;
+            this.labelX13.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX13.BackgroundStyle.Class = "";
+            this.labelX13.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX13.Location = new System.Drawing.Point(285, 205);
+            this.labelX13.Name = "labelX13";
+            this.labelX13.Size = new System.Drawing.Size(74, 21);
+            this.labelX13.TabIndex = 15;
+            this.labelX13.Text = "位四捨五入";
+            // 
+            // labelX12
+            // 
+            this.labelX12.AutoSize = true;
+            this.labelX12.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX12.BackgroundStyle.Class = "";
+            this.labelX12.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX12.Location = new System.Drawing.Point(93, 205);
+            this.labelX12.Name = "labelX12";
+            this.labelX12.Size = new System.Drawing.Size(127, 21);
+            this.labelX12.TabIndex = 14;
+            this.labelX12.Text = "平均計算至小數點後";
             // 
             // cboConfigure
             // 
@@ -648,53 +698,6 @@
             this.circularProgress1.Style = DevComponents.DotNetBar.eDotNetBarStyle.Windows7;
             this.circularProgress1.TabIndex = 13;
             // 
-            // labelX12
-            // 
-            this.labelX12.AutoSize = true;
-            this.labelX12.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX12.BackgroundStyle.Class = "";
-            this.labelX12.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX12.Location = new System.Drawing.Point(93, 205);
-            this.labelX12.Name = "labelX12";
-            this.labelX12.Size = new System.Drawing.Size(127, 21);
-            this.labelX12.TabIndex = 14;
-            this.labelX12.Text = "平均計算至小數點後";
-            // 
-            // labelX13
-            // 
-            this.labelX13.AutoSize = true;
-            this.labelX13.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX13.BackgroundStyle.Class = "";
-            this.labelX13.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX13.Location = new System.Drawing.Point(285, 205);
-            this.labelX13.Name = "labelX13";
-            this.labelX13.Size = new System.Drawing.Size(74, 21);
-            this.labelX13.TabIndex = 15;
-            this.labelX13.Text = "位四捨五入";
-            // 
-            // iptRd
-            // 
-            // 
-            // 
-            // 
-            this.iptRd.BackgroundStyle.Class = "DateTimeInputBackground";
-            this.iptRd.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.iptRd.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
-            this.iptRd.Location = new System.Drawing.Point(224, 203);
-            this.iptRd.MaxValue = 10;
-            this.iptRd.MinValue = 0;
-            this.iptRd.Name = "iptRd";
-            this.iptRd.ShowUpDown = true;
-            this.iptRd.Size = new System.Drawing.Size(54, 25);
-            this.iptRd.TabIndex = 16;
-            this.iptRd.Value = 2;
-            // 
             // ConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
@@ -707,17 +710,17 @@
             this.DoubleBuffered = true;
             this.MaximizeBox = true;
             this.Name = "ConfigForm";
-            this.Text = "班級定期評量成績單";
+            this.Text = "班級定期評量成績單(測試版)";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.iptRd)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.panel5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.iptRd)).EndInit();
             this.ResumeLayout(false);
 
         }

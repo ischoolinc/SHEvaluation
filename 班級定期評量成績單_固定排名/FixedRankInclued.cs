@@ -78,8 +78,8 @@ namespace 班級定期評量成績單_固定排名
 
                 return;
             }
-                FixedRankSubjInclude[rankType].Sort(new StringComparer("國文"
-                                              , "英文"
+                FixedRankSubjInclude[rankType].Sort(new StringComparer("國文", "國語文"
+                                              , "英文", "英語文"
                                               , "數學"
                                               , "理化"
                                               , "生物"

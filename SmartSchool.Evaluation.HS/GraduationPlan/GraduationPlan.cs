@@ -95,7 +95,9 @@ namespace SmartSchool.Evaluation.GraduationPlan
 
             public int Compare(XmlElement x, XmlElement y)
             {
-                return new GraduationPlanInfo(x).Name.CompareTo(new GraduationPlanInfo(y).Name);
+                //2021-10 要求改為反向排序 
+                //return new GraduationPlanInfo(x).Name.CompareTo(new GraduationPlanInfo(y).Name);
+                return 0 - new GraduationPlanInfo(x).Name.CompareTo(new GraduationPlanInfo(y).Name);
             }
 
             #endregion

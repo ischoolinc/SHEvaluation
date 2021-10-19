@@ -110,6 +110,8 @@
             this.colDesignateFinalScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colRemark = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colIsMakeupScore = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colSScoreSchoolYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSScoreSemester = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colRetakeSchoolYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colRetakeSemester = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colScoreN1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -753,6 +755,8 @@
             this.colDesignateFinalScore,
             this.colRemark,
             this.colIsMakeupScore,
+            this.colSScoreSchoolYear,
+            this.colSScoreSemester,
             this.colRetakeSchoolYear,
             this.colRetakeSemester,
             this.colScoreN1,
@@ -1150,6 +1154,20 @@
             this.colIsMakeupScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.colIsMakeupScore.Width = 40;
             // 
+            // colSScoreSchoolYear
+            // 
+            this.colSScoreSchoolYear.HeaderText = "補修學年度";
+            this.colSScoreSchoolYear.MinimumWidth = 55;
+            this.colSScoreSchoolYear.Name = "colSScoreSchoolYear";
+            this.colSScoreSchoolYear.Width = 55;
+            // 
+            // colSScoreSemester
+            // 
+            this.colSScoreSemester.HeaderText = "補修學期";
+            this.colSScoreSemester.MinimumWidth = 55;
+            this.colSScoreSemester.Name = "colSScoreSemester";
+            this.colSScoreSemester.Width = 55;
+            // 
             // colRetakeSchoolYear
             // 
             this.colRetakeSchoolYear.HeaderText = "重修學年度";
@@ -1188,6 +1206,7 @@
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximizeBox = true;
             this.Name = "SemesterScoreEditor";
             this.Text = "學期成績";
             this.panelEx1.ResumeLayout(false);
@@ -1285,6 +1304,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colDesignateFinalScore;
         private System.Windows.Forms.DataGridViewTextBoxColumn colRemark;
         private System.Windows.Forms.DataGridViewCheckBoxColumn colIsMakeupScore;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSScoreSchoolYear;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSScoreSemester;
         private System.Windows.Forms.DataGridViewTextBoxColumn colRetakeSchoolYear;
         private System.Windows.Forms.DataGridViewTextBoxColumn colRetakeSemester;
         private System.Windows.Forms.DataGridViewCheckBoxColumn colScoreN1;

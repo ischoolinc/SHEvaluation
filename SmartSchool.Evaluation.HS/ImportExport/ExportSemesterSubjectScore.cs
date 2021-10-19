@@ -53,14 +53,16 @@ namespace SmartSchool.Evaluation.ImportExport
                 , "畢業採計-不計學分"
                 , "畢業採計-說明"
                 , "是否補修成績"
+                , "補修學年度"
+                , "補修學期"
                 , "重修學年度"
                 , "重修學期"
                 , "修課及格標準"
                 , "修課補考標準"
                 , "修課備註"
-                , "修課直接指定總成績"                
+                , "修課直接指定總成績"
                 , "免修"
-                , "抵免"
+                , "抵免"                
                 );
             filterRepeat.CheckedChanged += delegate
             {
@@ -237,6 +239,8 @@ namespace SmartSchool.Evaluation.ImportExport
                                     case "是否補修成績": row.Add(field, var.Detail.GetAttribute("是否補修成績") == "是" ? "是" : ""); break;
                                     case "重修學年度": row.Add(field, var.Detail.GetAttribute("重修學年度")); break;
                                     case "重修學期": row.Add(field, var.Detail.GetAttribute("重修學期")); break;
+                                    case "補修學年度": row.Add(field, var.Detail.GetAttribute("補修學年度")); break;
+                                    case "補修學期": row.Add(field, var.Detail.GetAttribute("補修學期")); break;
                                     case "修課及格標準": row.Add(field, var.Detail.GetAttribute("修課及格標準")); break;
                                     case "修課補考標準": row.Add(field, var.Detail.GetAttribute("修課補考標準")); break;
                                     //                                    case "修課科目代碼": row.Add(field, var.Detail.GetAttribute("修課科目代碼")); break;

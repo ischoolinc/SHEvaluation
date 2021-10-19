@@ -194,6 +194,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                         //    subjectCode,
                         //var.GetAttribute("修課科目代碼"),
                         var.GetAttribute("是否補修成績") == "是",
+                         var.GetAttribute("補修學年度"),
+                        var.GetAttribute("補修學期"),
                         var.GetAttribute("重修學年度"),
                         var.GetAttribute("重修學期"),
                         var.GetAttribute("免修") == "是",
@@ -827,6 +829,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 subjectElement.SetAttribute("是否補修成績", (row.Cells[colIsMakeupScore.Index].Value != null && (bool)row.Cells[colIsMakeupScore.Index].Value) ? "是" : "否");
                 subjectElement.SetAttribute("重修學年度", "" + row.Cells[colRetakeSchoolYear.Index].Value);
                 subjectElement.SetAttribute("重修學期", "" + row.Cells[colRetakeSemester.Index].Value);
+                subjectElement.SetAttribute("補修學年度", "" + row.Cells[colSScoreSchoolYear.Index].Value);
+                subjectElement.SetAttribute("補修學期", "" + row.Cells[colSScoreSemester.Index].Value);
                 subjectElement.SetAttribute("免修", (row.Cells[colScoreN1.Index].Value != null && (bool)row.Cells[colScoreN1.Index].Value) ? "是" : "否");
                 subjectElement.SetAttribute("抵免", (row.Cells[colScoreN2.Index].Value != null && (bool)row.Cells[colScoreN2.Index].Value) ? "是" : "否");
 
@@ -914,7 +918,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 dataGridViewX1.UpdateCellErrorText(i, row.Index);
             }
 
-            foreach (int i in new int[] { 2 })
+            foreach (int i in new int[] { 2, 20, 21, 22, 23 })
             {
                 row.Cells[i].ErrorText = "";
                 int x = 0;
@@ -936,7 +940,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 }
                 dataGridViewX1.UpdateCellErrorText(i, row.Index);
             }
-            foreach (int i in new int[] { 7, 8, 9, 10, 11 })
+            foreach (int i in new int[] { 7, 8, 9, 10, 11, 15, 16, 17 })
             {
                 row.Cells[i].ErrorText = "";
                 double x = 0;
@@ -947,10 +951,47 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 }
                 dataGridViewX1.UpdateCellErrorText(i, row.Index);
             }
+
+            // 檢查補修相關資料
+            row.Cells[19].ErrorText = "";
+            row.Cells[20].ErrorText = "";
+            row.Cells[21].ErrorText = "";
+
+            if ("" + row.Cells[19].Value != "" && "" + row.Cells[19].Value == "True")
+            {
+
+                if ("" + row.Cells[20].Value == "")
+                {
+                    validatePass &= false;
+                    row.Cells[20].ErrorText = "必須輸入整數";
+                }
+
+                if ("" + row.Cells[21].Value == "")
+                {
+                    validatePass &= false;
+                    row.Cells[21].ErrorText = "必須輸入整數";
+                }
+            }
+
+            if ("" + row.Cells[20].Value != "" || "" + row.Cells[21].Value != "")
+            {
+                if ("" + row.Cells[19].Value != "" && "" + row.Cells[19].Value == "True")
+                {
+
+                }
+                else
+                {
+                    validatePass &= false;
+                    row.Cells[19].ErrorText = "是否補修成績必須打勾";
+                }
+
+            }
+
             foreach (DataGridViewCell cell in row.Cells)
             {
                 validatePass &= (cell.ErrorText == "");
             }
+
             return validatePass;
         }
 

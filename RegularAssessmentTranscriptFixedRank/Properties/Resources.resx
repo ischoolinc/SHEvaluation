@@ -133,6 +133,9 @@
   <data name="個人定期成績單樣板20210324" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\個人定期成績單樣板20210324.doc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="學生定期評量成績單樣板_20211101" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\學生定期評量成績單樣板_20211101.doc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="歡樂的合併欄位總表" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\歡樂的合併欄位總表.doc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

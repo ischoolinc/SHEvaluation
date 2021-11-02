@@ -113,6 +113,16 @@ namespace RegularAssessmentTranscriptFixedRank.Properties {
         /// <summary>
         ///   查詢類型 System.Byte[] 的當地語系化資源。
         /// </summary>
+        internal static byte[] 學生定期評量成績單樣板_20211101 {
+            get {
+                object obj = ResourceManager.GetObject("學生定期評量成績單樣板_20211101", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類型 System.Byte[] 的當地語系化資源。
+        /// </summary>
         internal static byte[] 歡樂的合併欄位總表 {
             get {
                 object obj = ResourceManager.GetObject("歡樂的合併欄位總表", resourceCulture);

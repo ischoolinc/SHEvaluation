@@ -34,7 +34,7 @@ namespace RegularAssessmentTranscriptFixedRank
         {
             if (checkBoxX1.Checked)
             {
-                Template = new Aspose.Words.Document(new MemoryStream(Properties.Resources.個人學期成績單樣板_高中_));
+                Template = new Aspose.Words.Document(new MemoryStream(Properties.Resources.學生定期評量成績單樣板_20211101));
                 this.SubjectLimit = 25;
             }
         }
@@ -141,7 +141,7 @@ namespace RegularAssessmentTranscriptFixedRank
             {
                 //document.Save(path, Aspose.Words.SaveFormat.Doc);
                 System.IO.FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write);
-                stream.Write(Properties.Resources.個人定期成績單樣板20210324, 0, Properties.Resources.個人定期成績單樣板20210324.Length);
+                stream.Write(Properties.Resources.學生定期評量成績單樣板_20211101, 0, Properties.Resources.學生定期評量成績單樣板_20211101.Length);
                 stream.Flush();
                 stream.Close();
                 System.Diagnostics.Process.Start(path);
@@ -158,7 +158,7 @@ namespace RegularAssessmentTranscriptFixedRank
                     {
                         //document.Save(sd.FileName, Aspose.Words.SaveFormat.Doc);
                         System.IO.FileStream stream = new FileStream(sd.FileName, FileMode.Create, FileAccess.Write);
-                        stream.Write(Properties.Resources.個人定期成績單樣板20210324, 0, Properties.Resources.個人定期成績單樣板20210324.Length);
+                        stream.Write(Properties.Resources.學生定期評量成績單樣板_20211101, 0, Properties.Resources.學生定期評量成績單樣板_20211101.Length);
                         stream.Flush();
                         stream.Close();
 
@@ -219,7 +219,7 @@ namespace RegularAssessmentTranscriptFixedRank
                     {
                         //document.Save(sd.FileName, Aspose.Words.SaveFormat.Doc);
                         System.IO.FileStream stream = new FileStream(sd.FileName, FileMode.Create, FileAccess.Write);
-                        stream.Write(Properties.Resources.個人學期成績單樣板, 0, Properties.Resources.個人學期成績單樣板.Length);
+                        stream.Write(Properties.Resources.學生定期評量成績單樣板_20211101, 0, Properties.Resources.學生定期評量成績單樣板_20211101.Length);
                         stream.Flush();
                         stream.Close();
 

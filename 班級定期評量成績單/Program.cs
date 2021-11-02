@@ -345,9 +345,9 @@ namespace 班級定期評量成績單
                                 document.Save(sd.FileName, Aspose.Words.SaveFormat.Doc);
 
                             }
-                            catch
+                            catch (Exception ex)
                             {
-                                FISCA.Presentation.Controls.MsgBox.Show("指定路徑無法存取。", "建立檔案失敗", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                                FISCA.Presentation.Controls.MsgBox.Show(ex.Message, "建立檔案失敗", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                                 return;
                             }
                         }

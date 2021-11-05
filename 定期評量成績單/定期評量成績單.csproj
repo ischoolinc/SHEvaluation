@@ -49,10 +49,8 @@
       <HintPath>library\Aspose.Cells.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Aspose.Words, Version=4.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>library\Aspose.Words.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Aspose.Words_201402">
+      <HintPath>library\Aspose.Words_201402.dll</HintPath>
     </Reference>
     <Reference Include="Campus.ePaperCloud, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

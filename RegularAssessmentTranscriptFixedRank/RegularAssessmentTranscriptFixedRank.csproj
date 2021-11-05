@@ -34,9 +34,8 @@
       <HintPath>Library\Aspose.Cells.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Aspose.Words">
-      <HintPath>Library\Aspose.Words.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Aspose.Words_201402">
+      <HintPath>Library\Aspose.Words_201402.dll</HintPath>
     </Reference>
     <Reference Include="Campus.ePaperCloud">
       <HintPath>Library\Campus.ePaperCloud.dll</HintPath>

@@ -147,11 +147,11 @@ FROM class
                     intervalInfo.RankName = rankName;
                     intervalInfo.RankType = rankType;
 
-                    intervalInfo.Avg_top_25 = "" + dr["avg_top_25"];
-                    intervalInfo.Avg_top_50 = "" + dr["avg_top_50"];
-                    intervalInfo.Avg = "" + dr["avg"];
-                    intervalInfo.Avg_bottom_50 = "" + dr["avg_bottom_50"];
-                    intervalInfo.Avg_bottom_25 = "" + dr["avg_bottom_25"];
+                    intervalInfo.Avg_top_25 = ParseScore("" + dr["avg_top_25"]);
+                    intervalInfo.Avg_top_50 = ParseScore("" + dr["avg_top_50"]);
+                    intervalInfo.Avg = ParseScore("" + dr["avg"]);
+                    intervalInfo.Avg_bottom_50 = ParseScore("" + dr["avg_bottom_50"]);
+                    intervalInfo.Avg_bottom_25 = ParseScore("" + dr["avg_bottom_25"]);
                     intervalInfo.Level_gte100 = "" + dr["level_gte100"];
                     intervalInfo.Level_90 = "" + dr["level_90"];
                     intervalInfo.Level_80 = "" + dr["level_80"];
@@ -163,6 +163,13 @@ FROM class
                     intervalInfo.Level_20 = "" + dr["level_20"];
                     intervalInfo.Level_10 = "" + dr["level_10"];
                     intervalInfo.Level_lt10 = "" + dr["level_lt10"];
+
+                    intervalInfo.Std_dev_pop = ParseScore("" + dr["std_dev_pop"]);
+                    intervalInfo.Pr_88 = ParseScore("" + dr["pr_88"]);
+                    intervalInfo.Pr_75 = ParseScore("" + dr["pr_75"]);
+                    intervalInfo.Pr_50 = ParseScore("" + dr["pr_50"]);
+                    intervalInfo.Pr_25 = ParseScore("" + dr["pr_25"]);
+                    intervalInfo.Pr_12 = ParseScore("" + dr["pr_12"]);
 
                     //某班級下 級距dictionary 的 key(ex:2年級(rank_name)某科的加權總分{90-100分:6人 ;80:90分:人 ...etc })
 
@@ -195,7 +202,22 @@ FROM class
         /// </summary>
         /// <returns></returns>
      
+                /// <summary>
+        /// 四捨五入至使用者指定位數
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string ParseScore(string str)
+        {
+            string value = "";
+            decimal dc;
+            if (decimal.TryParse(str, out dc))
+            {
+                value = Math.Round(dc, Program.AvgRd, MidpointRounding.AwayFromZero).ToString();
+            }
 
+            return value;
+        }
 
 
 

@@ -1319,6 +1319,13 @@ namespace 班級定期評量成績單_固定排名
                                                 row["班低標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Avg_bottom_50;
                                                 row["班底標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Avg_bottom_25;
 
+                                                row["班新頂標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_88;
+                                                row["班新前標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_75;
+                                                row["班新均標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_50;
+                                                row["班新後標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_25;
+                                                row["班新底標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_12;
+                                                row["班標準差" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Std_dev_pop;
+
                                                 row["班組距" + subjectIndex + "count90"] = IntervalInfos[classRec.ClassID][key].Level_90;
                                                 row["班組距" + subjectIndex + "count80"] = IntervalInfos[classRec.ClassID][key].Level_80;
                                                 row["班組距" + subjectIndex + "count70"] = IntervalInfos[classRec.ClassID][key].Level_70;
@@ -1381,6 +1388,13 @@ namespace 班級定期評量成績單_固定排名
                                                 row["科低標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Avg_bottom_50;
                                                 row["科底標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Avg_bottom_25;
 
+                                                row["科新頂標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_88;
+                                                row["科新前標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_75;
+                                                row["科新均標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_50;
+                                                row["科新後標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_25;
+                                                row["科新底標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_12;
+                                                row["科標準差" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Std_dev_pop;
+
                                                 row["科組距" + subjectIndex + "count90"] = IntervalInfos[classRec.ClassID][key].Level_90;
                                                 row["科組距" + subjectIndex + "count80"] = IntervalInfos[classRec.ClassID][key].Level_80;
                                                 row["科組距" + subjectIndex + "count70"] = IntervalInfos[classRec.ClassID][key].Level_70;
@@ -1423,6 +1437,13 @@ namespace 班級定期評量成績單_固定排名
                                                 row["年均標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Avg;
                                                 row["年低標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Avg_bottom_50;
                                                 row["年底標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Avg_bottom_25;
+
+                                                row["年新頂標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_88;
+                                                row["年新前標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_75;
+                                                row["年新均標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_50;
+                                                row["年新後標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_25;
+                                                row["年新底標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_12;
+                                                row["年標準差" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Std_dev_pop;
 
                                                 row["年組距" + subjectIndex + "count90"] = IntervalInfos[classRec.ClassID][key].Level_90;
                                                 row["年組距" + subjectIndex + "count80"] = IntervalInfos[classRec.ClassID][key].Level_80;
@@ -1481,6 +1502,13 @@ namespace 班級定期評量成績單_固定排名
                                                                 row[$"類別1_分組{number}均標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Avg;
                                                                 row[$"類別1_分組{number}低標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Avg_bottom_50;
                                                                 row[$"類別1_分組{number}底標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Avg_bottom_25;
+
+                                                                row[$"類別1_分組{number}新頂標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_88;
+                                                                row[$"類別1_分組{number}新前標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_75;
+                                                                row[$"類別1_分組{number}新均標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_50;
+                                                                row[$"類別1_分組{number}新後標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_25;
+                                                                row[$"類別1_分組{number}新底標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_12;
+                                                                row[$"類別1_分組{number}標準差" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Std_dev_pop;
 
                                                                 row[$"類別1_分組{number}組距" + subjectIndex + "count90"] = IntervalInfos[classRec.ClassID][key].Level_90;
                                                                 row[$"類別1_分組{number}組距" + subjectIndex + "count80"] = IntervalInfos[classRec.ClassID][key].Level_80;
@@ -1553,6 +1581,13 @@ namespace 班級定期評量成績單_固定排名
                                                                 row[$"類別2_分組{number}均標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Avg;
                                                                 row[$"類別2_分組{number}低標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Avg_bottom_50;
                                                                 row[$"類別2_分組{number}底標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Avg_bottom_25;
+
+                                                                row[$"類別2_分組{number}新頂標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_88;
+                                                                row[$"類別2_分組{number}新前標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_75;
+                                                                row[$"類別2_分組{number}新均標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_50;
+                                                                row[$"類別2_分組{number}新後標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_25;
+                                                                row[$"類別2_分組{number}新底標" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Pr_12;
+                                                                row[$"類別2_分組{number}標準差" + subjectIndex] = IntervalInfos[classRec.ClassID][key].Std_dev_pop;
 
                                                                 row[$"類別2_分組{number}組距" + subjectIndex + "count90"] = IntervalInfos[classRec.ClassID][key].Level_90;
                                                                 row[$"類別2_分組{number}組距" + subjectIndex + "count80"] = IntervalInfos[classRec.ClassID][key].Level_80;
@@ -1855,6 +1890,13 @@ namespace 班級定期評量成績單_固定排名
                                                     row[$"{totalScoreItemName}類別1_分組{number}低標"] = IntervalInfos[classRec.ClassID][key].Avg_bottom_50;
                                                     row[$"{totalScoreItemName}類別1_分組{number}底標"] = IntervalInfos[classRec.ClassID][key].Avg_bottom_25;
 
+                                                    row[$"{totalScoreItemName}類別1_分組{number}新頂標"] = IntervalInfos[classRec.ClassID][key].Pr_88;
+                                                    row[$"{totalScoreItemName}類別1_分組{number}新前標"] = IntervalInfos[classRec.ClassID][key].Pr_75;
+                                                    row[$"{totalScoreItemName}類別1_分組{number}新均標"] = IntervalInfos[classRec.ClassID][key].Pr_50;
+                                                    row[$"{totalScoreItemName}類別1_分組{number}新後標"] = IntervalInfos[classRec.ClassID][key].Pr_25;
+                                                    row[$"{totalScoreItemName}類別1_分組{number}新底標"] = IntervalInfos[classRec.ClassID][key].Pr_12;
+                                                    row[$"{totalScoreItemName}類別1_分組{number}標準差"] = IntervalInfos[classRec.ClassID][key].Std_dev_pop;
+
                                                     row[$"{totalScoreItemName}類別1_分組{number}組距count90"] = IntervalInfos[classRec.ClassID][key].Level_90;
                                                     row[$"{totalScoreItemName}類別1_分組{number}組距count80"] = IntervalInfos[classRec.ClassID][key].Level_80;
                                                     row[$"{totalScoreItemName}類別1_分組{number}組距count70"] = IntervalInfos[classRec.ClassID][key].Level_70;
@@ -1921,6 +1963,13 @@ namespace 班級定期評量成績單_固定排名
                                                     row[$"{totalScoreItemName}類別2_分組{number}均標"] = IntervalInfos[classRec.ClassID][key].Avg;
                                                     row[$"{totalScoreItemName}類別2_分組{number}低標"] = IntervalInfos[classRec.ClassID][key].Avg_bottom_50;
                                                     row[$"{totalScoreItemName}類別2_分組{number}底標"] = IntervalInfos[classRec.ClassID][key].Avg_bottom_25;
+
+                                                    row[$"{totalScoreItemName}類別2_分組{number}新頂標"] = IntervalInfos[classRec.ClassID][key].Pr_88;
+                                                    row[$"{totalScoreItemName}類別2_分組{number}新前標"] = IntervalInfos[classRec.ClassID][key].Pr_75;
+                                                    row[$"{totalScoreItemName}類別2_分組{number}新均標"] = IntervalInfos[classRec.ClassID][key].Pr_50;
+                                                    row[$"{totalScoreItemName}類別2_分組{number}新後標"] = IntervalInfos[classRec.ClassID][key].Pr_25;
+                                                    row[$"{totalScoreItemName}類別2_分組{number}新底標"] = IntervalInfos[classRec.ClassID][key].Pr_12;
+                                                    row[$"{totalScoreItemName}類別2_分組{number}標準差"] = IntervalInfos[classRec.ClassID][key].Std_dev_pop;
 
                                                     row[$"{totalScoreItemName}類別2_分組{number}組距count90"] = IntervalInfos[classRec.ClassID][key].Level_90;
                                                     row[$"{totalScoreItemName}類別2_分組{number}組距count80"] = IntervalInfos[classRec.ClassID][key].Level_80;
@@ -2172,8 +2221,6 @@ namespace 班級定期評量成績單_固定排名
         /// </summary>
 
 
-
-
         /// <summary>
         /// 總計成績 級距塞入
         /// </summary>
@@ -2193,6 +2240,15 @@ namespace 班級定期評量成績單_固定排名
                 row[$"{itemName}{rankType}均標"] = IntervalInfos[classRec.ClassID][key].Avg;
                 row[$"{itemName}{rankType}低標"] = IntervalInfos[classRec.ClassID][key].Avg_bottom_50;
                 row[$"{itemName}{rankType}底標"] = IntervalInfos[classRec.ClassID][key].Avg_bottom_25;
+
+                // 2021-12 Cynthia 新增 新五標及標準差
+                row[$"{itemName}{rankType}新頂標"] = IntervalInfos[classRec.ClassID][key].Pr_88;
+                row[$"{itemName}{rankType}新前標"] = IntervalInfos[classRec.ClassID][key].Pr_75;
+                row[$"{itemName}{rankType}新均標"] = IntervalInfos[classRec.ClassID][key].Pr_50;
+                row[$"{itemName}{rankType}新後標"] = IntervalInfos[classRec.ClassID][key].Pr_25;
+                row[$"{itemName}{rankType}新底標"] = IntervalInfos[classRec.ClassID][key].Pr_12;
+                row[$"{itemName}{rankType}標準差"] = IntervalInfos[classRec.ClassID][key].Std_dev_pop;
+
 
                 if (itemName != "總分" && itemName != "加權總分") //分數級距沒有意義
                 {

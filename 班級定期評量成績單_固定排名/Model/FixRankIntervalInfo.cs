@@ -145,7 +145,35 @@ namespace 班級定期評量成績單_固定排名.Model
         /// </summary>
         public string Level_10 { get; set; }
 
+        /// <summary>
+        /// 標準差
+        /// </summary>
+        public string Std_dev_pop { get; set; }
 
+        /// <summary>
+        /// 新頂標
+        /// </summary>
+        public string Pr_88 { get; set; }
+
+        /// <summary>
+        /// 新前標
+        /// </summary>
+        public string Pr_75 { get; set; }
+
+        /// <summary>
+        /// 新均標
+        /// </summary>
+        public string Pr_50 { get; set; }
+
+        /// <summary>
+        /// 新後標
+        /// </summary>
+        public string Pr_25 { get; set; }
+
+        /// <summary>
+        /// 新底標
+        /// </summary>
+        public string Pr_12 { get; set; }
 
         public string _Level_lt10 { get; set; }
 
@@ -164,7 +192,7 @@ namespace 班級定期評量成績單_固定排名.Model
             set
             {
                 _Level_lt10 = value;
-                RoundNumber();
+                //RoundNumber();
                 this.PutIvtervalValueToDic();
                 this.CaculateAll();
             }
@@ -349,11 +377,12 @@ namespace 班級定期評量成績單_固定排名.Model
         /// </summary>
         private void RoundNumber()
         {
-            this.Avg_top_25 = Math.Round(ParseDouble(Avg_top_25), 2) == 0 ? "" : Math.Round(ParseDouble(Avg_top_25), 2).ToString();
-            this.Avg_top_50 = Math.Round(ParseDouble(Avg_top_50), 2) == 0 ? "" : Math.Round(ParseDouble(Avg_top_50), 2).ToString();
-            this.Avg = Math.Round(ParseDouble(Avg), 2) == 0 ? "" : Math.Round(ParseDouble(Avg), 2).ToString();
-            this.Avg_bottom_25 = Math.Round(ParseDouble(Avg_bottom_25), 2) == 0 ? "" : Math.Round(ParseDouble(Avg_bottom_25), 2).ToString();
-            this.Avg_bottom_50 = Math.Round(ParseDouble(Avg_bottom_50), 2) == 0 ? "" : Math.Round(ParseDouble(Avg_bottom_50), 2).ToString(); ;
+            //this.Avg_top_25 = Math.Round(ParseDouble(Avg_top_25), 2) == 0 ? "" : Math.Round(ParseDouble(Avg_top_25), 2).ToString();
+            //this.Avg_top_50 = Math.Round(ParseDouble(Avg_top_50), 2) == 0 ? "" : Math.Round(ParseDouble(Avg_top_50), 2).ToString();
+            //this.Avg = Math.Round(ParseDouble(Avg), 2) == 0 ? "" : Math.Round(ParseDouble(Avg), 2).ToString();
+            //this.Avg_bottom_25 = Math.Round(ParseDouble(Avg_bottom_25), 2) == 0 ? "" : Math.Round(ParseDouble(Avg_bottom_25), 2).ToString();
+            //this.Avg_bottom_50 = Math.Round(ParseDouble(Avg_bottom_50), 2) == 0 ? "" : Math.Round(ParseDouble(Avg_bottom_50), 2).ToString(); 
         }
+
     }
 }

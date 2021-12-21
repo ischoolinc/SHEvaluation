@@ -552,7 +552,48 @@ namespace 班級定期評量成績單_固定排名
 
                 builder.EndRow();
 
+                //2021-12
+                builder.InsertCell(); builder.Write("新頂標");
+                for (int subjectIndex = 1; subjectIndex <= maxSubjectNum; subjectIndex++)
+                {
+                    builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "新頂標" + subjectIndex + " \\* MERGEFORMAT ", "«C" + subjectIndex + "»");
+                }
+                builder.EndRow();
 
+                builder.InsertCell(); builder.Write("新前標");
+                for (int subjectIndex = 1; subjectIndex <= maxSubjectNum; subjectIndex++)
+                {
+                    builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "新前標" + subjectIndex + " \\* MERGEFORMAT ", "«C" + subjectIndex + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell(); builder.Write("新均標");
+                for (int subjectIndex = 1; subjectIndex <= maxSubjectNum; subjectIndex++)
+                {
+                    builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "新均標" + subjectIndex + " \\* MERGEFORMAT ", "«C" + subjectIndex + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell(); builder.Write("新後標");
+                for (int subjectIndex = 1; subjectIndex <= maxSubjectNum; subjectIndex++)
+                {
+                    builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "新後標" + subjectIndex + " \\* MERGEFORMAT ", "«C" + subjectIndex + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell(); builder.Write("新底標");
+                for (int subjectIndex = 1; subjectIndex <= maxSubjectNum; subjectIndex++)
+                {
+                    builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "新底標" + subjectIndex + " \\* MERGEFORMAT ", "«C" + subjectIndex + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell(); builder.Write("標準差");
+                for (int subjectIndex = 1; subjectIndex <= maxSubjectNum; subjectIndex++)
+                {
+                    builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "標準差" + subjectIndex + " \\* MERGEFORMAT ", "«C" + subjectIndex + "»");
+                }
+                builder.EndRow();
 
                 builder.InsertCell(); builder.Write("100以上");
                 for (int subjectIndex = 1; subjectIndex <= maxSubjectNum; subjectIndex++)
@@ -771,6 +812,45 @@ namespace 班級定期評量成績單_固定排名
 
 
             builder.EndRow();
+
+            //2021-12
+            builder.InsertCell(); builder.Write("新頂標");
+            foreach (string key in new string[] { "總分班", "總分科", "總分年", "平均班", "平均科", "平均年", "加權總分班", "加權總分科", "加權總分年", "加權平均班", "加權平均科", "加權平均年" })
+            {
+                builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "新頂標 \\* MERGEFORMAT ", "«C»");
+            }
+            builder.EndRow();
+            builder.InsertCell(); builder.Write("新前標");
+            foreach (string key in new string[] { "總分班", "總分科", "總分年", "平均班", "平均科", "平均年", "加權總分班", "加權總分科", "加權總分年", "加權平均班", "加權平均科", "加權平均年" })
+            {
+                builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "新前標 \\* MERGEFORMAT ", "«C»");
+            }
+            builder.EndRow();
+            builder.InsertCell(); builder.Write("新均標");
+            foreach (string key in new string[] { "總分班", "總分科", "總分年", "平均班", "平均科", "平均年", "加權總分班", "加權總分科", "加權總分年", "加權平均班", "加權平均科", "加權平均年" })
+            {
+                builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "新均標 \\* MERGEFORMAT ", "«C»");
+            }
+            builder.EndRow();
+            builder.InsertCell(); builder.Write("新後標");
+            foreach (string key in new string[] { "總分班", "總分科", "總分年", "平均班", "平均科", "平均年", "加權總分班", "加權總分科", "加權總分年", "加權平均班", "加權平均科", "加權平均年" })
+            {
+                builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "新後標 \\* MERGEFORMAT ", "«C»");
+            }
+            builder.EndRow();
+            builder.InsertCell(); builder.Write("新底標");
+            foreach (string key in new string[] { "總分班", "總分科", "總分年", "平均班", "平均科", "平均年", "加權總分班", "加權總分科", "加權總分年", "加權平均班", "加權平均科", "加權平均年" })
+            {
+                builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "新底標 \\* MERGEFORMAT ", "«C»");
+            }
+            builder.EndRow();
+            builder.InsertCell(); builder.Write("標準差");
+            foreach (string key in new string[] { "總分班", "總分科", "總分年", "平均班", "平均科", "平均年", "加權總分班", "加權總分科", "加權總分年", "加權平均班", "加權平均科", "加權平均年" })
+            {
+                builder.InsertCell(); builder.InsertField("MERGEFIELD " + key + "標準差 \\* MERGEFORMAT ", "«C»");
+            }
+            builder.EndRow();
+
 
             builder.InsertCell(); builder.Write("100以上");
             foreach (string key in new string[] { "總分班", "總分科", "總分年", "平均班", "平均科", "平均年", "加權總分班", "加權總分科", "加權總分年", "加權平均班", "加權平均科", "加權平均年" /*, "類1總分", "類1平均", "類1加權總分", "類1加權平均", "類2總分", "類2平均", "類2加權總分", "類2加權平均"*/ })
@@ -1169,7 +1249,14 @@ namespace 班級定期評量成績單_固定排名
                         ,"高標"
                         ,"均標"
                         ,"低標"
-                        ,"底標" };
+                        ,"底標"
+                        ,"新頂標"
+                        ,"新前標"
+                        ,"新均標"
+                        ,"新後標"
+                        ,"新底標"
+                        ,"標準差"
+                };
 
                 Dictionary<string, string> rows = new Dictionary<string, string> {
                         { "頂標" ,"頂標" }
@@ -1177,6 +1264,12 @@ namespace 班級定期評量成績單_固定排名
                         ,{"均標"                          ,"均標"   }
                         ,{"低標"                          ,"低標"   }
                         ,{"底標"                          ,"底標"   }
+                        ,{ "新頂標" ,"新頂標" }
+                        ,{"新前標"                          ,"新前標"   }
+                        ,{"新均標"                          ,"新均標"   }
+                        ,{"新後標"                          ,"新後標"   }
+                        ,{"新底標"                          ,"新底標"   }
+                        ,{"標準差"                          ,"標準差"   }
                         ,{"100以上"                       ,"組距count100Up"   }
                         ,{"90以上"                        ,"組距count90Up"   }
                         ,{"90以上小於100"                 ,"組距count90"   }
@@ -1484,6 +1577,16 @@ namespace 班級定期評量成績單_固定排名
                     table.Columns.Add($"{rankType}低標{subjectIndex}");
                     table.Columns.Add($"{rankType}底標{subjectIndex}");
 
+                    //新五標
+                    table.Columns.Add($"{rankType}新頂標{subjectIndex}");
+                    table.Columns.Add($"{rankType}新前標{subjectIndex}");
+                    table.Columns.Add($"{rankType}新均標{subjectIndex}");
+                    table.Columns.Add($"{rankType}新後標{subjectIndex}");
+                    table.Columns.Add($"{rankType}新底標{subjectIndex}");
+
+                    //標準差
+                    table.Columns.Add($"{rankType}標準差{subjectIndex}");
+
                     // 組距
 
                     table.Columns.Add($"{rankType}組距" + subjectIndex + "count90");
@@ -1601,7 +1704,7 @@ namespace 班級定期評量成績單_固定排名
 
             string[] rankNames = new string[] { "班", "科", "年" };
 
-            string[] intervals = new string[] { "頂標", "高標", "均標", "低標", "底標" };
+            string[] intervals = new string[] { "頂標", "高標", "均標", "低標", "底標", "新頂標", "新前標", "新均標", "新後標", "新底標", "標準差" };
 
             foreach (string item in items) //加權平均、平均、加權總分、總分
             {
@@ -1984,6 +2087,13 @@ GROUP BY
                         ,{"均標" ,"均標"   }
                         ,{"低標" ,"低標"   }
                         ,{"底標" ,"底標"   }
+                        ,{"新頂標" ,"新頂標"   }
+                        ,{"新前標" ,"新前標"   }
+                        ,{"新均標" ,"新均標"   }
+                        ,{"新後標" ,"新後標"   }
+                        ,{"新底標" ,"新底標"   }
+                        ,{"標準差" ,"標準差"   }
+
                         ,{"100以上"      ,"組距count100Up"   }
                         ,{"90以上"       ,"組距count90Up"   }
                         ,{"90以上小於100","組距count90"   }

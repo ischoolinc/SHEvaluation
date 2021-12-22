@@ -687,7 +687,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                 {
                                     XmlElement newScore = doc.CreateElement("Subject");
                                     #region 建立newScore
-                                    foreach (string field in new string[] { "科目", "科目級別", "學分數", "分項類別", "必選修", "校部訂", "原始成績", "補考成績", "重修成績", "手動調整成績", "學年調整成績", "取得學分", "不計學分", "不需評分", "免修", "抵免" })
+                                    foreach (string field in new string[] { "科目", "科目級別", "學分數", "分項類別", "必選修", "校部訂", "原始成績", "補考成績", "重修成績", "手動調整成績", "學年調整成績", "取得學分", "不計學分", "不需評分", "免修", "抵免", "補修學年度", "補修學期", "是否補修成績" })
                                     {
                                         if (e.ImportFields.Contains(field))
                                         {

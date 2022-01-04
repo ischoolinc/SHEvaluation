@@ -176,6 +176,12 @@ namespace ClassSemesterScoreReportFixed_SH
                 r2List.Add("avg");
                 r2List.Add("avg_bottom_50");
                 r2List.Add("avg_bottom_25");
+                r2List.Add("pr_88");
+                r2List.Add("pr_75");
+                r2List.Add("pr_50");
+                r2List.Add("pr_25");
+                r2List.Add("pr_12");
+                r2List.Add("std_dev_pop");
                 r2List.Add("level_gte100");
                 r2List.Add("level_90");
                 r2List.Add("level_80");
@@ -196,6 +202,12 @@ namespace ClassSemesterScoreReportFixed_SH
                 r2ListOld.Add("avg");
                 r2ListOld.Add("avg_bottom_50");
                 r2ListOld.Add("avg_bottom_25");
+                r2ListOld.Add("pr_88");
+                r2ListOld.Add("pr_75");
+                r2ListOld.Add("pr_50");
+                r2ListOld.Add("pr_25");
+                r2ListOld.Add("pr_12");
+                r2ListOld.Add("std_dev_pop");
                 r2ListOld.Add("level_gte100");
                 r2ListOld.Add("level_90");
                 r2ListOld.Add("level_80");
@@ -216,6 +228,12 @@ namespace ClassSemesterScoreReportFixed_SH
                 r2ListClass.Add("avg");
                 r2ListClass.Add("avg_bottom_50");
                 r2ListClass.Add("avg_bottom_25");
+                r2ListClass.Add("pr_88");
+                r2ListClass.Add("pr_75");
+                r2ListClass.Add("pr_50");
+                r2ListClass.Add("pr_25");
+                r2ListClass.Add("pr_12");
+                r2ListClass.Add("std_dev_pop");
                 r2ListClass.Add("level_gte100");
                 r2ListClass.Add("level_90");
                 r2ListClass.Add("level_80");
@@ -576,7 +594,7 @@ namespace ClassSemesterScoreReportFixed_SH
                         bkw.ReportProgress(35);
                         int progressCount = 0;
 
-                      
+
                         Dictionary<string, Dictionary<string, SemesterSubjectScoreInfo>> SemesterSubjectScoreInfoDict = new Dictionary<string, Dictionary<string, SemesterSubjectScoreInfo>>();
 
                         #region 學生學期科目成績並整理
@@ -603,7 +621,7 @@ namespace ClassSemesterScoreReportFixed_SH
                                         continue;
 
                                     if (smScore.Detail.GetAttribute("不計學分") == "是")
-                                        continue;                                  
+                                        continue;
 
                                     // 累計應得學分
                                     Global._StudCreditDict[stud.StudentID].shouldGetTotalCredit += smScore.Credit;
@@ -726,7 +744,7 @@ namespace ClassSemesterScoreReportFixed_SH
                                                         classSubjects[subjectName][subjectLevel].Add(credit);
                                                 }
                                             }
-                                            
+
                                         }
                                     }
                                 }
@@ -776,11 +794,14 @@ namespace ClassSemesterScoreReportFixed_SH
                                                     break;
                                                 string studentID = stuRec.StudentID;
                                                 string key1 = subjectName + subjectNumber;
+
+
                                                 if (SemesterSubjectScoreInfoDict.ContainsKey(studentID))
                                                 {
                                                     if (SemesterSubjectScoreInfoDict[studentID].ContainsKey(key1))
                                                     {
                                                         row["科目成績" + ClassStuNum + "-" + subjectIndex] = SemesterSubjectScoreInfoDict[studentID][key1].Score;
+                                                        row["科目成績(原始)" + ClassStuNum + "-" + subjectIndex] = SemesterSubjectScoreInfoDict[studentID][key1].Detail.GetAttribute("原始成績");
 
                                                         if (SemsScoreRankMatrixDataDict.ContainsKey(studentID))
                                                         {
@@ -1221,6 +1242,52 @@ namespace ClassSemesterScoreReportFixed_SH
             }
             #endregion
 
+
+            // 新增科目成績(原始) Cynthia
+            #region 科目成績(原始)
+            builder.InsertBreak(Aspose.Words.BreakType.PageBreak);
+            builder.Writeln("科目成績(原始)");
+            builder.StartTable();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.Write("科目名稱(原始)");
+            for (int i = 1; i <= maxSubjectNum; i++)
+            {
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 科目名稱" + i + " \\* MERGEFORMAT ", "«科目名稱" + i + "»");
+            }
+            builder.EndRow();
+
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.Write("學分數");
+            for (int i = 1; i <= maxSubjectNum; i++)
+            {
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 學分數" + i + " \\* MERGEFORMAT ", "«C" + i + "»");
+            }
+            builder.EndRow();
+
+            for (int stuIndex = 1; stuIndex <= maxStuNum; stuIndex++)
+            {
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 學號" + stuIndex + " \\* MERGEFORMAT ", "«學號" + stuIndex + "»");
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 座號" + stuIndex + " \\* MERGEFORMAT ", "«座號" + stuIndex + "»");
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 姓名" + stuIndex + " \\* MERGEFORMAT ", "«姓名" + stuIndex + "»");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績(原始)" + stuIndex + "-" + i + " \\* MERGEFORMAT ", "«S" + i + "»");
+                }
+                builder.EndRow();
+            }
+            builder.EndTable();
+            #endregion
+
             #region 科目成績排名(原始)
             foreach (string key in new string[] { "班", "科", "全校", "類別1", "類別2" })
             {
@@ -1407,6 +1474,8 @@ namespace ClassSemesterScoreReportFixed_SH
             //builder.Write("加權平均");
             //builder.InsertCell();
             builder.Write("加權平均排名");
+            builder.InsertCell();
+            builder.Write("加權平均排名(原始)");
             builder.EndRow();
             for (int stuIndex = 1; stuIndex <= maxStuNum; stuIndex++)
             {
@@ -1422,6 +1491,9 @@ namespace ClassSemesterScoreReportFixed_SH
                 builder.InsertCell();
                 builder.InsertField("MERGEFIELD 類別1加權平均排名" + stuIndex + " \\* MERGEFORMAT ", "«RP»");
                 builder.InsertField("MERGEFIELD 類別1加權平均排名母數" + stuIndex + " \\b /  \\* MERGEFORMAT ", "«/TP»");
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 類別1加權平均排名(原始)" + stuIndex + " \\* MERGEFORMAT ", "«RP»");
+                builder.InsertField("MERGEFIELD 類別1加權平均排名(原始)母數" + stuIndex + " \\b /  \\* MERGEFORMAT ", "«/TP»");
                 builder.EndRow();
             }
             builder.EndTable();
@@ -1439,6 +1511,8 @@ namespace ClassSemesterScoreReportFixed_SH
             //builder.Write("加權平均");
             //builder.InsertCell();
             builder.Write("加權平均排名");
+            builder.InsertCell();
+            builder.Write("加權平均排名(原始)");
             builder.EndRow();
             for (int stuIndex = 1; stuIndex <= maxStuNum; stuIndex++)
             {
@@ -1454,6 +1528,9 @@ namespace ClassSemesterScoreReportFixed_SH
                 builder.InsertCell();
                 builder.InsertField("MERGEFIELD 類別2加權平均排名" + stuIndex + " \\* MERGEFORMAT ", "«RP»");
                 builder.InsertField("MERGEFIELD 類別2加權平均排名母數" + stuIndex + " \\b /  \\* MERGEFORMAT ", "«/TP»");
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 類別2加權平均排名(原始)" + stuIndex + " \\* MERGEFORMAT ", "«RP»");
+                builder.InsertField("MERGEFIELD 類別2加權平均排名(原始)母數" + stuIndex + " \\b /  \\* MERGEFORMAT ", "«/TP»");
                 builder.EndRow();
             }
             builder.EndTable();
@@ -1469,7 +1546,12 @@ namespace ClassSemesterScoreReportFixed_SH
             r1.Add("avg");
             r1.Add("avg_bottom_50");
             r1.Add("avg_bottom_25");
-
+            r1.Add("pr_88");
+            r1.Add("pr_75");
+            r1.Add("pr_50");
+            r1.Add("pr_25");
+            r1.Add("pr_12");
+            r1.Add("std_dev_pop");
             r2.Add("level_gte100");
             r2.Add("level_90");
             r2.Add("level_80");
@@ -1518,6 +1600,18 @@ namespace ClassSemesterScoreReportFixed_SH
                 builder.Write("低標");
                 builder.InsertCell();
                 builder.Write("底標");
+                builder.InsertCell();
+                builder.Write("新頂標");
+                builder.InsertCell();
+                builder.Write("新前標");
+                builder.InsertCell();
+                builder.Write("新均標");
+                builder.InsertCell();
+                builder.Write("新後標");
+                builder.InsertCell();
+                builder.Write("新底標");
+                builder.InsertCell();
+                builder.Write("標準差");
                 builder.EndRow();
                 foreach (string s2 in ta2)
                 {
@@ -1635,6 +1729,18 @@ namespace ClassSemesterScoreReportFixed_SH
                 builder.Write("低標");
                 builder.InsertCell();
                 builder.Write("底標");
+                builder.InsertCell();
+                builder.Write("新頂標");
+                builder.InsertCell();
+                builder.Write("新前標");
+                builder.InsertCell();
+                builder.Write("新均標");
+                builder.InsertCell();
+                builder.Write("新後標");
+                builder.InsertCell();
+                builder.Write("新底標");
+                builder.InsertCell();
+                builder.Write("標準差");
                 builder.EndRow();
                 foreach (string s2 in t2)
                 {
@@ -1719,7 +1825,7 @@ namespace ClassSemesterScoreReportFixed_SH
             builder.InsertCell();
             builder.Write("類別排名1名稱");
             builder.InsertCell();
-            builder.Write("類別排名2名稱");         
+            builder.Write("類別排名2名稱");
             builder.EndRow();
 
             for (int stuIndex = 1; stuIndex <= maxStuNum; stuIndex++)

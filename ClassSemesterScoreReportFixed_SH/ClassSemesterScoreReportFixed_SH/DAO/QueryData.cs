@@ -416,6 +416,12 @@ namespace ClassSemesterScoreReportFixed_SH.DAO
                 r2List.Add("avg");
                 r2List.Add("avg_bottom_50");
                 r2List.Add("avg_bottom_25");
+                r2List.Add("pr_88");
+                r2List.Add("pr_75");
+                r2List.Add("pr_50");
+                r2List.Add("pr_25");
+                r2List.Add("pr_12");
+                r2List.Add("std_dev_pop");
                 r2List.Add("level_gte100");
                 r2List.Add("level_90");
                 r2List.Add("level_80");
@@ -435,6 +441,12 @@ namespace ClassSemesterScoreReportFixed_SH.DAO
                 r2ListNP.Add("avg");
                 r2ListNP.Add("avg_bottom_50");
                 r2ListNP.Add("avg_bottom_25");
+                r2ListNP.Add("pr_88");
+                r2ListNP.Add("pr_75");
+                r2ListNP.Add("pr_50");
+                r2ListNP.Add("pr_25");
+                r2ListNP.Add("pr_12");
+                r2ListNP.Add("std_dev_pop");
 
                 QueryHelper qh = new QueryHelper();
                 string query = "" +
@@ -462,6 +474,12 @@ namespace ClassSemesterScoreReportFixed_SH.DAO
     "   , rank_matrix.avg" +
     "   , rank_matrix.avg_bottom_50" +
     "   , rank_matrix.avg_bottom_25" +
+    "   , rank_matrix.pr_88" +
+    "   , rank_matrix.pr_75" +
+    "   , rank_matrix.pr_50" +
+    "   , rank_matrix.pr_25" +
+    "   , rank_matrix.pr_12" +
+    "   , rank_matrix.std_dev_pop" +
     " 	, rank_matrix.level_gte100" +
     " 	, rank_matrix.level_90" +
     " 	, rank_matrix.level_80" +
@@ -580,6 +598,12 @@ namespace ClassSemesterScoreReportFixed_SH.DAO
                 r2List.Add("avg");
                 r2List.Add("avg_bottom_50");
                 r2List.Add("avg_bottom_25");
+                r2List.Add("pr_88");
+                r2List.Add("pr_75");
+                r2List.Add("pr_50");
+                r2List.Add("pr_25");
+                r2List.Add("pr_12");
+                r2List.Add("std_dev_pop");
                 r2List.Add("level_gte100");
                 r2List.Add("level_90");
                 r2List.Add("level_80");
@@ -599,6 +623,12 @@ namespace ClassSemesterScoreReportFixed_SH.DAO
                 r2ListNP.Add("avg");
                 r2ListNP.Add("avg_bottom_50");
                 r2ListNP.Add("avg_bottom_25");
+                r2ListNP.Add("pr_88");
+                r2ListNP.Add("pr_75");
+                r2ListNP.Add("pr_50");
+                r2ListNP.Add("pr_25");
+                r2ListNP.Add("pr_12");
+                r2ListNP.Add("std_dev_pop");
 
                 QueryHelper qh = new QueryHelper();
                 string query = "" +
@@ -619,6 +649,12 @@ namespace ClassSemesterScoreReportFixed_SH.DAO
     "   , rank_matrix.avg " +
     "   , rank_matrix.avg_bottom_50 " +
     "   , rank_matrix.avg_bottom_25 " +
+    "   , rank_matrix.pr_88" +
+    "   , rank_matrix.pr_75" +
+    "   , rank_matrix.pr_50" +
+    "   , rank_matrix.pr_25" +
+    "   , rank_matrix.pr_12" +
+    "   , rank_matrix.std_dev_pop" +
     "     , rank_matrix.level_gte100 " +
     "     , rank_matrix.level_90 " +
     "     , rank_matrix.level_80 " +

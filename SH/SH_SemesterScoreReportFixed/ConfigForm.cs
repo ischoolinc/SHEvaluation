@@ -189,6 +189,8 @@ namespace SH_SemesterScoreReportFixed
                     Configure.ReScoreMark = txtReScoreMark.Text;
                     Configure.FailScoreMark = txtFailScoreMark.Text;
 
+                    Configure.IsShowLevel = ckShowLevel.Checked;
+
                     Configure.NeedRereadScoreMark = txtNeedRereadScoreMark.Text;
                     Configure.RereadScoreMark = txtRereadScoreMark.Text;
 
@@ -225,6 +227,8 @@ namespace SH_SemesterScoreReportFixed
 
                     txtNeedRereadScoreMark.Text = Configure.NeedRereadScoreMark;
                     txtRereadScoreMark.Text = Configure.RereadScoreMark;
+
+                    ckShowLevel.Checked = Configure.IsShowLevel;
 
                     if (Configure.ExamRecord != null)
                     {
@@ -272,6 +276,7 @@ namespace SH_SemesterScoreReportFixed
 
             Configure.NeedRereadScoreMark = txtNeedRereadScoreMark.Text;
             Configure.RereadScoreMark = txtRereadScoreMark.Text;
+            Configure.IsShowLevel = ckShowLevel.Checked;
 
             if (Configure.RefenceExamRecord != null && Configure.RefenceExamRecord.Name == "")
                 Configure.RefenceExamRecord = null;
@@ -312,7 +317,7 @@ namespace SH_SemesterScoreReportFixed
             bool chkRun = true;
 
             if (s1 != s2)
-                if (FISCA.Presentation.Controls.MsgBox.Show("畫面上學年度學期與系統學年度學期不相同，請問是否繼續?", "學年度學期不同", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.No)
+                if (FISCA.Presentation.Controls.MsgBox.Show("所選的學年度學期與系統學年度學期不相同，請問是否繼續?", "學年度學期不同", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.No)
                 {
                     chkRun = false;
                 }
@@ -525,6 +530,7 @@ namespace SH_SemesterScoreReportFixed
                 conf.Template = Configure.Template;
                 conf.WithPrevSemesterScore = Configure.WithPrevSemesterScore;
                 conf.WithSchoolYearScore = Configure.WithSchoolYearScore;
+                conf.IsShowLevel = Configure.IsShowLevel;
                 conf.Encode();
                 conf.Save();
                 _Configures.Add(conf);

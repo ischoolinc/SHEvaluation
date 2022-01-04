@@ -225,6 +225,12 @@ namespace SH_SemesterScoreReportFixed
                 r2List.Add("avg");
                 r2List.Add("avg_bottom_50");
                 r2List.Add("avg_bottom_25");
+                r2List.Add("pr_88");
+                r2List.Add("pr_75");
+                r2List.Add("pr_50");
+                r2List.Add("pr_25");
+                r2List.Add("pr_12");
+                r2List.Add("std_dev_pop");
                 r2List.Add("level_gte100");
                 r2List.Add("level_90");
                 r2List.Add("level_80");
@@ -244,6 +250,12 @@ namespace SH_SemesterScoreReportFixed
                 r2ParseList.Add("avg");
                 r2ParseList.Add("avg_bottom_50");
                 r2ParseList.Add("avg_bottom_25");
+                r2ParseList.Add("pr_88");
+                r2ParseList.Add("pr_75");
+                r2ParseList.Add("pr_50");
+                r2ParseList.Add("pr_25");
+                r2ParseList.Add("pr_12");
+                r2ParseList.Add("std_dev_pop");
 
 
                 r3List.Add("班排名");
@@ -469,6 +481,16 @@ namespace SH_SemesterScoreReportFixed
                 table.Columns.Add("小過統計");
                 table.Columns.Add("警告統計");
                 table.Columns.Add("留校察看");
+
+                // 上學期獎懲統計 -- //2021-12-27 新增
+                table.Columns.Add("上學期大功統計");
+                table.Columns.Add("上學期小功統計");
+                table.Columns.Add("上學期嘉獎統計");
+                table.Columns.Add("上學期大過統計");
+                table.Columns.Add("上學期小過統計");
+                table.Columns.Add("上學期警告統計");
+                table.Columns.Add("上學期留校察看");
+
                 // 上學期分項成績 --
                 table.Columns.Add("上學期學業成績");
                 table.Columns.Add("上學期體育成績");
@@ -818,7 +840,18 @@ namespace SH_SemesterScoreReportFixed
                             {
                                 table.Columns.Add("綜合表現：" + face);
                             }
+
                         }
+                        // 2021-12-28 Cynthia 避免舊的變數不能使用，增加新版文字評量變數，舊版綜合表現OOO不移除
+                        for (int i = 1; i <= 10; i++)
+                        {
+                            table.Columns.Add("文字評量" + i);
+                        }
+                        for (int i = 1; i <= 10; i++)
+                        {
+                            table.Columns.Add("文字評量名稱" + i);
+                        }
+
                         #endregion
                         #region 缺曠對照表
                         List<K12.Data.PeriodMappingInfo> periodMappingInfos = K12.Data.PeriodMapping.SelectAll();
@@ -1509,7 +1542,10 @@ namespace SH_SemesterScoreReportFixed
 
                                             decimal level;
                                             subjectNumber = decimal.TryParse(semesterSubjectScore.Level, out level) ? (decimal?)level : null;
+
                                             row["科目名稱" + subjectIndex] = semesterSubjectScore.Subject + GetNumber(subjectNumber);
+                                            if (!conf.IsShowLevel)  //2021-12-27 Cynthia 不顯示級別
+                                                row["科目名稱" + subjectIndex] = semesterSubjectScore.Subject;
                                             row["科目" + subjectIndex] = semesterSubjectScore.Subject;
                                             row["科目級別" + subjectIndex] = GetNumber(subjectNumber);
                                             row["學分數" + subjectIndex] = semesterSubjectScore.CreditDec();
@@ -1971,6 +2007,8 @@ namespace SH_SemesterScoreReportFixed
                                                             decimal level;
                                                             subjectNumber = decimal.TryParse(sceTakeRecord.SubjectLevel, out level) ? (decimal?)level : null;
                                                             row["科目名稱" + subjectIndex] = sceTakeRecord.Subject + GetNumber(subjectNumber);
+                                                            if (!conf.IsShowLevel)  //2021-12-27 Cynthia 不顯示級別
+                                                                row["科目名稱" + subjectIndex] = sceTakeRecord.Subject;
                                                             row["科目" + subjectIndex] = sceTakeRecord.Subject;
                                                             row["科目級別" + subjectIndex] = GetNumber(subjectNumber);
 
@@ -2172,6 +2210,8 @@ namespace SH_SemesterScoreReportFixed
                                                                 decimal level;
                                                                 subjectNumber = decimal.TryParse(courseRec.SubjectLevel, out level) ? (decimal?)level : null;
                                                                 row["科目名稱" + subjectIndex] = courseRec.Subject + GetNumber(subjectNumber);
+                                                                if (!conf.IsShowLevel)  //2021-12-27 Cynthia 不顯示級別
+                                                                    row["科目名稱" + subjectIndex] = courseRec.Subject;
                                                                 row["科目" + subjectIndex] = courseRec.Subject;
                                                                 row["科目級別" + subjectIndex] = GetNumber(subjectNumber);
                                                                 row["學分數" + subjectIndex] = courseRec.CreditDec();
@@ -2210,6 +2250,8 @@ namespace SH_SemesterScoreReportFixed
                                                     decimal level;
                                                     subjectNumber = decimal.TryParse(semesterSubjectScore.Level, out level) ? (decimal?)level : null;
                                                     row["科目名稱" + subjectIndex] = semesterSubjectScore.Subject + GetNumber(subjectNumber);
+                                                    if (!conf.IsShowLevel)  //2021-12-27 Cynthia 不顯示級別
+                                                        row["科目名稱" + subjectIndex] = semesterSubjectScore.Subject;
                                                     row["科目" + subjectIndex] = semesterSubjectScore.Subject;
                                                     row["科目級別" + subjectIndex] = GetNumber(subjectNumber);
                                                     row["學分數" + subjectIndex] = semesterSubjectScore.CreditDec();
@@ -3353,6 +3395,8 @@ namespace SH_SemesterScoreReportFixed
 
                             #region 學務資料
                             #region 綜合表現
+                            List<string> commentList = new List<string>();
+                            List<string> faceList = new List<string>();
                             foreach (SemesterMoralScoreInfo info in stuRec.SemesterMoralScoreList)
                             {
                                 if (("" + info.Semester) == conf.Semester && ("" + info.SchoolYear) == conf.SchoolYear)
@@ -3366,6 +3410,20 @@ namespace SH_SemesterScoreReportFixed
                                         {
                                             string comment = each.InnerText;
                                             row["綜合表現：" + face] = each.InnerText;
+
+                                            // 2021-12-28 Cynthia 避免舊的變數不能使用，增加新版文字評量變數，舊版綜合表現OOO不移除
+                                            commentList.Add(comment);
+                                            faceList.Add(face);
+                                            for (int i = 1; i <= faceList.Count; i++)
+                                            {
+                                                if (faceList.Count <= 10)
+                                                    row["文字評量名稱" + i] = faceList[i - 1];
+                                            }
+                                            for (int i = 1; i <= commentList.Count; i++)
+                                            {
+                                                if (commentList.Count <= 10)
+                                                    row["文字評量" + i] = commentList[i - 1];
+                                            }
                                         }
                                     }
                                     break;
@@ -3380,6 +3438,14 @@ namespace SH_SemesterScoreReportFixed
                             int 小過 = 0;
                             int 警告 = 0;
                             bool 留校察看 = false;
+
+                            int previous大功 = 0;
+                            int previous小功 = 0;
+                            int previous嘉獎 = 0;
+                            int previous大過 = 0;
+                            int previous小過 = 0;
+                            int previous警告 = 0;
+                            bool previous留校察看 = false;
                             foreach (RewardInfo info in stuRec.RewardList)
                             {
                                 if (("" + info.Semester) == conf.Semester && ("" + info.SchoolYear) == conf.SchoolYear)
@@ -3396,15 +3462,46 @@ namespace SH_SemesterScoreReportFixed
                                     if (info.UltimateAdmonition)
                                         留校察看 = true;
                                 }
+
+                                ////2021-12-27 Cynthia  新增上學期獎懲統計
+                                if (conf.Semester == "2")
+                                {
+                                    if (("" + info.Semester) == "1" && ("" + info.SchoolYear) == conf.SchoolYear)
+                                    {
+                                        previous大功 += info.AwardA;
+                                        previous小功 += info.AwardB;
+                                        previous嘉獎 += info.AwardC;
+                                        if (!info.Cleared)
+                                        {
+                                            previous大過 += info.FaultA;
+                                            previous小過 += info.FaultB;
+                                            previous警告 += info.FaultC;
+                                        }
+                                        if (info.UltimateAdmonition)
+                                            previous留校察看 = true;
+                                    }
+                                }
+
                             }
-                            row["大功統計"] = 大功 == 0 ? "" : ("" + 大功);
-                            row["小功統計"] = 小功 == 0 ? "" : ("" + 小功);
-                            row["嘉獎統計"] = 嘉獎 == 0 ? "" : ("" + 嘉獎);
-                            row["大過統計"] = 大過 == 0 ? "" : ("" + 大過);
-                            row["小過統計"] = 小過 == 0 ? "" : ("" + 小過);
-                            row["警告統計"] = 警告 == 0 ? "" : ("" + 警告);
-                            row["留校察看"] = 留校察看 ? "是" : "";
+                            // 本學期
+                            row["大功統計"] = 大功 == 0 ? "0" : ("" + 大功);
+                            row["小功統計"] = 小功 == 0 ? "0" : ("" + 小功);
+                            row["嘉獎統計"] = 嘉獎 == 0 ? "0" : ("" + 嘉獎);
+                            row["大過統計"] = 大過 == 0 ? "0" : ("" + 大過);
+                            row["小過統計"] = 小過 == 0 ? "0" : ("" + 小過);
+                            row["警告統計"] = 警告 == 0 ? "0" : ("" + 警告);
+                            row["留校察看"] = 留校察看 ? "是" : "否";
+
+                            //2021-12-27 Cynthia 上學期
+                            row["上學期大功統計"] = previous大功 == 0 ? "0" : ("" + previous大功);
+                            row["上學期小功統計"] = previous小功 == 0 ? "0" : ("" + previous小功);
+                            row["上學期嘉獎統計"] = previous嘉獎 == 0 ? "0" : ("" + previous嘉獎);
+                            row["上學期大過統計"] = previous大過 == 0 ? "0" : ("" + previous大過);
+                            row["上學期小過統計"] = previous小過 == 0 ? "0" : ("" + previous小過);
+                            row["上學期警告統計"] = previous警告 == 0 ? "0" : ("" + previous警告);
+                            row["上學期留校察看"] = previous留校察看 ? "是" : "否";
                             #endregion
+
                             #region 缺曠統計
                             Dictionary<string, int> 缺曠項目統計 = new Dictionary<string, int>();
                             foreach (AttendanceInfo info in stuRec.AttendanceList)

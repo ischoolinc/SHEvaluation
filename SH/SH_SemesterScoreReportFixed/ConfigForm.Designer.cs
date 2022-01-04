@@ -48,6 +48,7 @@
             this.labelX4 = new DevComponents.DotNetBar.LabelX();
             this.cboExam = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.gp1 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.ckShowLevel = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.txtRereadScoreMark = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.txtNeedRereadScoreMark = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.labelX6 = new DevComponents.DotNetBar.LabelX();
@@ -64,11 +65,10 @@
             // btnSaveConfig
             // 
             this.btnSaveConfig.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.btnSaveConfig.AutoSize = true;
             this.btnSaveConfig.BackColor = System.Drawing.Color.Transparent;
             this.btnSaveConfig.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnSaveConfig.Enabled = false;
-            this.btnSaveConfig.Location = new System.Drawing.Point(409, 517);
+            this.btnSaveConfig.Location = new System.Drawing.Point(424, 517);
             this.btnSaveConfig.Name = "btnSaveConfig";
             this.btnSaveConfig.Size = new System.Drawing.Size(75, 25);
             this.btnSaveConfig.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -80,12 +80,10 @@
             // btnPrint
             // 
             this.btnPrint.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.btnPrint.AutoSize = true;
             this.btnPrint.BackColor = System.Drawing.Color.Transparent;
             this.btnPrint.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnPrint.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnPrint.Enabled = false;
-            this.btnPrint.Location = new System.Drawing.Point(505, 517);
+            this.btnPrint.Location = new System.Drawing.Point(504, 517);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(75, 25);
             this.btnPrint.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -96,11 +94,10 @@
             // btnCancel
             // 
             this.btnCancel.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.btnCancel.AutoSize = true;
             this.btnCancel.BackColor = System.Drawing.Color.Transparent;
             this.btnCancel.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(586, 517);
+            this.btnCancel.Location = new System.Drawing.Point(584, 517);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 25);
             this.btnCancel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -171,7 +168,7 @@
             this.linkLabel5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel5.AutoSize = true;
             this.linkLabel5.BackColor = System.Drawing.Color.Transparent;
-            this.linkLabel5.Location = new System.Drawing.Point(226, 521);
+            this.linkLabel5.Location = new System.Drawing.Point(214, 521);
             this.linkLabel5.Name = "linkLabel5";
             this.linkLabel5.Size = new System.Drawing.Size(112, 17);
             this.linkLabel5.TabIndex = 7;
@@ -213,6 +210,7 @@
             this.listViewEx1.Border.Class = "ListViewBorder";
             this.listViewEx1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.listViewEx1.CheckBoxes = true;
+            this.listViewEx1.HideSelection = false;
             this.listViewEx1.Location = new System.Drawing.Point(33, 254);
             this.listViewEx1.Name = "listViewEx1";
             this.listViewEx1.Size = new System.Drawing.Size(626, 248);
@@ -389,6 +387,25 @@
             this.gp1.TabIndex = 4;
             this.gp1.Text = "成績未取得學分狀態標示設定";
             // 
+            // ckShowLevel
+            // 
+            this.ckShowLevel.AutoSize = true;
+            this.ckShowLevel.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.ckShowLevel.BackgroundStyle.Class = "";
+            this.ckShowLevel.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.ckShowLevel.Checked = true;
+            this.ckShowLevel.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckShowLevel.CheckValue = "Y";
+            this.ckShowLevel.Location = new System.Drawing.Point(548, 227);
+            this.ckShowLevel.Name = "ckShowLevel";
+            this.ckShowLevel.Size = new System.Drawing.Size(107, 21);
+            this.ckShowLevel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.ckShowLevel.TabIndex = 48;
+            this.ckShowLevel.Text = "顯示科目級別";
+            // 
             // txtRereadScoreMark
             // 
             // 
@@ -397,7 +414,7 @@
             this.txtRereadScoreMark.Border.Class = "TextBoxBorder";
             this.txtRereadScoreMark.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.txtRereadScoreMark.ImeMode = System.Windows.Forms.ImeMode.Close;
-            this.txtRereadScoreMark.Location = new System.Drawing.Point(299, 45);
+            this.txtRereadScoreMark.Location = new System.Drawing.Point(320, 45);
             this.txtRereadScoreMark.Name = "txtRereadScoreMark";
             this.txtRereadScoreMark.Size = new System.Drawing.Size(50, 25);
             this.txtRereadScoreMark.TabIndex = 5;
@@ -424,7 +441,7 @@
             // 
             this.labelX6.BackgroundStyle.Class = "";
             this.labelX6.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX6.Location = new System.Drawing.Point(211, 47);
+            this.labelX6.Location = new System.Drawing.Point(232, 47);
             this.labelX6.Name = "labelX6";
             this.labelX6.Size = new System.Drawing.Size(87, 21);
             this.labelX6.TabIndex = 4;
@@ -466,7 +483,7 @@
             this.txtReScoreMark.Border.Class = "TextBoxBorder";
             this.txtReScoreMark.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.txtReScoreMark.ImeMode = System.Windows.Forms.ImeMode.Close;
-            this.txtReScoreMark.Location = new System.Drawing.Point(299, 10);
+            this.txtReScoreMark.Location = new System.Drawing.Point(320, 10);
             this.txtReScoreMark.Name = "txtReScoreMark";
             this.txtReScoreMark.Size = new System.Drawing.Size(50, 25);
             this.txtReScoreMark.TabIndex = 1;
@@ -508,7 +525,7 @@
             // 
             this.labelX3.BackgroundStyle.Class = "";
             this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX3.Location = new System.Drawing.Point(211, 12);
+            this.labelX3.Location = new System.Drawing.Point(232, 12);
             this.labelX3.Name = "labelX3";
             this.labelX3.Size = new System.Drawing.Size(87, 21);
             this.labelX3.TabIndex = 1;
@@ -534,6 +551,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(694, 556);
+            this.Controls.Add(this.ckShowLevel);
             this.Controls.Add(this.gp1);
             this.Controls.Add(this.btnSaveConfig);
             this.Controls.Add(this.btnPrint);
@@ -598,5 +616,6 @@
         private DevComponents.DotNetBar.Controls.TextBoxX txtNeedRereadScoreMark;
         private DevComponents.DotNetBar.LabelX labelX6;
         private DevComponents.DotNetBar.LabelX labelX8;
+        private DevComponents.DotNetBar.Controls.CheckBoxX ckShowLevel;
     }
 }

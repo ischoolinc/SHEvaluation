@@ -33,7 +33,7 @@ namespace SHCourseScoreInputStatus
 
             cbxSchoolYear.Text = K12.Data.School.DefaultSchoolYear;
             cbxSemester.Text = K12.Data.School.DefaultSemester;
-            
+
             _CourseScoreBaseList = new List<CourseScoreBase>();
             _bgWork = new BackgroundWorker();
             _bgWork.DoWork += new DoWorkEventHandler(_bgWork_DoWork);
@@ -81,14 +81,14 @@ namespace SHCourseScoreInputStatus
 
                 // 處理當勾選只列出未輸入完成
                 if (chkNotHasScore.Checked)
-                { 
-                    if(chkNotInput)
+                {
+                    if (chkNotInput)
                         lvData.Items.Add(lvi);
                 }
                 else
                     lvData.Items.Add(lvi);
             }
-            lblMsg.Text="共 "+lvData.Items.Count+" 筆課程";
+            lblMsg.Text = "共 " + lvData.Items.Count + " 筆課程";
             btnReload.Enabled = false;
         }
 
@@ -115,7 +115,7 @@ namespace SHCourseScoreInputStatus
         // 載入資料
         private void LoadData()
         {
-            
+
             int sc, ss;
             if (int.TryParse(cbxSchoolYear.Text, out sc))
             {
@@ -123,7 +123,7 @@ namespace SHCourseScoreInputStatus
             }
             else
                 _SchoolYear = 0;
-                        
+
             if (int.TryParse(cbxSemester.Text, out ss))
             {
                 _Semester = ss;
@@ -137,12 +137,12 @@ namespace SHCourseScoreInputStatus
             lvData.Items.Clear();
             _bgWork.RunWorkerAsync();
         }
-    
-    
+
+
 
         private void btnAddTemp_Click(object sender, EventArgs e)
-        {            
-            if (lvData.SelectedItems.Count> 0)
+        {
+            if (lvData.SelectedItems.Count > 0)
             {
                 btnAddTemp.Enabled = false;
                 // 將所選的加入待處理
@@ -167,7 +167,8 @@ namespace SHCourseScoreInputStatus
 
         private void chkNotHasScore_CheckedChanged(object sender, EventArgs e)
         {
-            BindDataToListView();
+            if (lvData.Items.Count > 0)
+                BindDataToListView();
         }
 
         private void cbxSemester_SelectedIndexChanged(object sender, EventArgs e)
@@ -196,12 +197,12 @@ namespace SHCourseScoreInputStatus
                 dt.Columns.Add("課程名稱");
                 dt.Columns.Add("授課教師");
                 dt.Columns.Add("課程成績");
-                
+
                 foreach (ListViewItem lvi in lvData.Items)
                 {
                     DataRow dr = dt.NewRow();
                     dr["課程名稱"] = lvi.Text;
-                    if(lvi.SubItems[1] !=null)
+                    if (lvi.SubItems[1] != null)
                         dr["授課教師"] = lvi.SubItems[1].Text;
 
                     if (lvi.SubItems[2] != null)

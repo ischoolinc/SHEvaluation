@@ -135,7 +135,7 @@ namespace SH_SemesterScoreReportFixed
         public string RereadScoreMark { get; set; }
 
         /// <summary>
-        /// 重修成績標示
+        /// 顯示科目級別，true:顯示
         /// </summary>
         [FISCA.UDT.Field]
         public bool IsShowLevel { get; set; }

@@ -131,17 +131,18 @@ namespace ClassSemesterScoreReportFixed_SH
                 foreach (var list in _ExamSubjectFull.Values)
                 {
                     #region 排序
-                    list.Sort(new StringComparer("國文"
-                                    , "英文"
-                                    , "數學"
-                                    , "理化"
-                                    , "生物"
-                                    , "社會"
-                                    , "物理"
-                                    , "化學"
-                                    , "歷史"
-                                    , "地理"
-                                    , "公民"));
+                    //list.Sort(new StringComparer("國文","國語文"
+                    //                , "英文", "英語文"
+                    //                , "數學"
+                    //                , "理化"
+                    //                , "生物"
+                    //                , "社會"
+                    //                , "物理"
+                    //                , "化學"
+                    //                , "歷史"
+                    //                , "地理"
+                    //                , "公民"));
+                    list.Sort(new StringComparer(Utility.GetSubjectOrder().ToArray()));
                     #endregion
                 }
                 #endregion               
@@ -222,7 +223,7 @@ namespace ClassSemesterScoreReportFixed_SH
             string s2 = School.DefaultSchoolYear + School.DefaultSemester;
 
             if (s1 != s2)
-                if (FISCA.Presentation.Controls.MsgBox.Show("畫面上學年度學期與系統學年度學期不相同，請問是否繼續?", "學年度學期不同", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.No)
+                if (FISCA.Presentation.Controls.MsgBox.Show("所選學年度學期與系統學年度學期不相同，請問是否繼續?", "學年度學期不同", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.No)
                     return;
 
             SaveTemplate(null, null);

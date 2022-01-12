@@ -9,6 +9,8 @@ using System.IO;
 using System.Threading;
 using FISCA.Permission;
 using SmartSchool.Customization.Data.StudentExtension;
+using FISCA.Data;
+using FISCA.Presentation.Controls;
 
 namespace ClassSemesterScoreReportFixed_SH
 {
@@ -377,6 +379,30 @@ namespace ClassSemesterScoreReportFixed_SH
                 }
                 #endregion
 
+                // 2022-01-07 Cynthia
+                // https://3.basecamp.com/4399967/buckets/15765350/todos/2460321461
+                #region 各科目五標、標準差 
+                for (int subjectIndex = 1; subjectIndex <= conf.SubjectLimit; subjectIndex++)
+                {
+                    foreach (string s2 in rankTypeList)
+                    {
+                        foreach (string r in r2ListClass)
+                        {
+                            string rankType = s2;
+                            if (s2 == "年排名")
+                                rankType = "全校排名";
+                            //科目成績1_班排名_avg_top_50
+                            string key = "科目成績"+ subjectIndex + "_" + rankType + "_" + r;
+                            string key1 = "科目成績(原始)"+ subjectIndex+"_" + rankType + "_" + r;
+                            table.Columns.Add(key);
+                            table.Columns.Add(key1);
+                        }
+                    }
+                }
+                #endregion
+
+
+
                 #endregion
                 #endregion
 
@@ -412,7 +438,7 @@ namespace ClassSemesterScoreReportFixed_SH
 
                     if (exc != null)
                     {
-                        FISCA.Presentation.Controls.MsgBox.Show("產生班級學期成績單(固定排名)發生錯誤", exc.Message);
+                        FISCA.Presentation.Controls.MsgBox.Show(exc.Message,"產生班級學期成績單(固定排名)發生錯誤",MessageBoxButtons.OK,MessageBoxIcon.Error);
 
                         // throw new Exception("產生班級學期成績單發生錯誤", exc);
                     }
@@ -754,17 +780,18 @@ namespace ClassSemesterScoreReportFixed_SH
                             #region 各科成績資料
                             #region 整理列印順序
                             List<string> subjectNameList = new List<string>(classSubjects.Keys);
-                            subjectNameList.Sort(new StringComparer("國文"
-                                            , "英文"
-                                            , "數學"
-                                            , "理化"
-                                            , "生物"
-                                            , "社會"
-                                            , "物理"
-                                            , "化學"
-                                            , "歷史"
-                                            , "地理"
-                                            , "公民"));
+                            //subjectNameList.Sort(new StringComparer("國文","國語文"
+                            //                , "英文", "英語文"
+                            //                , "數學"
+                            //                , "理化"
+                            //                , "生物"
+                            //                , "社會"
+                            //                , "物理"
+                            //                , "化學"
+                            //                , "歷史"
+                            //                , "地理"
+                            //                , "公民"));
+                            subjectNameList.Sort(new StringComparer(Utility.GetSubjectOrder().ToArray()));
                             #endregion
                             int subjectIndex = 1;
                             // 學期科目與定期評量
@@ -894,6 +921,14 @@ namespace ClassSemesterScoreReportFixed_SH
                                                         {
                                                             if (SemsScoreRankMatrixDataClassDict[classRec.ClassID][s1key].ContainsKey(r))
                                                             {
+                                                                // 2022-01-07 Cynthia 需要注意的是，類別1、2排名的五標組距就不適用於: 班級內類別1、2的學生屬於不同的分組，
+                                                                //科目成績1_科排名_avg_top_25
+                                                                string rankType = s2;
+                                                                if (s2 == "年排名")
+                                                                    rankType = "全校排名";
+                                                                string tKey = "科目成績" + subjectIndex +"_"+ rankType + "_" + r;
+                                                                row[tKey] = SemsScoreRankMatrixDataClassDict[classRec.ClassID][s1key][r];
+
                                                                 string sbkey = s2 + "科目_" + r + "_" + subjectIndex;
                                                                 row[sbkey] = SemsScoreRankMatrixDataClassDict[classRec.ClassID][s1key][r];
                                                             }
@@ -907,6 +942,13 @@ namespace ClassSemesterScoreReportFixed_SH
                                                         {
                                                             if (SemsScoreRankMatrixDataClassDict[classRec.ClassID][s1key].ContainsKey(r))
                                                             {
+                                                                // 2022-01-07 Cynthia
+                                                                string rankType = s2;
+                                                                if (s2 == "年排名")
+                                                                    rankType = "全校排名";
+                                                                string tKey = "科目成績(原始)" + subjectIndex + "_" + rankType + "_" + r;
+                                                                row[tKey] = SemsScoreRankMatrixDataClassDict[classRec.ClassID][s1key][r];
+
                                                                 string sbkey = s2 + "科目(原始)_" + r + "_" + subjectIndex;
                                                                 row[sbkey] = SemsScoreRankMatrixDataClassDict[classRec.ClassID][s1key][r];
                                                             }
@@ -1238,6 +1280,130 @@ namespace ClassSemesterScoreReportFixed_SH
                     }
                     builder.EndRow();
                 }
+                // 2022/1/7 科目成績 五標 Cynthia
+                #region 科目成績 五標
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("頂標");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績" + i+"_"+ key + "排名_avg_top_25" + " \\* MERGEFORMAT ", "«T" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("高標");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績" + i + "_" + key + "排名_avg_top_50" + " \\* MERGEFORMAT ", "«T" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("均標");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績" + i + "_" + key + "排名_avg" + " \\* MERGEFORMAT ", "«T" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("低標");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績" + i + "_" + key + "排名_avg_bottom_50" + " \\* MERGEFORMAT ", "«T" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("底標");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績" + i + "_" + key + "排名_avg_bottom_25" + " \\* MERGEFORMAT ", "«T" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("新頂標");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績" + i + "_" + key + "排名_pr_88" + " \\* MERGEFORMAT ", "«P" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("新前標");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績" + i + "_" + key + "排名_pr_75" + " \\* MERGEFORMAT ", "«P" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("新均標");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績" + i + "_" + key + "排名_pr_50" + " \\* MERGEFORMAT ", "«P" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("新後標");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績" + i + "_" + key + "排名_pr_25" + " \\* MERGEFORMAT ", "«P" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("新底標");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績" + i + "_" + key + "排名_pr_12" + " \\* MERGEFORMAT ", "«P" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("標準差");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績" + i + "_" + key + "排名_std_dev_pop" + " \\* MERGEFORMAT ", "«STD" + i + "»");
+                }
+                builder.EndRow();
+                #endregion
+
                 builder.EndTable();
             }
             #endregion
@@ -1332,6 +1498,129 @@ namespace ClassSemesterScoreReportFixed_SH
                     }
                     builder.EndRow();
                 }
+                // 2022/1/7 科目成績(原始) 五標 Cynthia
+                #region 科目成績(原始) 五標
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("頂標");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績(原始)" + i + "_" + key + "排名_avg_top_25" + " \\* MERGEFORMAT ", "«T" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("高標");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績(原始)" + i + "_" + key + "排名_avg_top_50" + " \\* MERGEFORMAT ", "«T" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("均標");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績(原始)" + i + "_" + key + "排名_avg" + " \\* MERGEFORMAT ", "«T" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("低標");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績(原始)" + i + "_" + key + "排名_avg_bottom_50" + " \\* MERGEFORMAT ", "«T" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("底標");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績(原始)" + i + "_" + key + "排名_avg_bottom_25" + " \\* MERGEFORMAT ", "«T" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("新頂標");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績(原始)" + i + "_" + key + "排名_pr_88" + " \\* MERGEFORMAT ", "«P" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("新前標");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績(原始)" + i + "_" + key + "排名_pr_75" + " \\* MERGEFORMAT ", "«P" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("新均標");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績(原始)" + i + "_" + key + "排名_pr_50" + " \\* MERGEFORMAT ", "«P" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("新後標");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績(原始)" + i + "_" + key + "排名_pr_25" + " \\* MERGEFORMAT ", "«P" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("新底標");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績(原始)" + i + "_" + key + "排名_pr_12" + " \\* MERGEFORMAT ", "«P" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("標準差");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 科目成績(原始)" + i + "_" + key + "排名_std_dev_pop" + " \\* MERGEFORMAT ", "«STD" + i + "»");
+                }
+                builder.EndRow();
+                #endregion
                 builder.EndTable();
             }
             #endregion

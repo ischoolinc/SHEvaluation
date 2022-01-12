@@ -177,6 +177,12 @@ namespace SH_SemesterScoreReportFixed
                 table.Columns.Add("學號");
                 table.Columns.Add("姓名");
                 table.Columns.Add("英文姓名");
+                table.Columns.Add("國籍一");
+                table.Columns.Add("國籍一護照名");
+                table.Columns.Add("國籍二");
+                table.Columns.Add("國籍二護照名");
+                table.Columns.Add("國籍一英文");
+                table.Columns.Add("國籍二英文");
                 table.Columns.Add("定期評量");
                 table.Columns.Add("本學期取得學分數");
                 table.Columns.Add("累計取得學分數");
@@ -659,6 +665,7 @@ namespace SH_SemesterScoreReportFixed
                 bkw.DoWork += delegate (object sender, System.ComponentModel.DoWorkEventArgs e)
                 {
                     FISCA.Data.QueryHelper qh = new FISCA.Data.QueryHelper();
+                    FISCA.Data.QueryHelper qh1 = new FISCA.Data.QueryHelper();
 
                     var studentRecords = accessHelper.StudentHelper.GetStudents(selectedStudents);
 
@@ -1278,6 +1285,30 @@ namespace SH_SemesterScoreReportFixed
                             row["學號"] = stuRec.StudentNumber;
                             row["姓名"] = stuRec.StudentName;
                             row["英文姓名"] = stuRec.Fields.ContainsKey("英文姓名") ? stuRec.Fields["英文姓名"] : "";
+
+                                                  //護照資料
+
+                            string strSQL1 = "select nationality1, passport_name1, nat1.eng_name as nat_eng1, nationality2, passport_name2, nat2.eng_name as nat_eng2, nationality3, passport_name3, nat3.eng_name as nat_eng3 from student_info_ext  as stud_info left outer join $ischool.mapping.nationality as nat1 on nat1.name = stud_info.nationality1 left outer join $ischool.mapping.nationality as nat2 on nat2.name = stud_info.nationality2 left outer join $ischool.mapping.nationality as nat3 on nat3.name = stud_info.nationality3 WHERE ref_student_id=" + stuRec.StudentID;
+                            DataTable student_info_ext = qh1.Select(strSQL1);
+                            if (student_info_ext.Rows.Count > 0)
+                            {
+                                row["國籍一"] = student_info_ext.Rows[0]["nationality1"];
+                                row["國籍一護照名"] = student_info_ext.Rows[0]["passport_name1"];
+                                row["國籍二"] = student_info_ext.Rows[0]["nationality2"];
+                                row["國籍二護照名"] = student_info_ext.Rows[0]["passport_name2"];
+                                row["國籍一英文"] = student_info_ext.Rows[0]["nat_eng1"];
+                                row["國籍二英文"] = student_info_ext.Rows[0]["nat_eng2"];
+                            }
+                            else
+                            {
+                                row["國籍一"] = "";
+                                row["國籍一護照名"] = "";
+                                row["國籍二"] = "";
+                                row["國籍二護照名"] = "";
+                                row["國籍一英文"] = "";
+                                row["國籍二英文"] = "";
+                            }
+
                             row["定期評量"] = conf.ExamRecord.Name;
                             #endregion
                             #region 成績資料

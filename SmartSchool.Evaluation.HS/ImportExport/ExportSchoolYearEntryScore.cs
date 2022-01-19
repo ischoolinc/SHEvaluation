@@ -21,31 +21,32 @@ namespace SmartSchool.Evaluation.ImportExport
         {
             SmartSchool.API.PlugIn.VirtualCheckBox filterRepeat = new SmartSchool.API.PlugIn.VirtualCheckBox("自動略過重讀成績", true);
             wizard.Options.Add(filterRepeat);
-            wizard.ExportableFields.AddRange("學年度", "成績年級", "學業", "體育", "國防通識", "健康與護理", "實習科目", "專業科目", "德行");
+            // 2022-01 Cynthia 移除"體育", "國防通識", "健康與護理",
+            wizard.ExportableFields.AddRange("學年度", "成績年級", "學業", "實習科目", "專業科目", "德行");
             AccessHelper _AccessHelper = new AccessHelper();
-            wizard.ExportPackage += delegate(object sender, SmartSchool.API.PlugIn.Export.ExportPackageEventArgs e)
+            wizard.ExportPackage += delegate (object sender, SmartSchool.API.PlugIn.Export.ExportPackageEventArgs e)
             {
                 List<StudentRecord> students = _AccessHelper.StudentHelper.GetStudents(e.List);
                 _AccessHelper.StudentHelper.FillSchoolYearEntryScore(filterRepeat.Checked, students);
-                foreach ( StudentRecord stu in students )
+                foreach (StudentRecord stu in students)
                 {
                     Dictionary<int, List<SchoolYearEntryScoreInfo>> schoolYearEntryScoreList = new Dictionary<int, List<SchoolYearEntryScoreInfo>>();
-                    foreach ( SchoolYearEntryScoreInfo var in stu.SchoolYearEntryScoreList )
+                    foreach (SchoolYearEntryScoreInfo var in stu.SchoolYearEntryScoreList)
                     {
-                        if ( !schoolYearEntryScoreList.ContainsKey(var.SchoolYear) )
+                        if (!schoolYearEntryScoreList.ContainsKey(var.SchoolYear))
                             schoolYearEntryScoreList.Add(var.SchoolYear, new List<SchoolYearEntryScoreInfo>());
                         schoolYearEntryScoreList[var.SchoolYear].Add(var);
                     }
-                    foreach ( int sy in schoolYearEntryScoreList.Keys )
+                    foreach (int sy in schoolYearEntryScoreList.Keys)
                     {
                         RowData row = new RowData();
                         row.ID = stu.StudentID;
                         row.Add("學年度", "" + sy);
-                        foreach ( SchoolYearEntryScoreInfo var in schoolYearEntryScoreList[sy] )
+                        foreach (SchoolYearEntryScoreInfo var in schoolYearEntryScoreList[sy])
                         {
-                            if ( !row.ContainsKey("成績年級") )
+                            if (!row.ContainsKey("成績年級"))
                                 row.Add("成績年級", "" + var.GradeYear);
-                            if ( e.ExportFields.Contains(var.Entry) )
+                            if (e.ExportFields.Contains(var.Entry))
                             {
                                 row.Add(var.Entry, "" + var.Score);
                             }

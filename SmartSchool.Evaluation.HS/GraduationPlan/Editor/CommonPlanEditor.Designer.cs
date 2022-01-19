@@ -51,24 +51,25 @@
             // 
             // contextMenuStrip1
             // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
             this.toolStripMenuItem2});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.ShowImageMargin = false;
-            this.contextMenuStrip1.Size = new System.Drawing.Size(74, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(84, 52);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(73, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(83, 24);
             this.toolStripMenuItem1.Text = "插入";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(73, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(83, 24);
             this.toolStripMenuItem2.Text = "刪除";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
@@ -109,10 +110,11 @@
             this.dataGridViewX1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dataGridViewX1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dataGridViewX1.Location = new System.Drawing.Point(0, 0);
+            this.dataGridViewX1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dataGridViewX1.Name = "dataGridViewX1";
             this.dataGridViewX1.RowHeadersWidth = 24;
             this.dataGridViewX1.RowTemplate.Height = 26;
-            this.dataGridViewX1.Size = new System.Drawing.Size(686, 510);
+            this.dataGridViewX1.Size = new System.Drawing.Size(915, 638);
             this.dataGridViewX1.TabIndex = 1;
             this.dataGridViewX1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridViewX1_CellBeginEdit);
             this.dataGridViewX1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewX1_CellEndEdit);
@@ -154,11 +156,8 @@
             this.Column13.HeaderText = "分項類別";
             this.Column13.Items.AddRange(new object[] {
             "學業",
-            "體育",
-            "國防通識(軍訓)",
-            "健康與護理",
-            "實習科目",
-            "專業科目"});
+            "專業科目",
+            "實習科目"});
             this.Column13.MinimumWidth = 85;
             this.Column13.Name = "Column13";
             // 
@@ -235,11 +234,12 @@
             // 
             // CommonPlanEditor
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.dataGridViewX1);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "CommonPlanEditor";
-            this.Size = new System.Drawing.Size(686, 510);
+            this.Size = new System.Drawing.Size(915, 638);
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewX1)).EndInit();
             this.ResumeLayout(false);

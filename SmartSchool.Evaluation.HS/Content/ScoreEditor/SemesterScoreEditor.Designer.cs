@@ -90,7 +90,7 @@
             this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column13 = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.ColEntry = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -284,7 +284,7 @@
             this.labelX12.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX12.Location = new System.Drawing.Point(237, 72);
             this.labelX12.Name = "labelX12";
-            this.labelX12.Size = new System.Drawing.Size(109, 21);
+            this.labelX12.Size = new System.Drawing.Size(136, 26);
             this.labelX12.TabIndex = 9;
             this.labelX12.Text = "專業科目(原始)：";
             // 
@@ -297,7 +297,7 @@
             this.textBoxX8.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.textBoxX8.Location = new System.Drawing.Point(352, 70);
             this.textBoxX8.Name = "textBoxX8";
-            this.textBoxX8.Size = new System.Drawing.Size(100, 25);
+            this.textBoxX8.Size = new System.Drawing.Size(100, 35);
             this.textBoxX8.TabIndex = 3;
             this.textBoxX8.TextChanged += new System.EventHandler(this.entryScoreChanged);
             // 
@@ -311,7 +311,7 @@
             this.labelX13.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX13.Location = new System.Drawing.Point(484, 72);
             this.labelX13.Name = "labelX13";
-            this.labelX13.Size = new System.Drawing.Size(109, 21);
+            this.labelX13.Size = new System.Drawing.Size(136, 26);
             this.labelX13.TabIndex = 10;
             this.labelX13.Text = "實習科目(原始)：";
             // 
@@ -324,7 +324,7 @@
             this.textBoxX9.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.textBoxX9.Location = new System.Drawing.Point(599, 70);
             this.textBoxX9.Name = "textBoxX9";
-            this.textBoxX9.Size = new System.Drawing.Size(100, 25);
+            this.textBoxX9.Size = new System.Drawing.Size(100, 35);
             this.textBoxX9.TabIndex = 4;
             this.textBoxX9.TextChanged += new System.EventHandler(this.entryScoreChanged);
             // 
@@ -336,9 +336,10 @@
             // 
             this.labelX14.BackgroundStyle.Class = "";
             this.labelX14.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX14.Enabled = false;
             this.labelX14.Location = new System.Drawing.Point(484, 102);
             this.labelX14.Name = "labelX14";
-            this.labelX14.Size = new System.Drawing.Size(109, 21);
+            this.labelX14.Size = new System.Drawing.Size(136, 26);
             this.labelX14.TabIndex = 11;
             this.labelX14.Text = "國防通識(原始)：";
             // 
@@ -349,9 +350,11 @@
             // 
             this.textBoxX10.Border.Class = "TextBoxBorder";
             this.textBoxX10.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX10.Enabled = false;
             this.textBoxX10.Location = new System.Drawing.Point(599, 100);
             this.textBoxX10.Name = "textBoxX10";
-            this.textBoxX10.Size = new System.Drawing.Size(100, 25);
+            this.textBoxX10.ReadOnly = true;
+            this.textBoxX10.Size = new System.Drawing.Size(100, 35);
             this.textBoxX10.TabIndex = 5;
             this.textBoxX10.TextChanged += new System.EventHandler(this.entryScoreChanged);
             // 
@@ -363,9 +366,10 @@
             // 
             this.labelX15.BackgroundStyle.Class = "";
             this.labelX15.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX15.Enabled = false;
             this.labelX15.Location = new System.Drawing.Point(223, 102);
             this.labelX15.Name = "labelX15";
-            this.labelX15.Size = new System.Drawing.Size(123, 21);
+            this.labelX15.Size = new System.Drawing.Size(153, 26);
             this.labelX15.TabIndex = 12;
             this.labelX15.Text = "健康與護理(原始)：";
             // 
@@ -377,9 +381,10 @@
             // 
             this.labelX16.BackgroundStyle.Class = "";
             this.labelX16.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX16.Enabled = false;
             this.labelX16.Location = new System.Drawing.Point(3, 102);
             this.labelX16.Name = "labelX16";
-            this.labelX16.Size = new System.Drawing.Size(109, 21);
+            this.labelX16.Size = new System.Drawing.Size(136, 26);
             this.labelX16.TabIndex = 13;
             this.labelX16.Text = "體育成績(原始)：";
             // 
@@ -390,9 +395,11 @@
             // 
             this.textBoxX11.Border.Class = "TextBoxBorder";
             this.textBoxX11.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX11.Enabled = false;
             this.textBoxX11.Location = new System.Drawing.Point(352, 100);
             this.textBoxX11.Name = "textBoxX11";
-            this.textBoxX11.Size = new System.Drawing.Size(100, 25);
+            this.textBoxX11.ReadOnly = true;
+            this.textBoxX11.Size = new System.Drawing.Size(100, 35);
             this.textBoxX11.TabIndex = 6;
             this.textBoxX11.TextChanged += new System.EventHandler(this.entryScoreChanged);
             // 
@@ -403,9 +410,11 @@
             // 
             this.textBoxX12.Border.Class = "TextBoxBorder";
             this.textBoxX12.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX12.Enabled = false;
             this.textBoxX12.Location = new System.Drawing.Point(118, 100);
             this.textBoxX12.Name = "textBoxX12";
-            this.textBoxX12.Size = new System.Drawing.Size(100, 25);
+            this.textBoxX12.ReadOnly = true;
+            this.textBoxX12.Size = new System.Drawing.Size(100, 35);
             this.textBoxX12.TabIndex = 7;
             this.textBoxX12.TextChanged += new System.EventHandler(this.entryScoreChanged);
             // 
@@ -419,7 +428,7 @@
             this.labelX17.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX17.Location = new System.Drawing.Point(3, 72);
             this.labelX17.Name = "labelX17";
-            this.labelX17.Size = new System.Drawing.Size(109, 21);
+            this.labelX17.Size = new System.Drawing.Size(136, 26);
             this.labelX17.TabIndex = 14;
             this.labelX17.Text = "學業成績(原始)：";
             // 
@@ -432,7 +441,7 @@
             this.textBoxX13.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.textBoxX13.Location = new System.Drawing.Point(118, 70);
             this.textBoxX13.Name = "textBoxX13";
-            this.textBoxX13.Size = new System.Drawing.Size(100, 25);
+            this.textBoxX13.Size = new System.Drawing.Size(100, 35);
             this.textBoxX13.TabIndex = 8;
             this.textBoxX13.TextChanged += new System.EventHandler(this.entryScoreChanged);
             // 
@@ -477,7 +486,7 @@
             this.labelX11.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX11.Location = new System.Drawing.Point(272, 12);
             this.labelX11.Name = "labelX11";
-            this.labelX11.Size = new System.Drawing.Size(74, 21);
+            this.labelX11.Size = new System.Drawing.Size(92, 26);
             this.labelX11.TabIndex = 1;
             this.labelX11.Text = "專業科目：";
             // 
@@ -490,7 +499,7 @@
             this.textBoxX7.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.textBoxX7.Location = new System.Drawing.Point(352, 10);
             this.textBoxX7.Name = "textBoxX7";
-            this.textBoxX7.Size = new System.Drawing.Size(100, 25);
+            this.textBoxX7.Size = new System.Drawing.Size(100, 35);
             this.textBoxX7.TabIndex = 0;
             this.textBoxX7.TextChanged += new System.EventHandler(this.entryScoreChanged);
             // 
@@ -504,7 +513,7 @@
             this.labelX8.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX8.Location = new System.Drawing.Point(519, 12);
             this.labelX8.Name = "labelX8";
-            this.labelX8.Size = new System.Drawing.Size(74, 21);
+            this.labelX8.Size = new System.Drawing.Size(92, 26);
             this.labelX8.TabIndex = 1;
             this.labelX8.Text = "實習科目：";
             // 
@@ -517,7 +526,7 @@
             this.textBoxX6.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.textBoxX6.Location = new System.Drawing.Point(599, 10);
             this.textBoxX6.Name = "textBoxX6";
-            this.textBoxX6.Size = new System.Drawing.Size(100, 25);
+            this.textBoxX6.Size = new System.Drawing.Size(100, 35);
             this.textBoxX6.TabIndex = 0;
             this.textBoxX6.TextChanged += new System.EventHandler(this.entryScoreChanged);
             // 
@@ -529,9 +538,10 @@
             // 
             this.labelX6.BackgroundStyle.Class = "";
             this.labelX6.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX6.Enabled = false;
             this.labelX6.Location = new System.Drawing.Point(519, 42);
             this.labelX6.Name = "labelX6";
-            this.labelX6.Size = new System.Drawing.Size(74, 21);
+            this.labelX6.Size = new System.Drawing.Size(92, 26);
             this.labelX6.TabIndex = 1;
             this.labelX6.Text = "國防通識：";
             // 
@@ -542,9 +552,11 @@
             // 
             this.textBoxX4.Border.Class = "TextBoxBorder";
             this.textBoxX4.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX4.Enabled = false;
             this.textBoxX4.Location = new System.Drawing.Point(599, 40);
             this.textBoxX4.Name = "textBoxX4";
-            this.textBoxX4.Size = new System.Drawing.Size(100, 25);
+            this.textBoxX4.ReadOnly = true;
+            this.textBoxX4.Size = new System.Drawing.Size(100, 35);
             this.textBoxX4.TabIndex = 0;
             this.textBoxX4.TextChanged += new System.EventHandler(this.entryScoreChanged);
             // 
@@ -556,9 +568,10 @@
             // 
             this.labelX7.BackgroundStyle.Class = "";
             this.labelX7.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX7.Enabled = false;
             this.labelX7.Location = new System.Drawing.Point(259, 42);
             this.labelX7.Name = "labelX7";
-            this.labelX7.Size = new System.Drawing.Size(87, 21);
+            this.labelX7.Size = new System.Drawing.Size(108, 26);
             this.labelX7.TabIndex = 1;
             this.labelX7.Text = "健康與護理：";
             // 
@@ -572,7 +585,7 @@
             this.labelX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX4.Location = new System.Drawing.Point(38, 132);
             this.labelX4.Name = "labelX4";
-            this.labelX4.Size = new System.Drawing.Size(74, 21);
+            this.labelX4.Size = new System.Drawing.Size(92, 26);
             this.labelX4.TabIndex = 1;
             this.labelX4.Text = "德行成績：";
             // 
@@ -584,9 +597,10 @@
             // 
             this.labelX5.BackgroundStyle.Class = "";
             this.labelX5.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX5.Enabled = false;
             this.labelX5.Location = new System.Drawing.Point(38, 42);
             this.labelX5.Name = "labelX5";
-            this.labelX5.Size = new System.Drawing.Size(74, 21);
+            this.labelX5.Size = new System.Drawing.Size(92, 26);
             this.labelX5.TabIndex = 1;
             this.labelX5.Text = "體育成績：";
             // 
@@ -597,9 +611,11 @@
             // 
             this.textBoxX5.Border.Class = "TextBoxBorder";
             this.textBoxX5.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX5.Enabled = false;
             this.textBoxX5.Location = new System.Drawing.Point(352, 40);
             this.textBoxX5.Name = "textBoxX5";
-            this.textBoxX5.Size = new System.Drawing.Size(100, 25);
+            this.textBoxX5.ReadOnly = true;
+            this.textBoxX5.Size = new System.Drawing.Size(100, 35);
             this.textBoxX5.TabIndex = 0;
             this.textBoxX5.TextChanged += new System.EventHandler(this.entryScoreChanged);
             // 
@@ -617,7 +633,7 @@
             this.textBoxX2.ForeColor = System.Drawing.SystemColors.WindowText;
             this.textBoxX2.Location = new System.Drawing.Point(118, 130);
             this.textBoxX2.Name = "textBoxX2";
-            this.textBoxX2.Size = new System.Drawing.Size(100, 25);
+            this.textBoxX2.Size = new System.Drawing.Size(100, 35);
             this.textBoxX2.TabIndex = 0;
             this.textBoxX2.ButtonCustomClick += new System.EventHandler(this.textBoxX2_ButtonCustomClick);
             this.textBoxX2.ButtonCustom2Click += new System.EventHandler(this.textBoxX2_ButtonCustomClick);
@@ -630,9 +646,11 @@
             // 
             this.textBoxX3.Border.Class = "TextBoxBorder";
             this.textBoxX3.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX3.Enabled = false;
             this.textBoxX3.Location = new System.Drawing.Point(118, 40);
             this.textBoxX3.Name = "textBoxX3";
-            this.textBoxX3.Size = new System.Drawing.Size(100, 25);
+            this.textBoxX3.ReadOnly = true;
+            this.textBoxX3.Size = new System.Drawing.Size(100, 35);
             this.textBoxX3.TabIndex = 0;
             this.textBoxX3.TextChanged += new System.EventHandler(this.entryScoreChanged);
             // 
@@ -646,7 +664,7 @@
             this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX3.Location = new System.Drawing.Point(38, 12);
             this.labelX3.Name = "labelX3";
-            this.labelX3.Size = new System.Drawing.Size(74, 21);
+            this.labelX3.Size = new System.Drawing.Size(92, 26);
             this.labelX3.TabIndex = 1;
             this.labelX3.Text = "學業成績：";
             // 
@@ -659,7 +677,7 @@
             this.textBoxX1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.textBoxX1.Location = new System.Drawing.Point(118, 10);
             this.textBoxX1.Name = "textBoxX1";
-            this.textBoxX1.Size = new System.Drawing.Size(100, 25);
+            this.textBoxX1.Size = new System.Drawing.Size(100, 35);
             this.textBoxX1.TabIndex = 0;
             this.textBoxX1.TextChanged += new System.EventHandler(this.entryScoreChanged);
             // 
@@ -735,7 +753,7 @@
             this.dataGridViewX1.ColumnHeadersHeight = 42;
             this.dataGridViewX1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridViewX1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column13,
+            this.ColEntry,
             this.Column5,
             this.Column6,
             this.Column1,
@@ -793,7 +811,7 @@
             this.labelX9.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX9.Location = new System.Drawing.Point(10, 9);
             this.labelX9.Name = "labelX9";
-            this.labelX9.Size = new System.Drawing.Size(74, 21);
+            this.labelX9.Size = new System.Drawing.Size(92, 26);
             this.labelX9.TabIndex = 0;
             this.labelX9.Text = "修課年級：";
             // 
@@ -802,10 +820,10 @@
             this.cboAttendGradeYear.DisplayMember = "Text";
             this.cboAttendGradeYear.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cboAttendGradeYear.FormattingEnabled = true;
-            this.cboAttendGradeYear.ItemHeight = 19;
+            this.cboAttendGradeYear.ItemHeight = 23;
             this.cboAttendGradeYear.Location = new System.Drawing.Point(84, 5);
             this.cboAttendGradeYear.Name = "cboAttendGradeYear";
-            this.cboAttendGradeYear.Size = new System.Drawing.Size(73, 25);
+            this.cboAttendGradeYear.Size = new System.Drawing.Size(73, 29);
             this.cboAttendGradeYear.TabIndex = 2;
             this.cboAttendGradeYear.TextChanged += new System.EventHandler(this.comboBoxEx3_TextChanged);
             // 
@@ -814,10 +832,10 @@
             this.comboBoxEx2.DisplayMember = "Text";
             this.comboBoxEx2.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.comboBoxEx2.FormattingEnabled = true;
-            this.comboBoxEx2.ItemHeight = 19;
+            this.comboBoxEx2.ItemHeight = 23;
             this.comboBoxEx2.Location = new System.Drawing.Point(210, 8);
             this.comboBoxEx2.Name = "comboBoxEx2";
-            this.comboBoxEx2.Size = new System.Drawing.Size(73, 25);
+            this.comboBoxEx2.Size = new System.Drawing.Size(73, 29);
             this.comboBoxEx2.TabIndex = 2;
             this.comboBoxEx2.TextChanged += new System.EventHandler(this.ReLoad);
             // 
@@ -826,10 +844,10 @@
             this.comboBoxEx1.DisplayMember = "Text";
             this.comboBoxEx1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.comboBoxEx1.FormattingEnabled = true;
-            this.comboBoxEx1.ItemHeight = 19;
+            this.comboBoxEx1.ItemHeight = 23;
             this.comboBoxEx1.Location = new System.Drawing.Point(72, 8);
             this.comboBoxEx1.Name = "comboBoxEx1";
-            this.comboBoxEx1.Size = new System.Drawing.Size(73, 25);
+            this.comboBoxEx1.Size = new System.Drawing.Size(73, 29);
             this.comboBoxEx1.TabIndex = 2;
             this.comboBoxEx1.TextChanged += new System.EventHandler(this.ReLoad);
             // 
@@ -843,7 +861,7 @@
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX2.Location = new System.Drawing.Point(163, 12);
             this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(47, 21);
+            this.labelX2.Size = new System.Drawing.Size(58, 26);
             this.labelX2.TabIndex = 0;
             this.labelX2.Text = "學期：";
             // 
@@ -857,7 +875,7 @@
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX1.Location = new System.Drawing.Point(12, 12);
             this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(60, 21);
+            this.labelX1.Size = new System.Drawing.Size(75, 26);
             this.labelX1.TabIndex = 0;
             this.labelX1.Text = "學年度：";
             // 
@@ -967,22 +985,19 @@
             this.dataGridViewTextBoxColumn9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.dataGridViewTextBoxColumn9.Width = 60;
             // 
-            // Column13
+            // ColEntry
             // 
-            this.Column13.AutoComplete = false;
-            this.Column13.DisplayStyleForCurrentCellOnly = true;
-            this.Column13.FillWeight = 80F;
-            this.Column13.HeaderText = "分項類別";
-            this.Column13.Items.AddRange(new object[] {
+            this.ColEntry.AutoComplete = false;
+            this.ColEntry.DisplayStyleForCurrentCellOnly = true;
+            this.ColEntry.FillWeight = 80F;
+            this.ColEntry.HeaderText = "分項類別";
+            this.ColEntry.Items.AddRange(new object[] {
             "學業",
-            "體育",
-            "國防通識",
-            "健康與護理",
-            "實習科目",
-            "專業科目"});
-            this.Column13.MinimumWidth = 75;
-            this.Column13.Name = "Column13";
-            this.Column13.Width = 75;
+            "專業科目",
+            "實習科目"});
+            this.ColEntry.MinimumWidth = 75;
+            this.ColEntry.Name = "ColEntry";
+            this.ColEntry.Width = 75;
             // 
             // Column5
             // 
@@ -1284,7 +1299,7 @@
         private DevComponents.DotNetBar.Controls.TextBoxX textBoxX13;
         private DevComponents.DotNetBar.LabelX labelX11;
         private DevComponents.DotNetBar.Controls.TextBoxX textBoxX7;
-        private System.Windows.Forms.DataGridViewComboBoxColumn Column13;
+        private System.Windows.Forms.DataGridViewComboBoxColumn ColEntry;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;

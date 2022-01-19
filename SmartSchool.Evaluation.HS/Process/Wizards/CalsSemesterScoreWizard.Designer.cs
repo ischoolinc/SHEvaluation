@@ -83,7 +83,7 @@
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX1.Location = new System.Drawing.Point(35, 41);
             this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(671, 73);
+            this.labelX1.Size = new System.Drawing.Size(839, 91);
             this.labelX1.TabIndex = 1;
             this.labelX1.Text = "計算本學期學期科目成績，依成績計算規則所規定的及格標準判斷是否取得學分。\r\n若非本學期末第一次計算，使成績更動，建議重新處理後續成績作業(分項成績、計算排名)，以" +
     "產生正確的資料。\r\n    ●當發現修課的科目與級別與舊成績有重覆時，將依本學期末設定 重覆修課採計方式 :\r\n        重修(寫回原學期)、重讀(擇優採" +
@@ -100,11 +100,11 @@
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX2.Location = new System.Drawing.Point(35, 155);
             this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(623, 73);
+            this.labelX2.Size = new System.Drawing.Size(778, 91);
             this.labelX2.TabIndex = 1;
-            this.labelX2.Text = "將學生本學期之學期科目成績依照每個科目的分項類別加權計算成學期分項成績。\r\n　●科目之分項類別可為學業、體育、健康與護理、國防通識及實習科目，\r\n        " +
-    "成績計算規則可設定除學業外各分項是否計算成分項成績、以及各分項是否一併算入學業成績。\r\n　●德行成績為一分項成績，但不從科目成績計算而來，需由學務處使用＂計算德" +
-    "行成績＂功能計算之。";
+            this.labelX2.Text = "將學生本學期之學期科目成績依照每個科目的分項類別加權計算成學期分項成績。\r\n　●科目之分項類別可為學業、專業科目及實習科目，\r\n        成績計算規則可設定" +
+    "除學業外各分項是否計算成分項成績、以及各分項是否一併算入學業成績。\r\n　●德行成績為一分項成績，但不從科目成績計算而來，需由學務處使用「計算德行成績」功能計算之" +
+    "。";
             // 
             // labelX3
             // 
@@ -117,7 +117,7 @@
             this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX3.Location = new System.Drawing.Point(35, 273);
             this.labelX3.Name = "labelX3";
-            this.labelX3.Size = new System.Drawing.Size(475, 39);
+            this.labelX3.Size = new System.Drawing.Size(594, 48);
             this.labelX3.TabIndex = 1;
             this.labelX3.Text = "計算學生科目成績或分項成績之排名，排名之結果不會隨成績之變動自動調整。\r\n　●若學生成績調整並希望影響排名時，請再次使用排名功能。";
             // 

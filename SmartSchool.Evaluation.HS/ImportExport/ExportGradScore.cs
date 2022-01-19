@@ -16,7 +16,8 @@ namespace SmartSchool.Evaluation.ImportExport
             this.Image = null;
             this.Title = "匯出畢業成績";
             this.Group = "畢業成績";
-            foreach ( string var in new string[] { "學業畢業成績", "體育畢業成績", "國防通識畢業成績", "健康與護理畢業成績", "實習科目畢業成績", "德行畢業成績" } )
+            // 2022-01 Cynthia 移除"體育畢業成績", "國防通識畢業成績", "健康與護理畢業成績"，新增"專業科目畢業成績"
+            foreach ( string var in new string[] { "學業畢業成績", "專業科目畢業成績", "實習科目畢業成績", "德行畢業成績" } )
             {
                 this.ExportableFields.Add(var);
             }

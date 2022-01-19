@@ -83,7 +83,7 @@
             this.iiSchoolYear.MinValue = 0;
             this.iiSchoolYear.Name = "iiSchoolYear";
             this.iiSchoolYear.ShowUpDown = true;
-            this.iiSchoolYear.Size = new System.Drawing.Size(80, 25);
+            this.iiSchoolYear.Size = new System.Drawing.Size(80, 29);
             this.iiSchoolYear.TabIndex = 8;
             this.iiSchoolYear.ValueChanged += new System.EventHandler(this.iiSchoolYear_ValueChanged);
             // 
@@ -110,7 +110,7 @@
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX2.Location = new System.Drawing.Point(15, 71);
             this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(47, 21);
+            this.labelX2.Size = new System.Drawing.Size(58, 26);
             this.labelX2.TabIndex = 0;
             this.labelX2.Text = "複製：";
             // 
@@ -125,7 +125,7 @@
             this.comboItem1});
             this.comboBoxEx1.Location = new System.Drawing.Point(82, 71);
             this.comboBoxEx1.Name = "comboBoxEx1";
-            this.comboBoxEx1.Size = new System.Drawing.Size(144, 26);
+            this.comboBoxEx1.Size = new System.Drawing.Size(144, 30);
             this.comboBoxEx1.TabIndex = 1;
             this.comboBoxEx1.SelectedIndexChanged += new System.EventHandler(this.comboBoxEx1_SelectedIndexChanged);
             // 
@@ -143,7 +143,7 @@
             this.errorProvider1.SetIconPadding(this.textBoxX1, -18);
             this.textBoxX1.Location = new System.Drawing.Point(82, 38);
             this.textBoxX1.Name = "textBoxX1";
-            this.textBoxX1.Size = new System.Drawing.Size(144, 25);
+            this.textBoxX1.Size = new System.Drawing.Size(144, 35);
             this.textBoxX1.TabIndex = 1;
             this.textBoxX1.TextChanged += new System.EventHandler(this.textBoxX1_TextChanged);
             // 
@@ -157,7 +157,7 @@
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX1.Location = new System.Drawing.Point(15, 41);
             this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(47, 21);
+            this.labelX1.Size = new System.Drawing.Size(58, 26);
             this.labelX1.TabIndex = 0;
             this.labelX1.Text = "名稱：";
             // 

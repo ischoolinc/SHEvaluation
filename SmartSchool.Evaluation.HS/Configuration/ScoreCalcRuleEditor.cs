@@ -207,9 +207,11 @@ namespace SmartSchool.Evaluation.Configuration
             #region 新增 分項成績計算項目，併入學期學業成績 預設都勾起, 2014/3/20,ChenCT
             checkBoxX10.Checked = true; // 專業科目
             checkBoxX15.Checked = true; // 實習科目
-            checkBoxX8.Checked = true; // 體育
-            checkBoxX13.Checked = true; // 健康與護理
-            checkBoxX11.Checked = true; // 國防通識
+
+            //2022-01 Cynthia 因此三個分項不再使用，故取消預設勾選。
+            //checkBoxX8.Checked = true; // 體育
+            //checkBoxX13.Checked = true; // 健康與護理
+            //checkBoxX11.Checked = true; // 國防通識
             #endregion
 
             #region 修改 學年調整成績預設值，不使用學年調整成績(不登錄成績、不修改取得學分),因使用者需求調整 2014/3/26,ChenCT

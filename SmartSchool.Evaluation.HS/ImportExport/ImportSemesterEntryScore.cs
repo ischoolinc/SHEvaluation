@@ -29,15 +29,15 @@ namespace SmartSchool.Evaluation.ImportExport
                 , "學期"
                 , "成績年級"
                 , "學業"
-                , "體育"
-                , "國防通識"
-                , "健康與護理"
+                //, "體育"
+                //, "國防通識"
+                //, "健康與護理"
                 , "實習科目"
                 , "專業科目"
                 , "學業(原始)"
-                , "體育(原始)"
-                , "國防通識(原始)"
-                , "健康與護理(原始)"
+                //, "體育(原始)"
+                //, "國防通識(原始)"
+                //, "健康與護理(原始)"
                 , "實習科目(原始)"
                 , "專業科目(原始)"
                 , "德行" })
@@ -140,15 +140,15 @@ namespace SmartSchool.Evaluation.ImportExport
                         }
                         break;
                     case "學業":
-                    case "體育":
-                    case "國防通識":
-                    case "健康與護理":
+                    //case "體育":
+                    //case "國防通識":
+                    //case "健康與護理":
                     case "實習科目":
                     case "專業科目":
                     case "學業(原始)":
-                    case "體育(原始)":
-                    case "國防通識(原始)":
-                    case "健康與護理(原始)":
+                    //case "體育(原始)":
+                    //case "國防通識(原始)":
+                    //case "健康與護理(原始)":
                     case "實習科目(原始)":
                     case "專業科目(原始)":
                     case "德行":
@@ -307,15 +307,15 @@ namespace SmartSchool.Evaluation.ImportExport
                                 semesterImportScore[sy].Add(se, new Dictionary<string, decimal?>());
                         }
                         if (e.ImportFields.Contains(key) && key == "學業"
-                            || key == "體育"
-                            || key == "國防通識"
-                            || key == "健康與護理"
+                            //|| key == "體育"
+                            //|| key == "國防通識"
+                            //|| key == "健康與護理"
                             || key == "實習科目"
                             || key == "專業科目"
                             || key == "學業(原始)"
-                            || key == "體育(原始)"
-                            || key == "國防通識(原始)"
-                            || key == "健康與護理(原始)"
+                            //|| key == "體育(原始)"
+                            //|| key == "國防通識(原始)"
+                            //|| key == "健康與護理(原始)"
                             || key == "實習科目(原始)"
                             || key == "專業科目(原始)"
                             || key == "德行")
@@ -409,15 +409,15 @@ namespace SmartSchool.Evaluation.ImportExport
                         //匯入學習類成績
                         #region 匯入學習類成績
                         if (semesterImportScore[sy][se].ContainsKey("學業")
-                            || semesterImportScore[sy][se].ContainsKey("體育")
-                            || semesterImportScore[sy][se].ContainsKey("國防通識")
-                            || semesterImportScore[sy][se].ContainsKey("健康與護理")
+                            //|| semesterImportScore[sy][se].ContainsKey("體育")
+                            //|| semesterImportScore[sy][se].ContainsKey("國防通識")
+                            //|| semesterImportScore[sy][se].ContainsKey("健康與護理")
                             || semesterImportScore[sy][se].ContainsKey("實習科目")
                             || semesterImportScore[sy][se].ContainsKey("專業科目")
                             || semesterImportScore[sy][se].ContainsKey("學業(原始)")
-                            || semesterImportScore[sy][se].ContainsKey("體育(原始)")
-                            || semesterImportScore[sy][se].ContainsKey("國防通識(原始)")
-                            || semesterImportScore[sy][se].ContainsKey("健康與護理(原始)")
+                            //|| semesterImportScore[sy][se].ContainsKey("體育(原始)")
+                            //|| semesterImportScore[sy][se].ContainsKey("國防通識(原始)")
+                            //|| semesterImportScore[sy][se].ContainsKey("健康與護理(原始)")
                             || semesterImportScore[sy][se].ContainsKey("實習科目(原始)")
                             || semesterImportScore[sy][se].ContainsKey("專業科目(原始)")
                             )
@@ -427,15 +427,15 @@ namespace SmartSchool.Evaluation.ImportExport
                             bool hasEntry = false;
                             XmlElement entryScore = doc.CreateElement("SemesterEntryScore");
                             foreach (string key in new string[] { "學業"
-                                , "體育"
-                                , "國防通識"
-                                , "健康與護理"
+                                //, "體育"
+                                //, "國防通識"
+                                //, "健康與護理"
                                 , "實習科目" 
                                 , "專業科目" 
                                 , "學業(原始)"
-                                , "體育(原始)"
-                                , "國防通識(原始)"
-                                , "健康與護理(原始)"
+                                //, "體育(原始)"
+                                //, "國防通識(原始)"
+                                //, "健康與護理(原始)"
                                 , "實習科目(原始)" 
                                 , "專業科目(原始)" 
                                 })

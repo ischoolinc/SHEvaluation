@@ -149,24 +149,25 @@
             // 
             // contextMenuStrip1
             // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
             this.toolStripMenuItem2});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.ShowImageMargin = false;
-            this.contextMenuStrip1.Size = new System.Drawing.Size(74, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(84, 52);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(73, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(83, 24);
             this.toolStripMenuItem1.Text = "插入";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(73, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(83, 24);
             this.toolStripMenuItem2.Text = "刪除";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
@@ -211,11 +212,8 @@
             this.Column13.HeaderText = "分項類別";
             this.Column13.Items.AddRange(new object[] {
             "學業",
-            "體育",
-            "國防通識(軍訓)",
-            "健康與護理",
-            "實習科目",
-            "專業科目"});
+            "專業科目",
+            "實習科目"});
             this.Column13.MinimumWidth = 85;
             this.Column13.Name = "Column13";
             this.Column13.Width = 85;
@@ -373,6 +371,7 @@
             // 
             this.SubjectCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.SubjectCode.HeaderText = "科目代碼";
+            this.SubjectCode.MinimumWidth = 6;
             this.SubjectCode.Name = "SubjectCode";
             this.SubjectCode.ReadOnly = true;
             this.SubjectCode.Width = 64;
@@ -380,48 +379,62 @@
             // 課程類別
             // 
             this.課程類別.HeaderText = "課程類別";
+            this.課程類別.MinimumWidth = 6;
             this.課程類別.Name = "課程類別";
             this.課程類別.Visible = false;
+            this.課程類別.Width = 125;
             // 
             // 開課方式
             // 
             this.開課方式.HeaderText = "開課方式";
+            this.開課方式.MinimumWidth = 6;
             this.開課方式.Name = "開課方式";
             this.開課方式.Visible = false;
+            this.開課方式.Width = 125;
             // 
             // 科目屬性
             // 
             this.科目屬性.HeaderText = "科目屬性";
+            this.科目屬性.MinimumWidth = 6;
             this.科目屬性.Name = "科目屬性";
             this.科目屬性.Visible = false;
+            this.科目屬性.Width = 125;
             // 
             // 課程名稱
             // 
             this.課程名稱.HeaderText = "課程名稱";
+            this.課程名稱.MinimumWidth = 6;
             this.課程名稱.Name = "課程名稱";
             this.課程名稱.Visible = false;
+            this.課程名稱.Width = 125;
             // 
             // 領域名稱
             // 
             this.領域名稱.HeaderText = "領域名稱";
+            this.領域名稱.MinimumWidth = 6;
             this.領域名稱.Name = "領域名稱";
             this.領域名稱.Visible = false;
+            this.領域名稱.Width = 125;
             // 
             // 學分
             // 
             this.學分.HeaderText = "學分";
+            this.學分.MinimumWidth = 6;
             this.學分.Name = "學分";
             this.學分.Visible = false;
+            this.學分.Width = 125;
             // 
             // 授課學期學分
             // 
             this.授課學期學分.HeaderText = "授課學期學分";
+            this.授課學期學分.MinimumWidth = 6;
             this.授課學期學分.Name = "授課學期學分";
             this.授課學期學分.Visible = false;
+            this.授課學期學分.Width = 125;
             // 
             // GraduationPlanEditor
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.dataGridViewX1);
             this.Font = new System.Drawing.Font("微軟正黑體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));

@@ -25,6 +25,7 @@ namespace SmartSchool.Evaluation.Content
             _EntryTextBoxMapping.Add("國防通識", textBoxX4);
             _EntryTextBoxMapping.Add("健康與護理", textBoxX5);
             _EntryTextBoxMapping.Add("實習科目", textBoxX6);
+            _EntryTextBoxMapping.Add("專業科目", textBoxX7);
             _Loader = new BackgroundWorker();
             _Loader.DoWork += new DoWorkEventHandler(loader_DoWork);
             _Loader.RunWorkerCompleted += new RunWorkerCompletedEventHandler(loader_RunWorkerCompleted);

@@ -195,11 +195,18 @@ namespace SmartSchool.Evaluation.ImportExport
                                 e.ErrorFields.Add(field, "必須填入校訂或部訂");
                             }
                             break;
+                        //case "分項類別":
+                        //    if (value != "學業" && value != "體育" && value != "國防通識" && value != "健康與護理" && value != "實習科目" && value != "專業科目")
+                        //    {
+                        //        inputFormatPass &= false;
+                        //        e.ErrorFields.Add(field, "必須填入 學業、體育、國防通識、健康與護理、專業科目或實習科目");
+                        //    }
+                        //    break;
                         case "分項類別":
-                            if (value != "學業" && value != "體育" && value != "國防通識" && value != "健康與護理" && value != "實習科目" && value != "專業科目")
+                            if (value != "學業" &&  value != "實習科目" && value != "專業科目")
                             {
                                 inputFormatPass &= false;
-                                e.ErrorFields.Add(field, "必須填入 學業、體育、國防通識、健康與護理、專業科目或實習科目");
+                                e.ErrorFields.Add(field, "必須填入 學業、專業科目或實習科目");
                             }
                             break;
 

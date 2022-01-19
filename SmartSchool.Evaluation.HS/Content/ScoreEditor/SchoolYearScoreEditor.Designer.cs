@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panelEx1 = new DevComponents.DotNetBar.PanelEx();
             this.labelX10 = new DevComponents.DotNetBar.LabelX();
             this.labelX9 = new DevComponents.DotNetBar.LabelX();
@@ -55,16 +55,16 @@
             this.groupPanel1 = new DevComponents.DotNetBar.Controls.GroupPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.dataGridViewX1 = new DevComponents.DotNetBar.Controls.DataGridViewX();
-            this.comboBoxEx1 = new DevComponents.DotNetBar.Controls.ComboBoxEx();
-            this.labelX1 = new DevComponents.DotNetBar.LabelX();
-            this.errorSchoolYear = new System.Windows.Forms.ErrorProvider(this.components);
-            this.errorSemester = new System.Windows.Forms.ErrorProvider(this.components);
-            this.errorGradeYear = new System.Windows.Forms.ErrorProvider(this.components);
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.col結算成績 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.col補考成績 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.col重修成績 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.comboBoxEx1 = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.labelX1 = new DevComponents.DotNetBar.LabelX();
+            this.errorSchoolYear = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorSemester = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorGradeYear = new System.Windows.Forms.ErrorProvider(this.components);
             this.panelEx1.SuspendLayout();
             this.groupPanel2.SuspendLayout();
             this.groupPanel1.SuspendLayout();
@@ -126,7 +126,7 @@
             this.labelX9.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX9.Location = new System.Drawing.Point(164, 12);
             this.labelX9.Name = "labelX9";
-            this.labelX9.Size = new System.Drawing.Size(74, 21);
+            this.labelX9.Size = new System.Drawing.Size(92, 26);
             this.labelX9.TabIndex = 0;
             this.labelX9.Text = "成績年級：";
             // 
@@ -147,10 +147,10 @@
             this.comboBoxEx3.DisplayMember = "Text";
             this.comboBoxEx3.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.comboBoxEx3.FormattingEnabled = true;
-            this.comboBoxEx3.ItemHeight = 19;
+            this.comboBoxEx3.ItemHeight = 23;
             this.comboBoxEx3.Location = new System.Drawing.Point(238, 8);
             this.comboBoxEx3.Name = "comboBoxEx3";
-            this.comboBoxEx3.Size = new System.Drawing.Size(73, 25);
+            this.comboBoxEx3.Size = new System.Drawing.Size(73, 29);
             this.comboBoxEx3.TabIndex = 2;
             this.comboBoxEx3.TextChanged += new System.EventHandler(this.comboBoxEx3_TextChanged);
             // 
@@ -230,9 +230,9 @@
             // 
             this.labelX2.BackgroundStyle.Class = "";
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(488, 13);
+            this.labelX2.Location = new System.Drawing.Point(169, 13);
             this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(74, 21);
+            this.labelX2.Size = new System.Drawing.Size(92, 26);
             this.labelX2.TabIndex = 3;
             this.labelX2.Text = "專業科目：";
             // 
@@ -243,9 +243,9 @@
             // 
             this.textBoxX7.Border.Class = "TextBoxBorder";
             this.textBoxX7.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX7.Location = new System.Drawing.Point(569, 11);
+            this.textBoxX7.Location = new System.Drawing.Point(250, 11);
             this.textBoxX7.Name = "textBoxX7";
-            this.textBoxX7.Size = new System.Drawing.Size(59, 25);
+            this.textBoxX7.Size = new System.Drawing.Size(56, 35);
             this.textBoxX7.TabIndex = 2;
             // 
             // labelX8
@@ -256,9 +256,9 @@
             // 
             this.labelX8.BackgroundStyle.Class = "";
             this.labelX8.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX8.Location = new System.Drawing.Point(330, 51);
+            this.labelX8.Location = new System.Drawing.Point(327, 13);
             this.labelX8.Name = "labelX8";
-            this.labelX8.Size = new System.Drawing.Size(74, 21);
+            this.labelX8.Size = new System.Drawing.Size(92, 26);
             this.labelX8.TabIndex = 1;
             this.labelX8.Text = "實習科目：";
             // 
@@ -269,9 +269,9 @@
             // 
             this.textBoxX6.Border.Class = "TextBoxBorder";
             this.textBoxX6.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX6.Location = new System.Drawing.Point(411, 48);
+            this.textBoxX6.Location = new System.Drawing.Point(408, 10);
             this.textBoxX6.Name = "textBoxX6";
-            this.textBoxX6.Size = new System.Drawing.Size(59, 25);
+            this.textBoxX6.Size = new System.Drawing.Size(56, 35);
             this.textBoxX6.TabIndex = 0;
             // 
             // labelX6
@@ -282,9 +282,10 @@
             // 
             this.labelX6.BackgroundStyle.Class = "";
             this.labelX6.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX6.Enabled = false;
             this.labelX6.Location = new System.Drawing.Point(169, 51);
             this.labelX6.Name = "labelX6";
-            this.labelX6.Size = new System.Drawing.Size(74, 21);
+            this.labelX6.Size = new System.Drawing.Size(92, 26);
             this.labelX6.TabIndex = 1;
             this.labelX6.Text = "國防通識：";
             // 
@@ -295,9 +296,11 @@
             // 
             this.textBoxX4.Border.Class = "TextBoxBorder";
             this.textBoxX4.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX4.Location = new System.Drawing.Point(253, 48);
+            this.textBoxX4.Enabled = false;
+            this.textBoxX4.Location = new System.Drawing.Point(250, 48);
             this.textBoxX4.Name = "textBoxX4";
-            this.textBoxX4.Size = new System.Drawing.Size(59, 25);
+            this.textBoxX4.ReadOnly = true;
+            this.textBoxX4.Size = new System.Drawing.Size(56, 35);
             this.textBoxX4.TabIndex = 0;
             // 
             // labelX7
@@ -308,9 +311,10 @@
             // 
             this.labelX7.BackgroundStyle.Class = "";
             this.labelX7.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX7.Location = new System.Drawing.Point(317, 13);
+            this.labelX7.Enabled = false;
+            this.labelX7.Location = new System.Drawing.Point(476, 51);
             this.labelX7.Name = "labelX7";
-            this.labelX7.Size = new System.Drawing.Size(87, 21);
+            this.labelX7.Size = new System.Drawing.Size(108, 26);
             this.labelX7.TabIndex = 1;
             this.labelX7.Text = "健康與護理：";
             // 
@@ -324,7 +328,7 @@
             this.labelX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX4.Location = new System.Drawing.Point(18, 51);
             this.labelX4.Name = "labelX4";
-            this.labelX4.Size = new System.Drawing.Size(74, 21);
+            this.labelX4.Size = new System.Drawing.Size(92, 26);
             this.labelX4.TabIndex = 1;
             this.labelX4.Text = "德行成績：";
             // 
@@ -336,9 +340,10 @@
             // 
             this.labelX5.BackgroundStyle.Class = "";
             this.labelX5.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX5.Location = new System.Drawing.Point(169, 13);
+            this.labelX5.Enabled = false;
+            this.labelX5.Location = new System.Drawing.Point(327, 51);
             this.labelX5.Name = "labelX5";
-            this.labelX5.Size = new System.Drawing.Size(74, 21);
+            this.labelX5.Size = new System.Drawing.Size(92, 26);
             this.labelX5.TabIndex = 1;
             this.labelX5.Text = "體育成績：";
             // 
@@ -349,9 +354,11 @@
             // 
             this.textBoxX5.Border.Class = "TextBoxBorder";
             this.textBoxX5.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX5.Location = new System.Drawing.Point(411, 11);
+            this.textBoxX5.Enabled = false;
+            this.textBoxX5.Location = new System.Drawing.Point(571, 48);
             this.textBoxX5.Name = "textBoxX5";
-            this.textBoxX5.Size = new System.Drawing.Size(59, 25);
+            this.textBoxX5.ReadOnly = true;
+            this.textBoxX5.Size = new System.Drawing.Size(56, 35);
             this.textBoxX5.TabIndex = 0;
             // 
             // textBoxX2
@@ -363,7 +370,7 @@
             this.textBoxX2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.textBoxX2.Location = new System.Drawing.Point(98, 48);
             this.textBoxX2.Name = "textBoxX2";
-            this.textBoxX2.Size = new System.Drawing.Size(59, 25);
+            this.textBoxX2.Size = new System.Drawing.Size(56, 35);
             this.textBoxX2.TabIndex = 0;
             // 
             // textBoxX3
@@ -373,9 +380,11 @@
             // 
             this.textBoxX3.Border.Class = "TextBoxBorder";
             this.textBoxX3.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX3.Location = new System.Drawing.Point(253, 11);
+            this.textBoxX3.Enabled = false;
+            this.textBoxX3.Location = new System.Drawing.Point(408, 48);
             this.textBoxX3.Name = "textBoxX3";
-            this.textBoxX3.Size = new System.Drawing.Size(59, 25);
+            this.textBoxX3.ReadOnly = true;
+            this.textBoxX3.Size = new System.Drawing.Size(56, 35);
             this.textBoxX3.TabIndex = 0;
             // 
             // labelX3
@@ -388,7 +397,7 @@
             this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX3.Location = new System.Drawing.Point(18, 13);
             this.labelX3.Name = "labelX3";
-            this.labelX3.Size = new System.Drawing.Size(74, 21);
+            this.labelX3.Size = new System.Drawing.Size(92, 26);
             this.labelX3.TabIndex = 1;
             this.labelX3.Text = "學業成績：";
             // 
@@ -401,7 +410,7 @@
             this.textBoxX1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.textBoxX1.Location = new System.Drawing.Point(98, 11);
             this.textBoxX1.Name = "textBoxX1";
-            this.textBoxX1.Size = new System.Drawing.Size(56, 25);
+            this.textBoxX1.Size = new System.Drawing.Size(56, 35);
             this.textBoxX1.TabIndex = 0;
             // 
             // groupPanel1
@@ -463,14 +472,14 @@
             // 
             this.dataGridViewX1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dataGridViewX1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewX1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewX1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridViewX1.ColumnHeadersHeight = 25;
             this.dataGridViewX1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridViewX1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -479,14 +488,14 @@
             this.col結算成績,
             this.col補考成績,
             this.col重修成績});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewX1.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewX1.DefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridViewX1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewX1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dataGridViewX1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
@@ -502,50 +511,6 @@
             this.dataGridViewX1.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridViewX1_CurrentCellDirtyStateChanged);
             this.dataGridViewX1.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridViewX1_DataError);
             this.dataGridViewX1.RowHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewX1_RowHeaderMouseClick);
-            // 
-            // comboBoxEx1
-            // 
-            this.comboBoxEx1.DisplayMember = "Text";
-            this.comboBoxEx1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.comboBoxEx1.FormattingEnabled = true;
-            this.comboBoxEx1.ItemHeight = 19;
-            this.comboBoxEx1.Location = new System.Drawing.Point(72, 8);
-            this.comboBoxEx1.Name = "comboBoxEx1";
-            this.comboBoxEx1.Size = new System.Drawing.Size(73, 25);
-            this.comboBoxEx1.TabIndex = 2;
-            this.comboBoxEx1.TextChanged += new System.EventHandler(this.ReLoad);
-            // 
-            // labelX1
-            // 
-            this.labelX1.AutoSize = true;
-            // 
-            // 
-            // 
-            this.labelX1.BackgroundStyle.Class = "";
-            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX1.Location = new System.Drawing.Point(12, 12);
-            this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(60, 21);
-            this.labelX1.TabIndex = 0;
-            this.labelX1.Text = "學年度：";
-            // 
-            // errorSchoolYear
-            // 
-            this.errorSchoolYear.BlinkRate = 0;
-            this.errorSchoolYear.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
-            this.errorSchoolYear.ContainerControl = this;
-            // 
-            // errorSemester
-            // 
-            this.errorSemester.BlinkRate = 0;
-            this.errorSemester.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
-            this.errorSemester.ContainerControl = this;
-            // 
-            // errorGradeYear
-            // 
-            this.errorGradeYear.BlinkRate = 0;
-            this.errorGradeYear.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
-            this.errorGradeYear.ContainerControl = this;
             // 
             // Column5
             // 
@@ -568,19 +533,66 @@
             // 
             this.col結算成績.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.col結算成績.HeaderText = "結算成績";
+            this.col結算成績.MinimumWidth = 6;
             this.col結算成績.Name = "col結算成績";
             // 
             // col補考成績
             // 
             this.col補考成績.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.col補考成績.HeaderText = "補考成績";
+            this.col補考成績.MinimumWidth = 6;
             this.col補考成績.Name = "col補考成績";
             // 
             // col重修成績
             // 
             this.col重修成績.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.col重修成績.HeaderText = "重修成績";
+            this.col重修成績.MinimumWidth = 6;
             this.col重修成績.Name = "col重修成績";
+            // 
+            // comboBoxEx1
+            // 
+            this.comboBoxEx1.DisplayMember = "Text";
+            this.comboBoxEx1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboBoxEx1.FormattingEnabled = true;
+            this.comboBoxEx1.ItemHeight = 23;
+            this.comboBoxEx1.Location = new System.Drawing.Point(72, 8);
+            this.comboBoxEx1.Name = "comboBoxEx1";
+            this.comboBoxEx1.Size = new System.Drawing.Size(73, 29);
+            this.comboBoxEx1.TabIndex = 2;
+            this.comboBoxEx1.TextChanged += new System.EventHandler(this.ReLoad);
+            // 
+            // labelX1
+            // 
+            this.labelX1.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX1.BackgroundStyle.Class = "";
+            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX1.Location = new System.Drawing.Point(12, 12);
+            this.labelX1.Name = "labelX1";
+            this.labelX1.Size = new System.Drawing.Size(75, 26);
+            this.labelX1.TabIndex = 0;
+            this.labelX1.Text = "學年度：";
+            // 
+            // errorSchoolYear
+            // 
+            this.errorSchoolYear.BlinkRate = 0;
+            this.errorSchoolYear.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
+            this.errorSchoolYear.ContainerControl = this;
+            // 
+            // errorSemester
+            // 
+            this.errorSemester.BlinkRate = 0;
+            this.errorSemester.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
+            this.errorSemester.ContainerControl = this;
+            // 
+            // errorGradeYear
+            // 
+            this.errorGradeYear.BlinkRate = 0;
+            this.errorGradeYear.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
+            this.errorGradeYear.ContainerControl = this;
             // 
             // SchoolYearScoreEditor
             // 

@@ -61,6 +61,10 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             ValidateAll();
         }
 
+        private void SemesterScoreEditor_Load(object sender, EventArgs e)
+        {
+
+        }
         public SemesterScoreEditor(string schoolYear, string semester, string refStudentID)
         {
             InitializeComponent();
@@ -482,10 +486,34 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             e.Cancel = true;
             DataGridViewCell cell = dataGridViewX1.Rows[e.RowIndex].Cells[e.ColumnIndex];
             string message = "儲存格值：" + cell.Value + "。\n發生錯誤： " + e.Exception.Message + "。";
-            if (cell.ErrorText != message)
+            /// 2022-01 Cynthia 因分項類別的item移除了體育、國防通識、健康與護理，為了讓舊資料不要出現紅點，故增加一層判斷。
+            if (e.ColumnIndex != 0 && cell.Value.ToString() != "體育" && cell.Value.ToString() != "國防通識" && cell.Value.ToString() != "健康與護理")
+                if (cell.ErrorText != message)
+                {
+                    cell.ErrorText = message;
+                    dataGridViewX1.UpdateCellErrorText(e.ColumnIndex, e.RowIndex);
+                }
+
+            // 2022-01 Cynthia 且為了讓分項類別可以呈現舊資料，只好把分項類別加回去。
+            // 若不加回去則會顯示為「學業」。
+            DataGridViewComboBoxColumn comboColumn;
+            switch (e.ColumnIndex)
             {
-                cell.ErrorText = message;
-                dataGridViewX1.UpdateCellErrorText(e.ColumnIndex, e.RowIndex);
+                case 0:
+                    comboColumn = ((DataGridViewComboBoxColumn)dataGridViewX1.Columns["ColEntry"]);
+                    if (!comboColumn.Items.Contains("體育") && cell.Value.ToString()=="體育")
+                    {
+                        comboColumn.Items.Add("體育");
+                    }
+                    if (!comboColumn.Items.Contains("國防通識") && cell.Value.ToString() == "國防通識")
+                    {
+                        comboColumn.Items.Add("國防通識");
+                    }
+                    if (!comboColumn.Items.Contains("健康與護理") && cell.Value.ToString() == "健康與護理")
+                    {
+                        comboColumn.Items.Add("健康與護理");
+                    }
+                    break;
             }
         }
 
@@ -1309,6 +1337,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 }
             }
         }
+
+
 
         class EntryScoreToolTipProvider
         {

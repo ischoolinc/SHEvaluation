@@ -57,6 +57,31 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
             if (!_defaultValues.ContainsKey(row.Cells[e.ColumnIndex]))
                 _defaultValues.Add(row.Cells[e.ColumnIndex], row.Cells[e.ColumnIndex].Value);
             #endregion
+
+            #region 2022-01-18 Cynthia 移除舊分項處理
+            DataGridViewCell cell = dataGridViewX1.Rows[e.RowIndex].Cells[e.ColumnIndex];
+            DataGridViewComboBoxColumn comboColumn;
+            if (e.ColumnIndex == 2)
+            {
+                comboColumn = ((DataGridViewComboBoxColumn)dataGridViewX1.Columns["Column13"]);
+                if (cell.Value != null)
+                {
+                    //if (!comboColumn.Items.Contains("體育") && cell.Value.ToString() == "體育")
+                    //    comboColumn.Items.Add("體育");
+                    if (comboColumn.Items.Contains("體育") && cell.Value.ToString() != "體育")
+                        comboColumn.Items.Remove("體育");
+                    //if (!comboColumn.Items.Contains("國防通識(軍訓)") && cell.Value.ToString() == "國防通識(軍訓)")
+                    //    comboColumn.Items.Add("國防通識(軍訓)");
+                    if (comboColumn.Items.Contains("國防通識(軍訓)") && cell.Value.ToString() != "國防通識(軍訓)")
+                        comboColumn.Items.Remove("國防通識(軍訓)");
+                    //if (!comboColumn.Items.Contains("健康與護理") && cell.Value.ToString() == "健康與護理")
+                    //    comboColumn.Items.Add("健康與護理");
+                    if (comboColumn.Items.Contains("健康與護理") && cell.Value.ToString() != "健康與護理")
+                        comboColumn.Items.Remove("健康與護理");
+                }
+            }
+
+            #endregion
         }
 
         private void dataGridViewX1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -303,7 +328,7 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
         {
             DataGridViewCell cell = dataGridViewX1.Rows[e.RowIndex].Cells[e.ColumnIndex];
             cell.ErrorText = "";
-            #region 數字欄位輸入格式檢察
+            #region 數字欄位輸入格式檢查
             if ((e.ColumnIndex == _StartLevelIndex || (e.ColumnIndex >= _CreditStartIndex && e.ColumnIndex < _CreditStartIndex + 8)) && "" + e.FormattedValue != "")
             {
                 decimal i = 0;
@@ -319,11 +344,11 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
             #endregion
             dataGridViewX1.UpdateCellErrorText(e.ColumnIndex, e.RowIndex);
 
-            #region 學分數檢察
+            #region 學分數檢查
             if ("" + dataGridViewX1.Rows[e.RowIndex].Cells[_SubjectNameIndex].FormattedValue != "")
             {
                 bool pass = false;
-                #region 若是正輸入的欄位則用驗證值檢查否則用欄位上的值檢察
+                #region 若是正輸入的欄位則用驗證值檢查否則用欄位上的值檢查
                 for (int i = 0; i < 8; i++)
                 {
                     decimal x = 0;
@@ -401,12 +426,12 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
 
         private void dataGridViewX1_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex <4 )
+            if (e.ColumnIndex < 4)
             {
                 this.dataGridViewX1.ImeMode = ImeMode.NoControl;
-            
+
             }
-            else 
+            else
             {
                 this.dataGridViewX1.ImeMode = ImeMode.Off;
             }
@@ -467,7 +492,7 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
                 foreach (XmlNode node in source.SelectNodes("Subject"))
                 {
                     //todo selectNodeFrom 
-                  //  XmlAttributeCollection attributes = node.Attributes;
+                    //  XmlAttributeCollection attributes = node.Attributes;
 
 
 
@@ -530,7 +555,7 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
                             }
 
                             if (element.HasAttribute("學分"))
-                            { 
+                            {
                                 row.Cells[學分.Index].Value = element.Attributes["學分"].Value;
                             }
                             if (element.HasAttribute("授課學期學分"))
@@ -1050,12 +1075,36 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
         {
             e.Cancel = true;
             DataGridViewCell cell = dataGridViewX1.Rows[e.RowIndex].Cells[e.ColumnIndex];
-            string message = "儲存格值：" + cell.Value + "。\n發生錯誤： " + e.Exception.Message + "。";
-            if (cell.ErrorText != message)
+
+            #region 2022-01-18 Cynthia 移除舊分項處理
+            // 2022-01 Cynthia 且為了讓分項類別可以呈現舊資料，只好把分項類別加回去。
+            DataGridViewComboBoxColumn comboColumn;
+            if (e.ColumnIndex == 2)
             {
-                cell.ErrorText = message;
-                dataGridViewX1.UpdateCellErrorText(e.ColumnIndex, e.RowIndex);
+                comboColumn = ((DataGridViewComboBoxColumn)dataGridViewX1.Columns["Column13"]);
+                if (cell.Value != null)
+                {
+                    if (!comboColumn.Items.Contains("體育") && cell.Value.ToString() == "體育")
+                        comboColumn.Items.Add("體育");
+
+                    if (!comboColumn.Items.Contains("國防通識(軍訓)") && cell.Value.ToString() == "國防通識(軍訓)")
+                        comboColumn.Items.Add("國防通識(軍訓)");
+
+                    if (!comboColumn.Items.Contains("健康與護理") && cell.Value.ToString() == "健康與護理")
+                        comboColumn.Items.Add("健康與護理");
+                }
             }
+            #endregion
+
+            string message = "儲存格值：" + cell.Value + "。\n發生錯誤： " + e.Exception.Message + "。";
+            /// 2022-01 Cynthia 因分項類別的item移除了體育、國防通識、健康與護理，為了讓舊資料不要出現紅點，故增加一層判斷。
+            if (cell.Value != null)
+                if (e.ColumnIndex != 2 && cell.Value.ToString() != "體育" && cell.Value.ToString() != "國防通識(軍訓)" && cell.Value.ToString() != "健康與護理")
+                    if (cell.ErrorText != message)
+                    {
+                        cell.ErrorText = message;
+                        dataGridViewX1.UpdateCellErrorText(e.ColumnIndex, e.RowIndex);
+                    }
         }
 
         private void dataGridViewX1_MouseHover(object sender, EventArgs e)

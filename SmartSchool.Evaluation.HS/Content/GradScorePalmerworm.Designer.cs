@@ -44,6 +44,8 @@
             this.labelX3 = new DevComponents.DotNetBar.LabelX();
             this.textBoxX1 = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.textBoxX2 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.labelX1 = new DevComponents.DotNetBar.LabelX();
+            this.textBoxX7 = new DevComponents.DotNetBar.Controls.TextBoxX();
             ((System.ComponentModel.ISupportInitialize)(this.picWaiting)).BeginInit();
             this.SuspendLayout();
             // 
@@ -98,9 +100,9 @@
             // 
             this.labelX8.BackgroundStyle.Class = "";
             this.labelX8.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX8.Location = new System.Drawing.Point(383, 60);
+            this.labelX8.Location = new System.Drawing.Point(383, 18);
             this.labelX8.Name = "labelX8";
-            this.labelX8.Size = new System.Drawing.Size(74, 21);
+            this.labelX8.Size = new System.Drawing.Size(92, 26);
             this.labelX8.TabIndex = 14;
             this.labelX8.Text = "實習科目：";
             // 
@@ -111,9 +113,9 @@
             // 
             this.textBoxX6.Border.Class = "TextBoxBorder";
             this.textBoxX6.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX6.Location = new System.Drawing.Point(462, 58);
+            this.textBoxX6.Location = new System.Drawing.Point(462, 16);
             this.textBoxX6.Name = "textBoxX6";
-            this.textBoxX6.Size = new System.Drawing.Size(68, 25);
+            this.textBoxX6.Size = new System.Drawing.Size(68, 35);
             this.textBoxX6.TabIndex = 5;
             this.textBoxX6.TextChanged += new System.EventHandler(this.textBoxX1_TextChanged);
             // 
@@ -125,11 +127,13 @@
             // 
             this.labelX6.BackgroundStyle.Class = "";
             this.labelX6.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX6.Location = new System.Drawing.Point(200, 60);
+            this.labelX6.Enabled = false;
+            this.labelX6.Location = new System.Drawing.Point(199, 60);
             this.labelX6.Name = "labelX6";
-            this.labelX6.Size = new System.Drawing.Size(74, 21);
+            this.labelX6.Size = new System.Drawing.Size(92, 26);
             this.labelX6.TabIndex = 13;
             this.labelX6.Text = "國防通識：";
+            this.labelX6.Visible = false;
             // 
             // textBoxX4
             // 
@@ -138,10 +142,13 @@
             // 
             this.textBoxX4.Border.Class = "TextBoxBorder";
             this.textBoxX4.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX4.Enabled = false;
             this.textBoxX4.Location = new System.Drawing.Point(278, 57);
             this.textBoxX4.Name = "textBoxX4";
-            this.textBoxX4.Size = new System.Drawing.Size(68, 25);
+            this.textBoxX4.ReadOnly = true;
+            this.textBoxX4.Size = new System.Drawing.Size(68, 35);
             this.textBoxX4.TabIndex = 4;
+            this.textBoxX4.Visible = false;
             this.textBoxX4.TextChanged += new System.EventHandler(this.textBoxX1_TextChanged);
             // 
             // labelX7
@@ -152,11 +159,13 @@
             // 
             this.labelX7.BackgroundStyle.Class = "";
             this.labelX7.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX7.Location = new System.Drawing.Point(370, 18);
+            this.labelX7.Enabled = false;
+            this.labelX7.Location = new System.Drawing.Point(367, 60);
             this.labelX7.Name = "labelX7";
-            this.labelX7.Size = new System.Drawing.Size(87, 21);
+            this.labelX7.Size = new System.Drawing.Size(108, 26);
             this.labelX7.TabIndex = 16;
             this.labelX7.Text = "健康與護理：";
+            this.labelX7.Visible = false;
             // 
             // labelX4
             // 
@@ -168,7 +177,7 @@
             this.labelX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX4.Location = new System.Drawing.Point(18, 60);
             this.labelX4.Name = "labelX4";
-            this.labelX4.Size = new System.Drawing.Size(74, 21);
+            this.labelX4.Size = new System.Drawing.Size(92, 26);
             this.labelX4.TabIndex = 15;
             this.labelX4.Text = "德行成績：";
             // 
@@ -180,11 +189,13 @@
             // 
             this.labelX5.BackgroundStyle.Class = "";
             this.labelX5.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX5.Location = new System.Drawing.Point(200, 18);
+            this.labelX5.Enabled = false;
+            this.labelX5.Location = new System.Drawing.Point(18, 101);
             this.labelX5.Name = "labelX5";
-            this.labelX5.Size = new System.Drawing.Size(74, 21);
+            this.labelX5.Size = new System.Drawing.Size(92, 26);
             this.labelX5.TabIndex = 12;
             this.labelX5.Text = "體育成績：";
+            this.labelX5.Visible = false;
             // 
             // textBoxX5
             // 
@@ -193,10 +204,13 @@
             // 
             this.textBoxX5.Border.Class = "TextBoxBorder";
             this.textBoxX5.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX5.Location = new System.Drawing.Point(462, 15);
+            this.textBoxX5.Enabled = false;
+            this.textBoxX5.Location = new System.Drawing.Point(462, 57);
             this.textBoxX5.Name = "textBoxX5";
-            this.textBoxX5.Size = new System.Drawing.Size(68, 25);
+            this.textBoxX5.ReadOnly = true;
+            this.textBoxX5.Size = new System.Drawing.Size(68, 35);
             this.textBoxX5.TabIndex = 2;
+            this.textBoxX5.Visible = false;
             this.textBoxX5.TextChanged += new System.EventHandler(this.textBoxX1_TextChanged);
             // 
             // textBoxX3
@@ -206,10 +220,13 @@
             // 
             this.textBoxX3.Border.Class = "TextBoxBorder";
             this.textBoxX3.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX3.Location = new System.Drawing.Point(278, 15);
+            this.textBoxX3.Enabled = false;
+            this.textBoxX3.Location = new System.Drawing.Point(94, 98);
             this.textBoxX3.Name = "textBoxX3";
-            this.textBoxX3.Size = new System.Drawing.Size(68, 25);
+            this.textBoxX3.ReadOnly = true;
+            this.textBoxX3.Size = new System.Drawing.Size(68, 35);
             this.textBoxX3.TabIndex = 1;
+            this.textBoxX3.Visible = false;
             this.textBoxX3.TextChanged += new System.EventHandler(this.textBoxX1_TextChanged);
             // 
             // labelX3
@@ -222,7 +239,7 @@
             this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX3.Location = new System.Drawing.Point(18, 18);
             this.labelX3.Name = "labelX3";
-            this.labelX3.Size = new System.Drawing.Size(74, 21);
+            this.labelX3.Size = new System.Drawing.Size(92, 26);
             this.labelX3.TabIndex = 11;
             this.labelX3.Text = "學業成績：";
             // 
@@ -235,7 +252,7 @@
             this.textBoxX1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.textBoxX1.Location = new System.Drawing.Point(94, 15);
             this.textBoxX1.Name = "textBoxX1";
-            this.textBoxX1.Size = new System.Drawing.Size(65, 25);
+            this.textBoxX1.Size = new System.Drawing.Size(68, 35);
             this.textBoxX1.TabIndex = 0;
             this.textBoxX1.TextChanged += new System.EventHandler(this.textBoxX1_TextChanged);
             // 
@@ -248,14 +265,42 @@
             this.textBoxX2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.textBoxX2.Location = new System.Drawing.Point(94, 57);
             this.textBoxX2.Name = "textBoxX2";
-            this.textBoxX2.Size = new System.Drawing.Size(68, 25);
+            this.textBoxX2.Size = new System.Drawing.Size(68, 35);
             this.textBoxX2.TabIndex = 3;
             this.textBoxX2.TextChanged += new System.EventHandler(this.textBoxX1_TextChanged);
+            // 
+            // labelX1
+            // 
+            this.labelX1.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX1.BackgroundStyle.Class = "";
+            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX1.Location = new System.Drawing.Point(199, 17);
+            this.labelX1.Name = "labelX1";
+            this.labelX1.Size = new System.Drawing.Size(92, 26);
+            this.labelX1.TabIndex = 19;
+            this.labelX1.Text = "專業科目：";
+            // 
+            // textBoxX7
+            // 
+            // 
+            // 
+            // 
+            this.textBoxX7.Border.Class = "TextBoxBorder";
+            this.textBoxX7.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX7.Location = new System.Drawing.Point(278, 15);
+            this.textBoxX7.Name = "textBoxX7";
+            this.textBoxX7.Size = new System.Drawing.Size(68, 35);
+            this.textBoxX7.TabIndex = 18;
             // 
             // GradScorePalmerworm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.Transparent;
+            this.Controls.Add(this.labelX1);
+            this.Controls.Add(this.textBoxX7);
             this.Controls.Add(this.picWaiting);
             this.Controls.Add(this.buttonX4);
             this.Controls.Add(this.labelX8);
@@ -272,7 +317,7 @@
             this.Controls.Add(this.textBoxX1);
             this.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Name = "GradScorePalmerworm";
-            this.Size = new System.Drawing.Size(550, 99);
+            this.Size = new System.Drawing.Size(550, 100);
             ((System.ComponentModel.ISupportInitialize)(this.picWaiting)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -290,12 +335,14 @@
         private DevComponents.DotNetBar.LabelX labelX6;
         private DevComponents.DotNetBar.Controls.TextBoxX textBoxX4;
         private DevComponents.DotNetBar.LabelX labelX7;
-        private DevComponents.DotNetBar.LabelX labelX4;
         private DevComponents.DotNetBar.LabelX labelX5;
         private DevComponents.DotNetBar.Controls.TextBoxX textBoxX5;
         private DevComponents.DotNetBar.Controls.TextBoxX textBoxX3;
         private DevComponents.DotNetBar.LabelX labelX3;
         private DevComponents.DotNetBar.Controls.TextBoxX textBoxX1;
+        private DevComponents.DotNetBar.LabelX labelX1;
+        private DevComponents.DotNetBar.Controls.TextBoxX textBoxX7;
+        private DevComponents.DotNetBar.LabelX labelX4;
         private DevComponents.DotNetBar.Controls.TextBoxX textBoxX2;
     }
 }

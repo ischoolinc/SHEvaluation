@@ -68,7 +68,7 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
             dataGridViewX1.Rows[0].Cells[_StartLevelIndex].ReadOnly = true;
 
             dataGridViewX1.CurrentCell = dataGridViewX1.FirstDisplayedCell;
-            if(dataGridViewX1.CurrentCell !=null)
+            if (dataGridViewX1.CurrentCell != null)
                 dataGridViewX1.BeginEdit(true);
         }
 
@@ -111,7 +111,7 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
                 default:
                     levelNumber = "" + (p);
                     break;
-                #endregion
+                    #endregion
             }
             return levelNumber;
         }
@@ -163,7 +163,7 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
                     row.Cells[_RequiredIndex].Value = element.Attributes["Required"].InnerText;
                     row.Cells[_SubjectNameIndex].Value = element.Attributes["SubjectName"].InnerText;
                     row.Cells[_NotIncludedInCreditIndex].Value = element.GetAttribute("NotIncludedInCredit") == "True" ? true : false;
-                    row.Cells[_NotIncludedInCalcIndex].Value = element.GetAttribute("NotIncludedInCalc")== "True" ? true : false;
+                    row.Cells[_NotIncludedInCalcIndex].Value = element.GetAttribute("NotIncludedInCalc") == "True" ? true : false;
                     if (element.HasAttribute("Entry"))
                     {
                         switch (element.GetAttribute("Entry"))
@@ -194,7 +194,7 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
 
                     row.Cells[_StartLevelIndex].Value = element.Attributes["Level"].InnerText;
                     //填入學分數
-                        row.Cells[_CreditStartIndex].Value = element.Attributes["Credit"].InnerText;
+                    row.Cells[_CreditStartIndex].Value = element.Attributes["Credit"].InnerText;
                     #endregion
                     //呼叫結束編輯處理函式
                     dataGridViewX1_CellEndEdit(this, new DataGridViewCellEventArgs(_SubjectNameIndex, row.Index));
@@ -203,7 +203,7 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
             if (this.IsValidated) { }
             dataGridViewX1.CurrentCell = dataGridViewX1.FirstDisplayedCell;
 
-            if(dataGridViewX1.CurrentCell !=null)
+            if (dataGridViewX1.CurrentCell != null)
                 dataGridViewX1.BeginEdit(true);
         }
 
@@ -258,7 +258,7 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
                     parentElement.SetAttribute("RequiredBy", row.Cells[_RequiredByIndex].Value == null ? "" : row.Cells[_RequiredByIndex].Value.ToString());
                     parentElement.SetAttribute("Required", row.Cells[_RequiredIndex].Value == null ? "" : row.Cells[_RequiredIndex].Value.ToString());
 
-                    parentElement.SetAttribute("Credit", ""+row.Cells[_CreditStartIndex].Value);
+                    parentElement.SetAttribute("Credit", "" + row.Cells[_CreditStartIndex].Value);
                     bool b;
                     bool.TryParse(row.Cells[_NotIncludedInCreditIndex].Value == null ? "false" : row.Cells[_NotIncludedInCreditIndex].Value.ToString(), out b);
                     parentElement.SetAttribute("NotIncludedInCredit", b.ToString());
@@ -335,7 +335,7 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
                     {
                         foreach (DataGridViewCell cell in row.Cells)
                         {
-                            pass &= (cell.ErrorText== "");
+                            pass &= (cell.ErrorText == "");
                         }
                     }
                 }
@@ -348,7 +348,7 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
             if (row.IsNewRow) return true;
 
             bool pass = true;
-            DataGridViewCell cell ;
+            DataGridViewCell cell;
             decimal tryInt = 0;
             #region 檢查學分填寫正確
             cell = row.Cells[_CreditStartIndex];
@@ -361,7 +361,7 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
             else
             {
                 cell.ErrorText = "";
-                dataGridViewX1.UpdateCellErrorText(cell.ColumnIndex, cell.RowIndex);                
+                dataGridViewX1.UpdateCellErrorText(cell.ColumnIndex, cell.RowIndex);
             }
             #endregion
             #region 檢查級別填寫正確
@@ -380,9 +380,9 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
             }
             #endregion            
             #region 檢查必填欄位
-            foreach (int index in new int[]{_CreditStartIndex,_EntryIndex,_RequiredByIndex,_RequiredIndex,_SubjectNameIndex})
+            foreach (int index in new int[] { _CreditStartIndex, _EntryIndex, _RequiredByIndex, _RequiredIndex, _SubjectNameIndex })
             {
-                cell=row.Cells[index];
+                cell = row.Cells[index];
                 if ("" + cell.Value == "")
                 {
                     cell.ErrorText = "必須填寫。";
@@ -458,7 +458,7 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
                 }
                 else
                     if (_RowSubject.ContainsKey(row))
-                        _RowSubject.Remove(row);
+                    _RowSubject.Remove(row);
             }
             #endregion
             //如果有填入科目名稱則開始計算級別
@@ -471,7 +471,7 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
                 //如果有填數開始級別則以開始級別開始算
                 if (int.TryParse("" + row.Cells[_StartLevelIndex].Value, out startLevel))
                 {
-                    row.Cells[_SubjectNameIndex].Value = subjectName + "  ( " + subjectName +" "+ GetNumber(startLevel) + " ) ";
+                    row.Cells[_SubjectNameIndex].Value = subjectName + "  ( " + subjectName + " " + GetNumber(startLevel) + " ) ";
                 }
                 else
                     row.Cells[_SubjectNameIndex].Value = subjectName;
@@ -485,7 +485,7 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
                 {
                     dataGridViewX1.Rows[e.RowIndex + 1].Cells[index].Value = dataGridViewX1.Rows[e.RowIndex].Cells[index].Value;
                 }
-            } 
+            }
             #endregion
         }
 
@@ -497,7 +497,7 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
 
         private void dataGridViewX1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (e.RowIndex>0&&e.ColumnIndex < 0 && e.Button == MouseButtons.Right)
+            if (e.RowIndex > 0 && e.ColumnIndex < 0 && e.Button == MouseButtons.Right)
             {
                 _SelectedRowIndex = e.RowIndex;
                 foreach (DataGridViewRow var in dataGridViewX1.SelectedRows)
@@ -520,11 +520,34 @@ namespace SmartSchool.Evaluation.GraduationPlan.Editor
             e.Cancel = true;
             DataGridViewCell cell = dataGridViewX1.Rows[e.RowIndex].Cells[e.ColumnIndex];
             string message = "儲存格值：" + cell.Value + "。\n發生錯誤： " + e.Exception.Message + "。";
-            if (cell.ErrorText != message)
+            /// 2022-01 Cynthia 因分項類別的item移除了體育、國防通識、健康與護理，為了讓舊資料不要出現紅點，故增加一層判斷。
+            if (cell.Value != null)
+                if (e.ColumnIndex != 2 && cell.Value.ToString() != "體育" && cell.Value.ToString() != "國防通識(軍訓)" && cell.Value.ToString() != "健康與護理")
+                    if (cell.ErrorText != message)
+                    {
+                        cell.ErrorText = message;
+                        dataGridViewX1.UpdateCellErrorText(e.ColumnIndex, e.RowIndex);
+                    }
+
+            #region 2022-01-18 Cynthia 移除舊分項處理
+            // 2022-01 Cynthia 且為了讓分項類別可以呈現舊資料，只好把分項類別加回去。
+            DataGridViewComboBoxColumn comboColumn;
+            if (e.ColumnIndex == 2)
             {
-                cell.ErrorText = message;
-                dataGridViewX1.UpdateCellErrorText(e.ColumnIndex, e.RowIndex);
+                comboColumn = ((DataGridViewComboBoxColumn)dataGridViewX1.Columns["Column13"]);
+                if (cell.Value != null)
+                {
+                    if (!comboColumn.Items.Contains("體育") && cell.Value.ToString() == "體育")
+                        comboColumn.Items.Add("體育");
+
+                    if (!comboColumn.Items.Contains("國防通識(軍訓)") && cell.Value.ToString() == "國防通識(軍訓)")
+                        comboColumn.Items.Add("國防通識(軍訓)");
+
+                    if (!comboColumn.Items.Contains("健康與護理") && cell.Value.ToString() == "健康與護理")
+                        comboColumn.Items.Add("健康與護理");
+                }
             }
+            #endregion
         }
 
         private void dataGridViewX1_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)

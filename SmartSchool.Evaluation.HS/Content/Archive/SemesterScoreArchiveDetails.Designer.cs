@@ -90,10 +90,14 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.colMakeupStandard = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDesignateFinalScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colRemark = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colIsMakeupScore = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Column19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colRetakeSchoolYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colRetakeSemester = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column15 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Column18 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.panelEx1.SuspendLayout();
             this.groupPanel2.SuspendLayout();
             this.groupPanel1.SuspendLayout();
@@ -270,6 +274,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX8.Border.Class = "TextBoxBorder";
             this.textBoxX8.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX8.Enabled = false;
             this.textBoxX8.Location = new System.Drawing.Point(352, 70);
             this.textBoxX8.Name = "textBoxX8";
             this.textBoxX8.ReadOnly = true;
@@ -297,6 +302,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX9.Border.Class = "TextBoxBorder";
             this.textBoxX9.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX9.Enabled = false;
             this.textBoxX9.Location = new System.Drawing.Point(599, 70);
             this.textBoxX9.Name = "textBoxX9";
             this.textBoxX9.ReadOnly = true;
@@ -324,6 +330,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX10.Border.Class = "TextBoxBorder";
             this.textBoxX10.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX10.Enabled = false;
             this.textBoxX10.Location = new System.Drawing.Point(599, 100);
             this.textBoxX10.Name = "textBoxX10";
             this.textBoxX10.ReadOnly = true;
@@ -365,6 +372,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX11.Border.Class = "TextBoxBorder";
             this.textBoxX11.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX11.Enabled = false;
             this.textBoxX11.Location = new System.Drawing.Point(352, 100);
             this.textBoxX11.Name = "textBoxX11";
             this.textBoxX11.ReadOnly = true;
@@ -378,6 +386,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX12.Border.Class = "TextBoxBorder";
             this.textBoxX12.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX12.Enabled = false;
             this.textBoxX12.Location = new System.Drawing.Point(118, 100);
             this.textBoxX12.Name = "textBoxX12";
             this.textBoxX12.ReadOnly = true;
@@ -405,6 +414,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX13.Border.Class = "TextBoxBorder";
             this.textBoxX13.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX13.Enabled = false;
             this.textBoxX13.Location = new System.Drawing.Point(118, 70);
             this.textBoxX13.Name = "textBoxX13";
             this.textBoxX13.ReadOnly = true;
@@ -462,6 +472,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX7.Border.Class = "TextBoxBorder";
             this.textBoxX7.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX7.Enabled = false;
             this.textBoxX7.Location = new System.Drawing.Point(352, 10);
             this.textBoxX7.Name = "textBoxX7";
             this.textBoxX7.ReadOnly = true;
@@ -489,6 +500,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX6.Border.Class = "TextBoxBorder";
             this.textBoxX6.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX6.Enabled = false;
             this.textBoxX6.Location = new System.Drawing.Point(599, 10);
             this.textBoxX6.Name = "textBoxX6";
             this.textBoxX6.ReadOnly = true;
@@ -516,6 +528,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX4.Border.Class = "TextBoxBorder";
             this.textBoxX4.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX4.Enabled = false;
             this.textBoxX4.Location = new System.Drawing.Point(599, 40);
             this.textBoxX4.Name = "textBoxX4";
             this.textBoxX4.ReadOnly = true;
@@ -557,6 +570,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX5.Border.Class = "TextBoxBorder";
             this.textBoxX5.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX5.Enabled = false;
             this.textBoxX5.Location = new System.Drawing.Point(352, 40);
             this.textBoxX5.Name = "textBoxX5";
             this.textBoxX5.ReadOnly = true;
@@ -570,6 +584,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX3.Border.Class = "TextBoxBorder";
             this.textBoxX3.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX3.Enabled = false;
             this.textBoxX3.Location = new System.Drawing.Point(118, 40);
             this.textBoxX3.Name = "textBoxX3";
             this.textBoxX3.ReadOnly = true;
@@ -597,6 +612,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX1.Border.Class = "TextBoxBorder";
             this.textBoxX1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.textBoxX1.Enabled = false;
             this.textBoxX1.Location = new System.Drawing.Point(118, 10);
             this.textBoxX1.Name = "textBoxX1";
             this.textBoxX1.ReadOnly = true;
@@ -714,10 +730,14 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.colMakeupStandard,
             this.colDesignateFinalScore,
             this.colRemark,
-            this.Column14,
+            this.ColCode,
             this.colIsMakeupScore,
+            this.Column19,
+            this.Column20,
             this.colRetakeSchoolYear,
-            this.colRetakeSemester});
+            this.colRetakeSemester,
+            this.Column15,
+            this.Column18});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 9.75F);
@@ -983,13 +1003,14 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.colRemark.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.colRemark.Width = 55;
             // 
-            // Column14
+            // ColCode
             // 
-            this.Column14.HeaderText = "修課科目代碼";
-            this.Column14.MinimumWidth = 55;
-            this.Column14.Name = "Column14";
-            this.Column14.ReadOnly = true;
-            this.Column14.Width = 55;
+            this.ColCode.HeaderText = "修課科目代碼";
+            this.ColCode.MinimumWidth = 55;
+            this.ColCode.Name = "ColCode";
+            this.ColCode.ReadOnly = true;
+            this.ColCode.Visible = false;
+            this.ColCode.Width = 55;
             // 
             // colIsMakeupScore
             // 
@@ -1003,6 +1024,22 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.colIsMakeupScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.colIsMakeupScore.TrueValue = "是";
             this.colIsMakeupScore.Width = 40;
+            // 
+            // Column19
+            // 
+            this.Column19.HeaderText = "補修學年度";
+            this.Column19.MinimumWidth = 55;
+            this.Column19.Name = "Column19";
+            this.Column19.ReadOnly = true;
+            this.Column19.Width = 55;
+            // 
+            // Column20
+            // 
+            this.Column20.HeaderText = "補修學期";
+            this.Column20.MinimumWidth = 55;
+            this.Column20.Name = "Column20";
+            this.Column20.ReadOnly = true;
+            this.Column20.Width = 55;
             // 
             // colRetakeSchoolYear
             // 
@@ -1019,6 +1056,31 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.colRetakeSemester.Name = "colRetakeSemester";
             this.colRetakeSemester.ReadOnly = true;
             this.colRetakeSemester.Width = 55;
+            // 
+            // Column15
+            // 
+            this.Column15.FalseValue = "否";
+            this.Column15.FillWeight = 74F;
+            this.Column15.HeaderText = "免修";
+            this.Column15.MinimumWidth = 40;
+            this.Column15.Name = "Column15";
+            this.Column15.ReadOnly = true;
+            this.Column15.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Column15.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Column15.TrueValue = "是";
+            this.Column15.Width = 40;
+            // 
+            // Column18
+            // 
+            this.Column18.FalseValue = "否";
+            this.Column18.FillWeight = 74F;
+            this.Column18.HeaderText = "抵免";
+            this.Column18.MinimumWidth = 40;
+            this.Column18.Name = "Column18";
+            this.Column18.ReadOnly = true;
+            this.Column18.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Column18.TrueValue = "是";
+            this.Column18.Width = 40;
             // 
             // SemesterScoreArchiveDetails
             // 
@@ -1105,9 +1167,13 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
         private System.Windows.Forms.DataGridViewTextBoxColumn colMakeupStandard;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDesignateFinalScore;
         private System.Windows.Forms.DataGridViewTextBoxColumn colRemark;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column14;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColCode;
         private System.Windows.Forms.DataGridViewCheckBoxColumn colIsMakeupScore;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column19;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column20;
         private System.Windows.Forms.DataGridViewTextBoxColumn colRetakeSchoolYear;
         private System.Windows.Forms.DataGridViewTextBoxColumn colRetakeSemester;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Column15;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Column18;
     }
 }

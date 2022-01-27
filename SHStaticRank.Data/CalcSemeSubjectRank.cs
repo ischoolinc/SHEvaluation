@@ -96,7 +96,12 @@ namespace SHStaticRank.Data
                     FISCA.Presentation.MotherForm.SetStatusBarMessage("學期科目成績固定排名計算完成。", 100);
                     if (exc != null)
                     {
-                        throw new Exception("產生期末成績單發生錯誤", exc);
+                        //2022-01-26 Cynthia 因學校不小心將一個學生加了兩個同個分組的不同類別標籤，導致產出來會直接炸掉，改為跳出錯誤訊息。
+                        //throw new Exception("產生期末成績單發生錯誤", exc);
+                        if (exc.Message.Contains("相同索引鍵"))
+                            FISCA.Presentation.Controls.MsgBox.Show("計算排名發生錯誤：" + exc.Message+"\n\r若有設定類別排名，請修正學生類別標籤重複。","錯誤");
+                        else
+                            FISCA.Presentation.Controls.MsgBox.Show("計算排名發生錯誤：" + exc.Message, "錯誤");
                     }
                 };
                 bkw.DoWork += delegate

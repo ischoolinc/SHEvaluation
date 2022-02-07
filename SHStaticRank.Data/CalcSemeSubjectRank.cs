@@ -98,10 +98,7 @@ namespace SHStaticRank.Data
                     {
                         //2022-01-26 Cynthia 因學校不小心將一個學生加了兩個同個分組的不同類別標籤，導致產出來會直接炸掉，改為跳出錯誤訊息。
                         //throw new Exception("產生期末成績單發生錯誤", exc);
-                        if (exc.Message.Contains("相同索引鍵"))
-                            FISCA.Presentation.Controls.MsgBox.Show("計算排名發生錯誤：" + exc.Message+"\n\r若有設定類別排名，請修正學生類別標籤重複。","錯誤");
-                        else
-                            FISCA.Presentation.Controls.MsgBox.Show("計算排名發生錯誤：" + exc.Message, "錯誤");
+                        FISCA.Presentation.Controls.MsgBox.Show("計算排名發生錯誤：" + exc.Message, "錯誤");
                     }
                 };
                 bkw.DoWork += delegate
@@ -226,8 +223,12 @@ namespace SHStaticRank.Data
                                         {
                                             if (setting.Rank1Tag != "" && setting.Rank1Tag == "[" + tag.Name + "]")
                                             {
-                                                studentRec.Fields.Add("tag1", tag.SubCategory);
-                                                if (!cat1List.Contains(tag.SubCategory)) cat1List.Add(tag.SubCategory);
+                                                if (!studentRec.Fields.ContainsKey("tag1"))
+                                                    studentRec.Fields.Add("tag1", tag.SubCategory);
+                                                else
+                                                    throw new Exception("\r\n 學生：" + studentRec.StudentName + " 有重複類別標籤「" + tag.FullName + "」、「" + tag.Name+":"+studentRec.Fields["tag1"] +"」，請修正類別狀態。", exc);
+                                                if (!cat1List.Contains(tag.SubCategory))
+                                                    cat1List.Add(tag.SubCategory);
                                             }
                                             if (setting.Rank2Tag != "" && setting.Rank2Tag == "[" + tag.Name + "]")
                                             {
@@ -359,8 +360,10 @@ namespace SHStaticRank.Data
                                             if (studentRec.Fields.ContainsKey("tag1"))
                                             {
                                                 string key = "類別1排名" + studentRec.Fields["tag1"] + "^^^" + gradeyear + "^^^" + subjectScore.Subject + "^^^" + subjectScore.Level;
-                                                if (!ranks.ContainsKey(key)) ranks.Add(key, new List<decimal>());
-                                                if (!rankStudents.ContainsKey(key)) rankStudents.Add(key, new List<string>());
+                                                if (!ranks.ContainsKey(key))
+                                                    ranks.Add(key, new List<decimal>());
+                                                if (!rankStudents.ContainsKey(key))
+                                                    rankStudents.Add(key, new List<string>());
                                                 ranks[key].Add(score);
                                                 rankStudents[key].Add(studentID);
                                             }

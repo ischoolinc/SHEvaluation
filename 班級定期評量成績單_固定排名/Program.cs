@@ -1106,17 +1106,18 @@ namespace 班級定期評量成績單_固定排名
                             #region 各科成績資料
                             #region 整理列印順序
                             List<string> subjectNameList = new List<string>(classSubjects.Keys);
-                            subjectNameList.Sort(new StringComparer("國文"
-                                                , "英文"
-                                                , "數學"
-                                                , "理化"
-                                                , "生物"
-                                                , "社會"
-                                                , "物理"
-                                                , "化學"
-                                                , "歷史"
-                                                , "地理"
-                                                , "公民"));
+                            subjectNameList.Sort(new StringComparer(Utility.GetSubjectOrder().ToArray()));
+                            //subjectNameList.Sort(new StringComparer("國文"
+                            //                    , "英文"
+                            //                    , "數學"
+                            //                    , "理化"
+                            //                    , "生物"
+                            //                    , "社會"
+                            //                    , "物理"
+                            //                    , "化學"
+                            //                    , "歷史"
+                            //                    , "地理"
+                            //                    , "公民"));
                             #endregion
                             int subjectIndex = 1;
 

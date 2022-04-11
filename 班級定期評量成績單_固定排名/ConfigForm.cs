@@ -98,21 +98,22 @@ namespace 班級定期評量成績單_固定排名
                 foreach (var list in _ExamSubjectFull.Values)
                 {
                     #region 排序
-                    list.Sort(new StringComparer("國文"
-                                    , "國語文"
-                                    , "英文"
-                                    , "英語文"
-                                    , "數學"
-                                    , "數學甲"
-                                    , "數學乙"
-                                    , "理化"
-                                    , "生物"
-                                    , "社會"
-                                    , "物理"
-                                    , "化學"
-                                    , "歷史"
-                                    , "地理"
-                                    , "公民"));
+                    list.Sort(new StringComparer(Utility.GetSubjectOrder().ToArray()));
+                    //list.Sort(new StringComparer("國文"
+                    //                , "國語文"
+                    //                , "英文"
+                    //                , "英語文"
+                    //                , "數學"
+                    //                , "數學甲"
+                    //                , "數學乙"
+                    //                , "理化"
+                    //                , "生物"
+                    //                , "社會"
+                    //                , "物理"
+                    //                , "化學"
+                    //                , "歷史"
+                    //                , "地理"
+                    //                , "公民"));
                     #endregion
                 }
                 #endregion

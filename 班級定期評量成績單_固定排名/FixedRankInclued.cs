@@ -41,8 +41,8 @@ namespace 班級定期評量成績單_固定排名
                 this.BringSelectedSubj = true;
                 foreach (DataGridViewCell cell in dataGridViewX1.SelectedCells)
                 {
-                    if(cell.Value!=null)
-                    SelectSubjucts.Add(cell.Value.ToString());
+                    if (cell.Value != null)
+                        SelectSubjucts.Add(cell.Value.ToString());
                 }
                 this.Close();
             }
@@ -78,27 +78,28 @@ namespace 班級定期評量成績單_固定排名
 
                 return;
             }
-                FixedRankSubjInclude[rankType].Sort(new StringComparer("國文", "國語文"
-                                              , "英文", "英語文"
-                                              , "數學"
-                                              , "理化"
-                                              , "生物"
-                                              , "社會"
-                                              , "物理"
-                                              , "化學"
-                                              , "歷史"
-                                              , "地理"
-                                              , "公民"));
+            //FixedRankSubjInclude[rankType].Sort(new StringComparer("國文", "國語文"
+            //                              , "英文", "英語文"
+            //                              , "數學"
+            //                              , "理化"
+            //                              , "生物"
+            //                              , "社會"
+            //                              , "物理"
+            //                              , "化學"
+            //                              , "歷史"
+            //                              , "地理"
+            //                              , "公民"));
+            FixedRankSubjInclude[rankType].Sort(new StringComparer(Utility.GetSubjectOrder().ToArray()));
 
 
-          
-                foreach (string dr in FixedRankSubjInclude[rankType])
-                {
-                    DataGridViewRow dgrow = new DataGridViewRow();
-                    dgrow.CreateCells(dataGridViewX1);
-                    dgrow.Cells[0].Value = dr;
-                    this.dataGridViewX1.Rows.Add(dgrow);
-                }
+
+            foreach (string dr in FixedRankSubjInclude[rankType])
+            {
+                DataGridViewRow dgrow = new DataGridViewRow();
+                dgrow.CreateCells(dataGridViewX1);
+                dgrow.Cells[0].Value = dr;
+                this.dataGridViewX1.Rows.Add(dgrow);
+            }
         }
     }
 }

@@ -65,7 +65,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             entityAction = EntityAction.Update;
             comboBoxEx3.Items.AddRange(new object[] { "1", "2", "3", "4" });
 
-            //2019/7/10 - 原本顯示身分證號,但是因該顯示學號 by俊威,佳樺
+            //2019/7/10 - 原本顯示身分證號,但是應該顯示學號 by俊威,佳樺
             labelX10.Text = Student.Instance.Items[_StudentID].StudentNumber + "  " + Student.Instance.Items[_StudentID].Name;
 
             this.comboBoxEx1.Text = schoolYear;
@@ -137,7 +137,10 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                         var.GetAttribute("學年成績"),
                         var.GetAttribute("結算成績") == "" ? var.GetAttribute("學年成績") : var.GetAttribute("結算成績"),
                         var.GetAttribute("補考成績"),
-                        var.GetAttribute("重修成績")
+                        var.GetAttribute("重修成績"),
+                        var.GetAttribute("校部定"),
+                        var.GetAttribute("必選修"),
+                        var.GetAttribute("識別學分數")
                         );
                     row.Cells[0].ToolTipText = _subject_rating.GetTooltip(row);
                     dataGridViewX1.Rows.Add(row);
@@ -263,6 +266,9 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 subjectElement.SetAttribute("結算成績", "" + row.Cells[2].Value);
                 subjectElement.SetAttribute("補考成績", "" + row.Cells[3].Value);
                 subjectElement.SetAttribute("重修成績", "" + row.Cells[4].Value);
+                subjectElement.SetAttribute("校部定", "" + row.Cells[5].Value);
+                subjectElement.SetAttribute("必選修", "" + row.Cells[6].Value);
+                subjectElement.SetAttribute("識別學分數", "" + row.Cells[7].Value);
                 subjectScoreInfo.AppendChild(subjectElement);
 
                 afterXml.AddElement("SubjectCollection", subjectElement);
@@ -276,7 +282,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             }
             else
                 if (subjectScoreInfo.SelectNodes("Subject").Count > 0)
-                    AddScore.InsertSchoolYearSubjectScore(_StudentID, comboBoxEx1.Text, comboBoxEx3.Text, subjectScoreInfo);
+                AddScore.InsertSchoolYearSubjectScore(_StudentID, comboBoxEx1.Text, comboBoxEx3.Text, subjectScoreInfo);
             #endregion
 
             #region 新增修改分項成績資料
@@ -516,7 +522,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
 
             bool hasScore = false;
             decimal score = decimal.MinValue;
-            foreach (int i in new int[] { 2, 3, 4 })
+            foreach (int i in new int[] { 2, 3, 4, 7 })
             {
                 row.Cells[i].ErrorText = "";
                 decimal x = 0;

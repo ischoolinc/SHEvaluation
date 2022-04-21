@@ -2021,9 +2021,10 @@ namespace SmartSchool.Evaluation
                                 //可以被計算
                                 if (hasScore)
                                 {
-                                    if (!subjectScores.ContainsKey(score.Subject))
-                                        subjectScores.Add(score.Subject, new Dictionary<SemesterSubjectScoreInfo, decimal>());
-                                    subjectScores[score.Subject].Add(score, maxscore);
+                                    string key = score.Subject+ "⊕" + score.Detail.GetAttribute("修課校部訂") + "⊕" + score.Detail.GetAttribute("修課必選修") + "⊕" + score.Detail.GetAttribute("開課學分數");
+                                    if (!subjectScores.ContainsKey(key))
+                                        subjectScores.Add(key, new Dictionary<SemesterSubjectScoreInfo, decimal>());
+                                    subjectScores[key].Add(score, maxscore);
                                 }
                             }
                         }
@@ -2330,7 +2331,11 @@ namespace SmartSchool.Evaluation
                         {//&& subjectCalcScores.ContainsKey(score.Subject) && subjectCalcScores[score.Subject] >= applylimit
                             foreach (var schoolYearSubjectScore in var.SchoolYearSubjectScoreList)
                             {
-                                if (schoolYearSubjectScore.SchoolYear == schoolyear && schoolYearSubjectScore.Subject == score.Subject && schoolYearSubjectScore.Score >= applylimit)
+                                if (schoolYearSubjectScore.SchoolYear == schoolyear && schoolYearSubjectScore.Subject == score.Subject 
+                                    && score.Detail.GetAttribute("修課校部訂") == schoolYearSubjectScore.Detail.GetAttribute("校部定")
+                                    && score.Detail.GetAttribute("修課必選修") == schoolYearSubjectScore.Detail.GetAttribute("必選修")
+                                    && score.Detail.GetAttribute("開課學分數") == schoolYearSubjectScore.Detail.GetAttribute("識別學分數")
+                                    && schoolYearSubjectScore.Score >= applylimit)
                                 {
                                     //subjectCalcScores.Add(schoolYearSubjectScore.Subject, schoolYearSubjectScore.Score);//[score.Subject]
                                     decimal tryParseDecimal, topScore = decimal.MinValue;

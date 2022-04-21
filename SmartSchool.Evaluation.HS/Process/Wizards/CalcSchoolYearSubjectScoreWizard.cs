@@ -188,27 +188,54 @@ namespace SmartSchool.Evaluation.Process.Wizards
                                         XmlElement subjectScoreInfo = (XmlElement)sc.Detail.ParentNode;
                                         foreach (string subject in subjectScore.Keys)
                                         {
-                                            XmlElement subjectElement = subjectScoreInfo.SelectSingleNode("Subject[@科目='" + subject + "']") as XmlElement;
+                                            string[] subjectInfo = subject.Split('⊕');
+                                            string subjectName = subject;
+                                            string Req = "";
+                                            string Reqby = "";
+                                            string Credit = "";
+                                            if (subjectInfo.Length >= 4)
+                                            {
+                                                subjectName = subjectInfo[0];
+                                                Req = subjectInfo[1];
+                                                Reqby = subjectInfo[2];
+                                                Credit = subjectInfo[3];
+                                            }
+
+                                            XmlElement subjectElement = subjectScoreInfo.SelectSingleNode("Subject[@科目='" + subjectName + "']") as XmlElement;
+
                                             if (subjectElement != null)
                                             {
-                                                decimal topScore = subjectScore[subject], tryParseScore;
-                                                if (decimal.TryParse(subjectElement.GetAttribute("補考成績"), out tryParseScore) && topScore < tryParseScore)
+                                                if (subjectElement.GetAttribute("校部定") == Req
+                                                    && subjectElement.GetAttribute("必選修") == Reqby
+                                                    && subjectElement.GetAttribute("識別學分數") == Credit)
                                                 {
-                                                    topScore = tryParseScore;
+                                                    decimal topScore = subjectScore[subject], tryParseScore;
+                                                    if (decimal.TryParse(subjectElement.GetAttribute("補考成績"), out tryParseScore) && topScore < tryParseScore)
+                                                    {
+                                                        topScore = tryParseScore;
+                                                    }
+                                                    if (decimal.TryParse(subjectElement.GetAttribute("重修成績"), out tryParseScore) && topScore < tryParseScore)
+                                                    {
+                                                        topScore = tryParseScore;
+                                                    }
+                                                    subjectElement.SetAttribute("結算成績", "" + subjectScore[subject]);
+                                                    subjectElement.SetAttribute("學年成績", "" + topScore);
+                                                    subjectElement.SetAttribute("識別學分數", "" + Credit);
+                                                    subjectElement.SetAttribute("校部定", "" + Req);
+                                                    subjectElement.SetAttribute("必選修", "" + Reqby);
                                                 }
-                                                if (decimal.TryParse(subjectElement.GetAttribute("重修成績"), out tryParseScore) && topScore < tryParseScore)
-                                                {
-                                                    topScore = tryParseScore;
-                                                }
-                                                subjectElement.SetAttribute("結算成績", "" + subjectScore[subject]);
-                                                subjectElement.SetAttribute("學年成績", "" + topScore);
+
                                             }
                                             else
                                             {
                                                 subjectElement = subjectScoreInfo.OwnerDocument.CreateElement("Subject");
-                                                subjectElement.SetAttribute("科目", subject);
+                                                subjectElement.SetAttribute("科目", subjectName);
                                                 subjectElement.SetAttribute("學年成績", "" + subjectScore[subject]);
                                                 subjectElement.SetAttribute("結算成績", "" + subjectScore[subject]);
+                                                subjectElement.SetAttribute("識別學分數", "" + Credit);
+                                                subjectElement.SetAttribute("校部定", "" + Req);
+                                                subjectElement.SetAttribute("必選修", "" + Reqby);
+
                                                 subjectScoreInfo.AppendChild(subjectElement);
                                             }
                                         }
@@ -242,10 +269,25 @@ namespace SmartSchool.Evaluation.Process.Wizards
                                     XmlElement subjectScoreInfo = doc.CreateElement("SchoolYearSubjectScore");
                                     foreach (string subject in subjectScore.Keys)
                                     {
+                                        string[] subjectInfo = subject.Split('⊕');
+                                        string subjectName = subject;
+                                        string Req = "";
+                                        string Reqby = "";
+                                        string Credit = "";
+                                        if (subjectInfo.Length >= 4)
+                                        {
+                                            subjectName = subjectInfo[0];
+                                            Req = subjectInfo[1];
+                                            Reqby = subjectInfo[2];
+                                            Credit = subjectInfo[3];
+                                        }
                                         XmlElement entryElement = doc.CreateElement("Subject");
-                                        entryElement.SetAttribute("科目", subject);
+                                        entryElement.SetAttribute("科目", subjectName);
                                         entryElement.SetAttribute("學年成績", "" + subjectScore[subject]);
                                         entryElement.SetAttribute("結算成績", "" + subjectScore[subject]);
+                                        entryElement.SetAttribute("識別學分數", "" + Credit);
+                                        entryElement.SetAttribute("校部定", "" + Req);
+                                        entryElement.SetAttribute("必選修", "" + Reqby);
                                         subjectScoreInfo.AppendChild(entryElement);
                                     }
                                     insertList.Add(new SmartSchool.Feature.Score.AddScore.InsertInfo(stu.StudentID, "" + schoolyear, "", "" + gradeyear, "", subjectScoreInfo));

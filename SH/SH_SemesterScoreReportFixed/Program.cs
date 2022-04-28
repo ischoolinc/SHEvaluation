@@ -197,6 +197,7 @@ namespace SH_SemesterScoreReportFixed
                 table.Columns.Add("本學期實得選修學分");
                 table.Columns.Add("在校期間實得必修學分");
                 table.Columns.Add("在校期間實得選修學分");
+                table.Columns.Add("學期成績排名採計成績欄位");
 
                 // 新增合併欄位
                 List<string> r1List = new List<string>();
@@ -1286,7 +1287,7 @@ namespace SH_SemesterScoreReportFixed
                             row["姓名"] = stuRec.StudentName;
                             row["英文姓名"] = stuRec.Fields.ContainsKey("英文姓名") ? stuRec.Fields["英文姓名"] : "";
 
-                                                  //護照資料
+                            //護照資料
 
                             string strSQL1 = "select nationality1, passport_name1, nat1.eng_name as nat_eng1, nationality2, passport_name2, nat2.eng_name as nat_eng2, nationality3, passport_name3, nat3.eng_name as nat_eng3 from student_info_ext  as stud_info left outer join $ischool.mapping.nationality as nat1 on nat1.name = stud_info.nationality1 left outer join $ischool.mapping.nationality as nat2 on nat2.name = stud_info.nationality2 left outer join $ischool.mapping.nationality as nat3 on nat3.name = stud_info.nationality3 WHERE ref_student_id=" + stuRec.StudentID;
                             DataTable student_info_ext = qh1.Select(strSQL1);
@@ -1823,6 +1824,10 @@ namespace SH_SemesterScoreReportFixed
 
                                                     if (SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"] != null)
                                                         row["學期科目全校排名母數" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][ssKey]["matrix_count"].ToString();
+
+                                                    if (SemsScoreRankMatrixDataDict[studentID][ssKey]["picked_grade"] != null)
+                                                        if (SemsScoreRankMatrixDataDict[studentID][ssKey]["picked_grade"].ToString() != "")
+                                                            row["學期成績排名採計成績欄位"] = SemsScoreRankMatrixDataDict[studentID][ssKey]["picked_grade"].ToString();
 
                                                     // 五標、組距
                                                     foreach (string item2 in r2List)

@@ -433,7 +433,7 @@ namespace ClassSemesterScoreReportFixed_SH.DAO
                 r2List.Add("level_20");
                 r2List.Add("level_10");
                 r2List.Add("level_lt10");
-
+                r2List.Add("picked_grade");
                 // 需要四捨五入
                 List<string> r2ListNP = new List<string>();
                 r2ListNP.Add("avg_top_25");
@@ -449,9 +449,23 @@ namespace ClassSemesterScoreReportFixed_SH.DAO
                 r2ListNP.Add("std_dev_pop");
 
                 QueryHelper qh = new QueryHelper();
-                string query = "" +
+                string query = @"WITH picked_grade_data AS (
+SELECT
+	array_to_string(xpath('//擇優採計成績/text()', settingEle), '/') AS picked_grade
+	, id AS rank_batch_id
+FROM
+	(
+		SELECT
+		id
+			,rank_batch.setting
+			, unnest(xpath('//Setting', xmlparse(content setting))) as settingEle
+		FROM
+rank_batch
+	) AS batch_data
+)" +
                    " SELECT " +
     " 	rank_matrix.id AS rank_matrix_id" +
+    "  , picked_grade" +
     " 	, rank_matrix.school_year" +
     " 	, rank_matrix.semester" +
     " 	, rank_matrix.grade_year" +
@@ -499,6 +513,7 @@ namespace ClassSemesterScoreReportFixed_SH.DAO
     " 		ON student.id = rank_detail.ref_student_id" +
     " 	LEFT OUTER JOIN class" +
     " 		ON class.id = student.ref_class_id" +
+    "  LEFT  JOIN picked_grade_data 		ON picked_grade_data.rank_batch_id = rank_matrix.ref_batch_id " +
     " WHERE" +
     " 	rank_matrix.is_alive = true" +
     " 	AND rank_matrix.school_year = " + SchoolYear +
@@ -515,59 +530,67 @@ namespace ClassSemesterScoreReportFixed_SH.DAO
     " 	, student.seat_no" +
     " 	, student.id";
 
-                DataTable dt = qh.Select(query);
-
-                foreach (DataRow dr in dt.Rows)
+                try
                 {
-                    string sid = dr["student_id"].ToString();
-                    if (!value.ContainsKey(sid))
-                        value.Add(sid, new Dictionary<string, Dictionary<string, string>>());
+                    DataTable dt = qh.Select(query);
 
-                    string key = dr["item_type"].ToString() + "_" + dr["item_name"].ToString() + "_" + dr["rank_type"].ToString();
-                    if (key == "學期/分項成績_學業_類別1排名")
+                    foreach (DataRow dr in dt.Rows)
                     {
-                        if (dr["rank_name"] != null)
-                        {
-                            if (!StudentIDTag1Dict.ContainsKey(sid))
-                                StudentIDTag1Dict.Add(sid, dr["rank_name"].ToString());
-                        }
-                    }
+                        string sid = dr["student_id"].ToString();
+                        if (!value.ContainsKey(sid))
+                            value.Add(sid, new Dictionary<string, Dictionary<string, string>>());
 
-                    if (key == "學期/分項成績_學業_類別2排名")
-                    {
-                        if (dr["rank_name"] != null)
+                        string key = dr["item_type"].ToString() + "_" + dr["item_name"].ToString() + "_" + dr["rank_type"].ToString();
+                        if (key == "學期/分項成績_學業_類別1排名")
                         {
-                            if (!StudentIDTag2Dict.ContainsKey(sid))
-                                StudentIDTag2Dict.Add(sid, dr["rank_name"].ToString());
-                        }
-                    }
-                    if (!value[sid].ContainsKey(key))
-                        value[sid].Add(key, new Dictionary<string, string>());
-
-                    foreach (string r2 in r2List)
-                    {
-                        string dValue = "";
-                        if (dr[r2] != null)
-                        {
-                            if (r2ListNP.Contains(r2))
+                            if (dr["rank_name"] != null)
                             {
-                                decimal dd;
-                                if (decimal.TryParse(dr[r2].ToString(), out dd))
+                                if (!StudentIDTag1Dict.ContainsKey(sid))
+                                    StudentIDTag1Dict.Add(sid, dr["rank_name"].ToString());
+                            }
+                        }
+
+                        if (key == "學期/分項成績_學業_類別2排名")
+                        {
+                            if (dr["rank_name"] != null)
+                            {
+                                if (!StudentIDTag2Dict.ContainsKey(sid))
+                                    StudentIDTag2Dict.Add(sid, dr["rank_name"].ToString());
+                            }
+                        }
+                        if (!value[sid].ContainsKey(key))
+                            value[sid].Add(key, new Dictionary<string, string>());
+
+                        foreach (string r2 in r2List)
+                        {
+                            string dValue = "";
+                            if (dr[r2] != null)
+                            {
+                                if (r2ListNP.Contains(r2))
                                 {
-                                    dValue = Math.Round(dd, 2, MidpointRounding.AwayFromZero).ToString();
+                                    decimal dd;
+                                    if (decimal.TryParse(dr[r2].ToString(), out dd))
+                                    {
+                                        dValue = Math.Round(dd, 2, MidpointRounding.AwayFromZero).ToString();
+                                    }
+
                                 }
+                                else
+                                {
+                                    dValue = dr[r2].ToString();
+                                }
+                            }
 
-                            }
-                            else
-                            {
-                                dValue = dr[r2].ToString();
-                            }
+                            if (!value[sid][key].ContainsKey(r2))
+                                value[sid][key].Add(r2, dValue);
                         }
-
-                        if (!value[sid][key].ContainsKey(r2))
-                            value[sid][key].Add(r2, dValue);
                     }
                 }
+                catch
+                {
+
+                }
+
             }
             return value;
         }
@@ -735,7 +758,7 @@ namespace ClassSemesterScoreReportFixed_SH.DAO
                             value[cid][key].Add(r2, dValue);
                     }
                 }
-            }          
+            }
             return value;
         }
     }

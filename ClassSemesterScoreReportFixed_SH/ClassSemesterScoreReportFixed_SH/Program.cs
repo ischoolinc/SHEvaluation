@@ -123,6 +123,8 @@ namespace ClassSemesterScoreReportFixed_SH
                 table.Columns.Add("學期");
                 table.Columns.Add("類別排名1");
                 table.Columns.Add("類別排名2");
+                table.Columns.Add("學期成績排名採計成績欄位");
+
                 //«通訊地址»«通訊地址郵遞區號»«通訊地址內容»
                 //«戶籍地址»«戶籍地址郵遞區號»«戶籍地址內容»
                 //«監護人»«父親»«母親»«科別名稱»
@@ -392,8 +394,8 @@ namespace ClassSemesterScoreReportFixed_SH
                             if (s2 == "年排名")
                                 rankType = "全校排名";
                             //科目成績1_班排名_avg_top_50
-                            string key = "科目成績"+ subjectIndex + "_" + rankType + "_" + r;
-                            string key1 = "科目成績(原始)"+ subjectIndex+"_" + rankType + "_" + r;
+                            string key = "科目成績" + subjectIndex + "_" + rankType + "_" + r;
+                            string key1 = "科目成績(原始)" + subjectIndex + "_" + rankType + "_" + r;
                             table.Columns.Add(key);
                             table.Columns.Add(key1);
                         }
@@ -438,7 +440,7 @@ namespace ClassSemesterScoreReportFixed_SH
 
                     if (exc != null)
                     {
-                        FISCA.Presentation.Controls.MsgBox.Show(exc.Message,"產生班級學期成績單(固定排名)發生錯誤",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                        FISCA.Presentation.Controls.MsgBox.Show(exc.Message, "產生班級學期成績單(固定排名)發生錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                         // throw new Exception("產生班級學期成績單發生錯誤", exc);
                     }
@@ -848,10 +850,14 @@ namespace ClassSemesterScoreReportFixed_SH
                                                                     }
                                                                     else
                                                                     {
+                                                                        //學期成績排名採計成績欄位 picked_grade
                                                                         if (SemsScoreRankMatrixDataDict[studentID][sk1].ContainsKey("rank"))
                                                                             row[rankTypeMapDict[rt] + ClassStuNum + "-" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][sk1]["rank"];
                                                                         if (SemsScoreRankMatrixDataDict[studentID][sk1].ContainsKey("matrix_count"))
                                                                             row[rankTypeMapDict[rt] + "母數" + ClassStuNum + "-" + subjectIndex] = SemsScoreRankMatrixDataDict[studentID][sk1]["matrix_count"];
+                                                                        if (SemsScoreRankMatrixDataDict[studentID][sk1].ContainsKey("picked_grade"))
+                                                                            if (SemsScoreRankMatrixDataDict[studentID][sk1]["picked_grade"] != "")
+                                                                                row["學期成績排名採計成績欄位"] = SemsScoreRankMatrixDataDict[studentID][sk1]["picked_grade"];
                                                                     }
 
                                                                     foreach (string rr in r2ListOld)
@@ -926,7 +932,7 @@ namespace ClassSemesterScoreReportFixed_SH
                                                                 string rankType = s2;
                                                                 if (s2 == "年排名")
                                                                     rankType = "全校排名";
-                                                                string tKey = "科目成績" + subjectIndex +"_"+ rankType + "_" + r;
+                                                                string tKey = "科目成績" + subjectIndex + "_" + rankType + "_" + r;
                                                                 row[tKey] = SemsScoreRankMatrixDataClassDict[classRec.ClassID][s1key][r];
 
                                                                 string sbkey = s2 + "科目_" + r + "_" + subjectIndex;
@@ -1182,7 +1188,7 @@ namespace ClassSemesterScoreReportFixed_SH
             #region 基本欄位
             builder.Writeln("基本欄位");
             builder.StartTable();
-            foreach (string field in new string[] { "學年度", "學期", "學校名稱", "學校地址", "學校電話", "科別名稱", "班級", "班導師", "類別排名1", "類別排名2" })
+            foreach (string field in new string[] { "學年度", "學期", "學校名稱", "學校地址", "學校電話", "科別名稱", "班級", "班導師", "類別排名1", "類別排名2", "學期成績排名採計成績欄位" })
             {
                 builder.InsertCell();
                 builder.Write(field);
@@ -1289,7 +1295,7 @@ namespace ClassSemesterScoreReportFixed_SH
                 for (int i = 1; i <= maxSubjectNum; i++)
                 {
                     builder.InsertCell();
-                    builder.InsertField("MERGEFIELD 科目成績" + i+"_"+ key + "排名_avg_top_25" + " \\* MERGEFORMAT ", "«T" + i + "»");
+                    builder.InsertField("MERGEFIELD 科目成績" + i + "_" + key + "排名_avg_top_25" + " \\* MERGEFORMAT ", "«T" + i + "»");
                 }
                 builder.EndRow();
 

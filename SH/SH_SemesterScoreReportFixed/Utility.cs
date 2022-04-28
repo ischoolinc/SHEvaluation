@@ -554,9 +554,23 @@ namespace SH_SemesterScoreReportFixed
                 return value;
 
             QueryHelper qh = new QueryHelper();
-            string query = "" +
+            string query = @"WITH picked_grade_data AS (
+SELECT
+	array_to_string(xpath('//擇優採計成績/text()', settingEle), '/') AS picked_grade
+	, id AS rank_batch_id
+FROM
+	(
+		SELECT
+		id
+			,rank_batch.setting
+			, unnest(xpath('//Setting', xmlparse(content setting))) as settingEle
+		FROM
+rank_batch
+	) AS batch_data
+)" +
                " SELECT " +
 " 	rank_matrix.id AS rank_matrix_id" +
+"  , picked_grade" +
 " 	, rank_matrix.school_year" +
 " 	, rank_matrix.semester" +
 " 	, rank_matrix.grade_year" +
@@ -604,6 +618,7 @@ namespace SH_SemesterScoreReportFixed
 " 		ON student.id = rank_detail.ref_student_id" +
 " 	LEFT OUTER JOIN class" +
 " 		ON class.id = student.ref_class_id" +
+"  LEFT  JOIN picked_grade_data 		ON picked_grade_data.rank_batch_id = rank_matrix.ref_batch_id " +
 " WHERE" +
 " 	rank_matrix.is_alive = true" +
 " 	AND rank_matrix.school_year = " + SchoolYear +
@@ -620,24 +635,32 @@ namespace SH_SemesterScoreReportFixed
 " 	, student.seat_no" +
 " 	, student.id";
 
-            DataTable dt = qh.Select(query);
-            //dt.TableName = "d5";
-            //dt.WriteXmlSchema(Application.StartupPath + "\\d5s.xml");
-            //dt.WriteXml(Application.StartupPath + "\\d5d.xml");
-
-            // student id key
-            // key = item_type + item_name +  rank_name 
-            foreach (DataRow dr in dt.Rows)
+            try
             {
-                string sid = dr["student_id"].ToString();
-                if (!value.ContainsKey(sid))
-                    value.Add(sid, new Dictionary<string, DataRow>());
+                DataTable dt = qh.Select(query);
+                //dt.TableName = "d5";
+                //dt.WriteXmlSchema(Application.StartupPath + "\\d5s.xml");
+                //dt.WriteXml(Application.StartupPath + "\\d5d.xml");
 
-                string key = dr["item_type"].ToString() + "_" + dr["item_name"].ToString() + "_" + dr["rank_type"].ToString();
+                // student id key
+                // key = item_type + item_name +  rank_name 
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string sid = dr["student_id"].ToString();
+                    if (!value.ContainsKey(sid))
+                        value.Add(sid, new Dictionary<string, DataRow>());
 
-                if (!value[sid].ContainsKey(key))
-                    value[sid].Add(key, dr);
+                    string key = dr["item_type"].ToString() + "_" + dr["item_name"].ToString() + "_" + dr["rank_type"].ToString();
+
+                    if (!value[sid].ContainsKey(key))
+                        value[sid].Add(key, dr);
+                }
             }
+            catch
+            {
+
+            }
+
 
             return value;
         }

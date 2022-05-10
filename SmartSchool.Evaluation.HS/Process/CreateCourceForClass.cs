@@ -179,6 +179,78 @@ namespace SmartSchool.Evaluation.Process
                     SmartSchool.Feature.Course.AddCourse.Insert(newCourses);
                     SmartSchool.Broadcaster.Events.Items["課程/新增"].Invoke();
                 }
+
+                #region 避免學校手動修改相關課程基本資料
+                if (newCourses.Count > 0)
+                {
+                    string tagID = GetTagID();
+                    List<string> newCourseIDList = new List<string>();
+                    foreach (var course in newCourses)
+                    {
+                        string queryCourseID = @"
+SELECT id, course_name, school_year, semester FROM course
+WHERE 	course_name='{0}'
+AND school_year='{1}'
+AND semester='{2}'";
+                        queryCourseID = string.Format(queryCourseID, course.CourseName, course.SchoolYear, course.Semester);
+                        QueryHelper queryHelper = new QueryHelper();
+                        try
+                        {
+                            DataTable dataTable = queryHelper.Select(queryCourseID);
+                            foreach (DataRow dr in dataTable.Rows)
+                            {
+                                newCourseIDList.Add(dr["id"].ToString());
+                            }
+                        }
+                        catch
+                        {
+
+                        }
+
+                    }
+
+                    List<string> listDataRow = new List<string>();
+                    foreach (string courseID in newCourseIDList)
+                    {
+                        string tagData = string.Format(@"
+SELECT
+    {0}::BIGINT AS ref_course_id
+    , {1}::BIGINT AS ref_tag_id
+                        ", courseID, tagID);
+                        listDataRow.Add(tagData);
+                    }
+
+                    if (listDataRow.Count > 0)
+                    {
+                        UpdateHelper updateHelper = new UpdateHelper();
+                        #region SQL
+                        string sql = string.Format(@"
+WITH data_row AS(
+    {0}
+)
+INSERT INTO tag_course(
+    ref_course_id
+    , ref_tag_id
+)
+SELECT
+    ref_course_id
+    , ref_tag_id
+FROM
+    data_row
+                    ", string.Join("UNION ALL", listDataRow));
+                        #endregion
+                        try
+                        {
+                            updateHelper.Execute(sql);
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+
+                }
+                #endregion
                 #endregion
                 #region 重新整理已開的課程
                 existSubject.Clear();
@@ -263,6 +335,71 @@ namespace SmartSchool.Evaluation.Process
                 SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("班級開課發生未預期的錯誤，開課或學生修課動作可能僅部分完成。");
                 //BugReporter.ReportException(e.Error, false);
             }
+        }
+
+        /// <summary>
+        /// 類別 課程計畫:課程
+        /// </summary>
+        private string GetTagID()
+        {
+            string tagID = "";
+            QueryHelper queryHelper = new QueryHelper();
+            string sql = @"
+SELECT
+    *
+FROM
+    tag
+WHERE
+    prefix = '課程計畫'
+	AND name='課程'
+    AND category = 'Course'
+";
+            try
+            {
+                DataTable dt = queryHelper.Select(sql);
+
+                if (dt.Rows.Count > 0)
+                {
+                    tagID = "" + dt.Rows[0]["id"];
+                }
+                else
+                {
+                    try
+                    {
+                        string insertSql = @"
+WITH insert_data AS(
+    INSERT INTO tag(
+        prefix
+        ,name
+        , category
+    ) VALUES(
+        '課程計畫'
+        ,'課程'
+        , 'Course'
+    )
+    RETURNING *
+)
+SELECT
+    *
+FROM
+    insert_data
+";
+                        DataTable insertDt = queryHelper.Select(insertSql);
+                        tagID = "" + insertDt.Rows[0]["id"];
+                    }
+                    catch (Exception ex)
+                    {
+                        MsgBox.Show(ex.Message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MsgBox.Show(ex.Message);
+            }
+
+
+            return tagID;
         }
         #endregion
 

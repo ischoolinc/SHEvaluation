@@ -87,7 +87,8 @@ namespace SHStaticRank2.Data
                 GC.Collect();
                 if (exc != null)
                 {
-                    throw new Exception("產生期末成績單發生錯誤", exc);
+                    FISCA.Presentation.Controls.MsgBox.Show("" + exc);
+                    //throw new Exception("產生期末成績單發生錯誤", exc);
                 }
 
                 System.Diagnostics.Process.Start(Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports", FolderName));
@@ -5425,7 +5426,7 @@ namespace SHStaticRank2.Data
                                     overflowSheet.Cells[overflowCount, 1].PutValue(accessHelper.StudentHelper.GetStudent(data.Key).RefClass == null ? "" : accessHelper.StudentHelper.GetStudent(data.Key).RefClass.ClassName);
                                     overflowSheet.Cells[overflowCount, 2].PutValue(accessHelper.StudentHelper.GetStudent(data.Key).SeatNo);
                                     overflowSheet.Cells[overflowCount, 3].PutValue(accessHelper.StudentHelper.GetStudent(data.Key).StudentName);
-                                    overflowSheet.Cells[overflowCount, 4].PutValue(data.Value);
+                                    overflowSheet.Cells[overflowCount, 4].PutValue(data.Value.Count);
                                     overflowSheet.Cells[overflowCount, 5].PutValue(setting.SubjectLimit);
                                     overflowCount++;
                                 }
@@ -6216,7 +6217,7 @@ namespace SHStaticRank2.Data
 
                         }
 
-                        for (int i = 1; i <= 60; i++)
+                        for (int i = 1; i <= 500; i++)
                         {
                             _table.Columns.Add("回歸科目名稱" + i);
                             _table.Columns.Add("回歸一上科目成績" + i);
@@ -13130,7 +13131,8 @@ namespace SHStaticRank2.Data
 
                                     ClassStart++;
 
-                                }else if (OneClassCompleted != null)
+                                }
+                                else if (OneClassCompleted != null)
                                 {
                                     OneClassCompleted();
 
@@ -13141,7 +13143,7 @@ namespace SHStaticRank2.Data
                                     int xx = (int)(100d / ClassSumCount * ClassCountStart);
                                     FISCA.RTContext.Invoke(new Action<string, int>(Word_Msg), new object[] { "產生班級Word檔中...", xx });
                                     ClassCountStart++;
-                                }                              
+                                }
                                 else
                                 {
                                     if (_table.Rows.Count > 0)

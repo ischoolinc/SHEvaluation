@@ -2450,10 +2450,11 @@ namespace SmartSchool.Evaluation
                         canCalc &= false;
                     }
                     #endregion
+                    // CT 修正 XML 文字錯誤導致設定無法比對
                     #region 處理畢業成績計算規則
-                    if (scoreCalcRule.SelectSingleNode("處理畢業成績計算規則") != null)
+                    if (scoreCalcRule.SelectSingleNode("畢業成績計算規則") != null)
                     {
-                        useSubjectAdv = scoreCalcRule.SelectSingleNode("處理畢業成績計算規則").InnerText == "學期科目成績加權";
+                        useSubjectAdv = scoreCalcRule.SelectSingleNode("畢業成績計算規則").InnerText == "學期科目成績加權";
                     }
                     #endregion
                 }

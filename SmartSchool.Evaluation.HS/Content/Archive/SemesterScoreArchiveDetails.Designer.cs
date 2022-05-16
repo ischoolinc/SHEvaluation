@@ -98,6 +98,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.colRetakeSemester = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column15 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Column18 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ColSpecifySubjectName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panelEx1.SuspendLayout();
             this.groupPanel2.SuspendLayout();
             this.groupPanel1.SuspendLayout();
@@ -142,7 +143,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.textBoxX15.Location = new System.Drawing.Point(210, 8);
             this.textBoxX15.Name = "textBoxX15";
             this.textBoxX15.ReadOnly = true;
-            this.textBoxX15.Size = new System.Drawing.Size(73, 35);
+            this.textBoxX15.Size = new System.Drawing.Size(73, 25);
             this.textBoxX15.TabIndex = 7;
             // 
             // textBoxX2
@@ -155,7 +156,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.textBoxX2.Location = new System.Drawing.Point(67, 8);
             this.textBoxX2.Name = "textBoxX2";
             this.textBoxX2.ReadOnly = true;
-            this.textBoxX2.Size = new System.Drawing.Size(72, 35);
+            this.textBoxX2.Size = new System.Drawing.Size(72, 25);
             this.textBoxX2.TabIndex = 6;
             // 
             // labelX10
@@ -263,7 +264,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.labelX12.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX12.Location = new System.Drawing.Point(237, 72);
             this.labelX12.Name = "labelX12";
-            this.labelX12.Size = new System.Drawing.Size(136, 26);
+            this.labelX12.Size = new System.Drawing.Size(109, 21);
             this.labelX12.TabIndex = 9;
             this.labelX12.Text = "專業科目(原始)：";
             // 
@@ -278,7 +279,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.textBoxX8.Location = new System.Drawing.Point(352, 70);
             this.textBoxX8.Name = "textBoxX8";
             this.textBoxX8.ReadOnly = true;
-            this.textBoxX8.Size = new System.Drawing.Size(100, 35);
+            this.textBoxX8.Size = new System.Drawing.Size(100, 25);
             this.textBoxX8.TabIndex = 3;
             // 
             // labelX13
@@ -291,7 +292,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.labelX13.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX13.Location = new System.Drawing.Point(484, 72);
             this.labelX13.Name = "labelX13";
-            this.labelX13.Size = new System.Drawing.Size(136, 26);
+            this.labelX13.Size = new System.Drawing.Size(109, 21);
             this.labelX13.TabIndex = 10;
             this.labelX13.Text = "實習科目(原始)：";
             // 
@@ -306,7 +307,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.textBoxX9.Location = new System.Drawing.Point(599, 70);
             this.textBoxX9.Name = "textBoxX9";
             this.textBoxX9.ReadOnly = true;
-            this.textBoxX9.Size = new System.Drawing.Size(100, 35);
+            this.textBoxX9.Size = new System.Drawing.Size(100, 25);
             this.textBoxX9.TabIndex = 4;
             // 
             // labelX14
@@ -319,7 +320,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.labelX14.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX14.Location = new System.Drawing.Point(484, 102);
             this.labelX14.Name = "labelX14";
-            this.labelX14.Size = new System.Drawing.Size(136, 26);
+            this.labelX14.Size = new System.Drawing.Size(109, 21);
             this.labelX14.TabIndex = 11;
             this.labelX14.Text = "國防通識(原始)：";
             // 
@@ -334,7 +335,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.textBoxX10.Location = new System.Drawing.Point(599, 100);
             this.textBoxX10.Name = "textBoxX10";
             this.textBoxX10.ReadOnly = true;
-            this.textBoxX10.Size = new System.Drawing.Size(100, 35);
+            this.textBoxX10.Size = new System.Drawing.Size(100, 25);
             this.textBoxX10.TabIndex = 5;
             // 
             // labelX15
@@ -347,7 +348,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.labelX15.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX15.Location = new System.Drawing.Point(223, 102);
             this.labelX15.Name = "labelX15";
-            this.labelX15.Size = new System.Drawing.Size(153, 26);
+            this.labelX15.Size = new System.Drawing.Size(123, 21);
             this.labelX15.TabIndex = 12;
             this.labelX15.Text = "健康與護理(原始)：";
             // 
@@ -361,7 +362,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.labelX16.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX16.Location = new System.Drawing.Point(3, 102);
             this.labelX16.Name = "labelX16";
-            this.labelX16.Size = new System.Drawing.Size(136, 26);
+            this.labelX16.Size = new System.Drawing.Size(109, 21);
             this.labelX16.TabIndex = 13;
             this.labelX16.Text = "體育成績(原始)：";
             // 
@@ -376,7 +377,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.textBoxX11.Location = new System.Drawing.Point(352, 100);
             this.textBoxX11.Name = "textBoxX11";
             this.textBoxX11.ReadOnly = true;
-            this.textBoxX11.Size = new System.Drawing.Size(100, 35);
+            this.textBoxX11.Size = new System.Drawing.Size(100, 25);
             this.textBoxX11.TabIndex = 6;
             // 
             // textBoxX12
@@ -390,7 +391,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.textBoxX12.Location = new System.Drawing.Point(118, 100);
             this.textBoxX12.Name = "textBoxX12";
             this.textBoxX12.ReadOnly = true;
-            this.textBoxX12.Size = new System.Drawing.Size(100, 35);
+            this.textBoxX12.Size = new System.Drawing.Size(100, 25);
             this.textBoxX12.TabIndex = 7;
             // 
             // labelX17
@@ -403,7 +404,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.labelX17.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX17.Location = new System.Drawing.Point(3, 72);
             this.labelX17.Name = "labelX17";
-            this.labelX17.Size = new System.Drawing.Size(136, 26);
+            this.labelX17.Size = new System.Drawing.Size(109, 21);
             this.labelX17.TabIndex = 14;
             this.labelX17.Text = "學業成績(原始)：";
             // 
@@ -418,7 +419,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.textBoxX13.Location = new System.Drawing.Point(118, 70);
             this.textBoxX13.Name = "textBoxX13";
             this.textBoxX13.ReadOnly = true;
-            this.textBoxX13.Size = new System.Drawing.Size(100, 35);
+            this.textBoxX13.Size = new System.Drawing.Size(100, 25);
             this.textBoxX13.TabIndex = 8;
             // 
             // buttonX4
@@ -461,7 +462,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.labelX11.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX11.Location = new System.Drawing.Point(272, 12);
             this.labelX11.Name = "labelX11";
-            this.labelX11.Size = new System.Drawing.Size(92, 26);
+            this.labelX11.Size = new System.Drawing.Size(74, 21);
             this.labelX11.TabIndex = 1;
             this.labelX11.Text = "專業科目：";
             // 
@@ -476,7 +477,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.textBoxX7.Location = new System.Drawing.Point(352, 10);
             this.textBoxX7.Name = "textBoxX7";
             this.textBoxX7.ReadOnly = true;
-            this.textBoxX7.Size = new System.Drawing.Size(100, 35);
+            this.textBoxX7.Size = new System.Drawing.Size(100, 25);
             this.textBoxX7.TabIndex = 0;
             // 
             // labelX8
@@ -489,7 +490,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.labelX8.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX8.Location = new System.Drawing.Point(519, 12);
             this.labelX8.Name = "labelX8";
-            this.labelX8.Size = new System.Drawing.Size(92, 26);
+            this.labelX8.Size = new System.Drawing.Size(74, 21);
             this.labelX8.TabIndex = 1;
             this.labelX8.Text = "實習科目：";
             // 
@@ -504,7 +505,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.textBoxX6.Location = new System.Drawing.Point(599, 10);
             this.textBoxX6.Name = "textBoxX6";
             this.textBoxX6.ReadOnly = true;
-            this.textBoxX6.Size = new System.Drawing.Size(100, 35);
+            this.textBoxX6.Size = new System.Drawing.Size(100, 25);
             this.textBoxX6.TabIndex = 0;
             // 
             // labelX6
@@ -517,7 +518,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.labelX6.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX6.Location = new System.Drawing.Point(519, 42);
             this.labelX6.Name = "labelX6";
-            this.labelX6.Size = new System.Drawing.Size(92, 26);
+            this.labelX6.Size = new System.Drawing.Size(74, 21);
             this.labelX6.TabIndex = 1;
             this.labelX6.Text = "國防通識：";
             // 
@@ -532,7 +533,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.textBoxX4.Location = new System.Drawing.Point(599, 40);
             this.textBoxX4.Name = "textBoxX4";
             this.textBoxX4.ReadOnly = true;
-            this.textBoxX4.Size = new System.Drawing.Size(100, 35);
+            this.textBoxX4.Size = new System.Drawing.Size(100, 25);
             this.textBoxX4.TabIndex = 0;
             // 
             // labelX7
@@ -545,7 +546,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.labelX7.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX7.Location = new System.Drawing.Point(259, 42);
             this.labelX7.Name = "labelX7";
-            this.labelX7.Size = new System.Drawing.Size(108, 26);
+            this.labelX7.Size = new System.Drawing.Size(87, 21);
             this.labelX7.TabIndex = 1;
             this.labelX7.Text = "健康與護理：";
             // 
@@ -559,7 +560,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.labelX5.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX5.Location = new System.Drawing.Point(38, 42);
             this.labelX5.Name = "labelX5";
-            this.labelX5.Size = new System.Drawing.Size(92, 26);
+            this.labelX5.Size = new System.Drawing.Size(74, 21);
             this.labelX5.TabIndex = 1;
             this.labelX5.Text = "體育成績：";
             // 
@@ -574,7 +575,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.textBoxX5.Location = new System.Drawing.Point(352, 40);
             this.textBoxX5.Name = "textBoxX5";
             this.textBoxX5.ReadOnly = true;
-            this.textBoxX5.Size = new System.Drawing.Size(100, 35);
+            this.textBoxX5.Size = new System.Drawing.Size(100, 25);
             this.textBoxX5.TabIndex = 0;
             // 
             // textBoxX3
@@ -588,7 +589,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.textBoxX3.Location = new System.Drawing.Point(118, 40);
             this.textBoxX3.Name = "textBoxX3";
             this.textBoxX3.ReadOnly = true;
-            this.textBoxX3.Size = new System.Drawing.Size(100, 35);
+            this.textBoxX3.Size = new System.Drawing.Size(100, 25);
             this.textBoxX3.TabIndex = 0;
             // 
             // labelX3
@@ -601,7 +602,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX3.Location = new System.Drawing.Point(38, 12);
             this.labelX3.Name = "labelX3";
-            this.labelX3.Size = new System.Drawing.Size(92, 26);
+            this.labelX3.Size = new System.Drawing.Size(74, 21);
             this.labelX3.TabIndex = 1;
             this.labelX3.Text = "學業成績：";
             // 
@@ -616,7 +617,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.textBoxX1.Location = new System.Drawing.Point(118, 10);
             this.textBoxX1.Name = "textBoxX1";
             this.textBoxX1.ReadOnly = true;
-            this.textBoxX1.Size = new System.Drawing.Size(100, 35);
+            this.textBoxX1.Size = new System.Drawing.Size(100, 25);
             this.textBoxX1.TabIndex = 0;
             // 
             // groupPanel1
@@ -676,7 +677,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.labelX19.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX19.Location = new System.Drawing.Point(561, 9);
             this.labelX19.Name = "labelX19";
-            this.labelX19.Size = new System.Drawing.Size(253, 26);
+            this.labelX19.Size = new System.Drawing.Size(203, 21);
             this.labelX19.TabIndex = 4;
             this.labelX19.Text = "封存時間：2021/04/16 20:20:20";
             // 
@@ -737,7 +738,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.colRetakeSchoolYear,
             this.colRetakeSemester,
             this.Column15,
-            this.Column18});
+            this.Column18,
+            this.ColSpecifySubjectName});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 9.75F);
@@ -766,7 +768,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.labelX9.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX9.Location = new System.Drawing.Point(10, 9);
             this.labelX9.Name = "labelX9";
-            this.labelX9.Size = new System.Drawing.Size(101, 26);
+            this.labelX9.Size = new System.Drawing.Size(82, 21);
             this.labelX9.TabIndex = 0;
             this.labelX9.Text = "修課年級：1";
             // 
@@ -780,7 +782,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX2.Location = new System.Drawing.Point(163, 12);
             this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(58, 26);
+            this.labelX2.Size = new System.Drawing.Size(47, 21);
             this.labelX2.TabIndex = 0;
             this.labelX2.Text = "學期：";
             // 
@@ -794,7 +796,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX1.Location = new System.Drawing.Point(12, 12);
             this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(75, 26);
+            this.labelX1.Size = new System.Drawing.Size(60, 21);
             this.labelX1.TabIndex = 0;
             this.labelX1.Text = "學年度：";
             // 
@@ -1082,9 +1084,17 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.Column18.TrueValue = "是";
             this.Column18.Width = 40;
             // 
+            // ColSpecifySubjectName
+            // 
+            this.ColSpecifySubjectName.HeaderText = "指定學年科目名稱";
+            this.ColSpecifySubjectName.MinimumWidth = 75;
+            this.ColSpecifySubjectName.Name = "ColSpecifySubjectName";
+            this.ColSpecifySubjectName.ReadOnly = true;
+            this.ColSpecifySubjectName.Width = 75;
+            // 
             // SemesterScoreArchiveDetails
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 541);
             this.Controls.Add(this.panelEx1);
@@ -1175,5 +1185,6 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
         private System.Windows.Forms.DataGridViewTextBoxColumn colRetakeSemester;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Column15;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Column18;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColSpecifySubjectName;
     }
 }

@@ -114,6 +114,7 @@ namespace SmartSchool.Evaluation
     ,course.course_name AS courseName
 	,course.subject AS subjectName
 	,course.subj_level AS subjectLevel
+    , course.specify_subject_name
 	FROM sc_attend 
 	LEFT JOIN student ON sc_attend.ref_student_id =student.id 
 	LEFT JOIN class ON student.ref_class_id =class.id  
@@ -131,6 +132,9 @@ namespace SmartSchool.Evaluation
 
             // 2019/8/23 by CT，取得學生有直接指定總成績，如果有將取代原始成績,key:student_id,subject+subjectLevel
             Dictionary<string, Dictionary<string, DataRow>> studentFinalScoreDict = new Dictionary<string, Dictionary<string, DataRow>>();
+
+            // 2022/5/12 by Cynthia，取得課程上的指定學年科目名稱，存入「指定學年科目名稱」屬性,key:student_id,  subject+subjectLevel
+            Dictionary<string, Dictionary<string, string>> specifySubjectNameDict = new Dictionary<string, Dictionary<string, string>>();
 
             // 各科及格標準
             Dictionary<string, Dictionary<string, decimal>> studentPassScoreDict = new Dictionary<string, Dictionary<string, decimal>>();
@@ -243,6 +247,23 @@ namespace SmartSchool.Evaluation
                 {
                     duplicateSubjectLevelMethodDict.Add("" + dr["refStudentID"] + "_" + dr["subjectName"] + "_" + dr["subjectLevel"], method);
                 }
+
+                #region 指定學年科目名稱
+                string student_id = dr["refStudentID"].ToString();
+                string level = "";
+                if (dr["subjectLevel"] != null)
+                    level = dr["subjectLevel"].ToString().Trim();
+                string subjectKey = dr["subjectName"].ToString().Trim() + "_" + level;
+                string specifySubjectName = dr["specify_subject_name"].ToString().Trim();
+
+                if (!specifySubjectNameDict.ContainsKey(student_id))
+                    specifySubjectNameDict.Add(student_id, new Dictionary<string, string>());
+
+                if (!specifySubjectNameDict[student_id].ContainsKey(subjectKey))
+                    specifySubjectNameDict[student_id].Add(subjectKey, specifySubjectName);
+                else
+                    specifySubjectNameDict[student_id][subjectKey] = specifySubjectName;
+                #endregion
             }
 
 
@@ -669,6 +690,13 @@ namespace SmartSchool.Evaluation
 
                                     updateScoreElement.SetAttribute("開課學分數", "" + sacRecord.CreditDec());
 
+                                    if (specifySubjectNameDict.ContainsKey(sacRecord.StudentID))
+                                    {
+                                        string sKey = sacRecord.Subject + "_" + sacRecord.SubjectLevel;
+                                        if (specifySubjectNameDict[sacRecord.StudentID].ContainsKey(sKey))
+                                            updateScoreElement.SetAttribute("指定學年科目名稱", specifySubjectNameDict[sacRecord.StudentID][sKey]);
+                                    }
+
 
                                     #endregion
                                     updateScoreElement.SetAttribute("原始成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
@@ -824,6 +852,12 @@ namespace SmartSchool.Evaluation
                                     newScoreInfo.SetAttribute("開課分項類別", sacRecord.Entry);
                                     newScoreInfo.SetAttribute("開課學分數", "" + sacRecord.CreditDec());
                                     newScoreInfo.SetAttribute("原始成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
+                                    if (specifySubjectNameDict.ContainsKey(sacRecord.StudentID))
+                                    {
+                                        string sKey = sacRecord.Subject + "_" + sacRecord.SubjectLevel;
+                                        if (specifySubjectNameDict[sacRecord.StudentID].ContainsKey(sKey))
+                                            newScoreInfo.SetAttribute("指定學年科目名稱", specifySubjectNameDict[sacRecord.StudentID][sKey]);
+                                    }
 
                                     // 當有直接指定總成績覆蓋
                                     if (studentFinalScoreDict.ContainsKey(sacRecord.StudentID))
@@ -2021,7 +2055,10 @@ namespace SmartSchool.Evaluation
                                 //可以被計算
                                 if (hasScore)
                                 {
-                                    string key = score.Subject+ "⊕" + score.Detail.GetAttribute("修課校部訂") + "⊕" + score.Detail.GetAttribute("修課必選修") + "⊕" + score.Detail.GetAttribute("開課學分數");
+                                    string key = score.Subject + "⊕" + score.Detail.GetAttribute("修課校部訂") + "⊕" + score.Detail.GetAttribute("修課必選修") + "⊕" + score.Detail.GetAttribute("開課學分數");
+                                    if (score.Detail.GetAttribute("指定學年科目名稱") != "")
+                                        key = score.Detail.GetAttribute("指定學年科目名稱") + "⊕" + score.Detail.GetAttribute("修課校部訂") + "⊕" + score.Detail.GetAttribute("修課必選修") + "⊕" + score.Detail.GetAttribute("開課學分數");
+
                                     if (!subjectScores.ContainsKey(key))
                                         subjectScores.Add(key, new Dictionary<SemesterSubjectScoreInfo, decimal>());
                                     subjectScores[key].Add(score, maxscore);
@@ -2331,7 +2368,11 @@ namespace SmartSchool.Evaluation
                         {//&& subjectCalcScores.ContainsKey(score.Subject) && subjectCalcScores[score.Subject] >= applylimit
                             foreach (var schoolYearSubjectScore in var.SchoolYearSubjectScoreList)
                             {
-                                if (schoolYearSubjectScore.SchoolYear == schoolyear && schoolYearSubjectScore.Subject == score.Subject 
+                                string semesterSubject = score.Subject;
+                                if (score.Detail.GetAttribute("指定學年科目名稱") != "")
+                                    semesterSubject = score.Detail.GetAttribute("指定學年科目名稱");
+
+                                if (schoolYearSubjectScore.SchoolYear == schoolyear && schoolYearSubjectScore.Subject == semesterSubject
                                     && score.Detail.GetAttribute("修課校部訂") == schoolYearSubjectScore.Detail.GetAttribute("校部定")
                                     && score.Detail.GetAttribute("修課必選修") == schoolYearSubjectScore.Detail.GetAttribute("必選修")
                                     && score.Detail.GetAttribute("開課學分數") == schoolYearSubjectScore.Detail.GetAttribute("識別學分數")

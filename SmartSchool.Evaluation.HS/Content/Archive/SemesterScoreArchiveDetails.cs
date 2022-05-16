@@ -114,6 +114,7 @@ WHERE ref_student_id = {0} AND uid = {1}";
 	, array_to_string(xpath('//Subject/@補修學期', subj_score_ele), '')::text AS 補修學期 
 	, array_to_string(xpath('//Subject/@免修', subj_score_ele), '')::text AS 免修
 	, array_to_string(xpath('//Subject/@抵免', subj_score_ele), '')::text AS 抵免
+	, array_to_string(xpath('//Subject/@指定學年科目名稱', subj_score_ele), '')::text AS 指定學年科目名稱
 FROM (
 		SELECT 
 			$semester_subject_score_archive.*
@@ -166,7 +167,7 @@ FROM (
                     dataGridView_Archive.Rows[i].Cells[24].Value = dr["重修學期"].ToString();
                     dataGridView_Archive.Rows[i].Cells[25].Value = dr["免修"].ToString() == "是" ? "是" : "否";
                     dataGridView_Archive.Rows[i].Cells[26].Value = dr["抵免"].ToString() == "是" ? "是" : "否";
-
+                    dataGridView_Archive.Rows[i].Cells[27].Value = dr["指定學年科目名稱"].ToString();
                     i++;
                 }
             }

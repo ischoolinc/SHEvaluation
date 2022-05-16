@@ -93,6 +93,7 @@ namespace ExportSemsArchive.Report
 											, array_to_string(xpath('//Subject/@補修學期', subj_score_ele), '')::text AS 補修學期 
 											, array_to_string(xpath('//Subject/@免修', subj_score_ele), '')::text AS 免修
 											, array_to_string(xpath('//Subject/@抵免', subj_score_ele), '')::text AS 抵免
+											, array_to_string(xpath('//Subject/@指定學年科目名稱', subj_score_ele), '')::text AS 指定學年科目名稱
 										FROM (
 												SELECT 
 													$semester_subject_score_archive.*
@@ -155,7 +156,7 @@ namespace ExportSemsArchive.Report
                     _wb.Worksheets[0].Cells[rowIndex, 33].PutValue(dr["補修學期"]);
                     _wb.Worksheets[0].Cells[rowIndex, 34].PutValue(dr["免修"]);
                     _wb.Worksheets[0].Cells[rowIndex, 35].PutValue(dr["抵免"]);
-
+                    _wb.Worksheets[0].Cells[rowIndex, 36].PutValue(dr["指定學年科目名稱"]);
                     rowIndex++;
                 }
 

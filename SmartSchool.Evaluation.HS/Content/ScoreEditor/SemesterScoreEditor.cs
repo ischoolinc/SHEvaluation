@@ -203,7 +203,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                         var.GetAttribute("重修學年度"),
                         var.GetAttribute("重修學期"),
                         var.GetAttribute("免修") == "是",
-                        var.GetAttribute("抵免") == "是"
+                        var.GetAttribute("抵免") == "是",
+                        var.GetAttribute("指定學年科目名稱")
                         );
                     row.Cells[SubjectColumn].ToolTipText = GetSubjectScorePlace(row);
                     dataGridViewX1.Rows.Add(row);
@@ -526,7 +527,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
         private void buttonX1_Click(object sender, EventArgs e)
         {
             dataGridViewX1.EndEdit();
-            if (!ValidateAll()) return;
+            if (!ValidateAll()) 
+                return;
             #region 新增修改科目成績資料
             XmlElement subjectScoreInfo = CreateSubjectScoreElement();
             if (_SubjectScoreID != "")
@@ -861,7 +863,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 subjectElement.SetAttribute("補修學期", "" + row.Cells[colSScoreSemester.Index].Value);
                 subjectElement.SetAttribute("免修", (row.Cells[colScoreN1.Index].Value != null && (bool)row.Cells[colScoreN1.Index].Value) ? "是" : "否");
                 subjectElement.SetAttribute("抵免", (row.Cells[colScoreN2.Index].Value != null && (bool)row.Cells[colScoreN2.Index].Value) ? "是" : "否");
-
+                subjectElement.SetAttribute("指定學年科目名稱", "" + row.Cells[ColSpecifySubjectName.Index].Value);
                 subjectScoreInfo.AppendChild(subjectElement);
 
                 _afterXml.AddElement("SubjectCollection", subjectElement);

@@ -62,7 +62,8 @@ namespace SmartSchool.Evaluation.ImportExport
                 , "修課備註"
                 , "修課直接指定總成績"
                 , "免修"
-                , "抵免"                
+                , "抵免"
+                , "指定學年科目名稱"
                 );
             filterRepeat.CheckedChanged += delegate
             {
@@ -183,7 +184,6 @@ namespace SmartSchool.Evaluation.ImportExport
                                     case "不計學分": row.Add(field, var.Detail.GetAttribute("不計學分") == "是" ? "是" : ""); break;
                                     case "不需評分": row.Add(field, var.Detail.GetAttribute("不需評分") == "是" ? "是" : ""); break;
                                     case "註記": row.Add(field, var.Detail.HasAttribute("註記") ? var.Detail.GetAttribute("註記") : ""); break;
-
                                     //case "計算規則-及格標準":
                                     //    if (stu.Fields.ContainsKey("及格標準") && stu.Fields["及格標準"] is Dictionary<int, decimal>)
                                     //    {
@@ -249,6 +249,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                     //case "應修學期": row.Add(field, var.Detail.GetAttribute("應修學期")); break;
                                     case "免修": row.Add(field, var.Detail.GetAttribute("免修") == "是" ? "是" : ""); break;
                                     case "抵免": row.Add(field, var.Detail.GetAttribute("抵免") == "是" ? "是" : ""); break;
+                                    case "指定學年科目名稱": row.Add(field, var.Detail.HasAttribute("指定學年科目名稱") ? var.Detail.GetAttribute("指定學年科目名稱") : ""); break;
 
                                 }
                             }

@@ -2513,6 +2513,16 @@ namespace SmartSchool.Evaluation
                         #region 使用所有科目成績加權計算畢業成績(總分及總數)
                         decimal creditCount = 0;
                         decimal scoreSum = 0;
+
+                        // 專業
+                        decimal PcreditCount = 0;
+                        decimal PscoreSum = 0;
+
+                        // 實習
+                        decimal IcreditCount = 0;
+                        decimal IscoreSum = 0;
+
+
                         foreach (SemesterSubjectScoreInfo subjectScoreInfo in var.SemesterSubjectScoreList)
                         {
                             if (useGPlan)//相關屬性採用課程規劃
@@ -2535,11 +2545,36 @@ namespace SmartSchool.Evaluation
                                 scoreSum += subjectScoreInfo.Score * subjectScoreInfo.Credit;
                                 creditCount += subjectScoreInfo.Credit;
                             }
+
+                            if (subjectScoreInfo.Detail.GetAttribute("開課分項類別") == "專業科目")
+                            {
+                                PscoreSum += subjectScoreInfo.Score * subjectScoreInfo.Credit;
+                                PcreditCount += subjectScoreInfo.Credit;
+                            }
+
+                            if (subjectScoreInfo.Detail.GetAttribute("開課分項類別") == "實習科目")
+                            {
+                                IscoreSum += subjectScoreInfo.Score * subjectScoreInfo.Credit;
+                                IcreditCount += subjectScoreInfo.Credit;
+                            }
+
                         }
                         if (creditCount != 0)
                         {
                             entryCount.Add("學業", creditCount);
                             entrySum.Add("學業", scoreSum);
+                        }
+
+                        if (PcreditCount != 0)
+                        {
+                            entryCount.Add("專業科目", PcreditCount);
+                            entrySum.Add("專業科目", PscoreSum);
+                        }
+
+                        if (IcreditCount != 0)
+                        {
+                            entryCount.Add("實習科目", IcreditCount);
+                            entrySum.Add("實習科目", IscoreSum);
                         }
                         #endregion
                     }
@@ -2547,7 +2582,8 @@ namespace SmartSchool.Evaluation
                     foreach (SemesterEntryScoreInfo entryScore in var.SemesterEntryScoreList)
                     {
                         #region 計算各分項畢業成績
-                        if (entryScore.Entry != "學業" || !useSubjectAdv)//其它分項或者是學業分項但不使用科目成績加權
+                        //if (entryScore.Entry != "學業" || !useSubjectAdv)//其它分項或者是學業分項但不使用科目成績加權
+                        if (!useSubjectAdv)//其它分項或者是學業分項但不使用科目成績加權
                         {
                             if (!entryCount.ContainsKey(entryScore.Entry))
                                 entryCount.Add(entryScore.Entry, 0);

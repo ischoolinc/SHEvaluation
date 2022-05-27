@@ -200,14 +200,10 @@ namespace SmartSchool.Evaluation.Process.Wizards
                                                 Reqby = subjectInfo[2];
                                                 Credit = subjectInfo[3];
                                             }
-
-                                            XmlElement subjectElement = subjectScoreInfo.SelectSingleNode("Subject[@科目='" + subjectName + "']") as XmlElement;
+                                            XmlElement subjectElement = subjectScoreInfo.SelectSingleNode("Subject[@科目='" + subjectName + "' and @校部定='" + Req + "' and @必選修='" + Reqby + "' and @識別學分數='" + Credit + "']") as XmlElement;
 
                                             if (subjectElement != null)
                                             {
-                                                if (subjectElement.GetAttribute("校部定") == Req
-                                                    && subjectElement.GetAttribute("必選修") == Reqby
-                                                    && subjectElement.GetAttribute("識別學分數") == Credit)
                                                 {
                                                     decimal topScore = subjectScore[subject], tryParseScore;
                                                     if (decimal.TryParse(subjectElement.GetAttribute("補考成績"), out tryParseScore) && topScore < tryParseScore)
@@ -220,11 +216,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
                                                     }
                                                     subjectElement.SetAttribute("結算成績", "" + subjectScore[subject]);
                                                     subjectElement.SetAttribute("學年成績", "" + topScore);
-                                                    subjectElement.SetAttribute("識別學分數", "" + Credit);
-                                                    subjectElement.SetAttribute("校部定", "" + Req);
-                                                    subjectElement.SetAttribute("必選修", "" + Reqby);
                                                 }
-
                                             }
                                             else
                                             {

@@ -395,6 +395,18 @@ namespace SmartSchool.Evaluation.ImportExport
                                     errorMessage += (errorMessage == "" ? "" : "\n") + "是否補修成績 必填 是";
                             }
                         }
+
+                        // 檢查重修學年度、重修學期
+                        if (e.SelectFields.Contains("重修成績") && e.SelectFields.Contains("重修學年度") && e.SelectFields.Contains("重修學期"))
+                        {
+                            if (e.Data["重修成績"] != "")
+                            {
+                                if (e.Data["重修學年度"] == "" || e.Data["重修學期"] == "")
+                                {
+                                    errorMessage += (errorMessage == "" ? "" : "\n") + "重修學年度、重修學期 必填!";
+                                }
+                            }
+                        }
                     }
                     e.ErrorMessage = errorMessage;
                 }

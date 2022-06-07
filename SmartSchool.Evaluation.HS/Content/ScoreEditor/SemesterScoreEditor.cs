@@ -502,7 +502,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             {
                 case 0:
                     comboColumn = ((DataGridViewComboBoxColumn)dataGridViewX1.Columns["ColEntry"]);
-                    if (!comboColumn.Items.Contains("體育") && cell.Value.ToString()=="體育")
+                    if (!comboColumn.Items.Contains("體育") && cell.Value.ToString() == "體育")
                     {
                         comboColumn.Items.Add("體育");
                     }
@@ -527,8 +527,11 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
         private void buttonX1_Click(object sender, EventArgs e)
         {
             dataGridViewX1.EndEdit();
-            if (!ValidateAll()) 
+            if (!ValidateAll())
+            {
+                MsgBox.Show("資料有誤，請修正。");
                 return;
+            }
             #region 新增修改科目成績資料
             XmlElement subjectScoreInfo = CreateSubjectScoreElement();
             if (_SubjectScoreID != "")
@@ -982,7 +985,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 dataGridViewX1.UpdateCellErrorText(i, row.Index);
             }
 
-            // 檢查補修相關資料
+            #region 檢查補修相關資料
             row.Cells[19].ErrorText = "";
             row.Cells[20].ErrorText = "";
             row.Cells[21].ErrorText = "";
@@ -1016,6 +1019,25 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 }
 
             }
+            #endregion
+
+            #region 檢查重修相關欄位
+            if ("" + row.Cells[Column8.Index].Value != "")
+            {
+
+                if ("" + row.Cells[colRetakeSchoolYear.Index].Value == "")
+                {
+                    validatePass &= false;
+                    row.Cells[colRetakeSchoolYear.Index].ErrorText = "必須輸入整數。";
+                }
+
+                if ("" + row.Cells[colRetakeSemester.Index].Value == "")
+                {
+                    validatePass &= false;
+                    row.Cells[colRetakeSemester.Index].ErrorText = "必須輸入整數。";
+                }
+            }
+            #endregion
 
             foreach (DataGridViewCell cell in row.Cells)
             {

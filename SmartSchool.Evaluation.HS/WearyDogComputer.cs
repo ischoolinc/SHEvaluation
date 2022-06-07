@@ -115,6 +115,8 @@ namespace SmartSchool.Evaluation
 	,course.subject AS subjectName
 	,course.subj_level AS subjectLevel
     , course.specify_subject_name
+	, COALESCE(sc_attend.required_by, course.c_required_by)  AS required_by
+	, COALESCE(sc_attend.is_required, course.c_is_required)  AS is_required
 	FROM sc_attend 
 	LEFT JOIN student ON sc_attend.ref_student_id =student.id 
 	LEFT JOIN class ON student.ref_class_id =class.id  
@@ -135,6 +137,9 @@ namespace SmartSchool.Evaluation
 
             // 2022/5/12 by Cynthia，取得課程上的指定學年科目名稱，存入「指定學年科目名稱」屬性,key:student_id,  subject+subjectLevel
             Dictionary<string, Dictionary<string, string>> specifySubjectNameDict = new Dictionary<string, Dictionary<string, string>>();
+
+            // 2022/6/2 by Cynthia  檢查設定必選修。key:student_id,  course_name
+            Dictionary<string, Dictionary<string, Dictionary<string, string>>> courseRequied = new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
 
             // 各科及格標準
             Dictionary<string, Dictionary<string, decimal>> studentPassScoreDict = new Dictionary<string, Dictionary<string, decimal>>();
@@ -255,7 +260,9 @@ namespace SmartSchool.Evaluation
                     level = dr["subjectLevel"].ToString().Trim();
                 string subjectKey = dr["subjectName"].ToString().Trim() + "_" + level;
                 string specifySubjectName = dr["specify_subject_name"].ToString().Trim();
-
+                string courseName = dr["courseName"].ToString();
+                string required_by = dr["required_by"].ToString();
+                string is_required = dr["is_required"].ToString();
                 if (!specifySubjectNameDict.ContainsKey(student_id))
                     specifySubjectNameDict.Add(student_id, new Dictionary<string, string>());
 
@@ -263,6 +270,17 @@ namespace SmartSchool.Evaluation
                     specifySubjectNameDict[student_id].Add(subjectKey, specifySubjectName);
                 else
                     specifySubjectNameDict[student_id][subjectKey] = specifySubjectName;
+
+                #region 校部定/必選修
+                if (!courseRequied.ContainsKey(student_id))
+                    courseRequied.Add(student_id, new Dictionary<string, Dictionary<string, string>>());
+                if(!courseRequied[student_id].ContainsKey(courseName))
+                    courseRequied[student_id].Add(courseName, new Dictionary<string, string>());
+                if (!courseRequied[student_id][courseName].ContainsKey("required_by"))
+                    courseRequied[student_id][courseName].Add("required_by", required_by);
+                if (!courseRequied[student_id][courseName].ContainsKey("is_required"))
+                    courseRequied[student_id][courseName].Add("is_required", is_required);
+                #endregion
                 #endregion
             }
 
@@ -365,6 +383,41 @@ namespace SmartSchool.Evaluation
                         canCalc = false;
                     }
                     #endregion
+
+                    #region 檢查課程的校部定、必選修
+                    //bool hasError = false;
+                    if (courseRequied.ContainsKey(var.StudentID))
+                    {
+                        bool hasError = false;
+                        foreach (string courseName in courseRequied[var.StudentID].Keys)
+                        {
+                            if (courseRequied[var.StudentID][courseName]["required_by"] == "")
+                            {
+                                if (!_ErrorList.ContainsKey(var))
+                                    _ErrorList.Add(var, new List<string>());
+
+                                _ErrorList[var].Add("沒有" + courseName + "的校部訂，無法計算。");
+
+                                hasError = true;
+                            }
+
+                            if (courseRequied[var.StudentID][courseName]["is_required"] == "")
+                            {
+                                if (!_ErrorList.ContainsKey(var))
+                                    _ErrorList.Add(var, new List<string>());
+
+                                _ErrorList[var].Add("沒有" + courseName + "的必選修，無法計算。");
+
+                                hasError = true;
+                            }
+                        }
+                        if (hasError)
+                        {
+                            canCalc = false;
+                        }
+                    }
+                    #endregion
+
 
                     #region 處理計算規則
                     XmlElement scoreCalcRule = ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var.StudentID) == null ? null : ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var.StudentID).ScoreCalcRuleElement;

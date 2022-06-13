@@ -727,5 +727,35 @@ rank_batch
             }
             return value;
         }
+
+        /// <summary>
+        /// 取得指定學年度學期的指定學年科目名稱
+        /// </summary>
+        /// <param name="SchoolYear"></param>
+        /// <param name="Semester"></param>
+        /// <returns></returns>
+        public static Dictionary<string,Dictionary<int, string>> GetCourseSpecifySubjectNameDict(string SchoolYear, string Semester)
+        {
+            Dictionary < string,Dictionary<int, string>> retVal = new Dictionary<string, Dictionary<int, string>>();
+            QueryHelper qh = new QueryHelper();
+            string strSQL = "SELECT id, subject, specify_subject_name FROM course WHERE school_year = " + SchoolYear + " AND semester = " + Semester + "  AND specify_subject_name<>''";
+            DataTable dt = qh.Select(strSQL);
+            foreach (DataRow dr in dt.Rows)
+            {
+                int courseID = 0;
+                string strCourseID = dr["id"].ToString();
+                string subjName = dr["subject"].ToString();
+                string spName = dr["specify_subject_name"].ToString();
+
+                if (!retVal.ContainsKey(subjName))
+                    retVal.Add(subjName, new Dictionary<int, string>());
+
+                if (int.TryParse(strCourseID, out courseID))
+                    if (!retVal[subjName].ContainsKey(courseID))
+                        retVal[subjName].Add(courseID, spName);
+            }
+            return retVal;
+        }
+
     }
 }

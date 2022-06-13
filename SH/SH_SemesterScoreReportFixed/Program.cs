@@ -688,6 +688,9 @@ namespace SH_SemesterScoreReportFixed
 
                     Dictionary<string, Dictionary<string, Dictionary<string, ExamScoreInfo>>> studentExamSores = new Dictionary<string, Dictionary<string, Dictionary<string, ExamScoreInfo>>>();
                     Dictionary<string, Dictionary<string, ExamScoreInfo>> studentRefExamSores = new Dictionary<string, Dictionary<string, ExamScoreInfo>>();
+                    //課程上指定學年科目名稱(KEY: courseID,)
+                    Dictionary<string, Dictionary<int, string>> CourseSpecifySubjectNameDic = Utility.GetCourseSpecifySubjectNameDict(conf.SchoolYear, conf.Semester);
+
                     ManualResetEvent scoreReady = new ManualResetEvent(false);
                     ManualResetEvent elseReady = new ManualResetEvent(false);
                     #region 偷跑取得考試成績
@@ -747,15 +750,25 @@ namespace SH_SemesterScoreReportFixed
                                     {
                                         foreach (var attendStudent in courseRecord.StudentAttendList)
                                         {
+                                            string newExamSubject = courseRecord.Subject;
+                                            if (CourseSpecifySubjectNameDic.ContainsKey(courseRecord.Subject))
+                                                if (CourseSpecifySubjectNameDic[courseRecord.Subject].ContainsKey(courseRecord.CourseID))
+                                                    newExamSubject = CourseSpecifySubjectNameDic[courseRecord.Subject][courseRecord.CourseID];
+
                                             if (!studentExamSores.ContainsKey(attendStudent.StudentID)) studentExamSores.Add(attendStudent.StudentID, new Dictionary<string, Dictionary<string, ExamScoreInfo>>());
-                                            if (!studentExamSores[attendStudent.StudentID].ContainsKey(courseRecord.Subject)) studentExamSores[attendStudent.StudentID].Add(courseRecord.Subject, new Dictionary<string, ExamScoreInfo>());
-                                            studentExamSores[attendStudent.StudentID][courseRecord.Subject].Add("" + attendStudent.CourseID, null);
+                                            if (!studentExamSores[attendStudent.StudentID].ContainsKey(newExamSubject)) studentExamSores[attendStudent.StudentID].Add(newExamSubject, new Dictionary<string, ExamScoreInfo>());
+                                            studentExamSores[attendStudent.StudentID][newExamSubject].Add("" + attendStudent.CourseID, null);
                                         }
                                         foreach (var examScoreRec in courseRecord.ExamScoreList)
                                         {
                                             if (examScoreRec.ExamName == conf.ExamRecord.Name)
                                             {
-                                                studentExamSores[examScoreRec.StudentID][courseRecord.Subject]["" + examScoreRec.CourseID] = examScoreRec;
+                                                string newExamSubject = courseRecord.Subject;
+                                                if (CourseSpecifySubjectNameDic.ContainsKey(courseRecord.Subject))
+                                                    if (CourseSpecifySubjectNameDic[courseRecord.Subject].ContainsKey(courseRecord.CourseID))
+                                                        newExamSubject = CourseSpecifySubjectNameDic[courseRecord.Subject][courseRecord.CourseID];
+
+                                                studentExamSores[examScoreRec.StudentID][newExamSubject]["" + examScoreRec.CourseID] = examScoreRec;
                                             }
                                         }
                                     }
@@ -1393,7 +1406,13 @@ namespace SH_SemesterScoreReportFixed
                                 {
                                     if (semesterSubjectScore.Detail.GetAttribute("不計學分") != "是")
                                     {
-                                        subjects1.Add(semesterSubjectScore.Subject);
+                                        //科目_校部定_必選修(bool)_學分
+                                        //subjects1.Add(semesterSubjectScore.Subject);
+                                        //指定學年科目名稱
+                                        if (semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱") != "")
+                                            subjects1.Add(semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱") + "_" + semesterSubjectScore.Detail.GetAttribute("修課校部訂") + "_" + semesterSubjectScore.Require.ToString().ToLower() + "_" + semesterSubjectScore.CreditDec());
+                                        else
+                                            subjects1.Add(semesterSubjectScore.Subject + "_" + semesterSubjectScore.Detail.GetAttribute("修課校部訂") + "_" + semesterSubjectScore.Require.ToString().ToLower() + "_" + semesterSubjectScore.CreditDec());
                                         currentGradeYear = semesterSubjectScore.GradeYear;
                                     }
                                 }
@@ -1402,17 +1421,30 @@ namespace SH_SemesterScoreReportFixed
                             {
                                 foreach (var subjectName in studentExamSores[studentID].Keys)
                                 {
+
                                     foreach (var courseID in studentExamSores[studentID][subjectName].Keys)
                                     {
                                         if (conf.PrintSubjectList.Contains(subjectName))
                                         {
                                             #region 跟學期成績做差異新增
+                                            string newExamSubjectName = subjectName;
+                                            if (CourseSpecifySubjectNameDic.ContainsKey(subjectName))
+                                                if (CourseSpecifySubjectNameDic[subjectName].ContainsKey(accessHelper.CourseHelper.GetCourse(courseID)[0].CourseID))
+                                                    newExamSubjectName = CourseSpecifySubjectNameDic[subjectName][accessHelper.CourseHelper.GetCourse(courseID)[0].CourseID];
+
                                             bool match = false;
                                             foreach (var semesterSubjectScore in stuRec.SemesterSubjectScoreList)
                                             {
+                                                string newSemesterSubjectName = semesterSubjectScore.Subject;
+                                                if (semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱") != "")
+                                                    newSemesterSubjectName = semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱");
+
                                                 if (("" + semesterSubjectScore.SchoolYear) == conf.SchoolYear
                                                     && ("" + semesterSubjectScore.Semester) == conf.Semester
-                                                    && semesterSubjectScore.Subject == subjectName
+                                                    && newSemesterSubjectName == newExamSubjectName
+                                                    && semesterSubjectScore.Detail.GetAttribute("修課校部訂") == accessHelper.CourseHelper.GetCourse(courseID)[0].RequiredBy
+                                                    && semesterSubjectScore.Require == accessHelper.CourseHelper.GetCourse(courseID)[0].Required
+                                                    && semesterSubjectScore.CreditDec() == accessHelper.CourseHelper.GetCourse(courseID)[0].CreditDec()
                                                     && semesterSubjectScore.Level == accessHelper.CourseHelper.GetCourse(courseID)[0].SubjectLevel)
                                                 {
                                                     match = true;
@@ -1421,7 +1453,8 @@ namespace SH_SemesterScoreReportFixed
                                             }
                                             if (!match)
                                             {
-                                                subjects1.Add(subjectName);
+                                                //指定學年科目成績
+                                                subjects1.Add(newExamSubjectName + "_" + accessHelper.CourseHelper.GetCourse(courseID)[0].RequiredBy + "_" + accessHelper.CourseHelper.GetCourse(courseID)[0].Required.ToString().ToLower() + "_" + accessHelper.CourseHelper.GetCourse(courseID)[0].CreditDec());
                                             }
                                             #endregion
                                         }
@@ -1437,7 +1470,12 @@ namespace SH_SemesterScoreReportFixed
                                         if (semesterSubjectScore.Semester == 1 && semesterSubjectScore.GradeYear == currentGradeYear)
                                         {
                                             if (semesterSubjectScore.Detail.GetAttribute("不計學分") != "是")
-                                                subjects2.Add(semesterSubjectScore.Subject);
+                                                if (semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱") != "")
+                                                    subjects2.Add(semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱") + "_" + semesterSubjectScore.Detail.GetAttribute("修課校部訂") + "_" + semesterSubjectScore.Require.ToString().ToLower() + "_" + semesterSubjectScore.CreditDec());
+                                                else
+                                                    subjects2.Add(semesterSubjectScore.Subject + "_" + semesterSubjectScore.Detail.GetAttribute("修課校部訂") + "_" + semesterSubjectScore.Require.ToString().ToLower() + "_" + semesterSubjectScore.CreditDec());
+
+                                            //subjects2.Add(semesterSubjectScore.Subject + "_" + semesterSubjectScore.Detail.GetAttribute("修課校部訂") + "_" + semesterSubjectScore.Require.ToString().ToLower() + "_" + semesterSubjectScore.CreditDec());
                                         }
                                     }
                                 }
@@ -1447,7 +1485,10 @@ namespace SH_SemesterScoreReportFixed
                                     {
                                         if (("" + schoolYearSubjectScore.SchoolYear) == conf.SchoolYear)
                                         {
-                                            subjects3.Add(schoolYearSubjectScore.Subject);
+                                            string required = "false";
+                                            if (schoolYearSubjectScore.Detail.GetAttribute("必選修") == "必修")
+                                                required = "true";
+                                            subjects3.Add(schoolYearSubjectScore.Subject + "_" + schoolYearSubjectScore.Detail.GetAttribute("校部定") + "_" + required + "_" + schoolYearSubjectScore.Detail.GetAttribute("識別學分數"));
                                         }
                                     }
                                 }
@@ -1558,6 +1599,7 @@ namespace SH_SemesterScoreReportFixed
                             // 學期科目與定期評量
                             foreach (string subjectName in subjectNameList)
                             {
+                                string[] subjectInfoArray = subjectName.Split('_');
                                 if (subjectIndex <= conf.SubjectLimit)
                                 {
                                     decimal? subjectNumber = null;
@@ -1567,8 +1609,15 @@ namespace SH_SemesterScoreReportFixed
                                     #region 本學期學期成績
                                     foreach (var semesterSubjectScore in stuRec.SemesterSubjectScoreList)
                                     {
+                                        string newSemesterSubjectName = semesterSubjectScore.Subject;
+                                        if (semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱") != "")
+                                            newSemesterSubjectName = semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱");
+
                                         if (semesterSubjectScore.Detail.GetAttribute("不計學分") != "是"
-                                            && semesterSubjectScore.Subject == subjectName
+                                            && newSemesterSubjectName == subjectInfoArray[0]//subjectName
+                                            && semesterSubjectScore.Detail.GetAttribute("修課校部訂") == subjectInfoArray[1]
+                                            && semesterSubjectScore.Require.ToString().ToLower() == subjectInfoArray[2].ToLower()
+                                            && semesterSubjectScore.CreditDec().ToString() == subjectInfoArray[3]
                                             && ("" + semesterSubjectScore.SchoolYear) == conf.SchoolYear
                                             && ("" + semesterSubjectScore.Semester) == conf.Semester)
                                         {
@@ -1578,10 +1627,10 @@ namespace SH_SemesterScoreReportFixed
                                             decimal level;
                                             subjectNumber = decimal.TryParse(semesterSubjectScore.Level, out level) ? (decimal?)level : null;
 
-                                            row["科目名稱" + subjectIndex] = semesterSubjectScore.Subject + GetNumber(subjectNumber);
+                                            row["科目名稱" + subjectIndex] = newSemesterSubjectName + GetNumber(subjectNumber);
                                             if (!conf.IsShowLevel)  //2021-12-27 Cynthia 不顯示級別
-                                                row["科目名稱" + subjectIndex] = semesterSubjectScore.Subject;
-                                            row["科目" + subjectIndex] = semesterSubjectScore.Subject;
+                                                row["科目名稱" + subjectIndex] = newSemesterSubjectName;
+                                            row["科目" + subjectIndex] = newSemesterSubjectName;
                                             row["科目級別" + subjectIndex] = GetNumber(subjectNumber);
                                             row["學分數" + subjectIndex] = semesterSubjectScore.CreditDec();
                                             row["科目必選修" + subjectIndex] = semesterSubjectScore.Require ? "必修" : "選修";
@@ -2022,223 +2071,25 @@ namespace SH_SemesterScoreReportFixed
                                     #endregion
                                     #region 定期評量成績
                                     // 檢查畫面上定期評量列印科目
-                                    if (conf.PrintSubjectList.Contains(subjectName))
+
+                                    //if (conf.PrintSubjectList.Contains(subjectInfoArray[0]))//subjectName要取原本的名稱
                                     {
+
                                         if (studentExamSores.ContainsKey(studentID))
                                         {
-                                            if (studentExamSores[studentID].ContainsKey(subjectName))
+                                            if (studentExamSores[studentID].ContainsKey(subjectInfoArray[0]))
                                             {
-                                                foreach (var courseID in studentExamSores[studentID][subjectName].Keys)
+                                                foreach (var courseID in studentExamSores[studentID][subjectInfoArray[0]].Keys)
                                                 {
-                                                    var sceTakeRecord = studentExamSores[studentID][subjectName][courseID];
+                                                    var sceTakeRecord = studentExamSores[studentID][subjectInfoArray[0]][courseID];
                                                     if (sceTakeRecord != null)
                                                     {//有輸入
-                                                        if (findInSemesterSubjectScore)
+                                                        if (conf.PrintSubjectList.Contains(sceTakeRecord.Subject))
                                                         {
-                                                            if (sceTakeRecord.SubjectLevel != "" + subjectNumber)
-                                                            {
-                                                                continue;
-                                                            }
-                                                        }
-                                                        findInExamScores = true;
-                                                        if (!findInSemesterSubjectScore)
-                                                        {
-                                                            decimal level;
-                                                            subjectNumber = decimal.TryParse(sceTakeRecord.SubjectLevel, out level) ? (decimal?)level : null;
-                                                            row["科目名稱" + subjectIndex] = sceTakeRecord.Subject + GetNumber(subjectNumber);
-                                                            if (!conf.IsShowLevel)  //2021-12-27 Cynthia 不顯示級別
-                                                                row["科目名稱" + subjectIndex] = sceTakeRecord.Subject;
-                                                            row["科目" + subjectIndex] = sceTakeRecord.Subject;
-                                                            row["科目級別" + subjectIndex] = GetNumber(subjectNumber);
 
-                                                            row["學分數" + subjectIndex] = sceTakeRecord.CreditDec();
-                                                        }
-                                                        row["科目成績" + subjectIndex] = sceTakeRecord.SpecialCase == "" ? ("" + sceTakeRecord.ExamScore) : sceTakeRecord.SpecialCase;
-                                                        #region 班排名及落點分析
-                                                        string k1 = "";
-                                                        if (RankMatrixDataDict.ContainsKey(studentID))
-                                                        {
-                                                            k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_班排名";
-                                                            if (RankMatrixDataDict[studentID].ContainsKey(k1))
-                                                            {
-                                                                if (RankMatrixDataDict[studentID][k1]["rank"] != null)
-                                                                    row["班排名" + subjectIndex] = RankMatrixDataDict[studentID][k1]["rank"].ToString();
-
-                                                                if (RankMatrixDataDict[studentID][k1]["matrix_count"] != null)
-                                                                    row["班排名母數" + subjectIndex] = RankMatrixDataDict[studentID][k1]["matrix_count"].ToString();
-
-                                                                // 五標PR填值
-                                                                foreach (string rItem in r2List)
-                                                                {
-                                                                    if (RankMatrixDataDict[studentID][k1][rItem] != null)
-                                                                    {
-
-                                                                        // RankMatrixDataDict[studentID][k1][rItem].ToString();
-
-                                                                        if (r2ParseList.Contains(rItem))
-                                                                        {
-                                                                            decimal dd;
-                                                                            if (decimal.TryParse(RankMatrixDataDict[studentID][k1][rItem].ToString(), out dd))
-                                                                            {
-                                                                                row["班排名" + subjectIndex + "_" + rItem] = Math.Round(dd, r2ParseN, MidpointRounding.AwayFromZero);
-                                                                            }
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            row["班排名" + subjectIndex + "_" + rItem] = RankMatrixDataDict[studentID][k1][rItem].ToString();
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-
-                                                        }
-                                                        #endregion
-                                                        #region 科排名及落點分析
-                                                        if (RankMatrixDataDict.ContainsKey(studentID))
-                                                        {
-                                                            k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_科排名";
-                                                            if (RankMatrixDataDict[studentID].ContainsKey(k1))
-                                                            {
-                                                                if (RankMatrixDataDict[studentID][k1]["rank"] != null)
-                                                                    row["科排名" + subjectIndex] = RankMatrixDataDict[studentID][k1]["rank"].ToString();
-
-                                                                if (RankMatrixDataDict[studentID][k1]["matrix_count"] != null)
-                                                                    row["科排名母數" + subjectIndex] = RankMatrixDataDict[studentID][k1]["matrix_count"].ToString();
-
-                                                                // 五標PR填值
-                                                                foreach (string rItem in r2List)
-                                                                {
-                                                                    if (RankMatrixDataDict[studentID][k1][rItem] != null)
-                                                                    {
-                                                                        if (r2ParseList.Contains(rItem))
-                                                                        {
-                                                                            decimal dd;
-                                                                            if (decimal.TryParse(RankMatrixDataDict[studentID][k1][rItem].ToString(), out dd))
-                                                                            {
-                                                                                row["科排名" + subjectIndex + "_" + rItem] = Math.Round(dd, r2ParseN, MidpointRounding.AwayFromZero);
-                                                                            }
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            row["科排名" + subjectIndex + "_" + rItem] = RankMatrixDataDict[studentID][k1][rItem].ToString();
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                        #endregion
-                                                        #region 全校排名及落點分析
-                                                        if (RankMatrixDataDict.ContainsKey(studentID))
-                                                        {
-                                                            k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_年排名";
-                                                            if (RankMatrixDataDict[studentID].ContainsKey(k1))
-                                                            {
-                                                                if (RankMatrixDataDict[studentID][k1]["rank"] != null)
-                                                                    row["全校排名" + subjectIndex] = RankMatrixDataDict[studentID][k1]["rank"].ToString();
-
-                                                                if (RankMatrixDataDict[studentID][k1]["matrix_count"] != null)
-                                                                    row["全校排名母數" + subjectIndex] = RankMatrixDataDict[studentID][k1]["matrix_count"].ToString();
-
-                                                                // 五標PR填值
-                                                                foreach (string rItem in r2List)
-                                                                {
-                                                                    if (RankMatrixDataDict[studentID][k1][rItem] != null)
-                                                                    {
-                                                                        if (r2ParseList.Contains(rItem))
-                                                                        {
-                                                                            decimal dd;
-                                                                            if (decimal.TryParse(RankMatrixDataDict[studentID][k1][rItem].ToString(), out dd))
-                                                                            {
-                                                                                row["全校排名" + subjectIndex + "_" + rItem] = Math.Round(dd, r2ParseN, MidpointRounding.AwayFromZero);
-                                                                            }
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            row["全校排名" + subjectIndex + "_" + rItem] = RankMatrixDataDict[studentID][k1][rItem].ToString();
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                        #endregion
-                                                        #region 類別1排名及落點分析
-                                                        if (RankMatrixDataDict.ContainsKey(studentID))
-                                                        {
-                                                            k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_類別1排名";
-                                                            if (RankMatrixDataDict[studentID].ContainsKey(k1))
-                                                            {
-                                                                if (RankMatrixDataDict[studentID][k1]["rank"] != null)
-                                                                    row["類別1排名" + subjectIndex] = RankMatrixDataDict[studentID][k1]["rank"].ToString();
-
-                                                                if (RankMatrixDataDict[studentID][k1]["matrix_count"] != null)
-                                                                    row["類別1排名母數" + subjectIndex] = RankMatrixDataDict[studentID][k1]["matrix_count"].ToString();
-
-                                                                // 五標PR填值
-                                                                foreach (string rItem in r2List)
-                                                                {
-                                                                    if (RankMatrixDataDict[studentID][k1][rItem] != null)
-                                                                    {
-                                                                        if (r2ParseList.Contains(rItem))
-                                                                        {
-                                                                            decimal dd;
-                                                                            if (decimal.TryParse(RankMatrixDataDict[studentID][k1][rItem].ToString(), out dd))
-                                                                            {
-                                                                                row["類別1排名" + subjectIndex + "_" + rItem] = Math.Round(dd, r2ParseN, MidpointRounding.AwayFromZero);
-                                                                            }
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            row["類別1排名" + subjectIndex + "_" + rItem] = RankMatrixDataDict[studentID][k1][rItem].ToString();
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                        #endregion
-                                                        #region 類別2排名及落點分析
-                                                        if (RankMatrixDataDict.ContainsKey(studentID))
-                                                        {
-                                                            k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_類別2排名";
-                                                            if (RankMatrixDataDict[studentID].ContainsKey(k1))
-                                                            {
-                                                                if (RankMatrixDataDict[studentID][k1]["rank"] != null)
-                                                                    row["類別2排名" + subjectIndex] = RankMatrixDataDict[studentID][k1]["rank"].ToString();
-
-                                                                if (RankMatrixDataDict[studentID][k1]["matrix_count"] != null)
-                                                                    row["類別2排名母數" + subjectIndex] = RankMatrixDataDict[studentID][k1]["matrix_count"].ToString();
-
-                                                                // 五標PR填值
-                                                                foreach (string rItem in r2List)
-                                                                {
-                                                                    if (RankMatrixDataDict[studentID][k1][rItem] != null)
-                                                                    {
-                                                                        if (r2ParseList.Contains(rItem))
-                                                                        {
-                                                                            decimal dd;
-                                                                            if (decimal.TryParse(RankMatrixDataDict[studentID][k1][rItem].ToString(), out dd))
-                                                                            {
-                                                                                row["類別2排名" + subjectIndex + "_" + rItem] = Math.Round(dd, r2ParseN, MidpointRounding.AwayFromZero);
-                                                                            }
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            row["類別2排名" + subjectIndex + "_" + rItem] = RankMatrixDataDict[studentID][k1][rItem].ToString();
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                        #endregion
-                                                    }
-                                                    else
-                                                    {//修課有該考試但沒有成績資料
-                                                        var courseRecs = accessHelper.CourseHelper.GetCourse(courseID);
-                                                        if (courseRecs.Count > 0)
-                                                        {
-                                                            var courseRec = courseRecs[0];
                                                             if (findInSemesterSubjectScore)
                                                             {
-                                                                if (courseRec.SubjectLevel != "" + subjectNumber)
+                                                                if (sceTakeRecord.SubjectLevel != "" + subjectNumber)
                                                                 {
                                                                     continue;
                                                                 }
@@ -2247,15 +2098,223 @@ namespace SH_SemesterScoreReportFixed
                                                             if (!findInSemesterSubjectScore)
                                                             {
                                                                 decimal level;
-                                                                subjectNumber = decimal.TryParse(courseRec.SubjectLevel, out level) ? (decimal?)level : null;
-                                                                row["科目名稱" + subjectIndex] = courseRec.Subject + GetNumber(subjectNumber);
+                                                                subjectNumber = decimal.TryParse(sceTakeRecord.SubjectLevel, out level) ? (decimal?)level : null;
+                                                                row["科目名稱" + subjectIndex] = sceTakeRecord.Subject + GetNumber(subjectNumber);
                                                                 if (!conf.IsShowLevel)  //2021-12-27 Cynthia 不顯示級別
-                                                                    row["科目名稱" + subjectIndex] = courseRec.Subject;
-                                                                row["科目" + subjectIndex] = courseRec.Subject;
+                                                                    row["科目名稱" + subjectIndex] = sceTakeRecord.Subject;
+                                                                row["科目" + subjectIndex] = sceTakeRecord.Subject;
                                                                 row["科目級別" + subjectIndex] = GetNumber(subjectNumber);
-                                                                row["學分數" + subjectIndex] = courseRec.CreditDec();
+
+                                                                row["學分數" + subjectIndex] = sceTakeRecord.CreditDec();
                                                             }
-                                                            row["科目成績" + subjectIndex] = "未輸入";
+                                                            row["科目成績" + subjectIndex] = sceTakeRecord.SpecialCase == "" ? ("" + sceTakeRecord.ExamScore) : sceTakeRecord.SpecialCase;
+                                                            #region 班排名及落點分析
+                                                            string k1 = "";
+                                                            if (RankMatrixDataDict.ContainsKey(studentID))
+                                                            {
+                                                                k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_班排名";
+                                                                if (RankMatrixDataDict[studentID].ContainsKey(k1))
+                                                                {
+                                                                    if (RankMatrixDataDict[studentID][k1]["rank"] != null)
+                                                                        row["班排名" + subjectIndex] = RankMatrixDataDict[studentID][k1]["rank"].ToString();
+
+                                                                    if (RankMatrixDataDict[studentID][k1]["matrix_count"] != null)
+                                                                        row["班排名母數" + subjectIndex] = RankMatrixDataDict[studentID][k1]["matrix_count"].ToString();
+
+                                                                    // 五標PR填值
+                                                                    foreach (string rItem in r2List)
+                                                                    {
+                                                                        if (RankMatrixDataDict[studentID][k1][rItem] != null)
+                                                                        {
+
+                                                                            // RankMatrixDataDict[studentID][k1][rItem].ToString();
+
+                                                                            if (r2ParseList.Contains(rItem))
+                                                                            {
+                                                                                decimal dd;
+                                                                                if (decimal.TryParse(RankMatrixDataDict[studentID][k1][rItem].ToString(), out dd))
+                                                                                {
+                                                                                    row["班排名" + subjectIndex + "_" + rItem] = Math.Round(dd, r2ParseN, MidpointRounding.AwayFromZero);
+                                                                                }
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                row["班排名" + subjectIndex + "_" + rItem] = RankMatrixDataDict[studentID][k1][rItem].ToString();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                            }
+                                                            #endregion
+                                                            #region 科排名及落點分析
+                                                            if (RankMatrixDataDict.ContainsKey(studentID))
+                                                            {
+                                                                k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_科排名";
+                                                                if (RankMatrixDataDict[studentID].ContainsKey(k1))
+                                                                {
+                                                                    if (RankMatrixDataDict[studentID][k1]["rank"] != null)
+                                                                        row["科排名" + subjectIndex] = RankMatrixDataDict[studentID][k1]["rank"].ToString();
+
+                                                                    if (RankMatrixDataDict[studentID][k1]["matrix_count"] != null)
+                                                                        row["科排名母數" + subjectIndex] = RankMatrixDataDict[studentID][k1]["matrix_count"].ToString();
+
+                                                                    // 五標PR填值
+                                                                    foreach (string rItem in r2List)
+                                                                    {
+                                                                        if (RankMatrixDataDict[studentID][k1][rItem] != null)
+                                                                        {
+                                                                            if (r2ParseList.Contains(rItem))
+                                                                            {
+                                                                                decimal dd;
+                                                                                if (decimal.TryParse(RankMatrixDataDict[studentID][k1][rItem].ToString(), out dd))
+                                                                                {
+                                                                                    row["科排名" + subjectIndex + "_" + rItem] = Math.Round(dd, r2ParseN, MidpointRounding.AwayFromZero);
+                                                                                }
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                row["科排名" + subjectIndex + "_" + rItem] = RankMatrixDataDict[studentID][k1][rItem].ToString();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            #endregion
+                                                            #region 全校排名及落點分析
+                                                            if (RankMatrixDataDict.ContainsKey(studentID))
+                                                            {
+                                                                k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_年排名";
+                                                                if (RankMatrixDataDict[studentID].ContainsKey(k1))
+                                                                {
+                                                                    if (RankMatrixDataDict[studentID][k1]["rank"] != null)
+                                                                        row["全校排名" + subjectIndex] = RankMatrixDataDict[studentID][k1]["rank"].ToString();
+
+                                                                    if (RankMatrixDataDict[studentID][k1]["matrix_count"] != null)
+                                                                        row["全校排名母數" + subjectIndex] = RankMatrixDataDict[studentID][k1]["matrix_count"].ToString();
+
+                                                                    // 五標PR填值
+                                                                    foreach (string rItem in r2List)
+                                                                    {
+                                                                        if (RankMatrixDataDict[studentID][k1][rItem] != null)
+                                                                        {
+                                                                            if (r2ParseList.Contains(rItem))
+                                                                            {
+                                                                                decimal dd;
+                                                                                if (decimal.TryParse(RankMatrixDataDict[studentID][k1][rItem].ToString(), out dd))
+                                                                                {
+                                                                                    row["全校排名" + subjectIndex + "_" + rItem] = Math.Round(dd, r2ParseN, MidpointRounding.AwayFromZero);
+                                                                                }
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                row["全校排名" + subjectIndex + "_" + rItem] = RankMatrixDataDict[studentID][k1][rItem].ToString();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            #endregion
+                                                            #region 類別1排名及落點分析
+                                                            if (RankMatrixDataDict.ContainsKey(studentID))
+                                                            {
+                                                                k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_類別1排名";
+                                                                if (RankMatrixDataDict[studentID].ContainsKey(k1))
+                                                                {
+                                                                    if (RankMatrixDataDict[studentID][k1]["rank"] != null)
+                                                                        row["類別1排名" + subjectIndex] = RankMatrixDataDict[studentID][k1]["rank"].ToString();
+
+                                                                    if (RankMatrixDataDict[studentID][k1]["matrix_count"] != null)
+                                                                        row["類別1排名母數" + subjectIndex] = RankMatrixDataDict[studentID][k1]["matrix_count"].ToString();
+
+                                                                    // 五標PR填值
+                                                                    foreach (string rItem in r2List)
+                                                                    {
+                                                                        if (RankMatrixDataDict[studentID][k1][rItem] != null)
+                                                                        {
+                                                                            if (r2ParseList.Contains(rItem))
+                                                                            {
+                                                                                decimal dd;
+                                                                                if (decimal.TryParse(RankMatrixDataDict[studentID][k1][rItem].ToString(), out dd))
+                                                                                {
+                                                                                    row["類別1排名" + subjectIndex + "_" + rItem] = Math.Round(dd, r2ParseN, MidpointRounding.AwayFromZero);
+                                                                                }
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                row["類別1排名" + subjectIndex + "_" + rItem] = RankMatrixDataDict[studentID][k1][rItem].ToString();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            #endregion
+                                                            #region 類別2排名及落點分析
+                                                            if (RankMatrixDataDict.ContainsKey(studentID))
+                                                            {
+                                                                k1 = "定期評量/科目成績_" + sceTakeRecord.Subject + "_類別2排名";
+                                                                if (RankMatrixDataDict[studentID].ContainsKey(k1))
+                                                                {
+                                                                    if (RankMatrixDataDict[studentID][k1]["rank"] != null)
+                                                                        row["類別2排名" + subjectIndex] = RankMatrixDataDict[studentID][k1]["rank"].ToString();
+
+                                                                    if (RankMatrixDataDict[studentID][k1]["matrix_count"] != null)
+                                                                        row["類別2排名母數" + subjectIndex] = RankMatrixDataDict[studentID][k1]["matrix_count"].ToString();
+
+                                                                    // 五標PR填值
+                                                                    foreach (string rItem in r2List)
+                                                                    {
+                                                                        if (RankMatrixDataDict[studentID][k1][rItem] != null)
+                                                                        {
+                                                                            if (r2ParseList.Contains(rItem))
+                                                                            {
+                                                                                decimal dd;
+                                                                                if (decimal.TryParse(RankMatrixDataDict[studentID][k1][rItem].ToString(), out dd))
+                                                                                {
+                                                                                    row["類別2排名" + subjectIndex + "_" + rItem] = Math.Round(dd, r2ParseN, MidpointRounding.AwayFromZero);
+                                                                                }
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                row["類別2排名" + subjectIndex + "_" + rItem] = RankMatrixDataDict[studentID][k1][rItem].ToString();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            #endregion
+
+                                                        }
+                                                    }
+                                                    else
+                                                    {//修課有該考試但沒有成績資料
+                                                        var courseRecs = accessHelper.CourseHelper.GetCourse(courseID);
+                                                        if (courseRecs.Count > 0)
+                                                        {
+                                                            var courseRec = courseRecs[0];
+                                                            if (conf.PrintSubjectList.Contains(courseRec.Subject))
+                                                            {
+                                                                if (findInSemesterSubjectScore)
+                                                                {
+                                                                    if (courseRec.SubjectLevel != "" + subjectNumber)
+                                                                    {
+                                                                        continue;
+                                                                    }
+                                                                }
+                                                                findInExamScores = true;
+                                                                if (!findInSemesterSubjectScore)
+                                                                {
+                                                                    decimal level;
+                                                                    subjectNumber = decimal.TryParse(courseRec.SubjectLevel, out level) ? (decimal?)level : null;
+                                                                    row["科目名稱" + subjectIndex] = courseRec.Subject + GetNumber(subjectNumber);
+                                                                    if (!conf.IsShowLevel)  //2021-12-27 Cynthia 不顯示級別
+                                                                        row["科目名稱" + subjectIndex] = courseRec.Subject;
+                                                                    row["科目" + subjectIndex] = courseRec.Subject;
+                                                                    row["科目級別" + subjectIndex] = GetNumber(subjectNumber);
+                                                                    row["學分數" + subjectIndex] = courseRec.CreditDec();
+                                                                }
+                                                                row["科目成績" + subjectIndex] = "未輸入";
+                                                            }
                                                         }
                                                     }
                                                     if (studentRefExamSores.ContainsKey(studentID) && studentRefExamSores[studentID].ContainsKey(courseID))
@@ -2265,7 +2324,7 @@ namespace SH_SemesterScoreReportFixed
                                                             ? ("" + studentRefExamSores[studentID][courseID].ExamScore)
                                                             : studentRefExamSores[studentID][courseID].SpecialCase;
                                                     }
-                                                    studentExamSores[studentID][subjectName].Remove(courseID);
+                                                    studentExamSores[studentID][subjectInfoArray[0]].Remove(courseID);
                                                     break;
                                                 }
                                             }
@@ -2277,8 +2336,15 @@ namespace SH_SemesterScoreReportFixed
                                     {
                                         foreach (var semesterSubjectScore in stuRec.SemesterSubjectScoreList)
                                         {
+                                            string newSemesterSubjectName = semesterSubjectScore.Subject;
+                                            if (semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱") != "")
+                                                newSemesterSubjectName = semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱");
+
                                             if (semesterSubjectScore.Detail.GetAttribute("不計學分") != "是"
-                                                && semesterSubjectScore.Subject == subjectName
+                                                && newSemesterSubjectName == subjectInfoArray[0]//subjectName
+                                                && semesterSubjectScore.Detail.GetAttribute("修課校部訂") == subjectInfoArray[1]
+                                                && semesterSubjectScore.Require.ToString().ToLower() == subjectInfoArray[2].ToLower()
+                                                && semesterSubjectScore.CreditDec().ToString() == subjectInfoArray[3]
                                                 && semesterSubjectScore.Semester == 1
                                                 && semesterSubjectScore.GradeYear == currentGradeYear)
                                             {
@@ -2288,10 +2354,10 @@ namespace SH_SemesterScoreReportFixed
                                                 {
                                                     decimal level;
                                                     subjectNumber = decimal.TryParse(semesterSubjectScore.Level, out level) ? (decimal?)level : null;
-                                                    row["科目名稱" + subjectIndex] = semesterSubjectScore.Subject + GetNumber(subjectNumber);
+                                                    row["科目名稱" + subjectIndex] = newSemesterSubjectName + GetNumber(subjectNumber);
                                                     if (!conf.IsShowLevel)  //2021-12-27 Cynthia 不顯示級別
-                                                        row["科目名稱" + subjectIndex] = semesterSubjectScore.Subject;
-                                                    row["科目" + subjectIndex] = semesterSubjectScore.Subject;
+                                                        row["科目名稱" + subjectIndex] = newSemesterSubjectName;
+                                                    row["科目" + subjectIndex] = newSemesterSubjectName;
                                                     row["科目級別" + subjectIndex] = GetNumber(subjectNumber);
                                                     row["學分數" + subjectIndex] = semesterSubjectScore.CreditDec();
                                                     row["科目必選修" + subjectIndex] = semesterSubjectScore.Require ? "必修" : "選修";
@@ -2394,8 +2460,16 @@ namespace SH_SemesterScoreReportFixed
                                     {
                                         foreach (var schoolYearSubjectScore in stuRec.SchoolYearSubjectScoreList)
                                         {
+                                            string required = "false";
+                                            if (schoolYearSubjectScore.Detail.GetAttribute("必選修") == "必修")
+                                                required = "true";
                                             if (("" + schoolYearSubjectScore.SchoolYear) == conf.SchoolYear
-                                                && schoolYearSubjectScore.Subject == subjectName)
+                                            //&& schoolYearSubjectScore.Subject == subjectName
+                                            && schoolYearSubjectScore.Subject == subjectInfoArray[0]
+                                            && schoolYearSubjectScore.Detail.GetAttribute("校部定") == subjectInfoArray[1]
+                                            && required == subjectInfoArray[2].ToLower()
+
+                                                && schoolYearSubjectScore.Detail.GetAttribute("識別學分數") == subjectInfoArray[3])
                                             {
                                                 if (!findInSemesterSubjectScore
                                                     && !findInSemester1SubjectScore

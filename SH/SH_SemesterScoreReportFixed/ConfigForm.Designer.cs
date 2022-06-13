@@ -48,7 +48,6 @@
             this.labelX4 = new DevComponents.DotNetBar.LabelX();
             this.cboExam = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.gp1 = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.ckShowLevel = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.txtRereadScoreMark = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.txtNeedRereadScoreMark = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.labelX6 = new DevComponents.DotNetBar.LabelX();
@@ -59,6 +58,7 @@
             this.labelX5 = new DevComponents.DotNetBar.LabelX();
             this.labelX3 = new DevComponents.DotNetBar.LabelX();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
+            this.ckShowLevel = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.gp1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -229,9 +229,9 @@
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX2.Location = new System.Drawing.Point(33, 227);
             this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(60, 21);
+            this.labelX2.Size = new System.Drawing.Size(301, 21);
             this.labelX2.TabIndex = 45;
-            this.labelX2.Text = "列印科目";
+            this.labelX2.Text = "列印評量成績科目，若不需列印評量成績請勿勾選";
             // 
             // cboSemester
             // 
@@ -387,25 +387,6 @@
             this.gp1.TabIndex = 4;
             this.gp1.Text = "成績未取得學分狀態標示設定";
             // 
-            // ckShowLevel
-            // 
-            this.ckShowLevel.AutoSize = true;
-            this.ckShowLevel.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.ckShowLevel.BackgroundStyle.Class = "";
-            this.ckShowLevel.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.ckShowLevel.Checked = true;
-            this.ckShowLevel.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckShowLevel.CheckValue = "Y";
-            this.ckShowLevel.Location = new System.Drawing.Point(548, 227);
-            this.ckShowLevel.Name = "ckShowLevel";
-            this.ckShowLevel.Size = new System.Drawing.Size(107, 21);
-            this.ckShowLevel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.ckShowLevel.TabIndex = 48;
-            this.ckShowLevel.Text = "顯示科目級別";
-            // 
             // txtRereadScoreMark
             // 
             // 
@@ -545,6 +526,25 @@
             this.labelX1.Size = new System.Drawing.Size(101, 21);
             this.labelX1.TabIndex = 42;
             this.labelX1.Text = "需補考成績加註";
+            // 
+            // ckShowLevel
+            // 
+            this.ckShowLevel.AutoSize = true;
+            this.ckShowLevel.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.ckShowLevel.BackgroundStyle.Class = "";
+            this.ckShowLevel.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.ckShowLevel.Checked = true;
+            this.ckShowLevel.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckShowLevel.CheckValue = "Y";
+            this.ckShowLevel.Location = new System.Drawing.Point(548, 227);
+            this.ckShowLevel.Name = "ckShowLevel";
+            this.ckShowLevel.Size = new System.Drawing.Size(107, 21);
+            this.ckShowLevel.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.ckShowLevel.TabIndex = 48;
+            this.ckShowLevel.Text = "顯示科目級別";
             // 
             // ConfigForm
             // 

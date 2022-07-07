@@ -138,7 +138,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                         var.GetAttribute("結算成績") == "" ? var.GetAttribute("學年成績") : var.GetAttribute("結算成績"),
                         var.GetAttribute("補考成績"),
                         var.GetAttribute("重修成績"),
-                        var.GetAttribute("校部定"),
+                        var.GetAttribute("校部定")== "部訂" ? "部定" : var.GetAttribute("校部定"),
                         var.GetAttribute("必選修"),
                         var.GetAttribute("識別學分數")
                         );
@@ -266,7 +266,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 subjectElement.SetAttribute("結算成績", "" + row.Cells[2].Value);
                 subjectElement.SetAttribute("補考成績", "" + row.Cells[3].Value);
                 subjectElement.SetAttribute("重修成績", "" + row.Cells[4].Value);
-                subjectElement.SetAttribute("校部定", "" + row.Cells[5].Value);
+                subjectElement.SetAttribute("校部定", "" + row.Cells[5].Value== "部定" ? "部訂" : row.Cells[5].Value.ToString());
                 subjectElement.SetAttribute("必選修", "" + row.Cells[6].Value);
                 subjectElement.SetAttribute("識別學分數", "" + row.Cells[7].Value);
                 subjectScoreInfo.AppendChild(subjectElement);

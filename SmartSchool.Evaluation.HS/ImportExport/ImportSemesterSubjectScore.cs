@@ -189,10 +189,10 @@ namespace SmartSchool.Evaluation.ImportExport
                             }
                             break;
                         case "校部訂":
-                            if (value != "校訂" && value != "部訂")
+                            if (value != "校訂" && value != "部訂" && value != "部定")
                             {
                                 inputFormatPass &= false;
-                                e.ErrorFields.Add(field, "必須填入校訂或部訂");
+                                e.ErrorFields.Add(field, "必須填入校訂或部定");
                             }
                             break;
                         //case "分項類別":
@@ -203,7 +203,7 @@ namespace SmartSchool.Evaluation.ImportExport
                         //    }
                         //    break;
                         case "分項類別":
-                            if (value != "學業" &&  value != "實習科目" && value != "專業科目")
+                            if (value != "學業" && value != "實習科目" && value != "專業科目")
                             {
                                 inputFormatPass &= false;
                                 e.ErrorFields.Add(field, "必須填入 學業、專業科目或實習科目");
@@ -547,7 +547,8 @@ namespace SmartSchool.Evaluation.ImportExport
                                                 case "校部訂":
                                                     if (score.Detail.GetAttribute("修課校部訂") != value)
                                                     {
-                                                        score.Detail.SetAttribute("修課校部訂", value);
+                                                        if (!(score.Detail.GetAttribute("修課校部訂") == "部訂" && value == "部定"))
+                                                            score.Detail.SetAttribute("修課校部訂", value== "部定" ? "部訂" : value);
                                                         hasChanged = true;
                                                     }
                                                     break;
@@ -741,7 +742,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                                     newScore.SetAttribute("修課必選修", value);
                                                     break;
                                                 case "校部訂":
-                                                    newScore.SetAttribute("修課校部訂", value);
+                                                    newScore.SetAttribute("修課校部訂", value == "部定" ? "部訂" : value);
                                                     break;
                                                 case "取得學分":
                                                     newScore.SetAttribute("是否取得學分", value);
@@ -777,7 +778,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                                     value = (value == "" ? "否" : value);
                                                     newScore.SetAttribute(field, value);
                                                     break;
-                                                
+
                                             }
                                         }
                                     }
@@ -861,7 +862,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                                 newScore.SetAttribute("修課必選修", value);
                                                 break;
                                             case "校部訂":
-                                                newScore.SetAttribute("修課校部訂", value);
+                                                newScore.SetAttribute("修課校部訂", value == "部定" ? "部訂" : value);
                                                 break;
                                             case "取得學分":
                                                 newScore.SetAttribute("是否取得學分", value);

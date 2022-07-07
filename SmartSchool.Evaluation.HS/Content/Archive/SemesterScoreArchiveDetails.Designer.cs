@@ -852,10 +852,10 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.Column3.AutoComplete = false;
             this.Column3.DisplayStyleForCurrentCellOnly = true;
             this.Column3.FillWeight = 1F;
-            this.Column3.HeaderText = " 校訂 部訂";
+            this.Column3.HeaderText = " 校訂 部定";
             this.Column3.Items.AddRange(new object[] {
             "校訂",
-            "部訂"});
+            "部定"});
             this.Column3.MinimumWidth = 50;
             this.Column3.Name = "Column3";
             this.Column3.ReadOnly = true;

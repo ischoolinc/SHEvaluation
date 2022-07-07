@@ -180,7 +180,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                         var.GetAttribute("科目"),
                         var.GetAttribute("科目級別"),
                         var.GetAttribute("開課學分數"),
-                        var.GetAttribute("修課校部訂"),
+                        var.GetAttribute("修課校部訂")== "部訂"? "部定" : var.GetAttribute("修課校部訂"),
                         var.GetAttribute("修課必選修"),
                         var.GetAttribute("是否取得學分") == "是",
                         var.GetAttribute("原始成績"),
@@ -387,9 +387,11 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                         row.Cells[index].Style.ForeColor = dataGridViewX1.DefaultCellStyle.ForeColor;
                     }
                     index = 4;
-                    if ("" + row.Cells[index].Value != subject.RequiredBy)
+                    string req = subject.RequiredBy;
+                    if (req == "部訂") req = "部定";
+                    if ("" + row.Cells[index].Value != req)
                     {
-                        row.Cells[index].ToolTipText = "在課程規劃表 \"" + gplan.Name + "\"中\n值為: " + subject.RequiredBy;
+                        row.Cells[index].ToolTipText = "在課程規劃表 \"" + gplan.Name + "\"中\n值為: " + req;
                         row.Cells[index].Style.BackColor = Color.Gainsboro;
                         row.Cells[index].Style.ForeColor = Color.DimGray;
                     }
@@ -841,7 +843,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 subjectElement.SetAttribute("科目", "" + row.Cells[1].Value);
                 subjectElement.SetAttribute("科目級別", "" + row.Cells[2].Value);
                 subjectElement.SetAttribute("開課學分數", "" + row.Cells[3].Value);
-                subjectElement.SetAttribute("修課校部訂", "" + row.Cells[4].Value);
+                subjectElement.SetAttribute("修課校部訂", "" + row.Cells[4].Value== "部定" ? "部訂" : row.Cells[4].Value.ToString());
                 subjectElement.SetAttribute("修課必選修", "" + row.Cells[5].Value);
                 subjectElement.SetAttribute("是否取得學分", (row.Cells[6].Value != null && (bool)row.Cells[6].Value) ? "是" : "否");
                 subjectElement.SetAttribute("原始成績", "" + row.Cells[7].Value);

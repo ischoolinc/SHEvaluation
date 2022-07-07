@@ -605,10 +605,10 @@
             this.Column2.AutoComplete = false;
             this.Column2.DisplayStyleForCurrentCellOnly = true;
             this.Column2.FillWeight = 1F;
-            this.Column2.HeaderText = "校訂 部訂";
+            this.Column2.HeaderText = "校訂 部定";
             this.Column2.Items.AddRange(new object[] {
             "校訂",
-            "部訂"});
+            "部定"});
             this.Column2.MinimumWidth = 50;
             this.Column2.Name = "Column2";
             this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.True;

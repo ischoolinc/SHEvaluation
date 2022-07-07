@@ -183,10 +183,10 @@ namespace SmartSchool.Evaluation.ImportExport
                     case "校部定":
                         if (value != "")
                         {
-                            if (value != "校訂" && value != "部訂")
+                            if (value != "校訂" && value != "部訂" && value != "部定")
                             {
                                 inputFormatPass &= false;
-                                e.ErrorFields.Add(field, "必須填入「校訂」或「部訂」。");
+                                e.ErrorFields.Add(field, "必須填入「校訂」或「部定」。");
                             }
                         }
                         break;
@@ -210,7 +210,7 @@ namespace SmartSchool.Evaluation.ImportExport
 
                 string subject = e.Data["科目"];
                 string schoolYear = e.Data["學年度"];
-                string requiredBy = e.Data["校部定"];
+                string requiredBy = e.Data["校部定"]== "部定" ? "部訂" : e.Data["校部定"];
                 string required = e.Data["必選修"];
                 string credit = e.Data["識別學分數"];
 
@@ -373,7 +373,7 @@ namespace SmartSchool.Evaluation.ImportExport
                     int t;
                     string subject = row["科目"];
                     string schoolYear = row["學年度"];
-                    string requiredBy = row["校部定"];
+                    string requiredBy = row["校部定"]== "部定" ? "部訂" : row["校部定"];
                     string required = row["必選修"];
                     string credit = row["識別學分數"];
 
@@ -525,7 +525,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                             newScore.SetAttribute(field, value);
                                             break;
                                         case "校部定":
-                                            newScore.SetAttribute(field, value);
+                                            newScore.SetAttribute(field, value== "部定" ? "部訂" : value);
                                             break;
                                         case "必選修":
                                             newScore.SetAttribute(field, value);
@@ -582,7 +582,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                         newScore.SetAttribute(field, value);
                                         break;
                                     case "校部定":
-                                        newScore.SetAttribute(field, value);
+                                        newScore.SetAttribute(field, value== "部定"? "部訂" : value);
                                         break;
                                     case "必選修":
                                         newScore.SetAttribute(field, value);

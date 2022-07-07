@@ -134,7 +134,7 @@ namespace ExportSemsArchive.Report
                     _wb.Worksheets[0].Cells[rowIndex, 12].PutValue(dr["科目級別"]);
                     _wb.Worksheets[0].Cells[rowIndex, 13].PutValue(dr["學分數"]);
                     _wb.Worksheets[0].Cells[rowIndex, 14].PutValue(dr["必選修"]);
-                    _wb.Worksheets[0].Cells[rowIndex, 15].PutValue(dr["校部訂"]);
+                    _wb.Worksheets[0].Cells[rowIndex, 15].PutValue(dr["校部訂"].ToString() == "部訂" ? "部定" : dr["校部訂"].ToString()) ;
                     _wb.Worksheets[0].Cells[rowIndex, 16].PutValue(dr["取得學分"]);
                     _wb.Worksheets[0].Cells[rowIndex, 17].PutValue(dr["原始成績"]);
                     _wb.Worksheets[0].Cells[rowIndex, 18].PutValue(dr["補考成績"]);

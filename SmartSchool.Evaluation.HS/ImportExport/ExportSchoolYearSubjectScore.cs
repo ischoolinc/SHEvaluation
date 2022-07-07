@@ -46,7 +46,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                     case "結算成績": row.Add(field, var.Detail.GetAttribute(field) == "" ? ("" + var.Score) : var.Detail.GetAttribute(field)); break;
                                     case "補考成績": row.Add(field, var.Detail.GetAttribute(field)); break;
                                     case "重修成績": row.Add(field, var.Detail.GetAttribute(field)); break;
-                                    case "校部定": row.Add(field, var.Detail.GetAttribute(field)); break;
+                                    case "校部定": row.Add(field, var.Detail.GetAttribute(field)== "部訂" ? "部定" : var.Detail.GetAttribute(field)); break;
                                     case "必選修": row.Add(field, var.Detail.GetAttribute(field)); break;
                                     case "識別學分數": row.Add(field, var.Detail.GetAttribute(field)); break;
                                 }

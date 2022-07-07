@@ -144,7 +144,7 @@ FROM (
                     dataGridView_Archive.Rows[i].Cells[1].Value = dr["科目"].ToString();
                     dataGridView_Archive.Rows[i].Cells[2].Value = dr["科目級別"].ToString();
                     dataGridView_Archive.Rows[i].Cells[3].Value = dr["學分數"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[4].Value = dr["校部訂"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[4].Value = dr["校部訂"].ToString() == "部訂" ? "部定": dr["校部訂"].ToString();
                     dataGridView_Archive.Rows[i].Cells[5].Value = dr["必選修"].ToString();
                     dataGridView_Archive.Rows[i].Cells[6].Value = dr["取得學分"].ToString() == "是" ? "是" : "否";
                     dataGridView_Archive.Rows[i].Cells[7].Value = dr["原始成績"].ToString();

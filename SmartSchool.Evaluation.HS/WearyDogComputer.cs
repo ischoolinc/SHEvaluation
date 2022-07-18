@@ -274,7 +274,7 @@ namespace SmartSchool.Evaluation
                 #region 校部定/必選修
                 if (!courseRequied.ContainsKey(student_id))
                     courseRequied.Add(student_id, new Dictionary<string, Dictionary<string, string>>());
-                if(!courseRequied[student_id].ContainsKey(courseName))
+                if (!courseRequied[student_id].ContainsKey(courseName))
                     courseRequied[student_id].Add(courseName, new Dictionary<string, string>());
                 if (!courseRequied[student_id][courseName].ContainsKey("required_by"))
                     courseRequied[student_id][courseName].Add("required_by", required_by);
@@ -540,6 +540,11 @@ namespace SmartSchool.Evaluation
                         {
                             if (scoreinfo.Semester == semester)
                                 currentSubjectScoreList.Add(scoreinfo, key);
+                            else if (scoreinfo.SchoolYear >= 108 && scoreinfo.Semester < semester)
+                            {
+                                // 因為108課綱開始跨課綱，學生會重讀某科目，會使用科目名稱+級別+重讀判斷文字
+                                repeatSubjectScoreList.Add(scoreinfo, key);
+                            }
                             else if (scoreinfo.Semester < semester)
                             {
                                 if (scoreinfo.GradeYear == (int)gradeYear)
@@ -547,6 +552,11 @@ namespace SmartSchool.Evaluation
                                 else
                                     restudySubjectScoreList.Add(scoreinfo, key);
                             }
+                        }
+                        else if (scoreinfo.SchoolYear >= 108 && scoreinfo.SchoolYear < schoolyear)
+                        {
+                            // 因為108課綱開始跨課綱，學生會重讀某科目，會使用科目名稱+級別+重讀判斷文字
+                            repeatSubjectScoreList.Add(scoreinfo, key);
                         }
                         else if (scoreinfo.SchoolYear < schoolyear)
                         {
@@ -572,7 +582,9 @@ namespace SmartSchool.Evaluation
                     }
                     #endregion
                     #region 移除重讀跟重修成績重複年級的學期成績
-                    CleanUpRepeat(repeatSubjectScoreList);
+                    // 因為整個過濾會產生只重讀某學年度學期資料會被過濾
+                    //CleanUpRepeat(repeatSubjectScoreList);
+
                     CleanUpRepeat(restudySubjectScoreList);
                     #endregion
                     //新增的學期成績資料

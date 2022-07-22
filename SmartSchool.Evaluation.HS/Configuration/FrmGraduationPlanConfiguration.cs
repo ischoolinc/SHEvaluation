@@ -85,15 +85,16 @@ namespace SmartSchool.Evaluation.Configuration
 
         void _BKWChecker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            MotherForm.SetStatusBarMessage("驗證課程規劃表", e.ProgressPercentage);
-            if (!(bool)((object[])e.UserState)[0])
-            {
-                Node item;
-                if (_GPlanMapping.TryGetValue((GraduationPlanInfo)((object[])e.UserState)[1], out item))
-                {
-                    SetWarningNode(item, true);
-                }
-            }
+            // 2022/7/22 調整只能檢視，不做驗證 先註解
+            //MotherForm.SetStatusBarMessage("驗證課程規劃表", e.ProgressPercentage);
+            //if (!(bool)((object[])e.UserState)[0])
+            //{
+            //    Node item;
+            //    if (_GPlanMapping.TryGetValue((GraduationPlanInfo)((object[])e.UserState)[1], out item))
+            //    {
+            //        SetWarningNode(item, true);
+            //    }
+            //}
         }
 
         void _BKWChecker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -275,6 +276,9 @@ namespace SmartSchool.Evaluation.Configuration
 
         private void BtnEnabled(bool enabled)
         {
+            // 只能檢視
+            enabled = false;
+            btnCreate.Enabled = enabled;
             btnEditName.Enabled = enabled;
             btnUpdate.Enabled = enabled;
             btnDelete.Enabled = enabled;

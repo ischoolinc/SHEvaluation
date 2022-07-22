@@ -47,18 +47,20 @@ namespace SmartSchool.Evaluation
                 (new FrmScoreCalcConfiguration()).ShowDialog();
             };
 
-            button.Enable = CurrentUser.Acl["Button0860"].Executable;
-            button["班級課程規劃表"].BeginGroup = true;
-            button["班級課程規劃表"].Click += delegate
-            {
-                //new ConfigurationForm(new GraduationPlanConfiguration()).ShowDialog();
-                (new FrmGraduationPlanConfiguration()).ShowDialog();
-            };
+       
 
             button.Enable = CurrentUser.Acl["Button0870"].Executable;
             button["通用課程規劃表"].Click += delegate
             {
                 new ConfigurationForm(new CommonPlanConfiguration()).ShowDialog();
+            };
+
+
+            button.Enable = CurrentUser.Acl["Button0860"].Executable;            
+            button["檢視班級課程規劃表(99課綱適用)"].Click += delegate
+            {
+                //new ConfigurationForm(new GraduationPlanConfiguration()).ShowDialog();
+                (new FrmGraduationPlanConfiguration()).ShowDialog();
             };
 
             button.Enable = CurrentUser.Acl["Button0850"].Executable;

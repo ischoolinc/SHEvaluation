@@ -142,12 +142,12 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.jtToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(139, 28);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(123, 26);
             // 
             // jtToolStripMenuItem
             // 
             this.jtToolStripMenuItem.Name = "jtToolStripMenuItem";
-            this.jtToolStripMenuItem.Size = new System.Drawing.Size(138, 24);
+            this.jtToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.jtToolStripMenuItem.Text = "重新整理";
             this.jtToolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
@@ -249,10 +249,10 @@
             this.tabControlPanel2.Controls.Add(this.labelX1);
             this.tabControlPanel2.Controls.Add(this.graduationPlanEditor1);
             this.tabControlPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlPanel2.Location = new System.Drawing.Point(0, 34);
+            this.tabControlPanel2.Location = new System.Drawing.Point(0, 29);
             this.tabControlPanel2.Name = "tabControlPanel2";
             this.tabControlPanel2.Padding = new System.Windows.Forms.Padding(1);
-            this.tabControlPanel2.Size = new System.Drawing.Size(784, 527);
+            this.tabControlPanel2.Size = new System.Drawing.Size(784, 532);
             this.tabControlPanel2.Style.BackColor1.Color = System.Drawing.Color.Transparent;
             this.tabControlPanel2.Style.BackColor2.Color = System.Drawing.Color.Transparent;
             this.tabControlPanel2.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
@@ -276,7 +276,7 @@
             this.labelX1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.labelX1.Location = new System.Drawing.Point(6, 5);
             this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(85, 34);
+            this.labelX1.Size = new System.Drawing.Size(69, 28);
             this.labelX1.TabIndex = 1;
             this.labelX1.Text = "labelX1";
             // 
@@ -285,12 +285,13 @@
             this.graduationPlanEditor1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.graduationPlanEditor1.Enabled = false;
             this.graduationPlanEditor1.Font = new System.Drawing.Font("微軟正黑體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.graduationPlanEditor1.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.graduationPlanEditor1.Location = new System.Drawing.Point(1, 35);
             this.graduationPlanEditor1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.graduationPlanEditor1.Name = "graduationPlanEditor1";
-            this.graduationPlanEditor1.Size = new System.Drawing.Size(782, 491);
+            this.graduationPlanEditor1.Size = new System.Drawing.Size(782, 496);
             this.graduationPlanEditor1.TabIndex = 0;
             this.graduationPlanEditor1.Load += new System.EventHandler(this.graduationPlanEditor1_Load);
             // 
@@ -305,10 +306,10 @@
             this.tabControlPanel3.Controls.Add(this.labelX2);
             this.tabControlPanel3.Controls.Add(this.listViewEx1);
             this.tabControlPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlPanel3.Location = new System.Drawing.Point(0, 34);
+            this.tabControlPanel3.Location = new System.Drawing.Point(0, 29);
             this.tabControlPanel3.Name = "tabControlPanel3";
             this.tabControlPanel3.Padding = new System.Windows.Forms.Padding(1);
-            this.tabControlPanel3.Size = new System.Drawing.Size(784, 527);
+            this.tabControlPanel3.Size = new System.Drawing.Size(784, 532);
             this.tabControlPanel3.Style.BackColor1.Color = System.Drawing.Color.Transparent;
             this.tabControlPanel3.Style.BackColor2.Color = System.Drawing.Color.Transparent;
             this.tabControlPanel3.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
@@ -332,7 +333,7 @@
             this.labelX2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.labelX2.Location = new System.Drawing.Point(6, 5);
             this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(85, 34);
+            this.labelX2.Size = new System.Drawing.Size(69, 28);
             this.labelX2.TabIndex = 2;
             this.labelX2.Text = "labelX2";
             // 
@@ -352,7 +353,7 @@
             this.listViewEx1.Location = new System.Drawing.Point(6, 34);
             this.listViewEx1.MultiSelect = false;
             this.listViewEx1.Name = "listViewEx1";
-            this.listViewEx1.Size = new System.Drawing.Size(774, 488);
+            this.listViewEx1.Size = new System.Drawing.Size(774, 493);
             this.listViewEx1.SmallImageList = this.imageList1;
             this.listViewEx1.TabIndex = 0;
             this.listViewEx1.UseCompatibleStateImageBehavior = false;
@@ -411,7 +412,7 @@
             // 
             // FrmGraduationPlanConfiguration
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 561);
             this.Controls.Add(this.expandableSplitter1);
@@ -420,7 +421,7 @@
             this.DoubleBuffered = true;
             this.MaximizeBox = true;
             this.Name = "FrmGraduationPlanConfiguration";
-            this.Text = "班級課程規劃表";
+            this.Text = "檢視班級課程規劃表(99課綱適用)";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmGraduationPlanConfiguration_FormClosing);
             this.Load += new System.EventHandler(this.FrmGraduationPlanConfiguration_Load);
             this.controlPanel.ResumeLayout(false);

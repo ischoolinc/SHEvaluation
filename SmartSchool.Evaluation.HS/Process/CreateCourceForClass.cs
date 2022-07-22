@@ -35,8 +35,9 @@ namespace SmartSchool.Evaluation.Process
             };
             var buttonItem2 = buttonItem1["直接開課"];
             buttonItem2.Click += new System.EventHandler(this.buttonItem2_Click);
-            var buttonItem3 = buttonItem1["依課程規劃表開課"];
-            buttonItem3.Click += new System.EventHandler(this.buttonItem3_Click);
+            // 有新版，此功能先註解
+            //var buttonItem3 = buttonItem1["依課程規劃表開課"];
+            //buttonItem3.Click += new System.EventHandler(this.buttonItem3_Click);
         }
 
 

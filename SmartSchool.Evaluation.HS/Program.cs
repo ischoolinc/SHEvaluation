@@ -47,7 +47,12 @@ namespace SmartSchool.Evaluation
                 (new FrmScoreCalcConfiguration()).ShowDialog();
             };
 
-       
+            FISCA.Features.Register("GraduationPlanSyncAllBackground", x =>
+            {
+                SmartSchool.Evaluation.GraduationPlan.GraduationPlan.Instance.Reflash();
+              //  Console.WriteLine("GraduationPlanSyncAllBackground");
+            });
+
 
             button.Enable = CurrentUser.Acl["Button0870"].Executable;
             button["通用課程規劃表"].Click += delegate

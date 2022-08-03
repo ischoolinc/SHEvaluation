@@ -19,12 +19,16 @@ namespace SmartSchool.Evaluation.Reports
         {
             int schoolyear = 0;
             int semester = 0;
+            int gradeYear = 0;
+            bool printAllYear = false;
 
             SelectSemesterForm form = new SelectSemesterForm("補考名單-依科目");
             if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 schoolyear = form.SchoolYear;
                 semester = form.Semester;
+                gradeYear = form.GradeYear;
+                printAllYear = form.IsPrintAllYear;
             }
             else
                 return;
@@ -34,7 +38,7 @@ namespace SmartSchool.Evaluation.Reports
             _BGWResitList.DoWork += new DoWorkEventHandler(_BGWResitList_DoWork);
             _BGWResitList.ProgressChanged += new ProgressChangedEventHandler(_BGWResitList_ProgressChanged);
             _BGWResitList.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_BGWResitList_RunWorkerCompleted);
-            _BGWResitList.RunWorkerAsync(new object[] { schoolyear, semester });
+            _BGWResitList.RunWorkerAsync(new object[] { schoolyear, semester, gradeYear, printAllYear });
         }
 
         private int SortBySemesterSubjectScore(string a, string b)
@@ -284,6 +288,9 @@ namespace SmartSchool.Evaluation.Reports
             int schoolyear = (int)objectValue[0];
             int semester = (int)objectValue[1];
 
+            int gradeYear = (int)objectValue[2];
+            bool printAllYear = (bool)objectValue[3];
+
             _BGWResitList.ReportProgress(0);
 
             #region 取得所有學生以及補考資訊
@@ -328,6 +335,8 @@ namespace SmartSchool.Evaluation.Reports
 
             foreach (StudentRecord aStudent in allStudents)
             {
+                if (!printAllYear && aStudent.RefClass.GradeYear != gradeYear.ToString())
+                    continue;
                 string className = aStudent.RefClass.ClassName;
                 string seatNo = aStudent.SeatNo;
                 string studentName = aStudent.StudentName;

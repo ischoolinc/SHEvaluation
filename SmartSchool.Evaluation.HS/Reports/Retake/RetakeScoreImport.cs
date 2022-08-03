@@ -31,7 +31,7 @@ namespace SmartSchool.Evaluation.Reports
             _BWRepeatScoreImport.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_BWRepeatScoreImport_RunWorkerCompleted);
             _BWRepeatScoreImport.ProgressChanged += new ProgressChangedEventHandler(_BWRepeatScoreImport_ProgressChanged);
             _BWRepeatScoreImport.WorkerReportsProgress = true;
-            _BWRepeatScoreImport.RunWorkerAsync(new object[] { form.SchoolYear, form.Semester, form.IsPrintAllSemester });
+            _BWRepeatScoreImport.RunWorkerAsync(new object[] { form.SchoolYear, form.Semester, form.IsPrintAllSemester, form.GradeYear, form.IsPrintAllGradeYear });
         }
 
         private void Completed(string inputReportName, Workbook inputWorkbook)
@@ -104,6 +104,9 @@ namespace SmartSchool.Evaluation.Reports
             int semester = (int)obj[1];
             bool printAll = (bool)obj[2];
 
+            int gradeYear = (int)obj[3];
+            bool printAllYear = (bool)obj[4];
+
             _BWRepeatScoreImport.ReportProgress(0);
 
             #region 取得所有學生以及補考資訊
@@ -151,6 +154,8 @@ namespace SmartSchool.Evaluation.Reports
 
             foreach (SmartSchool.Customization.Data.StudentRecord aStudent in allStudents)
             {
+                if (!printAllYear && aStudent.RefClass.GradeYear != gradeYear.ToString())
+                    continue;
                 foreach (SemesterSubjectScoreInfo info in aStudent.SemesterSubjectScoreList)
                 {
                     if ((info.SchoolYear == schoolyear && info.Semester == semester) || printAll)

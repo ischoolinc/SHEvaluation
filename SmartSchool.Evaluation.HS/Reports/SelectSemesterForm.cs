@@ -14,6 +14,8 @@ namespace SmartSchool.Evaluation.Reports
     {
         protected int _schoolyear = 0;
         protected int _semester = 0;
+        //protected int _gradeYear = 0;
+        //protected bool _printAllYear = false;
 
         public int SchoolYear
         {
@@ -23,7 +25,14 @@ namespace SmartSchool.Evaluation.Reports
         {
             get { return _semester; }
         }
-
+        public bool IsPrintAllYear
+        {
+            get { return chkAllYear.Checked; }
+        }
+        public int GradeYear
+        {
+            get { return (int)gradeYearInput.Value; }
+        }
         public SelectSemesterForm(string titleName)
             : this()
         {
@@ -56,6 +65,11 @@ namespace SmartSchool.Evaluation.Reports
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
+        }
+
+        private void chkAllYear_CheckedChanged(object sender, EventArgs e)
+        {
+            gradeYearInput.Enabled = !chkAllYear.Checked;
         }
     }
 }

@@ -189,8 +189,22 @@ namespace SH_ClassYearScoreReport
                 table.Columns.Add("學年學業成績" + i);
                 table.Columns.Add("學年專業科目成績" + i);
                 table.Columns.Add("學年實習科目成績" + i);
+                table.Columns.Add("學年應得學分" + i);
+                table.Columns.Add("學年實得學分" + i);
+                table.Columns.Add("應得學分累計" + i);
+                table.Columns.Add("實得學分累計" + i);
+
                 //table.Columns.Add("學生類別排名1名稱" + i);
                 //table.Columns.Add("學生類別排名2名稱" + i);
+
+                foreach (string key in new string[] { "學業", "專業科目", "實習科目" })
+                {
+                    foreach (string key2 in new string[] { "班", "年", "科" })
+                    {
+                        table.Columns.Add("學年" + key + "成績" + key2 + "排名" + i);
+                        table.Columns.Add("學年" + key + "成績" + key2 + "排名母數" + i);
+                    }
+                }
             }
 
             List<string> itemNameList = new List<string>();
@@ -298,6 +312,7 @@ namespace SH_ClassYearScoreReport
 
                     table.Columns.Add("科目成績" + Num + "-" + subjectIndex);
                     table.Columns.Add("科目學年學分" + Num + "-" + subjectIndex);
+
                     table.Columns.Add("班排名" + Num + "-" + subjectIndex);
                     table.Columns.Add("班排名母數" + Num + "-" + subjectIndex);
                     table.Columns.Add("科排名" + Num + "-" + subjectIndex);
@@ -379,11 +394,6 @@ namespace SH_ClassYearScoreReport
 
 
 
-                // 學生學分
-                //table.Columns.Add("應得學分" + Num);
-                //table.Columns.Add("實得學分" + Num);
-                //table.Columns.Add("應得學分累計" + Num);
-                //table.Columns.Add("實得學分累計" + Num);
             }
 
             #region 組距及分析
@@ -486,28 +496,32 @@ namespace SH_ClassYearScoreReport
             Dictionary<string, Dictionary<string, decimal>> StudentYearSubjCreditBySemsSubjMappingDic = new Dictionary<string, Dictionary<string, decimal>>();
 
             List<string> studIDList = (from data in selectedStudents select data.StudentID).ToList();
-            
+
             // 取得學年成績固定排名(舊)
             StudYearSubjRankData = DAO.QueryData.GetStudentYearSubjectScoreRowBySchoolYear(studIDList, _SchoolYear);
-
+            Dictionary<string, DataRow> StudYearEntryRankData = DAO.QueryData.GetStudentYearEntryScoreRowBySchoolYear(studIDList, _SchoolYear);
 
             foreach (StudentRecord stud in selectedStudents)
             {
                 foreach (SemesterSubjectScoreInfo_New smScore in stud.SemesterSubjectScoreList)
                 {
-
                     //if (smScore == null)
                     //    continue;
 
                     //if (smScore.Detail.GetAttribute("不計學分") == "是")
                     //    continue;
 
-                    //// 累計應得學分
-                    //Global._StudCreditDict[stud.StudentID].shouldGetTotalCredit += smScore.Credit;
+                    if (smScore.Detail.GetAttribute("不計學分") != "是")
+                    {
+                        // 應得學分累計
+                        if (!Global._StudCreditDict.ContainsKey(stud.StudentID))
+                            Global._StudCreditDict.Add(stud.StudentID, new DAO.StudCredit());
+                        Global._StudCreditDict[stud.StudentID].shouldGetTotalCredit += smScore.CreditDec;
 
-                    //// 累計實得學分
-                    //if (smScore.Pass)
-                    //    Global._StudCreditDict[stud.StudentID].gotTotalCredit += smScore.Credit;
+                        // 實得學分累計
+                        if (smScore.Pass)
+                            Global._StudCreditDict[stud.StudentID].gotTotalCredit += smScore.CreditDec;
+                    }
 
                     if (smScore.SchoolYear.ToString() == _SchoolYear)
                     {
@@ -515,45 +529,24 @@ namespace SH_ClassYearScoreReport
                         {
                             StudentYearSubjCreditBySemsSubjMappingDic.Add(stud.StudentID, new Dictionary<string, decimal>());
                         }
-
-
                         string specifySubjectName = smScore.Detail.GetAttribute("指定學年科目名稱");
                         string subjName = (specifySubjectName == "") ? smScore.Subject : specifySubjectName;
-
                         string subjectKey = subjName + "_" + smScore.Detail.GetAttribute("修課校部訂") + "_" + smScore.Detail.GetAttribute("修課必選修") + "_" + smScore.CreditDec;
-
-
 
                         if (!StudentYearSubjCreditBySemsSubjMappingDic[stud.StudentID].ContainsKey(subjectKey))
                             StudentYearSubjCreditBySemsSubjMappingDic[stud.StudentID].Add(subjectKey, smScore.CreditDec);
                         else
                             StudentYearSubjCreditBySemsSubjMappingDic[stud.StudentID][subjectKey] += smScore.CreditDec;
 
-                        //// 建立學生學期成績索引
-                        //if (!SemesterSubjectScoreInfoDict.ContainsKey(stud.StudentID))
-                        //    SemesterSubjectScoreInfoDict.Add(stud.StudentID, new Dictionary<string, SemesterSubjectScoreInfo>());
+                        if (smScore.Detail.GetAttribute("不計學分") != "是")
+                        {
+                            // 學年應得學分
+                            Global._StudCreditDict[stud.StudentID].shouldGetCredit += smScore.CreditDec;
 
-                        //string subjKey = smScore.Subject + smScore.Level;
-                        //if (!SemesterSubjectScoreInfoDict[stud.StudentID].ContainsKey(subjKey))
-                        //    SemesterSubjectScoreInfoDict[stud.StudentID].Add(subjKey, smScore);
-
-                        //// 學期應得學分
-                        //Global._StudCreditDict[stud.StudentID].shouldGetCredit += smScore.Credit;
-
-                        //// 學期實得學分
-                        //if (smScore.Pass)
-                        //    Global._StudCreditDict[stud.StudentID].gotCredit += smScore.Credit;
-
-                        //if (!studentSubjectScoreDict.ContainsKey(stud.StudentID))
-                        //    studentSubjectScoreDict.Add(stud.StudentID, new Dictionary<string, Dictionary<string, SemesterSubjectScoreInfo>>());
-
-                        //if (!studentSubjectScoreDict[stud.StudentID].ContainsKey(smScore.Subject))
-                        //    studentSubjectScoreDict[stud.StudentID].Add(smScore.Subject, new Dictionary<string, SemesterSubjectScoreInfo>());
-
-                        //// 科目名稱+級別是key
-                        //string key11 = smScore.Subject + "^^^" + smScore.Level;
-                        //if (!studentSubjectScoreDict[stud.StudentID][smScore.Subject].ContainsKey(key11))
-                        //    studentSubjectScoreDict[stud.StudentID][smScore.Subject].Add(key11, smScore);
+                            // 學年實得學分
+                            if (smScore.Pass)
+                                Global._StudCreditDict[stud.StudentID].gotCredit += smScore.CreditDec;
+                        }
                     }
                 }
 
@@ -616,11 +609,48 @@ namespace SH_ClassYearScoreReport
                     row["學號" + ClassStuNum] = stuRec.StudentNumber;
                     row["姓名" + ClassStuNum] = stuRec.StudentName;
                     if (YearEntryScoreDic.ContainsKey(stuRec.StudentID))
-                        foreach (string key in new string[] { "學業", "專業科目", "實習科" })
+                        foreach (string key in new string[] { "學業", "專業科目", "實習科目" })
                         {
                             if (YearEntryScoreDic[stuRec.StudentID].ContainsKey(key))
                                 row["學年" + key + "成績" + ClassStuNum] = YearEntryScoreDic[stuRec.StudentID][key].Value;
                         }
+                    if (Global._TempEntryClassRankDict.ContainsKey(stuRec.StudentID))
+                        foreach (string key in new string[] { "學業", "專業科目", "實習科目" })
+                        {
+                            if (Global._TempEntryClassRankDict[stuRec.StudentID].ContainsKey(key))
+                            {
+                                row["學年" + key + "成績班排名" + ClassStuNum] = Global._TempEntryClassRankDict[stuRec.StudentID][key].Rank;
+                                row["學年" + key + "成績班排名母數" + ClassStuNum] = Global._TempEntryClassRankDict[stuRec.StudentID][key].RankT;
+                            }
+                        }
+
+                    if (Global._TempEntryGradeYearRankDict.ContainsKey(stuRec.StudentID))
+                        foreach (string key in new string[] { "學業", "專業科目", "實習科" })
+                        {
+                            if (Global._TempEntryGradeYearRankDict[stuRec.StudentID].ContainsKey(key))
+                            {
+                                row["學年" + key + "成績年排名" + ClassStuNum] = Global._TempEntryGradeYearRankDict[stuRec.StudentID][key].Rank;
+                                row["學年" + key + "成績年排名母數" + ClassStuNum] = Global._TempEntryGradeYearRankDict[stuRec.StudentID][key].RankT;
+                            }
+                        }
+
+                    if (Global._TempEntryDeptRankDict.ContainsKey(stuRec.StudentID))
+                        foreach (string key in new string[] { "學業", "專業科目", "實習科" })
+                        {
+                            if (Global._TempEntryDeptRankDict[stuRec.StudentID].ContainsKey(key))
+                            {
+                                row["學年" + key + "成績科排名" + ClassStuNum] = Global._TempEntryDeptRankDict[stuRec.StudentID][key].Rank;
+                                row["學年" + key + "成績科排名母數" + ClassStuNum] = Global._TempEntryDeptRankDict[stuRec.StudentID][key].RankT;
+                            }
+                        }
+
+                    if (Global._StudCreditDict.ContainsKey(stuRec.StudentID))
+                    {
+                        row["學年應得學分" + ClassStuNum] = Global._StudCreditDict[stuRec.StudentID].shouldGetCredit;
+                        row["學年實得學分" + ClassStuNum] = Global._StudCreditDict[stuRec.StudentID].gotCredit;
+                        row["應得學分累計" + ClassStuNum] = Global._StudCreditDict[stuRec.StudentID].shouldGetTotalCredit;
+                        row["實得學分累計" + ClassStuNum] = Global._StudCreditDict[stuRec.StudentID].gotTotalCredit;
+                    }
 
                     #region 整理班級中列印科目
                     if (YearSubjectScoreInfoDic.ContainsKey(stuRec.StudentID))
@@ -633,7 +663,6 @@ namespace SH_ClassYearScoreReport
 
                             if (!classSubjects.Contains(subjArray[0]))
                                 classSubjects.Add(subjArray[0]);
-
                         }
                     }
 
@@ -664,29 +693,27 @@ namespace SH_ClassYearScoreReport
                                 {
                                     row["科目成績" + ClassStuNum + "-" + subjectIndex] = YearSubjectScoreInfoDic[studentID][subjectNameKey].Score;
 
-                                    foreach (string rt in rankTypeMapDict.Keys)
+                                    if (Global._TempSubjClassRankDict.ContainsKey(studentID))
                                     {
-                                        if (Global._TempSubjClassRankDict.ContainsKey(studentID))
+                                        if (Global._TempSubjClassRankDict[studentID].ContainsKey(subjectInfoArray[0]))
                                         {
-                                            if (Global._TempSubjClassRankDict[studentID].ContainsKey(subjectInfoArray[0]))
-                                            {
-                                                row[rankTypeMapDict[rt] + "" + ClassStuNum + "-" + subjectIndex] = Global._TempSubjClassRankDict[studentID][subjectInfoArray[0]].Rank;
-                                                row[rankTypeMapDict[rt] + "母數" + ClassStuNum + "-" + subjectIndex] = Global._TempSubjClassRankDict[studentID][subjectInfoArray[0]].RankT;
-                                            }
+                                            row["班排名" + ClassStuNum + "-" + subjectIndex] = Global._TempSubjClassRankDict[studentID][subjectInfoArray[0]].Rank;
+                                            row["班排名母數" + ClassStuNum + "-" + subjectIndex] = Global._TempSubjClassRankDict[studentID][subjectInfoArray[0]].RankT;
                                         }
-                                        if (Global._TempGradeYearRankDict.ContainsKey(studentID))
-                                            if (Global._TempGradeYearRankDict[studentID].ContainsKey(subjectInfoArray[0]))
-                                            {
-                                                row[rankTypeMapDict[rt] + "" + ClassStuNum + "-" + subjectIndex] = Global._TempGradeYearRankDict[studentID][subjectInfoArray[0]].Rank;
-                                                row[rankTypeMapDict[rt] + "母數" + ClassStuNum + "-" + subjectIndex] = Global._TempGradeYearRankDict[studentID][subjectInfoArray[0]].RankT;
-                                            }
-                                        if (Global._TempSubjDeptRankDict.ContainsKey(studentID))
-                                            if (Global._TempSubjDeptRankDict[studentID].ContainsKey(subjectInfoArray[0]))
-                                            {
-                                                row[rankTypeMapDict[rt] + "" + ClassStuNum + "-" + subjectIndex] = Global._TempSubjDeptRankDict[studentID][subjectInfoArray[0]].Rank;
-                                                row[rankTypeMapDict[rt] + "母數" + ClassStuNum + "-" + subjectIndex] = Global._TempSubjDeptRankDict[studentID][subjectInfoArray[0]].RankT;
-                                            }
                                     }
+                                    if (Global._TempSubjGradeYearRankDict.ContainsKey(studentID))
+                                        if (Global._TempSubjGradeYearRankDict[studentID].ContainsKey(subjectInfoArray[0]))
+                                        {
+                                            row["年排名" + ClassStuNum + "-" + subjectIndex] = Global._TempSubjGradeYearRankDict[studentID][subjectInfoArray[0]].Rank;
+                                            row["年排名母數" + ClassStuNum + "-" + subjectIndex] = Global._TempSubjGradeYearRankDict[studentID][subjectInfoArray[0]].RankT;
+                                        }
+                                    if (Global._TempSubjDeptRankDict.ContainsKey(studentID))
+                                        if (Global._TempSubjDeptRankDict[studentID].ContainsKey(subjectInfoArray[0]))
+                                        {
+                                            row["科排名" + ClassStuNum + "-" + subjectIndex] = Global._TempSubjDeptRankDict[studentID][subjectInfoArray[0]].Rank;
+                                            row["科排名母數" + ClassStuNum + "-" + subjectIndex] = Global._TempSubjDeptRankDict[studentID][subjectInfoArray[0]].RankT;
+                                        }
+
                                 }
                             }
                             if (StudentYearSubjCreditBySemsSubjMappingDic.ContainsKey(studentID))
@@ -773,6 +800,7 @@ namespace SH_ClassYearScoreReport
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            picLoding.Visible = true;
             //預設學年度學期
             _DefalutSchoolYear = "" + K12.Data.School.DefaultSchoolYear;
             _DefaultSemester = "" + K12.Data.School.DefaultSemester;
@@ -797,7 +825,7 @@ namespace SH_ClassYearScoreReport
                 }
                 cboSchoolYear.SelectedIndex = 0;
             }
-
+            picLoding.Visible = false;
         }
 
         private void SaveTemplate(object sender, EventArgs e)
@@ -874,8 +902,8 @@ namespace SH_ClassYearScoreReport
 
         private void lnkDownloadTemplate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            picLoding.Visible = true;
             if (this._Configure == null) return;
+            picLoding.Visible = true;
             lnkDownloadTemplate.Enabled = false;
             #region 儲存檔案
             string inputReportName = "班級學年成績單樣板(" + this._Configure.Name + ").docx";

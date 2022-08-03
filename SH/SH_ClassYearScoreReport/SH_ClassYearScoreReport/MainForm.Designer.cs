@@ -205,7 +205,7 @@ namespace SH_ClassYearScoreReport
             // 
             this.picLoding.BackColor = System.Drawing.Color.Transparent;
             this.picLoding.Image = global::SH_ClassYearScoreReport.Properties.Resources.loading;
-            this.picLoding.Location = new System.Drawing.Point(274, 41);
+            this.picLoding.Location = new System.Drawing.Point(241, 41);
             this.picLoding.Name = "picLoding";
             this.picLoding.Size = new System.Drawing.Size(35, 34);
             this.picLoding.TabIndex = 20;

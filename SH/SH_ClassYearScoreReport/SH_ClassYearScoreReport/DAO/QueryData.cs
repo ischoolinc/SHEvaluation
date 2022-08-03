@@ -55,7 +55,7 @@ namespace SH_ClassYearScoreReport.DAO
                 Global._TempSubjClassRankDict.Clear();
                 Global._TempSubjDeptRankDict.Clear();
                 Global._TempSubjGradeYearRankDict.Clear();
-                Global._TempSubjGroup1RankDict.Clear();
+                //Global._TempSubjGroup1RankDict.Clear();
 
                 foreach (string id in retVal.Keys)
                 {
@@ -178,6 +178,130 @@ namespace SH_ClassYearScoreReport.DAO
                     //        cnCount++;
                     //    }
                     #endregion
+                }
+
+            }
+            return retVal;
+        }
+
+        /// <summary>
+        /// 透過學生學生系統編號，取得學年分項排名
+        /// </summary>
+        /// <param name="StudentIDList"></param>
+        /// <param name="SchoolYear"></param>
+        /// <param name="Semester"></param>
+        /// <returns></returns>
+        public static Dictionary<string, DataRow> GetStudentYearEntryScoreRowBySchoolYear(List<string> StudentIDList, string SchoolYear)
+        {
+            Dictionary<string, DataRow> retVal = new Dictionary<string, DataRow>();
+            if (StudentIDList.Count > 0)
+            {
+                QueryHelper qh = new QueryHelper();
+                string strQuery = "select ref_student_id,score_info,class_rating,dept_rating,year_rating,group_rating from year_entry_score where ref_student_id in(" + string.Join(",", StudentIDList.ToArray()) + ") and school_year=" + SchoolYear;
+                DataTable dt = qh.Select(strQuery);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string id = dr["ref_student_id"].ToString();
+                    if (!retVal.ContainsKey(id))
+                        retVal.Add(id, dr);
+                }
+
+                Global._TempEntryClassRankDict.Clear();
+                Global._TempEntryDeptRankDict.Clear();
+                Global._TempEntryGradeYearRankDict.Clear();
+               // Global._TempSubjGroup1RankDict.Clear();
+
+                foreach (string id in retVal.Keys)
+                {
+                    DataRow dr = retVal[id];
+
+                    #region 分項班排名
+                    if (!Global._TempEntryClassRankDict.ContainsKey(id))
+                        Global._TempEntryClassRankDict.Add(id, new Dictionary<string, ScoreItem>());
+
+                    if (dr["class_rating"] != null)
+                        if (!string.IsNullOrEmpty(dr["class_rating"].ToString()))
+                        {
+                            XElement elmClass = XElement.Parse(dr["class_rating"].ToString());
+                            foreach (XElement elm in elmClass.Elements("Item"))
+                            {
+                                int g1, g2;
+                                decimal c1;
+                                string key = elm.Attribute("分項").Value;
+                                ScoreItem si = new ScoreItem();
+                                si.Name = key;
+                                if (!Global._TempEntryClassRankDict[id].ContainsKey(key))
+                                {
+                                    int.TryParse(elm.Attribute("排名").Value, out g1);
+                                    int.TryParse(elm.Attribute("成績人數").Value, out g2);
+                                    decimal.TryParse(elm.Attribute("成績").Value, out c1);
+                                    si.Rank = g1;
+                                    si.RankT = g2;
+                                    si.Score = c1;
+                                    Global._TempEntryClassRankDict[id].Add(key, si);
+                                }
+                            }
+                        }
+                    #endregion
+
+                    #region 分項科排名
+                    if (!Global._TempEntryDeptRankDict.ContainsKey(id))
+                        Global._TempEntryDeptRankDict.Add(id, new Dictionary<string, ScoreItem>());
+
+                    if (dr["dept_rating"] != null)
+                        if (!string.IsNullOrEmpty(dr["dept_rating"].ToString()))
+                        {
+                            XElement elmDept = XElement.Parse(dr["dept_rating"].ToString());
+                            foreach (XElement elm in elmDept.Elements("Item"))
+                            {
+                                int g1, g2;
+                                decimal c1;
+                                string key = elm.Attribute("分項").Value;
+                                ScoreItem si = new ScoreItem();
+                                si.Name = key;
+                                if (!Global._TempEntryDeptRankDict[id].ContainsKey(key))
+                                {
+                                    int.TryParse(elm.Attribute("排名").Value, out g1);
+                                    int.TryParse(elm.Attribute("成績人數").Value, out g2);
+                                    decimal.TryParse(elm.Attribute("成績").Value, out c1);
+                                    si.Rank = g1;
+                                    si.RankT = g2;
+                                    si.Score = c1;
+                                    Global._TempEntryDeptRankDict[id].Add(key, si);
+                                }
+                            }
+                        }
+                    #endregion
+
+                    #region 分項年排名
+                    if (!Global._TempEntryGradeYearRankDict.ContainsKey(id))
+                        Global._TempEntryGradeYearRankDict.Add(id, new Dictionary<string, ScoreItem>());
+
+                    if (dr["year_rating"] != null)
+                        if (!string.IsNullOrEmpty(dr["year_rating"].ToString()))
+                        {
+                            XElement elmGradeYear = XElement.Parse(dr["year_rating"].ToString());
+                            foreach (XElement elm in elmGradeYear.Elements("Item"))
+                            {
+                                int g1, g2;
+                                decimal c1;
+                                string key = elm.Attribute("分項").Value;
+                                ScoreItem si = new ScoreItem();
+                                si.Name = key;
+                                if (!Global._TempEntryGradeYearRankDict[id].ContainsKey(key))
+                                {
+                                    int.TryParse(elm.Attribute("排名").Value, out g1);
+                                    int.TryParse(elm.Attribute("成績人數").Value, out g2);
+                                    decimal.TryParse(elm.Attribute("成績").Value, out c1);
+                                    si.Rank = g1;
+                                    si.RankT = g2;
+                                    si.Score = c1;
+                                    Global._TempEntryGradeYearRankDict[id].Add(key, si);
+                                }
+                            }
+                        }
+                    #endregion
+
                 }
 
             }

@@ -121,8 +121,7 @@
     <Compile Include="Configure.cs" />
     <Compile Include="DAO\QueryData.cs" />
     <Compile Include="DAO\ScoreItem.cs" />
-    <Compile Include="DAO\UDTTransfer.cs" />
-    <Compile Include="DAO\UDT_ScoreConfig.cs" />
+    <Compile Include="DAO\StudCredit.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

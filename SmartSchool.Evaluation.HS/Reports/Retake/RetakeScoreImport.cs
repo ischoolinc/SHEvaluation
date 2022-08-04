@@ -106,8 +106,8 @@ namespace SmartSchool.Evaluation.Reports
             int semester = (int)obj[1];
             bool printAll = (bool)obj[2];
 
-            int gradeYear = (int)obj[3];
-            bool printAllYear = (bool)obj[4];
+            //int gradeYear = (int)obj[3];
+            //bool printAllYear = (bool)obj[4];
 
             _BWRepeatScoreImport.ReportProgress(0);
 
@@ -156,8 +156,8 @@ namespace SmartSchool.Evaluation.Reports
 
             foreach (SmartSchool.Customization.Data.StudentRecord aStudent in allStudents)
             {
-                if (!printAllYear && aStudent.RefClass.GradeYear != gradeYear.ToString())
-                    continue;
+                //if (!printAllYear && aStudent.RefClass.GradeYear != gradeYear.ToString())
+                //    continue;
                 foreach (SemesterSubjectScoreInfo info in aStudent.SemesterSubjectScoreList)
                 {
                     if ((info.SchoolYear == schoolyear && info.Semester == semester) || printAll)

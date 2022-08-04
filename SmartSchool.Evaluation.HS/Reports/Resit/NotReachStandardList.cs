@@ -19,8 +19,8 @@ namespace SmartSchool.Evaluation.Reports
         {
             int schoolyear = 0;
             int semester = 0;
-            int gradeYear = 0;
-            bool printAllYear = false;
+            //int gradeYear = 0;
+            //bool printAllYear = false;
 
             SelectSemesterForm form = new SelectSemesterForm("未達補考標準名單");
             if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
@@ -38,7 +38,8 @@ namespace SmartSchool.Evaluation.Reports
             _BGWResitList.DoWork += new DoWorkEventHandler(_BGWResitList_DoWork);
             _BGWResitList.ProgressChanged += new ProgressChangedEventHandler(_BGWResitList_ProgressChanged);
             _BGWResitList.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_BGWResitList_RunWorkerCompleted);
-            _BGWResitList.RunWorkerAsync(new object[] { schoolyear, semester, gradeYear, printAllYear });
+            //_BGWResitList.RunWorkerAsync(new object[] { schoolyear, semester, gradeYear, printAllYear });
+            _BGWResitList.RunWorkerAsync(new object[] { schoolyear, semester });
         }
 
         private int SortBySemesterSubjectScore(string a, string b)
@@ -288,8 +289,8 @@ namespace SmartSchool.Evaluation.Reports
             int schoolyear = (int)objectValue[0];
             int semester = (int)objectValue[1];
 
-            int gradeYear = (int)objectValue[2];
-            bool printAllYear = (bool)objectValue[3];
+            //int gradeYear = (int)objectValue[2];
+            //bool printAllYear = (bool)objectValue[3];
 
             _BGWResitList.ReportProgress(0);
 
@@ -336,8 +337,8 @@ namespace SmartSchool.Evaluation.Reports
 
             foreach (StudentRecord aStudent in allStudents)
             {
-                if (!printAllYear && aStudent.RefClass.GradeYear != gradeYear.ToString())
-                    continue;
+                //if (!printAllYear && aStudent.RefClass.GradeYear != gradeYear.ToString())
+                //    continue;
 
                 string className = aStudent.RefClass.ClassName;
                 string seatNo = aStudent.SeatNo;

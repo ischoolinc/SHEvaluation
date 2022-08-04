@@ -19,8 +19,8 @@ namespace SmartSchool.Evaluation.Reports
         {
             int schoolyear = 0;
             int semester = 0;
-            int gradeYear = 0;
-            bool printAllYear = false;
+            //int gradeYear = 0;
+            //bool printAllYear = false;
 
             SelectSemesterForm form = new SelectSemesterForm("補考名單-依科目");
             if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
@@ -38,7 +38,8 @@ namespace SmartSchool.Evaluation.Reports
             _BGWResitList.DoWork += new DoWorkEventHandler(_BGWResitList_DoWork);
             _BGWResitList.ProgressChanged += new ProgressChangedEventHandler(_BGWResitList_ProgressChanged);
             _BGWResitList.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_BGWResitList_RunWorkerCompleted);
-            _BGWResitList.RunWorkerAsync(new object[] { schoolyear, semester, gradeYear, printAllYear });
+            //_BGWResitList.RunWorkerAsync(new object[] { schoolyear, semester, gradeYear, printAllYear });
+            _BGWResitList.RunWorkerAsync(new object[] { schoolyear, semester });
         }
 
         private int SortBySemesterSubjectScore(string a, string b)

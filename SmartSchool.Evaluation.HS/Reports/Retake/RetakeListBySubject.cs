@@ -169,8 +169,8 @@ namespace SmartSchool.Evaluation.Reports
             int semester = (int)((e.Argument as object[])[3]);
             bool printAll = (bool)((e.Argument as object[])[4]);
 
-            int gradeYear = (int)(e.Argument as object[])[5];
-            bool printAllYear = (bool)(e.Argument as object[])[6];
+            //int gradeYear = (int)(e.Argument as object[])[5];
+            //bool printAllYear = (bool)(e.Argument as object[])[6];
 
             double totleProgress = 0.0;
             double currentProgress = 80.0 / handle.Count;
@@ -186,8 +186,8 @@ namespace SmartSchool.Evaluation.Reports
                 //每一個學生
                 foreach (BriefStudentData student in splitList)
                 {
-                    if (!printAllYear && student.GradeYear != gradeYear.ToString())
-                        continue;
+                    //if (!printAllYear && student.GradeYear != gradeYear.ToString())
+                    //    continue;
                     List<string> studentPassedList = new List<string>();
                     //每學期成績
                     foreach (XmlElement scoreElement in resp.GetContent().GetElements("SemesterSubjectScore[RefStudentId='" + student.ID + "']"))

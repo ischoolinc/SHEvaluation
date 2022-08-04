@@ -15,15 +15,15 @@ namespace SmartSchool.Evaluation.Reports.Retake
             get { return chkAllSemester.Checked; }
         }
 
-        public bool IsPrintAllGradeYear
-        {
-            get { return chkAllYear.Checked; }
-        }
+        //public bool IsPrintAllGradeYear
+        //{
+        //    get { return chkAllYear.Checked; }
+        //}
 
-        public int GradeYear
-        {
-            get { return (int)gradeYearInput.Value; }
-        }
+        //public int GradeYear
+        //{
+        //    get { return (int)gradeYearInput.Value; }
+        //}
 
         public RetakeSelectSemesterForm(string titleName)
         {
@@ -37,9 +37,9 @@ namespace SmartSchool.Evaluation.Reports.Retake
             numericUpDown2.Enabled = !chkAllSemester.Checked;
         }
 
-        private void checkBoxX1_CheckedChanged(object sender, EventArgs e)
-        {
-            gradeYearInput.Enabled = !chkAllYear.Checked;
-        }
+        //private void checkBoxX1_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    gradeYearInput.Enabled = !chkAllYear.Checked;
+        //}
     }
 }

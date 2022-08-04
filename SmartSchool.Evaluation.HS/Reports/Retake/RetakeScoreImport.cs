@@ -31,7 +31,9 @@ namespace SmartSchool.Evaluation.Reports
             _BWRepeatScoreImport.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_BWRepeatScoreImport_RunWorkerCompleted);
             _BWRepeatScoreImport.ProgressChanged += new ProgressChangedEventHandler(_BWRepeatScoreImport_ProgressChanged);
             _BWRepeatScoreImport.WorkerReportsProgress = true;
-            _BWRepeatScoreImport.RunWorkerAsync(new object[] { form.SchoolYear, form.Semester, form.IsPrintAllSemester, form.GradeYear, form.IsPrintAllGradeYear });
+            //_BWRepeatScoreImport.RunWorkerAsync(new object[] { form.SchoolYear, form.Semester, form.IsPrintAllSemester, form.GradeYear, form.IsPrintAllGradeYear });
+            _BWRepeatScoreImport.RunWorkerAsync(new object[] { form.SchoolYear, form.Semester, form.IsPrintAllSemester});
+
         }
 
         private void Completed(string inputReportName, Workbook inputWorkbook)

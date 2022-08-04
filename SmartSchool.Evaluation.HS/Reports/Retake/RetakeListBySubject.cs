@@ -66,7 +66,8 @@ namespace SmartSchool.Evaluation.Reports
             bkwNotPassComputer.DoWork += new DoWorkEventHandler(bkwNotPassComputer_DoWork);
             bkwNotPassComputer.ProgressChanged += new ProgressChangedEventHandler(bkwNotPassComputer_ProgressChanged);
             bkwNotPassComputer.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bkwNotPassComputer_RunWorkerCompleted);
-            bkwNotPassComputer.RunWorkerAsync(new object[] { handle, response, form.SchoolYear, form.Semester, form.IsPrintAllSemester, form.GradeYear, form.IsPrintAllGradeYear });
+            //bkwNotPassComputer.RunWorkerAsync(new object[] { handle, response, form.SchoolYear, form.Semester, form.IsPrintAllSemester, form.GradeYear, form.IsPrintAllGradeYear });
+            bkwNotPassComputer.RunWorkerAsync(new object[] { handle, response, form.SchoolYear, form.Semester, form.IsPrintAllSemester});
         }
 
         private void bkwNotPassComputer_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

@@ -27,8 +27,8 @@ namespace SmartSchool.Evaluation.Reports
             {
                 schoolyear = form.SchoolYear;
                 semester = form.Semester;
-                gradeYear = form.GradeYear;
-                printAllYear = form.IsPrintAllYear;
+                //gradeYear = form.GradeYear;
+                //printAllYear = form.IsPrintAllYear;
             }
             else
                 return;

@@ -25,14 +25,14 @@ namespace SmartSchool.Evaluation.Reports
         {
             get { return _semester; }
         }
-        public bool IsPrintAllYear
-        {
-            get { return chkAllYear.Checked; }
-        }
-        public int GradeYear
-        {
-            get { return (int)gradeYearInput.Value; }
-        }
+        //public bool IsPrintAllYear
+        //{
+        //    get { return chkAllYear.Checked; }
+        //}
+        //public int GradeYear
+        //{
+        //    get { return (int)gradeYearInput.Value; }
+        //}
         public SelectSemesterForm(string titleName)
             : this()
         {
@@ -67,9 +67,9 @@ namespace SmartSchool.Evaluation.Reports
             this.Close();
         }
 
-        private void chkAllYear_CheckedChanged(object sender, EventArgs e)
-        {
-            gradeYearInput.Enabled = !chkAllYear.Checked;
-        }
+        //private void chkAllYear_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    gradeYearInput.Enabled = !chkAllYear.Checked;
+        //}
     }
 }

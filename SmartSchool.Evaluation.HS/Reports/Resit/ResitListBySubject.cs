@@ -289,8 +289,8 @@ namespace SmartSchool.Evaluation.Reports
             int schoolyear = (int)objectValue[0];
             int semester = (int)objectValue[1];
 
-            int gradeYear = (int)objectValue[2];
-            bool printAllYear = (bool)objectValue[3];
+            //int gradeYear = (int)objectValue[2];
+            //bool printAllYear = (bool)objectValue[3];
 
             _BGWResitList.ReportProgress(0);
 
@@ -336,8 +336,8 @@ namespace SmartSchool.Evaluation.Reports
 
             foreach (StudentRecord aStudent in allStudents)
             {
-                if (!printAllYear && aStudent.RefClass.GradeYear != gradeYear.ToString())
-                    continue;
+                //if (!printAllYear && aStudent.RefClass.GradeYear != gradeYear.ToString())
+                //    continue;
                 string className = aStudent.RefClass.ClassName;
                 string seatNo = aStudent.SeatNo;
                 string studentName = aStudent.StudentName;

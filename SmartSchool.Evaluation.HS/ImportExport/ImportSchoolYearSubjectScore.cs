@@ -33,7 +33,7 @@ namespace SmartSchool.Evaluation.ImportExport
             {
                 this.ImportableFields.Add(field);
             }
-            foreach (string field in new string[] { "科目", "學年度", "成績年級" })
+            foreach (string field in new string[] { "科目", "學年度", "成績年級", "校部定", "必選修", "識別學分數" })
             {
                 this.RequiredFields.Add(field);
             }

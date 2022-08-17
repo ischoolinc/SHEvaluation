@@ -10,6 +10,9 @@ using SmartSchool.Customization.Data.StudentExtension;
 using FISCA.Permission;
 using SmartSchool;
 using Campus.ePaperCloud;
+using System.Xml.Linq;
+using System.Xml.XPath;
+using System.Xml;
 
 namespace SH_SemesterScoreReportFixed
 {
@@ -198,7 +201,7 @@ namespace SH_SemesterScoreReportFixed
                 table.Columns.Add("在校期間實得必修學分");
                 table.Columns.Add("在校期間實得選修學分");
                 table.Columns.Add("學期成績排名採計成績欄位");
-
+                table.Columns.Add("升級或應重讀");
                 // 新增合併欄位
                 List<string> r1List = new List<string>();
                 List<string> r2List = new List<string>();
@@ -1400,8 +1403,24 @@ namespace SH_SemesterScoreReportFixed
                             List<string> subjects1 = new List<string>();//本學期
                             List<string> subjects2 = new List<string>();//上學期
                             List<string> subjects3 = new List<string>();//學年
+                            // 進校判斷升級重讀: key= 科目名稱+校部定+必選修+學分數, Value=上下學期實得學分加總
+                            Dictionary<string, decimal> subjectCreditDic = new Dictionary<string, decimal>();
+
                             foreach (var semesterSubjectScore in stuRec.SemesterSubjectScoreList)
                             {
+                                if (semesterSubjectScore.SchoolYear.ToString() == conf.SchoolYear && semesterSubjectScore.Detail.GetAttribute("不計學分") != "是")
+                                {
+                                    string skey = semesterSubjectScore.Subject + "_" + semesterSubjectScore.Detail.GetAttribute("修課校部訂") + "_" + semesterSubjectScore.Require.ToString().ToLower() + "_" + semesterSubjectScore.CreditDec();
+                                    if (semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱") != "")
+                                        skey = semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱") + "_" + semesterSubjectScore.Detail.GetAttribute("修課校部訂") + "_" + semesterSubjectScore.Require.ToString().ToLower() + "_" + semesterSubjectScore.CreditDec();
+
+                                    if (!subjectCreditDic.ContainsKey(skey))
+                                        subjectCreditDic.Add(skey, 0);
+                                    if (semesterSubjectScore.Pass)
+                                        subjectCreditDic[skey] += semesterSubjectScore.CreditDec();
+
+                                }
+
                                 if (("" + semesterSubjectScore.SchoolYear) == conf.SchoolYear && ("" + semesterSubjectScore.Semester) == conf.Semester)
                                 {
                                     if (semesterSubjectScore.Detail.GetAttribute("不計學分") != "是")
@@ -1453,7 +1472,7 @@ namespace SH_SemesterScoreReportFixed
                                             }
                                             if (!match)
                                             {
-                                                //指定學年科目成績
+                                                //指定學年科目名稱
                                                 subjects1.Add(newExamSubjectName + "_" + accessHelper.CourseHelper.GetCourse(courseID)[0].RequiredBy + "_" + accessHelper.CourseHelper.GetCourse(courseID)[0].Required.ToString().ToLower() + "_" + accessHelper.CourseHelper.GetCourse(courseID)[0].CreditDec());
                                             }
                                             #endregion
@@ -1481,6 +1500,17 @@ namespace SH_SemesterScoreReportFixed
                                 }
                                 if (conf.WithSchoolYearScore)
                                 {
+                                    decimal entryScore = 0;
+                                    foreach (var schoolYearEntryScore in stuRec.SchoolYearEntryScoreList)
+                                    {
+                                        if (schoolYearEntryScore.SchoolYear.ToString() == conf.SchoolYear)
+                                        {
+                                            if (schoolYearEntryScore.Entry == "學業")
+                                                entryScore = schoolYearEntryScore.Score;
+                                        }
+                                    }
+                                    //RetainInTheSameGrade(string pStudentID, int schoolYear, decimal entryScore, List<SchoolYearSubjectScoreInfo> schoolYearSubjectScoreInfos, Dictionary<string, decimal> subjectCreditDic)
+                                    row["升級或應重讀"] = RetainInTheSameGrade(stuRec.StudentID, conf.SchoolYear, currentGradeYear, entryScore, stuRec.SchoolYearSubjectScoreList, subjectCreditDic) ? "重讀" : "升級";
                                     foreach (var schoolYearSubjectScore in stuRec.SchoolYearSubjectScoreList)
                                     {
                                         if (("" + schoolYearSubjectScore.SchoolYear) == conf.SchoolYear)
@@ -3728,6 +3758,161 @@ namespace SH_SemesterScoreReportFixed
             }
 
             return value;
+        }
+
+        /***********************************
+ * 學生之學年學業成績符合下列各款規定之一者，准予升級：
+ *   一、各科目學年成績均及格。
+ *   二、學年成績不及格之各科目每週教學總節數，未超過修習各科目每週教學總節數二分之一，且不及格之科目成績無零分，而學年總平均成績及格。
+ *   三、學年成績不及格之科目未超過修習全部科目二分之一，且其不及格之科目成績無零分，而學年總平均成績及格。
+ ***********************************/
+        public static bool RetainInTheSameGrade(string pStudentID, string schoolYear, int gradeYear, decimal entryScore, List<SchoolYearSubjectScoreInfo> schoolYearSubjectScoreInfos, Dictionary<string, decimal> subjectCreditDic)
+        {
+            decimal? totalCredit = 0;
+            decimal? notPassTotalCredit = 0;
+            int totalSubjectAmount = 0;
+            int notPassTotalSubjectAmount = 0;
+            bool hasZeroScoreSubject = false;
+
+            foreach (SchoolYearSubjectScoreInfo ss in schoolYearSubjectScoreInfos)
+            {
+                if (ss.SchoolYear.ToString() == schoolYear && ss.GradeYear == gradeYear)
+                {
+                    string required = "false";
+                    if (ss.Detail.GetAttribute("必選修") == "必修")
+                        required = "true";
+                    string sKey = ss.Subject + "_" + ss.Detail.GetAttribute("校部定") + "_" + required + "_" + ss.Detail.GetAttribute("識別學分數");
+
+                    //  所有科目每週教學總節數(ischool 無課時，故取學分)
+                    if (subjectCreditDic.ContainsKey(sKey))
+                        totalCredit += subjectCreditDic[sKey];
+
+                    //  所有科目數
+                    totalSubjectAmount++;
+
+                    if (ss.Score < GetPassingStandard(pStudentID, ss.GradeYear))
+                    {
+                        if (subjectCreditDic.ContainsKey(sKey))
+                            notPassTotalCredit += subjectCreditDic[sKey];
+
+                        notPassTotalSubjectAmount += 1;
+                    }
+
+                    if (ss.Score == 0)
+                        hasZeroScoreSubject = true;
+                }
+            }
+
+            //  各科目學年成績均及格：升級
+            if (notPassTotalSubjectAmount == 0)
+                return false;
+
+            //  剛好 1/2：升級
+            //  學年成績不及格之各科目每週教學總節數，未超過修習各科目每週教學總節數二分之一，且不及格之科目成績無零分，而學年總平均成績(系統學年學業成績)及格
+            if (((notPassTotalCredit * 2) <= totalCredit) && (!hasZeroScoreSubject) && (entryScore >= (GetPassingStandard(pStudentID, gradeYear))))
+                return false;
+
+            //  剛好 1/2：升級
+            //  學年成績不及格之科目未超過修習全部科目二分之一，且其不及格之科目成績無零分，而學年總平均成績(系統學年學業成績)及格
+            if (((notPassTotalSubjectAmount * 2) <= totalSubjectAmount) && (!hasZeroScoreSubject) && (entryScore >= (GetPassingStandard(pStudentID, gradeYear))))
+                return false;
+
+            return true;
+        }
+
+        /****<學生類別 一年級及格標準=\"60\" 一年級補考標準=\"0\" 三年級及格標準=\"60\" 三年級補考標準=\"0\" 二年級及格標準=\"60\" 二年級補考標準=\"0\" 四年級及格標準=\"60\" 四年級補考標準=\"0\" 類別=\"預設\" />
+ * 比對學生成績身份，若比對不到則及格標準使用「預設」
+ ****/
+        public static decimal GetPassingStandard(string pStudentID, int? GradeYear)
+        {
+            GradeYear = GradeYear.HasValue ? GradeYear.Value : 0;
+            decimal passingStandard = 60;
+            decimal tmpPassingStandard = 60;
+
+            List<SHSchool.Data.SHStudentTagRecord> pStudentTag = SHSchool.Data.SHStudentTag.SelectByStudentID(pStudentID);
+            if (pStudentTag == null)
+                return passingStandard;
+
+            Dictionary<string, SHSchool.Data.SHScoreCalcRuleRecord> _SHScoreCalcRule = SHSchool.Data.SHScoreCalcRule.SelectAll().ToDictionary(x => x.ID);
+
+            XmlElement scoreCalcRule = SmartSchool.Evaluation.ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(pStudentID) == null ? null : SmartSchool.Evaluation.ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(pStudentID).ScoreCalcRuleElement;
+            if (scoreCalcRule == null)
+                return passingStandard;
+
+            List<string> pStudentTagFullName = new List<string>();
+            List<string> pStudentTagPrefix = new List<string>();
+            foreach (SHSchool.Data.SHStudentTagRecord sr in pStudentTag)
+            {
+                pStudentTagFullName.Add(sr.FullName);
+                pStudentTagPrefix.Add(sr.Prefix);
+            }
+
+            XDocument doc = XDocument.Parse("<root>" + scoreCalcRule.InnerXml + "</root>");
+
+            if (doc.Document == null)
+                return passingStandard;
+
+            if (doc.Document.Element("root").Element("及格標準") == null)
+                return passingStandard;
+
+            if (doc.Document.Element("root").Element("及格標準").Elements("學生類別") == null)
+                return passingStandard;
+
+            foreach (XElement x in doc.Document.Element("root").Element("及格標準").Elements("學生類別"))
+            {
+                if (x.Attribute("類別") != null)
+                {
+                    if (pStudentTagFullName.Contains(x.Attribute("類別").Value) || pStudentTagPrefix.Contains(x.Attribute("類別").Value))
+                    {
+                        try
+                        {
+                            if (x.Attribute(NumericToChinese(GradeYear) + "年級及格標準") != null)
+                            {
+                                bool result = decimal.TryParse(x.Attribute(NumericToChinese(GradeYear) + "年級及格標準").Value, out tmpPassingStandard);
+                                if (result)
+                                {
+                                    if (tmpPassingStandard < passingStandard)
+                                    {
+                                        passingStandard = tmpPassingStandard;
+                                    }
+                                }
+                            }
+                        }
+                        catch
+                        {
+                            return passingStandard;
+                        }
+                    }
+                }
+            }
+
+            try
+            {
+                var elem = doc.XPathSelectElement("root/及格標準/學生類別[@類別='預設']");
+                bool result = decimal.TryParse(elem.Attribute(NumericToChinese(GradeYear) + "年級及格標準").Value, out tmpPassingStandard);
+                if (result)
+                {
+                    if (passingStandard > tmpPassingStandard)
+                        passingStandard = tmpPassingStandard;
+                }
+            }
+            catch
+            {
+                return passingStandard;
+            }
+
+            return passingStandard;
+        }
+
+        public static char NumericToChinese(int? pNumber)
+        {
+            int qNumber = pNumber.HasValue ? pNumber.Value : 0;
+            if (pNumber > 10 || pNumber < 0)
+                throw new Exception("轉換的數字必須介於 0~10");
+
+            char[] number = new char[] { '○', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十' };
+
+            return number[qNumber];
         }
     }
 }

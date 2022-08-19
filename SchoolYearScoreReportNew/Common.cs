@@ -133,7 +133,7 @@ namespace SchoolYearScoreReport
             private int getIntForEntry(string a1)
             {
                 List<string> list = new List<string>();
-                list.AddRange(new string[] { "學業", "學業成績名次", "實習科目", "體育", "國防通識", "健康與護理", "德行", "實得學分", "累計學分" });
+                list.AddRange(new string[] { "學業", "學業成績名次", "實得學分", "累計學分", "學業(原始)", "實習科目(原始)", "實習科目", "專業科目(原始)", "專業科目", "體育", "國防通識", "健康與護理", "德行" });
                 int x = list.IndexOf(a1);
                 if (x < 0)
                 {

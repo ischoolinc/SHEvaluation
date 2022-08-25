@@ -22,6 +22,9 @@ namespace SmartSchool.Evaluation.GraduationPlan
         readonly private bool _NotIncludedInCalc;
         readonly private string _SubjectCode;
 
+        // 授課學期學分
+        readonly private string _SubjectCredit;
+
         internal GraduationPlanSubject(XmlElement subjectElement)
         {
             _Category = subjectElement.GetAttribute("Category");
@@ -42,6 +45,8 @@ namespace SmartSchool.Evaluation.GraduationPlan
             b = false;
             bool.TryParse(subjectElement.GetAttribute("NotIncludedInCalc"), out b);
             _NotIncludedInCalc = b;
+
+            _SubjectCredit = subjectElement.GetAttribute("授課學期學分");
         }
 
         public string Category { get { return _Category; } }
@@ -58,5 +63,7 @@ namespace SmartSchool.Evaluation.GraduationPlan
         public string Entry { get { return _Entry; } }
         public bool NotIncludedInCredit { get { return _NotIncludedInCredit; } }
         public bool NotIncludedInCalc { get { return _NotIncludedInCalc; } }
+
+        public string SubjectCredit { get { return _SubjectCredit; } }
     }
 }

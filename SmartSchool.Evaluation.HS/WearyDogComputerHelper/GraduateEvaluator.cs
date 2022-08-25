@@ -5,6 +5,8 @@ using FISCA.DSAUtil;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
 using SmartSchool.Evaluation.GraduationPlan;
+using System.IO;
+using System;
 
 namespace SmartSchool.Evaluation.WearyDogComputerHelper
 {
@@ -476,41 +478,138 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                     #region 使用課程規劃表時，判斷必修是否都有修習
                     if (attendAllRequiredSubjects)
                     {
-                        //學生修已修的科目中屬於必修的清單。
-                        SubjectSet requiredList = new SubjectSet();
+                        ////學生修已修的科目中屬於必修的清單。
+                        //SubjectSet requiredList = new SubjectSet();
+                        //foreach (SemesterSubjectScoreInfo subjectScore in subjectsByStudent)
+                        //{
+                        //    GraduationPlan.GraduationPlanSubject gPlanSubject = GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(student.StudentID).GetSubjectInfo(subjectScore.Subject, subjectScore.Level);
+
+                        //    if (gPlanSubject.Required.Trim() == REQUIRED)
+                        //    {
+                        //        SubjectName sn = new SubjectName(gPlanSubject.SubjectName, gPlanSubject.Level);
+
+                        //        //處理重修問題。
+                        //        if (!requiredList.Contains(sn))
+                        //            requiredList.Add(sn);
+                        //    }
+                        //}
+
+                        ////學生在課程規劃上的必修科目清單。
+                        //SubjectSet pRequiredSubjects = new SubjectSet();
+
+                        //foreach (GraduationPlanSubject each in GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(student.StudentID).Subjects)
+                        //{
+                        //    //判斷課程規劃科目為必修而且須計學分，亦即必修科目
+                        //    if (each.Required.Trim() == REQUIRED)
+                        //        pRequiredSubjects.Add(new SubjectName(each.SubjectName, each.Level));
+                        //}
+                        //foreach (SubjectName each in pRequiredSubjects)
+                        //{
+                        //    //如果有一個科目沒修，就是修課不完全。
+                        //    if (!requiredList.Contains(each))
+                        //    {
+                        //        XmlElement unPasselement = doc.CreateElement("UnPassReson");
+                        //        unPasselement.InnerText = "未修習所有必修課程";
+                        //        evalResult.AppendChild(unPasselement);
+                        //        break;
+                        //    }
+                        //}
+
+                        List<SemesterSubjectScoreInfo> SemesterSubjectScoreInfoReqList = new List<SemesterSubjectScoreInfo>();
+
+                        List<string> reSubjectNameList = new List<string>();
+
+                        // 學生獲得必修學分數
+                        Dictionary<string, int> SubjectScoreReqSumDict = new Dictionary<string, int>();
+                        // 取得必修課程
                         foreach (SemesterSubjectScoreInfo subjectScore in subjectsByStudent)
                         {
-                            GraduationPlan.GraduationPlanSubject gPlanSubject = GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(student.StudentID).GetSubjectInfo(subjectScore.Subject, subjectScore.Level);
-
-                            if (gPlanSubject.Required.Trim() == REQUIRED)
+                            // 必修
+                            if (subjectScore.Require)
                             {
-                                SubjectName sn = new SubjectName(gPlanSubject.SubjectName, gPlanSubject.Level);
+                                string key = subjectScore.Subject + subjectScore.Level;
+                                if (!reSubjectNameList.Contains(key))
+                                {
+                                    SemesterSubjectScoreInfoReqList.Add(subjectScore);
+                                    reSubjectNameList.Add(key);
 
-                                //處理重修問題。
-                                if (!requiredList.Contains(sn))
-                                    requiredList.Add(sn);
+                                    if (!SubjectScoreReqSumDict.ContainsKey(subjectScore.Subject))
+                                        SubjectScoreReqSumDict.Add(subjectScore.Subject, 0);
+
+                                    SubjectScoreReqSumDict[subjectScore.Subject] += subjectScore.Credit;
+                                }
+
                             }
                         }
 
-                        //學生在課程規劃上的必修科目清單。
-                        SubjectSet pRequiredSubjects = new SubjectSet();
-
+                        Dictionary<string, int> GPlanSubjectReqSumDict = new Dictionary<string, int>();
+                        // 取得課程規劃資料，計算各科必修學分數
                         foreach (GraduationPlanSubject each in GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(student.StudentID).Subjects)
                         {
-                            //判斷課程規劃科目為必修而且須計學分，亦即必修科目
+                            if (each.Domain.Contains("特殊需求領域"))
+                                continue;
+
                             if (each.Required.Trim() == REQUIRED)
-                                pRequiredSubjects.Add(new SubjectName(each.SubjectName, each.Level));
-                        }
-                        foreach (SubjectName each in pRequiredSubjects)
-                        {
-                            //如果有一個科目沒修，就是修課不完全。
-                            if (!requiredList.Contains(each))
                             {
-                                XmlElement unPasselement = doc.CreateElement("UnPassReson");
-                                unPasselement.InnerText = "未修習所有必修課程";
-                                evalResult.AppendChild(unPasselement);
-                                break;
+                                if (!GPlanSubjectReqSumDict.ContainsKey(each.SubjectName))
+                                {
+                                    int sum = 0;
+                                    char[] arr = each.SubjectCredit.ToCharArray();
+                                    foreach (char c in arr)
+                                    {
+                                        int n;
+                                        if (int.TryParse(c + "", out n))
+                                        {
+                                            sum += n;
+                                        }
+                                    }
+                                    GPlanSubjectReqSumDict.Add(each.SubjectName, sum);
+                                }
                             }
+                        }
+
+                        // 檢查必修全部
+                        bool allReqAttend = true;
+                        List<string> errList = new List<string>();
+                        foreach (string gSubject in GPlanSubjectReqSumDict.Keys)
+                        {
+                            if (SubjectScoreReqSumDict.ContainsKey(gSubject))
+                            {
+                                // 修習學分數不足
+                                if (SubjectScoreReqSumDict[gSubject] < GPlanSubjectReqSumDict[gSubject])
+                                {
+                                    allReqAttend = false;
+                                    errList.Add(gSubject + ":修習學分數不足。");
+                                }
+                            }
+                            else
+                            {
+                                // 未修
+                                allReqAttend = false;
+                                errList.Add(gSubject + ":未修習這科目。");
+                            }
+                        }
+
+                        if (allReqAttend == false)
+                        {
+                            try
+                            {
+                                string path1 = System.Windows.Forms.Application.StartupPath + @"\Reports\未修習所有必修課程簡述.txt";
+                                StreamWriter sw = new StreamWriter(path1, true);
+                                sw.WriteLine("學號：" + student.StudentNumber + ",姓名：" + student.StudentName);
+                                sw.WriteLine(string.Join("\n", errList.ToArray()));
+                                sw.WriteLine("記錄時間:" + DateTime.Now.ToString());
+                                sw.WriteLine();
+                                sw.Close();
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
+
+                            XmlElement unPasselement = doc.CreateElement("UnPassReson");
+                            unPasselement.InnerText = "未修習所有必修課程";
+                            evalResult.AppendChild(unPasselement);
                         }
                     }
 
@@ -625,17 +724,17 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                 {
                                     get總學分數 += subjectScore.CreditDec();
                                     if (subjectScore.Require && subjectScore.Detail.GetAttribute("修課校部訂") == "校訂")
-                                         get校訂必修學分數 += subjectScore.CreditDec();
+                                        get校訂必修學分數 += subjectScore.CreditDec();
                                     if (!subjectScore.Require)
-                                         get選修學分數 += subjectScore.CreditDec();
+                                        get選修學分數 += subjectScore.CreditDec();
                                     if (subjectScore.Detail.GetAttribute("開課分項類別") == "實習科目")
-                                         get實習學分數 += subjectScore.CreditDec();
+                                        get實習學分數 += subjectScore.CreditDec();
                                     if (subjectScore.Detail.GetAttribute("開課分項類別") == "專業科目")
-                                         get專業學分數 += subjectScore.CreditDec();
+                                        get專業學分數 += subjectScore.CreditDec();
                                     if (subjectScore.Require && subjectScore.Detail.GetAttribute("修課校部訂") == "部訂")
-                                         get部訂必修學分數 += subjectScore.CreditDec();
+                                        get部訂必修學分數 += subjectScore.CreditDec();
                                     if (subjectScore.Require)
-                                         get必修學分數 += subjectScore.CreditDec();
+                                        get必修學分數 += subjectScore.CreditDec();
                                 }
                             }
                             else
@@ -768,7 +867,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                         attendCredits += subjectScore.CreditDec();
 
                                         if (subjectScore.Pass)
-                                             passCredits += subjectScore.CreditDec();
+                                            passCredits += subjectScore.CreditDec();
                                         #endregion
                                     }
                                 }
@@ -1436,17 +1535,17 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
 
                                 if (Uncounted)
                                 {
-                                     get總學分數 += subjectScore.CreditDec();
+                                    get總學分數 += subjectScore.CreditDec();
                                     if (subjectScore.Require && subjectScore.Detail.GetAttribute("修課校部訂") == "校訂")
-                                         get校訂必修學分數 += subjectScore.CreditDec();
+                                        get校訂必修學分數 += subjectScore.CreditDec();
                                     if (!subjectScore.Require)
-                                         get選修學分數 += subjectScore.CreditDec();
+                                        get選修學分數 += subjectScore.CreditDec();
                                     if (subjectScore.Detail.GetAttribute("開課分項類別") == "實習科目")
-                                         get實習學分數 += subjectScore.CreditDec();
+                                        get實習學分數 += subjectScore.CreditDec();
                                     if (subjectScore.Require && subjectScore.Detail.GetAttribute("修課校部訂") == "部訂")
-                                         get部訂必修學分數 += subjectScore.CreditDec();
+                                        get部訂必修學分數 += subjectScore.CreditDec();
                                     if (subjectScore.Require)
-                                         get必修學分數 += subjectScore.CreditDec();
+                                        get必修學分數 += subjectScore.CreditDec();
                                 }
                                 #endregion
                             }
@@ -1566,7 +1665,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                         attendCredits += subjectScore.CreditDec();
 
                                         if (subjectScore.Pass)
-                                             passCredits += subjectScore.CreditDec();
+                                            passCredits += subjectScore.CreditDec();
                                         #endregion
                                     }
                                 }

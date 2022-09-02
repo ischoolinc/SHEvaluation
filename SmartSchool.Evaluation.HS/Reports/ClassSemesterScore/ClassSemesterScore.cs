@@ -9,7 +9,9 @@ using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
 using SmartSchool.Customization.PlugIn.Report;
 using System.Drawing;
+using System.Linq;
 using SmartSchool.Common;
+using System.Globalization;
 
 namespace SmartSchool.Evaluation.Reports
 {
@@ -52,7 +54,7 @@ namespace SmartSchool.Evaluation.Reports
             _BWClassSemesterScore.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_BWClassSemesterScore_RunWorkerCompleted);
             _BWClassSemesterScore.ProgressChanged += new ProgressChangedEventHandler(_BWClassSemesterScore_ProgressChanged);
             _BWClassSemesterScore.WorkerReportsProgress = true;
-            _BWClassSemesterScore.RunWorkerAsync(new object[] { schoolyear, semester, over100, papersize,UseSourceScore });
+            _BWClassSemesterScore.RunWorkerAsync(new object[] { schoolyear, semester, over100, papersize, UseSourceScore });
         }
 
         private void Completed(string inputReportName, Workbook inputWorkbook)
@@ -148,7 +150,7 @@ namespace SmartSchool.Evaluation.Reports
                 default:
                     levelNumber = "" + (p);
                     break;
-                #endregion
+                    #endregion
             }
             return levelNumber;
         }
@@ -349,7 +351,7 @@ namespace SmartSchool.Evaluation.Reports
             Workbook template = new Workbook();
             if (papersize == 0)
                 template.Open(new MemoryStream(Properties.Resources.班級學生學期成績一覽表B4));
-            else if(papersize == 1)
+            else if (papersize == 1)
                 template.Open(new MemoryStream(Properties.Resources.班級學生學期成績一覽表A3));
 
             Worksheet tempws = template.Worksheets[template.Worksheets.Add()];
@@ -367,6 +369,8 @@ namespace SmartSchool.Evaluation.Reports
             Worksheet ws = wb.Worksheets[0];
 
             ScoreAverageMachine machine = new ScoreAverageMachine();
+
+            CacluteCourseGetCreditRate courseGetCreditCount = new CacluteCourseGetCreditRate();
 
             AccessHelper helper = new AccessHelper();
 
@@ -410,7 +414,7 @@ namespace SmartSchool.Evaluation.Reports
                     {
                         // 不計學分、不須評分跳過  || info.Detail.GetAttribute("不需評分") == "是"
                         if (info.Detail.GetAttribute("不計學分") == "是")
-                        continue;
+                            continue;
 
                         if (info.SchoolYear == schoolyear && info.Semester == semester)
                         {
@@ -424,7 +428,7 @@ namespace SmartSchool.Evaluation.Reports
 
                             string header = info.Subject + levelString + "_" + info.CreditDec();
                             string creditHeader = info.CreditDec().ToString();
-                            string reqHeader =info.Require ? "必 " : "選 ";
+                            string reqHeader = info.Require ? "必 " : "選 ";
 
                             if (!subjectHeader.Contains(header))
                             {
@@ -442,7 +446,7 @@ namespace SmartSchool.Evaluation.Reports
                             string header = info.Entry;    // 先過濾原始
 
                             // 使用原始成績
-                            if (UseSourceScore && header =="學業(原始)")
+                            if (UseSourceScore && header == "學業(原始)")
                                 header = "學業平均(原始)";
 
                             if (UseSourceScore && header == "學業")
@@ -451,7 +455,7 @@ namespace SmartSchool.Evaluation.Reports
                             if (UseSourceScore == false && header == "學業(原始)")
                                 continue;
 
-                            if (UseSourceScore==false && header == "學業")
+                            if (UseSourceScore == false && header == "學業")
                                 header = "學業平均(擇優)";
 
                             if (!entryHeader.Contains(header))
@@ -471,13 +475,14 @@ namespace SmartSchool.Evaluation.Reports
                     sString = "(擇優)";
 
                 ws.Cells.CreateRange(rowIndex, 4, false).Copy(tempHeader);
-                ws.Cells[rowIndex, 0].PutValue(SystemInformation.SchoolChineseName + " " + schoolyear + " 學年度 第 " + semester + " 學期 班級學生成績一覽表  班級： " + aClass.ClassName+ " "+sString);
+                ws.Cells[rowIndex, 0].PutValue(SystemInformation.SchoolChineseName + " " + schoolyear + " 學年度 第 " + semester + " 學期 班級學生成績一覽表  班級： " + aClass.ClassName + " " + sString);
 
                 headerColIndex = 3;
                 foreach (string subject in subjectHeader)
                 {
                     columnIndexTable.Add(subject, headerColIndex);
                     machine.AddItem(subject);
+                    courseGetCreditCount.AddItem(subject);
                     string sl = subject.Split('_')[0];
                     ws.Cells[rowIndex + 1, headerColIndex].PutValue(sl);
                     ws.Cells[rowIndex + 2, headerColIndex].PutValue(subjectReqHeader[subject]);
@@ -528,10 +533,10 @@ namespace SmartSchool.Evaluation.Reports
                             continue;
 
                         if (info.SchoolYear == schoolyear && info.Semester == semester)
-                        {                            
+                        {
                             shouldGetCredit += info.CreditDec();
                             if (info.Pass)
-                                 gotCredit += info.CreditDec();
+                                gotCredit += info.CreditDec();
 
                             int level;
                             string levelString = "";
@@ -548,7 +553,7 @@ namespace SmartSchool.Evaluation.Reports
                                 decimal iScore = 0;
                                 if (UseSourceScore)
                                 {
-                                    decimal.TryParse(info.Detail.GetAttribute("原始成績"),out iScore);
+                                    decimal.TryParse(info.Detail.GetAttribute("原始成績"), out iScore);
                                 }
                                 else
                                     iScore = info.Score;      // 擇優                          
@@ -559,6 +564,11 @@ namespace SmartSchool.Evaluation.Reports
                                 ws.Cells[rowIndex, columnIndexTable[key]].PutValue((info.Pass ? "" : "*") + iScore);
                                 machine.AddScore(key, iScore);
 
+                                courseGetCreditCount.AddCourseCount(key);
+                                if (info.Pass)
+                                {
+                                    courseGetCreditCount.AddGetCreditCount(key);
+                                }
                             }
                         }
 
@@ -569,7 +579,7 @@ namespace SmartSchool.Evaluation.Reports
                             shouldGetTotalCredit += info.CreditDec();
                             if (info.Pass)
                                 gotTotalCredit += info.CreditDec();
-                        }                        
+                        }
                     }
 
                     foreach (SemesterEntryScoreInfo info in student.SemesterEntryScoreList)
@@ -585,9 +595,10 @@ namespace SmartSchool.Evaluation.Reports
                                 ws.Cells[rowIndex, columnIndexTable["學業平均(原始)"]].PutValue(score);
                                 machine.AddScore("學業平均(原始)", score);
 
-                            } else if(UseSourceScore==false && info.Entry == "學業")
+                            }
+                            else if (UseSourceScore == false && info.Entry == "學業")
                             {
-                               decimal score = info.Score;
+                                decimal score = info.Score;
                                 if (!over100 && score > 100)
                                     score = 100;
                                 ws.Cells[rowIndex, columnIndexTable["學業平均(擇優)"]].PutValue(score);
@@ -606,7 +617,7 @@ namespace SmartSchool.Evaluation.Reports
                                 }
                             }
 
-                            
+
                         }
                     }
 
@@ -637,6 +648,23 @@ namespace SmartSchool.Evaluation.Reports
                 {
                     ws.Cells[rowIndex, columnIndexTable[name]].PutValue(machine.GetAverage(name).ToString());
                 }
+                rowIndex++;
+
+                ws.Cells.CreateRange(rowIndex, 1, false).Copy(eachStudent);
+                ws.Cells[rowIndex, 0].PutValue("取得學分比率");
+                foreach (string name in courseGetCreditCount.GetAllItemName())
+                {
+                    ws.Cells[rowIndex, columnIndexTable[name]].PutValue(courseGetCreditCount.GetGetCreditRate(name));
+                }
+                rowIndex++;
+
+                ws.Cells.CreateRange(rowIndex, 1, false).Copy(eachStudent);
+                ws.Cells[rowIndex, 0].PutValue("未取得學分比率");
+                foreach (string name in courseGetCreditCount.GetAllItemName())
+                {
+                    ws.Cells[rowIndex, columnIndexTable[name]].PutValue(courseGetCreditCount.GetNotGetCreditRate(name));
+                }
+
                 machine.Clear();
                 rowIndex++;
 
@@ -698,6 +726,70 @@ namespace SmartSchool.Evaluation.Reports
         public void Clear()
         {
             _itemScoreList.Clear();
+        }
+    }
+
+    class CacluteCourseGetCreditRate
+    {
+        Dictionary<string, int> _ItemGetCreditDic = new Dictionary<string, int>();
+        Dictionary<string, int> _ItemCourseCount = new Dictionary<string, int>();
+
+        public void AddItem(string item)
+        {
+            if (!_ItemGetCreditDic.ContainsKey(item))
+                _ItemGetCreditDic.Add(item, 0);
+            if (!_ItemCourseCount.ContainsKey(item))
+                _ItemCourseCount.Add(item, 0);
+        }
+
+        public void AddGetCreditCount(string item)
+        {
+            if (!_ItemGetCreditDic.ContainsKey(item))
+                return;
+            _ItemGetCreditDic[item]++;
+        }
+
+        public void AddCourseCount(string item)
+        {
+            if (!_ItemCourseCount.ContainsKey(item))
+                return;
+            _ItemCourseCount[item]++;
+        }
+
+        public List<string> GetAllItemName()
+        {
+            List<string> items = new List<string>();
+            foreach (string key in _ItemCourseCount.Keys)
+                items.Add(key);
+            return items;
+        }
+
+        public object GetGetCreditRate(string item)
+        {
+            if (!_ItemCourseCount.ContainsKey(item) || !_ItemGetCreditDic.ContainsKey(item))
+                return 0;
+
+            double courseCount = _ItemCourseCount[item]* 1.0;
+            double getCreditCount = _ItemGetCreditDic[item] * 1.0;
+
+            if (courseCount > 0)
+                return (Math.Round((getCreditCount / courseCount), 4)).ToString("P", CultureInfo.InvariantCulture);
+            else
+                return "";
+        }
+
+        public object GetNotGetCreditRate(string item)
+        {
+            if (!_ItemCourseCount.ContainsKey(item) || !_ItemGetCreditDic.ContainsKey(item))
+                return 0;
+
+            double courseCount = _ItemCourseCount[item] * 1.0;
+            double notGetCreditCount = (courseCount - _ItemGetCreditDic[item]) * 1.0;
+
+            if (courseCount > 0)
+                return (Math.Round((notGetCreditCount / courseCount), 4)).ToString("P", CultureInfo.InvariantCulture);
+            else
+                return "";
         }
     }
 }

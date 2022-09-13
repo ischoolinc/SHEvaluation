@@ -47,7 +47,11 @@ namespace StudentDuplicateSubjectCheck
             this.numericUpDown1.Maximum = 5;
             this.numericUpDown1.Value = 1;
 
-            labelX2.Text = "本功能將會對本學期學生的修課紀錄有3項檢查：\n" + "1.檢查成績計算規則，並將及格標準、補考標準、學生身分寫入修課紀錄。\n2.檢查課程規劃，並將課程代碼寫入修課紀錄。" + Environment.NewLine + "3.假若與先前的學期成績有重覆的科目級別則會列出，由人工設定計算方式。";
+            labelX2.Text = "本功能將會對本學期學生的修課紀錄有3項檢查：\n" +
+                "1.檢查成績計算規則，並將及格標準、補考標準、學生身分寫入修課紀錄。\n" +
+                //"2.檢查課程規劃，並將課程代碼寫入修課紀錄。" + Environment.NewLine +
+                "2.及格標準、補考標準只會寫入一次並不會覆蓋已寫入的紀錄。" + Environment.NewLine +
+                "3.假若與先前的學期成績有重覆的科目級別則會列出，由人工設定計算方式。";
 
             _backgroundWorker = new BackgroundWorker();
             _backgroundWorker.DoWork += new DoWorkEventHandler(_backgroundWorker_DoWork);
@@ -350,6 +354,7 @@ namespace StudentDuplicateSubjectCheck
             Dictionary<string, decimal> makeupStandardDict = new Dictionary<string, decimal>();
             Dictionary<string, string> remarkDict = new Dictionary<string, string>();
             Dictionary<string, string> studentGraduationPlanDict = new Dictionary<string, string>();
+            Dictionary<string, string> studentGroupCodeDict = new Dictionary<string, string>();
             dtErrorTable.Columns.Clear();
             dtErrorTable.Columns.Add("student_number");
             dtErrorTable.Columns.Add("class_name");
@@ -638,14 +643,24 @@ namespace StudentDuplicateSubjectCheck
 
 
             // 學生取得課程規劃 
+            //string qrygpPlan = "SELECT " +
+            //    "student.id AS student_id" +
+            //    ",student.ref_graduation_plan_id AS student_gp_id" +
+            //    ",class.ref_graduation_plan_id AS class_gp_id " +
+            //    "FROM student " +
+            //    "LEFT JOIN class " +
+            //    "ON student.ref_class_id = class.id " +
+            //    "WHERE student.id IN(" + string.Join(",", studentIDList.ToArray()) + ");";
+
+            //取得群科班代碼
             string qrygpPlan = "SELECT " +
-                "student.id AS student_id" +
-                ",student.ref_graduation_plan_id AS student_gp_id" +
-                ",class.ref_graduation_plan_id AS class_gp_id " +
-                "FROM student " +
-                "LEFT JOIN class " +
-                "ON student.ref_class_id = class.id " +
-                "WHERE student.id IN(" + string.Join(",", studentIDList.ToArray()) + ");";
+    "student.id AS student_id" +
+    ",student.gdc_code AS student_gdc_code" +
+    ",class.gdc_code AS class_gdc_code " +
+    "FROM student " +
+    "LEFT JOIN class " +
+    "ON student.ref_class_id = class.id " +
+    "WHERE student.id IN(" + string.Join(",", studentIDList.ToArray()) + ");";
 
             QueryHelper qhGpPlan = new QueryHelper();
             DataTable dtGpPlan = qhGpPlan.Select(qrygpPlan);
@@ -656,27 +671,31 @@ namespace StudentDuplicateSubjectCheck
                 string gpID = "";
 
                 // 如果學生有設以學生生身為主
-                if (dr["class_gp_id"] != null && dr["class_gp_id"].ToString() != "")
+                if (dr["class_gdc_code"] != null && dr["class_gdc_code"].ToString() != "")
                 {
-                    gpID = dr["class_gp_id"].ToString();
+                    gpID = dr["class_gdc_code"].ToString();
                 }
 
-                if (dr["student_gp_id"] != null && dr["student_gp_id"].ToString() != "")
+                if (dr["student_gdc_code"] != null && dr["student_gdc_code"].ToString() != "")
                 {
-                    gpID = dr["student_gp_id"].ToString();
+                    gpID = dr["student_gdc_code"].ToString();
                 }
 
                 if (gpID == "")
                     noGpPlanStudentIDList.Add(sid);
 
-                if (!studentGraduationPlanDict.ContainsKey(sid))
-                    studentGraduationPlanDict.Add(sid, gpID);
+                //if (!studentGraduationPlanDict.ContainsKey(sid))
+                //    studentGraduationPlanDict.Add(sid, gpID);
+
+                if (!studentGroupCodeDict.ContainsKey(sid))
+                    studentGroupCodeDict.Add(sid, gpID);
             }
 
             // 有學生沒有課程規劃表
             if (noGpPlanStudentIDList.Count > 0)
             {
-                errorMessage = "沒有設定課程規劃表學生清單：";
+                //errorMessage = "沒有設定課程規劃表學生清單：";
+                errorMessage = "沒有設定群科班學生清單：";
                 dtErrorTable.Rows.Clear();
                 dtErrorTable.Columns.Clear();
                 this.dtErrorTable.Columns.Add("student_number");
@@ -712,17 +731,79 @@ namespace StudentDuplicateSubjectCheck
                     gpIDList.Add(id);
             }
 
-            // 取得課程規劃內容
-            string qryGpPlanData = "SELECT id,name,content FROM graduation_plan WHERE id IN(" + string.Join(",", gpIDList.ToArray()) + ") ";
-            DataTable dtGpPlanData = qhGpPlan.Select(qryGpPlanData);
 
-            Dictionary<string, XElement> gpDataDict = new Dictionary<string, XElement>();
-            foreach (DataRow dr in dtGpPlanData.Rows)
+            ////取得課程規劃內容
+            //string qryGpPlanData = "SELECT id,name,content FROM graduation_plan WHERE id IN(" + string.Join(",", gpIDList.ToArray()) + ") ";
+            //DataTable dtGpPlanData = qhGpPlan.Select(qryGpPlanData);
+
+            //Dictionary<string, XElement> gpDataDict = new Dictionary<string, XElement>();
+            //foreach (DataRow dr in dtGpPlanData.Rows)
+            //{
+            //    string id = dr["id"].ToString();
+            //    XElement elm = XElement.Parse(dr["content"].ToString());
+            //    gpDataDict.Add(id, elm);
+            //}
+
+
+            // 分類群科班大表
+            List<string> groupCodeList = new List<string>();
+            foreach (string id in studentGroupCodeDict.Values)
             {
-                string id = dr["id"].ToString();
-                XElement elm = XElement.Parse(dr["content"].ToString());
-                gpDataDict.Add(id, elm);
+                if (string.IsNullOrWhiteSpace(id))
+                    continue;
+
+                if (!groupCodeList.Contains(id))
+                    groupCodeList.Add(id);
             }
+
+            Dictionary<string, List<GroupCodePlan>> gdcPlanDic = new Dictionary<string, List<GroupCodePlan>>();
+            List<GroupCodePlan> groupCodePlans = new List<GroupCodePlan>();
+            string qry = "SELECT * FROM $moe.subjectcode WHERE group_code IN('" + string.Join("','", groupCodeList.ToArray()) + "') ";
+            try
+            {
+                QueryHelper qh = new QueryHelper();
+                DataTable dt = qh.Select(qry);
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string group_code = dr["group_code"].ToString();
+                    //if (!gdcPlanDic.ContainsKey(group_code))
+                    //{
+                    //    gdcPlanDic.Add(group_code, new List<GroupCodePlan>());
+                    //}
+                    GroupCodePlan groupCodePlan = new GroupCodePlan();
+                    groupCodePlan.group_code = dr["group_code"].ToString();
+                    groupCodePlan.course_code = dr["course_code"].ToString();
+                    groupCodePlan.is_required = dr["is_required"].ToString();
+                    groupCodePlan.require_by = dr["require_by"].ToString() == "部訂" ? "部定" : dr["require_by"].ToString();
+                    groupCodePlan.subject_name = dr["subject_name"].ToString();
+                    groupCodePlan.course_attr = dr["course_attr"].ToString();
+                    groupCodePlan.credit_period= dr["credit_period"].ToString();
+                    if (groupCodePlan.course_attr.Length > 2)
+                    {
+                        string code2 = groupCodePlan.course_attr.Substring(1, 1);
+                        if (code2 == "2")
+                        {
+                            groupCodePlan.Entry = "專業科目";
+                        }
+                        else if (code2 == "3")
+                        {
+                            groupCodePlan.Entry = "實習科目";
+                        }
+                        else
+                            groupCodePlan.Entry = "學業";
+                    }
+
+                    groupCodePlans.Add(groupCodePlan);
+
+                }
+            }
+            catch
+            {
+                MsgBox.Show("取得課程計畫大表發生錯誤。");
+            }
+
+
 
             // 取得學生修課科目代碼
             string qryScAttendSubjectCode = "" +
@@ -734,6 +815,10 @@ namespace StudentDuplicateSubjectCheck
                 ",ref_student_id AS student_id" +
                 ",sc_attend.subject_code " +
                 ", sc_attend.subject_code AS subject_code_old " +
+                ", CASE WHEN course.c_required_by = 1 THEN '部定' ELSE '校訂' END AS required_by " +
+                ", CASE WHEN course. c_is_required = '1' THEN '必修' ELSE '選修' END AS is_required " +
+                ", course.score_type AS entry " +
+                ", course.credit " +
                 "FROM " +
                 "course " +
                 "INNER JOIN sc_attend " +
@@ -743,31 +828,61 @@ namespace StudentDuplicateSubjectCheck
             QueryHelper qhSubjectCode = new QueryHelper();
             dtSubjectCode = qhSubjectCode.Select(qryScAttendSubjectCode);
 
+            #region 課程計畫大表
             foreach (DataRow dr in dtSubjectCode.Rows)
             {
                 string sid = dr["student_id"].ToString();
-                if (studentGraduationPlanDict.ContainsKey(sid))
+                if (studentGroupCodeDict.ContainsKey(sid))
                 {
-                    string gpid = studentGraduationPlanDict[sid];
-                    if (gpDataDict.ContainsKey(gpid))
+                    string gdcCode = studentGroupCodeDict[sid];
+                    //if (gpDataDict.ContainsKey(gpid))
                     {
-                        foreach (XElement elm in gpDataDict[gpid].Elements("Subject"))
+                        foreach (GroupCodePlan gdcPlan in groupCodePlans)
                         {
-                            string subjName = "", subjLevel = "", subjCode = "";
-                            if (elm.Attribute("SubjectName") != null)
-                                subjName = elm.Attribute("SubjectName").Value;
-                            if (elm.Attribute("Level") != null)
-                                subjLevel = elm.Attribute("Level").Value;
+                            if (gdcCode == gdcPlan.group_code)
+                            {
+                                //科目+分項+校部定+必選修
+                                string gdcPlanKey = gdcPlan.subject_name + "_" + gdcPlan.Entry + "_" + gdcPlan.require_by + "_" + gdcPlan.is_required;
+                                string drKey = dr["subject_name"].ToString() + "_" + dr["entry"].ToString() + "_" + dr["required_by"].ToString() + "_" + dr["is_required"].ToString();
+                                
+                                
+                                if (gdcPlanKey == drKey)
+                                    dr["subject_code"] = gdcPlan.course_code;
 
-                            if (elm.Attribute("課程代碼") != null)
-                                subjCode = elm.Attribute("課程代碼").Value;
-
-                            if (dr["subject_name"].ToString() == subjName)
-                                dr["subject_code"] = subjCode;
+                            }
                         }
                     }
                 }
             }
+            #endregion
+
+            #region 課程規劃表
+            //foreach (DataRow dr in dtSubjectCode.Rows)
+            //{
+            //    string sid = dr["student_id"].ToString();
+            //    if (studentGraduationPlanDict.ContainsKey(sid))
+            //    {
+            //        string gpid = studentGraduationPlanDict[sid];
+            //        if (gpDataDict.ContainsKey(gpid))
+            //        {
+            //            foreach (XElement elm in gpDataDict[gpid].Elements("Subject"))
+            //            {
+            //                string subjName = "", subjLevel = "", subjCode = "";
+            //                if (elm.Attribute("SubjectName") != null)
+            //                    subjName = elm.Attribute("SubjectName").Value;
+            //                if (elm.Attribute("Level") != null)
+            //                    subjLevel = elm.Attribute("Level").Value;
+
+            //                if (elm.Attribute("課程代碼") != null)
+            //                    subjCode = elm.Attribute("課程代碼").Value;
+
+            //                if (dr["subject_name"].ToString() == subjName)
+            //                    dr["subject_code"] = subjCode;
+            //            }
+            //        }
+            //    }
+            //}
+            #endregion
 
             MyUserState mus1 = new MyUserState();
             mus1.Name = "課程代碼";

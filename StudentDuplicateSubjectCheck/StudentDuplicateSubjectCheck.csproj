@@ -135,6 +135,7 @@
     <Compile Include="ErrorMessageForm.Designer.cs">
       <DependentUpon>ErrorMessageForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="GroupCodePlan.cs" />
     <Compile Include="HasPassScoreForm.cs">
       <SubType>Form</SubType>
     </Compile>

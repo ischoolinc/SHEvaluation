@@ -115,7 +115,7 @@ namespace RegularAssessmentTranscriptFixedRank
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             #region 儲存檔案
-            string inputReportName = "學生定期評量成績單(固定排名)樣板(高中).doc";
+            string inputReportName = "學生定期評量成績單(固定排名)樣板(高中)";
             string reportName = inputReportName;
 
             string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");
@@ -176,7 +176,7 @@ namespace RegularAssessmentTranscriptFixedRank
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             #region 儲存檔案
-            string inputReportName = "學生定期評量成績單(固定排名)合併欄位總表.doc";
+            string inputReportName = "學生定期評量成績單(固定排名)合併欄位總表";
             string reportName = inputReportName;
 
             string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");
@@ -219,7 +219,7 @@ namespace RegularAssessmentTranscriptFixedRank
                     {
                         //document.Save(sd.FileName, Aspose.Words.SaveFormat.Doc);
                         System.IO.FileStream stream = new FileStream(sd.FileName, FileMode.Create, FileAccess.Write);
-                        stream.Write(Properties.Resources.學生定期評量成績單樣板_20211101, 0, Properties.Resources.學生定期評量成績單樣板_20211101.Length);
+                        stream.Write(Properties.Resources.歡樂的合併欄位總表, 0, Properties.Resources.歡樂的合併欄位總表.Length);
                         stream.Flush();
                         stream.Close();
 

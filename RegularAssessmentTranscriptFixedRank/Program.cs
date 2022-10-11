@@ -119,6 +119,9 @@ namespace RegularAssessmentTranscriptFixedRank
                 table.Columns.Add("學校名稱");
                 table.Columns.Add("學校地址");
                 table.Columns.Add("學校電話");
+                table.Columns.Add("校長名稱");
+                table.Columns.Add("學務主任");
+                table.Columns.Add("教務主任");
                 table.Columns.Add("收件人地址");
                 //«通訊地址»«通訊地址郵遞區號»«通訊地址內容»
                 //«戶籍地址»«戶籍地址郵遞區號»«戶籍地址內容»
@@ -221,7 +224,11 @@ namespace RegularAssessmentTranscriptFixedRank
 
                 for (int subjectIndex = 1; subjectIndex <= conf.SubjectLimit; subjectIndex++)
                 {
+                    table.Columns.Add("領域名稱" + subjectIndex);
                     table.Columns.Add("科目名稱" + subjectIndex);
+                    table.Columns.Add("校部定" + subjectIndex);
+                    table.Columns.Add("必選修" + subjectIndex);
+                    table.Columns.Add("分項類別" + subjectIndex);
                     table.Columns.Add("學分數" + subjectIndex);
                     table.Columns.Add("前次成績" + subjectIndex);
                     table.Columns.Add("科目成績" + subjectIndex);
@@ -1108,9 +1115,13 @@ namespace RegularAssessmentTranscriptFixedRank
                             }
 
                             #region 基本資料
-                            row["學校名稱"] = SmartSchool.Customization.Data.SystemInformation.SchoolChineseName;
-                            row["學校地址"] = SmartSchool.Customization.Data.SystemInformation.Address;
-                            row["學校電話"] = SmartSchool.Customization.Data.SystemInformation.Telephone;
+                            row["學校名稱"] = K12.Data.School.Configuration["學校資訊"].PreviousData.SelectSingleNode("ChineseName").InnerText;
+                            row["學校地址"] = K12.Data.School.Configuration["學校資訊"].PreviousData.SelectSingleNode("Address").InnerText;
+                            row["學校電話"] = K12.Data.School.Configuration["學校資訊"].PreviousData.SelectSingleNode("Telephone").InnerText;
+                            row["校長名稱"] = K12.Data.School.Configuration["學校資訊"].PreviousData.SelectSingleNode("ChancellorChineseName").InnerText;
+                            row["學務主任"] = K12.Data.School.Configuration["學校資訊"].PreviousData.SelectSingleNode("StuDirectorName").InnerText;
+                            row["教務主任"] = K12.Data.School.Configuration["學校資訊"].PreviousData.SelectSingleNode("EduDirectorName").InnerText;
+
                             row["收件人地址"] = stuRec.ContactInfo.MailingAddress.FullAddress != "" ?
                                                     stuRec.ContactInfo.MailingAddress.FullAddress : stuRec.ContactInfo.PermanentAddress.FullAddress;
                             row["收件人"] = stuRec.ParentInfo.CustodianName != "" ? stuRec.ParentInfo.CustodianName :
@@ -1200,12 +1211,20 @@ namespace RegularAssessmentTranscriptFixedRank
                                                 {
                                                     #region 評量成績
                                                     var sceTakeRecord = studentExamSores[studentID][subjectName][courseID];
+                                                    var courseRecs = accessHelper.CourseHelper.GetCourse(courseID);
+
                                                     if (sceTakeRecord != null)
                                                     {//有輸入
+
                                                         decimal level;
                                                         subjectNumber = decimal.TryParse(sceTakeRecord.SubjectLevel, out level) ? (decimal?)level : null;
+                                                        row["領域名稱" + subjectIndex] = sceTakeRecord.Domain;
                                                         row["科目名稱" + subjectIndex] = sceTakeRecord.Subject + GetNumber(subjectNumber);
+                                                        row["校部定" + subjectIndex] = sceTakeRecord.RequiredBy == "部訂" ? "部定" : sceTakeRecord.RequiredBy;
+                                                        row["必選修" + subjectIndex] = sceTakeRecord.Required ? "必修" : "選修";
+                                                        row["分項類別" + subjectIndex] = sceTakeRecord.Entry;
                                                         row["學分數" + subjectIndex] = sceTakeRecord.CreditDec();
+
                                                         row["科目成績" + subjectIndex] = sceTakeRecord.SpecialCase == "" ? ("" + sceTakeRecord.ExamScore) : sceTakeRecord.SpecialCase;
                                                         #region 班排名及落點分析
                                                         string k1 = "";
@@ -1336,13 +1355,16 @@ namespace RegularAssessmentTranscriptFixedRank
                                                     }
                                                     else
                                                     {//修課有該考試但沒有成績資料
-                                                        var courseRecs = accessHelper.CourseHelper.GetCourse(courseID);
                                                         if (courseRecs.Count > 0)
                                                         {
                                                             var courseRec = courseRecs[0];
                                                             decimal level;
                                                             subjectNumber = decimal.TryParse(courseRec.SubjectLevel, out level) ? (decimal?)level : null;
+                                                            row["領域名稱" + subjectIndex] = courseRec.Domain;
                                                             row["科目名稱" + subjectIndex] = courseRec.Subject + GetNumber(subjectNumber);
+                                                            row["校部定" + subjectIndex] = courseRec.RequiredBy == "部訂" ? "部定" : courseRec.RequiredBy;
+                                                            row["必選修" + subjectIndex] = courseRec.Required ? "必修" : "選修";
+                                                            row["分項類別" + subjectIndex] = courseRec.Entry;
                                                             row["學分數" + subjectIndex] = courseRec.CreditDec();
                                                             row["科目成績" + subjectIndex] = "未輸入";
                                                         }

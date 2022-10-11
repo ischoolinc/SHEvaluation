@@ -28,6 +28,7 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
         //{
         //    get { return _sems_index; }
         //}
+        private bool IsPrint = true;
 
         private ReportOptions _option;
         public ReportOptions Option
@@ -62,6 +63,7 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
 
         void _student_button_OnClick(object sender, EventArgs e)
         {
+            //MsgBox.Show("如產出為空白，須從班級>成績相關報表>多學期成績單，產出班級多學期成績單，再產生學生的多學期成績單。謝謝。");
             AccessHelper helper = new AccessHelper();
             BackgroundWorker bkw = new BackgroundWorker();
             bkw.DoWork += new DoWorkEventHandler(bkw_DoWork);
@@ -81,6 +83,17 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
             mWorker.PackageSize = 150;
             mWorker.PackageWorker += new EventHandler<PackageWorkEventArgs<StudentRecord>>(mWorker_PackageWorker);
             List<PackageWorkEventArgs<StudentRecord>> resp = mWorker.Run(students);
+
+            // 沒有成績單的學生 (使用者選取的學生清單-有取回成績單的學生)
+            List<string> noResultStudentList = new List<string>();
+            // 有取回成績單的學生ID
+            List<string> resultStudentList = new List<string>();
+
+            foreach (StudentRecord studentRecord in students)
+            {
+                noResultStudentList.Add(studentRecord.StudentID);
+            }
+
             List<SmartSchool.Feature.Student.StudentSnapShop> list = new List<SmartSchool.Feature.Student.StudentSnapShop>();
             foreach (PackageWorkEventArgs<StudentRecord> r in resp)
             {
@@ -90,8 +103,40 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
                     Console.WriteLine("StudentSnapshop List 是 Null");
                 else
                     list.AddRange((List<SmartSchool.Feature.Student.StudentSnapShop>)r.Result);
+
+                foreach (var result in snap)
+                {
+                    resultStudentList.Add(result.RefStudentID);
+                }
             }
+
+            foreach (string resultStudentID in resultStudentList)
+            {
+                noResultStudentList.Remove(resultStudentID);
+            }
+
             bkw.ReportProgress(80);
+
+            StringBuilder s = new StringBuilder();
+            foreach (StudentRecord studentRecord in students)
+            {
+                foreach (string noResultID in noResultStudentList)
+                {
+                    if(noResultID== studentRecord.StudentID)
+                    {
+                        s.AppendLine(studentRecord.RefClass.ClassName + "　" + studentRecord.SeatNo + "　" + studentRecord.StudentName + "　" + studentRecord.StudentNumber);
+                    }
+                }
+            }
+
+            if (noResultStudentList.Count> 0)
+            {
+                MessageBox.Show("下列學生沒有可列印的資料，請先從 班級>成績相關報表>多學期成績單，產出資訊後，才有辦法產學生的多學期成績單。\r\n" + s.ToString());
+            }
+
+            if (students.Count == noResultStudentList.Count)
+                IsPrint = false;
+
             Document doc = new Document();
             doc.Sections.Clear();
             foreach (SmartSchool.Feature.Student.StudentSnapShop var in list)
@@ -169,6 +214,13 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
         void _bgworker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("多學期成績單產生完成");
+
+            if (!IsPrint)
+            {
+                SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("沒有可列印的資料。");
+                return;
+            }
+
             Document doc = (Document)e.Result;
 
             string reportName = "多學期成績單";
@@ -264,7 +316,7 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
                 List<Student> list = new List<Student>();
                 foreach (StudentRecord each_stu in classRec.Students)
                 {
-                    Student student = new Student(each_stu, option.ScoreType, option.PrintSemester,option.PrintEntries);
+                    Student student = new Student(each_stu, option.ScoreType, option.PrintSemester, option.PrintEntries);
                     list.Add(student);
                     if (!student_collection.ContainsKey(each_stu.StudentID))
                         student_collection.Add(each_stu.StudentID, student);
@@ -351,7 +403,7 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
                                     s.Place = place;
                                     s.Radix = count;
                                     //處理德行不允許破百
-                                    if ( s.Name == "德行"&&option.FixMoralScore )
+                                    if (s.Name == "德行" && option.FixMoralScore)
                                     {
                                         s.FixToLimit(100);
                                     }
@@ -376,7 +428,7 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
             mWorker.PackageSize = 50;
             mWorker.PackageWorker += new EventHandler<PackageWorkEventArgs<SmartSchool.Feature.Student.StudentSnapShop>>(mWorker_PackageWorker);
 
-            foreach ( string stuid in student_collection.Keys )
+            foreach (string stuid in student_collection.Keys)
             {
                 Student each_stu = student_collection[stuid];
                 #region 一個學生產生一個新的Document
@@ -387,7 +439,7 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
                 List<string> merge_keys = new List<string>();
                 List<object> merge_values = new List<object>();
                 merge_keys.AddRange(new string[] { "學校名稱", "科別名稱", "班級名稱", "座號", "學號", "姓名", "排名", "各學期成績" });
-                merge_values.AddRange(new object[] { 
+                merge_values.AddRange(new object[] {
                     SmartSchool.Customization.Data.SystemInformation.SchoolChineseName,
                     each_stu.Department ,
                     each_stu.ClassName,
@@ -395,7 +447,7 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
                     each_stu.StudentNumber,
                     each_stu.StudentName,
                     option.RatingMethod.ToString(),
-                    each_stu 
+                    each_stu
                 });
                 each_page.MailMerge.MergeField += new Aspose.Words.Reporting.MergeFieldEventHandler(MailMerge_MergeField);
                 each_page.MailMerge.Execute(merge_keys.ToArray(), merge_values.ToArray());
@@ -414,7 +466,7 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
                 #endregion
                 //每300人次就直接上傳一次snapShops
                 #region 每300人次就直接上傳一次
-                if ( snapShops.Count == 300 )
+                if (snapShops.Count == 300)
                 {
                     mWorker.Run(snapShops);
                     snapShops.Clear();
@@ -423,7 +475,7 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
                 //合併成績單至一個檔案
                 doc.Sections.Add(doc.ImportNode(each_page.Sections[0], true));
                 //回報進度
-                _bgworker.ReportProgress((int)( student_counter++ * 60.0 / student_total ) + 40);
+                _bgworker.ReportProgress((int)(student_counter++ * 60.0 / student_total) + 40);
             }
             //將最後一段的SnapShop上傳
             if (snapShops.Count > 0)
@@ -444,7 +496,7 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
         void MailMerge_MergeField(object sender, Aspose.Words.Reporting.MergeFieldEventArgs e)
         {
 
-            if ( e.FieldName == "各學期成績" )
+            if (e.FieldName == "各學期成績")
             {
                 e.Text = string.Empty;
 
@@ -453,19 +505,19 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
                 //有成績之學期
                 List<int> semesters = new List<int>();
                 #region 總計此學生有學期成績之學期
-                foreach ( SubjectInfo subject in stu.SubjectCollection.Values )
+                foreach (SubjectInfo subject in stu.SubjectCollection.Values)
                 {
-                    foreach ( int sem in subject.SemsScores.Keys )
+                    foreach (int sem in subject.SemsScores.Keys)
                     {
-                        if ( !semesters.Contains(sem) )
+                        if (!semesters.Contains(sem))
                             semesters.Add(sem);
                     }
                 }
-                foreach ( EntryInfo entry in stu.EntryCollection.Values )
+                foreach (EntryInfo entry in stu.EntryCollection.Values)
                 {
-                    foreach ( int sem in entry.SemsScores.Keys )
+                    foreach (int sem in entry.SemsScores.Keys)
                     {
-                        if ( !semesters.Contains(sem) )
+                        if (!semesters.Contains(sem))
                             semesters.Add(sem);
                     }
                 }
@@ -476,7 +528,7 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
                 #region 取得外框寬度並計算欄寬
                 Cell SCell = (Cell)builder.CurrentParagraph.ParentNode;
                 double Swidth = SCell.CellFormat.Width;
-                double microUnit = Swidth / ( semesters.Count + 6 ); //每學期給一份，總平均給一份，百分比給一份，班級排名及科目各給兩份
+                double microUnit = Swidth / (semesters.Count + 6); //每學期給一份，總平均給一份，百分比給一份，班級排名及科目各給兩份
                 #endregion
                 Table table = builder.StartTable();
 
@@ -497,18 +549,18 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
                 List<EntryInfo> entries = new List<EntryInfo>();
                 entries.AddRange(stu.EntryCollection.Values);
                 entries.Sort(new EntryComparer());
-                if ( entries.Count > 0 )
+                if (entries.Count > 0)
                 {
                     #region 填表頭
                     builder.InsertCell().CellFormat.Width = microUnit * 2;
                     builder.CellFormat.Borders.Right.LineWidth = 0.25;
                     builder.Write("分項總成績");
-                    foreach ( int sem in semesters )
+                    foreach (int sem in semesters)
                     {
                         #region 每學期給一欄
                         builder.InsertCell().CellFormat.Width = microUnit;
                         builder.CellFormat.Borders.Right.LineWidth = 0.25;
-                        switch ( sem )
+                        switch (sem)
                         {
                             case 1:
                                 builder.Write("一上");
@@ -551,25 +603,25 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
                     builder.EndRow();
                     #endregion
                     //分項跟科目成績中間劃雙線
-                    foreach ( Cell cell in table.LastRow.Cells )
+                    foreach (Cell cell in table.LastRow.Cells)
                         cell.CellFormat.Shading.BackgroundPatternColor = Color.LightGray;
                 }
                 //分項跟科目成績中間劃雙線
                 //foreach ( Cell cell in table.LastRow.Cells )
                 //    cell.CellFormat.Borders.Bottom.LineStyle = LineStyle.Double;
                 #region 填分項成績
-                foreach ( EntryInfo entryInfo in entries )
+                foreach (EntryInfo entryInfo in entries)
                 {
                     //科目名稱
                     builder.InsertCell().CellFormat.Width = microUnit * 2;
                     builder.CellFormat.Borders.Right.LineWidth = 0.25;
                     builder.Write(entryInfo.Name);
                     #region 每學期成績
-                    foreach ( int sem in semesters )
+                    foreach (int sem in semesters)
                     {
                         builder.InsertCell().CellFormat.Width = microUnit;
                         builder.CellFormat.Borders.Right.LineWidth = 0.25;
-                        if ( entryInfo.SemsScores.ContainsKey(sem) )
+                        if (entryInfo.SemsScores.ContainsKey(sem))
                         {
                             builder.Write("" + entryInfo.SemsScores[sem]);
                         }
@@ -578,7 +630,7 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
                     //總平均
                     builder.InsertCell().CellFormat.Width = microUnit * 1.5;
                     builder.CellFormat.Borders.Right.LineWidth = 0.25;
-                    if ( entryInfo.Name == "德行" )
+                    if (entryInfo.Name == "德行")
                     {
                         decimal moral_score = Math.Round(entryInfo.GetAverange());
                         builder.Write("" + moral_score + " (" + GetMoralLevel(moral_score) + "級分)");
@@ -599,18 +651,18 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
                 List<SubjectInfo> subjects = new List<SubjectInfo>();
                 subjects.AddRange(stu.SubjectCollection.Values);
                 subjects.Sort(new SubjectComparer());
-                if ( subjects.Count > 0 )
+                if (subjects.Count > 0)
                 {
                     #region 填表頭
                     builder.InsertCell().CellFormat.Width = microUnit * 2;
                     builder.CellFormat.Borders.Right.LineWidth = 0.25;
                     builder.Write("科目成績");
-                    foreach ( int sem in semesters )
+                    foreach (int sem in semesters)
                     {
                         #region 每學期給一欄
                         builder.InsertCell().CellFormat.Width = microUnit;
                         builder.CellFormat.Borders.Right.LineWidth = 0.25;
-                        switch ( sem )
+                        switch (sem)
                         {
                             case 1:
                                 builder.Write("一上");
@@ -653,7 +705,7 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
                     builder.EndRow();
                     #endregion
                     //分項跟科目成績中間劃雙線
-                    foreach ( Cell cell in table.LastRow.Cells )
+                    foreach (Cell cell in table.LastRow.Cells)
                         cell.CellFormat.Shading.BackgroundPatternColor = Color.LightGray;
                     //分項跟科目成績中間劃雙線
                     //foreach ( Cell cell in table.LastRow.Cells )
@@ -661,18 +713,18 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
                 }
                 #region 填科目成績
 
-                foreach ( SubjectInfo subjectInfo in subjects )
+                foreach (SubjectInfo subjectInfo in subjects)
                 {
                     //科目名稱
                     builder.InsertCell().CellFormat.Width = microUnit * 2;
                     builder.CellFormat.Borders.Right.LineWidth = 0.25;
                     builder.Write(subjectInfo.Name);
                     #region 每學期成績
-                    foreach ( int sem in semesters )
+                    foreach (int sem in semesters)
                     {
                         builder.InsertCell().CellFormat.Width = microUnit;
                         builder.CellFormat.Borders.Right.LineWidth = 0.25;
-                        if ( subjectInfo.SemsScores.ContainsKey(sem) )
+                        if (subjectInfo.SemsScores.ContainsKey(sem))
                         {
                             builder.Write("" + subjectInfo.SemsScores[sem]);
                         }
@@ -693,19 +745,19 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
                 }
                 #endregion
                 #region 去除表格四邊的線
-                if ( table.FirstRow != null )
+                if (table.FirstRow != null)
                 {
-                    foreach ( Cell cell in table.FirstRow.Cells )
+                    foreach (Cell cell in table.FirstRow.Cells)
                         cell.CellFormat.Borders.Top.LineStyle = LineStyle.None;
                 }
 
-                if ( table.LastRow != null )
+                if (table.LastRow != null)
                 {
-                    foreach ( Cell cell in table.LastRow.Cells )
+                    foreach (Cell cell in table.LastRow.Cells)
                         cell.CellFormat.Borders.Bottom.LineStyle = LineStyle.None;
                 }
 
-                foreach ( Row row in table.Rows )
+                foreach (Row row in table.Rows)
                 {
                     row.FirstCell.CellFormat.Borders.Left.LineStyle = LineStyle.None;
                     row.LastCell.CellFormat.Borders.Right.LineStyle = LineStyle.None;

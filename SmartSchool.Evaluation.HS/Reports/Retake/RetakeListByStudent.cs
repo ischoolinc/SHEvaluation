@@ -224,11 +224,12 @@ namespace SmartSchool.Evaluation.Reports
                                 continue;
 
                             //Debug by Cloud 2014.02.12
+                            string domainName = XMLEncoding.Encoding(subjectScoreElement.GetAttribute("領域"));
                             string subjectName = XMLEncoding.Encoding(subjectScoreElement.GetAttribute("科目"));
                             string leavel = XMLEncoding.Encoding(subjectScoreElement.GetAttribute("科目級別"));
                             string credit = XMLEncoding.Encoding(subjectScoreElement.GetAttribute("開課學分數"));
 
-                            string subject = "<subject 科目='" + subjectName + "' 科目級別='" + leavel + "' 學分數='" + credit + "' />";
+                            string subject = "<subject 領域='" + domainName + "' 科目='" + subjectName + "' 科目級別='" + leavel + "' 學分數='" + credit + "' />";
 
                             //string subject = "<subject 科目='" + subjectScoreElement.GetAttribute("科目") + "' 科目級別='" + subjectScoreElement.GetAttribute("科目級別") + "' 學分數='" + subjectScoreElement.GetAttribute("開課學分數") + "' />";
 
@@ -305,7 +306,7 @@ namespace SmartSchool.Evaluation.Reports
 
 
                         XmlElement subjectElement = notPassList[studentKey][subject];
-                        report.Worksheets[0].Cells.CopyRow(template.Worksheets[0].Cells, 2, index);
+                        report.Worksheets[0].Cells.CopyRow(template.Worksheets[0].Cells, 2, index); //編號
                         report.Worksheets[0].Cells[index, 0].PutValue(studentKey.ClassName);//班級
                         report.Worksheets[0].Cells[index, 1].PutValue(studentKey.SeatNo);//座號
                         report.Worksheets[0].Cells[index, 2].PutValue(studentKey.StudentNumber);//學號
@@ -314,8 +315,9 @@ namespace SmartSchool.Evaluation.Reports
                         report.Worksheets[0].Cells[index, 5].PutValue(subjectElement.GetAttribute("修課校部訂"));//修課校部訂
                         report.Worksheets[0].Cells[index, 6].PutValue(subjectElement.GetAttribute("學年度"));//學年度
                         report.Worksheets[0].Cells[index, 7].PutValue(subjectElement.GetAttribute("學期"));//學期
-                        report.Worksheets[0].Cells[index, 8].PutValue(doc.DocumentElement.GetAttribute("科目") + (level == 0 ? "" : " " + GetNumber(level)));//科目
-                        report.Worksheets[0].Cells[index, 9].PutValue(doc.DocumentElement.GetAttribute("學分數"));//學分數
+                        report.Worksheets[0].Cells[index, 8].PutValue(doc.DocumentElement.GetAttribute("領域"));//重修科目所屬領域
+                        report.Worksheets[0].Cells[index, 9].PutValue(doc.DocumentElement.GetAttribute("科目") + (level == 0 ? "" : " " + GetNumber(level)));//科目
+                        report.Worksheets[0].Cells[index, 10].PutValue(doc.DocumentElement.GetAttribute("學分數"));//學分數
 
 
                         #region 取得最高分數

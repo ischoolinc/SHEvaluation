@@ -67,7 +67,7 @@ namespace SmartSchool.Evaluation.Reports
             bkwNotPassComputer.ProgressChanged += new ProgressChangedEventHandler(bkwNotPassComputer_ProgressChanged);
             bkwNotPassComputer.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bkwNotPassComputer_RunWorkerCompleted);
             //bkwNotPassComputer.RunWorkerAsync(new object[] { handle, response, form.SchoolYear, form.Semester, form.IsPrintAllSemester, form.GradeYear, form.IsPrintAllGradeYear });
-            bkwNotPassComputer.RunWorkerAsync(new object[] { handle, response, form.SchoolYear, form.Semester, form.IsPrintAllSemester});
+            bkwNotPassComputer.RunWorkerAsync(new object[] { handle, response, form.SchoolYear, form.Semester, form.IsPrintAllSemester });
         }
 
         private void bkwNotPassComputer_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -202,11 +202,12 @@ namespace SmartSchool.Evaluation.Reports
                                 continue;
 
                             //Debug by Cloud 2014.02.12
+                            string domainName = XMLEncoding.Encoding(subjectScoreElement.GetAttribute("領域"));
                             string subjectName = XMLEncoding.Encoding(subjectScoreElement.GetAttribute("科目"));
                             string leavel = XMLEncoding.Encoding(subjectScoreElement.GetAttribute("科目級別"));
                             string credit = XMLEncoding.Encoding(subjectScoreElement.GetAttribute("開課學分數"));
 
-                            string subject = "<subject 科目='" + subjectName + "' 科目級別='" + leavel + "' 學分數='" + credit + "' />";
+                            string subject = "<subject 領域='" + domainName + "' 科目='" + subjectName + "' 科目級別='" + leavel + "' 學分數='" + credit + "' />";
                             if (subjectScoreElement.GetAttribute("是否取得學分") == "是" || studentPassedList.Contains(subject))//如果該科目有取得學分獲該科目在其他學期已取得學分
                             {
                                 //加入已取得學分科目清單
@@ -270,8 +271,9 @@ namespace SmartSchool.Evaluation.Reports
                     doc.LoadXml(subjectKey);
                     int level = 0;
                     int.TryParse(doc.DocumentElement.GetAttribute("科目級別"), out level);
-                    report.Worksheets[0].Cells[index + 1, 2].PutValue(doc.DocumentElement.GetAttribute("科目") + (level == 0 ? "" : " " + GetNumber(level)));
-                    report.Worksheets[0].Cells[index + 1, 6].PutValue(doc.DocumentElement.GetAttribute("學分數"));
+                    report.Worksheets[0].Cells[index + 1, 2].PutValue(doc.DocumentElement.GetAttribute("領域"));
+                    report.Worksheets[0].Cells[index + 1, 6].PutValue(doc.DocumentElement.GetAttribute("科目") + (level == 0 ? "" : " " + GetNumber(level)));
+                    report.Worksheets[0].Cells[index + 1, 10].PutValue(doc.DocumentElement.GetAttribute("學分數"));
                     index += 4;
                     foreach (BriefStudentData student in notPassList[subjectKey].Keys)
                     {

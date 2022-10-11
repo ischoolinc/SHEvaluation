@@ -749,6 +749,7 @@ namespace SmartSchool.Evaluation
                                     updateScoreElement.SetAttribute("不需評分", sacRecord.NotIncludedInCalc ? "是" : "否");
                                     updateScoreElement.SetAttribute("修課必選修", sacRecord.Required ? "必修" : "選修");
                                     updateScoreElement.SetAttribute("修課校部訂", (sacRecord.RequiredBy == "部訂" ? sacRecord.RequiredBy : "校訂"));
+                                    updateScoreElement.SetAttribute("領域", sacRecord.Domain);
                                     updateScoreElement.SetAttribute("科目", sacRecord.Subject);
                                     updateScoreElement.SetAttribute("科目級別", sacRecord.SubjectLevel);
                                     updateScoreElement.SetAttribute("開課分項類別", sacRecord.Entry);
@@ -912,6 +913,7 @@ namespace SmartSchool.Evaluation
                                     newScoreInfo.SetAttribute("不需評分", sacRecord.NotIncludedInCalc ? "是" : "否");
                                     newScoreInfo.SetAttribute("修課必選修", sacRecord.Required ? "必修" : "選修");
                                     newScoreInfo.SetAttribute("修課校部訂", (sacRecord.RequiredBy == "部訂" ? sacRecord.RequiredBy : "校訂"));
+                                    newScoreInfo.SetAttribute("領域", sacRecord.Domain);
                                     newScoreInfo.SetAttribute("科目", sacRecord.Subject);
                                     newScoreInfo.SetAttribute("科目級別", sacRecord.SubjectLevel);
                                     newScoreInfo.SetAttribute("開課分項類別", sacRecord.Entry);
@@ -2120,9 +2122,9 @@ namespace SmartSchool.Evaluation
                                 //可以被計算
                                 if (hasScore)
                                 {
-                                    string key = score.Subject + "⊕" + score.Detail.GetAttribute("修課校部訂") + "⊕" + score.Detail.GetAttribute("修課必選修") + "⊕" + score.Detail.GetAttribute("開課學分數");
+                                    string key = score.Detail.GetAttribute("領域") + "⊕" + score.Subject + "⊕" + score.Detail.GetAttribute("修課校部訂") + "⊕" + score.Detail.GetAttribute("修課必選修") + "⊕" + score.Detail.GetAttribute("開課學分數");
                                     if (score.Detail.GetAttribute("指定學年科目名稱") != "")
-                                        key = score.Detail.GetAttribute("指定學年科目名稱") + "⊕" + score.Detail.GetAttribute("修課校部訂") + "⊕" + score.Detail.GetAttribute("修課必選修") + "⊕" + score.Detail.GetAttribute("開課學分數");
+                                        key = score.Detail.GetAttribute("領域") + "⊕" + score.Detail.GetAttribute("指定學年科目名稱") + "⊕" + score.Detail.GetAttribute("修課校部訂") + "⊕" + score.Detail.GetAttribute("修課必選修") + "⊕" + score.Detail.GetAttribute("開課學分數");
 
                                     if (!subjectScores.ContainsKey(key))
                                         subjectScores.Add(key, new Dictionary<SemesterSubjectScoreInfo, decimal>());

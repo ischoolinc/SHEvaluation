@@ -87,6 +87,7 @@ WHERE ref_student_id = {0} AND uid = {1}";
 	, sems_subj_score_ext.semester
 	, sems_subj_score_ext.school_year
 	, sems_subj_score_ext.last_update
+    , array_to_string(xpath('//Subject/@領域', subj_score_ele), '')::text AS 領域
 	, array_to_string(xpath('//Subject/@開課分項類別', subj_score_ele), '')::text AS 分項類別
 	, array_to_string(xpath('//Subject/@科目', subj_score_ele), '')::text AS 科目
 	, array_to_string(xpath('//Subject/@科目級別', subj_score_ele), '')::text AS 科目級別
@@ -140,34 +141,35 @@ FROM (
 
                 foreach (DataRow dr in dtSubj.Rows)
                 {
-                    dataGridView_Archive.Rows[i].Cells[0].Value = dr["分項類別"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[1].Value = dr["科目"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[2].Value = dr["科目級別"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[3].Value = dr["學分數"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[4].Value = dr["校部訂"].ToString() == "部訂" ? "部定": dr["校部訂"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[5].Value = dr["必選修"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[6].Value = dr["取得學分"].ToString() == "是" ? "是" : "否";
-                    dataGridView_Archive.Rows[i].Cells[7].Value = dr["原始成績"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[8].Value = dr["補考成績"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[9].Value = dr["重修成績"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[10].Value = dr["手動調整成績"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[11].Value = dr["學年調整成績"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[12].Value = dr["不計學分"];
-                    dataGridView_Archive.Rows[i].Cells[13].Value = dr["不需評分"];
-                    dataGridView_Archive.Rows[i].Cells[14].Value = dr["註記"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[15].Value = dr["修課及格標準"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[16].Value = dr["修課補考標準"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[17].Value = dr["修課直接指定總成績"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[18].Value = dr["修課備註"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[19].Value = dr["修課科目代碼"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[20].Value = dr["是否補修成績"].ToString() == "是" ? "是" : "否";
-                    dataGridView_Archive.Rows[i].Cells[21].Value = dr["補修學年度"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[22].Value = dr["補修學期"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[23].Value = dr["重修學年度"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[24].Value = dr["重修學期"].ToString();
-                    dataGridView_Archive.Rows[i].Cells[25].Value = dr["免修"].ToString() == "是" ? "是" : "否";
-                    dataGridView_Archive.Rows[i].Cells[26].Value = dr["抵免"].ToString() == "是" ? "是" : "否";
-                    dataGridView_Archive.Rows[i].Cells[27].Value = dr["指定學年科目名稱"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[0].Value = dr["領域"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[1].Value = dr["分項類別"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[2].Value = dr["科目"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[3].Value = dr["科目級別"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[4].Value = dr["學分數"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[5].Value = dr["校部訂"].ToString() == "部訂" ? "部定": dr["校部訂"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[6].Value = dr["必選修"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[7].Value = dr["取得學分"].ToString() == "是" ? "是" : "否";
+                    dataGridView_Archive.Rows[i].Cells[8].Value = dr["原始成績"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[9].Value = dr["補考成績"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[10].Value = dr["重修成績"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[11].Value = dr["手動調整成績"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[12].Value = dr["學年調整成績"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[13].Value = dr["不計學分"];
+                    dataGridView_Archive.Rows[i].Cells[14].Value = dr["不需評分"];
+                    dataGridView_Archive.Rows[i].Cells[15].Value = dr["註記"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[16].Value = dr["修課及格標準"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[17].Value = dr["修課補考標準"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[18].Value = dr["修課直接指定總成績"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[19].Value = dr["修課備註"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[20].Value = dr["修課科目代碼"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[21].Value = dr["是否補修成績"].ToString() == "是" ? "是" : "否";
+                    dataGridView_Archive.Rows[i].Cells[22].Value = dr["補修學年度"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[23].Value = dr["補修學期"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[24].Value = dr["重修學年度"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[25].Value = dr["重修學期"].ToString();
+                    dataGridView_Archive.Rows[i].Cells[26].Value = dr["免修"].ToString() == "是" ? "是" : "否";
+                    dataGridView_Archive.Rows[i].Cells[27].Value = dr["抵免"].ToString() == "是" ? "是" : "否";
+                    dataGridView_Archive.Rows[i].Cells[28].Value = dr["指定學年科目名稱"].ToString();
                     i++;
                 }
             }

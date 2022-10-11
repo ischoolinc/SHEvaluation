@@ -45,6 +45,11 @@
             取得所有成績
             </summary>
         </member>
+        <member name="E:SmartSchool.Customization.Data.ClassHelper.FillingField">
+            <summary>
+            呼叫FillField方法時
+            </summary>
+        </member>
         <member name="M:SmartSchool.Customization.Data.ClassHelper.FillField(System.String,System.Collections.Generic.IEnumerable{SmartSchool.Customization.Data.ClassRecord})">
             <summary>
             填入班級其他資料
@@ -65,11 +70,6 @@
             </summary>
             <param name="className">班級名稱</param>
             <returns>如果查無班級名稱則傳回null</returns>
-        </member>
-        <member name="E:SmartSchool.Customization.Data.ClassHelper.FillingField">
-            <summary>
-            呼叫FillField方法時
-            </summary>
         </member>
         <member name="M:SmartSchool.Customization.Data.CourseHelper.GetCourse(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
@@ -111,6 +111,11 @@
             <param name="semester">學期</param>
             <param name="teacher">教師</param>
         </member>
+        <member name="E:SmartSchool.Customization.Data.CourseHelper.FillingStudentAttend">
+            <summary>
+            呼叫FillExamScore方法時
+            </summary>
+        </member>
         <member name="M:SmartSchool.Customization.Data.CourseHelper.FillStudentAttend(System.Collections.Generic.IEnumerable{SmartSchool.Customization.Data.CourseRecord})">
             <summary>
             填入修課學生資料
@@ -122,6 +127,11 @@
             填入修課學生資料
             </summary>
             <param name="courses">課程</param>
+        </member>
+        <member name="E:SmartSchool.Customization.Data.CourseHelper.FillingField">
+            <summary>
+            呼叫FillField方法時
+            </summary>
         </member>
         <member name="M:SmartSchool.Customization.Data.CourseHelper.FillField(System.String,System.Collections.Generic.IEnumerable{SmartSchool.Customization.Data.CourseRecord})">
             <summary>
@@ -137,6 +147,11 @@
             <param name="fieldName">要填入的欄位名稱</param>
             <param name="courses">要填入資料的課程</param>
         </member>
+        <member name="E:SmartSchool.Customization.Data.CourseHelper.FillingExamScore">
+            <summary>
+            呼叫FillExamScore方法時
+            </summary>
+        </member>
         <member name="M:SmartSchool.Customization.Data.CourseHelper.FillExamScore(System.Collections.Generic.IEnumerable{SmartSchool.Customization.Data.CourseRecord})">
             <summary>
             填入學生修課評量成績
@@ -148,6 +163,11 @@
             填入學生修課評量成績
             </summary>
             <param name="courses">課程</param>
+        </member>
+        <member name="E:SmartSchool.Customization.Data.CourseHelper.FillingExam">
+            <summary>
+            呼叫FillExam方法時
+            </summary>
         </member>
         <member name="M:SmartSchool.Customization.Data.CourseHelper.FillExam(SmartSchool.Customization.Data.CourseRecord[])">
             <summary>
@@ -170,26 +190,6 @@
             <param name="courseName">課程名稱</param>
             <returns>如果查無課程名稱則傳回null</returns>
         </member>
-        <member name="E:SmartSchool.Customization.Data.CourseHelper.FillingStudentAttend">
-            <summary>
-            呼叫FillExamScore方法時
-            </summary>
-        </member>
-        <member name="E:SmartSchool.Customization.Data.CourseHelper.FillingField">
-            <summary>
-            呼叫FillField方法時
-            </summary>
-        </member>
-        <member name="E:SmartSchool.Customization.Data.CourseHelper.FillingExamScore">
-            <summary>
-            呼叫FillExamScore方法時
-            </summary>
-        </member>
-        <member name="E:SmartSchool.Customization.Data.CourseHelper.FillingExam">
-            <summary>
-            呼叫FillExam方法時
-            </summary>
-        </member>
         <member name="T:SmartSchool.Customization.Data.AccessHelper">
             <summary>
             提供各種資料取得服務
@@ -198,11 +198,6 @@
         <member name="M:SmartSchool.Customization.Data.AccessHelper.#ctor">
             <summary>
             建構子
-            </summary>
-        </member>
-        <member name="M:SmartSchool.Customization.Data.AccessHelper.Reflash">
-            <summary>
-            清除暫存資訊
             </summary>
         </member>
         <member name="P:SmartSchool.Customization.Data.AccessHelper.StudentHelper">
@@ -230,19 +225,24 @@
             暫存容器
             </summary>
         </member>
+        <member name="M:SmartSchool.Customization.Data.AccessHelper.Reflash">
+            <summary>
+            清除暫存資訊
+            </summary>
+        </member>
+        <member name="T:SmartSchool.Customization.Data.CourseRecord_New">
+            <summary>
+            課程紀錄(New)
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.CourseRecord_New.CreditDec">
+            <summary>
+            學分數
+            </summary>
+        </member>
         <member name="T:SmartSchool.Customization.Data.StudentExtension.ExtensionFieldCollection">
             <summary>
             延伸欄位資料
-            </summary>
-        </member>
-        <member name="M:SmartSchool.Customization.Data.StudentExtension.ExtensionFieldCollection.Clear">
-            <summary>
-            清空
-            </summary>
-        </member>
-        <member name="M:SmartSchool.Customization.Data.StudentExtension.ExtensionFieldCollection.Clear(System.String)">
-            <summary>
-            清空特定NameSpace內的值
             </summary>
         </member>
         <member name="P:SmartSchool.Customization.Data.StudentExtension.ExtensionFieldCollection.Item(System.String,System.String)">
@@ -253,49 +253,14 @@
             <param name="fieldName">欄位名稱</param>
             <returns>值</returns>
         </member>
-        <member name="T:SmartSchool.Customization.Data.FillEventArgs`1">
+        <member name="M:SmartSchool.Customization.Data.StudentExtension.ExtensionFieldCollection.Clear">
             <summary>
-            Fill資料相關資訊
+            清空
             </summary>
         </member>
-        <member name="M:SmartSchool.Customization.Data.FillEventArgs`1.#ctor(SmartSchool.Customization.Data.AccessHelper,System.Collections.Generic.IEnumerable{`0})">
+        <member name="M:SmartSchool.Customization.Data.StudentExtension.ExtensionFieldCollection.Clear(System.String)">
             <summary>
-            初始
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.FillEventArgs`1.AccessHelper">
-            <summary>
-            觸發事件的AccessHelper實體
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.FillEventArgs`1.List">
-            <summary>
-            填入資料的對象
-            </summary>
-        </member>
-        <member name="T:SmartSchool.Customization.Data.FillFieldEventArgs`1">
-            <summary>
-            FillField事件相關資訊
-            </summary>
-        </member>
-        <member name="M:SmartSchool.Customization.Data.FillFieldEventArgs`1.#ctor(SmartSchool.Customization.Data.AccessHelper,System.String,System.Collections.Generic.IEnumerable{`0})">
-            <summary>
-            初始
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.FillFieldEventArgs`1.FieldName">
-            <summary>
-            填入的欄位名稱
-            </summary>
-        </member>
-        <member name="M:SmartSchool.Customization.Data.FillSemesterInfoEventArgs`1.#ctor(SmartSchool.Customization.Data.AccessHelper,System.Int32,System.Int32,System.Collections.Generic.IEnumerable{`0})">
-            <summary>
-            建構子 指定學年度學期
-            </summary>
-        </member>
-        <member name="M:SmartSchool.Customization.Data.FillSemesterInfoEventArgs`1.#ctor(SmartSchool.Customization.Data.AccessHelper,System.Collections.Generic.IEnumerable{`0})">
-            <summary>
-            建構子 不指定學年度學期
+            清空特定NameSpace內的值
             </summary>
         </member>
         <member name="T:SmartSchool.Customization.Data.StudentExtension.SemesterHistory">
@@ -378,450 +343,9 @@
             學生學期科目成績資訊(New)
             </summary>
         </member>
-        <member name="T:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo">
-            <summary>
-            學生學期科目成績資訊
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo.Credit">
-            <summary>
-            學分數
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo.Detail">
-            <summary>
-            詳細資料
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo.GradeYear">
-            <summary>
-            成績年級
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo.Level">
-            <summary>
-            級別
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo.Require">
-            <summary>
-            必修
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo.SchoolYear">
-            <summary>
-            學年度
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo.Score">
-            <summary>
-            分數
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo.Semester">
-            <summary>
-            學期
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo.Subject">
-            <summary>
-            科目
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo.Pass">
-            <summary>
-            取得學分
-            </summary>
-        </member>
         <member name="P:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo_New.CreditDec">
             <summary>
             學分數
-            </summary>
-        </member>
-        <member name="M:SmartSchool.Customization.Data.SystemInformation.getField(System.String)">
-            <summary>
-            取得特定欄位資料
-            </summary>
-            <param name="fieldName">欄位名稱</param>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.SystemInformation.Fields">
-            <summary>
-            其他資料(需先呼叫getField)
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.SystemInformation.SchoolYear">
-            <summary>
-            學年度
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.SystemInformation.Semester">
-            <summary>
-            學期
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.SystemInformation.SchoolChineseName">
-            <summary>
-            中文校名
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.SystemInformation.SchoolEnglishName">
-            <summary>
-            英文校名
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.SystemInformation.SchoolCode">
-            <summary>
-            學校代碼
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.SystemInformation.Telephone">
-            <summary>
-            學校電話。
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.SystemInformation.Fax">
-            <summary>
-            學校傳真。
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.SystemInformation.Address">
-            <summary>
-            學校地址。
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.SystemInformation.Preference">
-            <summary>
-            個人暫存資料
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.SystemInformation.Configuration">
-            <summary>
-            全校通用設定資料
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.SystemInformationProvider.SchoolYear">
-            <summary>
-            學年度
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.SystemInformationProvider.Semester">
-            <summary>
-            學期
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.SystemInformationProvider.SchoolChineseName">
-            <summary>
-            中文校名
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.SystemInformationProvider.SchoolEnglishName">
-            <summary>
-            英文校名
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.SystemInformationProvider.SchoolCode">
-            <summary>
-            學校代碼
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.SystemInformationProvider.Telephone">
-            <summary>
-            學校電話。
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.SystemInformationProvider.Fax">
-            <summary>
-            學校傳真。
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.SystemInformationProvider.Address">
-            <summary>
-            學校地址。
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.SystemInformationProvider.Preference">
-            <summary>
-            登入帳號相關設定資料
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.SystemInformationProvider.Configuration">
-            <summary>
-            全校通用設定資料
-            </summary>
-        </member>
-        <member name="T:SmartSchool.Customization.Data.StudentAttendCourseRecord">
-            <summary>
-            學生修課紀錄
-            </summary>
-        </member>
-        <member name="T:SmartSchool.Customization.Data.StudentRecord">
-            <summary>
-            學生紀錄
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.Gender">
-            <summary>
-            性別
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.StudentID">
-            <summary>
-            系統編號
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.IsNormalStudent">
-            <summary>
-            是否為在校學生
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.StudentName">
-            <summary>
-            姓名
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.SeatNo">
-            <summary>
-            座號
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.Status">
-            <summary>
-            狀態
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.StudentNumber">
-            <summary>
-            學號
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.Birthday">
-            <summary>
-            生日
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.Department">
-            <summary>
-            科別
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.IDNumber">
-            <summary>
-            身分證號
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.StudentCategorys">
-            <summary>
-            學生類別
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.AttendanceList">
-            <summary>
-            學生缺曠(必須先呼叫FillAttendance)
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.ExamScoreList">
-            <summary>
-            學生修課成績(必須先呼叫FillExamScore)
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.RewardList">
-            <summary>
-            學生獎懲(必須先呼叫FillReward)
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.SchoolYearEntryScoreList">
-            <summary>
-            學生學年分項成績(必須先呼叫FillSchoolYearEntryScore)
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.SchoolYearSubjectScoreList">
-            <summary>
-            學生學年科目成績(必須先呼叫FillSchoolYearSubjectScore)
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.SemesterEntryScoreList">
-            <summary>
-            學生學期分項成績(必須先呼叫FillSemesterEntryScore)
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.SemesterSubjectScoreList">
-            <summary>
-            學生學期科目成績(必須先呼叫FillSemesterSubjectScore)
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.UpdateRecordList">
-            <summary>
-            學生異動資料(必須先呼叫FillUpdateRecord)
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.AttendCourseList">
-            <summary>
-            修課資料(必須先呼叫FillAttendCourse)
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.RefClass">
-            <summary>
-            所屬班級
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.ContactInfo">
-            <summary>
-            聯絡資訊(必須先呼叫FillContactInfo)
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.ParentInfo">
-            <summary>
-            家長資訊(必須先呼叫FillParentInfo)
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.Fields">
-            <summary>
-            其他資料欄位(需先呼叫FillField填入需要的欄位)
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.SemesterMoralScoreList">
-            <summary>
-            學期德行成績(必須先呼叫FillSemsesterMoralScore)
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.SemesterHistoryList">
-            <summary>
-            學期德行成績(必須先呼叫FillSemesterHistory)
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentRecord.ExtensionFields">
-            <summary>
-            學生延伸欄位資料
-            </summary>
-        </member>
-        <member name="T:SmartSchool.Customization.Data.CourseRecord">
-            <summary>
-            課程紀錄
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.CourseRecord.CourseID">
-            <summary>
-            系統編號
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.CourseRecord.CourseName">
-            <summary>
-            課程名稱
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.CourseRecord.Subject">
-            <summary>
-            科目
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.CourseRecord.SubjectLevel">
-            <summary>
-            科目級別
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.CourseRecord.SchoolYear">
-            <summary>
-            學年度
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.CourseRecord.Semester">
-            <summary>
-            學期
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.CourseRecord.Credit">
-            <summary>
-            學分數
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.CourseRecord.Entry">
-            <summary>
-            分項類別
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.CourseRecord.NotIncludedInCredit">
-            <summary>
-            不計學分
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.CourseRecord.NotIncludedInCalc">
-            <summary>
-            不需評量
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.CourseRecord.CourseCategorys">
-            <summary>
-            課程類別
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.CourseRecord.StudentAttendList">
-            <summary>
-            修課學生資料(必須先呼叫FillStudentAttend)
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.CourseRecord.Fields">
-            <summary>
-            其他資料欄位(需先呼叫FillField填入需要的欄位)
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.CourseRecord.ExamScoreList">
-            <summary>
-            修課學生成績(必須先呼叫FillExamScore)
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.CourseRecord.RequiredBy">
-            <summary>
-            校部訂
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.CourseRecord.Required">
-            <summary>
-            必選修
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.CourseRecord.ExamList">
-            <summary>
-            考試清單(必須先呼叫FillExam)
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentAttendCourseRecord.FinalScore">
-            <summary>
-            修課總成績
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentAttendCourseRecord.HasFinalScore">
-            <summary>
-            已有修課總成績
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentAttendCourseRecord.RequiredBy">
-            <summary>
-            校部訂
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentAttendCourseRecord.Required">
-            <summary>
-            必選修
-            </summary>
-        </member>
-        <member name="T:SmartSchool.Customization.Data.ExamScoreInfo">
-            <summary>
-            科目考試成績資訊
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.ExamScoreInfo.ExamName">
-            <summary>
-            考試名稱
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.ExamScoreInfo.ExamScore">
-            <summary>
-            考試成績
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.ExamScoreInfo.SpecialCase">
-            <summary>
-            特殊情況
             </summary>
         </member>
         <member name="T:SmartSchool.Customization.Data.StudentExtension.AttendanceInfo">
@@ -1124,6 +648,61 @@
             詳細資料
             </summary>
         </member>
+        <member name="T:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo">
+            <summary>
+            學生學期科目成績資訊
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo.Credit">
+            <summary>
+            學分數
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo.Detail">
+            <summary>
+            詳細資料
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo.GradeYear">
+            <summary>
+            成績年級
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo.Level">
+            <summary>
+            級別
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo.Require">
+            <summary>
+            必修
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo.SchoolYear">
+            <summary>
+            學年度
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo.Score">
+            <summary>
+            分數
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo.Semester">
+            <summary>
+            學期
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo.Subject">
+            <summary>
+            科目
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo.Pass">
+            <summary>
+            取得學分
+            </summary>
+        </member>
         <member name="T:SmartSchool.Customization.Data.StudentExtension.UpdateRecordInfo">
             <summary>
             學生異動資訊
@@ -1269,6 +848,207 @@
             詳細資料
             </summary>
         </member>
+        <member name="T:SmartSchool.Customization.Data.FillEventArgs`1">
+            <summary>
+            Fill資料相關資訊
+            </summary>
+        </member>
+        <member name="M:SmartSchool.Customization.Data.FillEventArgs`1.#ctor(SmartSchool.Customization.Data.AccessHelper,System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            初始
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.FillEventArgs`1.AccessHelper">
+            <summary>
+            觸發事件的AccessHelper實體
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.FillEventArgs`1.List">
+            <summary>
+            填入資料的對象
+            </summary>
+        </member>
+        <member name="T:SmartSchool.Customization.Data.FillFieldEventArgs`1">
+            <summary>
+            FillField事件相關資訊
+            </summary>
+        </member>
+        <member name="M:SmartSchool.Customization.Data.FillFieldEventArgs`1.#ctor(SmartSchool.Customization.Data.AccessHelper,System.String,System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            初始
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.FillFieldEventArgs`1.FieldName">
+            <summary>
+            填入的欄位名稱
+            </summary>
+        </member>
+        <member name="M:SmartSchool.Customization.Data.FillSemesterInfoEventArgs`1.#ctor(SmartSchool.Customization.Data.AccessHelper,System.Int32,System.Int32,System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            建構子 指定學年度學期
+            </summary>
+        </member>
+        <member name="M:SmartSchool.Customization.Data.FillSemesterInfoEventArgs`1.#ctor(SmartSchool.Customization.Data.AccessHelper,System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            建構子 不指定學年度學期
+            </summary>
+        </member>
+        <member name="M:SmartSchool.Customization.Data.SystemInformation.getField(System.String)">
+            <summary>
+            取得特定欄位資料
+            </summary>
+            <param name="fieldName">欄位名稱</param>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.SystemInformation.Fields">
+            <summary>
+            其他資料(需先呼叫getField)
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.SystemInformation.SchoolYear">
+            <summary>
+            學年度
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.SystemInformation.Semester">
+            <summary>
+            學期
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.SystemInformation.SchoolChineseName">
+            <summary>
+            中文校名
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.SystemInformation.SchoolEnglishName">
+            <summary>
+            英文校名
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.SystemInformation.SchoolCode">
+            <summary>
+            學校代碼
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.SystemInformation.Telephone">
+            <summary>
+            學校電話。
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.SystemInformation.Fax">
+            <summary>
+            學校傳真。
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.SystemInformation.Address">
+            <summary>
+            學校地址。
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.SystemInformation.Preference">
+            <summary>
+            個人暫存資料
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.SystemInformation.Configuration">
+            <summary>
+            全校通用設定資料
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.SystemInformationProvider.SchoolYear">
+            <summary>
+            學年度
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.SystemInformationProvider.Semester">
+            <summary>
+            學期
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.SystemInformationProvider.SchoolChineseName">
+            <summary>
+            中文校名
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.SystemInformationProvider.SchoolEnglishName">
+            <summary>
+            英文校名
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.SystemInformationProvider.SchoolCode">
+            <summary>
+            學校代碼
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.SystemInformationProvider.Telephone">
+            <summary>
+            學校電話。
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.SystemInformationProvider.Fax">
+            <summary>
+            學校傳真。
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.SystemInformationProvider.Address">
+            <summary>
+            學校地址。
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.SystemInformationProvider.Preference">
+            <summary>
+            登入帳號相關設定資料
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.SystemInformationProvider.Configuration">
+            <summary>
+            全校通用設定資料
+            </summary>
+        </member>
+        <member name="T:SmartSchool.Customization.Data.StudentAttendCourseRecord">
+            <summary>
+            學生修課紀錄
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentAttendCourseRecord.FinalScore">
+            <summary>
+            修課總成績
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentAttendCourseRecord.HasFinalScore">
+            <summary>
+            已有修課總成績
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentAttendCourseRecord.RequiredBy">
+            <summary>
+            校部訂
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentAttendCourseRecord.Required">
+            <summary>
+            必選修
+            </summary>
+        </member>
+        <member name="T:SmartSchool.Customization.Data.ExamScoreInfo">
+            <summary>
+            科目考試成績資訊
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.ExamScoreInfo.ExamName">
+            <summary>
+            考試名稱
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.ExamScoreInfo.ExamScore">
+            <summary>
+            考試成績
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.ExamScoreInfo.SpecialCase">
+            <summary>
+            特殊情況
+            </summary>
+        </member>
         <member name="T:SmartSchool.Customization.Data.ClassRecord">
             <summary>
             班級紀錄
@@ -1314,6 +1094,16 @@
             其他資料欄位(需先呼叫FillField填入需要的欄位)
             </summary>
         </member>
+        <member name="P:SmartSchool.Customization.Data.ClassInformationProvider.AccessHelper">
+            <summary>
+            資料存取器
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.ClassInformationProvider.CachePool">
+            <summary>
+            快取暫存區
+            </summary>
+        </member>
         <member name="M:SmartSchool.Customization.Data.ClassInformationProvider.GetClass(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             用班級編號取得班級資料
@@ -1343,12 +1133,107 @@
             <param name="className">班級名稱</param>
             <returns>如果查無班級名稱則傳回null</returns>
         </member>
-        <member name="P:SmartSchool.Customization.Data.ClassInformationProvider.AccessHelper">
+        <member name="T:SmartSchool.Customization.Data.CourseRecord">
+            <summary>
+            課程紀錄
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.CourseRecord.CourseID">
+            <summary>
+            系統編號
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.CourseRecord.CourseName">
+            <summary>
+            課程名稱
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.CourseRecord.Domain">
+            <summary>
+            領域
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.CourseRecord.Subject">
+            <summary>
+            科目
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.CourseRecord.SubjectLevel">
+            <summary>
+            科目級別
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.CourseRecord.SchoolYear">
+            <summary>
+            學年度
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.CourseRecord.Semester">
+            <summary>
+            學期
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.CourseRecord.Credit">
+            <summary>
+            學分數
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.CourseRecord.Entry">
+            <summary>
+            分項類別
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.CourseRecord.NotIncludedInCredit">
+            <summary>
+            不計學分
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.CourseRecord.NotIncludedInCalc">
+            <summary>
+            不需評量
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.CourseRecord.CourseCategorys">
+            <summary>
+            課程類別
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.CourseRecord.StudentAttendList">
+            <summary>
+            修課學生資料(必須先呼叫FillStudentAttend)
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.CourseRecord.Fields">
+            <summary>
+            其他資料欄位(需先呼叫FillField填入需要的欄位)
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.CourseRecord.ExamScoreList">
+            <summary>
+            修課學生成績(必須先呼叫FillExamScore)
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.CourseRecord.RequiredBy">
+            <summary>
+            校部訂
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.CourseRecord.Required">
+            <summary>
+            必選修
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.CourseRecord.ExamList">
+            <summary>
+            考試清單(必須先呼叫FillExam)
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.CourseInformationProvider.AccessHelper">
             <summary>
             資料存取器
             </summary>
         </member>
-        <member name="P:SmartSchool.Customization.Data.ClassInformationProvider.CachePool">
+        <member name="P:SmartSchool.Customization.Data.CourseInformationProvider.CachePool">
             <summary>
             快取暫存區
             </summary>
@@ -1422,16 +1307,6 @@
             <param name="courseName">課程名稱</param>
             <returns>如果查無課程名稱則傳回null</returns>
         </member>
-        <member name="P:SmartSchool.Customization.Data.CourseInformationProvider.AccessHelper">
-            <summary>
-            資料存取器
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.CourseInformationProvider.CachePool">
-            <summary>
-            快取暫存區
-            </summary>
-        </member>
         <member name="M:SmartSchool.Customization.Data.StudentHelper.GetStudent(System.String)">
             <summary>
             用學生編號取得學生資料
@@ -1469,6 +1344,11 @@
             填入學生延伸欄位資料
             </summary>
         </member>
+        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingAttendance">
+            <summary>
+            呼叫FillAttendance方法時
+            </summary>
+        </member>
         <member name="M:SmartSchool.Customization.Data.StudentHelper.FillAttendance(System.Collections.Generic.IEnumerable{SmartSchool.Customization.Data.StudentRecord})">
             <summary>
             填入學生缺曠
@@ -1487,6 +1367,11 @@
         <member name="M:SmartSchool.Customization.Data.StudentHelper.FillAttendance(System.Int32,System.Int32,SmartSchool.Customization.Data.StudentRecord[])">
             <summary>
             填入學生缺曠
+            </summary>
+        </member>
+        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingReward">
+            <summary>
+            呼叫FillReward方法時
             </summary>
         </member>
         <member name="M:SmartSchool.Customization.Data.StudentHelper.FillReward(System.Collections.Generic.IEnumerable{SmartSchool.Customization.Data.StudentRecord})">
@@ -1509,6 +1394,11 @@
             填入學生獎懲
             </summary>
         </member>
+        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingUpdateRecord">
+            <summary>
+            呼叫FillUpdateRecord方法時
+            </summary>
+        </member>
         <member name="M:SmartSchool.Customization.Data.StudentHelper.FillUpdateRecord(System.Collections.Generic.IEnumerable{SmartSchool.Customization.Data.StudentRecord})">
             <summary>
             填入學生異動資料
@@ -1519,6 +1409,11 @@
             填入學生異動資料
             </summary>
         </member>
+        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingSemesterHistory">
+            <summary>
+            呼叫FillSemesterHistory方法時
+            </summary>
+        </member>
         <member name="M:SmartSchool.Customization.Data.StudentHelper.FillSemesterHistory(System.Collections.Generic.IEnumerable{SmartSchool.Customization.Data.StudentRecord})">
             <summary>
             填入學生學期歷程
@@ -1527,6 +1422,11 @@
         <member name="M:SmartSchool.Customization.Data.StudentHelper.FillSemesterHistory(SmartSchool.Customization.Data.StudentRecord[])">
             <summary>
             填入學生學期歷程
+            </summary>
+        </member>
+        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingExamScore">
+            <summary>
+            呼叫FillExamScore方法時
             </summary>
         </member>
         <member name="M:SmartSchool.Customization.Data.StudentHelper.FillExamScore(System.Int32,System.Int32,System.Collections.Generic.IEnumerable{SmartSchool.Customization.Data.StudentRecord})">
@@ -1545,6 +1445,11 @@
             <param name="semester">學期</param>
             <param name="students">學生</param>
         </member>
+        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingSemesterSubjectScore">
+            <summary>
+            呼叫FillSemesterSubjectScore方法時
+            </summary>
+        </member>
         <member name="M:SmartSchool.Customization.Data.StudentHelper.FillSemesterSubjectScore(System.Boolean,System.Collections.Generic.IEnumerable{SmartSchool.Customization.Data.StudentRecord})">
             <summary>
             填入學生學期科目成績
@@ -1556,6 +1461,11 @@
             填入學生學期科目成績
             </summary>
             <param name="filterRepeat">過濾重讀(重複年級學期)資料</param>
+        </member>
+        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingSemesterMoralScore">
+            <summary>
+            呼叫FillSemesterMoralScore方法時
+            </summary>
         </member>
         <member name="M:SmartSchool.Customization.Data.StudentHelper.FillSemesterMoralScore(System.Boolean,System.Collections.Generic.IEnumerable{SmartSchool.Customization.Data.StudentRecord})">
             <summary>
@@ -1569,6 +1479,11 @@
             </summary>
             <param name="filterRepeat">過濾重讀(重複年級學期)資料</param>
         </member>
+        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingSemesterEntryScore">
+            <summary>
+            呼叫FillSemesterEntryScore方法時
+            </summary>
+        </member>
         <member name="M:SmartSchool.Customization.Data.StudentHelper.FillSemesterEntryScore(System.Boolean,System.Collections.Generic.IEnumerable{SmartSchool.Customization.Data.StudentRecord})">
             <summary>
             填入學生學期分項成績
@@ -1580,6 +1495,11 @@
             填入學生學期分項成績
             </summary>
             <param name="filterRepeat">過濾重讀(重複年級學期)資料</param>
+        </member>
+        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingSchoolYearSubjectScore">
+            <summary>
+            呼叫FillingSchoolYearSubjectScore方法時
+            </summary>
         </member>
         <member name="M:SmartSchool.Customization.Data.StudentHelper.FillSchoolYearSubjectScore(System.Boolean,System.Collections.Generic.IEnumerable{SmartSchool.Customization.Data.StudentRecord})">
             <summary>
@@ -1593,6 +1513,11 @@
             </summary>
             <param name="filterRepeat">過濾重讀(重複年級)資料</param>
         </member>
+        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingSchoolYearEntryScore">
+            <summary>
+            呼叫FillSchoolYearEntryScore方法時
+            </summary>
+        </member>
         <member name="M:SmartSchool.Customization.Data.StudentHelper.FillSchoolYearEntryScore(System.Boolean,System.Collections.Generic.IEnumerable{SmartSchool.Customization.Data.StudentRecord})">
             <summary>
             填入學生學年分項成績
@@ -1604,6 +1529,11 @@
             填入學生學年分項成績
             </summary>
             <param name="filterRepeat">過濾重讀(重複年級)資料</param>
+        </member>
+        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingAttendCourse">
+            <summary>
+            呼叫FillAttendCourse方法時
+            </summary>
         </member>
         <member name="M:SmartSchool.Customization.Data.StudentHelper.FillAttendCourse(System.Int32,System.Int32,System.Collections.Generic.IEnumerable{SmartSchool.Customization.Data.StudentRecord})">
             <summary>
@@ -1619,6 +1549,11 @@
             <param name="schoolYear">學年度</param>
             <param name="semester">學期</param>
         </member>
+        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingContactInfo">
+            <summary>
+            呼叫FillContactInfo方法時
+            </summary>
+        </member>
         <member name="M:SmartSchool.Customization.Data.StudentHelper.FillContactInfo(System.Collections.Generic.IEnumerable{SmartSchool.Customization.Data.StudentRecord})">
             <summary>
             填入學生聯絡資料
@@ -1629,6 +1564,11 @@
             填入學生聯絡資料
             </summary>
         </member>
+        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingParentInfo">
+            <summary>
+            呼叫FillParentInfo方法時
+            </summary>
+        </member>
         <member name="M:SmartSchool.Customization.Data.StudentHelper.FillParentInfo(System.Collections.Generic.IEnumerable{SmartSchool.Customization.Data.StudentRecord})">
             <summary>
             填入學生聯絡資料
@@ -1637,6 +1577,11 @@
         <member name="M:SmartSchool.Customization.Data.StudentHelper.FillParentInfo(SmartSchool.Customization.Data.StudentRecord[])">
             <summary>
             填入學生聯絡資料
+            </summary>
+        </member>
+        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingField">
+            <summary>
+            呼叫FillField方法時
             </summary>
         </member>
         <member name="M:SmartSchool.Customization.Data.StudentHelper.FillField(System.String,System.Collections.Generic.IEnumerable{SmartSchool.Customization.Data.StudentRecord})">
@@ -1670,74 +1615,154 @@
             <param name="field">欄位名稱</param>
             <param name="list">"學生"與"值"的對照表，Dictionary或SortedList等皆可傳入</param>
         </member>
-        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingAttendance">
+        <member name="T:SmartSchool.Customization.Data.StudentRecord">
             <summary>
-            呼叫FillAttendance方法時
+            學生紀錄
             </summary>
         </member>
-        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingReward">
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.Gender">
             <summary>
-            呼叫FillReward方法時
+            性別
             </summary>
         </member>
-        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingUpdateRecord">
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.StudentID">
             <summary>
-            呼叫FillUpdateRecord方法時
+            系統編號
             </summary>
         </member>
-        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingSemesterHistory">
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.IsNormalStudent">
             <summary>
-            呼叫FillSemesterHistory方法時
+            是否為在校學生
             </summary>
         </member>
-        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingExamScore">
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.StudentName">
             <summary>
-            呼叫FillExamScore方法時
+            姓名
             </summary>
         </member>
-        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingSemesterSubjectScore">
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.SeatNo">
             <summary>
-            呼叫FillSemesterSubjectScore方法時
+            座號
             </summary>
         </member>
-        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingSemesterMoralScore">
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.Status">
             <summary>
-            呼叫FillSemesterMoralScore方法時
+            狀態
             </summary>
         </member>
-        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingSemesterEntryScore">
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.StudentNumber">
             <summary>
-            呼叫FillSemesterEntryScore方法時
+            學號
             </summary>
         </member>
-        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingSchoolYearSubjectScore">
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.Birthday">
             <summary>
-            呼叫FillingSchoolYearSubjectScore方法時
+            生日
             </summary>
         </member>
-        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingSchoolYearEntryScore">
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.Department">
             <summary>
-            呼叫FillSchoolYearEntryScore方法時
+            科別
             </summary>
         </member>
-        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingAttendCourse">
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.IDNumber">
             <summary>
-            呼叫FillAttendCourse方法時
+            身分證號
             </summary>
         </member>
-        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingContactInfo">
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.StudentCategorys">
             <summary>
-            呼叫FillContactInfo方法時
+            學生類別
             </summary>
         </member>
-        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingParentInfo">
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.AttendanceList">
             <summary>
-            呼叫FillParentInfo方法時
+            學生缺曠(必須先呼叫FillAttendance)
             </summary>
         </member>
-        <member name="E:SmartSchool.Customization.Data.StudentHelper.FillingField">
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.ExamScoreList">
             <summary>
-            呼叫FillField方法時
+            學生修課成績(必須先呼叫FillExamScore)
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.RewardList">
+            <summary>
+            學生獎懲(必須先呼叫FillReward)
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.SchoolYearEntryScoreList">
+            <summary>
+            學生學年分項成績(必須先呼叫FillSchoolYearEntryScore)
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.SchoolYearSubjectScoreList">
+            <summary>
+            學生學年科目成績(必須先呼叫FillSchoolYearSubjectScore)
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.SemesterEntryScoreList">
+            <summary>
+            學生學期分項成績(必須先呼叫FillSemesterEntryScore)
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.SemesterSubjectScoreList">
+            <summary>
+            學生學期科目成績(必須先呼叫FillSemesterSubjectScore)
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.UpdateRecordList">
+            <summary>
+            學生異動資料(必須先呼叫FillUpdateRecord)
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.AttendCourseList">
+            <summary>
+            修課資料(必須先呼叫FillAttendCourse)
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.RefClass">
+            <summary>
+            所屬班級
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.ContactInfo">
+            <summary>
+            聯絡資訊(必須先呼叫FillContactInfo)
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.ParentInfo">
+            <summary>
+            家長資訊(必須先呼叫FillParentInfo)
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.Fields">
+            <summary>
+            其他資料欄位(需先呼叫FillField填入需要的欄位)
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.SemesterMoralScoreList">
+            <summary>
+            學期德行成績(必須先呼叫FillSemsesterMoralScore)
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.SemesterHistoryList">
+            <summary>
+            學期德行成績(必須先呼叫FillSemesterHistory)
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentRecord.ExtensionFields">
+            <summary>
+            學生延伸欄位資料
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentInformationProvider.AccessHelper">
+            <summary>
+            資料存取器
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.StudentInformationProvider.CachePool">
+            <summary>
+            快取暫存區
             </summary>
         </member>
         <member name="M:SmartSchool.Customization.Data.StudentInformationProvider.GetStudents(System.Collections.Generic.IEnumerable{System.String})">
@@ -1864,16 +1889,6 @@
             寫入延伸欄位資料
             </summary>
         </member>
-        <member name="P:SmartSchool.Customization.Data.StudentInformationProvider.AccessHelper">
-            <summary>
-            資料存取器
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.StudentInformationProvider.CachePool">
-            <summary>
-            快取暫存區
-            </summary>
-        </member>
         <member name="T:SmartSchool.Customization.Data.CategoryInfo">
             <summary>
             類別資訊
@@ -1919,6 +1934,11 @@
             取得授課教師
             </summary>
         </member>
+        <member name="E:SmartSchool.Customization.Data.TeacherHelper.FillingField">
+            <summary>
+            呼叫FillField方法時
+            </summary>
+        </member>
         <member name="M:SmartSchool.Customization.Data.TeacherHelper.FillField(System.String,System.Collections.Generic.IEnumerable{SmartSchool.Customization.Data.TeacherRecord})">
             <summary>
             填入教師其他資料
@@ -1939,11 +1959,6 @@
             </summary>
             <param name="identifiableName">教師識別名稱</param>
             <returns>查無此教師則傳回null</returns>
-        </member>
-        <member name="E:SmartSchool.Customization.Data.TeacherHelper.FillingField">
-            <summary>
-            呼叫FillField方法時
-            </summary>
         </member>
         <member name="P:SmartSchool.Customization.Data.TeacherRecord.TeacherID">
             <summary>
@@ -1986,6 +2001,16 @@
             PS. 暱稱可以亂取，不宜到處宣傳，切記
             </remarks>
         </member>
+        <member name="P:SmartSchool.Customization.Data.TeacherInformationProvider.AccessHelper">
+            <summary>
+            資料存取器
+            </summary>
+        </member>
+        <member name="P:SmartSchool.Customization.Data.TeacherInformationProvider.CachePool">
+            <summary>
+            快取暫存區
+            </summary>
+        </member>
         <member name="M:SmartSchool.Customization.Data.TeacherInformationProvider.GetTeacher(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             取得教師資料
@@ -2019,16 +2044,6 @@
             </summary>
             <param name="identifiableName">教師識別名稱</param>
             <returns>如查無此教師則傳回null</returns>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.TeacherInformationProvider.AccessHelper">
-            <summary>
-            資料存取器
-            </summary>
-        </member>
-        <member name="P:SmartSchool.Customization.Data.TeacherInformationProvider.CachePool">
-            <summary>
-            快取暫存區
-            </summary>
         </member>
     </members>
 </doc>

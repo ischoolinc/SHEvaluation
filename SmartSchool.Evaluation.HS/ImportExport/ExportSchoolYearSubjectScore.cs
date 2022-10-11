@@ -21,7 +21,7 @@ namespace SmartSchool.Evaluation.ImportExport
         {
             SmartSchool.API.PlugIn.VirtualCheckBox filterRepeat = new SmartSchool.API.PlugIn.VirtualCheckBox("自動略過重讀成績", true);
             wizard.Options.Add(filterRepeat);
-            wizard.ExportableFields.AddRange("學年度", "成績年級", "科目", "學年成績", "結算成績", "補考成績", "重修成績","校部定", "必選修", "識別學分數");
+            wizard.ExportableFields.AddRange("學年度", "成績年級", "領域", "科目", "學年成績", "結算成績", "補考成績", "重修成績","校部定", "必選修", "識別學分數");
             AccessHelper _AccessHelper = new AccessHelper();
             wizard.ExportPackage += delegate(object sender, SmartSchool.API.PlugIn.Export.ExportPackageEventArgs e)
             {
@@ -41,6 +41,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                 {
                                     case "學年度": row.Add(field, "" + var.SchoolYear); break;
                                     case "成績年級": row.Add(field, "" + var.GradeYear); break;
+                                    case "領域": row.Add(field, "" + var.Detail.GetAttribute("領域")); break;
                                     case "科目": row.Add(field, var.Subject); break;
                                     case "學年成績": row.Add(field, "" + var.Score); break;
                                     case "結算成績": row.Add(field, var.Detail.GetAttribute(field) == "" ? ("" + var.Score) : var.Detail.GetAttribute(field)); break;

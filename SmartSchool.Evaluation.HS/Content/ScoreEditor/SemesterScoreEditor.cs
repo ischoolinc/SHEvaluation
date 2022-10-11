@@ -36,7 +36,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
         private SubjectScoreToolTipProvider _subject_rating;
         private EntryScoreToolTipProvider _score_rating;
         private EntryScoreToolTipProvider _moral_rating;
-        private const int SubjectColumn = 1, SubjectLevel = 2;
+        private const int SubjectColumn = 2, SubjectLevel = 3;
 
         public SemesterScoreEditor(string refStudentID)
         {
@@ -176,11 +176,12 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                     _beforeXml.AddElement("SubjectCollection", var);
                     DataGridViewRow row = new DataGridViewRow();
                     row.CreateCells(dataGridViewX1,
+                        var.GetAttribute("領域"), // 領域名稱
                         var.GetAttribute("開課分項類別"),
                         var.GetAttribute("科目"),
                         var.GetAttribute("科目級別"),
                         var.GetAttribute("開課學分數"),
-                        var.GetAttribute("修課校部訂")== "部訂"? "部定" : var.GetAttribute("修課校部訂"),
+                        var.GetAttribute("修課校部訂") == "部訂" ? "部定" : var.GetAttribute("修課校部訂"),
                         var.GetAttribute("修課必選修"),
                         var.GetAttribute("是否取得學分") == "是",
                         var.GetAttribute("原始成績"),
@@ -198,7 +199,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                         //    subjectCode,
                         //var.GetAttribute("修課科目代碼"),
                         var.GetAttribute("是否補修成績") == "是",
-                         var.GetAttribute("補修學年度"),
+                        var.GetAttribute("補修學年度"),
                         var.GetAttribute("補修學期"),
                         var.GetAttribute("重修學年度"),
                         var.GetAttribute("重修學期"),
@@ -359,8 +360,23 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 {
                     #region 比對各項目資料
                     GraduationPlanInfo gplan = GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(_StudentID);
-                    GraduationPlanSubject subject = gplan.GetSubjectInfo("" + row.Cells[1].Value, "" + row.Cells[2].Value);
-                    int index = 0;
+                    GraduationPlanSubject subject = gplan.GetSubjectInfo("" + row.Cells[2].Value, "" + row.Cells[3].Value);
+
+                    int index = 0; // 領域名稱檢查規則，因為舊資料中都會缺少領域欄位，故先不進行檢查，允許空值 --2022.10.05 俊緯
+                    //if ("" + row.Cells[index].Value != subject.Domain)
+                    //{
+                    //    row.Cells[index].ToolTipText = "在課程規劃表 \"" + gplan.Name + "\"中\n值為: " + subject.Domain;
+                    //    row.Cells[index].Style.BackColor = Color.Gainsboro;
+                    //    row.Cells[index].Style.ForeColor = Color.DimGray;
+                    //}
+                    //else
+                    //{
+                    //    row.Cells[index].ToolTipText = "";
+                    //    row.Cells[index].Style.BackColor = dataGridViewX1.DefaultCellStyle.BackColor;
+                    //    row.Cells[index].Style.ForeColor = dataGridViewX1.DefaultCellStyle.ForeColor;
+                    //}
+
+                    index = 1;
                     if ("" + row.Cells[index].Value != subject.Entry)
                     {
                         row.Cells[index].ToolTipText = "在課程規劃表 \"" + gplan.Name + "\"中\n值為: " + subject.Entry;
@@ -370,10 +386,10 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                     else
                     {
                         row.Cells[index].ToolTipText = "";
-                        row.Cells[index].Style.BackColor = dataGridViewX1.DefaultCellStyle.BackColor; ;
+                        row.Cells[index].Style.BackColor = dataGridViewX1.DefaultCellStyle.BackColor;
                         row.Cells[index].Style.ForeColor = dataGridViewX1.DefaultCellStyle.ForeColor;
                     }
-                    index = 3;
+                    index = 4;
                     if ("" + row.Cells[index].Value != subject.Credit)
                     {
                         row.Cells[index].ToolTipText = "在課程規劃表 \"" + gplan.Name + "\"中\n值為: " + subject.Credit;
@@ -383,10 +399,10 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                     else
                     {
                         row.Cells[index].ToolTipText = "";
-                        row.Cells[index].Style.BackColor = dataGridViewX1.DefaultCellStyle.BackColor; ;
+                        row.Cells[index].Style.BackColor = dataGridViewX1.DefaultCellStyle.BackColor;
                         row.Cells[index].Style.ForeColor = dataGridViewX1.DefaultCellStyle.ForeColor;
                     }
-                    index = 4;
+                    index = 5;
                     string req = subject.RequiredBy;
                     if (req == "部訂") req = "部定";
                     if ("" + row.Cells[index].Value != req)
@@ -398,10 +414,10 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                     else
                     {
                         row.Cells[index].ToolTipText = "";
-                        row.Cells[index].Style.BackColor = dataGridViewX1.DefaultCellStyle.BackColor; ;
+                        row.Cells[index].Style.BackColor = dataGridViewX1.DefaultCellStyle.BackColor;
                         row.Cells[index].Style.ForeColor = dataGridViewX1.DefaultCellStyle.ForeColor;
                     }
-                    index = 5;
+                    index = 6;
                     if ("" + row.Cells[index].Value != subject.Required)
                     {
                         row.Cells[index].ToolTipText = "在課程規劃表 \"" + gplan.Name + "\"中\n值為: " + subject.Required;
@@ -411,10 +427,10 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                     else
                     {
                         row.Cells[index].ToolTipText = "";
-                        row.Cells[index].Style.BackColor = dataGridViewX1.DefaultCellStyle.BackColor; ;
+                        row.Cells[index].Style.BackColor = dataGridViewX1.DefaultCellStyle.BackColor;
                         row.Cells[index].Style.ForeColor = dataGridViewX1.DefaultCellStyle.ForeColor;
                     }
-                    index = 12;
+                    index = 13;
                     if ((row.Cells[index].Value != null && (bool)row.Cells[index].Value) != subject.NotIncludedInCredit)
                     {
                         row.Cells[index].ToolTipText = "在課程規劃表 \"" + gplan.Name + "\"中\n值為: " + (subject.NotIncludedInCredit ? "是" : "否");
@@ -424,10 +440,10 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                     else
                     {
                         row.Cells[index].ToolTipText = "";
-                        row.Cells[index].Style.BackColor = dataGridViewX1.DefaultCellStyle.BackColor; ;
+                        row.Cells[index].Style.BackColor = dataGridViewX1.DefaultCellStyle.BackColor;
                         row.Cells[index].Style.ForeColor = dataGridViewX1.DefaultCellStyle.ForeColor;
                     }
-                    index = 13;
+                    index = 14;
                     if ((row.Cells[index].Value != null && (bool)row.Cells[index].Value) != subject.NotIncludedInCalc)
                     {
                         row.Cells[index].ToolTipText = "在課程規劃表 \"" + gplan.Name + "\"中\n值為: " + (subject.NotIncludedInCalc ? "是" : "否");
@@ -437,7 +453,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                     else
                     {
                         row.Cells[index].ToolTipText = "";
-                        row.Cells[index].Style.BackColor = dataGridViewX1.DefaultCellStyle.BackColor; ;
+                        row.Cells[index].Style.BackColor = dataGridViewX1.DefaultCellStyle.BackColor;
                         row.Cells[index].Style.ForeColor = dataGridViewX1.DefaultCellStyle.ForeColor;
                     }
                     #endregion
@@ -445,7 +461,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 else
                 {
                     //改變顏色
-                    foreach (int index in new int[] { 0, 3, 4, 5, 12, 13 })
+                    //foreach (int index in new int[] { 0, 1, 4, 5, 6, 13, 14 }) // 領域名稱檢查規則，因為舊資料中都會缺少領域欄位，故先不進行檢查，允許空值 --2022.10.05 俊緯
+                    foreach (int index in new int[] { 1, 4, 5, 6, 13, 14 })
                     {
                         row.Cells[index].ToolTipText = "學生課程規劃表未設定，無法比較與課程規畫表差異。";
                         row.Cells[index].Style.BackColor = Color.Gainsboro;
@@ -459,7 +476,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 foreach (DataGridViewCell cell in row.Cells)
                 {
                     cell.ToolTipText = "";
-                    cell.Style.BackColor = dataGridViewX1.DefaultCellStyle.BackColor; ;
+                    cell.Style.BackColor = dataGridViewX1.DefaultCellStyle.BackColor;
                     cell.Style.ForeColor = dataGridViewX1.DefaultCellStyle.ForeColor;
                 }
             }
@@ -490,7 +507,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             DataGridViewCell cell = dataGridViewX1.Rows[e.RowIndex].Cells[e.ColumnIndex];
             string message = "儲存格值：" + cell.Value + "。\n發生錯誤： " + e.Exception.Message + "。";
             /// 2022-01 Cynthia 因分項類別的item移除了體育、國防通識、健康與護理，為了讓舊資料不要出現紅點，故增加一層判斷。
-            if (e.ColumnIndex != 0 && cell.Value.ToString() != "體育" && cell.Value.ToString() != "國防通識" && cell.Value.ToString() != "健康與護理")
+            if (e.ColumnIndex != 1 && cell.Value.ToString() != "體育" && cell.Value.ToString() != "國防通識" && cell.Value.ToString() != "健康與護理")
                 if (cell.ErrorText != message)
                 {
                     cell.ErrorText = message;
@@ -502,7 +519,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             DataGridViewComboBoxColumn comboColumn;
             switch (e.ColumnIndex)
             {
-                case 0:
+                case 1:
                     comboColumn = ((DataGridViewComboBoxColumn)dataGridViewX1.Columns["ColEntry"]);
                     if (!comboColumn.Items.Contains("體育") && cell.Value.ToString() == "體育")
                     {
@@ -839,21 +856,22 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 if (row.IsNewRow)
                     break;
                 XmlElement subjectElement = doc.CreateElement("Subject");
-                subjectElement.SetAttribute("開課分項類別", "" + row.Cells[0].Value);
-                subjectElement.SetAttribute("科目", "" + row.Cells[1].Value);
-                subjectElement.SetAttribute("科目級別", "" + row.Cells[2].Value);
-                subjectElement.SetAttribute("開課學分數", "" + row.Cells[3].Value);
-                subjectElement.SetAttribute("修課校部訂", "" + row.Cells[4].Value== "部定" ? "部訂" : row.Cells[4].Value.ToString());
-                subjectElement.SetAttribute("修課必選修", "" + row.Cells[5].Value);
-                subjectElement.SetAttribute("是否取得學分", (row.Cells[6].Value != null && (bool)row.Cells[6].Value) ? "是" : "否");
-                subjectElement.SetAttribute("原始成績", "" + row.Cells[7].Value);
-                subjectElement.SetAttribute("補考成績", "" + row.Cells[8].Value);
-                subjectElement.SetAttribute("重修成績", "" + row.Cells[9].Value);
-                subjectElement.SetAttribute("擇優採計成績", "" + row.Cells[10].Value);
-                subjectElement.SetAttribute("學年調整成績", "" + row.Cells[11].Value);
-                subjectElement.SetAttribute("不計學分", (row.Cells[12].Value != null && (bool)row.Cells[12].Value) ? "是" : "否");
-                subjectElement.SetAttribute("不需評分", (row.Cells[13].Value != null && (bool)row.Cells[13].Value) ? "是" : "否");
-                subjectElement.SetAttribute("註記", "" + row.Cells[14].Value);
+                subjectElement.SetAttribute("領域", "" + row.Cells[0].Value);
+                subjectElement.SetAttribute("開課分項類別", "" + row.Cells[1].Value);
+                subjectElement.SetAttribute("科目", "" + row.Cells[2].Value);
+                subjectElement.SetAttribute("科目級別", "" + row.Cells[3].Value);
+                subjectElement.SetAttribute("開課學分數", "" + row.Cells[4].Value);
+                subjectElement.SetAttribute("修課校部訂", "" + row.Cells[5].Value == "部定" ? "部訂" : row.Cells[5].Value.ToString());
+                subjectElement.SetAttribute("修課必選修", "" + row.Cells[6].Value);
+                subjectElement.SetAttribute("是否取得學分", (row.Cells[7].Value != null && (bool)row.Cells[7].Value) ? "是" : "否");
+                subjectElement.SetAttribute("原始成績", "" + row.Cells[8].Value);
+                subjectElement.SetAttribute("補考成績", "" + row.Cells[9].Value);
+                subjectElement.SetAttribute("重修成績", "" + row.Cells[10].Value);
+                subjectElement.SetAttribute("擇優採計成績", "" + row.Cells[11].Value);
+                subjectElement.SetAttribute("學年調整成績", "" + row.Cells[12].Value);
+                subjectElement.SetAttribute("不計學分", (row.Cells[13].Value != null && (bool)row.Cells[13].Value) ? "是" : "否");
+                subjectElement.SetAttribute("不需評分", (row.Cells[14].Value != null && (bool)row.Cells[14].Value) ? "是" : "否");
+                subjectElement.SetAttribute("註記", "" + row.Cells[15].Value);
                 subjectElement.SetAttribute("修課及格標準", "" + row.Cells[colPassingStandard.Index].Value);
                 subjectElement.SetAttribute("修課補考標準", "" + row.Cells[colMakeupStandard.Index].Value);
                 subjectElement.SetAttribute("修課直接指定總成績", "" + row.Cells[colDesignateFinalScore.Index].Value);
@@ -942,7 +960,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             if (row.IsNewRow) return true;
             CompareSubjectInfo(row);
 
-            foreach (int i in new int[] { 0, 1, 3, 4, 5 })
+            //foreach (int i in new int[] { 0, 1, 2, 4, 5, 6 })
+            foreach (int i in new int[] { 1, 2, 4, 5, 6 }) // 領域名稱檢查規則，因為舊資料中都會缺少領域欄位，故先不進行檢查，允許空值 --2022.10.05 俊緯
             {
                 row.Cells[i].ErrorText = "";
                 if ("" + row.Cells[i].Value == "")
@@ -953,7 +972,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 dataGridViewX1.UpdateCellErrorText(i, row.Index);
             }
 
-            foreach (int i in new int[] { 2, 20, 21, 22, 23 })
+            foreach (int i in new int[] { 3, 21, 22, 23, 24 })
             {
                 row.Cells[i].ErrorText = "";
                 int x = 0;
@@ -964,7 +983,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 }
                 dataGridViewX1.UpdateCellErrorText(i, row.Index);
             }
-            foreach (int i in new int[] { 3 })
+            foreach (int i in new int[] { 4 })
             {
                 row.Cells[i].ErrorText = "";
                 decimal x = 0;
@@ -975,7 +994,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 }
                 dataGridViewX1.UpdateCellErrorText(i, row.Index);
             }
-            foreach (int i in new int[] { 7, 8, 9, 10, 11, 15, 16, 17 })
+            foreach (int i in new int[] { 8, 9, 10, 11, 12, 16, 17, 18 })
             {
                 row.Cells[i].ErrorText = "";
                 double x = 0;
@@ -988,36 +1007,36 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             }
 
             #region 檢查補修相關資料
-            row.Cells[19].ErrorText = "";
             row.Cells[20].ErrorText = "";
             row.Cells[21].ErrorText = "";
+            row.Cells[22].ErrorText = "";
 
-            if ("" + row.Cells[19].Value != "" && "" + row.Cells[19].Value == "True")
+            if ("" + row.Cells[20].Value != "" && "" + row.Cells[20].Value == "True")
             {
-
-                if ("" + row.Cells[20].Value == "")
-                {
-                    validatePass &= false;
-                    row.Cells[20].ErrorText = "必須輸入整數";
-                }
 
                 if ("" + row.Cells[21].Value == "")
                 {
                     validatePass &= false;
                     row.Cells[21].ErrorText = "必須輸入整數";
                 }
+
+                if ("" + row.Cells[22].Value == "")
+                {
+                    validatePass &= false;
+                    row.Cells[22].ErrorText = "必須輸入整數";
+                }
             }
 
-            if ("" + row.Cells[20].Value != "" || "" + row.Cells[21].Value != "")
+            if ("" + row.Cells[21].Value != "" || "" + row.Cells[22].Value != "")
             {
-                if ("" + row.Cells[19].Value != "" && "" + row.Cells[19].Value == "True")
+                if ("" + row.Cells[20].Value != "" && "" + row.Cells[20].Value == "True")
                 {
 
                 }
                 else
                 {
                     validatePass &= false;
-                    row.Cells[19].ErrorText = "是否補修成績必須打勾";
+                    row.Cells[20].ErrorText = "是否補修成績必須打勾";
                 }
 
             }

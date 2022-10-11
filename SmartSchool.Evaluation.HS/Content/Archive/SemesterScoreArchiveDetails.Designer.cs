@@ -71,6 +71,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.labelX9 = new DevComponents.DotNetBar.LabelX();
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
+            this.colDomain = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column13 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -168,7 +169,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.labelX10.BackgroundStyle.Class = "";
             this.labelX10.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX10.Font = new System.Drawing.Font("微軟正黑體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.labelX10.Font = new System.Drawing.Font("Microsoft JhengHei", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.labelX10.Location = new System.Drawing.Point(289, 10);
             this.labelX10.Name = "labelX10";
             this.labelX10.Size = new System.Drawing.Size(485, 23);
@@ -703,7 +704,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.dataGridView_Archive.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 9.75F);
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F);
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -712,6 +713,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.dataGridView_Archive.ColumnHeadersHeight = 42;
             this.dataGridView_Archive.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridView_Archive.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colDomain,
             this.Column13,
             this.Column5,
             this.Column6,
@@ -742,7 +744,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.ColSpecifySubjectName});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 9.75F);
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F);
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
@@ -799,6 +801,15 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.labelX1.Size = new System.Drawing.Size(60, 21);
             this.labelX1.TabIndex = 0;
             this.labelX1.Text = "學年度：";
+            // 
+            // colDomain
+            // 
+            this.colDomain.HeaderText = "領域";
+            this.colDomain.MinimumWidth = 75;
+            this.colDomain.Name = "colDomain";
+            this.colDomain.ReadOnly = true;
+            this.colDomain.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colDomain.Width = 75;
             // 
             // Column13
             // 
@@ -1158,6 +1169,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
         private DevComponents.DotNetBar.Controls.TextBoxX textBoxX2;
         private DevComponents.DotNetBar.Controls.DataGridViewX dataGridView_Archive;
         private DevComponents.DotNetBar.LabelX labelX19;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDomain;
         private System.Windows.Forms.DataGridViewComboBoxColumn Column13;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;

@@ -26,7 +26,8 @@ namespace SmartSchool.Evaluation.ImportExport
             SmartSchool.API.PlugIn.VirtualCheckBox filterRepeat = new SmartSchool.API.PlugIn.VirtualCheckBox("自動略過重讀成績", true);
             wizard.Options.Add(filterRepeat);
             wizard.ExportableFields.AddRange(
-                "科目"
+                "領域"
+                , "科目"
                 , "科目級別"
                 , "學年度"
                 , "學期"
@@ -164,6 +165,7 @@ namespace SmartSchool.Evaluation.ImportExport
                             {
                                 switch (field)
                                 {
+                                    case "領域": row.Add(field, var.Detail.GetAttribute("領域")); break;
                                     case "科目": row.Add(field, var.Subject); break;
                                     case "科目級別": row.Add(field, var.Level); break;
                                     case "學年度": row.Add(field, "" + var.SchoolYear); break;

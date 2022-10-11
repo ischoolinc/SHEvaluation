@@ -95,10 +95,11 @@ namespace 班級定期評量成績單_固定排名
                     }
                 }
                 bkw.ReportProgress(70);
+                StringComparer stringComparer = new StringComparer(Utility.GetSubjectOrder().ToArray());
                 foreach (var list in _ExamSubjectFull.Values)
                 {
                     #region 排序
-                    list.Sort(new StringComparer(Utility.GetSubjectOrder().ToArray()));
+                    list.Sort(stringComparer);
                     //list.Sort(new StringComparer("國文"
                     //                , "國語文"
                     //                , "英文"

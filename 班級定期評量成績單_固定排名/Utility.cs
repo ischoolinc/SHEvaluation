@@ -10,7 +10,7 @@ using System.Linq;
 namespace 班級定期評量成績單_固定排名
 {
     /// <summary>
-    /// 套表列印功能 通常 
+    /// 套表列印功能 通常
     /// step 1. 功能變數總表
     /// step 2. 產生DataTable 並填入 Header
     /// step 3. 不再這裡做 因為很多變數
@@ -43,6 +43,9 @@ namespace 班級定期評量成績單_固定排名
                                                     , "學校名稱"
                                                     , "學校地址"
                                                     , "學校電話"
+                                                    , "校長名稱"
+                                                    , "學務主任"
+                                                    , "教務主任"
                                                     , "科別名稱"
                                                     , "定期評量"
                                                     , "班級"
@@ -116,11 +119,54 @@ namespace 班級定期評量成績單_固定排名
             builder.InsertCell();
             builder.InsertCell();
             builder.InsertCell();
+            builder.Write("領域名稱");
+            for (int i = 1; i <= maxSubjectNum; i++)
+            {
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 領域名稱" + i + " \\* MERGEFORMAT ", "«領域名稱" + i + "»");
+            }
+            builder.EndRow();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.InsertCell();
             builder.Write("科目名稱");
             for (int i = 1; i <= maxSubjectNum; i++)
             {
                 builder.InsertCell();
                 builder.InsertField("MERGEFIELD 科目名稱" + i + " \\* MERGEFORMAT ", "«科目名稱" + i + "»");
+            }
+            builder.EndRow();
+
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.Write("分項類別");
+            for (int i = 1; i <= maxSubjectNum; i++)
+            {
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 分項類別" + i + " \\* MERGEFORMAT ", "«E" + i + "»");
+            }
+            builder.EndRow();
+
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.Write("校部定");
+            for (int i = 1; i <= maxSubjectNum; i++)
+            {
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 校部定" + i + " \\* MERGEFORMAT ", "«RB" + i + "»");
+            }
+            builder.EndRow();
+
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.Write("必選修");
+            for (int i = 1; i <= maxSubjectNum; i++)
+            {
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 必選修" + i + " \\* MERGEFORMAT ", "«R" + i + "»");
             }
             builder.EndRow();
 
@@ -160,6 +206,19 @@ namespace 班級定期評量成績單_固定排名
                 builder.InsertBreak(Aspose.Words.BreakType.PageBreak);
                 builder.Writeln(" " + key + "排名");
                 builder.StartTable();
+
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("領域名稱");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 領域名稱" + i + " \\* MERGEFORMAT ", "«領域名稱" + i + "»");
+                }
+                builder.EndRow();
+
                 builder.InsertCell();
                 builder.InsertCell();
                 builder.InsertCell();
@@ -168,6 +227,39 @@ namespace 班級定期評量成績單_固定排名
                 {
                     builder.InsertCell();
                     builder.InsertField("MERGEFIELD 科目名稱" + i + " \\* MERGEFORMAT ", "«科目名稱" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("分項類別");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 分項類別" + i + " \\* MERGEFORMAT ", "«E" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("校部定");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 校部定" + i + " \\* MERGEFORMAT ", "«RB" + i + "»");
+                }
+                builder.EndRow();
+
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.InsertCell();
+                builder.Write("必選修");
+                for (int i = 1; i <= maxSubjectNum; i++)
+                {
+                    builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 必選修" + i + " \\* MERGEFORMAT ", "«R" + i + "»");
                 }
                 builder.EndRow();
 
@@ -206,6 +298,18 @@ namespace 班級定期評量成績單_固定排名
             builder.InsertBreak(Aspose.Words.BreakType.PageBreak);
             builder.Writeln("前次成績(參考成績試別)");
             builder.StartTable();
+
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.Write("領域名稱");
+            for (int i = 1; i <= maxSubjectNum; i++)
+            {
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 領域名稱" + i + " \\* MERGEFORMAT ", "«領域名稱" + i + "»");
+            }
+            builder.EndRow();
+
             builder.InsertCell();
             builder.InsertCell();
             builder.InsertCell();
@@ -214,6 +318,39 @@ namespace 班級定期評量成績單_固定排名
             {
                 builder.InsertCell();
                 builder.InsertField("MERGEFIELD 科目名稱" + i + " \\* MERGEFORMAT ", "«科目名稱" + i + "»");
+            }
+            builder.EndRow();
+
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.Write("分項類別");
+            for (int i = 1; i <= maxSubjectNum; i++)
+            {
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 分項類別" + i + " \\* MERGEFORMAT ", "«E" + i + "»");
+            }
+            builder.EndRow();
+
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.Write("校部定");
+            for (int i = 1; i <= maxSubjectNum; i++)
+            {
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 校部定" + i + " \\* MERGEFORMAT ", "«RB" + i + "»");
+            }
+            builder.EndRow();
+
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.Write("必選修");
+            for (int i = 1; i <= maxSubjectNum; i++)
+            {
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 必選修" + i + " \\* MERGEFORMAT ", "«R" + i + "»");
             }
             builder.EndRow();
 
@@ -505,6 +642,13 @@ namespace 班級定期評量成績單_固定排名
                 builder.Writeln(key + "成績分析及組距");
 
                 builder.StartTable();
+
+                builder.InsertCell(); builder.Write("領域名稱");
+                for (int subjectIndex = 1; subjectIndex <= maxSubjectNum; subjectIndex++)
+                {
+                    builder.InsertCell(); builder.InsertField("MERGEFIELD 領域名稱" + subjectIndex + " \\* MERGEFORMAT ", "«D" + subjectIndex + "»");
+                }
+                builder.EndRow();
                 builder.InsertCell(); builder.Write("科目名稱");
                 for (int subjectIndex = 1; subjectIndex <= maxSubjectNum; subjectIndex++)
                 {
@@ -1445,6 +1589,9 @@ namespace 班級定期評量成績單_固定排名
             table.Columns.Add("學校名稱");
             table.Columns.Add("學校地址");
             table.Columns.Add("學校電話");
+            table.Columns.Add("校長名稱");
+            table.Columns.Add("學務主任");
+            table.Columns.Add("教務主任");
             table.Columns.Add("科別名稱");
             table.Columns.Add("試別");
             table.Columns.Add("定期評量");
@@ -1479,7 +1626,11 @@ namespace 班級定期評量成績單_固定排名
             //«監護人»«父親»«母親»«科別名稱»
             for (int subjectIndex = 1; subjectIndex <= configure.SubjectLimit; subjectIndex++)
             {
+                table.Columns.Add("領域名稱" + subjectIndex);
                 table.Columns.Add("科目名稱" + subjectIndex);
+                table.Columns.Add("分項類別" + subjectIndex);
+                table.Columns.Add("校部定" + subjectIndex);
+                table.Columns.Add("必選修" + subjectIndex);
                 table.Columns.Add("學分數" + subjectIndex);
             }
             for (int i = 1; i <= configure.StudentLimit; i++)

@@ -971,12 +971,15 @@ namespace 班級定期評量成績單_固定排名
                             DataRow row = table.NewRow();
                             List<string> tag1List = new List<string>();
                             List<string> tag2List = new List<string>();
-                            Dictionary<string, Dictionary<string, List<string>>> classSubjects = new Dictionary<string, Dictionary<string, List<string>>>();
+                            Dictionary<string, Dictionary<string, CourseRecord>> classSubjects = new Dictionary<string, Dictionary<string, CourseRecord>>();
                             string gradeYear = classRec.GradeYear;
                             #region 基本資料
-                            row["學校名稱"] = SmartSchool.Customization.Data.SystemInformation.SchoolChineseName;
-                            row["學校地址"] = SmartSchool.Customization.Data.SystemInformation.Address;
-                            row["學校電話"] = SmartSchool.Customization.Data.SystemInformation.Telephone;
+                            row["學校名稱"] = K12.Data.School.Configuration["學校資訊"].PreviousData.SelectSingleNode("ChineseName").InnerText;
+                            row["學校地址"] = K12.Data.School.Configuration["學校資訊"].PreviousData.SelectSingleNode("Address").InnerText;
+                            row["學校電話"] = K12.Data.School.Configuration["學校資訊"].PreviousData.SelectSingleNode("Telephone").InnerText;
+                            row["校長名稱"] = K12.Data.School.Configuration["學校資訊"].PreviousData.SelectSingleNode("ChancellorChineseName").InnerText;
+                            row["學務主任"] = K12.Data.School.Configuration["學校資訊"].PreviousData.SelectSingleNode("StuDirectorName").InnerText;
+                            row["教務主任"] = K12.Data.School.Configuration["學校資訊"].PreviousData.SelectSingleNode("EduDirectorName").InnerText;
                             row["科別名稱"] = classRec.Department;
                             row["試別"] = conf.ExamRecord.Name;
 
@@ -1083,19 +1086,20 @@ namespace 班級定期評量成績單_固定排名
                                     {
                                         foreach (var courseID in studentExamSores[studentID][subjectName].Keys)
                                         {
+                                            CourseRecord courseRecord = accessHelper.CourseHelper.GetCourse(courseID)[0];
                                             string subjectLevel = accessHelper.CourseHelper.GetCourse(courseID)[0].SubjectLevel;
                                             string credit = "" + accessHelper.CourseHelper.GetCourse(courseID)[0].CreditDec();
+                                            string domainName = "" + accessHelper.CourseHelper.GetCourse(courseID)[0].Domain;
+
                                             if (conf.PrintSubjectList.Contains(subjectName))
                                             {
                                                 if (!classSubjects.ContainsKey(subjectName))
-                                                    classSubjects.Add(subjectName, new Dictionary<string, List<string>>());
+                                                    classSubjects.Add(subjectName, new Dictionary<string, CourseRecord>());
 
                                                 if (!classSubjects[subjectName].ContainsKey(subjectLevel))
-                                                    classSubjects[subjectName].Add(subjectLevel, new List<string>());
-
-                                                if (!classSubjects[subjectName][subjectLevel].Contains(credit))
-                                                    classSubjects[subjectName][subjectLevel].Add(credit);
-
+                                                    classSubjects[subjectName].Add(subjectLevel, courseRecord);
+                                                else
+                                                    classSubjects[subjectName][subjectLevel] = courseRecord;
                                             }
                                         }
                                     }
@@ -1131,12 +1135,15 @@ namespace 班級定期評量成績單_固定排名
                                     subjectNumber = decimal.TryParse(subjectLevel, out level) ? (decimal?)level : null;
                                     if (subjectIndex <= conf.SubjectLimit)
                                     {
+                                        CourseRecord courseRecord = classSubjects[subjectName][subjectLevel];
+                                        row["領域名稱" + subjectIndex] = courseRecord.Domain;
                                         row["科目名稱" + subjectIndex] = subjectName + GetNumber(subjectNumber);
+                                        row["分項類別" + subjectIndex] = courseRecord.Entry;
+                                        row["校部定" + subjectIndex] = courseRecord.RequiredBy == "部訂" ? "部定" : courseRecord.RequiredBy;
+                                        row["必選修" + subjectIndex] = courseRecord.Required ? "必修" : "選修";
                                         row["學分數" + subjectIndex] = "";
-                                        foreach (string credit in classSubjects[subjectName][subjectLevel])
-                                        {
-                                            row["學分數" + subjectIndex] += (("" + row["學分數" + subjectIndex]) == "" ? "" : ",") + credit;
-                                        }
+                                        row["學分數" + subjectIndex] += (("" + row["學分數" + subjectIndex]) == "" ? "" : ",") + courseRecord.Credit;
+
                                         // 檢查畫面上定期評量列印科目
                                         if (conf.PrintSubjectList.Contains(subjectName))
                                         {

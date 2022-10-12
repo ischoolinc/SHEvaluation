@@ -228,6 +228,7 @@ namespace RegularAssessmentTranscriptFixedRank
                     table.Columns.Add("科目名稱" + subjectIndex);
                     table.Columns.Add("校部定" + subjectIndex);
                     table.Columns.Add("必選修" + subjectIndex);
+                    table.Columns.Add("校部定/必選修" + subjectIndex);
                     table.Columns.Add("分項類別" + subjectIndex);
                     table.Columns.Add("學分數" + subjectIndex);
                     table.Columns.Add("前次成績" + subjectIndex);
@@ -1220,8 +1221,11 @@ namespace RegularAssessmentTranscriptFixedRank
                                                         subjectNumber = decimal.TryParse(sceTakeRecord.SubjectLevel, out level) ? (decimal?)level : null;
                                                         row["領域名稱" + subjectIndex] = sceTakeRecord.Domain;
                                                         row["科目名稱" + subjectIndex] = sceTakeRecord.Subject + GetNumber(subjectNumber);
-                                                        row["校部定" + subjectIndex] = sceTakeRecord.RequiredBy == "部訂" ? "部定" : sceTakeRecord.RequiredBy;
-                                                        row["必選修" + subjectIndex] = sceTakeRecord.Required ? "必修" : "選修";
+                                                        string requiredby = sceTakeRecord.RequiredBy == "部訂" ? "部定" : sceTakeRecord.RequiredBy;
+                                                        string required = sceTakeRecord.Required ? "必修" : "選修";
+                                                        row["校部定/必選修" + subjectIndex] = "" + requiredby[0] + required[0]; // "校定/必修"會轉成"校必"
+                                                        row["校部定" + subjectIndex] = requiredby;
+                                                        row["必選修" + subjectIndex] = required;
                                                         row["分項類別" + subjectIndex] = sceTakeRecord.Entry;
                                                         row["學分數" + subjectIndex] = sceTakeRecord.CreditDec();
 
@@ -1362,8 +1366,11 @@ namespace RegularAssessmentTranscriptFixedRank
                                                             subjectNumber = decimal.TryParse(courseRec.SubjectLevel, out level) ? (decimal?)level : null;
                                                             row["領域名稱" + subjectIndex] = courseRec.Domain;
                                                             row["科目名稱" + subjectIndex] = courseRec.Subject + GetNumber(subjectNumber);
-                                                            row["校部定" + subjectIndex] = courseRec.RequiredBy == "部訂" ? "部定" : courseRec.RequiredBy;
-                                                            row["必選修" + subjectIndex] = courseRec.Required ? "必修" : "選修";
+                                                            string requiredby = courseRec.RequiredBy == "部訂" ? "部定" : courseRec.RequiredBy;
+                                                            string required = courseRec.Required ? "必修" : "選修";
+                                                            row["校部定/必選修" + subjectIndex] = "" + requiredby[0] + required[0]; // "校定/必修"會轉成"校必"
+                                                            row["校部定" + subjectIndex] = requiredby;
+                                                            row["必選修" + subjectIndex] = required;
                                                             row["分項類別" + subjectIndex] = courseRec.Entry;
                                                             row["學分數" + subjectIndex] = courseRec.CreditDec();
                                                             row["科目成績" + subjectIndex] = "未輸入";

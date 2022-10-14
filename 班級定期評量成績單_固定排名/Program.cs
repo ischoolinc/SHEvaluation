@@ -110,7 +110,6 @@ namespace 班級定期評量成績單_固定排名
             {
                 Configure conf = form.Configure; // 列印設定相關變數(學年度 學期 )
 
-
                 Dictionary<string, Dictionary<string, FixRankIntervalInfo>> IntervalInfos;// 組距 by 班級 
                 Dictionary<string, Dictionary<string, StudentFixedRankInfo>> dicFixedRankData;// 組距 by 班級 學生 
 
@@ -195,7 +194,7 @@ namespace 班級定期評量成績單_固定排名
                         System.Windows.Forms.SaveFileDialog sd = new System.Windows.Forms.SaveFileDialog();
                         sd.Title = "另存新檔";
                         sd.FileName = reportName + ".doc";
-                        sd.Filter = "Excel檔案 (*.doc)|*.doc|所有檔案 (*.*)|*.*";
+                        sd.Filter = "Word檔案 (*.doc)|*.doc|所有檔案 (*.*)|*.*";
                         if (sd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                         {
                             try
@@ -253,7 +252,7 @@ namespace 班級定期評量成績單_固定排名
                             {
                                 exc = exception;
                             }
-                            #endregion`
+                            #endregion
                             try
                             {
                                 if (conf.ExamRecord != null || conf.RefenceExamRecord != null)
@@ -288,8 +287,12 @@ namespace 班級定期評量成績單_固定排名
                                         {
                                             foreach (var attendStudent in courseRecord.StudentAttendList)
                                             {
-                                                if (!studentExamSores.ContainsKey(attendStudent.StudentID)) studentExamSores.Add(attendStudent.StudentID, new Dictionary<string, Dictionary<string, ExamScoreInfo>>());
-                                                if (!studentExamSores[attendStudent.StudentID].ContainsKey(courseRecord.Subject)) studentExamSores[attendStudent.StudentID].Add(courseRecord.Subject, new Dictionary<string, ExamScoreInfo>());
+                                                if (!studentExamSores.ContainsKey(attendStudent.StudentID))
+                                                    studentExamSores.Add(attendStudent.StudentID, new Dictionary<string, Dictionary<string, ExamScoreInfo>>());
+
+                                                if (!studentExamSores[attendStudent.StudentID].ContainsKey(courseRecord.Subject))
+                                                    studentExamSores[attendStudent.StudentID].Add(courseRecord.Subject, new Dictionary<string, ExamScoreInfo>());
+
                                                 studentExamSores[attendStudent.StudentID][courseRecord.Subject].Add("" + attendStudent.CourseID, null);
                                             }
                                             foreach (var examScoreRec in courseRecord.ExamScoreList)//
@@ -1010,16 +1013,6 @@ namespace 班級定期評量成績單_固定排名
 
                             }
 
-
-                            // 處理學生類別1 類別2 之 類別名稱比如 
-
-                            foreach (StudentRecord stuRec in classRec.Students)
-                            {
-                                // 
-
-
-                            }
-
                             int ClassStuNum = 0;
                             foreach (StudentRecord stuRec in classRec.Students)
                             {
@@ -1086,20 +1079,31 @@ namespace 班級定期評量成績單_固定排名
                                     {
                                         foreach (var courseID in studentExamSores[studentID][subjectName].Keys)
                                         {
-                                            CourseRecord courseRecord = accessHelper.CourseHelper.GetCourse(courseID)[0];
-                                            string subjectLevel = accessHelper.CourseHelper.GetCourse(courseID)[0].SubjectLevel;
-                                            string credit = "" + accessHelper.CourseHelper.GetCourse(courseID)[0].CreditDec();
-                                            string domainName = "" + accessHelper.CourseHelper.GetCourse(courseID)[0].Domain;
+                                            ExamScoreInfo sceTakeRecord = studentExamSores[studentID][subjectName][courseID];
 
-                                            if (conf.PrintSubjectList.Contains(subjectName))
+                                            if (sceTakeRecord != null)
                                             {
-                                                if (!classSubjects.ContainsKey(subjectName))
-                                                    classSubjects.Add(subjectName, new Dictionary<string, CourseRecord>());
+                                                //// 改成用［領域+分項類別+科目名稱+校部定、必選修+學分+級別］判斷課程 --2022/10/13 俊緯 
+                                                string domain = "" + sceTakeRecord.Domain;
+                                                string entry = "" + sceTakeRecord.Entry;
+                                                string subject = "" + sceTakeRecord.Subject;
+                                                string requiredBy = sceTakeRecord.RequiredBy == "部訂" ? "部定" : "" + sceTakeRecord.RequiredBy;
+                                                string required = sceTakeRecord.Required ? "必修" : "選修";
+                                                string credit = "" + sceTakeRecord.Credit;
+                                                string level = "" + sceTakeRecord.SubjectLevel;
+                                                string courseKey = domain + "_" + entry + "_" + subject + "_" + requiredBy + required + "_" + credit + "_" + level;
 
-                                                if (!classSubjects[subjectName].ContainsKey(subjectLevel))
-                                                    classSubjects[subjectName].Add(subjectLevel, courseRecord);
-                                                else
-                                                    classSubjects[subjectName][subjectLevel] = courseRecord;
+                                                // 需要依照科目排序，所以將科目名稱當成第一層的key值
+                                                if (conf.PrintSubjectList.Contains(subjectName))
+                                                {
+                                                    if (!classSubjects.ContainsKey(subject))
+                                                        classSubjects.Add(subject, new Dictionary<string, CourseRecord>());
+
+                                                    if (!classSubjects[subject].ContainsKey(courseKey))
+                                                        classSubjects[subject].Add(courseKey, null);
+
+                                                    classSubjects[subject][courseKey] = sceTakeRecord;
+                                                }
                                             }
                                         }
                                     }
@@ -1108,39 +1112,38 @@ namespace 班級定期評量成績單_固定排名
                             }
                             #endregion
                             #region 各科成績資料
-                            #region 整理列印順序
-                            List<string> subjectNameList = new List<string>(classSubjects.Keys);
-                            subjectNameList.Sort(new StringComparer(Utility.GetSubjectOrder().ToArray()));
-                            //subjectNameList.Sort(new StringComparer("國文"
-                            //                    , "英文"
-                            //                    , "數學"
-                            //                    , "理化"
-                            //                    , "生物"
-                            //                    , "社會"
-                            //                    , "物理"
-                            //                    , "化學"
-                            //                    , "歷史"
-                            //                    , "地理"
-                            //                    , "公民"));
+                            #region 整理列印順序 
+                            List<string> sortSubjectList = new List<string>(classSubjects.Keys);
+                            sortSubjectList.Sort(new StringComparer(Utility.GetSubjectOrder().ToArray()));
+                            ////subjectNameList.Sort(new StringComparer("國文"
+                            ////                    , "英文"
+                            ////                    , "數學"
+                            ////                    , "理化"
+                            ////                    , "生物"
+                            ////                    , "社會"
+                            ////                    , "物理"
+                            ////                    , "化學"
+                            ////                    , "歷史"
+                            ////                    , "地理"
+                            ////                    , "公民"));
                             #endregion
                             int subjectIndex = 1;
-
-                            // 學期科目與定期評量
-                            foreach (string subjectName in subjectNameList)
+                            foreach (string subjectName in sortSubjectList)
                             {
-                                foreach (string subjectLevel in classSubjects[subjectName].Keys)
+                                // 學期科目與定期評量
+                                foreach (string courseKey in classSubjects[subjectName].Keys)
                                 {
-                                    decimal level;
-                                    decimal? subjectNumber = null;
-                                    subjectNumber = decimal.TryParse(subjectLevel, out level) ? (decimal?)level : null;
                                     if (subjectIndex <= conf.SubjectLimit)
                                     {
-                                        CourseRecord courseRecord = classSubjects[subjectName][subjectLevel];
+                                        CourseRecord courseRecord = classSubjects[subjectName][courseKey];
+
+                                        decimal level;
+                                        decimal? subjectNumber = null;
+                                        subjectNumber = decimal.TryParse(courseRecord.SubjectLevel, out level) ? (decimal?)level : null;
+
                                         row["領域名稱" + subjectIndex] = courseRecord.Domain;
-                                        row["科目名稱" + subjectIndex] = subjectName + GetNumber(subjectNumber);
+                                        row["科目名稱" + subjectIndex] = courseRecord.Subject + GetNumber(subjectNumber);
                                         row["分項類別" + subjectIndex] = courseRecord.Entry;
-                                        row["校部定" + subjectIndex] = courseRecord.RequiredBy == "部訂" ? "部定" : courseRecord.RequiredBy;
-                                        row["必選修" + subjectIndex] = courseRecord.Required ? "必修" : "選修";
                                         row["學分數" + subjectIndex] = "";
                                         row["學分數" + subjectIndex] += (("" + row["學分數" + subjectIndex]) == "" ? "" : ",") + courseRecord.Credit;
 
@@ -1160,13 +1163,28 @@ namespace 班級定期評量成績單_固定排名
                                                     {
                                                         foreach (var courseID in studentExamSores[studentID][subjectName].Keys)
                                                         {
-                                                            if (accessHelper.CourseHelper.GetCourse(courseID)[0].SubjectLevel == subjectLevel)//studentExamSores[studentID][subjectName][courseID]可能是null
+
+                                                            #region 評量成績
+                                                            var sceTakeRecord = studentExamSores[studentID][subjectName][courseID];
+
+                                                            if (sceTakeRecord != null) // studentExamSores[studentID][subjectName][courseID]可能是null
                                                             {
-                                                                #region 評量成績
-                                                                var sceTakeRecord = studentExamSores[studentID][subjectName][courseID];
-                                                                if (sceTakeRecord != null)
+                                                                //// 改成用［領域+分項類別+科目名稱+校部定、必選修+學分+級別］判斷課程 --2022/10/13 俊緯 
+                                                                string scoreDomain = "" + sceTakeRecord.Domain;
+                                                                string scoreEntry = "" + sceTakeRecord.Entry;
+                                                                string scoreSubject = "" + sceTakeRecord.Subject;
+                                                                string scoreRequiredBy = sceTakeRecord.RequiredBy == "部訂" ? "部定" : "" + sceTakeRecord.RequiredBy;
+                                                                string scoreRequired = sceTakeRecord.Required ? "必修" : "選修";
+                                                                string scoreCredit = "" + sceTakeRecord.Credit;
+                                                                string scoreLevel = "" + sceTakeRecord.SubjectLevel;
+                                                                string scoreKey = scoreDomain + "_" + scoreEntry + "_" + scoreSubject + "_" + scoreRequiredBy + scoreRequired + "_" + scoreCredit + "_" + scoreLevel;
+
+                                                                if (courseKey == scoreKey)
                                                                 {
+                                                                    row["校部定/必選修" + ClassStuNum + "-" + subjectIndex] = "" + scoreRequiredBy[0].ToString() + scoreRequired[0].ToString();
+
                                                                     row["科目成績" + ClassStuNum + "-" + subjectIndex] = sceTakeRecord.SpecialCase == "" ? ("" + sceTakeRecord.ExamScore) : sceTakeRecord.SpecialCase;
+
                                                                     #region 班排名及落點分析
                                                                     if (stuRec.RefClass != null)
                                                                     {
@@ -1291,22 +1309,37 @@ namespace 班級定期評量成績單_固定排名
                                                                     }
                                                                     #endregion
                                                                 }
-                                                                else
-                                                                {//修課有該考試但沒有成績資料
+                                                            }
+                                                            else
+                                                            {//修課有該考試但沒有成績資料
+                                                             //// 改成用［領域+分項類別+科目名稱+校部定、必選修+學分+級別］判斷課程 --2022/10/13 俊緯
+
+                                                                CourseRecord attendCourse = accessHelper.CourseHelper.GetCourse(courseID)[0];
+                                                                string attendCourseDomain = "" + attendCourse.Domain;
+                                                                string attendCourseEntry = "" + attendCourse.Entry;
+                                                                string attendCourseSubjecct = "" + attendCourse.Subject;
+                                                                string attendCourseRequiredby = attendCourse.RequiredBy == "部訂" ? "部定" : attendCourse.RequiredBy;
+                                                                string attendCourseRequired = attendCourse.Required ? "必修" : "選修";
+                                                                string attendCourseCredit = "" + attendCourse.Credit;
+                                                                string attendCourseLevel = "" + attendCourse.SubjectLevel;
+                                                                string attendCourseKey = attendCourseDomain + "_" + attendCourseEntry + "_" + attendCourseSubjecct + "_" + attendCourseRequiredby + attendCourseRequired + "_" + attendCourseCredit + "_" + attendCourseLevel;
+                                                                if (courseKey == attendCourseKey)
+                                                                {
+                                                                    row["校部定/必選修" + ClassStuNum + "-" + subjectIndex] = "" + attendCourseRequiredby[0].ToString() + attendCourseRequired[0].ToString();
                                                                     row["科目成績" + ClassStuNum + "-" + subjectIndex] = "未輸入";
                                                                 }
-                                                                #endregion
-                                                                #region 參考成績
-                                                                if (studentRefExamSores.ContainsKey(studentID) && studentRefExamSores[studentID].ContainsKey(courseID))
-                                                                {
-                                                                    row["前次成績" + ClassStuNum + "-" + subjectIndex] =
-                                                                            studentRefExamSores[studentID][courseID].SpecialCase == ""
-                                                                            ? ("" + studentRefExamSores[studentID][courseID].ExamScore)
-                                                                            : studentRefExamSores[studentID][courseID].SpecialCase;
-                                                                }
-                                                                #endregion
-                                                                break;
                                                             }
+                                                            #endregion
+                                                            #region 參考成績
+                                                            if (studentRefExamSores.ContainsKey(studentID) && studentRefExamSores[studentID].ContainsKey(courseID))
+                                                            {
+                                                                row["前次成績" + ClassStuNum + "-" + subjectIndex] =
+                                                                        studentRefExamSores[studentID][courseID].SpecialCase == ""
+                                                                        ? ("" + studentRefExamSores[studentID][courseID].ExamScore)
+                                                                        : studentRefExamSores[studentID][courseID].SpecialCase;
+                                                            }
+                                                            #endregion
+                                                            break;
                                                         }
                                                     }
                                                 }

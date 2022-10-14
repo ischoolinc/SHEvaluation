@@ -30,7 +30,7 @@ namespace 班級定期評量成績單_固定排名
             int maxSubjectNum = 15;
             int maxStuNum = 60;
 
-            builder.Font.Size = 8;
+            builder.Font.Size = 6;
             #region 基本欄位
             builder.Writeln("基本欄位");
             builder.StartTable();
@@ -151,28 +151,6 @@ namespace 班級定期評量成績單_固定排名
             builder.InsertCell();
             builder.InsertCell();
             builder.InsertCell();
-            builder.Write("校部定");
-            for (int i = 1; i <= maxSubjectNum; i++)
-            {
-                builder.InsertCell();
-                builder.InsertField("MERGEFIELD 校部定" + i + " \\* MERGEFORMAT ", "«RB" + i + "»");
-            }
-            builder.EndRow();
-
-            builder.InsertCell();
-            builder.InsertCell();
-            builder.InsertCell();
-            builder.Write("必選修");
-            for (int i = 1; i <= maxSubjectNum; i++)
-            {
-                builder.InsertCell();
-                builder.InsertField("MERGEFIELD 必選修" + i + " \\* MERGEFORMAT ", "«R" + i + "»");
-            }
-            builder.EndRow();
-
-            builder.InsertCell();
-            builder.InsertCell();
-            builder.InsertCell();
             builder.Write("學分數");
             for (int i = 1; i <= maxSubjectNum; i++)
             {
@@ -192,6 +170,7 @@ namespace 班級定期評量成績單_固定排名
                 for (int i = 1; i <= maxSubjectNum; i++)
                 {
                     builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 校部定/必選修" + stuIndex + "-" + i + " \\* MERGEFORMAT ", "«RB/R" + i + "» ");
                     builder.InsertField("MERGEFIELD 科目成績" + stuIndex + "-" + i + " \\* MERGEFORMAT ", "«S" + i + "»");
                 }
                 builder.EndRow();
@@ -238,28 +217,6 @@ namespace 班級定期評量成績單_固定排名
                 {
                     builder.InsertCell();
                     builder.InsertField("MERGEFIELD 分項類別" + i + " \\* MERGEFORMAT ", "«E" + i + "»");
-                }
-                builder.EndRow();
-
-                builder.InsertCell();
-                builder.InsertCell();
-                builder.InsertCell();
-                builder.Write("校部定");
-                for (int i = 1; i <= maxSubjectNum; i++)
-                {
-                    builder.InsertCell();
-                    builder.InsertField("MERGEFIELD 校部定" + i + " \\* MERGEFORMAT ", "«RB" + i + "»");
-                }
-                builder.EndRow();
-
-                builder.InsertCell();
-                builder.InsertCell();
-                builder.InsertCell();
-                builder.Write("必選修");
-                for (int i = 1; i <= maxSubjectNum; i++)
-                {
-                    builder.InsertCell();
-                    builder.InsertField("MERGEFIELD 必選修" + i + " \\* MERGEFORMAT ", "«R" + i + "»");
                 }
                 builder.EndRow();
 
@@ -335,28 +292,6 @@ namespace 班級定期評量成績單_固定排名
             builder.InsertCell();
             builder.InsertCell();
             builder.InsertCell();
-            builder.Write("校部定");
-            for (int i = 1; i <= maxSubjectNum; i++)
-            {
-                builder.InsertCell();
-                builder.InsertField("MERGEFIELD 校部定" + i + " \\* MERGEFORMAT ", "«RB" + i + "»");
-            }
-            builder.EndRow();
-
-            builder.InsertCell();
-            builder.InsertCell();
-            builder.InsertCell();
-            builder.Write("必選修");
-            for (int i = 1; i <= maxSubjectNum; i++)
-            {
-                builder.InsertCell();
-                builder.InsertField("MERGEFIELD 必選修" + i + " \\* MERGEFORMAT ", "«R" + i + "»");
-            }
-            builder.EndRow();
-
-            builder.InsertCell();
-            builder.InsertCell();
-            builder.InsertCell();
             builder.Write("學分數");
             for (int i = 1; i <= maxSubjectNum; i++)
             {
@@ -376,6 +311,7 @@ namespace 班級定期評量成績單_固定排名
                 for (int i = 1; i <= maxSubjectNum; i++)
                 {
                     builder.InsertCell();
+                    builder.InsertField("MERGEFIELD 校部定/必選修" + stuIndex + "-" + i + " \\* MERGEFORMAT ", "«RB/R" + i + "» ");
                     builder.InsertField("MERGEFIELD 前次成績" + stuIndex + "-" + i + " \\* MERGEFORMAT ", "«S" + i + "»");
                 }
                 builder.EndRow();
@@ -1629,8 +1565,6 @@ namespace 班級定期評量成績單_固定排名
                 table.Columns.Add("領域名稱" + subjectIndex);
                 table.Columns.Add("科目名稱" + subjectIndex);
                 table.Columns.Add("分項類別" + subjectIndex);
-                table.Columns.Add("校部定" + subjectIndex);
-                table.Columns.Add("必選修" + subjectIndex);
                 table.Columns.Add("學分數" + subjectIndex);
             }
             for (int i = 1; i <= configure.StudentLimit; i++)
@@ -1644,6 +1578,7 @@ namespace 班級定期評量成績單_固定排名
             {
                 for (int subjectIndex = 1; subjectIndex <= configure.SubjectLimit; subjectIndex++)
                 {
+                    table.Columns.Add("校部定/必選修" + Num + "-" + subjectIndex);
                     table.Columns.Add("前次成績" + Num + "-" + subjectIndex);
                     table.Columns.Add("科目成績" + Num + "-" + subjectIndex);
                     table.Columns.Add("班排名" + Num + "-" + subjectIndex);

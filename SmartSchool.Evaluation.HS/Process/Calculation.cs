@@ -464,13 +464,16 @@ namespace SmartSchool.Evaluation.Process
                 // 修改畢業及離校資訊的離校類別
                 if (studIDList.Count > 0 && errormessages.Count==0)
                 {
-                    List<K12.Data.LeaveInfoRecord> LeaveInfoRecordList = K12.Data.LeaveInfo.SelectByStudentIDs(studIDList);
+                    //List<K12.Data.LeaveInfoRecord> LeaveInfoRecordList = K12.Data.LeaveInfo.SelectByStudentIDs(studIDList);
+                    List<SHSchool.Data.SHLeaveInfoRecord> LeaveInfoRecordList = SHSchool.Data.SHLeaveInfo.SelectByStudentIDs(studIDList);
 
-                    foreach (K12.Data.LeaveInfoRecord rec in LeaveInfoRecordList)
+                    //foreach (K12.Data.LeaveInfoRecord rec in LeaveInfoRecordList)
+                    foreach (SHSchool.Data.SHLeaveInfoRecord rec in LeaveInfoRecordList)
                         rec.Reason = "畢業";
 
                     // 更新
-                    K12.Data.LeaveInfo.Update(LeaveInfoRecordList);
+                    //K12.Data.LeaveInfo.Update(LeaveInfoRecordList);
+                    SHSchool.Data.SHLeaveInfo.Update(LeaveInfoRecordList);
                     // 同步資料
                     Student.Instance.SyncAllBackground();
                 }

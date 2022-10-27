@@ -144,8 +144,10 @@ namespace SmartSchool.Evaluation.ImportExport
 
                 string subjectCode = "";
 
+                StringBuilder stringBuilder = new StringBuilder();
                 foreach (StudentRecord stu in students)
                 {
+                    stringBuilder.AppendLine("學生系統編號：「" + stu.StudentID + "」，姓名：「" + stu.StudentName + "」");
                     foreach (SemesterSubjectScoreInfo var in stu.SemesterSubjectScoreList)
                     {
                         subjectCode = "";
@@ -227,7 +229,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                     case "畢業採計-學分數":
                                     case "畢業採計-分項類別":
                                     case "畢業採計-必選修":
-                                    case "畢業採計-校部訂":
+                                    //case "畢業採計-校部訂":
                                     case "畢業採計-不計學分":
                                         if (var.Detail.GetAttribute(field) == "")
                                             row.Add(field, "--");
@@ -237,6 +239,12 @@ namespace SmartSchool.Evaluation.ImportExport
                                     case "畢業採計-說明":
                                         row.Add(field, var.Detail.GetAttribute(field));
                                         break;
+                                    case "畢業採計-校部訂":
+                                        if (var.Detail.GetAttribute(field) == "")
+                                            row.Add(field, "--");
+                                        else
+                                            row.Add(field, var.Detail.GetAttribute(field) == "部訂" ? "部定" : var.Detail.GetAttribute(field));
+                                        break;
 
                                     case "是否補修成績": row.Add(field, var.Detail.GetAttribute("是否補修成績") == "是" ? "是" : ""); break;
                                     case "重修學年度": row.Add(field, var.Detail.GetAttribute("重修學年度")); break;
@@ -245,7 +253,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                     case "補修學期": row.Add(field, var.Detail.GetAttribute("補修學期")); break;
                                     case "修課及格標準": row.Add(field, var.Detail.GetAttribute("修課及格標準")); break;
                                     case "修課補考標準": row.Add(field, var.Detail.GetAttribute("修課補考標準")); break;
-                                    //                                    case "修課科目代碼": row.Add(field, var.Detail.GetAttribute("修課科目代碼")); break;
+                                    //case "修課科目代碼": row.Add(field, var.Detail.GetAttribute("修課科目代碼")); break;
                                     case "修課備註": row.Add(field, var.Detail.GetAttribute("修課備註")); break;
                                     case "修課直接指定總成績": row.Add(field, var.Detail.GetAttribute("修課直接指定總成績")); break;
                                     //case "應修學期": row.Add(field, var.Detail.GetAttribute("應修學期")); break;
@@ -259,6 +267,9 @@ namespace SmartSchool.Evaluation.ImportExport
                         e.Items.Add(row);
                     }
                 }
+
+
+                FISCA.LogAgent.ApplicationLog.Log("匯出學期科目成績", "匯出", "匯出以下學生學期科目成績：\r" + stringBuilder.ToString());
             };
         }
         //private AccessHelper _AccessHelper;

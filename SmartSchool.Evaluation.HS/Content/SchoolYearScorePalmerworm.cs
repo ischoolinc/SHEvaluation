@@ -101,10 +101,14 @@ namespace SmartSchool.Evaluation.Content
                 {
                     decimal credit = decimal.Parse(cnode.SelectSingleNode("@開課學分數").InnerText);
                     bool getCredit = cnode.SelectSingleNode("@是否取得學分").InnerText == "是";
-                    bool notIncludedInCredit = cnode.SelectSingleNode("@不計學分").InnerText == "是";
-                    if (getCredit && !notIncludedInCredit)
+                    if (cnode.SelectSingleNode("@不計學分") != null)
                     {
-                        creditCount += credit;
+                        bool notIncludedInCredit = cnode.SelectSingleNode("@不計學分").InnerText == "是";
+                        if (getCredit && !notIncludedInCredit)
+                        {
+                            creditCount += credit;
+                        }
+
                     }
                 }
                 if (Credit.ContainsKey(schoolyear + "_" + gradeyear))

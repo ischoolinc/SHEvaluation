@@ -96,10 +96,14 @@ namespace 班級定期評量成績單_固定排名
                 }
                 bkw.ReportProgress(70);
                 StringComparer stringComparer = new StringComparer(Utility.GetSubjectOrder().ToArray());
-                foreach (var list in _ExamSubjectFull.Values)
+                List<string> sortList = Utility.GetSubjectOrder();
+                List<string> examSubjectKeyList = _ExamSubjectFull.Keys.ToList();
+                foreach (var key in examSubjectKeyList)
                 {
                     #region 排序
-                    list.Sort(stringComparer);
+                    List<string> list = _ExamSubjectFull[key];
+                    _ExamSubjectFull[key] = list.OrderBy(x => (sortList.IndexOf(x) == -1 ? Int32.MaxValue : sortList.IndexOf(x))).ToList(); // 如果值不存在於科目對照表，就給他一個最大值丟到順序的最後 --2022/10/19 俊緯
+                    //list.Sort(stringComparer);
                     //list.Sort(new StringComparer("國文"
                     //                , "國語文"
                     //                , "英文"
@@ -143,7 +147,7 @@ namespace 班級定期評量成績單_固定排名
                 cboSchoolYear.SelectedIndex = cboSchoolYear.Items.IndexOf(_DefalutSchoolYear);
 
                 cboSemester.Items.Clear();
-               //cboSemester.Items.Add(_DefaultSemester);
+                //cboSemester.Items.Add(_DefaultSemester);
                 cboSemester.Items.Add("1");
                 cboSemester.Items.Add("2");
                 cboSemester.SelectedIndex = cboSemester.Items.IndexOf(_DefaultSemester);
@@ -182,7 +186,7 @@ namespace 班級定期評量成績單_固定排名
                 {
                     GetFixRankSubjectsInclude(this.cboSchoolYear.Text, this.cboSemester.Text, ((ExamRecord)cboExam.SelectedItem).ID, this._SelectedClasses);
                 }
-              
+
                 this.pictureBox1.Visible = false;
             };
             bkw.RunWorkerAsync();
@@ -597,7 +601,7 @@ namespace 班級定期評量成績單_固定排名
         {
             QueryHelper queryHelper = new QueryHelper();
             this.FixedRankCumputeSubject.Clear();
-           
+
             // 將 Dictionary 第一層初始化
             foreach (string _rankType in new string[] { "年、科、班排名", "類別1排名", "類別2排名" })
             {
@@ -628,7 +632,7 @@ GROUP BY
 
             DataTable dt = queryHelper.Select(sql);
 
-        
+
             foreach (DataRow dr in dt.Rows)
             {
                 string rankType = "" + dr["rank_type"];
@@ -640,8 +644,8 @@ GROUP BY
                     rankType = "年、科、班排名";
                 }
 
-              
-              
+
+
                 if (!this.FixedRankCumputeSubject[rankType].Contains(itemName))
                 {
                     this.FixedRankCumputeSubject[rankType].Add(itemName);
@@ -659,7 +663,7 @@ GROUP BY
             Boolean Tag1WarnHasShowed = false;
             Boolean Tag2WarnHasShowed = false;
 
-            
+
 
 
 

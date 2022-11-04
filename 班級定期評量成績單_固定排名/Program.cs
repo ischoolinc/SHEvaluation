@@ -98,6 +98,7 @@ namespace 班級定期評量成績單_固定排名
             List<StudentRecord> selectedStudents = new List<StudentRecord>();
             List<string> selectGrades = new List<string>();//選取之班級的年級
             List<string> selectClass = selectedClasses.Select(x => x.ClassID).ToList();
+            List<string> subjectSortList = Utility.GetSubjectOrder(); // 科目參照科目對照表順序
             foreach (ClassRecord classRecord in selectedClasses)
             {
                 if (!selectGrades.Contains(classRecord.GradeYear))
@@ -1114,18 +1115,8 @@ namespace 班級定期評量成績單_固定排名
                             #region 各科成績資料
                             #region 整理列印順序 
                             List<string> sortSubjectList = new List<string>(classSubjects.Keys);
-                            sortSubjectList.Sort(new StringComparer(Utility.GetSubjectOrder().ToArray()));
-                            ////subjectNameList.Sort(new StringComparer("國文"
-                            ////                    , "英文"
-                            ////                    , "數學"
-                            ////                    , "理化"
-                            ////                    , "生物"
-                            ////                    , "社會"
-                            ////                    , "物理"
-                            ////                    , "化學"
-                            ////                    , "歷史"
-                            ////                    , "地理"
-                            ////                    , "公民"));
+                            sortSubjectList = sortSubjectList.OrderBy(x => (subjectSortList.IndexOf(x) == -1 ? Int32.MaxValue : subjectSortList.IndexOf(x))).ToList(); // 如果值不存在於科目對照表，就給他一個最大值丟到順序的最後 --2022/10/19 俊緯
+                            //sortSubjectList.Sort(new StringComparer(Utility.GetSubjectOrder().ToArray()));
                             #endregion
                             int subjectIndex = 1;
                             foreach (string subjectName in sortSubjectList)

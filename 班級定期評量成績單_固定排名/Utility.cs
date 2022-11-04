@@ -30,7 +30,7 @@ namespace 班級定期評量成績單_固定排名
             int maxSubjectNum = 15;
             int maxStuNum = 60;
 
-            builder.Font.Size = 6;
+            builder.Font.Size = 12;
             #region 基本欄位
             builder.Writeln("基本欄位");
             builder.StartTable();

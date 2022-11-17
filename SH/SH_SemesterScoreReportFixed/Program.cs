@@ -147,12 +147,18 @@ namespace SH_SemesterScoreReportFixed
                 // 取得學期成績排名、五標、分數區間
                 Dictionary<string, Dictionary<string, DataRow>> SemsScoreRankMatrixDataDict = Utility.GetSemsScoreRankMatrixData(conf.SchoolYear, conf.Semester, selectedStudents);
 
+                // 缺曠對照表key值(ex : 本學期一般_曠課、上學期集會_事假
+                List<string> AttendanceMappingKeyList = new List<string>();
+
                 //建立合併欄位總表
                 DataTable table = new DataTable();
                 #region 所有的合併欄位
                 table.Columns.Add("學校名稱");
                 table.Columns.Add("學校地址");
                 table.Columns.Add("學校電話");
+                table.Columns.Add("校長名稱");
+                table.Columns.Add("教務主任");
+                table.Columns.Add("學務主任");
                 table.Columns.Add("收件人地址");
                 //«通訊地址»«通訊地址郵遞區號»«通訊地址內容»
                 //«戶籍地址»«戶籍地址郵遞區號»«戶籍地址內容»
@@ -288,6 +294,8 @@ namespace SH_SemesterScoreReportFixed
 
                 for (int subjectIndex = 1; subjectIndex <= conf.SubjectLimit; subjectIndex++)
                 {
+                    table.Columns.Add("領域" + subjectIndex);
+                    table.Columns.Add("分項類別" + subjectIndex);
                     table.Columns.Add("科目名稱" + subjectIndex);
                     table.Columns.Add("科目" + subjectIndex);
                     table.Columns.Add("科目級別" + subjectIndex);
@@ -296,7 +304,7 @@ namespace SH_SemesterScoreReportFixed
                     table.Columns.Add("科目成績" + subjectIndex);
                     // 新增學期科目相關成績--
                     table.Columns.Add("科目必選修" + subjectIndex);
-                    table.Columns.Add("科目校部定" + subjectIndex);
+                    table.Columns.Add("科目校部定/科目必選修" + subjectIndex);
                     table.Columns.Add("科目註記" + subjectIndex);
                     table.Columns.Add("科目取得學分" + subjectIndex);
                     table.Columns.Add("科目未取得學分註記" + subjectIndex);
@@ -545,6 +553,8 @@ namespace SH_SemesterScoreReportFixed
                     table.Columns.Add("前學期" + name);
                     table.Columns.Add("本學期" + name);
                     table.Columns.Add("學年" + name);
+
+                    AttendanceMappingKeyList.Add(name);
                 }
 
                 //  動態產生學期科目與學期分項合併欄位
@@ -758,8 +768,10 @@ namespace SH_SemesterScoreReportFixed
                                                 if (CourseSpecifySubjectNameDic[courseRecord.Subject].ContainsKey(courseRecord.CourseID))
                                                     newExamSubject = CourseSpecifySubjectNameDic[courseRecord.Subject][courseRecord.CourseID];
 
-                                            if (!studentExamSores.ContainsKey(attendStudent.StudentID)) studentExamSores.Add(attendStudent.StudentID, new Dictionary<string, Dictionary<string, ExamScoreInfo>>());
-                                            if (!studentExamSores[attendStudent.StudentID].ContainsKey(newExamSubject)) studentExamSores[attendStudent.StudentID].Add(newExamSubject, new Dictionary<string, ExamScoreInfo>());
+                                            if (!studentExamSores.ContainsKey(attendStudent.StudentID))
+                                                studentExamSores.Add(attendStudent.StudentID, new Dictionary<string, Dictionary<string, ExamScoreInfo>>());
+                                            if (!studentExamSores[attendStudent.StudentID].ContainsKey(newExamSubject))
+                                                studentExamSores[attendStudent.StudentID].Add(newExamSubject, new Dictionary<string, ExamScoreInfo>());
                                             studentExamSores[attendStudent.StudentID][newExamSubject].Add("" + attendStudent.CourseID, null);
                                         }
                                         foreach (var examScoreRec in courseRecord.ExamScoreList)
@@ -1120,11 +1132,11 @@ namespace SH_SemesterScoreReportFixed
                         int.TryParse(conf.Semester, out Semester);
 
                         Dictionary<string, decimal> ServiceLearningByDateDict2 = new Dictionary<string, decimal>();
-                        Dictionary<string, Dictionary<string, int>> AttendanceCountDict2 = new Dictionary<string, Dictionary<string, int>>();
                         Dictionary<string, decimal> ServiceLearningByDateDict1 = new Dictionary<string, decimal>();
                         Dictionary<string, decimal> ServiceLearningByDateDict = new Dictionary<string, decimal>();
                         Dictionary<string, Dictionary<string, int>> AttendanceCountDict = new Dictionary<string, Dictionary<string, int>>();
                         Dictionary<string, Dictionary<string, int>> AttendanceCountDict1 = new Dictionary<string, Dictionary<string, int>>();
+                        Dictionary<string, Dictionary<string, int>> AttendanceCountDict2 = new Dictionary<string, Dictionary<string, int>>();
 
                         // 取得暫存資料 學習服務區間時數                       
                         // 本學期
@@ -1217,11 +1229,19 @@ namespace SH_SemesterScoreReportFixed
                                 // 處理學生上學習服務時數	
                                 row["前學期服務學習時數"] = ServiceLearningByDateDict1[studentID];
                             }
+                            else
+                            {
+                                row["前學期服務學習時數"] = 0;
+                            }
 
                             if (ServiceLearningByDateDict2.ContainsKey(studentID))
                             {
                                 // 處理學生下學習服務時數	
                                 row["本學期服務學習時數"] = ServiceLearningByDateDict2[studentID];
+                            }
+                            else
+                            {
+                                row["本學期服務學習時數"] = 0;
                             }
 
                             if (ServiceLearningByDateDict.ContainsKey(studentID))
@@ -1229,47 +1249,72 @@ namespace SH_SemesterScoreReportFixed
                                 // 處理學生學年學習服務時數	
                                 row["學年服務學習時數"] = ServiceLearningByDateDict[studentID];
                             }
+                            else
+                            {
+                                row["學年服務學習時數"] = 0;
+                            }
 
                             // 處理缺曠
                             if (AttendanceCountDict.ContainsKey(studentID))
                             {
-                                foreach (KeyValuePair<string, int> data in AttendanceCountDict[studentID])
+                                Dictionary<string, int> attenceCount = AttendanceCountDict[studentID];
+
+                                foreach (string attendMappingKey in AttendanceMappingKeyList)
                                 {
-                                    string keyS = "學年" + data.Key;
-
-                                    if (table.Columns.Contains(keyS))
-
-                                        row[keyS] = data.Value;
+                                    string keyS = "學年" + attendMappingKey;
+                                    if (attenceCount.Keys.Contains(attendMappingKey))
+                                    {
+                                        row[keyS] = attenceCount[attendMappingKey] == 0 ? 0 : attenceCount[attendMappingKey];
+                                    }
+                                    else
+                                    {
+                                        row[keyS] = "0";
+                                    }
                                 }
                             }
 
                             if (AttendanceCountDict1.ContainsKey(studentID))
                             {
-                                foreach (KeyValuePair<string, int> data in AttendanceCountDict1[studentID])
+                                Dictionary<string, int> attenceCount = AttendanceCountDict1[studentID];
+
+                                foreach (string attendMappingKey in AttendanceMappingKeyList)
                                 {
-                                    string keyS = "前學期" + data.Key;
-
-                                    if (table.Columns.Contains(keyS))
-
-                                        row[keyS] = data.Value;
+                                    string keyS = "前學期" + attendMappingKey;
+                                    if (attenceCount.Keys.Contains(attendMappingKey))
+                                    {
+                                        row[keyS] = attenceCount[attendMappingKey] == 0 ? 0 : attenceCount[attendMappingKey];
+                                    }
+                                    else
+                                    {
+                                        row[keyS] = "0";
+                                    }
                                 }
                             }
 
                             if (AttendanceCountDict2.ContainsKey(studentID))
                             {
-                                foreach (KeyValuePair<string, int> data in AttendanceCountDict2[studentID])
+                                Dictionary<string, int> attenceCount = AttendanceCountDict2[studentID];
+
+                                foreach (string attendMappingKey in AttendanceMappingKeyList)
                                 {
-                                    string keyS = "本學期" + data.Key;
-
-                                    if (table.Columns.Contains(keyS))
-
-                                        row[keyS] = data.Value;
+                                    string keyS = "本學期" + attendMappingKey;
+                                    if (attenceCount.Keys.Contains(attendMappingKey))
+                                    {
+                                        row[keyS] = attenceCount[attendMappingKey] == 0 ? 0 : attenceCount[attendMappingKey];
+                                    }
+                                    else
+                                    {
+                                        row[keyS] = "0";
+                                    }
                                 }
                             }
 
-                            row["學校名稱"] = SmartSchool.Customization.Data.SystemInformation.SchoolChineseName;
-                            row["學校地址"] = SmartSchool.Customization.Data.SystemInformation.Address;
-                            row["學校電話"] = SmartSchool.Customization.Data.SystemInformation.Telephone;
+                            row["學校名稱"] = K12.Data.School.Configuration["學校資訊"].PreviousData.SelectSingleNode("ChineseName").InnerText;
+                            row["學校地址"] = K12.Data.School.Configuration["學校資訊"].PreviousData.SelectSingleNode("Address").InnerText;
+                            row["學校電話"] = K12.Data.School.Configuration["學校資訊"].PreviousData.SelectSingleNode("Telephone").InnerText;
+                            row["校長名稱"] = K12.Data.School.Configuration["學校資訊"].PreviousData.SelectSingleNode("ChancellorChineseName").InnerText;
+                            row["學務主任"] = K12.Data.School.Configuration["學校資訊"].PreviousData.SelectSingleNode("StuDirectorName").InnerText;
+                            row["教務主任"] = K12.Data.School.Configuration["學校資訊"].PreviousData.SelectSingleNode("EduDirectorName").InnerText;
                             row["收件人地址"] = stuRec.ContactInfo.MailingAddress.FullAddress != "" ?
                                                 stuRec.ContactInfo.MailingAddress.FullAddress : stuRec.ContactInfo.PermanentAddress.FullAddress;
                             row["收件人"] = stuRec.ParentInfo.CustodianName != "" ? stuRec.ParentInfo.CustodianName :
@@ -1657,14 +1702,18 @@ namespace SH_SemesterScoreReportFixed
                                             decimal level;
                                             subjectNumber = decimal.TryParse(semesterSubjectScore.Level, out level) ? (decimal?)level : null;
 
+                                            row["領域" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("領域");
+                                            row["分項類別" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("開課分項類別");
                                             row["科目名稱" + subjectIndex] = newSemesterSubjectName + GetNumber(subjectNumber);
                                             if (!conf.IsShowLevel)  //2021-12-27 Cynthia 不顯示級別
                                                 row["科目名稱" + subjectIndex] = newSemesterSubjectName;
                                             row["科目" + subjectIndex] = newSemesterSubjectName;
                                             row["科目級別" + subjectIndex] = GetNumber(subjectNumber);
                                             row["學分數" + subjectIndex] = semesterSubjectScore.CreditDec();
-                                            row["科目必選修" + subjectIndex] = semesterSubjectScore.Require ? "必修" : "選修";
-                                            row["科目校部定" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("修課校部訂");
+                                            string required = semesterSubjectScore.Require ? "必修" : "選修";
+                                            string requiredBy = semesterSubjectScore.Detail.GetAttribute("修課校部訂");
+                                            row["科目必選修" + subjectIndex] = required;
+                                            row["科目校部定/科目必選修" + subjectIndex] = "" + requiredBy[0] + required[0];
                                             row["科目註記" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("註記");
                                             row["科目取得學分" + subjectIndex] = semesterSubjectScore.Pass ? "是" : "否";
                                             row["科目未取得學分註記" + subjectIndex] = semesterSubjectScore.Pass ? "" : "\f";
@@ -2129,12 +2178,17 @@ namespace SH_SemesterScoreReportFixed
                                                             {
                                                                 decimal level;
                                                                 subjectNumber = decimal.TryParse(sceTakeRecord.SubjectLevel, out level) ? (decimal?)level : null;
+                                                                row["領域" + subjectIndex] = sceTakeRecord.Domain;
+                                                                row["分項類別" + subjectIndex] = sceTakeRecord.Entry;
                                                                 row["科目名稱" + subjectIndex] = sceTakeRecord.Subject + GetNumber(subjectNumber);
                                                                 if (!conf.IsShowLevel)  //2021-12-27 Cynthia 不顯示級別
                                                                     row["科目名稱" + subjectIndex] = sceTakeRecord.Subject;
                                                                 row["科目" + subjectIndex] = sceTakeRecord.Subject;
                                                                 row["科目級別" + subjectIndex] = GetNumber(subjectNumber);
-
+                                                                string required = sceTakeRecord.Required ? "必修" : "選修";
+                                                                string requiredBy = sceTakeRecord.RequiredBy == "部訂" ? "部定" : sceTakeRecord.RequiredBy;
+                                                                row["科目必選修" + subjectIndex] = required;
+                                                                row["科目校部定/科目必選修" + subjectIndex] = "" + requiredBy[0] + required[0];
                                                                 row["學分數" + subjectIndex] = sceTakeRecord.CreditDec();
                                                             }
                                                             row["科目成績" + subjectIndex] = sceTakeRecord.SpecialCase == "" ? ("" + sceTakeRecord.ExamScore) : sceTakeRecord.SpecialCase;
@@ -2336,11 +2390,17 @@ namespace SH_SemesterScoreReportFixed
                                                                 {
                                                                     decimal level;
                                                                     subjectNumber = decimal.TryParse(courseRec.SubjectLevel, out level) ? (decimal?)level : null;
+                                                                    row["領域" + subjectIndex] = courseRec.Domain;
+                                                                    row["分項類別" + subjectIndex] = courseRec.Entry;
                                                                     row["科目名稱" + subjectIndex] = courseRec.Subject + GetNumber(subjectNumber);
                                                                     if (!conf.IsShowLevel)  //2021-12-27 Cynthia 不顯示級別
                                                                         row["科目名稱" + subjectIndex] = courseRec.Subject;
                                                                     row["科目" + subjectIndex] = courseRec.Subject;
                                                                     row["科目級別" + subjectIndex] = GetNumber(subjectNumber);
+                                                                    string required = courseRec.Required ? "必修" : "選修";
+                                                                    string requiredBy = courseRec.RequiredBy == "部訂" ? "部定" : courseRec.RequiredBy;
+                                                                    row["科目必選修" + subjectIndex] = required;
+                                                                    row["科目校部定/科目必選修" + subjectIndex] = "" + requiredBy[0] + required[0];
                                                                     row["學分數" + subjectIndex] = courseRec.CreditDec();
                                                                 }
                                                                 row["科目成績" + subjectIndex] = "未輸入";
@@ -2384,14 +2444,18 @@ namespace SH_SemesterScoreReportFixed
                                                 {
                                                     decimal level;
                                                     subjectNumber = decimal.TryParse(semesterSubjectScore.Level, out level) ? (decimal?)level : null;
+                                                    row["領域" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("領域");
+                                                    row["分項類別" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("開課分項類別");
                                                     row["科目名稱" + subjectIndex] = newSemesterSubjectName + GetNumber(subjectNumber);
                                                     if (!conf.IsShowLevel)  //2021-12-27 Cynthia 不顯示級別
                                                         row["科目名稱" + subjectIndex] = newSemesterSubjectName;
                                                     row["科目" + subjectIndex] = newSemesterSubjectName;
                                                     row["科目級別" + subjectIndex] = GetNumber(subjectNumber);
                                                     row["學分數" + subjectIndex] = semesterSubjectScore.CreditDec();
-                                                    row["科目必選修" + subjectIndex] = semesterSubjectScore.Require ? "必修" : "選修";
-                                                    row["科目校部定" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("修課校部訂");
+                                                    string required = semesterSubjectScore.Require ? "必修" : "選修";
+                                                    string requiredBy = semesterSubjectScore.Detail.GetAttribute("修課校部訂");
+                                                    row["科目必選修" + subjectIndex] = required;
+                                                    row["科目校部定/科目必選修" + subjectIndex] = "" + requiredBy[0] + required[0];
                                                     row["科目註記" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("註記");
                                                 }
                                                 row["上學期科目取得學分" + subjectIndex] = semesterSubjectScore.Pass ? "是" : "否";
@@ -3577,10 +3641,10 @@ namespace SH_SemesterScoreReportFixed
                                     }
 
                                 }
-                                #endregion
-
-                                #endregion
                             }
+                            #endregion
+
+                            #endregion
 
                             #region 學務資料
                             #region 綜合表現
@@ -3710,7 +3774,7 @@ namespace SH_SemesterScoreReportFixed
                             }
                             foreach (string attendanceKey in 缺曠項目統計.Keys)
                             {
-                                row[attendanceKey] = 缺曠項目統計[attendanceKey] == 0 ? "" : ("" + 缺曠項目統計[attendanceKey]);
+                                row[attendanceKey] = 缺曠項目統計[attendanceKey] == 0 ? "0" : ("" + 缺曠項目統計[attendanceKey]);
                             }
                             #endregion
 

@@ -335,7 +335,7 @@ namespace SmartSchool.Evaluation.Reports
                             maxScore = tryParseDecimal;
                         #endregion
 
-                        report.Worksheets[0].Cells[index, 10].PutValue("" + maxScore);//學期成績
+                        report.Worksheets[0].Cells[index, 11].PutValue("" + maxScore);//學期成績
 
                         //int gradeyear;
                         //if (ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(studentKey.ID) != null && int.TryParse(subjectElement.GetAttribute("年級"), out gradeyear))
@@ -345,11 +345,11 @@ namespace SmartSchool.Evaluation.Reports
 
                         if (subjectElement.GetAttribute("修課及格標準") != "")
                         {
-                            report.Worksheets[0].Cells[index, 11].PutValue(subjectElement.GetAttribute("修課及格標準"));
+                            report.Worksheets[0].Cells[index, 12].PutValue(subjectElement.GetAttribute("修課及格標準"));
                         }
                         else
                         {
-                            report.Worksheets[0].Cells[index, 11].PutValue("--");//及格基分
+                            report.Worksheets[0].Cells[index, 12].PutValue("--");//及格基分
                         }
 
                         index++;
@@ -362,7 +362,7 @@ namespace SmartSchool.Evaluation.Reports
                 }
             }
             //加上底線
-            report.Worksheets[0].Cells.CreateRange(index, 0, 1, 10).SetOutlineBorder(BorderType.TopBorder, CellBorderType.Medium, Color.Black);
+            report.Worksheets[0].Cells.CreateRange(index, 0, 1, 13).SetOutlineBorder(BorderType.TopBorder, CellBorderType.Medium, Color.Black);
 
             object[] results = new object[] { report, reportName };
             e.Result = results;

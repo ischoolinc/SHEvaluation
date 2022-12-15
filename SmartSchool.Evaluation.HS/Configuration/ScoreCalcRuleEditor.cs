@@ -447,6 +447,11 @@ namespace SmartSchool.Evaluation.Configuration
                 bool.TryParse(element.GetAttribute("學年調整成績"), out tryParseBool);
                 checkBoxX18.Checked = tryParseBool;
                 #endregion
+                #region 補修成績
+                tryParseBool = true;
+                bool.TryParse(element.GetAttribute("補修成績"), out tryParseBool);
+                checkBoxX26.Checked = tryParseBool;
+                #endregion
             }
             #endregion
 
@@ -479,6 +484,12 @@ namespace SmartSchool.Evaluation.Configuration
                 bool.TryParse(element.GetAttribute("學年調整成績"), out tryParseBool);
                 checkBoxX21.Checked = tryParseBool;
                 #endregion
+                #region 補修成績
+                tryParseBool = true;
+                bool.TryParse(element.GetAttribute("補修成績"), out tryParseBool);
+                checkBoxX27.Checked = tryParseBool; 
+                #endregion
+
             }
             #endregion
 
@@ -824,6 +835,7 @@ namespace SmartSchool.Evaluation.Configuration
             parentelement.SetAttribute("重修成績", checkBoxX19.Checked.ToString());
             parentelement.SetAttribute("擇優採計成績", checkBoxX14.Checked.ToString());
             parentelement.SetAttribute("學年調整成績", checkBoxX18.Checked.ToString());
+            parentelement.SetAttribute("補修成績", checkBoxX26.Checked.ToString());
             doc.DocumentElement.AppendChild(parentelement);
             #endregion
 
@@ -834,6 +846,7 @@ namespace SmartSchool.Evaluation.Configuration
             parentelement.SetAttribute("重修成績", checkBoxX23.Checked.ToString());
             parentelement.SetAttribute("擇優採計成績", checkBoxX22.Checked.ToString());
             parentelement.SetAttribute("學年調整成績", checkBoxX21.Checked.ToString());
+            parentelement.SetAttribute("補修成績", checkBoxX27.Checked.ToString());
             doc.DocumentElement.AppendChild(parentelement);
             #endregion
 

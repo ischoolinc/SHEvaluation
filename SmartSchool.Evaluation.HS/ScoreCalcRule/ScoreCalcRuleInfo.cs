@@ -59,6 +59,7 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
             Dictionary<string, bool> calcEntry = new Dictionary<string, bool>();
             Dictionary<string, bool> calcInStudy = new Dictionary<string, bool>();
             List<string> takeScore = new List<string>();
+            bool takeRepairScore = false;
             //精準位數
             int decimals = 2;
             //進位模式
@@ -104,6 +105,9 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
             }
             #endregion
             #region 採計成績欄位
+            // 處理補修成績
+            bool.TryParse(helper.GetText("分項成績計算採計成績欄位/@補修成績"), out takeRepairScore);
+
             foreach (string item in new string[] { "原始成績", "補考成績", "重修成績", "擇優採計成績", "學年調整成績" })
             {
                 if (!bool.TryParse(helper.GetText("分項成績計算採計成績欄位/@" + item), out tryParsebool) || tryParsebool)
@@ -125,6 +129,13 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
                 //不計學分或不需評分不用算
                 if (subjectElement.GetAttribute("不需評分") == "是" || subjectElement.GetAttribute("不計學分") == "是")
                     continue;
+
+                // 若為補修成績且補修成績不採計，則不計算
+                if (takeRepairScore == false)
+                {
+                    if (subjectElement.GetAttribute("是否補修成績") == "是")
+                        continue;
+                }
                 #region 分項類別跟學分數
                 string entry = subjectElement.GetAttribute("開課分項類別");
                 decimal credit = 0;

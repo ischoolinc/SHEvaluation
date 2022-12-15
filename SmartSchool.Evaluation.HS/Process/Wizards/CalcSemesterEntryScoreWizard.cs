@@ -190,7 +190,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
                             {
 
                                 string updateid = "";
-                                #region 找到ID，將計算分項與現有成績的分向做聯集
+                                #region 找到ID，將計算分項與現有成績的分項做聯集
                                 Dictionary<int, Dictionary<int, Dictionary<string, string>>> scoreID = (Dictionary<int, Dictionary<int, Dictionary<string, string>>>)stu.Fields["SemesterEntryScoreID"];
                                 //只處理以下幾個分項類別(學習類)
                                 List<string> enableEntryLists = new List<string>(new string[] { "體育", "學業", "國防通識", "健康與護理", "實習科目" });

@@ -1428,6 +1428,7 @@ namespace SmartSchool.Evaluation
                 Dictionary<string, bool> calcEntry = new Dictionary<string, bool>();
                 Dictionary<string, bool> calcInStudy = new Dictionary<string, bool>();
                 List<string> takeScore = new List<string>();
+                bool takeRepairScore = false;
                 //精準位數
                 int decimals = 2;
                 //進位模式
@@ -1481,13 +1482,17 @@ namespace SmartSchool.Evaluation
                         }
                         #endregion
                         #region 採計成績欄位
-                        foreach (string item in new string[] { "原始成績", "補考成績", "重修成績", "擇優採計成績", "學年調整成績" })
+                        // 處理補修成績
+                        bool.TryParse(helper.GetText("分項成績計算採計成績欄位/@補修成績"), out takeRepairScore);
+
+                        foreach (string item in new string[] { "原始成績", "補考成績", "重修成績", "擇優採計成績", "學年調整成績"})
                         {
                             if (!bool.TryParse(helper.GetText("分項成績計算採計成績欄位/@" + item), out tryParsebool) || tryParsebool)
                             {//沒有設定這項成績設定規則(預設true)或者設定值是true
                                 takeScore.Add(item);
                             }
                         }
+
                         #endregion
                     }
                     #endregion
@@ -1504,6 +1509,13 @@ namespace SmartSchool.Evaluation
                             //不計學分或不需評分不用算
                             if (subjectNode.Detail.GetAttribute("不需評分") == "是" || subjectNode.Detail.GetAttribute("不計學分") == "是")
                                 continue;
+
+                            // 若為補修成績且補修成績不採計，則不計算
+                            if (takeRepairScore == false)
+                            {
+                                if (subjectNode.Detail.GetAttribute("是否補修成績") == "是")
+                                    continue;
+                            }
                             #region 分項類別跟學分數
                             string entry = subjectNode.Detail.GetAttribute("開課分項類別");
                             decimal credit = subjectNode.CreditDec();
@@ -1954,6 +1966,7 @@ namespace SmartSchool.Evaluation
 
 
                 List<string> scoreTypeList = new List<string>();
+                bool takeRepairScore = false;
 
                 #region 取得成績年級跟計算規則
                 #region 處理計算規則
@@ -1991,6 +2004,9 @@ namespace SmartSchool.Evaluation
                     #region 學年成績計算採計成績欄位
                     if (scoreCalcRule.SelectSingleNode("學年成績計算採計成績欄位") != null)
                     {
+                        // 處理補修成績
+                        bool.TryParse(helper.GetText("學年成績計算採計成績欄位/@補修成績"), out takeRepairScore);
+
                         if (bool.TryParse(helper.GetText("學年成績計算採計成績欄位/@原始成績"), out tryParsebool) && tryParsebool)
                         {
                             scoreTypeList.Add("原始成績");
@@ -2074,6 +2090,12 @@ namespace SmartSchool.Evaluation
                         {
                             if (!ApplySemesterSchoolYear.ContainsKey(scoreInfo.Semester) || ApplySemesterSchoolYear[scoreInfo.Semester] != scoreInfo.SchoolYear)
                                 removeList.Add(scoreInfo);
+
+                            // 若為補修成績，且成績計算不採計，則移除
+                            if (takeRepairScore == false && scoreInfo.Detail.GetAttribute("是否補修成績") == "是")
+                            {
+                                removeList.Add(scoreInfo);
+                            }
                         }
                         foreach (SemesterSubjectScoreInfo scoreInfo in removeList)
                         {

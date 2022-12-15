@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.itemContainer9 = new DevComponents.DotNetBar.ItemContainer();
             this.labelItem1 = new DevComponents.DotNetBar.LabelItem();
             this.panelEx1 = new DevComponents.DotNetBar.PanelEx();
@@ -201,6 +201,8 @@
             this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.checkBoxX26 = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.checkBoxX27 = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.panelEx1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -313,7 +315,7 @@
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedTabFont = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Bold);
+            this.tabControl1.SelectedTabFont = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Bold);
             this.tabControl1.SelectedTabIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1002, 710);
             this.tabControl1.Style = DevComponents.DotNetBar.eTabStripStyle.Office2007Document;
@@ -327,10 +329,10 @@
             // 
             this.tabControlPanel4.Controls.Add(this.cardPanelEx1);
             this.tabControlPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlPanel4.Location = new System.Drawing.Point(0, 33);
+            this.tabControlPanel4.Location = new System.Drawing.Point(0, 28);
             this.tabControlPanel4.Name = "tabControlPanel4";
             this.tabControlPanel4.Padding = new System.Windows.Forms.Padding(1);
-            this.tabControlPanel4.Size = new System.Drawing.Size(1002, 677);
+            this.tabControlPanel4.Size = new System.Drawing.Size(1002, 682);
             this.tabControlPanel4.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(253)))), ((int)(((byte)(254)))));
             this.tabControlPanel4.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(157)))), ((int)(((byte)(188)))), ((int)(((byte)(227)))));
             this.tabControlPanel4.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
@@ -356,7 +358,7 @@
             this.cardPanelEx1.Location = new System.Drawing.Point(1, 1);
             this.cardPanelEx1.MinWidth = 10;
             this.cardPanelEx1.Name = "cardPanelEx1";
-            this.cardPanelEx1.Size = new System.Drawing.Size(1000, 675);
+            this.cardPanelEx1.Size = new System.Drawing.Size(1000, 680);
             this.cardPanelEx1.Style.Alignment = System.Drawing.StringAlignment.Center;
             this.cardPanelEx1.Style.BackColor1.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
             this.cardPanelEx1.Style.BackColor2.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
@@ -390,7 +392,7 @@
             this.groupPanel1.Controls.Add(this.labelX4);
             this.groupPanel1.Controls.Add(this.labelX3);
             this.groupPanel1.Controls.Add(this.labelX2);
-            this.groupPanel1.Location = new System.Drawing.Point(165, 10);
+            this.groupPanel1.Location = new System.Drawing.Point(167, 10);
             this.groupPanel1.Name = "groupPanel1";
             this.groupPanel1.Size = new System.Drawing.Size(644, 208);
             // 
@@ -435,7 +437,7 @@
             0,
             0});
             this.numericUpDown6.Name = "numericUpDown6";
-            this.numericUpDown6.Size = new System.Drawing.Size(35, 29);
+            this.numericUpDown6.Size = new System.Drawing.Size(35, 25);
             this.numericUpDown6.TabIndex = 9;
             this.numericUpDown6.Value = new decimal(new int[] {
             2,
@@ -459,7 +461,7 @@
             this.radioButton10.BackColor = System.Drawing.Color.Transparent;
             this.radioButton10.Location = new System.Drawing.Point(3, 2);
             this.radioButton10.Name = "radioButton10";
-            this.radioButton10.Size = new System.Drawing.Size(116, 26);
+            this.radioButton10.Size = new System.Drawing.Size(91, 21);
             this.radioButton10.TabIndex = 3;
             this.radioButton10.Text = "無條件進位";
             this.radioButton10.UseVisualStyleBackColor = false;
@@ -470,7 +472,7 @@
             this.radioButton11.BackColor = System.Drawing.Color.Transparent;
             this.radioButton11.Location = new System.Drawing.Point(100, 2);
             this.radioButton11.Name = "radioButton11";
-            this.radioButton11.Size = new System.Drawing.Size(116, 26);
+            this.radioButton11.Size = new System.Drawing.Size(91, 21);
             this.radioButton11.TabIndex = 3;
             this.radioButton11.Text = "無條件捨去";
             this.radioButton11.UseVisualStyleBackColor = false;
@@ -482,7 +484,7 @@
             this.radioButton21.Checked = true;
             this.radioButton21.Location = new System.Drawing.Point(197, 2);
             this.radioButton21.Name = "radioButton21";
-            this.radioButton21.Size = new System.Drawing.Size(99, 26);
+            this.radioButton21.Size = new System.Drawing.Size(78, 21);
             this.radioButton21.TabIndex = 3;
             this.radioButton21.TabStop = true;
             this.radioButton21.Text = "四捨五入";
@@ -499,7 +501,7 @@
             this.labelX19.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX19.Location = new System.Drawing.Point(244, 113);
             this.labelX19.Name = "labelX19";
-            this.labelX19.Size = new System.Drawing.Size(25, 26);
+            this.labelX19.Size = new System.Drawing.Size(20, 21);
             this.labelX19.TabIndex = 7;
             this.labelX19.Text = "位";
             // 
@@ -514,7 +516,7 @@
             this.labelX20.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX20.Location = new System.Drawing.Point(16, 113);
             this.labelX20.Name = "labelX20";
-            this.labelX20.Size = new System.Drawing.Size(225, 26);
+            this.labelX20.Size = new System.Drawing.Size(181, 21);
             this.labelX20.TabIndex = 6;
             this.labelX20.Text = "學年分項成績計算至小數點後";
             // 
@@ -527,7 +529,7 @@
             0,
             0});
             this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(35, 29);
+            this.numericUpDown4.Size = new System.Drawing.Size(35, 25);
             this.numericUpDown4.TabIndex = 5;
             this.numericUpDown4.Value = new decimal(new int[] {
             2,
@@ -544,7 +546,7 @@
             0,
             0});
             this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(35, 29);
+            this.numericUpDown3.Size = new System.Drawing.Size(35, 25);
             this.numericUpDown3.TabIndex = 5;
             this.numericUpDown3.Value = new decimal(new int[] {
             2,
@@ -561,7 +563,7 @@
             0,
             0});
             this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(35, 29);
+            this.numericUpDown2.Size = new System.Drawing.Size(35, 25);
             this.numericUpDown2.TabIndex = 5;
             this.numericUpDown2.Value = new decimal(new int[] {
             2,
@@ -578,7 +580,7 @@
             0,
             0});
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(35, 29);
+            this.numericUpDown1.Size = new System.Drawing.Size(35, 25);
             this.numericUpDown1.TabIndex = 5;
             this.numericUpDown1.Value = new decimal(new int[] {
             2,
@@ -602,7 +604,7 @@
             this.radioButton30.BackColor = System.Drawing.Color.Transparent;
             this.radioButton30.Location = new System.Drawing.Point(3, 2);
             this.radioButton30.Name = "radioButton30";
-            this.radioButton30.Size = new System.Drawing.Size(116, 26);
+            this.radioButton30.Size = new System.Drawing.Size(91, 21);
             this.radioButton30.TabIndex = 3;
             this.radioButton30.Text = "無條件進位";
             this.radioButton30.UseVisualStyleBackColor = false;
@@ -614,7 +616,7 @@
             this.radioButton12.Checked = true;
             this.radioButton12.Location = new System.Drawing.Point(197, 2);
             this.radioButton12.Name = "radioButton12";
-            this.radioButton12.Size = new System.Drawing.Size(99, 26);
+            this.radioButton12.Size = new System.Drawing.Size(78, 21);
             this.radioButton12.TabIndex = 3;
             this.radioButton12.TabStop = true;
             this.radioButton12.Text = "四捨五入";
@@ -626,7 +628,7 @@
             this.radioButton29.BackColor = System.Drawing.Color.Transparent;
             this.radioButton29.Location = new System.Drawing.Point(100, 2);
             this.radioButton29.Name = "radioButton29";
-            this.radioButton29.Size = new System.Drawing.Size(116, 26);
+            this.radioButton29.Size = new System.Drawing.Size(91, 21);
             this.radioButton29.TabIndex = 3;
             this.radioButton29.Text = "無條件捨去";
             this.radioButton29.UseVisualStyleBackColor = false;
@@ -647,7 +649,7 @@
             this.radioButton6.BackColor = System.Drawing.Color.Transparent;
             this.radioButton6.Location = new System.Drawing.Point(3, 2);
             this.radioButton6.Name = "radioButton6";
-            this.radioButton6.Size = new System.Drawing.Size(116, 26);
+            this.radioButton6.Size = new System.Drawing.Size(91, 21);
             this.radioButton6.TabIndex = 3;
             this.radioButton6.Text = "無條件進位";
             this.radioButton6.UseVisualStyleBackColor = false;
@@ -658,7 +660,7 @@
             this.radioButton7.BackColor = System.Drawing.Color.Transparent;
             this.radioButton7.Location = new System.Drawing.Point(100, 2);
             this.radioButton7.Name = "radioButton7";
-            this.radioButton7.Size = new System.Drawing.Size(116, 26);
+            this.radioButton7.Size = new System.Drawing.Size(91, 21);
             this.radioButton7.TabIndex = 3;
             this.radioButton7.Text = "無條件捨去";
             this.radioButton7.UseVisualStyleBackColor = false;
@@ -670,7 +672,7 @@
             this.radioButton8.Checked = true;
             this.radioButton8.Location = new System.Drawing.Point(197, 2);
             this.radioButton8.Name = "radioButton8";
-            this.radioButton8.Size = new System.Drawing.Size(99, 26);
+            this.radioButton8.Size = new System.Drawing.Size(78, 21);
             this.radioButton8.TabIndex = 3;
             this.radioButton8.TabStop = true;
             this.radioButton8.Text = "四捨五入";
@@ -692,7 +694,7 @@
             this.radioButton2.BackColor = System.Drawing.Color.Transparent;
             this.radioButton2.Location = new System.Drawing.Point(3, 2);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(116, 26);
+            this.radioButton2.Size = new System.Drawing.Size(91, 21);
             this.radioButton2.TabIndex = 3;
             this.radioButton2.Text = "無條件進位";
             this.radioButton2.UseVisualStyleBackColor = false;
@@ -703,7 +705,7 @@
             this.radioButton3.BackColor = System.Drawing.Color.Transparent;
             this.radioButton3.Location = new System.Drawing.Point(100, 2);
             this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(116, 26);
+            this.radioButton3.Size = new System.Drawing.Size(91, 21);
             this.radioButton3.TabIndex = 3;
             this.radioButton3.Text = "無條件捨去";
             this.radioButton3.UseVisualStyleBackColor = false;
@@ -715,7 +717,7 @@
             this.radioButton4.Checked = true;
             this.radioButton4.Location = new System.Drawing.Point(197, 2);
             this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(99, 26);
+            this.radioButton4.Size = new System.Drawing.Size(78, 21);
             this.radioButton4.TabIndex = 3;
             this.radioButton4.TabStop = true;
             this.radioButton4.Text = "四捨五入";
@@ -737,7 +739,7 @@
             this.radioButton1.BackColor = System.Drawing.Color.Transparent;
             this.radioButton1.Location = new System.Drawing.Point(3, 2);
             this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(116, 26);
+            this.radioButton1.Size = new System.Drawing.Size(91, 21);
             this.radioButton1.TabIndex = 3;
             this.radioButton1.Text = "無條件進位";
             this.radioButton1.UseVisualStyleBackColor = false;
@@ -748,7 +750,7 @@
             this.radioButton5.BackColor = System.Drawing.Color.Transparent;
             this.radioButton5.Location = new System.Drawing.Point(100, 2);
             this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(116, 26);
+            this.radioButton5.Size = new System.Drawing.Size(91, 21);
             this.radioButton5.TabIndex = 3;
             this.radioButton5.Text = "無條件捨去";
             this.radioButton5.UseVisualStyleBackColor = false;
@@ -760,7 +762,7 @@
             this.radioButton9.Checked = true;
             this.radioButton9.Location = new System.Drawing.Point(197, 2);
             this.radioButton9.Name = "radioButton9";
-            this.radioButton9.Size = new System.Drawing.Size(99, 26);
+            this.radioButton9.Size = new System.Drawing.Size(78, 21);
             this.radioButton9.TabIndex = 3;
             this.radioButton9.TabStop = true;
             this.radioButton9.Text = "四捨五入";
@@ -777,7 +779,7 @@
             this.labelX9.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX9.Location = new System.Drawing.Point(244, 148);
             this.labelX9.Name = "labelX9";
-            this.labelX9.Size = new System.Drawing.Size(25, 26);
+            this.labelX9.Size = new System.Drawing.Size(20, 21);
             this.labelX9.TabIndex = 2;
             this.labelX9.Text = "位";
             // 
@@ -792,7 +794,7 @@
             this.labelX8.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX8.Location = new System.Drawing.Point(244, 78);
             this.labelX8.Name = "labelX8";
-            this.labelX8.Size = new System.Drawing.Size(25, 26);
+            this.labelX8.Size = new System.Drawing.Size(20, 21);
             this.labelX8.TabIndex = 2;
             this.labelX8.Text = "位";
             // 
@@ -807,7 +809,7 @@
             this.labelX7.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX7.Location = new System.Drawing.Point(244, 43);
             this.labelX7.Name = "labelX7";
-            this.labelX7.Size = new System.Drawing.Size(25, 26);
+            this.labelX7.Size = new System.Drawing.Size(20, 21);
             this.labelX7.TabIndex = 2;
             this.labelX7.Text = "位";
             // 
@@ -822,7 +824,7 @@
             this.labelX6.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX6.Location = new System.Drawing.Point(244, 8);
             this.labelX6.Name = "labelX6";
-            this.labelX6.Size = new System.Drawing.Size(25, 26);
+            this.labelX6.Size = new System.Drawing.Size(20, 21);
             this.labelX6.TabIndex = 2;
             this.labelX6.Text = "位";
             // 
@@ -837,7 +839,7 @@
             this.labelX5.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX5.Location = new System.Drawing.Point(43, 148);
             this.labelX5.Name = "labelX5";
-            this.labelX5.Size = new System.Drawing.Size(192, 26);
+            this.labelX5.Size = new System.Drawing.Size(154, 21);
             this.labelX5.TabIndex = 0;
             this.labelX5.Text = "畢業成績計算至小數點後";
             // 
@@ -852,7 +854,7 @@
             this.labelX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX4.Location = new System.Drawing.Point(16, 78);
             this.labelX4.Name = "labelX4";
-            this.labelX4.Size = new System.Drawing.Size(225, 26);
+            this.labelX4.Size = new System.Drawing.Size(181, 21);
             this.labelX4.TabIndex = 0;
             this.labelX4.Text = "學年科目成績計算至小數點後";
             // 
@@ -867,7 +869,7 @@
             this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX3.Location = new System.Drawing.Point(16, 43);
             this.labelX3.Name = "labelX3";
-            this.labelX3.Size = new System.Drawing.Size(225, 26);
+            this.labelX3.Size = new System.Drawing.Size(181, 21);
             this.labelX3.TabIndex = 0;
             this.labelX3.Text = "學期分項成績計算至小數點後";
             // 
@@ -882,7 +884,7 @@
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX2.Location = new System.Drawing.Point(16, 8);
             this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(225, 26);
+            this.labelX2.Size = new System.Drawing.Size(181, 21);
             this.labelX2.TabIndex = 0;
             this.labelX2.Text = "學期科目成績計算至小數點後";
             // 
@@ -894,7 +896,7 @@
             this.groupPanel2.Controls.Add(this.groupPanel20);
             this.groupPanel2.Controls.Add(this.groupPanel17);
             this.groupPanel2.Controls.Add(this.groupPanel19);
-            this.groupPanel2.Location = new System.Drawing.Point(165, 228);
+            this.groupPanel2.Location = new System.Drawing.Point(167, 228);
             this.groupPanel2.Name = "groupPanel2";
             this.groupPanel2.Size = new System.Drawing.Size(644, 273);
             // 
@@ -985,7 +987,7 @@
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX1.Location = new System.Drawing.Point(9, 2);
             this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(125, 26);
+            this.labelX1.Size = new System.Drawing.Size(101, 21);
             this.labelX1.TabIndex = 0;
             this.labelX1.Text = "重修成績登錄：";
             // 
@@ -995,13 +997,13 @@
             this.comboBoxEx1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.comboBoxEx1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxEx1.FormattingEnabled = true;
-            this.comboBoxEx1.ItemHeight = 23;
+            this.comboBoxEx1.ItemHeight = 19;
             this.comboBoxEx1.Items.AddRange(new object[] {
             this.comboItem3,
             this.comboItem4});
             this.comboBoxEx1.Location = new System.Drawing.Point(110, 0);
             this.comboBoxEx1.Name = "comboBoxEx1";
-            this.comboBoxEx1.Size = new System.Drawing.Size(142, 29);
+            this.comboBoxEx1.Size = new System.Drawing.Size(142, 25);
             this.comboBoxEx1.TabIndex = 1;
             // 
             // comboItem3
@@ -1067,7 +1069,7 @@
             this.labelX15.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX15.Location = new System.Drawing.Point(9, 2);
             this.labelX15.Name = "labelX15";
-            this.labelX15.Size = new System.Drawing.Size(125, 26);
+            this.labelX15.Size = new System.Drawing.Size(101, 21);
             this.labelX15.TabIndex = 0;
             this.labelX15.Text = "重讀學期修課：";
             // 
@@ -1077,13 +1079,13 @@
             this.comboBoxEx2.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.comboBoxEx2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxEx2.FormattingEnabled = true;
-            this.comboBoxEx2.ItemHeight = 23;
+            this.comboBoxEx2.ItemHeight = 19;
             this.comboBoxEx2.Items.AddRange(new object[] {
             this.comboItem1,
             this.comboItem2});
             this.comboBoxEx2.Location = new System.Drawing.Point(110, 0);
             this.comboBoxEx2.Name = "comboBoxEx2";
-            this.comboBoxEx2.Size = new System.Drawing.Size(142, 29);
+            this.comboBoxEx2.Size = new System.Drawing.Size(142, 25);
             this.comboBoxEx2.TabIndex = 1;
             // 
             // comboItem1
@@ -1143,14 +1145,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewX1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewX1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewX1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridViewX1.ColumnHeadersHeight = 40;
             this.dataGridViewX1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridViewX1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -1163,14 +1165,14 @@
             this.Column6,
             this.Column7,
             this.Column9});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewX1.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewX1.DefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridViewX1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dataGridViewX1.Location = new System.Drawing.Point(8, 3);
             this.dataGridViewX1.Name = "dataGridViewX1";
@@ -1266,7 +1268,7 @@
             this.groupPanel3.Controls.Add(this.groupPanel9);
             this.groupPanel3.Controls.Add(this.groupPanel8);
             this.groupPanel3.Controls.Add(this.groupPanel7);
-            this.groupPanel3.Location = new System.Drawing.Point(165, 511);
+            this.groupPanel3.Location = new System.Drawing.Point(167, 511);
             this.groupPanel3.Name = "groupPanel3";
             this.groupPanel3.Size = new System.Drawing.Size(644, 222);
             // 
@@ -1306,6 +1308,7 @@
             // 
             this.groupPanel26.CanvasColor = System.Drawing.SystemColors.Control;
             this.groupPanel26.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel26.Controls.Add(this.checkBoxX26);
             this.groupPanel26.Controls.Add(this.checkBoxX18);
             this.groupPanel26.Controls.Add(this.checkBoxX14);
             this.groupPanel26.Controls.Add(this.checkBoxX19);
@@ -1362,7 +1365,7 @@
             this.checkBoxX18.CheckValue = "Y";
             this.checkBoxX18.Location = new System.Drawing.Point(164, 30);
             this.checkBoxX18.Name = "checkBoxX18";
-            this.checkBoxX18.Size = new System.Drawing.Size(128, 26);
+            this.checkBoxX18.Size = new System.Drawing.Size(107, 21);
             this.checkBoxX18.TabIndex = 0;
             this.checkBoxX18.Text = "學年調整成績";
             // 
@@ -1380,7 +1383,7 @@
             this.checkBoxX14.CheckValue = "Y";
             this.checkBoxX14.Location = new System.Drawing.Point(5, 30);
             this.checkBoxX14.Name = "checkBoxX14";
-            this.checkBoxX14.Size = new System.Drawing.Size(128, 26);
+            this.checkBoxX14.Size = new System.Drawing.Size(107, 21);
             this.checkBoxX14.TabIndex = 0;
             this.checkBoxX14.Text = "手動調整成績";
             // 
@@ -1398,7 +1401,7 @@
             this.checkBoxX19.CheckValue = "Y";
             this.checkBoxX19.Location = new System.Drawing.Point(316, 4);
             this.checkBoxX19.Name = "checkBoxX19";
-            this.checkBoxX19.Size = new System.Drawing.Size(95, 26);
+            this.checkBoxX19.Size = new System.Drawing.Size(80, 21);
             this.checkBoxX19.TabIndex = 0;
             this.checkBoxX19.Text = "重修成績";
             // 
@@ -1416,7 +1419,7 @@
             this.checkBoxX17.CheckValue = "Y";
             this.checkBoxX17.Location = new System.Drawing.Point(164, 4);
             this.checkBoxX17.Name = "checkBoxX17";
-            this.checkBoxX17.Size = new System.Drawing.Size(95, 26);
+            this.checkBoxX17.Size = new System.Drawing.Size(80, 21);
             this.checkBoxX17.TabIndex = 0;
             this.checkBoxX17.Text = "補考成績";
             // 
@@ -1434,7 +1437,7 @@
             this.checkBoxX16.CheckValue = "Y";
             this.checkBoxX16.Location = new System.Drawing.Point(5, 4);
             this.checkBoxX16.Name = "checkBoxX16";
-            this.checkBoxX16.Size = new System.Drawing.Size(95, 26);
+            this.checkBoxX16.Size = new System.Drawing.Size(80, 21);
             this.checkBoxX16.TabIndex = 0;
             this.checkBoxX16.Text = "原始成績";
             // 
@@ -1495,7 +1498,7 @@
             this.checkBoxX10.CheckValue = "Y";
             this.checkBoxX10.Location = new System.Drawing.Point(5, 30);
             this.checkBoxX10.Name = "checkBoxX10";
-            this.checkBoxX10.Size = new System.Drawing.Size(162, 26);
+            this.checkBoxX10.Size = new System.Drawing.Size(134, 21);
             this.checkBoxX10.TabIndex = 0;
             this.checkBoxX10.Text = "併入學期學業成績";
             // 
@@ -1513,7 +1516,7 @@
             this.checkBoxX12.CheckValue = "Y";
             this.checkBoxX12.Location = new System.Drawing.Point(5, 4);
             this.checkBoxX12.Name = "checkBoxX12";
-            this.checkBoxX12.Size = new System.Drawing.Size(128, 26);
+            this.checkBoxX12.Size = new System.Drawing.Size(107, 21);
             this.checkBoxX12.TabIndex = 0;
             this.checkBoxX12.Text = "計算分項成績";
             // 
@@ -1574,7 +1577,7 @@
             this.checkBoxX15.CheckValue = "Y";
             this.checkBoxX15.Location = new System.Drawing.Point(5, 30);
             this.checkBoxX15.Name = "checkBoxX15";
-            this.checkBoxX15.Size = new System.Drawing.Size(162, 26);
+            this.checkBoxX15.Size = new System.Drawing.Size(134, 21);
             this.checkBoxX15.TabIndex = 0;
             this.checkBoxX15.Text = "併入學期學業成績";
             // 
@@ -1592,7 +1595,7 @@
             this.checkBoxX4.CheckValue = "Y";
             this.checkBoxX4.Location = new System.Drawing.Point(5, 4);
             this.checkBoxX4.Name = "checkBoxX4";
-            this.checkBoxX4.Size = new System.Drawing.Size(128, 26);
+            this.checkBoxX4.Size = new System.Drawing.Size(107, 21);
             this.checkBoxX4.TabIndex = 0;
             this.checkBoxX4.Text = "計算分項成績";
             // 
@@ -1652,7 +1655,7 @@
             this.checkBoxX13.Enabled = false;
             this.checkBoxX13.Location = new System.Drawing.Point(5, 30);
             this.checkBoxX13.Name = "checkBoxX13";
-            this.checkBoxX13.Size = new System.Drawing.Size(162, 26);
+            this.checkBoxX13.Size = new System.Drawing.Size(134, 21);
             this.checkBoxX13.TabIndex = 0;
             this.checkBoxX13.Text = "併入學期學業成績";
             // 
@@ -1668,7 +1671,7 @@
             this.checkBoxX3.Enabled = false;
             this.checkBoxX3.Location = new System.Drawing.Point(5, 4);
             this.checkBoxX3.Name = "checkBoxX3";
-            this.checkBoxX3.Size = new System.Drawing.Size(128, 26);
+            this.checkBoxX3.Size = new System.Drawing.Size(107, 21);
             this.checkBoxX3.TabIndex = 0;
             this.checkBoxX3.Text = "計算分項成績";
             // 
@@ -1728,7 +1731,7 @@
             this.checkBoxX11.Enabled = false;
             this.checkBoxX11.Location = new System.Drawing.Point(5, 30);
             this.checkBoxX11.Name = "checkBoxX11";
-            this.checkBoxX11.Size = new System.Drawing.Size(162, 26);
+            this.checkBoxX11.Size = new System.Drawing.Size(134, 21);
             this.checkBoxX11.TabIndex = 0;
             this.checkBoxX11.Text = "併入學期學業成績";
             // 
@@ -1744,7 +1747,7 @@
             this.checkBoxX2.Enabled = false;
             this.checkBoxX2.Location = new System.Drawing.Point(5, 4);
             this.checkBoxX2.Name = "checkBoxX2";
-            this.checkBoxX2.Size = new System.Drawing.Size(128, 26);
+            this.checkBoxX2.Size = new System.Drawing.Size(107, 21);
             this.checkBoxX2.TabIndex = 0;
             this.checkBoxX2.Text = "計算分項成績";
             // 
@@ -1804,7 +1807,7 @@
             this.checkBoxX8.Enabled = false;
             this.checkBoxX8.Location = new System.Drawing.Point(5, 30);
             this.checkBoxX8.Name = "checkBoxX8";
-            this.checkBoxX8.Size = new System.Drawing.Size(162, 26);
+            this.checkBoxX8.Size = new System.Drawing.Size(134, 21);
             this.checkBoxX8.TabIndex = 0;
             this.checkBoxX8.Text = "併入學期學業成績";
             // 
@@ -1820,7 +1823,7 @@
             this.checkBoxX1.Enabled = false;
             this.checkBoxX1.Location = new System.Drawing.Point(5, 4);
             this.checkBoxX1.Name = "checkBoxX1";
-            this.checkBoxX1.Size = new System.Drawing.Size(128, 26);
+            this.checkBoxX1.Size = new System.Drawing.Size(107, 21);
             this.checkBoxX1.TabIndex = 0;
             this.checkBoxX1.Text = "計算分項成績";
             // 
@@ -1832,7 +1835,7 @@
             this.groupPanel6.Controls.Add(this.groupPanel27);
             this.groupPanel6.Controls.Add(this.checkBoxX5);
             this.groupPanel6.Controls.Add(this.groupPanel11);
-            this.groupPanel6.Location = new System.Drawing.Point(165, 743);
+            this.groupPanel6.Location = new System.Drawing.Point(167, 743);
             this.groupPanel6.Name = "groupPanel6";
             this.groupPanel6.Size = new System.Drawing.Size(644, 265);
             // 
@@ -1872,6 +1875,7 @@
             // 
             this.groupPanel27.CanvasColor = System.Drawing.SystemColors.Control;
             this.groupPanel27.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel27.Controls.Add(this.checkBoxX27);
             this.groupPanel27.Controls.Add(this.checkBoxX21);
             this.groupPanel27.Controls.Add(this.checkBoxX22);
             this.groupPanel27.Controls.Add(this.checkBoxX23);
@@ -1926,7 +1930,7 @@
             this.checkBoxX21.Enabled = false;
             this.checkBoxX21.Location = new System.Drawing.Point(164, 30);
             this.checkBoxX21.Name = "checkBoxX21";
-            this.checkBoxX21.Size = new System.Drawing.Size(128, 26);
+            this.checkBoxX21.Size = new System.Drawing.Size(107, 21);
             this.checkBoxX21.TabIndex = 0;
             this.checkBoxX21.Text = "學年調整成績";
             // 
@@ -1941,7 +1945,7 @@
             this.checkBoxX22.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.checkBoxX22.Location = new System.Drawing.Point(5, 30);
             this.checkBoxX22.Name = "checkBoxX22";
-            this.checkBoxX22.Size = new System.Drawing.Size(128, 26);
+            this.checkBoxX22.Size = new System.Drawing.Size(107, 21);
             this.checkBoxX22.TabIndex = 0;
             this.checkBoxX22.Text = "手動調整成績";
             // 
@@ -1956,7 +1960,7 @@
             this.checkBoxX23.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.checkBoxX23.Location = new System.Drawing.Point(316, 4);
             this.checkBoxX23.Name = "checkBoxX23";
-            this.checkBoxX23.Size = new System.Drawing.Size(95, 26);
+            this.checkBoxX23.Size = new System.Drawing.Size(80, 21);
             this.checkBoxX23.TabIndex = 0;
             this.checkBoxX23.Text = "重修成績";
             // 
@@ -1971,7 +1975,7 @@
             this.checkBoxX24.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.checkBoxX24.Location = new System.Drawing.Point(164, 4);
             this.checkBoxX24.Name = "checkBoxX24";
-            this.checkBoxX24.Size = new System.Drawing.Size(95, 26);
+            this.checkBoxX24.Size = new System.Drawing.Size(80, 21);
             this.checkBoxX24.TabIndex = 0;
             this.checkBoxX24.Text = "補考成績";
             // 
@@ -1986,7 +1990,7 @@
             this.checkBoxX25.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.checkBoxX25.Location = new System.Drawing.Point(5, 4);
             this.checkBoxX25.Name = "checkBoxX25";
-            this.checkBoxX25.Size = new System.Drawing.Size(95, 26);
+            this.checkBoxX25.Size = new System.Drawing.Size(80, 21);
             this.checkBoxX25.TabIndex = 0;
             this.checkBoxX25.Text = "原始成績";
             // 
@@ -1997,7 +2001,7 @@
             // 
             this.checkBoxX5.BackgroundStyle.Class = "";
             this.checkBoxX5.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.checkBoxX5.Font = new System.Drawing.Font("微軟正黑體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.checkBoxX5.Font = new System.Drawing.Font("Microsoft JhengHei", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.checkBoxX5.Location = new System.Drawing.Point(4, 3);
             this.checkBoxX5.Name = "checkBoxX5";
             this.checkBoxX5.Size = new System.Drawing.Size(626, 23);
@@ -2055,7 +2059,7 @@
             this.radioButton13.BackColor = System.Drawing.Color.Transparent;
             this.radioButton13.Location = new System.Drawing.Point(284, 2);
             this.radioButton13.Name = "radioButton13";
-            this.radioButton13.Size = new System.Drawing.Size(133, 26);
+            this.radioButton13.Size = new System.Drawing.Size(104, 21);
             this.radioButton13.TabIndex = 0;
             this.radioButton13.Text = "以六十分登錄";
             this.radioButton13.UseVisualStyleBackColor = false;
@@ -2067,7 +2071,7 @@
             this.radioButton26.Checked = true;
             this.radioButton26.Location = new System.Drawing.Point(11, 2);
             this.radioButton26.Name = "radioButton26";
-            this.radioButton26.Size = new System.Drawing.Size(347, 26);
+            this.radioButton26.Size = new System.Drawing.Size(268, 21);
             this.radioButton26.TabIndex = 3;
             this.radioButton26.TabStop = true;
             this.radioButton26.Text = "不登錄學年調整成績(只修改取得學分狀態)";
@@ -2079,7 +2083,7 @@
             this.radioButton27.BackColor = System.Drawing.Color.Transparent;
             this.radioButton27.Location = new System.Drawing.Point(11, 29);
             this.radioButton27.Name = "radioButton27";
-            this.radioButton27.Size = new System.Drawing.Size(415, 26);
+            this.radioButton27.Size = new System.Drawing.Size(320, 21);
             this.radioButton27.TabIndex = 0;
             this.radioButton27.Text = "不使用學年調整成績(不登錄成績、不修改取得學分)";
             this.radioButton27.UseVisualStyleBackColor = false;
@@ -2090,7 +2094,7 @@
             this.radioButton14.BackColor = System.Drawing.Color.Transparent;
             this.radioButton14.Location = new System.Drawing.Point(392, 2);
             this.radioButton14.Name = "radioButton14";
-            this.radioButton14.Size = new System.Drawing.Size(184, 26);
+            this.radioButton14.Size = new System.Drawing.Size(143, 21);
             this.radioButton14.TabIndex = 0;
             this.radioButton14.Text = "以學生及格標準登錄";
             this.radioButton14.UseVisualStyleBackColor = false;
@@ -2101,7 +2105,7 @@
             this.groupPanel14.CanvasColor = System.Drawing.SystemColors.Control;
             this.groupPanel14.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
             this.groupPanel14.Controls.Add(this.groupPanel18);
-            this.groupPanel14.Location = new System.Drawing.Point(165, 1018);
+            this.groupPanel14.Location = new System.Drawing.Point(167, 1018);
             this.groupPanel14.Name = "groupPanel14";
             this.groupPanel14.Size = new System.Drawing.Size(644, 150);
             // 
@@ -2187,7 +2191,7 @@
             // 
             this.numericUpDown5.Location = new System.Drawing.Point(75, 3);
             this.numericUpDown5.Name = "numericUpDown5";
-            this.numericUpDown5.Size = new System.Drawing.Size(35, 29);
+            this.numericUpDown5.Size = new System.Drawing.Size(35, 25);
             this.numericUpDown5.TabIndex = 6;
             this.numericUpDown5.Value = new decimal(new int[] {
             4,
@@ -2206,7 +2210,7 @@
             this.labelX21.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX21.Location = new System.Drawing.Point(9, 5);
             this.labelX21.Name = "labelX21";
-            this.labelX21.Size = new System.Drawing.Size(75, 26);
+            this.labelX21.Size = new System.Drawing.Size(60, 21);
             this.labelX21.TabIndex = 0;
             this.labelX21.Text = "開始年級";
             // 
@@ -2217,7 +2221,7 @@
             this.radioButton20.Checked = true;
             this.radioButton20.Location = new System.Drawing.Point(10, 62);
             this.radioButton20.Name = "radioButton20";
-            this.radioButton20.Size = new System.Drawing.Size(286, 26);
+            this.radioButton20.Size = new System.Drawing.Size(221, 21);
             this.radioButton20.TabIndex = 3;
             this.radioButton20.TabStop = true;
             this.radioButton20.Text = "延修成績登錄至各修課學年度學期";
@@ -2229,7 +2233,7 @@
             this.radioButton19.BackColor = System.Drawing.Color.Transparent;
             this.radioButton19.Location = new System.Drawing.Point(10, 34);
             this.radioButton19.Name = "radioButton19";
-            this.radioButton19.Size = new System.Drawing.Size(320, 26);
+            this.radioButton19.Size = new System.Drawing.Size(247, 21);
             this.radioButton19.TabIndex = 3;
             this.radioButton19.Text = "所有延修成績合併登錄至同一延修學期";
             this.radioButton19.UseVisualStyleBackColor = false;
@@ -2244,10 +2248,10 @@
             // 
             this.tabControlPanel6.Controls.Add(this.cardPanelEx3);
             this.tabControlPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlPanel6.Location = new System.Drawing.Point(0, 33);
+            this.tabControlPanel6.Location = new System.Drawing.Point(0, 28);
             this.tabControlPanel6.Name = "tabControlPanel6";
             this.tabControlPanel6.Padding = new System.Windows.Forms.Padding(1);
-            this.tabControlPanel6.Size = new System.Drawing.Size(1002, 677);
+            this.tabControlPanel6.Size = new System.Drawing.Size(1002, 682);
             this.tabControlPanel6.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(253)))), ((int)(((byte)(254)))));
             this.tabControlPanel6.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(157)))), ((int)(((byte)(188)))), ((int)(((byte)(227)))));
             this.tabControlPanel6.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
@@ -2271,7 +2275,7 @@
             this.cardPanelEx3.Location = new System.Drawing.Point(1, 1);
             this.cardPanelEx3.MinWidth = 10;
             this.cardPanelEx3.Name = "cardPanelEx3";
-            this.cardPanelEx3.Size = new System.Drawing.Size(1000, 675);
+            this.cardPanelEx3.Size = new System.Drawing.Size(1000, 680);
             this.cardPanelEx3.Style.Alignment = System.Drawing.StringAlignment.Center;
             this.cardPanelEx3.Style.BackColor1.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
             this.cardPanelEx3.Style.BackColor2.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
@@ -2288,7 +2292,7 @@
             this.groupPanel15.Controls.Add(this.radioButton15);
             this.groupPanel15.Controls.Add(this.radioButton16);
             this.groupPanel15.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupPanel15.Location = new System.Drawing.Point(165, 10);
+            this.groupPanel15.Location = new System.Drawing.Point(167, 10);
             this.groupPanel15.Name = "groupPanel15";
             this.groupPanel15.Size = new System.Drawing.Size(644, 61);
             // 
@@ -2330,7 +2334,7 @@
             this.radioButton15.BackColor = System.Drawing.Color.Transparent;
             this.radioButton15.Location = new System.Drawing.Point(228, 7);
             this.radioButton15.Name = "radioButton15";
-            this.radioButton15.Size = new System.Drawing.Size(252, 26);
+            this.radioButton15.Size = new System.Drawing.Size(195, 21);
             this.radioButton15.TabIndex = 1;
             this.radioButton15.Text = "以實際學期科目成績內容為準";
             this.radioButton15.UseVisualStyleBackColor = false;
@@ -2343,7 +2347,7 @@
             this.radioButton16.Checked = true;
             this.radioButton16.Location = new System.Drawing.Point(31, 7);
             this.radioButton16.Name = "radioButton16";
-            this.radioButton16.Size = new System.Drawing.Size(201, 26);
+            this.radioButton16.Size = new System.Drawing.Size(156, 21);
             this.radioButton16.TabIndex = 0;
             this.radioButton16.TabStop = true;
             this.radioButton16.Text = "以課程規劃表內容為準";
@@ -2359,7 +2363,7 @@
             this.groupPanel12.Controls.Add(this.radioButton24);
             this.groupPanel12.Controls.Add(this.radioButton23);
             this.groupPanel12.Controls.Add(this.labelX14);
-            this.groupPanel12.Location = new System.Drawing.Point(165, 81);
+            this.groupPanel12.Location = new System.Drawing.Point(167, 81);
             this.groupPanel12.Name = "groupPanel12";
             this.groupPanel12.Size = new System.Drawing.Size(644, 61);
             // 
@@ -2446,7 +2450,7 @@
             this.radioButton22.Checked = true;
             this.radioButton22.Location = new System.Drawing.Point(289, 6);
             this.radioButton22.Name = "radioButton22";
-            this.radioButton22.Size = new System.Drawing.Size(167, 26);
+            this.radioButton22.Size = new System.Drawing.Size(130, 21);
             this.radioButton22.TabIndex = 1;
             this.radioButton22.TabStop = true;
             this.radioButton22.Text = "學期分項成績平均";
@@ -2458,7 +2462,7 @@
             this.radioButton32.BackColor = System.Drawing.Color.Transparent;
             this.radioButton32.Location = new System.Drawing.Point(151, 6);
             this.radioButton32.Name = "radioButton32";
-            this.radioButton32.Size = new System.Drawing.Size(167, 26);
+            this.radioButton32.Size = new System.Drawing.Size(130, 21);
             this.radioButton32.TabIndex = 0;
             this.radioButton32.Text = "學期科目成績加權";
             this.radioButton32.UseVisualStyleBackColor = false;
@@ -2475,7 +2479,7 @@
             this.labelX23.ForeColor = System.Drawing.SystemColors.ControlText;
             this.labelX23.Location = new System.Drawing.Point(29, 7);
             this.labelX23.Name = "labelX23";
-            this.labelX23.Size = new System.Drawing.Size(142, 26);
+            this.labelX23.Size = new System.Drawing.Size(114, 21);
             this.labelX23.TabIndex = 0;
             this.labelX23.Text = "學業成績計算方式";
             // 
@@ -2487,7 +2491,7 @@
             this.radioButton24.ForeColor = System.Drawing.SystemColors.ControlText;
             this.radioButton24.Location = new System.Drawing.Point(317, 8);
             this.radioButton24.Name = "radioButton24";
-            this.radioButton24.Size = new System.Drawing.Size(167, 26);
+            this.radioButton24.Size = new System.Drawing.Size(130, 21);
             this.radioButton24.TabIndex = 1;
             this.radioButton24.TabStop = true;
             this.radioButton24.Text = "學期分項成績平均";
@@ -2500,7 +2504,7 @@
             this.radioButton23.ForeColor = System.Drawing.SystemColors.ControlText;
             this.radioButton23.Location = new System.Drawing.Point(179, 8);
             this.radioButton23.Name = "radioButton23";
-            this.radioButton23.Size = new System.Drawing.Size(167, 26);
+            this.radioButton23.Size = new System.Drawing.Size(130, 21);
             this.radioButton23.TabIndex = 0;
             this.radioButton23.Text = "學期科目成績加權";
             this.radioButton23.UseVisualStyleBackColor = false;
@@ -2517,7 +2521,7 @@
             this.labelX14.ForeColor = System.Drawing.SystemColors.ControlText;
             this.labelX14.Location = new System.Drawing.Point(48, 9);
             this.labelX14.Name = "labelX14";
-            this.labelX14.Size = new System.Drawing.Size(159, 26);
+            this.labelX14.Size = new System.Drawing.Size(127, 21);
             this.labelX14.TabIndex = 0;
             this.labelX14.Text = "學業成績計算方式：";
             // 
@@ -2530,7 +2534,7 @@
             this.groupPanel21.Controls.Add(this.groupPanel5);
             this.groupPanel21.Controls.Add(this.groupPanel16);
             this.groupPanel21.Controls.Add(this.groupPanel13);
-            this.groupPanel21.Location = new System.Drawing.Point(165, 152);
+            this.groupPanel21.Location = new System.Drawing.Point(167, 152);
             this.groupPanel21.Name = "groupPanel21";
             this.groupPanel21.Size = new System.Drawing.Size(644, 549);
             // 
@@ -2625,7 +2629,7 @@
             this.labelX27.ForeColor = System.Drawing.SystemColors.ControlText;
             this.labelX27.Location = new System.Drawing.Point(54, 30);
             this.labelX27.Name = "labelX27";
-            this.labelX27.Size = new System.Drawing.Size(125, 26);
+            this.labelX27.Size = new System.Drawing.Size(101, 21);
             this.labelX27.TabIndex = 6;
             this.labelX27.Text = "修習科目判斷：";
             // 
@@ -2639,7 +2643,7 @@
             this.checkBoxX9.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.checkBoxX9.Location = new System.Drawing.Point(159, 30);
             this.checkBoxX9.Name = "checkBoxX9";
-            this.checkBoxX9.Size = new System.Drawing.Size(296, 26);
+            this.checkBoxX9.Size = new System.Drawing.Size(241, 21);
             this.checkBoxX9.TabIndex = 5;
             this.checkBoxX9.Text = "必需修滿課程規劃表中所列必修課程";
             // 
@@ -2655,7 +2659,7 @@
             this.labelX24.ForeColor = System.Drawing.SystemColors.ControlText;
             this.labelX24.Location = new System.Drawing.Point(28, 3);
             this.labelX24.Name = "labelX24";
-            this.labelX24.Size = new System.Drawing.Size(159, 26);
+            this.labelX24.Size = new System.Drawing.Size(127, 21);
             this.labelX24.TabIndex = 6;
             this.labelX24.Text = "學年學業成績判斷：";
             // 
@@ -2669,7 +2673,7 @@
             this.checkBoxX7.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.checkBoxX7.Location = new System.Drawing.Point(159, 3);
             this.checkBoxX7.Name = "checkBoxX7";
-            this.checkBoxX7.Size = new System.Drawing.Size(262, 26);
+            this.checkBoxX7.Size = new System.Drawing.Size(214, 21);
             this.checkBoxX7.TabIndex = 5;
             this.checkBoxX7.Text = "各學年學年學業分項成績皆及格";
             // 
@@ -2724,7 +2728,7 @@
             this.radioButton28.Checked = true;
             this.radioButton28.Location = new System.Drawing.Point(289, 6);
             this.radioButton28.Name = "radioButton28";
-            this.radioButton28.Size = new System.Drawing.Size(167, 26);
+            this.radioButton28.Size = new System.Drawing.Size(130, 21);
             this.radioButton28.TabIndex = 1;
             this.radioButton28.TabStop = true;
             this.radioButton28.Text = "學期分項成績平均";
@@ -2736,7 +2740,7 @@
             this.radioButton33.BackColor = System.Drawing.Color.Transparent;
             this.radioButton33.Location = new System.Drawing.Point(151, 6);
             this.radioButton33.Name = "radioButton33";
-            this.radioButton33.Size = new System.Drawing.Size(167, 26);
+            this.radioButton33.Size = new System.Drawing.Size(130, 21);
             this.radioButton33.TabIndex = 0;
             this.radioButton33.Text = "學期科目成績加權";
             this.radioButton33.UseVisualStyleBackColor = false;
@@ -2753,7 +2757,7 @@
             this.labelX28.ForeColor = System.Drawing.SystemColors.ControlText;
             this.labelX28.Location = new System.Drawing.Point(29, 7);
             this.labelX28.Name = "labelX28";
-            this.labelX28.Size = new System.Drawing.Size(142, 26);
+            this.labelX28.Size = new System.Drawing.Size(114, 21);
             this.labelX28.TabIndex = 0;
             this.labelX28.Text = "學業成績計算方式";
             // 
@@ -2809,10 +2813,10 @@
             this.cmbProfessionalSubjectTable.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmbProfessionalSubjectTable.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbProfessionalSubjectTable.FormattingEnabled = true;
-            this.cmbProfessionalSubjectTable.ItemHeight = 23;
+            this.cmbProfessionalSubjectTable.ItemHeight = 19;
             this.cmbProfessionalSubjectTable.Location = new System.Drawing.Point(182, 130);
             this.cmbProfessionalSubjectTable.Name = "cmbProfessionalSubjectTable";
-            this.cmbProfessionalSubjectTable.Size = new System.Drawing.Size(121, 29);
+            this.cmbProfessionalSubjectTable.Size = new System.Drawing.Size(121, 25);
             this.cmbProfessionalSubjectTable.TabIndex = 5;
             // 
             // labelX26
@@ -2827,7 +2831,7 @@
             this.labelX26.ForeColor = System.Drawing.SystemColors.ControlText;
             this.labelX26.Location = new System.Drawing.Point(9, 132);
             this.labelX26.Name = "labelX26";
-            this.labelX26.Size = new System.Drawing.Size(209, 26);
+            this.labelX26.Size = new System.Drawing.Size(167, 21);
             this.labelX26.TabIndex = 4;
             this.labelX26.Text = "列印學籍表用專業科目表：";
             // 
@@ -2841,7 +2845,7 @@
             this.labelX13.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX13.Location = new System.Drawing.Point(13, 3);
             this.labelX13.Name = "labelX13";
-            this.labelX13.Size = new System.Drawing.Size(376, 26);
+            this.labelX13.Size = new System.Drawing.Size(301, 21);
             this.labelX13.TabIndex = 1;
             this.labelX13.Text = "必需通過下列勾選科目表中的修習及取得學分規定";
             // 
@@ -2923,7 +2927,7 @@
             this.labelX25.ForeColor = System.Drawing.SystemColors.ControlText;
             this.labelX25.Location = new System.Drawing.Point(54, 7);
             this.labelX25.Name = "labelX25";
-            this.labelX25.Size = new System.Drawing.Size(125, 26);
+            this.labelX25.Size = new System.Drawing.Size(101, 21);
             this.labelX25.TabIndex = 5;
             this.labelX25.Text = "德行畢業判斷：";
             // 
@@ -2978,7 +2982,7 @@
             this.radioButton17.Checked = true;
             this.radioButton17.Location = new System.Drawing.Point(289, 6);
             this.radioButton17.Name = "radioButton17";
-            this.radioButton17.Size = new System.Drawing.Size(167, 26);
+            this.radioButton17.Size = new System.Drawing.Size(130, 21);
             this.radioButton17.TabIndex = 1;
             this.radioButton17.TabStop = true;
             this.radioButton17.Text = "學期分項成績平均";
@@ -2990,7 +2994,7 @@
             this.radioButton18.BackColor = System.Drawing.Color.Transparent;
             this.radioButton18.Location = new System.Drawing.Point(151, 6);
             this.radioButton18.Name = "radioButton18";
-            this.radioButton18.Size = new System.Drawing.Size(167, 26);
+            this.radioButton18.Size = new System.Drawing.Size(130, 21);
             this.radioButton18.TabIndex = 0;
             this.radioButton18.Text = "學期科目成績加權";
             this.radioButton18.UseVisualStyleBackColor = false;
@@ -3007,7 +3011,7 @@
             this.labelX22.ForeColor = System.Drawing.SystemColors.ControlText;
             this.labelX22.Location = new System.Drawing.Point(29, 7);
             this.labelX22.Name = "labelX22";
-            this.labelX22.Size = new System.Drawing.Size(142, 26);
+            this.labelX22.Size = new System.Drawing.Size(114, 21);
             this.labelX22.TabIndex = 0;
             this.labelX22.Text = "學業成績計算方式";
             // 
@@ -3021,7 +3025,7 @@
             this.checkBoxX6.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.checkBoxX6.Location = new System.Drawing.Point(159, 7);
             this.checkBoxX6.Name = "checkBoxX6";
-            this.checkBoxX6.Size = new System.Drawing.Size(179, 26);
+            this.checkBoxX6.Size = new System.Drawing.Size(147, 21);
             this.checkBoxX6.TabIndex = 0;
             this.checkBoxX6.Text = "功過相抵未滿三大過";
             // 
@@ -3095,7 +3099,7 @@
             this.checkBoxX20.CheckValue = "Y";
             this.checkBoxX20.Location = new System.Drawing.Point(290, 93);
             this.checkBoxX20.Name = "checkBoxX20";
-            this.checkBoxX20.Size = new System.Drawing.Size(212, 26);
+            this.checkBoxX20.Size = new System.Drawing.Size(174, 21);
             this.checkBoxX20.TabIndex = 7;
             this.checkBoxX20.Text = "同一科目級別不重複採計";
             // 
@@ -3109,7 +3113,7 @@
             this.labelX29.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX29.Location = new System.Drawing.Point(29, 93);
             this.labelX29.Name = "labelX29";
-            this.labelX29.Size = new System.Drawing.Size(159, 26);
+            this.labelX29.Size = new System.Drawing.Size(127, 21);
             this.labelX29.TabIndex = 5;
             this.labelX29.Text = "專業及實習總學分數";
             // 
@@ -3122,7 +3126,7 @@
             this.textBoxX2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.textBoxX2.Location = new System.Drawing.Point(159, 90);
             this.textBoxX2.Name = "textBoxX2";
-            this.textBoxX2.Size = new System.Drawing.Size(63, 35);
+            this.textBoxX2.Size = new System.Drawing.Size(63, 25);
             this.textBoxX2.TabIndex = 6;
             this.textBoxX2.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
             // 
@@ -3136,7 +3140,7 @@
             this.labelX12.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX12.Location = new System.Drawing.Point(29, 64);
             this.labelX12.Name = "labelX12";
-            this.labelX12.Size = new System.Drawing.Size(92, 26);
+            this.labelX12.Size = new System.Drawing.Size(74, 21);
             this.labelX12.TabIndex = 3;
             this.labelX12.Text = "實習學分數";
             // 
@@ -3150,7 +3154,7 @@
             this.labelX17.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX17.Location = new System.Drawing.Point(290, 64);
             this.labelX17.Name = "labelX17";
-            this.labelX17.Size = new System.Drawing.Size(125, 26);
+            this.labelX17.Size = new System.Drawing.Size(101, 21);
             this.labelX17.TabIndex = 3;
             this.labelX17.Text = "校訂必修學分數";
             // 
@@ -3164,7 +3168,7 @@
             this.labelX11.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX11.Location = new System.Drawing.Point(290, 35);
             this.labelX11.Name = "labelX11";
-            this.labelX11.Size = new System.Drawing.Size(125, 26);
+            this.labelX11.Size = new System.Drawing.Size(101, 21);
             this.labelX11.TabIndex = 3;
             this.labelX11.Text = "部訂必修學分數";
             // 
@@ -3178,7 +3182,7 @@
             this.labelX18.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX18.Location = new System.Drawing.Point(290, 6);
             this.labelX18.Name = "labelX18";
-            this.labelX18.Size = new System.Drawing.Size(92, 26);
+            this.labelX18.Size = new System.Drawing.Size(74, 21);
             this.labelX18.TabIndex = 3;
             this.labelX18.Text = "必修學分數";
             // 
@@ -3192,7 +3196,7 @@
             this.labelX16.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX16.Location = new System.Drawing.Point(29, 35);
             this.labelX16.Name = "labelX16";
-            this.labelX16.Size = new System.Drawing.Size(92, 26);
+            this.labelX16.Size = new System.Drawing.Size(74, 21);
             this.labelX16.TabIndex = 3;
             this.labelX16.Text = "選修學分數";
             // 
@@ -3206,7 +3210,7 @@
             this.labelX10.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX10.Location = new System.Drawing.Point(29, 6);
             this.labelX10.Name = "labelX10";
-            this.labelX10.Size = new System.Drawing.Size(75, 26);
+            this.labelX10.Size = new System.Drawing.Size(60, 21);
             this.labelX10.TabIndex = 3;
             this.labelX10.Text = "總學分數";
             // 
@@ -3219,7 +3223,7 @@
             this.textBoxX1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.textBoxX1.Location = new System.Drawing.Point(420, 3);
             this.textBoxX1.Name = "textBoxX1";
-            this.textBoxX1.Size = new System.Drawing.Size(63, 35);
+            this.textBoxX1.Size = new System.Drawing.Size(63, 25);
             this.textBoxX1.TabIndex = 1;
             this.textBoxX1.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
             // 
@@ -3232,7 +3236,7 @@
             this.textBoxX11.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.textBoxX11.Location = new System.Drawing.Point(159, 61);
             this.textBoxX11.Name = "textBoxX11";
-            this.textBoxX11.Size = new System.Drawing.Size(63, 35);
+            this.textBoxX11.Size = new System.Drawing.Size(63, 25);
             this.textBoxX11.TabIndex = 4;
             this.textBoxX11.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
             // 
@@ -3245,7 +3249,7 @@
             this.textBoxX8.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.textBoxX8.Location = new System.Drawing.Point(159, 32);
             this.textBoxX8.Name = "textBoxX8";
-            this.textBoxX8.Size = new System.Drawing.Size(63, 35);
+            this.textBoxX8.Size = new System.Drawing.Size(63, 25);
             this.textBoxX8.TabIndex = 1;
             this.textBoxX8.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
             // 
@@ -3258,7 +3262,7 @@
             this.textBoxX10.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.textBoxX10.Location = new System.Drawing.Point(420, 61);
             this.textBoxX10.Name = "textBoxX10";
-            this.textBoxX10.Size = new System.Drawing.Size(63, 35);
+            this.textBoxX10.Size = new System.Drawing.Size(63, 25);
             this.textBoxX10.TabIndex = 3;
             this.textBoxX10.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
             // 
@@ -3271,7 +3275,7 @@
             this.textBoxX6.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.textBoxX6.Location = new System.Drawing.Point(159, 3);
             this.textBoxX6.Name = "textBoxX6";
-            this.textBoxX6.Size = new System.Drawing.Size(63, 35);
+            this.textBoxX6.Size = new System.Drawing.Size(63, 25);
             this.textBoxX6.TabIndex = 0;
             this.textBoxX6.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
             // 
@@ -3284,7 +3288,7 @@
             this.textBoxX7.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.textBoxX7.Location = new System.Drawing.Point(420, 32);
             this.textBoxX7.Name = "textBoxX7";
-            this.textBoxX7.Size = new System.Drawing.Size(63, 35);
+            this.textBoxX7.Size = new System.Drawing.Size(63, 25);
             this.textBoxX7.TabIndex = 2;
             this.textBoxX7.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
             // 
@@ -3302,19 +3306,19 @@
             this.toolStripMenuItem2});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.ShowImageMargin = false;
-            this.contextMenuStrip1.Size = new System.Drawing.Size(84, 52);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(76, 48);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(83, 24);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(75, 22);
             this.toolStripMenuItem1.Text = "插入";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(83, 24);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(75, 22);
             this.toolStripMenuItem2.Text = "刪除";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
@@ -3390,12 +3394,42 @@
             this.dataGridViewTextBoxColumn9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.dataGridViewTextBoxColumn9.Width = 63;
             // 
+            // checkBoxX26
+            // 
+            this.checkBoxX26.AutoSize = true;
+            this.checkBoxX26.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.checkBoxX26.BackgroundStyle.Class = "";
+            this.checkBoxX26.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX26.Location = new System.Drawing.Point(316, 29);
+            this.checkBoxX26.Name = "checkBoxX26";
+            this.checkBoxX26.Size = new System.Drawing.Size(80, 21);
+            this.checkBoxX26.TabIndex = 1;
+            this.checkBoxX26.Text = "補修成績";
+            // 
+            // checkBoxX27
+            // 
+            this.checkBoxX27.AutoSize = true;
+            this.checkBoxX27.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.checkBoxX27.BackgroundStyle.Class = "";
+            this.checkBoxX27.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX27.Location = new System.Drawing.Point(316, 30);
+            this.checkBoxX27.Name = "checkBoxX27";
+            this.checkBoxX27.Size = new System.Drawing.Size(80, 21);
+            this.checkBoxX27.TabIndex = 2;
+            this.checkBoxX27.Text = "補修成績";
+            // 
             // ScoreCalcRuleEditor
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoScroll = true;
             this.Controls.Add(this.panelEx1);
-            this.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ScoreCalcRuleEditor";
             this.Size = new System.Drawing.Size(1002, 710);
@@ -3648,6 +3682,7 @@
         private DevComponents.DotNetBar.Controls.CheckBoxX checkBoxX23;
         private DevComponents.DotNetBar.Controls.CheckBoxX checkBoxX24;
         private DevComponents.DotNetBar.Controls.CheckBoxX checkBoxX25;
-
+        private DevComponents.DotNetBar.Controls.CheckBoxX checkBoxX26;
+        private DevComponents.DotNetBar.Controls.CheckBoxX checkBoxX27;
     }
 }

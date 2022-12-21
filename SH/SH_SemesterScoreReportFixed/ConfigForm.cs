@@ -193,6 +193,7 @@ namespace SH_SemesterScoreReportFixed
 
                     Configure.NeedRereadScoreMark = txtNeedRereadScoreMark.Text;
                     Configure.RereadScoreMark = txtRereadScoreMark.Text;
+                    Configure.RepairScoreMark = txtRepairScoreMark.Text;
 
                     if (cboExam.Items.Count > 0)
                         Configure.ExamRecord = (ExamRecord)cboExam.Items[0];
@@ -227,6 +228,7 @@ namespace SH_SemesterScoreReportFixed
 
                     txtNeedRereadScoreMark.Text = Configure.NeedRereadScoreMark;
                     txtRereadScoreMark.Text = Configure.RereadScoreMark;
+                    txtRepairScoreMark.Text = Configure.RepairScoreMark;
 
                     ckShowLevel.Checked = Configure.IsShowLevel;
 
@@ -276,6 +278,7 @@ namespace SH_SemesterScoreReportFixed
 
             Configure.NeedRereadScoreMark = txtNeedRereadScoreMark.Text;
             Configure.RereadScoreMark = txtRereadScoreMark.Text;
+            Configure.RepairScoreMark = txtRepairScoreMark.Text;
             Configure.IsShowLevel = ckShowLevel.Checked;
 
             if (Configure.RefenceExamRecord != null && Configure.RefenceExamRecord.Name == "")

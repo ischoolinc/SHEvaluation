@@ -59,6 +59,8 @@
             this.labelX3 = new DevComponents.DotNetBar.LabelX();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
             this.ckShowLevel = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.txtRepairScoreMark = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.labelX10 = new DevComponents.DotNetBar.LabelX();
             this.gp1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -341,6 +343,8 @@
             this.gp1.BackColor = System.Drawing.Color.Transparent;
             this.gp1.CanvasColor = System.Drawing.SystemColors.Control;
             this.gp1.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.gp1.Controls.Add(this.txtRepairScoreMark);
+            this.gp1.Controls.Add(this.labelX10);
             this.gp1.Controls.Add(this.txtRereadScoreMark);
             this.gp1.Controls.Add(this.txtNeedRereadScoreMark);
             this.gp1.Controls.Add(this.labelX6);
@@ -546,6 +550,34 @@
             this.ckShowLevel.TabIndex = 48;
             this.ckShowLevel.Text = "顯示科目級別";
             // 
+            // txtRepairScoreMark
+            // 
+            // 
+            // 
+            // 
+            this.txtRepairScoreMark.Border.Class = "TextBoxBorder";
+            this.txtRepairScoreMark.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtRepairScoreMark.ImeMode = System.Windows.Forms.ImeMode.Close;
+            this.txtRepairScoreMark.Location = new System.Drawing.Point(512, 45);
+            this.txtRepairScoreMark.Name = "txtRepairScoreMark";
+            this.txtRepairScoreMark.Size = new System.Drawing.Size(50, 25);
+            this.txtRepairScoreMark.TabIndex = 49;
+            // 
+            // labelX10
+            // 
+            this.labelX10.AutoSize = true;
+            this.labelX10.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX10.BackgroundStyle.Class = "";
+            this.labelX10.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX10.Location = new System.Drawing.Point(424, 47);
+            this.labelX10.Name = "labelX10";
+            this.labelX10.Size = new System.Drawing.Size(87, 21);
+            this.labelX10.TabIndex = 48;
+            this.labelX10.Text = "補修成績加註";
+            // 
             // ConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
@@ -617,5 +649,7 @@
         private DevComponents.DotNetBar.LabelX labelX6;
         private DevComponents.DotNetBar.LabelX labelX8;
         private DevComponents.DotNetBar.Controls.CheckBoxX ckShowLevel;
+        private DevComponents.DotNetBar.Controls.TextBoxX txtRepairScoreMark;
+        private DevComponents.DotNetBar.LabelX labelX10;
     }
 }

@@ -135,6 +135,12 @@ namespace SH_SemesterScoreReportFixed
         public string RereadScoreMark { get; set; }
 
         /// <summary>
+        /// 補修成績標示
+        /// </summary>
+        [FISCA.UDT.Field]
+        public string RepairScoreMark { get; set; }
+
+        /// <summary>
         /// 顯示科目級別，true:顯示
         /// </summary>
         [FISCA.UDT.Field]

@@ -2483,6 +2483,11 @@ namespace SH_SemesterScoreReportFixed
                                                     row["上學期科目學年調整成績" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("學年調整成績");
                                                     row["上學期科目成績" + subjectIndex] = semesterSubjectScore.Score;
 
+                                                    if ("" + semesterSubjectScore.Detail.GetAttribute("是否補修成績") == "是")
+                                                    {
+                                                        row["上學期科目補修成績標示" + subjectIndex] = conf.RepairScoreMark;
+                                                    }
+
                                                     if ("" + semesterSubjectScore.Score == semesterSubjectScore.Detail.GetAttribute("原始成績"))
                                                         row["上學期科目原始成績註記" + subjectIndex] = "\f";
                                                     if ("" + semesterSubjectScore.Score == semesterSubjectScore.Detail.GetAttribute("補考成績"))

@@ -30,8 +30,8 @@ namespace SH_SemesterScoreReportFixed
             {
                 Template = new Aspose.Words.Document(new MemoryStream(Properties.Resources.個人學期成績單樣板));
                 this.SubjectLimit = 30;
-                this.WithSchoolYearScore = true;
-                this.WithPrevSemesterScore = true;
+                this.WithSchoolYearScore = false;
+                this.WithPrevSemesterScore = false;
             }
         }
         private void UploadTemplate(object sender, EventArgs e)

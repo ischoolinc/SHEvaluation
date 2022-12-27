@@ -55,11 +55,6 @@
             this.groupPanel1 = new DevComponents.DotNetBar.Controls.GroupPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.dataGridViewX1 = new DevComponents.DotNetBar.Controls.DataGridViewX();
-            this.comboBoxEx1 = new DevComponents.DotNetBar.Controls.ComboBoxEx();
-            this.labelX1 = new DevComponents.DotNetBar.LabelX();
-            this.errorSchoolYear = new System.Windows.Forms.ErrorProvider(this.components);
-            this.errorSemester = new System.Windows.Forms.ErrorProvider(this.components);
-            this.errorGradeYear = new System.Windows.Forms.ErrorProvider(this.components);
             this.colDomain = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -69,6 +64,11 @@
             this.Column2 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.comboBoxEx1 = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.labelX1 = new DevComponents.DotNetBar.LabelX();
+            this.errorSchoolYear = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorSemester = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorGradeYear = new System.Windows.Forms.ErrorProvider(this.components);
             this.panelEx1.SuspendLayout();
             this.groupPanel2.SuspendLayout();
             this.groupPanel1.SuspendLayout();
@@ -520,50 +520,6 @@
             this.dataGridViewX1.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridViewX1_DataError);
             this.dataGridViewX1.RowHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewX1_RowHeaderMouseClick);
             // 
-            // comboBoxEx1
-            // 
-            this.comboBoxEx1.DisplayMember = "Text";
-            this.comboBoxEx1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.comboBoxEx1.FormattingEnabled = true;
-            this.comboBoxEx1.ItemHeight = 19;
-            this.comboBoxEx1.Location = new System.Drawing.Point(72, 8);
-            this.comboBoxEx1.Name = "comboBoxEx1";
-            this.comboBoxEx1.Size = new System.Drawing.Size(73, 25);
-            this.comboBoxEx1.TabIndex = 2;
-            this.comboBoxEx1.TextChanged += new System.EventHandler(this.ReLoad);
-            // 
-            // labelX1
-            // 
-            this.labelX1.AutoSize = true;
-            // 
-            // 
-            // 
-            this.labelX1.BackgroundStyle.Class = "";
-            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX1.Location = new System.Drawing.Point(12, 12);
-            this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(60, 21);
-            this.labelX1.TabIndex = 0;
-            this.labelX1.Text = "學年度：";
-            // 
-            // errorSchoolYear
-            // 
-            this.errorSchoolYear.BlinkRate = 0;
-            this.errorSchoolYear.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
-            this.errorSchoolYear.ContainerControl = this;
-            // 
-            // errorSemester
-            // 
-            this.errorSemester.BlinkRate = 0;
-            this.errorSemester.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
-            this.errorSemester.ContainerControl = this;
-            // 
-            // errorGradeYear
-            // 
-            this.errorGradeYear.BlinkRate = 0;
-            this.errorGradeYear.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
-            this.errorGradeYear.ContainerControl = this;
-            // 
             // colDomain
             // 
             this.colDomain.HeaderText = "領域";
@@ -646,6 +602,50 @@
             this.Column3.Name = "Column3";
             this.Column3.Width = 50;
             // 
+            // comboBoxEx1
+            // 
+            this.comboBoxEx1.DisplayMember = "Text";
+            this.comboBoxEx1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboBoxEx1.FormattingEnabled = true;
+            this.comboBoxEx1.ItemHeight = 19;
+            this.comboBoxEx1.Location = new System.Drawing.Point(72, 8);
+            this.comboBoxEx1.Name = "comboBoxEx1";
+            this.comboBoxEx1.Size = new System.Drawing.Size(73, 25);
+            this.comboBoxEx1.TabIndex = 2;
+            this.comboBoxEx1.TextChanged += new System.EventHandler(this.ReLoad);
+            // 
+            // labelX1
+            // 
+            this.labelX1.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX1.BackgroundStyle.Class = "";
+            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX1.Location = new System.Drawing.Point(12, 12);
+            this.labelX1.Name = "labelX1";
+            this.labelX1.Size = new System.Drawing.Size(60, 21);
+            this.labelX1.TabIndex = 0;
+            this.labelX1.Text = "學年度：";
+            // 
+            // errorSchoolYear
+            // 
+            this.errorSchoolYear.BlinkRate = 0;
+            this.errorSchoolYear.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
+            this.errorSchoolYear.ContainerControl = this;
+            // 
+            // errorSemester
+            // 
+            this.errorSemester.BlinkRate = 0;
+            this.errorSemester.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
+            this.errorSemester.ContainerControl = this;
+            // 
+            // errorGradeYear
+            // 
+            this.errorGradeYear.BlinkRate = 0;
+            this.errorGradeYear.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
+            this.errorGradeYear.ContainerControl = this;
+            // 
             // SchoolYearScoreEditor
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -654,6 +654,7 @@
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximizeBox = true;
             this.Name = "SchoolYearScoreEditor";
             this.Text = "學年成績";
             this.panelEx1.ResumeLayout(false);

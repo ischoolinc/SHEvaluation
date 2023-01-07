@@ -224,7 +224,10 @@ namespace SmartSchool.Evaluation.Configuration
             string id = _SelectItem.Name;
             string name = schoolYear + (_SelectItem.Tag as GraduationPlanInfo).TrimName;
 
-            EditGraduationPlan.Update(_SelectItem.Name, _GraduationPlanEditor.GetSource(schoolYear));
+            System.Xml.XmlElement sourceXml = _GraduationPlanEditor.GetSource(schoolYear);
+            sourceXml.SetAttribute("EntryYear", schoolYear);
+
+            EditGraduationPlan.Update(_SelectItem.Name, sourceXml);
             this._GraduationPlanEditor.SetSource((_SelectItem.Tag as GraduationPlanInfo).GraduationPlanElement);
             EventHub.Instance.InvokGraduationPlanUpdated(_SelectItem.Name);
         }
@@ -280,7 +283,7 @@ namespace SmartSchool.Evaluation.Configuration
             enabled = false;
             btnCreate.Enabled = enabled;
             btnEditName.Enabled = enabled;
-            btnUpdate.Enabled = enabled;
+            //btnUpdate.Enabled = enabled;
             btnDelete.Enabled = enabled;
         }
 

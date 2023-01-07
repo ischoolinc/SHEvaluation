@@ -53,7 +53,7 @@ namespace SmartSchool.Evaluation.ImportExport
             };
             wizard.Options.AddRange(autoCheckPass, manulCheckPass);
             wizard.PackageLimit = 3000;
-            wizard.ImportableFields.AddRange("領域", "科目", "科目級別", "學年度", "學期", "英文名稱", "學分數", "分項類別", "成績年級", "必選修", "校部訂", "原始成績", "補考成績", "重修成績", "手動調整成績", "學年調整成績", "取得學分", "不計學分", "不需評分", "註記", "是否補修成績", "補修學年度", "補修學期", "重修學年度", "重修學期", "修課及格標準", "修課補考標準", "修課備註", "修課直接指定總成績", "免修", "抵免", "指定學年科目名稱");
+            wizard.ImportableFields.AddRange("領域", "科目", "科目級別", "學年度", "學期", "英文名稱", "學分數", "分項類別", "成績年級", "必選修", "校部訂", "原始成績", "補考成績", "重修成績", "手動調整成績", "學年調整成績", "取得學分", "不計學分", "不需評分", "註記", "是否補修成績", "補修學年度", "補修學期", "重修學年度", "重修學期", "修課及格標準", "修課補考標準", "修課備註", "修課直接指定總成績", "免修", "抵免", "指定學年科目名稱", "課程代碼");
             wizard.RequiredFields.AddRange("科目", "科目級別", "學年度", "學期");
             wizard.ValidateStart += delegate (object sender, SmartSchool.API.PlugIn.Import.ValidateStartEventArgs e)
             {
@@ -549,7 +549,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                                 case "分項類別":
                                                     if (score.Detail.GetAttribute("開課分項類別") != value)
                                                     {
-                                                        logLine += "、"+ field + "由「" + score.Detail.GetAttribute("開課分項類別") + "」變更為「" + value + "」";
+                                                        logLine += "、" + field + "由「" + score.Detail.GetAttribute("開課分項類別") + "」變更為「" + value + "」";
                                                         score.Detail.SetAttribute("開課分項類別", value);
                                                         hasChanged = true;
                                                     }
@@ -566,8 +566,8 @@ namespace SmartSchool.Evaluation.ImportExport
                                                     value = (value == "部定" ? "部訂" : value);
                                                     if (score.Detail.GetAttribute("修課校部訂") != value)
                                                     {
-                                                        logLine += "、" + field + "由「" + score.Detail.GetAttribute("修課校部訂")== "部訂" ? "部定" : score.Detail.GetAttribute("修課校部訂") + "」變更為「" + value + "」";
-                                                        score.Detail.SetAttribute("修課校部訂", value);;
+                                                        logLine += "、" + field + "由「" + score.Detail.GetAttribute("修課校部訂") == "部訂" ? "部定" : score.Detail.GetAttribute("修課校部訂") + "」變更為「" + value + "」";
+                                                        score.Detail.SetAttribute("修課校部訂", value); ;
                                                         hasChanged = true;
                                                     }
                                                     break;
@@ -635,13 +635,13 @@ namespace SmartSchool.Evaluation.ImportExport
                                                     break;
                                                 case "指定學年科目名稱":
                                                 case "英文名稱":
-                                                    //if (score.Detail.GetAttribute(field) != value)
-                                                    //{
-                                                    //    logLine += "、" + field + "由「" + score.Detail.GetAttribute(field) + "」變更為「" + value + "」";
-                                                    //    score.Detail.SetAttribute(field, value);
-                                                    //    hasChanged = true;
-                                                    //}
-                                                    //break;
+                                                //if (score.Detail.GetAttribute(field) != value)
+                                                //{
+                                                //    logLine += "、" + field + "由「" + score.Detail.GetAttribute(field) + "」變更為「" + value + "」";
+                                                //    score.Detail.SetAttribute(field, value);
+                                                //    hasChanged = true;
+                                                //}
+                                                //break;
                                                 case "修課及格標準":
                                                 case "修課補考標準":
                                                 case "修課直接指定總成績":
@@ -650,6 +650,14 @@ namespace SmartSchool.Evaluation.ImportExport
                                                     {
                                                         logLine += "、" + field + "由「" + score.Detail.GetAttribute(field) + "」變更為「" + value + "」";
                                                         score.Detail.SetAttribute(field, value);
+                                                        hasChanged = true;
+                                                    }
+                                                    break;
+                                                case "課程代碼":
+                                                    if (score.Detail.GetAttribute("修課科目代碼") != value)
+                                                    {
+                                                        logLine += "、" + field + "由「" + score.Detail.GetAttribute("修課科目代碼") + "」變更為「" + value + "」";
+                                                        score.Detail.SetAttribute("修課科目代碼", value);
                                                         hasChanged = true;
                                                     }
                                                     break;
@@ -739,7 +747,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                     string logLine = "學生系統編號：「" + id + "」學生姓名：「" + studentRec.StudentName + "」，新增科目：學年度「" + sy + "」、學期「" + se + "」";
 
                                     #region 建立newScore
-                                    foreach (string field in new string[] { "領域", "科目", "科目級別", "學分數", "分項類別", "必選修", "校部訂", "原始成績", "補考成績", "重修成績", "手動調整成績", "學年調整成績", "取得學分", "不計學分", "不需評分", "免修", "抵免", "補修學年度", "補修學期", "是否補修成績", "指定學年科目名稱" })
+                                    foreach (string field in new string[] { "領域", "科目", "科目級別", "學分數", "分項類別", "必選修", "校部訂", "原始成績", "補考成績", "重修成績", "手動調整成績", "學年調整成績", "取得學分", "不計學分", "不需評分", "免修", "抵免", "補修學年度", "補修學期", "是否補修成績", "指定學年科目名稱", "課程代碼" })
                                     {
                                         if (e.ImportFields.Contains(field))
                                         {
@@ -750,7 +758,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                                 case "領域":
                                                     newScore.SetAttribute("領域", value);
                                                     if (value != "")
-                                                        logLine += "、"+ field + "「" + value + "」";
+                                                        logLine += "、" + field + "「" + value + "」";
                                                     break;
                                                 case "科目":
                                                     newScore.SetAttribute("科目", value);
@@ -824,6 +832,11 @@ namespace SmartSchool.Evaluation.ImportExport
                                                     if (value != "")
                                                         logLine += "、" + field + "「" + value + "」";
                                                     break;
+                                                case "課程代碼":
+                                                    newScore.SetAttribute("修課科目代碼", value);
+                                                    if (value != "")
+                                                        logLine += "、" + field + "「" + value + "」";
+                                                    break;
 
                                             }
                                         }
@@ -884,7 +897,7 @@ namespace SmartSchool.Evaluation.ImportExport
                             {
                                 XmlElement newScore = doc.CreateElement("Subject");
                                 #region 建立newScore
-                                foreach (string field in new string[] { "領域", "科目", "科目級別", "學分數", "分項類別", "必選修", "校部訂", "原始成績", "補考成績", "重修成績", "手動調整成績", "學年調整成績", "取得學分", "不計學分", "不需評分", "是否補修成績", "重修學年度", "重修學期", "免修", "抵免", "補修學年度", "補修學期", "指定學年科目名稱" })
+                                foreach (string field in new string[] { "領域", "科目", "科目級別", "學分數", "分項類別", "必選修", "校部訂", "原始成績", "補考成績", "重修成績", "手動調整成績", "學年調整成績", "取得學分", "不計學分", "不需評分", "是否補修成績", "重修學年度", "重修學期", "免修", "抵免", "補修學年度", "補修學期", "指定學年科目名稱", "課程代碼" })
                                 {
                                     if (e.ImportFields.Contains(field))
                                     {
@@ -960,6 +973,11 @@ namespace SmartSchool.Evaluation.ImportExport
                                                 break;
                                             case "指定學年科目名稱":
                                                 newScore.SetAttribute(field, value);
+                                                if (value != "")
+                                                    logLine += "、" + field + "「" + value + "」";
+                                                break;
+                                            case "課程代碼":
+                                                newScore.SetAttribute("修課科目代碼", value);
                                                 if (value != "")
                                                     logLine += "、" + field + "「" + value + "」";
                                                 break;

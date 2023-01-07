@@ -192,6 +192,7 @@
             this.btnUpdate.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnUpdate.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnUpdate.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnUpdate.Enabled = false;
             this.btnUpdate.Location = new System.Drawing.Point(0, 521);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(200, 20);
@@ -285,7 +286,6 @@
             this.graduationPlanEditor1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.graduationPlanEditor1.Enabled = false;
             this.graduationPlanEditor1.Font = new System.Drawing.Font("微軟正黑體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.graduationPlanEditor1.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.graduationPlanEditor1.Location = new System.Drawing.Point(1, 35);

@@ -70,26 +70,6 @@
             this.groupPanel1 = new DevComponents.DotNetBar.Controls.GroupPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.dataGridViewX1 = new DevComponents.DotNetBar.Controls.DataGridViewX();
-            this.labelX9 = new DevComponents.DotNetBar.LabelX();
-            this.cboAttendGradeYear = new DevComponents.DotNetBar.Controls.ComboBoxEx();
-            this.comboBoxEx2 = new DevComponents.DotNetBar.Controls.ComboBoxEx();
-            this.comboBoxEx1 = new DevComponents.DotNetBar.Controls.ComboBoxEx();
-            this.labelX2 = new DevComponents.DotNetBar.LabelX();
-            this.labelX1 = new DevComponents.DotNetBar.LabelX();
-            this.errorSchoolYear = new System.Windows.Forms.ErrorProvider(this.components);
-            this.errorSemester = new System.Windows.Forms.ErrorProvider(this.components);
-            this.errorGradeYear = new System.Windows.Forms.ErrorProvider(this.components);
-            this.buttonItem1 = new DevComponents.DotNetBar.ButtonItem();
-            this.buttonItem2 = new DevComponents.DotNetBar.ButtonItem();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColDomain = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColEntry = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -118,6 +98,27 @@
             this.colScoreN1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colScoreN2 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ColSpecifySubjectName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCourseCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.labelX9 = new DevComponents.DotNetBar.LabelX();
+            this.cboAttendGradeYear = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.comboBoxEx2 = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.comboBoxEx1 = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.labelX2 = new DevComponents.DotNetBar.LabelX();
+            this.labelX1 = new DevComponents.DotNetBar.LabelX();
+            this.errorSchoolYear = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorSemester = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorGradeYear = new System.Windows.Forms.ErrorProvider(this.components);
+            this.buttonItem1 = new DevComponents.DotNetBar.ButtonItem();
+            this.buttonItem2 = new DevComponents.DotNetBar.ButtonItem();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panelEx1.SuspendLayout();
             this.groupPanel2.SuspendLayout();
             this.groupPanel1.SuspendLayout();
@@ -164,7 +165,7 @@
             // 
             this.labelX10.BackgroundStyle.Class = "";
             this.labelX10.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX10.Font = new System.Drawing.Font("Microsoft JhengHei", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.labelX10.Font = new System.Drawing.Font("微軟正黑體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.labelX10.Location = new System.Drawing.Point(289, 10);
             this.labelX10.Name = "labelX10";
             this.labelX10.Size = new System.Drawing.Size(485, 23);
@@ -746,7 +747,7 @@
             this.dataGridViewX1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -782,10 +783,11 @@
             this.colRetakeSemester,
             this.colScoreN1,
             this.colScoreN2,
-            this.ColSpecifySubjectName});
+            this.ColSpecifySubjectName,
+            this.colCourseCode});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
@@ -804,190 +806,6 @@
             this.dataGridViewX1.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewX1_CellValidated);
             this.dataGridViewX1.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridViewX1_DataError);
             this.dataGridViewX1.RowHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewX1_RowHeaderMouseClick);
-            // 
-            // labelX9
-            // 
-            this.labelX9.AutoSize = true;
-            // 
-            // 
-            // 
-            this.labelX9.BackgroundStyle.Class = "";
-            this.labelX9.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX9.Location = new System.Drawing.Point(10, 9);
-            this.labelX9.Name = "labelX9";
-            this.labelX9.Size = new System.Drawing.Size(74, 21);
-            this.labelX9.TabIndex = 0;
-            this.labelX9.Text = "修課年級：";
-            // 
-            // cboAttendGradeYear
-            // 
-            this.cboAttendGradeYear.DisplayMember = "Text";
-            this.cboAttendGradeYear.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboAttendGradeYear.FormattingEnabled = true;
-            this.cboAttendGradeYear.ItemHeight = 19;
-            this.cboAttendGradeYear.Location = new System.Drawing.Point(84, 5);
-            this.cboAttendGradeYear.Name = "cboAttendGradeYear";
-            this.cboAttendGradeYear.Size = new System.Drawing.Size(73, 25);
-            this.cboAttendGradeYear.TabIndex = 2;
-            this.cboAttendGradeYear.TextChanged += new System.EventHandler(this.comboBoxEx3_TextChanged);
-            // 
-            // comboBoxEx2
-            // 
-            this.comboBoxEx2.DisplayMember = "Text";
-            this.comboBoxEx2.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.comboBoxEx2.FormattingEnabled = true;
-            this.comboBoxEx2.ItemHeight = 19;
-            this.comboBoxEx2.Location = new System.Drawing.Point(210, 8);
-            this.comboBoxEx2.Name = "comboBoxEx2";
-            this.comboBoxEx2.Size = new System.Drawing.Size(73, 25);
-            this.comboBoxEx2.TabIndex = 2;
-            this.comboBoxEx2.TextChanged += new System.EventHandler(this.ReLoad);
-            // 
-            // comboBoxEx1
-            // 
-            this.comboBoxEx1.DisplayMember = "Text";
-            this.comboBoxEx1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.comboBoxEx1.FormattingEnabled = true;
-            this.comboBoxEx1.ItemHeight = 19;
-            this.comboBoxEx1.Location = new System.Drawing.Point(72, 8);
-            this.comboBoxEx1.Name = "comboBoxEx1";
-            this.comboBoxEx1.Size = new System.Drawing.Size(73, 25);
-            this.comboBoxEx1.TabIndex = 2;
-            this.comboBoxEx1.TextChanged += new System.EventHandler(this.ReLoad);
-            // 
-            // labelX2
-            // 
-            this.labelX2.AutoSize = true;
-            // 
-            // 
-            // 
-            this.labelX2.BackgroundStyle.Class = "";
-            this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(163, 12);
-            this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(47, 21);
-            this.labelX2.TabIndex = 0;
-            this.labelX2.Text = "學期：";
-            // 
-            // labelX1
-            // 
-            this.labelX1.AutoSize = true;
-            // 
-            // 
-            // 
-            this.labelX1.BackgroundStyle.Class = "";
-            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX1.Location = new System.Drawing.Point(12, 12);
-            this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(60, 21);
-            this.labelX1.TabIndex = 0;
-            this.labelX1.Text = "學年度：";
-            // 
-            // errorSchoolYear
-            // 
-            this.errorSchoolYear.BlinkRate = 0;
-            this.errorSchoolYear.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
-            this.errorSchoolYear.ContainerControl = this;
-            // 
-            // errorSemester
-            // 
-            this.errorSemester.BlinkRate = 0;
-            this.errorSemester.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
-            this.errorSemester.ContainerControl = this;
-            // 
-            // errorGradeYear
-            // 
-            this.errorGradeYear.BlinkRate = 0;
-            this.errorGradeYear.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
-            this.errorGradeYear.ContainerControl = this;
-            // 
-            // buttonItem1
-            // 
-            this.buttonItem1.GlobalItem = false;
-            this.buttonItem1.Name = "buttonItem1";
-            this.buttonItem1.Text = "可重算成績";
-            // 
-            // buttonItem2
-            // 
-            this.buttonItem2.Checked = true;
-            this.buttonItem2.GlobalItem = false;
-            this.buttonItem2.Name = "buttonItem2";
-            this.buttonItem2.Text = "不可重算成績";
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dataGridViewTextBoxColumn1.FillWeight = 145F;
-            this.dataGridViewTextBoxColumn1.HeaderText = "科目";
-            this.dataGridViewTextBoxColumn1.MinimumWidth = 80;
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.FillWeight = 1F;
-            this.dataGridViewTextBoxColumn2.HeaderText = "級別";
-            this.dataGridViewTextBoxColumn2.MinimumWidth = 40;
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn2.Width = 40;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.HeaderText = "學分";
-            this.dataGridViewTextBoxColumn3.MinimumWidth = 22;
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn3.Width = 40;
-            // 
-            // dataGridViewTextBoxColumn4
-            // 
-            this.dataGridViewTextBoxColumn4.HeaderText = "原始成績";
-            this.dataGridViewTextBoxColumn4.MinimumWidth = 40;
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            this.dataGridViewTextBoxColumn4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn4.Width = 40;
-            // 
-            // dataGridViewTextBoxColumn5
-            // 
-            this.dataGridViewTextBoxColumn5.HeaderText = "補考成績";
-            this.dataGridViewTextBoxColumn5.MinimumWidth = 40;
-            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
-            this.dataGridViewTextBoxColumn5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn5.Width = 40;
-            // 
-            // dataGridViewTextBoxColumn6
-            // 
-            this.dataGridViewTextBoxColumn6.HeaderText = "重修成績";
-            this.dataGridViewTextBoxColumn6.MinimumWidth = 40;
-            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
-            this.dataGridViewTextBoxColumn6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn6.Width = 40;
-            // 
-            // dataGridViewTextBoxColumn7
-            // 
-            this.dataGridViewTextBoxColumn7.HeaderText = "手動調整成績";
-            this.dataGridViewTextBoxColumn7.MinimumWidth = 55;
-            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
-            this.dataGridViewTextBoxColumn7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn7.Width = 55;
-            // 
-            // dataGridViewTextBoxColumn8
-            // 
-            this.dataGridViewTextBoxColumn8.HeaderText = "學年調整成績";
-            this.dataGridViewTextBoxColumn8.MinimumWidth = 55;
-            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
-            this.dataGridViewTextBoxColumn8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn8.Width = 55;
-            // 
-            // dataGridViewTextBoxColumn9
-            // 
-            this.dataGridViewTextBoxColumn9.FillWeight = 75F;
-            this.dataGridViewTextBoxColumn9.HeaderText = "註記";
-            this.dataGridViewTextBoxColumn9.MinimumWidth = 60;
-            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
-            this.dataGridViewTextBoxColumn9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn9.Width = 60;
             // 
             // ColDomain
             // 
@@ -1233,13 +1051,203 @@
             this.ColSpecifySubjectName.Name = "ColSpecifySubjectName";
             this.ColSpecifySubjectName.Width = 75;
             // 
+            // colCourseCode
+            // 
+            this.colCourseCode.HeaderText = "課程代碼";
+            this.colCourseCode.Name = "colCourseCode";
+            this.colCourseCode.Width = 150;
+            // 
+            // labelX9
+            // 
+            this.labelX9.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX9.BackgroundStyle.Class = "";
+            this.labelX9.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX9.Location = new System.Drawing.Point(10, 9);
+            this.labelX9.Name = "labelX9";
+            this.labelX9.Size = new System.Drawing.Size(74, 21);
+            this.labelX9.TabIndex = 0;
+            this.labelX9.Text = "修課年級：";
+            // 
+            // cboAttendGradeYear
+            // 
+            this.cboAttendGradeYear.DisplayMember = "Text";
+            this.cboAttendGradeYear.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboAttendGradeYear.FormattingEnabled = true;
+            this.cboAttendGradeYear.ItemHeight = 19;
+            this.cboAttendGradeYear.Location = new System.Drawing.Point(84, 5);
+            this.cboAttendGradeYear.Name = "cboAttendGradeYear";
+            this.cboAttendGradeYear.Size = new System.Drawing.Size(73, 25);
+            this.cboAttendGradeYear.TabIndex = 2;
+            this.cboAttendGradeYear.TextChanged += new System.EventHandler(this.comboBoxEx3_TextChanged);
+            // 
+            // comboBoxEx2
+            // 
+            this.comboBoxEx2.DisplayMember = "Text";
+            this.comboBoxEx2.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboBoxEx2.FormattingEnabled = true;
+            this.comboBoxEx2.ItemHeight = 19;
+            this.comboBoxEx2.Location = new System.Drawing.Point(210, 8);
+            this.comboBoxEx2.Name = "comboBoxEx2";
+            this.comboBoxEx2.Size = new System.Drawing.Size(73, 25);
+            this.comboBoxEx2.TabIndex = 2;
+            this.comboBoxEx2.TextChanged += new System.EventHandler(this.ReLoad);
+            // 
+            // comboBoxEx1
+            // 
+            this.comboBoxEx1.DisplayMember = "Text";
+            this.comboBoxEx1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboBoxEx1.FormattingEnabled = true;
+            this.comboBoxEx1.ItemHeight = 19;
+            this.comboBoxEx1.Location = new System.Drawing.Point(72, 8);
+            this.comboBoxEx1.Name = "comboBoxEx1";
+            this.comboBoxEx1.Size = new System.Drawing.Size(73, 25);
+            this.comboBoxEx1.TabIndex = 2;
+            this.comboBoxEx1.TextChanged += new System.EventHandler(this.ReLoad);
+            // 
+            // labelX2
+            // 
+            this.labelX2.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX2.BackgroundStyle.Class = "";
+            this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX2.Location = new System.Drawing.Point(163, 12);
+            this.labelX2.Name = "labelX2";
+            this.labelX2.Size = new System.Drawing.Size(47, 21);
+            this.labelX2.TabIndex = 0;
+            this.labelX2.Text = "學期：";
+            // 
+            // labelX1
+            // 
+            this.labelX1.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX1.BackgroundStyle.Class = "";
+            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX1.Location = new System.Drawing.Point(12, 12);
+            this.labelX1.Name = "labelX1";
+            this.labelX1.Size = new System.Drawing.Size(60, 21);
+            this.labelX1.TabIndex = 0;
+            this.labelX1.Text = "學年度：";
+            // 
+            // errorSchoolYear
+            // 
+            this.errorSchoolYear.BlinkRate = 0;
+            this.errorSchoolYear.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
+            this.errorSchoolYear.ContainerControl = this;
+            // 
+            // errorSemester
+            // 
+            this.errorSemester.BlinkRate = 0;
+            this.errorSemester.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
+            this.errorSemester.ContainerControl = this;
+            // 
+            // errorGradeYear
+            // 
+            this.errorGradeYear.BlinkRate = 0;
+            this.errorGradeYear.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
+            this.errorGradeYear.ContainerControl = this;
+            // 
+            // buttonItem1
+            // 
+            this.buttonItem1.GlobalItem = false;
+            this.buttonItem1.Name = "buttonItem1";
+            this.buttonItem1.Text = "可重算成績";
+            // 
+            // buttonItem2
+            // 
+            this.buttonItem2.Checked = true;
+            this.buttonItem2.GlobalItem = false;
+            this.buttonItem2.Name = "buttonItem2";
+            this.buttonItem2.Text = "不可重算成績";
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn1.FillWeight = 145F;
+            this.dataGridViewTextBoxColumn1.HeaderText = "科目";
+            this.dataGridViewTextBoxColumn1.MinimumWidth = 80;
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.FillWeight = 1F;
+            this.dataGridViewTextBoxColumn2.HeaderText = "級別";
+            this.dataGridViewTextBoxColumn2.MinimumWidth = 40;
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn2.Width = 40;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.HeaderText = "學分";
+            this.dataGridViewTextBoxColumn3.MinimumWidth = 22;
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn3.Width = 40;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.HeaderText = "原始成績";
+            this.dataGridViewTextBoxColumn4.MinimumWidth = 40;
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn4.Width = 40;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            this.dataGridViewTextBoxColumn5.HeaderText = "補考成績";
+            this.dataGridViewTextBoxColumn5.MinimumWidth = 40;
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn5.Width = 40;
+            // 
+            // dataGridViewTextBoxColumn6
+            // 
+            this.dataGridViewTextBoxColumn6.HeaderText = "重修成績";
+            this.dataGridViewTextBoxColumn6.MinimumWidth = 40;
+            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn6.Width = 40;
+            // 
+            // dataGridViewTextBoxColumn7
+            // 
+            this.dataGridViewTextBoxColumn7.HeaderText = "手動調整成績";
+            this.dataGridViewTextBoxColumn7.MinimumWidth = 55;
+            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            this.dataGridViewTextBoxColumn7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn7.Width = 55;
+            // 
+            // dataGridViewTextBoxColumn8
+            // 
+            this.dataGridViewTextBoxColumn8.HeaderText = "學年調整成績";
+            this.dataGridViewTextBoxColumn8.MinimumWidth = 55;
+            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+            this.dataGridViewTextBoxColumn8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn8.Width = 55;
+            // 
+            // dataGridViewTextBoxColumn9
+            // 
+            this.dataGridViewTextBoxColumn9.FillWeight = 75F;
+            this.dataGridViewTextBoxColumn9.HeaderText = "註記";
+            this.dataGridViewTextBoxColumn9.MinimumWidth = 60;
+            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
+            this.dataGridViewTextBoxColumn9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn9.Width = 60;
+            // 
             // SemesterScoreEditor
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(784, 564);
             this.Controls.Add(this.panelEx1);
             this.DoubleBuffered = true;
-            this.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = true;
             this.Name = "SemesterScoreEditor";
@@ -1347,5 +1355,6 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn colScoreN1;
         private System.Windows.Forms.DataGridViewCheckBoxColumn colScoreN2;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColSpecifySubjectName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCourseCode;
     }
 }

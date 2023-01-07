@@ -124,11 +124,6 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
 
             string gradeYear = "";
 
-            //// 課程代碼比對使用
-            //List<string> studIDList = new List<string>();
-            //string subjectCode = "";
-            //CourseCodeTransfer cct = new CourseCodeTransfer();
-
             #region 科目成績
             dataGridViewX1.Rows.Clear();
             DSXmlHelper _SubjectResponse = QueryScore.GetSemesterSubjectScoreBySemester(true, (comboBoxEx1.Text), (comboBoxEx2.Text), _StudentID);
@@ -139,22 +134,6 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 if (int.TryParse(_SubjectResponse.GetText("SemesterSubjectScore/GradeYear"), out t))
                     gradeYear = "" + t;
 
-                //// 科目代碼
-                //subjectCode = "";
-
-                //// 比對資料使用
-                //studIDList.Clear();
-                //studIDList.Add(_StudentID);
-
-                //// 取得學生課程代碼
-                //Dictionary<string, StudentCourseCodeInfo> studCodeInfoDict = cct.GetStundetCourseCodeDict(studIDList);
-
-                //StudentCourseCodeInfo currentStudCourseInfo = new StudentCourseCodeInfo();
-
-                //if (studCodeInfoDict.ContainsKey(_StudentID))
-                //{
-                //    currentStudCourseInfo = studCodeInfoDict[_StudentID];
-                //}
 
                 #region 建立排名相關物件
                 DSXmlHelper rating = _SubjectResponse;
@@ -165,14 +144,6 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
 
                 foreach (XmlElement var in _SubjectResponse.GetElements("SemesterSubjectScore/ScoreInfo/SemesterSubjectScoreInfo/Subject"))
                 {
-                    //// 取得課程代碼
-                    //subjectCode = currentStudCourseInfo.GetCourseCode(var.GetAttribute("科目"), var.GetAttribute("修課校部訂"), var.GetAttribute("修課必選修"));
-
-                    //if (subjectCode != "")
-                    //{
-                    //    Console.WriteLine(subjectCode);
-                    //}
-
                     _beforeXml.AddElement("SubjectCollection", var);
                     DataGridViewRow row = new DataGridViewRow();
                     row.CreateCells(dataGridViewX1,
@@ -196,8 +167,6 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                         var.GetAttribute("修課補考標準"),
                         var.GetAttribute("修課直接指定總成績"),
                         var.GetAttribute("修課備註"),
-                        //    subjectCode,
-                        //var.GetAttribute("修課科目代碼"),
                         var.GetAttribute("是否補修成績") == "是",
                         var.GetAttribute("補修學年度"),
                         var.GetAttribute("補修學期"),
@@ -205,9 +174,11 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                         var.GetAttribute("重修學期"),
                         var.GetAttribute("免修") == "是",
                         var.GetAttribute("抵免") == "是",
-                        var.GetAttribute("指定學年科目名稱")
+                        var.GetAttribute("指定學年科目名稱"),
+                        var.GetAttribute("修課科目代碼")
                         );
                     row.Cells[SubjectColumn].ToolTipText = GetSubjectScorePlace(row);
+
                     dataGridViewX1.Rows.Add(row);
                 }
                 foreach (DataGridViewRow row in dataGridViewX1.Rows)
@@ -876,8 +847,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 subjectElement.SetAttribute("修課補考標準", "" + row.Cells[colMakeupStandard.Index].Value);
                 subjectElement.SetAttribute("修課直接指定總成績", "" + row.Cells[colDesignateFinalScore.Index].Value);
                 subjectElement.SetAttribute("修課備註", "" + row.Cells[colRemark.Index].Value);
-                // 2021/3 討論後讀取對照無法寫入
-                //subjectElement.SetAttribute("修課科目代碼", "" + row.Cells[colSubjectCode.Index].Value);
+                subjectElement.SetAttribute("修課科目代碼", "" + row.Cells[colCourseCode.Index].Value);
 
                 subjectElement.SetAttribute("是否補修成績", (row.Cells[colIsMakeupScore.Index].Value != null && (bool)row.Cells[colIsMakeupScore.Index].Value) ? "是" : "否");
                 subjectElement.SetAttribute("重修學年度", "" + row.Cells[colRetakeSchoolYear.Index].Value);

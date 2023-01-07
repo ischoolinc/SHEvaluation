@@ -60,9 +60,9 @@ namespace SmartSchool.Evaluation
                 new ConfigurationForm(new CommonPlanConfiguration()).ShowDialog();
             };
 
-
+            // button["檢視班級課程規劃表(99課綱適用)"].Click += delegate
             button.Enable = CurrentUser.Acl["Button0860"].Executable;            
-            button["檢視班級課程規劃表(99課綱適用)"].Click += delegate
+            button["班級課程規劃表(99課綱適用)"].Click += delegate
             {
                 //new ConfigurationForm(new GraduationPlanConfiguration()).ShowDialog();
                 (new FrmGraduationPlanConfiguration()).ShowDialog();

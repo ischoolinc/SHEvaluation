@@ -20,6 +20,11 @@ namespace SmartSchool.Evaluation.Reports
         private ButtonAdapter classButton;
         private BackgroundWorker _BWClassSemesterScore;
 
+        private Boolean _Error;
+        private String _ErrorMessage;
+        private Dictionary<string, List<string>> _ClassSubjectDict;
+        private int _SupportSubjectCount;
+
         public ClassSemesterScore()
         {
             classButton = new SecureButtonAdapter("Report0160");
@@ -55,6 +60,10 @@ namespace SmartSchool.Evaluation.Reports
             _BWClassSemesterScore.ProgressChanged += new ProgressChangedEventHandler(_BWClassSemesterScore_ProgressChanged);
             _BWClassSemesterScore.WorkerReportsProgress = true;
             _BWClassSemesterScore.RunWorkerAsync(new object[] { schoolyear, semester, over100, papersize, UseSourceScore });
+            _SupportSubjectCount = 30;
+            _ErrorMessage = "樣板僅支援30個科目，下列班級的科目數超過樣板可支援數，無法完整列印：\n";
+            _Error = false;
+            _ClassSubjectDict = new Dictionary<string, List<string>>();
         }
 
         private void Completed(string inputReportName, Workbook inputWorkbook)
@@ -334,6 +343,8 @@ namespace SmartSchool.Evaluation.Reports
         void _BWClassSemesterScore_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             classButton.SetBarMessage("班級學生學期成績一覽表產生完成");
+            if (_Error)
+                MsgBox.Show(_ErrorMessage);
             Completed("班級學生學期成績一覽表", (Workbook)e.Result);
         }
 
@@ -349,10 +360,16 @@ namespace SmartSchool.Evaluation.Reports
             _BWClassSemesterScore.ReportProgress(0);
 
             Workbook template = new Workbook();
+
+            //_SupportSubjectCount = 30; //B4、A3都是支援30科
             if (papersize == 0)
+            {
                 template.Open(new MemoryStream(Properties.Resources.班級學生學期成績一覽表B4));
+            }
             else if (papersize == 1)
+            {
                 template.Open(new MemoryStream(Properties.Resources.班級學生學期成績一覽表A3));
+            }
 
             Worksheet tempws = template.Worksheets[template.Worksheets.Add()];
 
@@ -490,6 +507,12 @@ namespace SmartSchool.Evaluation.Reports
                     headerColIndex++;
                 }
                 headerColIndex = 33;
+
+
+                if (!_ClassSubjectDict.ContainsKey(aClass.ClassName))
+                    _ClassSubjectDict.Add(aClass.ClassName, subjectHeader);
+
+
 
                 foreach (string entry in entryHeader)
                 {
@@ -646,7 +669,8 @@ namespace SmartSchool.Evaluation.Reports
                 ws.Cells[rowIndex, 0].PutValue("平均");
                 foreach (string name in machine.GetAllItemName())
                 {
-                    ws.Cells[rowIndex, columnIndexTable[name]].PutValue(machine.GetAverage(name).ToString());
+                    if (columnIndexTable.ContainsKey(name))
+                        ws.Cells[rowIndex, columnIndexTable[name]].PutValue(machine.GetAverage(name).ToString());
                 }
                 rowIndex++;
 
@@ -654,7 +678,8 @@ namespace SmartSchool.Evaluation.Reports
                 ws.Cells[rowIndex, 0].PutValue("取得學分比率");
                 foreach (string name in courseGetCreditCount.GetAllItemName())
                 {
-                    ws.Cells[rowIndex, columnIndexTable[name]].PutValue(courseGetCreditCount.GetGetCreditRate(name));
+                    if (columnIndexTable.ContainsKey(name))
+                        ws.Cells[rowIndex, columnIndexTable[name]].PutValue(courseGetCreditCount.GetGetCreditRate(name));
                 }
                 rowIndex++;
 
@@ -662,7 +687,8 @@ namespace SmartSchool.Evaluation.Reports
                 ws.Cells[rowIndex, 0].PutValue("未取得學分比率");
                 foreach (string name in courseGetCreditCount.GetAllItemName())
                 {
-                    ws.Cells[rowIndex, columnIndexTable[name]].PutValue(courseGetCreditCount.GetNotGetCreditRate(name));
+                    if (columnIndexTable.ContainsKey(name))
+                        ws.Cells[rowIndex, columnIndexTable[name]].PutValue(courseGetCreditCount.GetNotGetCreditRate(name));
                 }
 
                 machine.Clear();
@@ -674,6 +700,21 @@ namespace SmartSchool.Evaluation.Reports
             ws.Cells.CreateRange(rowIndex - 1, 0, 1, headerColIndex + 4).SetOutlineBorder(BorderType.BottomBorder, CellBorderType.Medium, Color.Black);
 
             e.Result = wb;
+
+
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (string name in _ClassSubjectDict.Keys)
+            {
+                if (_ClassSubjectDict[name].Count > _SupportSubjectCount)
+                {
+                    _Error = true;
+                    sb.AppendLine(name);
+                }
+            }
+
+            _ErrorMessage += sb.ToString();
         }
     }
 
@@ -769,7 +810,7 @@ namespace SmartSchool.Evaluation.Reports
             if (!_ItemCourseCount.ContainsKey(item) || !_ItemGetCreditDic.ContainsKey(item))
                 return 0;
 
-            double courseCount = _ItemCourseCount[item]* 1.0;
+            double courseCount = _ItemCourseCount[item] * 1.0;
             double getCreditCount = _ItemGetCreditDic[item] * 1.0;
 
             if (courseCount > 0)

@@ -124,14 +124,14 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
                 {
                     if(noResultID== studentRecord.StudentID)
                     {
-                        s.AppendLine(studentRecord.RefClass.ClassName + "　" + studentRecord.SeatNo + "　" + studentRecord.StudentName + "　" + studentRecord.StudentNumber);
+                        s.AppendLine((studentRecord.RefClass==null?"": studentRecord.RefClass.ClassName) + "　" + studentRecord.SeatNo + "　" + studentRecord.StudentName + "　" + studentRecord.StudentNumber);
                     }
                 }
             }
 
             if (noResultStudentList.Count> 0)
             {
-                MessageBox.Show("下列學生沒有可列印的資料，請先從 班級>成績相關報表>多學期成績單，產出資訊後，才有辦法產學生的多學期成績單。\r\n" + s.ToString());
+                MsgBox.Show("下列學生沒有可列印的資料，請先從 班級>成績相關報表>多學期成績單，產出資訊後，才有辦法產學生的多學期成績單。\r\n" + s.ToString());
             }
 
             if (students.Count == noResultStudentList.Count)

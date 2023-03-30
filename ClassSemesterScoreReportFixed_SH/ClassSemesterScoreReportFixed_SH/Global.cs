@@ -90,5 +90,17 @@ namespace ClassSemesterScoreReportFixed_SH
         /// </summary>
         public static Dictionary<string, DAO.StudCredit> _StudCreditDict = new Dictionary<string, StudCredit>();
 
+
+        /// <summary>
+        /// 班級 科目習修人數 
+        /// Key 科目+級別 int :習修人數
+        /// </summary>
+        public static Dictionary<string, Dictionary<string, int>> SubjectStudiedCountDic = new Dictionary<string, Dictionary<string, int>>();
+
+        /// <summary>
+        /// 班級 科目取得學分人數 
+        /// Key 科目+級別 int :取得學分人數
+        /// </summary>
+        public static Dictionary<string, Dictionary<string, int>> SubjectPassCountDic = new Dictionary<string, Dictionary<string, int>>();
     }
 }

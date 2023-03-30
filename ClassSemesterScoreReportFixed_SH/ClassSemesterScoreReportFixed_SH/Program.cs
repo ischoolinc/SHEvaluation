@@ -132,6 +132,8 @@ namespace ClassSemesterScoreReportFixed_SH
                 {
                     table.Columns.Add("科目名稱" + subjectIndex);
                     table.Columns.Add("學分數" + subjectIndex);
+                    table.Columns.Add("取得學分比率" + subjectIndex);
+                    table.Columns.Add("未取得學分比率" + subjectIndex);
                 }
                 for (int i = 1; i <= conf.StudentLimit; i++)
                 {
@@ -668,6 +670,19 @@ namespace ClassSemesterScoreReportFixed_SH
                                         if (!SemesterSubjectScoreInfoDict[stud.StudentID].ContainsKey(subjKey))
                                             SemesterSubjectScoreInfoDict[stud.StudentID].Add(subjKey, smScore);
 
+                                        if (!Global.SubjectStudiedCountDic.ContainsKey(stud.RefClass.ClassID))
+                                            Global.SubjectStudiedCountDic.Add(stud.RefClass.ClassID, new Dictionary<string, int>());
+                                        if (!Global.SubjectStudiedCountDic[stud.RefClass.ClassID].ContainsKey(subjKey))
+                                            Global.SubjectStudiedCountDic[stud.RefClass.ClassID].Add(subjKey, 0);
+                                        Global.SubjectStudiedCountDic[stud.RefClass.ClassID][subjKey]++;
+
+                                        if (!Global.SubjectPassCountDic.ContainsKey(stud.RefClass.ClassID))
+                                            Global.SubjectPassCountDic.Add(stud.RefClass.ClassID, new Dictionary<string, int>());
+                                        if (!Global.SubjectPassCountDic[stud.RefClass.ClassID].ContainsKey(subjKey))
+                                            Global.SubjectPassCountDic[stud.RefClass.ClassID].Add(subjKey, 0);
+                                        if (smScore.Pass)
+                                            Global.SubjectPassCountDic[stud.RefClass.ClassID][subjKey]++;
+
                                         // 學期應得學分
                                         Global._StudCreditDict[stud.StudentID].shouldGetCredit += smScore.Credit;
 
@@ -711,6 +726,8 @@ namespace ClassSemesterScoreReportFixed_SH
                             List<string> tag1List = new List<string>();
                             List<string> tag2List = new List<string>();
                             Dictionary<string, Dictionary<string, List<string>>> classSubjects = new Dictionary<string, Dictionary<string, List<string>>>();
+
+
                             string gradeYear = classRec.GradeYear;
                             #region 基本資料
                             row["學校名稱"] = SmartSchool.Customization.Data.SystemInformation.SchoolChineseName;
@@ -770,6 +787,7 @@ namespace ClassSemesterScoreReportFixed_SH
                                                         classSubjects[subjectName].Add(subjectLevel, new List<string>());
                                                     if (!classSubjects[subjectName][subjectLevel].Contains(credit))
                                                         classSubjects[subjectName][subjectLevel].Add(credit);
+
                                                 }
                                             }
 
@@ -912,6 +930,7 @@ namespace ClassSemesterScoreReportFixed_SH
                                                     }
                                                 }
 
+                                                //
                                             }
 
 
@@ -964,6 +983,12 @@ namespace ClassSemesterScoreReportFixed_SH
                                             }
 
 
+                                            if (Global.SubjectStudiedCountDic.ContainsKey(classRec.ClassID) & Global.SubjectPassCountDic.ContainsKey(classRec.ClassID))
+                                                if (Global.SubjectStudiedCountDic[classRec.ClassID].ContainsKey(subjectName + subjectNumber) & Global.SubjectPassCountDic[classRec.ClassID].ContainsKey(subjectName + subjectNumber))
+                                                {
+                                                    row["取得學分比率" + subjectIndex] = Math.Round(Global.SubjectPassCountDic[classRec.ClassID][subjectName + subjectNumber] / (decimal)Global.SubjectStudiedCountDic[classRec.ClassID][subjectName + subjectNumber] * 100, 2, MidpointRounding.AwayFromZero) + "%";
+                                                    row["未取得學分比率" + subjectIndex] = Math.Round((Global.SubjectStudiedCountDic[classRec.ClassID][subjectName + subjectNumber] - Global.SubjectPassCountDic[classRec.ClassID][subjectName + subjectNumber]) / (decimal)Global.SubjectStudiedCountDic[classRec.ClassID][subjectName + subjectNumber] * 100, 2, MidpointRounding.AwayFromZero) + "%";
+                                                }
                                             subjectIndex++;
                                         }
                                         else
@@ -972,6 +997,7 @@ namespace ClassSemesterScoreReportFixed_SH
                                             if (!overflowRecords.Contains(classRec))
                                                 overflowRecords.Add(classRec);
                                         }
+
                                     }
                                 }
                                 #endregion
@@ -1239,6 +1265,29 @@ namespace ClassSemesterScoreReportFixed_SH
                 }
                 builder.EndRow();
             }
+
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.Write("取得學分比率");
+            for (int i = 1; i <= maxSubjectNum; i++)
+            {
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 取得學分比率" + i + " \\* MERGEFORMAT ", "«R" + i + "»");
+            }
+            builder.EndRow();
+
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.Write("未取得學分比率");
+            for (int i = 1; i <= maxSubjectNum; i++)
+            {
+                builder.InsertCell();
+                builder.InsertField("MERGEFIELD 未取得學分比率" + i + " \\* MERGEFORMAT ", "«RN" + i + "»");
+            }
+            builder.EndRow();
+
             builder.EndTable();
             #endregion
 

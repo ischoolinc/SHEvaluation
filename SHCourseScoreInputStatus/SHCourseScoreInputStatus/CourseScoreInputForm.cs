@@ -18,6 +18,8 @@ namespace SHCourseScoreInputStatus
         private int _Semester = 0;
         private bool _chkNotInput = false;
         List<CourseScoreBase> _CourseScoreBaseList;
+        private ListViewColumnSorter lvwColumnSorter;
+
 
         public CourseScoreInputForm()
         {
@@ -39,12 +41,15 @@ namespace SHCourseScoreInputStatus
             _bgWork.DoWork += new DoWorkEventHandler(_bgWork_DoWork);
             _bgWork.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_bgWork_RunWorkerCompleted);
             //LoadData();
+
+            lvwColumnSorter = new ListViewColumnSorter();
+            this.lvData.ListViewItemSorter = lvwColumnSorter;
         }
 
         void _bgWork_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             btnExport.Enabled = true;
-            btnAddTemp.Enabled = true;
+            //btnAddTemp.Enabled = true;
             btnReload.Enabled = true;
             BindDataToListView();
         }
@@ -56,9 +61,13 @@ namespace SHCourseScoreInputStatus
             foreach (CourseScoreBase csb in _CourseScoreBaseList)
             {
                 ListViewItem lvi = new ListViewItem();
+                //System.Windows.Forms.ListViewItem.ListViewSubItem subitem1 = lvi.SubItems.Add("");
                 lvi.Tag = csb;
                 lvi.Text = csb.CourseName;
                 lvi.SubItems.Add(csb.TeacherName);
+
+                lvi.UseItemStyleForSubItems = false;
+
                 string val = "--/--";
                 bool chkNotInput = true;
                 if (csb.hasScoreCount.HasValue && csb.CourseStudentCount.HasValue)
@@ -67,6 +76,7 @@ namespace SHCourseScoreInputStatus
 
                     if (csb.hasScoreCount.Value == csb.CourseStudentCount.Value)
                         chkNotInput = false;
+
                 }
                 if (csb.hasScoreCount.HasValue && csb.CourseStudentCount.HasValue == false)
                 {
@@ -78,7 +88,10 @@ namespace SHCourseScoreInputStatus
                 }
 
                 lvi.SubItems.Add(val);
+                if (chkNotInput)
+                    lvi.SubItems[2].ForeColor = Color.Red;
 
+                lvi.SubItems.Add(csb.ScoreSource);
                 // 處理當勾選只列出未輸入完成
                 if (chkNotHasScore.Checked)
                 {
@@ -89,7 +102,7 @@ namespace SHCourseScoreInputStatus
                     lvData.Items.Add(lvi);
             }
             lblMsg.Text = "共 " + lvData.Items.Count + " 筆課程";
-            btnReload.Enabled = false;
+            //btnReload.Enabled = false;
         }
 
         void _bgWork_DoWork(object sender, DoWorkEventArgs e)
@@ -167,24 +180,24 @@ namespace SHCourseScoreInputStatus
 
         private void chkNotHasScore_CheckedChanged(object sender, EventArgs e)
         {
-            if (lvData.Items.Count > 0)
-                BindDataToListView();
+            //if (lvData.Items.Count > 0)
+            BindDataToListView();
         }
 
         private void cbxSemester_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbxSemester.Text != _Semester.ToString())
                 btnReload.Enabled = true;
-            else
-                btnReload.Enabled = false;
+            //else
+            //    btnReload.Enabled = false;
         }
 
         private void cbxSchoolYear_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbxSchoolYear.Text != _SchoolYear.ToString())
                 btnReload.Enabled = true;
-            else
-                btnReload.Enabled = false;
+            //else
+            //    btnReload.Enabled = false;
         }
 
         private void btnExport_Click(object sender, EventArgs e)
@@ -213,6 +226,40 @@ namespace SHCourseScoreInputStatus
                 Utility.CompletedXls("課程成績輸入狀況", dt, wb);
             }
             btnExport.Enabled = true;
+        }
+
+        private void lvData_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            // Determine if clicked column is already the column that is being sorted.
+            if (e.Column == lvwColumnSorter.SortColumn)
+            {
+                // Reverse the current sort direction for this column.
+                if (lvwColumnSorter.Order == SortOrder.Ascending)
+                {
+                    lvwColumnSorter.Order = SortOrder.Descending;
+                }
+                else
+                {
+                    lvwColumnSorter.Order = SortOrder.Ascending;
+                }
+            }
+            else
+            {
+                // Set the column number that is to be sorted; default to ascending.
+                lvwColumnSorter.SortColumn = e.Column;
+                lvwColumnSorter.Order = SortOrder.Ascending;
+            }
+
+            // Perform the sort with these new sort options.
+            this.lvData.Sort();
+        }
+
+        private void lvData_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lvData.SelectedItems.Count > 0)
+                btnAddTemp.Enabled = true;
+            else
+                btnAddTemp.Enabled = false;
         }
     }
 }

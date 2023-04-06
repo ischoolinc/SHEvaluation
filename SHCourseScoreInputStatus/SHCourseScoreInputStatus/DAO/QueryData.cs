@@ -20,6 +20,7 @@ namespace SHCourseScoreInputStatus.DAO
             List<CourseScoreBase> retVal = new List<CourseScoreBase>();
             // 取得課程資料，只需要評分才顯示
             QueryHelper qh = new QueryHelper();
+            //string query = "select course.id,course.course_name from course  where course.school_year=" + SchoolYear + " and course.semester=" + Semester + " and not_included_in_calc='0' AND  ref_exam_template_id IN (SELECT id FROM exam_template WHERE   allow_upload ='1') order by course.course_name,course.id;";
             string query = "select course.id,course.course_name from course  where course.school_year=" + SchoolYear + " and course.semester=" + Semester + " and not_included_in_calc='0' order by course.course_name,course.id;";
             DataTable dt = qh.Select(query);
             foreach (DataRow dr in dt.Rows)
@@ -39,6 +40,10 @@ namespace SHCourseScoreInputStatus.DAO
             // 取得課程授課教師
             Dictionary<string, string> data3 = GetCousreTeacherNameBySchoolYearSemester(SchoolYear, Semester);
 
+            // 取得課程授課教師
+            Dictionary<string, string> data4 = GetCousreTempleScoreTypeBySchoolYearSemester(SchoolYear, Semester);
+
+            
             // 填入人數值
             foreach (CourseScoreBase csb in retVal)
             {
@@ -50,6 +55,10 @@ namespace SHCourseScoreInputStatus.DAO
 
                 if (data3.ContainsKey(csb.CourseID))
                     csb.TeacherName = data3[csb.CourseID];
+
+                if (data4.ContainsKey(csb.CourseID))
+                    csb.ScoreSource = data4[csb.CourseID];
+                
             }
 
             return retVal;
@@ -108,6 +117,36 @@ namespace SHCourseScoreInputStatus.DAO
             foreach (DataRow dr in dt.Rows)
             {
                 retVal.Add(dr[0].ToString(), dr[1].ToString());
+            }
+            return retVal;
+        }
+
+        /// <summary>
+        /// 透過學年度學期取得課程成績來源
+        /// </summary>
+        /// <param name="SchoolYear"></param>
+        /// <param name="Semester"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> GetCousreTempleScoreTypeBySchoolYearSemester(int SchoolYear, int Semester)
+        {
+            Dictionary<string, string> retVal = new Dictionary<string, string>();
+            QueryHelper qh = new QueryHelper();
+            string query = @"SELECT
+course.id,course.course_name
+, allow_upload
+, CASE allow_upload 
+WHEN '1' THEN '由教師提供'
+WHEN '0' THEN '由學校計算'
+ELSE '' END AS source
+FROM course  
+INNER JOIN exam_template ON course.ref_exam_template_id = exam_template.id 
+AND course.school_year=" + SchoolYear + " AND course.semester=" + Semester + " AND not_included_in_calc='0'";
+
+            
+            DataTable dt = qh.Select(query);
+            foreach (DataRow dr in dt.Rows)
+            {
+                retVal.Add(dr["id"].ToString(), dr["source"].ToString());
             }
             return retVal;
         }

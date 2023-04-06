@@ -29,11 +29,16 @@ namespace SHCourseScoreInputStatus.DAO
         /// 有成績人數
         /// </summary>
         public int? hasScoreCount { get; set; }
-        
+
         /// <summary>
         /// 課程學生人數
         /// </summary>
-        public int? CourseStudentCount { get; set; }        
+        public int? CourseStudentCount { get; set; }
+
+        /// <summary>
+        /// 課程成績來源
+        /// </summary>
+        public string ScoreSource { get; set; }
 
     }
 }

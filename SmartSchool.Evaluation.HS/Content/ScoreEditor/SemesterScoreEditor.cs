@@ -52,9 +52,13 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             _afterXml.AddElement("LockScore");
             labelX10.Text = Student.Instance.Items[_StudentID].ClassName + (Student.Instance.Items[_StudentID].ClassName != "" && Student.Instance.Items[_StudentID].SeatNo != "" ? " " + Student.Instance.Items[_StudentID].SeatNo : "") +
                 " " + Student.Instance.Items[_StudentID].Name + (Student.Instance.Items[_StudentID].StudentNumber == "" ? "" : " (" + Student.Instance.Items[_StudentID].StudentNumber + ")");
-            for (int s = 3; s > 0; s--)
+            //for (int s = 3; s > 0; s--)
+            //{
+            //    comboBoxEx1.Items.Add(CurrentUser.Instance.SchoolYear - s);
+            //}
+            for (int i = -3; i <= 3; i++)
             {
-                comboBoxEx1.Items.Add(CurrentUser.Instance.SchoolYear - s);
+                comboBoxEx1.Items.Add(CurrentUser.Instance.SchoolYear - i);
             }
             comboBoxEx2.Items.AddRange(new object[] { "1", "2" });
             cboAttendGradeYear.Items.AddRange(new object[] { "1", "2", "3", "4" });

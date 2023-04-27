@@ -136,6 +136,13 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
                     if (subjectElement.GetAttribute("是否補修成績") == "是")
                         continue;
                 }
+
+                string subjectCode = subjectElement.GetAttribute("修課科目代碼");
+                if (subjectCode.Length >= 23) //共23碼
+                {
+                    if (subjectCode[16].ToString() + subjectCode[18].ToString() == "9D"|| subjectCode[16].ToString() + subjectCode[18].ToString() == "9d")
+                        continue;
+                }
                 #region 分項類別跟學分數
                 string entry = subjectElement.GetAttribute("開課分項類別");
                 decimal credit = 0;

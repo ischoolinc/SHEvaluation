@@ -1485,7 +1485,7 @@ namespace SmartSchool.Evaluation
                         // 處理補修成績
                         bool.TryParse(helper.GetText("分項成績計算採計成績欄位/@補修成績"), out takeRepairScore);
 
-                        foreach (string item in new string[] { "原始成績", "補考成績", "重修成績", "擇優採計成績", "學年調整成績"})
+                        foreach (string item in new string[] { "原始成績", "補考成績", "重修成績", "擇優採計成績", "學年調整成績" })
                         {
                             if (!bool.TryParse(helper.GetText("分項成績計算採計成績欄位/@" + item), out tryParsebool) || tryParsebool)
                             {//沒有設定這項成績設定規則(預設true)或者設定值是true
@@ -1516,6 +1516,14 @@ namespace SmartSchool.Evaluation
                                 if (subjectNode.Detail.GetAttribute("是否補修成績") == "是")
                                     continue;
                             }
+
+                            string subjectCode = subjectNode.Detail.GetAttribute("修課科目代碼");
+                            if (subjectCode.Length >= 23) //共23碼
+                            {
+                                if (subjectCode[16].ToString() + subjectCode[18].ToString() == "9D"|| subjectCode[16].ToString() + subjectCode[18].ToString() == "9d")
+                                    continue;
+                            }
+
                             #region 分項類別跟學分數
                             string entry = subjectNode.Detail.GetAttribute("開課分項類別");
                             decimal credit = subjectNode.CreditDec();

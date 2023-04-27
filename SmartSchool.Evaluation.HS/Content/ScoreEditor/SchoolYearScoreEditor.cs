@@ -45,10 +45,16 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
 
             //2019/7/10 - 原本顯示身分證號,但是因該顯示學號 by俊威,佳樺
             labelX10.Text = Student.Instance.Items[_StudentID].StudentNumber + "  " + Student.Instance.Items[_StudentID].Name;
-            for (int s = 3; s > 0; s--)
+
+            //2023-04-27 學年度
+            for (int i = -3; i <= 3; i++)
             {
-                comboBoxEx1.Items.Add(CurrentUser.Instance.SchoolYear - s);
+                comboBoxEx1.Items.Add(CurrentUser.Instance.SchoolYear - i);
             }
+            //for (int s = 3; s > 0; s--)
+            //{
+            //    comboBoxEx1.Items.Add(CurrentUser.Instance.SchoolYear - s);
+            //}
             ValidateAll();
         }
 

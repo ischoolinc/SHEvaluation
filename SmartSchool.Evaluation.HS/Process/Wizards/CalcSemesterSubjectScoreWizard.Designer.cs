@@ -76,7 +76,7 @@
             this.wizard1.FooterStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.wizard1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(57)))), ((int)(((byte)(129)))));
             this.wizard1.HeaderCaptionFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.wizard1.HeaderDescriptionFont = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.wizard1.HeaderDescriptionFont = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.wizard1.HeaderDescriptionIndent = 16;
             this.wizard1.HeaderHeight = 30;
             this.wizard1.HeaderImageVisible = false;
@@ -103,7 +103,7 @@
             this.wizard1.Name = "wizard1";
             this.wizard1.NextButtonText = "下一步 >";
             this.wizard1.NextButtonWidth = 65;
-            this.wizard1.Size = new System.Drawing.Size(261, 169);
+            this.wizard1.Size = new System.Drawing.Size(303, 169);
             this.wizard1.TabIndex = 0;
             this.wizard1.WizardPages.AddRange(new DevComponents.DotNetBar.WizardPage[] {
             this.wizardPage1,
@@ -131,7 +131,7 @@
             this.wizardPage1.Name = "wizardPage1";
             this.wizardPage1.PageDescription = "< Wizard step description >";
             this.wizardPage1.PageTitle = "選擇學年度學期";
-            this.wizardPage1.Size = new System.Drawing.Size(247, 90);
+            this.wizardPage1.Size = new System.Drawing.Size(289, 90);
             // 
             // 
             // 
@@ -267,7 +267,7 @@
             this.wizardPage2.NextButtonVisible = DevComponents.DotNetBar.eWizardButtonState.False;
             this.wizardPage2.PageDescription = "< Wizard step description >";
             this.wizardPage2.PageTitle = "計算學期科目成績";
-            this.wizardPage2.Size = new System.Drawing.Size(247, 90);
+            this.wizardPage2.Size = new System.Drawing.Size(289, 90);
             // 
             // 
             // 
@@ -291,7 +291,7 @@
             // 
             this.linkLabel2.AutoSize = true;
             this.linkLabel2.BackColor = System.Drawing.Color.Transparent;
-            this.linkLabel2.Location = new System.Drawing.Point(64, 73);
+            this.linkLabel2.Location = new System.Drawing.Point(185, 73);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(86, 17);
             this.linkLabel2.TabIndex = 3;
@@ -303,7 +303,7 @@
             // 
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.BackColor = System.Drawing.Color.Transparent;
-            this.linkLabel1.Location = new System.Drawing.Point(156, 73);
+            this.linkLabel1.Location = new System.Drawing.Point(93, 73);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(86, 17);
             this.linkLabel1.TabIndex = 2;
@@ -320,7 +320,7 @@
             this.progressBarX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.progressBarX1.Location = new System.Drawing.Point(35, 23);
             this.progressBarX1.Name = "progressBarX1";
-            this.progressBarX1.Size = new System.Drawing.Size(189, 23);
+            this.progressBarX1.Size = new System.Drawing.Size(236, 23);
             this.progressBarX1.TabIndex = 1;
             this.progressBarX1.Text = "progressBarX1";
             // 
@@ -355,7 +355,7 @@
             this.wizardPage4.NextButtonVisible = DevComponents.DotNetBar.eWizardButtonState.False;
             this.wizardPage4.PageDescription = "< Wizard step description >";
             this.wizardPage4.PageTitle = "上傳學期科目成績";
-            this.wizardPage4.Size = new System.Drawing.Size(247, 90);
+            this.wizardPage4.Size = new System.Drawing.Size(289, 90);
             // 
             // 
             // 
@@ -404,11 +404,11 @@
             // CalcSemesterSubjectScoreWizard
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(261, 169);
+            this.ClientSize = new System.Drawing.Size(303, 169);
             this.ControlBox = false;
             this.Controls.Add(this.wizard1);
             this.DoubleBuffered = true;
-            this.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "CalcSemesterSubjectScoreWizard";

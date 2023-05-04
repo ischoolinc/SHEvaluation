@@ -456,7 +456,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
                 {
                     linkLabel1.Visible = true;
                     linkLabel2.Visible = true; // 不再主動跳出視窗，警告訊息放在這裡供使用者點選打開檢查
-                    labelX4.Text = "計算失敗，請檢查警告訊息、錯誤訊息";
+                    labelX4.Text = "計算失敗，請先處理錯誤訊息，再檢視警告訊息";
 
                 }
                 else if (!hasError && hasWarning) // 沒錯誤 有警告

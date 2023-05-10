@@ -29,11 +29,11 @@ namespace SmartSchool.Evaluation.ImportExport
             this.Title = "匯入學年科目成績";
             this.Group = "學年科目成績";
             this.PackageLimit = 3000;
-            foreach (string field in new string[] { "領域", "科目", "學年度", "成績年級", "結算成績", "補考成績", "重修成績", "校部定", "必選修", "識別學分數" })
+            foreach (string field in new string[] { "科目", "學年度", "成績年級", "結算成績", "補考成績", "重修成績"})
             {
                 this.ImportableFields.Add(field);
             }
-            foreach (string field in new string[] { "科目", "學年度", "成績年級", "校部定", "必選修", "識別學分數" })
+            foreach (string field in new string[] { "科目", "學年度", "成績年級"})
             {
                 this.RequiredFields.Add(field);
             }
@@ -139,8 +139,6 @@ namespace SmartSchool.Evaluation.ImportExport
                 {
                     default:
                         break;
-                    case "領域":
-                        break;
                     case "科目":
                         if (value == "")
                         {
@@ -172,36 +170,6 @@ namespace SmartSchool.Evaluation.ImportExport
                             }
                         }
                         break;
-                    case "識別學分數":
-                        if (value != "")
-                        {
-                            if (!decimal.TryParse(value, out d))
-                            {
-                                inputFormatPass &= false;
-                                e.ErrorFields.Add(field, "必須填入數字。");
-                            }
-                        }
-                        break;
-                    case "校部定":
-                        if (value != "")
-                        {
-                            if (value != "校訂" && value != "部訂" && value != "部定")
-                            {
-                                inputFormatPass &= false;
-                                e.ErrorFields.Add(field, "必須填入「校訂」或「部定」。");
-                            }
-                        }
-                        break;
-                    case "必選修":
-                        if (value != "")
-                        {
-                            if (value != "必修" && value != "選修")
-                            {
-                                inputFormatPass &= false;
-                                e.ErrorFields.Add(field, "必須填入「必修」或「選修」。");
-                            }
-                        }
-                        break;
                 }
             }
             #endregion
@@ -212,9 +180,6 @@ namespace SmartSchool.Evaluation.ImportExport
 
                 string subject = e.Data["科目"];
                 string schoolYear = e.Data["學年度"];
-                string requiredBy = e.Data["校部定"] == "部定" ? "部訂" : e.Data["校部定"];
-                string required = e.Data["必選修"];
-                string credit = e.Data["識別學分數"];
 
                 int? sy = null;
                 if (int.TryParse(schoolYear, out t))
@@ -230,7 +195,7 @@ namespace SmartSchool.Evaluation.ImportExport
                     {
                         if (info.SchoolYear == sy)
                         {
-                            if (info.Subject == subject && info.Detail.GetAttribute("校部定") == requiredBy && info.Detail.GetAttribute("必選修") == required && info.Detail.GetAttribute("識別學分數") == credit)
+                            if (info.Subject == subject)
                                 isNewSubjectInfo = false;
                         }
                     }
@@ -261,7 +226,7 @@ namespace SmartSchool.Evaluation.ImportExport
                     }
                     #endregion
                     #region 驗證重複科目資料
-                    string skey = subject + requiredBy + required + credit;
+                    string skey = subject;
                     if (!_ID_SchoolYear_Subject.ContainsKey(key))
                         _ID_SchoolYear_Subject.Add(key, new List<string>());
                     if (_ID_SchoolYear_Subject[key].Contains(skey))
@@ -357,7 +322,7 @@ namespace SmartSchool.Evaluation.ImportExport
                 #region 整理現有的成績資料
                 foreach (SchoolYearSubjectScoreInfo var in studentRec.SchoolYearSubjectScoreList)
                 {
-                    string key = var.Subject + var.Detail.GetAttribute("校部定") + var.Detail.GetAttribute("必選修") + var.Detail.GetAttribute("識別學分數");
+                    string key = var.Subject;
                     if (!schoolYearScoreDictionary.ContainsKey(var.SchoolYear))
                         schoolYearScoreDictionary.Add(var.SchoolYear, new Dictionary<string, SchoolYearSubjectScoreInfo>());
                     if (!schoolYearScoreDictionary[var.SchoolYear].ContainsKey(key))
@@ -375,12 +340,10 @@ namespace SmartSchool.Evaluation.ImportExport
                     int t;
                     string subject = row["科目"];
                     string schoolYear = row["學年度"];
-                    string requiredBy = row["校部定"] == "部定" ? "部訂" : row["校部定"];
-                    string required = row["必選修"];
-                    string credit = row["識別學分數"];
 
                     int sy = int.Parse(schoolYear);
-                    string key = subject + requiredBy + required + credit;
+                    string key = subject;
+
                     if (!schoolYearImportScoreDictionary.ContainsKey(sy))
                         schoolYearImportScoreDictionary.Add(sy, new Dictionary<string, RowData>());
                     if (!schoolYearImportScoreDictionary[sy].ContainsKey(key))
@@ -434,13 +397,6 @@ namespace SmartSchool.Evaluation.ImportExport
                                     switch (field)
                                     {
                                         default: break;
-                                        case "領域":
-                                            if (score.Detail.GetAttribute(field) != value)
-                                            {
-                                                score.Detail.SetAttribute(field, value);
-                                                hasChanged = true;
-                                            }
-                                            break;
                                         case "結算成績":
                                         case "補考成績":
                                         case "重修成績":
@@ -516,7 +472,7 @@ namespace SmartSchool.Evaluation.ImportExport
                         {
                             XmlElement newScore = doc.CreateElement("Subject");
                             #region 建立newScore
-                            foreach (string field in new string[] { "領域", "科目", "結算成績", "補考成績", "重修成績", "校部定", "必選修", "識別學分數" })
+                            foreach (string field in new string[] {"科目", "結算成績", "補考成績", "重修成績"})
                             {
                                 if (args.ImportFields.Contains(field))
                                 {
@@ -524,9 +480,6 @@ namespace SmartSchool.Evaluation.ImportExport
                                     switch (field)
                                     {
                                         default: break;
-                                        case "領域":
-                                            newScore.SetAttribute("領域", value);
-                                            break;
                                         case "科目":
                                             newScore.SetAttribute("科目", value);
                                             break;
@@ -534,15 +487,6 @@ namespace SmartSchool.Evaluation.ImportExport
                                         case "結算成績":
                                         case "補考成績":
                                         case "重修成績":
-                                            newScore.SetAttribute(field, value);
-                                            break;
-                                        case "校部定":
-                                            newScore.SetAttribute(field, value == "部定" ? "部訂" : value);
-                                            break;
-                                        case "必選修":
-                                            newScore.SetAttribute(field, value);
-                                            break;
-                                        case "識別學分數":
                                             newScore.SetAttribute(field, value);
                                             break;
                                     }
@@ -576,7 +520,7 @@ namespace SmartSchool.Evaluation.ImportExport
                     {
                         XmlElement newScore = doc.CreateElement("Subject");
                         #region 建立newScore
-                        foreach (string field in new string[] { "領域", "科目", "結算成績", "補考成績", "重修成績", "校部定", "必選修", "識別學分數" })
+                        foreach (string field in new string[] {"科目", "結算成績", "補考成績", "重修成績"})
                         {
                             if (args.ImportFields.Contains(field))
                             {
@@ -584,25 +528,12 @@ namespace SmartSchool.Evaluation.ImportExport
                                 switch (field)
                                 {
                                     default: break;
-                                    case "領域":
-                                        newScore.SetAttribute("領域", value);
-                                        break;
                                     case "科目":
                                         newScore.SetAttribute("科目", value);
                                         break;
-
                                     case "結算成績":
                                     case "補考成績":
                                     case "重修成績":
-                                        newScore.SetAttribute(field, value);
-                                        break;
-                                    case "校部定":
-                                        newScore.SetAttribute(field, value == "部定" ? "部訂" : value);
-                                        break;
-                                    case "必選修":
-                                        newScore.SetAttribute(field, value);
-                                        break;
-                                    case "識別學分數":
                                         newScore.SetAttribute(field, value);
                                         break;
                                 }

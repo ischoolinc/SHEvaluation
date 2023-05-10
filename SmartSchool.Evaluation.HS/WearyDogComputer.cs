@@ -2093,11 +2093,21 @@ namespace SmartSchool.Evaluation
                             }
                         }
                         //如果成績資料的年級學年度不在清單中（指定的學年度及學期）就移掉
+                        // 如果課程代碼17碼為「9」，19碼為「D」的成績先寫死這個規則並移除 -2023.5.9 俊緯
                         List<SemesterSubjectScoreInfo> removeList = new List<SemesterSubjectScoreInfo>();
                         foreach (SemesterSubjectScoreInfo scoreInfo in var.SemesterSubjectScoreList)
                         {
                             if (!ApplySemesterSchoolYear.ContainsKey(scoreInfo.Semester) || ApplySemesterSchoolYear[scoreInfo.Semester] != scoreInfo.SchoolYear)
                                 removeList.Add(scoreInfo);
+
+                            string subjectCode = scoreInfo.Detail.GetAttribute("修課科目代碼");
+                            if (subjectCode.Length == 23)
+                            {
+                                if (subjectCode[16].ToString() + subjectCode[18].ToString() == "9D" || subjectCode[16].ToString() + subjectCode[18].ToString() == "9d")
+                                {
+                                    removeList.Add(scoreInfo);
+                                }
+                            }
 
                             // 若為補修成績，且成績計算不採計，則移除
                             if (takeRepairScore == false && scoreInfo.Detail.GetAttribute("是否補修成績") == "是")
@@ -2152,9 +2162,9 @@ namespace SmartSchool.Evaluation
                                 //可以被計算
                                 if (hasScore)
                                 {
-                                    string key = score.Detail.GetAttribute("領域") + "⊕" + score.Subject + "⊕" + score.Detail.GetAttribute("修課校部訂") + "⊕" + score.Detail.GetAttribute("修課必選修") + "⊕" + score.Detail.GetAttribute("開課學分數");
+                                    string key = score.Subject;
                                     if (score.Detail.GetAttribute("指定學年科目名稱") != "")
-                                        key = score.Detail.GetAttribute("領域") + "⊕" + score.Detail.GetAttribute("指定學年科目名稱") + "⊕" + score.Detail.GetAttribute("修課校部訂") + "⊕" + score.Detail.GetAttribute("修課必選修") + "⊕" + score.Detail.GetAttribute("開課學分數");
+                                        key = score.Detail.GetAttribute("指定學年科目名稱");
 
                                     if (!subjectScores.ContainsKey(key))
                                         subjectScores.Add(key, new Dictionary<SemesterSubjectScoreInfo, decimal>());

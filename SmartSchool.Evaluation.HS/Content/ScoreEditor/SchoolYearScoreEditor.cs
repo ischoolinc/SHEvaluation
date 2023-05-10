@@ -29,7 +29,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
         private SubjectScoreToolTipProvider _subject_rating; //各科目排名
         private EntryScoreToolTipProvider _score_rating, _moral_rating; //學業、德行成績排名。
         //科目名稱欄 Index
-        private const int SubjectColumn = 1;
+        private const int SubjectColumn = 0;
 
         public SchoolYearScoreEditor(string refStudentID)
         {
@@ -139,15 +139,11 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
 
                     DataGridViewRow row = new DataGridViewRow();
                     row.CreateCells(dataGridViewX1,
-                        var.GetAttribute("領域"),
                         var.GetAttribute("科目"),
                         var.GetAttribute("學年成績"),
                         var.GetAttribute("結算成績") == "" ? var.GetAttribute("學年成績") : var.GetAttribute("結算成績"),
                         var.GetAttribute("補考成績"),
-                        var.GetAttribute("重修成績"),
-                        var.GetAttribute("校部定") == "部訂" ? "部定" : var.GetAttribute("校部定"),
-                        var.GetAttribute("必選修"),
-                        var.GetAttribute("識別學分數")
+                        var.GetAttribute("重修成績")
                         );
                     row.Cells[0].ToolTipText = _subject_rating.GetTooltip(row);
                     dataGridViewX1.Rows.Add(row);
@@ -272,15 +268,11 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 if (row.IsNewRow)
                     break;
                 XmlElement subjectElement = doc.CreateElement("Subject");
-                subjectElement.SetAttribute("領域", "" + row.Cells[0].Value);
-                subjectElement.SetAttribute("科目", "" + row.Cells[1].Value);
-                subjectElement.SetAttribute("學年成績", "" + row.Cells[2].Value);
-                subjectElement.SetAttribute("結算成績", "" + row.Cells[3].Value);
-                subjectElement.SetAttribute("補考成績", "" + row.Cells[4].Value);
-                subjectElement.SetAttribute("重修成績", "" + row.Cells[5].Value);
-                subjectElement.SetAttribute("校部定", "" + row.Cells[6].Value == "部定" ? "部訂" : row.Cells[6].Value.ToString());
-                subjectElement.SetAttribute("必選修", "" + row.Cells[7].Value);
-                subjectElement.SetAttribute("識別學分數", "" + row.Cells[8].Value);
+                subjectElement.SetAttribute("科目", "" + row.Cells[0].Value);
+                subjectElement.SetAttribute("學年成績", "" + row.Cells[1].Value);
+                subjectElement.SetAttribute("結算成績", "" + row.Cells[2].Value);
+                subjectElement.SetAttribute("補考成績", "" + row.Cells[3].Value);
+                subjectElement.SetAttribute("重修成績", "" + row.Cells[4].Value);
                 subjectScoreInfo.AppendChild(subjectElement);
 
                 afterXml.AddElement("SubjectCollection", subjectElement);
@@ -534,8 +526,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
 
             bool hasScore = false;
             decimal score = decimal.MinValue;
-            //foreach (int i in new int[] { 0, 1, 6, 7, 8 }) // 領域名稱，因為各學校舊資料中會缺少，故先不做檢查，允許空值 --2022.10.05 俊緯
-            foreach (int i in new int[] { 1, 6, 7, 8 })
+            foreach (int i in new int[] { 0 })
             {
                 row.Cells[i].ErrorText = "";
                 decimal x = 0;
@@ -544,14 +535,9 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                     validatePass &= false;
                     row.Cells[i].ErrorText = "此為必填欄位";
                 }
-                if (i == 8 && "" + row.Cells[i].Value != "" && !decimal.TryParse("" + row.Cells[i].Value, out x))
-                {
-                    validatePass &= false;
-                    row.Cells[i].ErrorText = "必須輸入數字";
-                }
                 dataGridViewX1.UpdateCellErrorText(i, row.Index);
             }
-            foreach (int i in new int[] { 3, 4, 5 })
+            foreach (int i in new int[] { 2, 3, 4 })
             {
                 row.Cells[i].ErrorText = "";
                 decimal x = 0;
@@ -571,7 +557,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
 
             if (hasScore)
             {
-                foreach (int i in new int[] { 2 })
+                foreach (int i in new int[] { 1 })
                 {
                     row.Cells[i].Value = score;
                     row.Cells[i].ErrorText = "";
@@ -580,7 +566,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             }
             else
             {
-                foreach (int i in new int[] { 2 })
+                foreach (int i in new int[] { 1 })
                 {
                     validatePass &= false;
                     row.Cells[i].Value = "";

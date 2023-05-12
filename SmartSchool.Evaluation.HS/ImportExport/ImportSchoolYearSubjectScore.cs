@@ -96,7 +96,15 @@ namespace SmartSchool.Evaluation.ImportExport
                         if (!_StudentSchoolYearSubjectCollection[stu.StudentID].ContainsKey(semescore.SchoolYear))
                             _StudentSchoolYearSubjectCollection[stu.StudentID].Add(semescore.SchoolYear, new List<string>());
                         if (!_StudentSchoolYearSubjectCollection[stu.StudentID][semescore.SchoolYear].Contains(semescore.Subject))
-                            _StudentSchoolYearSubjectCollection[stu.StudentID][semescore.SchoolYear].Add(semescore.Subject);
+                        {
+                            string subject = semescore.Subject;
+                            if (semescore.Detail.GetAttribute("指定學年科目名稱") != "")
+                            {
+                                subject = semescore.Detail.GetAttribute("指定學年科目名稱");
+                            }
+
+                            _StudentSchoolYearSubjectCollection[stu.StudentID][semescore.SchoolYear].Add(subject);
+                        }
                         //填入學期科目成績的成績年級資料
                         if (!_StudentSchoolYearGradeYearCollection[stu.StudentID].ContainsKey(semescore.SchoolYear))
                             _StudentSchoolYearGradeYearCollection[stu.StudentID].Add(semescore.SchoolYear, semescore.GradeYear);

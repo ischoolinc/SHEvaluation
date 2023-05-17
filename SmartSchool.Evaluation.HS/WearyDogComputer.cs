@@ -2480,9 +2480,6 @@ namespace SmartSchool.Evaluation
                                     semesterSubject = score.Detail.GetAttribute("指定學年科目名稱");
 
                                 if (schoolYearSubjectScore.SchoolYear == schoolyear && schoolYearSubjectScore.Subject == semesterSubject
-                                    && score.Detail.GetAttribute("修課校部訂") == schoolYearSubjectScore.Detail.GetAttribute("校部定")
-                                    && score.Detail.GetAttribute("修課必選修") == schoolYearSubjectScore.Detail.GetAttribute("必選修")
-                                    && score.Detail.GetAttribute("開課學分數") == schoolYearSubjectScore.Detail.GetAttribute("識別學分數")
                                     && schoolYearSubjectScore.Score >= applylimit)
                                 {
                                     //subjectCalcScores.Add(schoolYearSubjectScore.Subject, schoolYearSubjectScore.Score);//[score.Subject]

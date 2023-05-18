@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Xml;
+using DevComponents.DotNetBar;
 using DevComponents.DotNetBar.Controls;
 using DevComponents.DotNetBar.Rendering;
 
@@ -19,6 +20,8 @@ namespace SmartSchool.Evaluation.Configuration
         private List<Control> uncheckedList = new List<Control>();
         private bool reseting = false;
         private int _SelectedRowIndex;
+
+        SuperTooltipInfo sttip = new SuperTooltipInfo();  //超級提示框
 
         public ScoreCalcRuleEditor()
         {
@@ -79,6 +82,7 @@ namespace SmartSchool.Evaluation.Configuration
 
             }
         }
+
 
         void control_TextChanged(object sender, EventArgs e)
         {
@@ -238,7 +242,7 @@ namespace SmartSchool.Evaluation.Configuration
             checkBoxX22.Checked = true;
             //學年調整成績
             //2017/1/12 穎驊筆記，恩正說 此項 學年調整成績 就邏輯上不會出現在"計算採計學年科目成績欄位" 故預設 為 false ，甚至 其在UI功能也 disable 掉
-            checkBoxX21.Checked = false; 
+            checkBoxX21.Checked = false;
             #endregion
 
 
@@ -487,7 +491,7 @@ namespace SmartSchool.Evaluation.Configuration
                 #region 補修成績
                 tryParseBool = true;
                 bool.TryParse(element.GetAttribute("補修成績"), out tryParseBool);
-                checkBoxX27.Checked = tryParseBool; 
+                checkBoxX27.Checked = tryParseBool;
                 #endregion
 
             }
@@ -619,19 +623,34 @@ namespace SmartSchool.Evaluation.Configuration
             }
             #endregion
             #region 畢業學分數
-            //學科累計總學分數
+            //新增 應修總學分數 Jackie Wang 2023/05/16
+            element = (XmlElement)_scrContent.SelectSingleNode("畢業學分數/應修總學分數");
+            if (element != null)
+            {
+                textBoxX3.Text = element.InnerText;
+            }
+
+            //學科累計總學分數 UI改為 應取得總學分數 Jackie Wang 2023/05/16
             element = (XmlElement)_scrContent.SelectSingleNode("畢業學分數/學科累計總學分數");
             if (element != null)
             {
                 textBoxX6.Text = element.InnerText;
             }
-            //專業及實習總學分數
+
+            //新增 應修專業及實習總學分數 Jackie Wang 2023/05/16
+            element = (XmlElement)_scrContent.SelectSingleNode("畢業學分數/應修專業及實習總學分數");
+            if (element != null)
+            {
+                textBoxX4.Text = element.InnerText;
+            }
+
+            //專業及實習總學分數 UI 改為 專業及實習應取得總學分數 Jackie Wang 2023/05/16
             element = (XmlElement)_scrContent.SelectSingleNode("畢業學分數/專業及實習總學分數");
             if (element != null)
             {
                 textBoxX2.Text = element.InnerText;
             }
-            //必修學分數
+            //必修學分數 
             element = (XmlElement)_scrContent.SelectSingleNode("畢業學分數/必修學分數");
             if (element != null)
             {
@@ -928,20 +947,39 @@ namespace SmartSchool.Evaluation.Configuration
             #endregion
             #region 畢業學分數
             parentelement = doc.CreateElement("畢業學分數");
-            //學科累計總學分數
+
+            //新增 應修總學分數 Jackie Wang 2023/05/16
+            if (ValidateCredit(textBoxX3) && textBoxX3.Text != "")
+            {
+                element = doc.CreateElement("應修總學分數");
+                element.InnerText = textBoxX3.Text;
+                parentelement.AppendChild(element);
+            }
+
+            //學科累計總學分數 UI改為 應取得總學分數 Jackie Wang 2023/05/16
             if (ValidateCredit(textBoxX6) && textBoxX6.Text != "")
             {
                 element = doc.CreateElement("學科累計總學分數");
                 element.InnerText = textBoxX6.Text;
                 parentelement.AppendChild(element);
             }
-            //專業及實習總學分數
+
+            //新增 應修專業及實習總學分數 Jackie Wang 2023/05/16
+            if (ValidateCredit(textBoxX4) && textBoxX4.Text != "")
+            {
+                element = doc.CreateElement("應修專業及實習總學分數");
+                element.InnerText = textBoxX4.Text;
+                parentelement.AppendChild(element);
+            }
+
+            //專業及實習總學分數 UI 改為 專業及實習應取得總學分數 Jackie Wang 2023/05/16
             if (ValidateCredit(textBoxX2) && textBoxX2.Text != "")
             {
                 element = doc.CreateElement("專業及實習總學分數");
                 element.InnerText = textBoxX2.Text;
                 parentelement.AppendChild(element);
             }
+
             //必修學分數
             if (ValidateCredit(textBoxX1) && textBoxX1.Text != "")
             {
@@ -949,13 +987,15 @@ namespace SmartSchool.Evaluation.Configuration
                 element.InnerText = textBoxX1.Text;
                 parentelement.AppendChild(element);
             }
-            //部訂必修學分數
+
+            //部訂必修學分數 技高填入部定必修及格百分比
             if (ValidateCredit(textBoxX7) && textBoxX7.Text != "")
             {
                 element = doc.CreateElement("部訂必修學分數");
                 element.InnerText = textBoxX7.Text;
                 parentelement.AppendChild(element);
             }
+
             //實習學分數
             if (ValidateCredit(textBoxX11) && textBoxX11.Text != "")
             {
@@ -963,6 +1003,7 @@ namespace SmartSchool.Evaluation.Configuration
                 element.InnerText = textBoxX11.Text;
                 parentelement.AppendChild(element);
             }
+
             //選修學分數
             if (ValidateCredit(textBoxX8) && textBoxX8.Text != "")
             {
@@ -1280,6 +1321,23 @@ namespace SmartSchool.Evaluation.Configuration
             {
                 ValidateCredit(tbox);
             }
+        }
+
+        private void ScoreCalcRuleEditor_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBoxX1_MouseHover(object sender, EventArgs e)
+        {
+            sttip.BodyText = "普高課程填入部定及校定必修及格學分數";
+            superTooltip1.SetSuperTooltip(textBoxX1, sttip);
+        }
+
+        private void textBoxX7_MouseHover(object sender, EventArgs e)
+        {
+            sttip.BodyText = "技高課程填入部定及格百分比";
+            superTooltip1.SetSuperTooltip(textBoxX7, sttip);
         }
 
         //private void buttonX1_Click(object sender, EventArgs e)

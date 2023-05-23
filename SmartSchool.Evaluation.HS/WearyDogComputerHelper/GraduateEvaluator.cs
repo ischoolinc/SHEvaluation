@@ -127,8 +127,15 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                         _ErrorList[student].Add("沒有設定課程規劃表，當\"學期科目成績屬性採計方式\"設定使用\"以課程規劃表內容為準\"時，學生必須要有課程規劃表以做參考。");
                         isDataReasonable &= false;
                     }
-                    #endregion
 
+                    //同一科目級別不重複採計
+                    if (rule.SelectSingleNode("畢業學分數/同一科目級別不重複採計") != null)
+                    {
+                        // 預設值為true
+                        if (rule.SelectSingleNode("畢業學分數/同一科目級別不重複採計").InnerText.Trim() == "FALSE")
+                            filterSameSubject = false;
+                    }
+                    #endregion
 
                     //應修總學分數
                     #region 應修總學分數
@@ -662,101 +669,119 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                         }
                     }
 
-                    //同一科目級別不重複採計
-                    #region 同一科目級別不重複採計
-                    if (rule.SelectSingleNode("畢業學分數/同一科目級別不重複採計") != null)
-                    {
-                        if (rule.SelectSingleNode("畢業學分數/同一科目級別不重複採計").InnerText.Trim() == "FALSE")
-                            filterSameSubject = false;
-                    }
-                    #endregion
-                    #region 功過相抵未滿三大過
-                    //<德行成績畢業判斷規則 功過相抵未滿三大過="true">每學年德行成績均及格</德行成績畢業判斷規則>
-                    if (rule.SelectSingleNode("德行成績畢業判斷規則") != null)
-                    {
-                        XmlElement Element = rule.SelectSingleNode("德行成績畢業判斷規則") as XmlElement;
-
-                        if (Element.GetAttribute("功過相抵未滿三大過").ToUpper().Equals("TRUE"))
-                        {
-                            crule.IsDemeritNotExceedMaximum = true;
-
-
-
-                        }
-                    }
-                    #endregion
                     #region 學年學業成績及格
-                    //<畢業成績計算規則 學年學業成績及格="true">學期分項成績平均</畢業成績計算規則>
-                    if (rule.SelectSingleNode("畢業成績計算規則") != null)
                     {
-                        XmlElement Element = rule.SelectSingleNode("畢業成績計算規則") as XmlElement;
-
-                        if (Element.GetAttribute("學年學業成績及格").ToUpper().Equals("TRUE"))
+                        //<畢業成績計算規則 學年學業成績及格="true">學期分項成績平均</畢業成績計算規則>
+                        if (rule.SelectSingleNode("畢業成績計算規則") != null)
                         {
-                            crule.IsEverySchoolYearEntryStudiesPass = true;
-                            #region 及格標準
-                            foreach (XmlElement element in helper.GetElements("及格標準/學生類別"))
+                            XmlElement Element = rule.SelectSingleNode("畢業成績計算規則") as XmlElement;
+
+                            if (Element.GetAttribute("學年學業成績及格").ToUpper().Equals("TRUE"))
                             {
-                                string cat = element.GetAttribute("類別");
-                                bool useful = false;
-                                //掃描學生的類別作比對
-                                foreach (CategoryInfo catinfo in student.StudentCategorys)
+                                crule.IsEverySchoolYearEntryStudiesPass = true;
+                                #region 及格標準
+                                foreach (XmlElement element in helper.GetElements("及格標準/學生類別"))
                                 {
-                                    if (catinfo.Name == cat || catinfo.FullName == cat)
-                                        useful = true;
-                                }
-                                //學生是指定的類別或類別為"預設"
-                                if (cat == "預設" || useful)
-                                {
-                                    decimal tryParseDecimal;
-                                    for (int gyear = 1; gyear <= 4; gyear++)
+                                    string cat = element.GetAttribute("類別");
+                                    bool useful = false;
+                                    //掃描學生的類別作比對
+                                    foreach (CategoryInfo catinfo in student.StudentCategorys)
                                     {
-                                        switch (gyear)
+                                        if (catinfo.Name == cat || catinfo.FullName == cat)
+                                            useful = true;
+                                    }
+                                    //學生是指定的類別或類別為"預設"
+                                    if (cat == "預設" || useful)
+                                    {
+                                        decimal tryParseDecimal;
+                                        for (int gyear = 1; gyear <= 4; gyear++)
                                         {
-                                            case 1:
-                                                if (decimal.TryParse(element.GetAttribute("一年級及格標準"), out tryParseDecimal))
-                                                {
-                                                    if (!applyLimit.ContainsKey(gyear))
-                                                        applyLimit.Add(gyear, tryParseDecimal);
-                                                    if (applyLimit[gyear] > tryParseDecimal)
-                                                        applyLimit[gyear] = tryParseDecimal;
-                                                }
-                                                break;
-                                            case 2:
-                                                if (decimal.TryParse(element.GetAttribute("二年級及格標準"), out tryParseDecimal))
-                                                {
-                                                    if (!applyLimit.ContainsKey(gyear))
-                                                        applyLimit.Add(gyear, tryParseDecimal);
-                                                    if (applyLimit[gyear] > tryParseDecimal)
-                                                        applyLimit[gyear] = tryParseDecimal;
-                                                }
-                                                break;
-                                            case 3:
-                                                if (decimal.TryParse(element.GetAttribute("三年級及格標準"), out tryParseDecimal))
-                                                {
-                                                    if (!applyLimit.ContainsKey(gyear))
-                                                        applyLimit.Add(gyear, tryParseDecimal);
-                                                    if (applyLimit[gyear] > tryParseDecimal)
-                                                        applyLimit[gyear] = tryParseDecimal;
-                                                }
-                                                break;
-                                            case 4:
-                                                if (decimal.TryParse(element.GetAttribute("四年級及格標準"), out tryParseDecimal))
-                                                {
-                                                    if (!applyLimit.ContainsKey(gyear))
-                                                        applyLimit.Add(gyear, tryParseDecimal);
-                                                    if (applyLimit[gyear] > tryParseDecimal)
-                                                        applyLimit[gyear] = tryParseDecimal;
-                                                }
-                                                break;
-                                            default:
-                                                break;
+                                            switch (gyear)
+                                            {
+                                                case 1:
+                                                    if (decimal.TryParse(element.GetAttribute("一年級及格標準"), out tryParseDecimal))
+                                                    {
+                                                        if (!applyLimit.ContainsKey(gyear))
+                                                            applyLimit.Add(gyear, tryParseDecimal);
+                                                        if (applyLimit[gyear] > tryParseDecimal)
+                                                            applyLimit[gyear] = tryParseDecimal;
+                                                    }
+                                                    break;
+                                                case 2:
+                                                    if (decimal.TryParse(element.GetAttribute("二年級及格標準"), out tryParseDecimal))
+                                                    {
+                                                        if (!applyLimit.ContainsKey(gyear))
+                                                            applyLimit.Add(gyear, tryParseDecimal);
+                                                        if (applyLimit[gyear] > tryParseDecimal)
+                                                            applyLimit[gyear] = tryParseDecimal;
+                                                    }
+                                                    break;
+                                                case 3:
+                                                    if (decimal.TryParse(element.GetAttribute("三年級及格標準"), out tryParseDecimal))
+                                                    {
+                                                        if (!applyLimit.ContainsKey(gyear))
+                                                            applyLimit.Add(gyear, tryParseDecimal);
+                                                        if (applyLimit[gyear] > tryParseDecimal)
+                                                            applyLimit[gyear] = tryParseDecimal;
+                                                    }
+                                                    break;
+                                                case 4:
+                                                    if (decimal.TryParse(element.GetAttribute("四年級及格標準"), out tryParseDecimal))
+                                                    {
+                                                        if (!applyLimit.ContainsKey(gyear))
+                                                            applyLimit.Add(gyear, tryParseDecimal);
+                                                        if (applyLimit[gyear] > tryParseDecimal)
+                                                            applyLimit[gyear] = tryParseDecimal;
+                                                    }
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
                                         }
                                     }
                                 }
+                                #endregion
                             }
-                            #endregion
                         }
+                        XmlElement reportEle = docCreditReport.CreateElement("畢業規則");
+                        evalReport.AppendChild(reportEle);
+                        reportEle.SetAttribute("規則", "學年學業成績及格");
+                        reportEle.SetAttribute("類型", "學年學業成績及格");
+                        reportEle.SetAttribute("啟用", crule.IsEverySchoolYearEntryStudiesPass ? "是" : "否");
+                        reportEle.SetAttribute("設定值", crule.IsEverySchoolYearEntryStudiesPass ? "是" : "否");
+                        reportEle.SetAttribute("通過標準", "0");
+                        reportEle.SetAttribute("不及格學年", "0");
+                        for (int gradeYear = 1; gradeYear <= 4; gradeYear++)
+                        {
+                            XmlElement passLimit = docCreditReport.CreateElement("及格標準");
+                            reportEle.AppendChild(passLimit);
+                            passLimit.SetAttribute("年級", "" + gradeYear);
+                            passLimit.SetAttribute("及格標準", "" + (applyLimit.ContainsKey(gradeYear) ? applyLimit[gradeYear] : 60));
+                            passLimit.SetAttribute("學年學業分項成績", "");
+                        }
+                    }
+                    #endregion
+
+                    #region 功過相抵未滿三大過
+                    {
+                        //<德行成績畢業判斷規則 功過相抵未滿三大過="true">每學年德行成績均及格</德行成績畢業判斷規則>
+                        if (rule.SelectSingleNode("德行成績畢業判斷規則") != null)
+                        {
+                            XmlElement Element = rule.SelectSingleNode("德行成績畢業判斷規則") as XmlElement;
+
+                            if (Element.GetAttribute("功過相抵未滿三大過").ToUpper().Equals("TRUE"))
+                            {
+                                crule.IsDemeritNotExceedMaximum = true;
+                            }
+                        }
+                        XmlElement reportEle = docCreditReport.CreateElement("畢業規則");
+                        evalReport.AppendChild(reportEle);
+                        reportEle.SetAttribute("規則", "功過相抵未滿三大過");
+                        reportEle.SetAttribute("類型", "功過相抵未滿三大過");
+                        reportEle.SetAttribute("啟用", crule.IsDemeritNotExceedMaximum ? "是" : "否");
+                        reportEle.SetAttribute("設定值", crule.IsDemeritNotExceedMaximum ? "是" : "否");
+                        reportEle.SetAttribute("通過標準", "0");
+                        reportEle.SetAttribute("目前累計支數", "0");
                     }
                     #endregion
                 }
@@ -1057,15 +1082,17 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                     #endregion
                     //判斷學年學業分項成績及格
                     #region 判斷學年學業分項成績及格
-                    if (crule.IsEverySchoolYearEntryStudiesPass)
                     {
                         Dictionary<int, bool?> passGrades = new Dictionary<int, bool?>();
                         passGrades.Add(1, null);
                         passGrades.Add(2, null);
                         passGrades.Add(3, null);
+                        XmlElement reportEle = docCreditReport.DocumentElement.SelectSingleNode("畢業規則[@規則=\"學年學業成績及格\"]") as XmlElement;
                         foreach (var item in student.SchoolYearEntryScoreList)
                         {
                             if (item.Entry != "學業") continue;
+                            XmlElement gEle = reportEle.SelectSingleNode("及格標準[@年級=\"" + item.GradeYear + "\"]") as XmlElement;
+                            gEle.SetAttribute("學年學業分項成績", "" + item.Score);
                             decimal applylimit = 60;
                             if (applyLimit.ContainsKey(item.GradeYear))
                                 applylimit = applyLimit[item.GradeYear];
@@ -1073,27 +1100,30 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                 passGrades.Add(item.GradeYear, item.Score >= applylimit);
                             else
                                 passGrades[item.GradeYear] = item.Score >= applylimit;
+
                         }
-                        foreach (var gradeYear in passGrades.Keys)
+                        if (crule.IsEverySchoolYearEntryStudiesPass)
                         {
-                            if (passGrades[gradeYear] == null)
+                            foreach (var gradeYear in passGrades.Keys)
                             {
-                                XmlElement unPasselement = docGradCheck.CreateElement("UnPassReson");
-                                unPasselement.InnerText = "缺少" + gradeYear + "年級學年學業分項成績";
-                                evalResult.AppendChild(unPasselement);
-                            }
-                            else if (!passGrades[gradeYear].Value)
-                            {
-                                XmlElement unPasselement = docGradCheck.CreateElement("UnPassReson");
-                                unPasselement.InnerText = "" + gradeYear + "年級學年學業分項成績不及格";
-                                evalResult.AppendChild(unPasselement);
+                                if (passGrades[gradeYear] == null)
+                                {
+                                    XmlElement unPasselement = docGradCheck.CreateElement("UnPassReson");
+                                    unPasselement.InnerText = "缺少" + gradeYear + "年級學年學業分項成績";
+                                    evalResult.AppendChild(unPasselement);
+                                }
+                                else if (!passGrades[gradeYear].Value)
+                                {
+                                    XmlElement unPasselement = docGradCheck.CreateElement("UnPassReson");
+                                    unPasselement.InnerText = "" + gradeYear + "年級學年學業分項成績不及格";
+                                    evalResult.AppendChild(unPasselement);
+                                }
                             }
                         }
                     }
                     #endregion
                     //判斷功過相抵未滿三大過
                     #region 判斷功過相抵未滿三大過
-                    if (crule.IsDemeritNotExceedMaximum)
                     {
                         //判斷使用自訂功過換算表或系統預設
                         if (mreducerecord != null)
@@ -1145,19 +1175,29 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                 }
                                 #endregion
                             }
-                            //如果滿三大過
-                            if (StudentDemeritCount <= -MaxDemeritC)
+                            XmlElement reportEle = docCreditReport.DocumentElement.SelectSingleNode("畢業規則[@規則=\"功過相抵未滿三大過\"]") as XmlElement;
+                            reportEle.SetAttribute("通過標準", "" + MaxDemeritC);
+                            reportEle.SetAttribute("目前累計支數", "" + (-StudentDemeritCount));
+
+                            if (crule.IsDemeritNotExceedMaximum)
                             {
-                                XmlElement unPasselement = docGradCheck.CreateElement("UnPassReson");
-                                unPasselement.InnerText = "功過相抵滿三大過";
-                                evalResult.AppendChild(unPasselement);
+                                //如果滿三大過
+                                if (StudentDemeritCount <= -MaxDemeritC)
+                                {
+                                    XmlElement unPasselement = docGradCheck.CreateElement("UnPassReson");
+                                    unPasselement.InnerText = "功過相抵滿三大過";
+                                    evalResult.AppendChild(unPasselement);
+                                }
                             }
                         }
                         else
                         {
-                            XmlElement unPasselement = docGradCheck.CreateElement("UnPassReson");
-                            unPasselement.InnerText = "沒有設定功過換算表";
-                            evalResult.AppendChild(unPasselement);
+                            if (crule.IsDemeritNotExceedMaximum)
+                            {
+                                XmlElement unPasselement = docGradCheck.CreateElement("UnPassReson");
+                                unPasselement.InnerText = "沒有設定功過換算表";
+                                evalResult.AppendChild(unPasselement);
+                            }
                         }
                     }
                     #endregion

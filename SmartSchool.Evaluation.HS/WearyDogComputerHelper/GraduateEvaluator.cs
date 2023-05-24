@@ -631,8 +631,8 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                 subjectElement.AppendChild(semesterElement);
                                 semesterElement.SetAttribute("開課年級", gplanSubject.SubjectElement.GetAttribute("GradeYear"));
                                 semesterElement.SetAttribute("開課學期", gplanSubject.SubjectElement.GetAttribute("Semester"));
-                                semesterElement.SetAttribute("分組名稱", gplanSubject.SubjectElement.GetAttribute("分組名稱"));
-                                semesterElement.SetAttribute("分組修課學分數", gplanSubject.SubjectElement.GetAttribute("分組修課學分數"));
+                                semesterElement.SetAttribute("課程群組", gplanSubject.SubjectElement.GetAttribute("分組名稱"));
+                                semesterElement.SetAttribute("群組修課學分數", gplanSubject.SubjectElement.GetAttribute("分組修課學分數"));
 
                                 // 累計課程規劃表學分數
                                 if (gplanSubject.SubjectElement.GetAttribute("分組名稱") == "")
@@ -780,8 +780,8 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                         reportEle.SetAttribute("類型", "功過相抵未滿三大過");
                         reportEle.SetAttribute("啟用", crule.IsDemeritNotExceedMaximum ? "是" : "否");
                         reportEle.SetAttribute("設定值", crule.IsDemeritNotExceedMaximum ? "是" : "否");
-                        reportEle.SetAttribute("通過標準", "0");
-                        reportEle.SetAttribute("目前累計支數", "0");
+                        reportEle.SetAttribute("通過標準", "");
+                        reportEle.SetAttribute("目前累計支數", "");
                     }
                     #endregion
                 }
@@ -1023,32 +1023,42 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                             if (subjectElement.GetAttribute("狀態") == "未修習")
                             {
                                 bool comeAfter = false;
+                                decimal credit = 0;
                                 foreach (XmlElement semesterElemest in subjectElement.SelectNodes("開課設定"))
                                 {
                                     int tryParseGradeYear = 0, tryParseSemester = 0;
                                     int.TryParse(semesterElemest.GetAttribute("開課年級"), out tryParseGradeYear);
                                     int.TryParse(semesterElemest.GetAttribute("開課學期"), out tryParseSemester);
+                                    if (semesterElemest.GetAttribute("課程群組") == "")
+                                    {
+                                        credit = decimal.Parse(subjectElement.GetAttribute("學分數"));
+                                    }
+                                    else
+                                    {
+                                        string checkKey = "" + semesterElemest.GetAttribute("課程群組") + "_" + (tryParseGradeYear * 2 + tryParseSemester);
+                                        if (!checkList.Contains(checkKey))
+                                        {
+                                            checkList.Add(checkKey);
+                                            credit = decimal.Parse(semesterElemest.GetAttribute("群組修課學分數"));
+                                        }
+                                    }
                                     if (
                                         tryParseGradeYear > maxGradeYear
                                         || (tryParseGradeYear == maxGradeYear && tryParseSemester > maxSemester)
                                         )
                                     {
                                         comeAfter = true;
-                                        if (semesterElemest.GetAttribute("分組名稱") == "")
-                                            check.ComeAfterCount += decimal.Parse(subjectElement.GetAttribute("學分數"));
-                                        else
-                                        {
-                                            string checkKey = "" + semesterElemest.GetAttribute("分組名稱") + "_" + (tryParseGradeYear * 2 + tryParseSemester);
-                                            if (!checkList.Contains(checkKey))
-                                            {
-                                                checkList.Add(checkKey);
-                                                check.ComeAfterCount += decimal.Parse(semesterElemest.GetAttribute("分組修課學分數"));
-                                            }
-                                        }
                                     }
                                 }
                                 if (comeAfter)
+                                {
                                     subjectElement.SetAttribute("狀態", "尚未開課");
+                                    check.ComeAfterCount += credit;
+                                }
+                                else
+                                {
+                                    check.NotAttendCount += credit;
+                                }
                             }
                         }
                         // 標註各項統計值
@@ -1060,9 +1070,12 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                         check.XmlElement.PrependChild(summaryElement);
                         summaryElement.SetAttribute("畢業差額", "" + (check.PassCount + check.ComeAfterCount - check.PassLimit));
                         summaryElement.SetAttribute("已修習", "" + check.AttendCount);
+                        if (check.Type == "取得學分數統計")
+                            summaryElement.SetAttribute("已取得", "" + check.PassCount);
                         summaryElement.SetAttribute("尚未開課", "" + check.ComeAfterCount);
                         summaryElement.SetAttribute("可重修", "" + check.RetakeCount);
                         summaryElement.SetAttribute("可補修", "" + check.MakeupCount);
+                        summaryElement.SetAttribute("未修習", "" + check.NotAttendCount);
 
 
                         if (check.Active)
@@ -1102,9 +1115,9 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                 passGrades[item.GradeYear] = item.Score >= applylimit;
 
                         }
-                        if (crule.IsEverySchoolYearEntryStudiesPass)
+                        foreach (var gradeYear in passGrades.Keys)
                         {
-                            foreach (var gradeYear in passGrades.Keys)
+                            if (crule.IsEverySchoolYearEntryStudiesPass)
                             {
                                 if (passGrades[gradeYear] == null)
                                 {
@@ -1118,6 +1131,10 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                     unPasselement.InnerText = "" + gradeYear + "年級學年學業分項成績不及格";
                                     evalResult.AppendChild(unPasselement);
                                 }
+                            }
+                            if (passGrades[gradeYear] != null && !passGrades[gradeYear].Value)
+                            {
+                                reportEle.SetAttribute("不及格學年", "" + (int.Parse(reportEle.GetAttribute("不及格學年")) - 1));
                             }
                         }
                     }
@@ -1176,8 +1193,8 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                 #endregion
                             }
                             XmlElement reportEle = docCreditReport.DocumentElement.SelectSingleNode("畢業規則[@規則=\"功過相抵未滿三大過\"]") as XmlElement;
-                            reportEle.SetAttribute("通過標準", "" + MaxDemeritC);
-                            reportEle.SetAttribute("目前累計支數", "" + (-StudentDemeritCount));
+                            reportEle.SetAttribute("通過標準", "" + (-MaxDemeritC));
+                            reportEle.SetAttribute("目前累計支數", "" + (StudentDemeritCount));
 
                             if (crule.IsDemeritNotExceedMaximum)
                             {
@@ -1250,6 +1267,8 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
         public decimal PassLimit { get; set; }
         // 已修習學分數
         public decimal AttendCount { get; set; }
+        // 未修習學分數
+        public decimal NotAttendCount { get; set; }
         // 已通過學分數
         public decimal PassCount { get; set; }
         // 可補修學分數

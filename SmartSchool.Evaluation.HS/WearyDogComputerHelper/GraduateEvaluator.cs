@@ -64,8 +64,6 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                 bool isDataReasonable = true;
                 //計算資料採用課程規劃(預設採用課程規劃)
                 bool useGPlan = true;
-                //修滿所有必修課程
-                bool attendAllRequiredSubjects = false;
                 //及格標準<年及,及格標準>
                 Dictionary<int, decimal> applyLimit = new Dictionary<int, decimal>();
                 //學分規則相關資訊。
@@ -505,6 +503,8 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                     reportEle.SetAttribute("課規總學分數", "0");
                                     reportEle.SetAttribute("通過標準", "0");
                                     reportEle.SetAttribute("累計學分", "0");
+                                    reportEle.SetAttribute("核心科目表序號", "" + (checkedList.IndexOf(subjectTable.Name) + 1));
+                                    reportEle.SetAttribute("核心科目表名稱", subjectTable.Name);
                                     attendConfig = new CreditCheckConfig()
                                     {
                                         Name = ruleName,
@@ -534,6 +534,8 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                     reportEle.SetAttribute("課規總學分數", "0");
                                     reportEle.SetAttribute("通過標準", "0");
                                     reportEle.SetAttribute("累計學分", "0");
+                                    reportEle.SetAttribute("核心科目表序號", "" + (checkedList.IndexOf(subjectTable.Name) + 1));
+                                    reportEle.SetAttribute("核心科目表名稱", subjectTable.Name);
 
                                     passConfig = new CreditCheckConfig()
                                     {
@@ -1072,6 +1074,8 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                         summaryElement.SetAttribute("已修習", "" + check.AttendCount);
                         if (check.Type == "取得學分數統計")
                             summaryElement.SetAttribute("已取得", "" + check.PassCount);
+                        else
+                            summaryElement.SetAttribute("已取得", "");
                         summaryElement.SetAttribute("尚未開課", "" + check.ComeAfterCount);
                         summaryElement.SetAttribute("可重修", "" + check.RetakeCount);
                         summaryElement.SetAttribute("可補修", "" + check.MakeupCount);

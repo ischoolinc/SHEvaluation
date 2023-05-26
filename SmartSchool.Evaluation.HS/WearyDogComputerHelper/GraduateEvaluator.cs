@@ -360,7 +360,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                             XmlElement = reportEle,
                             DoCheck = delegate (string domain, decimal credit, string entry, string required, string requiredBy, string subjectName, string subjectLevel)
                             {
-                                return required == "必修" && requiredBy == "部訂";
+                                return required == "必修" && requiredBy == "校訂";
                             }
                         });
                     }
@@ -426,7 +426,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                             XmlElement = reportEle,
                             DoCheck = delegate (string domain, decimal credit, string entry, string required, string requiredBy, string subjectName, string subjectLevel)
                             {
-                                return required == "選修";
+                                return entry == "實習科目" || entry == "專業科目";
                             }
                         });
                     }
@@ -459,7 +459,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                             XmlElement = reportEle,
                             DoCheck = delegate (string domain, decimal credit, string entry, string required, string requiredBy, string subjectName, string subjectLevel)
                             {
-                                return required == "選修";
+                                return entry == "實習科目";
                             }
                         });
                     }

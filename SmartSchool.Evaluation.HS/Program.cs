@@ -39,23 +39,27 @@ namespace SmartSchool.Evaluation
             SmartSchool.Evaluation.GraduationPlan.GraduationPlan.CreateInstance();
             SmartSchool.Evaluation.ScoreCalcRule.ScoreCalcRule.CreateInstance();
 
+            #region 下載畢業資格檢查報告
             {
-                RibbonBarButton btn = K12.Presentation.NLDPanels.Student.RibbonBarItems["資料統計"]["畢業驗證報告"];
-                btn.Enable = false;
+                string aclCode = "5DB89EDF-7283-4C5E-925C-97C52C472AA0";
+                FISCA.Permission.RoleAclSource.Instance["學生"]["功能按鈕"].Add(new FISCA.Permission.RibbonFeature(aclCode, "下載畢業資格檢查報告"));
+                var btn = K12.Presentation.NLDPanels.Student.RibbonBarItems["教務"]["成績作業"]["下載畢業資格檢查報告"];
+                btn.Enable = CurrentUser.Acl[aclCode].Executable;
+
                 K12.Presentation.NLDPanels.Student.SelectedSourceChanged += delegate
                 {
-                    btn.Enable = K12.Presentation.NLDPanels.Student.SelectedSource.Count == 1;
+                    btn.Enable = K12.Presentation.NLDPanels.Student.SelectedSource.Count == 1 && CurrentUser.Acl[aclCode].Executable;
                 };
                 btn.Click += delegate
                 {
                     Customization.Data.AccessHelper accessHelper = new Customization.Data.AccessHelper();
                     StudentRecord studentRecord = accessHelper.StudentHelper.GetStudent(K12.Presentation.NLDPanels.Student.SelectedSource[0]);
                     new WearyDogComputer().FillStudentGradCheck(accessHelper, new List<StudentRecord>() { studentRecord });
-                    
+
                     string path = System.IO.Path.Combine(Application.StartupPath, "Reports");
                     if (!Directory.Exists(path))
                         Directory.CreateDirectory(path);
-                    path = System.IO.Path.Combine(path, "畢業驗證報告.xml");
+                    path = System.IO.Path.Combine(path, studentRecord.StudentNumber + "." + studentRecord.StudentName + ".畢業資格檢查報告.xml");
 
                     if (File.Exists(path))
                     {
@@ -94,6 +98,7 @@ namespace SmartSchool.Evaluation
                     System.Diagnostics.Process.Start(path);
                 };
             }
+            #endregion
 
             RibbonBarButton button = MotherForm.RibbonBarItems["教務作業", "基本設定"]["設定"];
             button.Enable = CurrentUser.Acl["Button0830"].Executable;
@@ -106,7 +111,7 @@ namespace SmartSchool.Evaluation
             FISCA.Features.Register("GraduationPlanSyncAllBackground", x =>
             {
                 SmartSchool.Evaluation.GraduationPlan.GraduationPlan.Instance.Reflash();
-              //  Console.WriteLine("GraduationPlanSyncAllBackground");
+                //  Console.WriteLine("GraduationPlanSyncAllBackground");
             });
 
 
@@ -117,7 +122,7 @@ namespace SmartSchool.Evaluation
             };
 
             // button["檢視班級課程規劃表(99課綱適用)"].Click += delegate
-            button.Enable = CurrentUser.Acl["Button0860"].Executable;            
+            button.Enable = CurrentUser.Acl["Button0860"].Executable;
             button["班級課程規劃表(99課綱適用)"].Click += delegate
             {
                 //new ConfigurationForm(new GraduationPlanConfiguration()).ShowDialog();

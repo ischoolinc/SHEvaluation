@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.itemContainer9 = new DevComponents.DotNetBar.ItemContainer();
             this.labelItem1 = new DevComponents.DotNetBar.LabelItem();
             this.panelEx1 = new DevComponents.DotNetBar.PanelEx();
@@ -320,7 +320,7 @@
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedTabFont = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Bold);
+            this.tabControl1.SelectedTabFont = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Bold);
             this.tabControl1.SelectedTabIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1002, 710);
             this.tabControl1.Style = DevComponents.DotNetBar.eTabStripStyle.Office2007Document;
@@ -342,7 +342,7 @@
             this.tabControlPanel6.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(157)))), ((int)(((byte)(188)))), ((int)(((byte)(227)))));
             this.tabControlPanel6.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
             this.tabControlPanel6.Style.BorderColor.Color = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(165)))), ((int)(((byte)(199)))));
-            this.tabControlPanel6.Style.BorderSide = ((DevComponents.DotNetBar.eBorderSide)(((DevComponents.DotNetBar.eBorderSide.Left | DevComponents.DotNetBar.eBorderSide.Right)
+            this.tabControlPanel6.Style.BorderSide = ((DevComponents.DotNetBar.eBorderSide)(((DevComponents.DotNetBar.eBorderSide.Left | DevComponents.DotNetBar.eBorderSide.Right) 
             | DevComponents.DotNetBar.eBorderSide.Bottom)));
             this.tabControlPanel6.Style.GradientAngle = 90;
             this.tabControlPanel6.TabIndex = 6;
@@ -937,8 +937,8 @@
             // 
             // listView1
             // 
-            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             // 
             // 
@@ -1184,11 +1184,11 @@
             // 
             this.labelX31.BackgroundStyle.Class = "";
             this.labelX31.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX31.Location = new System.Drawing.Point(248, 91);
+            this.labelX31.Location = new System.Drawing.Point(314, 96);
             this.labelX31.Name = "labelX31";
-            this.labelX31.Size = new System.Drawing.Size(154, 21);
+            this.labelX31.Size = new System.Drawing.Size(141, 21);
             this.labelX31.TabIndex = 10;
-            this.labelX31.Text = "專業及實習應取得學分數";
+            this.labelX31.Text = "取得專業及實習學分數";
             // 
             // textBoxX4
             // 
@@ -1197,10 +1197,10 @@
             // 
             this.textBoxX4.Border.Class = "TextBoxBorder";
             this.textBoxX4.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX4.Location = new System.Drawing.Point(420, 62);
+            this.textBoxX4.Location = new System.Drawing.Point(205, 94);
             this.textBoxX4.Name = "textBoxX4";
             this.textBoxX4.Size = new System.Drawing.Size(63, 25);
-            this.textBoxX4.TabIndex = 7;
+            this.textBoxX4.TabIndex = 6;
             // 
             // labelX30
             // 
@@ -1210,7 +1210,7 @@
             // 
             this.labelX30.BackgroundStyle.Class = "";
             this.labelX30.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX30.Location = new System.Drawing.Point(30, 7);
+            this.labelX30.Location = new System.Drawing.Point(52, 3);
             this.labelX30.Name = "labelX30";
             this.labelX30.Size = new System.Drawing.Size(87, 21);
             this.labelX30.TabIndex = 9;
@@ -1223,10 +1223,10 @@
             // 
             this.textBoxX3.Border.Class = "TextBoxBorder";
             this.textBoxX3.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX3.Location = new System.Drawing.Point(159, 2);
+            this.textBoxX3.Location = new System.Drawing.Point(205, 1);
             this.textBoxX3.Name = "textBoxX3";
             this.textBoxX3.Size = new System.Drawing.Size(63, 25);
-            this.textBoxX3.TabIndex = 1;
+            this.textBoxX3.TabIndex = 0;
             // 
             // checkBoxX20
             // 
@@ -1239,10 +1239,10 @@
             this.checkBoxX20.Checked = true;
             this.checkBoxX20.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxX20.CheckValue = "Y";
-            this.checkBoxX20.Location = new System.Drawing.Point(28, 126);
+            this.checkBoxX20.Location = new System.Drawing.Point(52, 127);
             this.checkBoxX20.Name = "checkBoxX20";
             this.checkBoxX20.Size = new System.Drawing.Size(174, 21);
-            this.checkBoxX20.TabIndex = 7;
+            this.checkBoxX20.TabIndex = 8;
             this.checkBoxX20.Text = "同一科目級別不重複採計";
             // 
             // labelX29
@@ -1253,11 +1253,11 @@
             // 
             this.labelX29.BackgroundStyle.Class = "";
             this.labelX29.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX29.Location = new System.Drawing.Point(261, 62);
+            this.labelX29.Location = new System.Drawing.Point(52, 96);
             this.labelX29.Name = "labelX29";
             this.labelX29.Size = new System.Drawing.Size(141, 21);
             this.labelX29.TabIndex = 5;
-            this.labelX29.Text = "專業及實習應修學分數";
+            this.labelX29.Text = "應修專業及實習學分數";
             // 
             // textBoxX2
             // 
@@ -1266,10 +1266,10 @@
             // 
             this.textBoxX2.Border.Class = "TextBoxBorder";
             this.textBoxX2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX2.Location = new System.Drawing.Point(420, 92);
+            this.textBoxX2.Location = new System.Drawing.Point(463, 94);
             this.textBoxX2.Name = "textBoxX2";
             this.textBoxX2.Size = new System.Drawing.Size(63, 25);
-            this.textBoxX2.TabIndex = 8;
+            this.textBoxX2.TabIndex = 7;
             this.textBoxX2.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
             // 
             // labelX12
@@ -1280,11 +1280,11 @@
             // 
             this.labelX12.BackgroundStyle.Class = "";
             this.labelX12.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX12.Location = new System.Drawing.Point(328, 120);
+            this.labelX12.Location = new System.Drawing.Point(314, 127);
             this.labelX12.Name = "labelX12";
-            this.labelX12.Size = new System.Drawing.Size(74, 21);
+            this.labelX12.Size = new System.Drawing.Size(101, 21);
             this.labelX12.TabIndex = 3;
-            this.labelX12.Text = "實習學分數";
+            this.labelX12.Text = "取得實習學分數";
             // 
             // labelX17
             // 
@@ -1294,11 +1294,11 @@
             // 
             this.labelX17.BackgroundStyle.Class = "";
             this.labelX17.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX17.Location = new System.Drawing.Point(30, 96);
+            this.labelX17.Location = new System.Drawing.Point(314, 65);
             this.labelX17.Name = "labelX17";
-            this.labelX17.Size = new System.Drawing.Size(101, 21);
+            this.labelX17.Size = new System.Drawing.Size(127, 21);
             this.labelX17.TabIndex = 3;
-            this.labelX17.Text = "校訂必修學分數";
+            this.labelX17.Text = "取得校訂必修學分數";
             // 
             // labelX11
             // 
@@ -1308,11 +1308,11 @@
             // 
             this.labelX11.BackgroundStyle.Class = "";
             this.labelX11.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX11.Location = new System.Drawing.Point(30, 67);
+            this.labelX11.Location = new System.Drawing.Point(52, 65);
             this.labelX11.Name = "labelX11";
-            this.labelX11.Size = new System.Drawing.Size(101, 21);
+            this.labelX11.Size = new System.Drawing.Size(127, 21);
             this.labelX11.TabIndex = 3;
-            this.labelX11.Text = "部訂必修學分數";
+            this.labelX11.Text = "取得部定必修學分數";
             // 
             // labelX18
             // 
@@ -1322,11 +1322,11 @@
             // 
             this.labelX18.BackgroundStyle.Class = "";
             this.labelX18.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX18.Location = new System.Drawing.Point(326, 3);
+            this.labelX18.Location = new System.Drawing.Point(52, 34);
             this.labelX18.Name = "labelX18";
-            this.labelX18.Size = new System.Drawing.Size(74, 21);
+            this.labelX18.Size = new System.Drawing.Size(101, 21);
             this.labelX18.TabIndex = 3;
-            this.labelX18.Text = "必修學分數";
+            this.labelX18.Text = "取得必修學分數";
             // 
             // labelX16
             // 
@@ -1336,11 +1336,11 @@
             // 
             this.labelX16.BackgroundStyle.Class = "";
             this.labelX16.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX16.Location = new System.Drawing.Point(328, 30);
+            this.labelX16.Location = new System.Drawing.Point(314, 34);
             this.labelX16.Name = "labelX16";
-            this.labelX16.Size = new System.Drawing.Size(74, 21);
+            this.labelX16.Size = new System.Drawing.Size(101, 21);
             this.labelX16.TabIndex = 3;
-            this.labelX16.Text = "選修學分數";
+            this.labelX16.Text = "取得選修學分數";
             // 
             // labelX10
             // 
@@ -1350,11 +1350,11 @@
             // 
             this.labelX10.BackgroundStyle.Class = "";
             this.labelX10.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX10.Location = new System.Drawing.Point(30, 36);
+            this.labelX10.Location = new System.Drawing.Point(314, 3);
             this.labelX10.Name = "labelX10";
-            this.labelX10.Size = new System.Drawing.Size(101, 21);
+            this.labelX10.Size = new System.Drawing.Size(87, 21);
             this.labelX10.TabIndex = 3;
-            this.labelX10.Text = "應取得總學分數";
+            this.labelX10.Text = "取得總學分數";
             // 
             // textBoxX1
             // 
@@ -1363,10 +1363,10 @@
             // 
             this.textBoxX1.Border.Class = "TextBoxBorder";
             this.textBoxX1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX1.Location = new System.Drawing.Point(420, 2);
+            this.textBoxX1.Location = new System.Drawing.Point(205, 32);
             this.textBoxX1.Name = "textBoxX1";
             this.textBoxX1.Size = new System.Drawing.Size(63, 25);
-            this.textBoxX1.TabIndex = 5;
+            this.textBoxX1.TabIndex = 2;
             this.textBoxX1.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
             this.textBoxX1.MouseHover += new System.EventHandler(this.textBoxX1_MouseHover);
             // 
@@ -1377,10 +1377,10 @@
             // 
             this.textBoxX11.Border.Class = "TextBoxBorder";
             this.textBoxX11.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX11.Location = new System.Drawing.Point(420, 32);
+            this.textBoxX11.Location = new System.Drawing.Point(463, 32);
             this.textBoxX11.Name = "textBoxX11";
             this.textBoxX11.Size = new System.Drawing.Size(63, 25);
-            this.textBoxX11.TabIndex = 6;
+            this.textBoxX11.TabIndex = 3;
             this.textBoxX11.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
             // 
             // textBoxX8
@@ -1390,10 +1390,10 @@
             // 
             this.textBoxX8.Border.Class = "TextBoxBorder";
             this.textBoxX8.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX8.Location = new System.Drawing.Point(159, 95);
+            this.textBoxX8.Location = new System.Drawing.Point(463, 63);
             this.textBoxX8.Name = "textBoxX8";
             this.textBoxX8.Size = new System.Drawing.Size(63, 25);
-            this.textBoxX8.TabIndex = 4;
+            this.textBoxX8.TabIndex = 5;
             this.textBoxX8.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
             // 
             // textBoxX10
@@ -1403,7 +1403,7 @@
             // 
             this.textBoxX10.Border.Class = "TextBoxBorder";
             this.textBoxX10.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX10.Location = new System.Drawing.Point(420, 122);
+            this.textBoxX10.Location = new System.Drawing.Point(463, 125);
             this.textBoxX10.Name = "textBoxX10";
             this.textBoxX10.Size = new System.Drawing.Size(63, 25);
             this.textBoxX10.TabIndex = 9;
@@ -1416,10 +1416,10 @@
             // 
             this.textBoxX6.Border.Class = "TextBoxBorder";
             this.textBoxX6.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX6.Location = new System.Drawing.Point(159, 33);
+            this.textBoxX6.Location = new System.Drawing.Point(463, 1);
             this.textBoxX6.Name = "textBoxX6";
             this.textBoxX6.Size = new System.Drawing.Size(63, 25);
-            this.textBoxX6.TabIndex = 2;
+            this.textBoxX6.TabIndex = 1;
             this.textBoxX6.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
             // 
             // textBoxX7
@@ -1429,10 +1429,10 @@
             // 
             this.textBoxX7.Border.Class = "TextBoxBorder";
             this.textBoxX7.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX7.Location = new System.Drawing.Point(159, 64);
+            this.textBoxX7.Location = new System.Drawing.Point(205, 63);
             this.textBoxX7.Name = "textBoxX7";
             this.textBoxX7.Size = new System.Drawing.Size(63, 25);
-            this.textBoxX7.TabIndex = 3;
+            this.textBoxX7.TabIndex = 4;
             this.textBoxX7.TextChanged += new System.EventHandler(this.textBoxX6_TextChanged);
             this.textBoxX7.MouseHover += new System.EventHandler(this.textBoxX7_MouseHover);
             // 
@@ -1454,7 +1454,7 @@
             this.tabControlPanel4.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(157)))), ((int)(((byte)(188)))), ((int)(((byte)(227)))));
             this.tabControlPanel4.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
             this.tabControlPanel4.Style.BorderColor.Color = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(165)))), ((int)(((byte)(199)))));
-            this.tabControlPanel4.Style.BorderSide = ((DevComponents.DotNetBar.eBorderSide)(((DevComponents.DotNetBar.eBorderSide.Left | DevComponents.DotNetBar.eBorderSide.Right)
+            this.tabControlPanel4.Style.BorderSide = ((DevComponents.DotNetBar.eBorderSide)(((DevComponents.DotNetBar.eBorderSide.Left | DevComponents.DotNetBar.eBorderSide.Right) 
             | DevComponents.DotNetBar.eBorderSide.Bottom)));
             this.tabControlPanel4.Style.GradientAngle = 90;
             this.tabControlPanel4.TabIndex = 4;
@@ -2258,18 +2258,18 @@
             // dataGridViewX1
             // 
             this.dataGridViewX1.AllowUserToDeleteRows = false;
-            this.dataGridViewX1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.dataGridViewX1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewX1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewX1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewX1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridViewX1.ColumnHeadersHeight = 40;
             this.dataGridViewX1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridViewX1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -2282,14 +2282,14 @@
             this.Column6,
             this.Column7,
             this.Column9});
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewX1.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewX1.DefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridViewX1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dataGridViewX1.Location = new System.Drawing.Point(8, 3);
             this.dataGridViewX1.Name = "dataGridViewX1";
@@ -3148,7 +3148,7 @@
             // 
             this.checkBoxX5.BackgroundStyle.Class = "";
             this.checkBoxX5.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.checkBoxX5.Font = new System.Drawing.Font("Microsoft JhengHei", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.checkBoxX5.Font = new System.Drawing.Font("微軟正黑體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.checkBoxX5.Location = new System.Drawing.Point(4, 3);
             this.checkBoxX5.Name = "checkBoxX5";
             this.checkBoxX5.Size = new System.Drawing.Size(626, 23);
@@ -3487,12 +3487,16 @@
             this.dataGridViewTextBoxColumn9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.dataGridViewTextBoxColumn9.Width = 63;
             // 
+            // superTooltip1
+            // 
+            this.superTooltip1.LicenseKey = "F962CEC7-CD8F-4911-A9E9-CAB39962FC1F";
+            // 
             // ScoreCalcRuleEditor
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoScroll = true;
             this.Controls.Add(this.panelEx1);
-            this.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ScoreCalcRuleEditor";
             this.Size = new System.Drawing.Size(1002, 710);

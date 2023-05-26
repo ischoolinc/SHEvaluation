@@ -1197,7 +1197,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                 #endregion
                             }
                             XmlElement reportEle = docCreditReport.DocumentElement.SelectSingleNode("畢業規則[@規則=\"功過相抵未滿三大過\"]") as XmlElement;
-                            reportEle.SetAttribute("通過標準", "" + (-MaxDemeritC));
+                            reportEle.SetAttribute("通過標準", "" + (1 - MaxDemeritC));
                             reportEle.SetAttribute("目前累計支數", "" + (StudentDemeritCount));
 
                             if (crule.IsDemeritNotExceedMaximum)

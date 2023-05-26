@@ -644,7 +644,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                 // 用開課年級+開課學期+分組名稱判斷此分組名稱有沒有採計過
                                 else if (check.XmlElement.SelectNodes("科目/開課設定[@開課年級=\"" + gplanSubject.SubjectElement.GetAttribute("GradeYear")
                                     + "\" and @開課學期=\"" + gplanSubject.SubjectElement.GetAttribute("Semester")
-                                    + "\" and @分組名稱=\"" + gplanSubject.SubjectElement.GetAttribute("分組名稱") + "\"]").Count == 1)
+                                    + "\" and @課程群組=\"" + gplanSubject.SubjectElement.GetAttribute("分組名稱") + "\"]").Count == 1)
                                 {
                                     decimal.TryParse(gplanSubject.SubjectElement.GetAttribute("分組修課學分數"), out credit);
                                     check.GPlanCount += credit;

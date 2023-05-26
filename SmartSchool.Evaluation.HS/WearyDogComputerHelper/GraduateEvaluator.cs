@@ -541,9 +541,9 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                     {
                                         Name = ruleName,
                                         Type = ruleType,
-                                        Active = attendLimit > 0,
+                                        Active = passLimit > 0,
                                         AcceptOtherSource = false,
-                                        SetupValue = "" + attendLimit,
+                                        SetupValue = "" + passLimit,
                                         XmlElement = reportEle,
                                         DoCheck = delegate (string domain, decimal credit, string entry, string required, string requiredBy, string subjectName, string subjectLevel)
                                         {

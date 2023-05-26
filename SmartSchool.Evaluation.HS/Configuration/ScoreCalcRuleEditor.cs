@@ -666,19 +666,22 @@ namespace SmartSchool.Evaluation.Configuration
             element = (XmlElement)_scrContent.SelectSingleNode("畢業學分數/實習學分數");
             if (element != null)
             {
-                textBoxX11.Text = element.InnerText;
+                textBoxX10.Text = element.InnerText;
+                //textBoxX11.Text = element.InnerText;
             }
             //選修學分數
             element = (XmlElement)_scrContent.SelectSingleNode("畢業學分數/選修學分數");
             if (element != null)
             {
-                textBoxX8.Text = element.InnerText;
+                textBoxX11.Text = element.InnerText;
+                //textBoxX8.Text = element.InnerText;
             }
             //校訂必修學分數
             element = (XmlElement)_scrContent.SelectSingleNode("畢業學分數/校訂必修學分數");
             if (element != null)
             {
-                textBoxX10.Text = element.InnerText;
+                textBoxX8.Text = element.InnerText;
+                //textBoxX10.Text = element.InnerText;
             }
             element = (XmlElement)_scrContent.SelectSingleNode("畢業學分數/同一科目級別不重複採計");
             if (element != null)
@@ -1000,7 +1003,8 @@ namespace SmartSchool.Evaluation.Configuration
             if (ValidateCredit(textBoxX11) && textBoxX11.Text != "")
             {
                 element = doc.CreateElement("實習學分數");
-                element.InnerText = textBoxX11.Text;
+                element.InnerText = textBoxX10.Text;
+                //element.InnerText = textBoxX11.Text;
                 parentelement.AppendChild(element);
             }
 
@@ -1008,14 +1012,16 @@ namespace SmartSchool.Evaluation.Configuration
             if (ValidateCredit(textBoxX8) && textBoxX8.Text != "")
             {
                 element = doc.CreateElement("選修學分數");
-                element.InnerText = textBoxX8.Text;
+                element.InnerText = textBoxX11.Text;
+                //element.InnerText = textBoxX8.Text;
                 parentelement.AppendChild(element);
             }
             //校訂必修學分數
             if (ValidateCredit(textBoxX10) && textBoxX10.Text != "")
             {
                 element = doc.CreateElement("校訂必修學分數");
-                element.InnerText = textBoxX10.Text;
+                element.InnerText = textBoxX8.Text;
+                //element.InnerText = textBoxX10.Text;
                 parentelement.AppendChild(element);
             }
             //同一科目級別不重複採計

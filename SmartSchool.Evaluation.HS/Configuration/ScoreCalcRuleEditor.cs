@@ -227,7 +227,7 @@ namespace SmartSchool.Evaluation.Configuration
             comboBoxEx2.SelectedIndex = 1;
             comboBoxEx1.SelectedIndex = 0;
             //清空畢業學分數設定值
-            textBoxX2.Text = textBoxX6.Text = textBoxX1.Text = textBoxX7.Text = textBoxX11.Text = textBoxX8.Text = textBoxX10.Text = "";
+            textBoxX1.Text = textBoxX2.Text = textBoxX3.Text = textBoxX4.Text = textBoxX6.Text = textBoxX7.Text = textBoxX8.Text = textBoxX10.Text = textBoxX11.Text = "";
 
 
 
@@ -1000,7 +1000,7 @@ namespace SmartSchool.Evaluation.Configuration
             }
 
             //實習學分數
-            if (ValidateCredit(textBoxX11) && textBoxX11.Text != "")
+            if (ValidateCredit(textBoxX10) && textBoxX10.Text != "")
             {
                 element = doc.CreateElement("實習學分數");
                 element.InnerText = textBoxX10.Text;
@@ -1009,7 +1009,7 @@ namespace SmartSchool.Evaluation.Configuration
             }
 
             //選修學分數
-            if (ValidateCredit(textBoxX8) && textBoxX8.Text != "")
+            if (ValidateCredit(textBoxX11) && textBoxX11.Text != "")
             {
                 element = doc.CreateElement("選修學分數");
                 element.InnerText = textBoxX11.Text;
@@ -1017,7 +1017,7 @@ namespace SmartSchool.Evaluation.Configuration
                 parentelement.AppendChild(element);
             }
             //校訂必修學分數
-            if (ValidateCredit(textBoxX10) && textBoxX10.Text != "")
+            if (ValidateCredit(textBoxX8) && textBoxX8.Text != "")
             {
                 element = doc.CreateElement("校訂必修學分數");
                 element.InnerText = textBoxX8.Text;
@@ -1199,7 +1199,7 @@ namespace SmartSchool.Evaluation.Configuration
                 tabItem4.Icon = null;
             #endregion
             #region 驗證第二頁資料正確
-            foreach (TextBox tbox in new TextBox[] { textBoxX6, textBoxX2, textBoxX7, textBoxX8, textBoxX10, textBoxX11, textBoxX1 })
+            foreach (TextBox tbox in new TextBox[] { textBoxX1, textBoxX2, textBoxX3, textBoxX4, textBoxX6, textBoxX7, textBoxX8, textBoxX10, textBoxX11 })
             {
                 pass2 &= ValidateCredit(tbox);
             }
@@ -1323,7 +1323,7 @@ namespace SmartSchool.Evaluation.Configuration
             //        checkBoxX9.Text = "必需修滿課程規劃表中所列必修課程(需成績屬性需選用課程規劃表判斷)";
             //    }
             //}
-            foreach (TextBox tbox in new TextBox[] { textBoxX6, textBoxX2, textBoxX7, textBoxX8, textBoxX10, textBoxX11, textBoxX1 })
+            foreach (TextBox tbox in new TextBox[] { textBoxX1, textBoxX2, textBoxX3, textBoxX4, textBoxX6, textBoxX7, textBoxX8, textBoxX10, textBoxX11 })
             {
                 ValidateCredit(tbox);
             }

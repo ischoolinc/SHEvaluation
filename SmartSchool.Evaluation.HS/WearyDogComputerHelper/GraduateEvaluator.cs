@@ -828,6 +828,8 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                     #endregion
 
                     int maxGradeYear = 0, maxSemester = 0;
+                    Dictionary<CreditCheckConfig, SubjectSet> dicAttendSubjects = new Dictionary<CreditCheckConfig, SubjectSet>();
+                    Dictionary<CreditCheckConfig, SubjectSet> dicPassedSubjects = new Dictionary<CreditCheckConfig, SubjectSet>();
                     foreach (SemesterSubjectScoreInfo subjectScore in subjectsByStudent)
                     {
                         #region 依據設定設定畢業採計各項屬性
@@ -874,8 +876,9 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                         {
                             foreach (CreditCheckConfig check in creditCheckConfigList)
                             {
-                                SubjectSet attendSubjects = new SubjectSet();
-                                SubjectSet passedSubjects = new SubjectSet();
+                                if (!dicAttendSubjects.ContainsKey(check)) dicAttendSubjects.Add(check, new SubjectSet());
+                                if (!dicPassedSubjects.ContainsKey(check)) dicPassedSubjects.Add(check, new SubjectSet());
+
                                 decimal credit = 0;
                                 decimal.TryParse(subjectScore.Detail.GetAttribute("畢業採計-學分數"), out credit);
                                 if (check.DoCheck(
@@ -897,12 +900,12 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                                 if (filterSameSubject)
                                                 {
                                                     SubjectName sn = new SubjectName(subjectScore.Subject.Trim(), subjectScore.Level.Trim());
-                                                    if (attendSubjects.Contains(sn))
+                                                    if (dicAttendSubjects[check].Contains(sn))
                                                     {
                                                         isCount = false;
                                                     }
                                                     else
-                                                        attendSubjects.Add(sn);
+                                                        dicAttendSubjects[check].Add(sn);
                                                 }
                                                 if (isCount)
                                                 {
@@ -970,14 +973,14 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                                         if (filterSameSubject)
                                                         {
                                                             SubjectName sn = new SubjectName(subjectScore.Subject.Trim(), subjectScore.Level.Trim());
-                                                            if (passedSubjects.Contains(sn))
+                                                            if (dicPassedSubjects[check].Contains(sn))
                                                             {
                                                                 subjectScore.Detail.SetAttribute("畢業採計-學分數", "0");
                                                                 subjectScore.Detail.SetAttribute("畢業採計-說明", "同科目級別重複取得學分數");
                                                                 isCount = false;
                                                             }
                                                             else
-                                                                passedSubjects.Add(sn);
+                                                                dicPassedSubjects[check].Add(sn);
                                                         }
                                                         if (isCount)
                                                         {
@@ -1280,7 +1283,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                             }
                         }
                         docCreditReport.DocumentElement.SetAttribute("畢業審查", pass == null ? "" : (pass.Value ? "通過" : "不通過"));
-                    } 
+                    }
                     #endregion
                 }
                 else

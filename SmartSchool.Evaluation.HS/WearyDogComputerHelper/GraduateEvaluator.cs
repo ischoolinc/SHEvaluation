@@ -113,9 +113,13 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                         if (rule.SelectSingleNode("學期科目成績屬性採計方式").InnerText == "以實際學期科目成績內容為準")
                         {
                             useGPlan = false;
+                            evalReport.SetAttribute("學期科目成績屬性採計方式", "以實際學期科目成績內容為準");
                         }
                         else
+                        {
                             useGPlan = true;
+                            evalReport.SetAttribute("學期科目成績屬性採計方式", "以課程規劃表內容為準");
+                        }
                     }
                     //判斷若以課程規為主，但是學生身上卻沒有課程規劃
                     if (useGPlan && GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(student.StudentID) == null)
@@ -131,7 +135,14 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                     {
                         // 預設值為true
                         if (rule.SelectSingleNode("畢業學分數/同一科目級別不重複採計").InnerText.Trim() == "FALSE")
+                        {
                             filterSameSubject = false;
+                            evalReport.SetAttribute("同一科目級別成績重複", "可重複採計");
+                        }
+                        else
+                        {
+                            evalReport.SetAttribute("同一科目級別成績重複", "不重複採計");
+                        }
                     }
                     #endregion
 
@@ -151,6 +162,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                         reportEle.SetAttribute("課規總學分數", "0");
                         reportEle.SetAttribute("通過標準", "0");
                         reportEle.SetAttribute("累計學分", "0");
+                        reportEle.SetAttribute("畢業審查", "");
 
                         creditCheckConfigList.Add(new CreditCheckConfig()
                         {
@@ -184,6 +196,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                         reportEle.SetAttribute("課規總學分數", "0");
                         reportEle.SetAttribute("通過標準", "0");
                         reportEle.SetAttribute("累計學分", "0");
+                        reportEle.SetAttribute("畢業審查", "");
 
                         creditCheckConfigList.Add(new CreditCheckConfig()
                         {
@@ -217,6 +230,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                         reportEle.SetAttribute("課規總學分數", "0");
                         reportEle.SetAttribute("通過標準", "0");
                         reportEle.SetAttribute("累計學分", "0");
+                        reportEle.SetAttribute("畢業審查", "");
 
                         creditCheckConfigList.Add(new CreditCheckConfig()
                         {
@@ -250,6 +264,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                         reportEle.SetAttribute("課規總學分數", "0");
                         reportEle.SetAttribute("通過標準", "0");
                         reportEle.SetAttribute("累計學分", "0");
+                        reportEle.SetAttribute("畢業審查", "");
 
                         creditCheckConfigList.Add(new CreditCheckConfig()
                         {
@@ -283,6 +298,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                         reportEle.SetAttribute("課規總學分數", "0");
                         reportEle.SetAttribute("通過標準", "0");
                         reportEle.SetAttribute("累計學分", "0");
+                        reportEle.SetAttribute("畢業審查", "");
 
                         creditCheckConfigList.Add(new CreditCheckConfig()
                         {
@@ -316,6 +332,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                         reportEle.SetAttribute("課規總學分數", "0");
                         reportEle.SetAttribute("通過標準", "0");
                         reportEle.SetAttribute("累計學分", "0");
+                        reportEle.SetAttribute("畢業審查", "");
 
                         creditCheckConfigList.Add(new CreditCheckConfig()
                         {
@@ -349,6 +366,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                         reportEle.SetAttribute("課規總學分數", "0");
                         reportEle.SetAttribute("通過標準", "0");
                         reportEle.SetAttribute("累計學分", "0");
+                        reportEle.SetAttribute("畢業審查", "");
 
                         creditCheckConfigList.Add(new CreditCheckConfig()
                         {
@@ -382,6 +400,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                         reportEle.SetAttribute("課規總學分數", "0");
                         reportEle.SetAttribute("通過標準", "0");
                         reportEle.SetAttribute("累計學分", "0");
+                        reportEle.SetAttribute("畢業審查", "");
 
                         creditCheckConfigList.Add(new CreditCheckConfig()
                         {
@@ -415,6 +434,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                         reportEle.SetAttribute("課規總學分數", "0");
                         reportEle.SetAttribute("通過標準", "0");
                         reportEle.SetAttribute("累計學分", "0");
+                        reportEle.SetAttribute("畢業審查", "");
 
                         creditCheckConfigList.Add(new CreditCheckConfig()
                         {
@@ -448,6 +468,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                         reportEle.SetAttribute("課規總學分數", "0");
                         reportEle.SetAttribute("通過標準", "0");
                         reportEle.SetAttribute("累計學分", "0");
+                        reportEle.SetAttribute("畢業審查", "");
 
                         creditCheckConfigList.Add(new CreditCheckConfig()
                         {
@@ -498,13 +519,14 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                     evalReport.AppendChild(reportEle);
                                     reportEle.SetAttribute("規則", ruleName);
                                     reportEle.SetAttribute("類型", ruleType);
+                                    reportEle.SetAttribute("核心科目表序號", "" + (checkedList.IndexOf(subjectTable.Name) + 1));
+                                    reportEle.SetAttribute("核心科目表名稱", subjectTable.Name);
                                     reportEle.SetAttribute("啟用", "否");
                                     reportEle.SetAttribute("設定值", "");
                                     reportEle.SetAttribute("課規總學分數", "0");
                                     reportEle.SetAttribute("通過標準", "0");
                                     reportEle.SetAttribute("累計學分", "0");
-                                    reportEle.SetAttribute("核心科目表序號", "" + (checkedList.IndexOf(subjectTable.Name) + 1));
-                                    reportEle.SetAttribute("核心科目表名稱", subjectTable.Name);
+                                    reportEle.SetAttribute("畢業審查", "");
                                     attendConfig = new CreditCheckConfig()
                                     {
                                         Name = ruleName,
@@ -1092,6 +1114,11 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                 XmlElement unPasselement = docGradCheck.CreateElement("UnPassReson");
                                 unPasselement.InnerText = "未達" + check.Name + "取得學分標準";
                                 evalResult.AppendChild(unPasselement);
+                                check.XmlElement.SetAttribute("畢業審查", "不通過");
+                            }
+                            else
+                            {
+                                check.XmlElement.SetAttribute("畢業審查", "通過");
                             }
                         }
                     }
@@ -1105,6 +1132,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                         passGrades.Add(2, null);
                         passGrades.Add(3, null);
                         XmlElement reportEle = docCreditReport.DocumentElement.SelectSingleNode("畢業規則[@規則=\"學年學業成績及格\"]") as XmlElement;
+                        reportEle.SetAttribute("畢業審查", "");
                         foreach (var item in student.SchoolYearEntryScoreList)
                         {
                             if (item.Entry != "學業") continue;
@@ -1119,27 +1147,36 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                 passGrades[item.GradeYear] = item.Score >= applylimit;
 
                         }
+                        bool pass = true;
                         foreach (var gradeYear in passGrades.Keys)
                         {
                             if (crule.IsEverySchoolYearEntryStudiesPass)
                             {
                                 if (passGrades[gradeYear] == null)
                                 {
+                                    XmlElement gEle = reportEle.SelectSingleNode("及格標準[@年級=\"" + gradeYear + "\"]") as XmlElement;
+                                    gEle.SetAttribute("學年學業分項成績", "缺");
                                     XmlElement unPasselement = docGradCheck.CreateElement("UnPassReson");
                                     unPasselement.InnerText = "缺少" + gradeYear + "年級學年學業分項成績";
                                     evalResult.AppendChild(unPasselement);
+                                    pass = false;
                                 }
                                 else if (!passGrades[gradeYear].Value)
                                 {
                                     XmlElement unPasselement = docGradCheck.CreateElement("UnPassReson");
                                     unPasselement.InnerText = "" + gradeYear + "年級學年學業分項成績不及格";
                                     evalResult.AppendChild(unPasselement);
+                                    pass = false;
                                 }
                             }
                             if (passGrades[gradeYear] != null && !passGrades[gradeYear].Value)
                             {
                                 reportEle.SetAttribute("不及格學年", "" + (int.Parse(reportEle.GetAttribute("不及格學年")) - 1));
                             }
+                        }
+                        if (crule.IsEverySchoolYearEntryStudiesPass)
+                        {
+                            reportEle.SetAttribute("畢業審查", pass ? "通過" : "不通過");
                         }
                     }
                     #endregion
@@ -1208,6 +1245,11 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                     XmlElement unPasselement = docGradCheck.CreateElement("UnPassReson");
                                     unPasselement.InnerText = "功過相抵滿三大過";
                                     evalResult.AppendChild(unPasselement);
+                                    reportEle.SetAttribute("畢業審查", "不通過");
+                                }
+                                else
+                                {
+                                    reportEle.SetAttribute("畢業審查", "通過");
                                 }
                             }
                         }
@@ -1221,6 +1263,24 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                             }
                         }
                     }
+                    #endregion
+                    // 結算報告的畢業審查狀態
+                    #region 結算報告的畢業審查狀態
+                    {
+                        bool? pass = null;
+                        foreach (XmlElement item in docCreditReport.DocumentElement.SelectNodes("畢業規則"))
+                        {
+                            if (item.GetAttribute("畢業審查") == "通過" && pass == null)
+                            {
+                                pass = true;
+                            }
+                            if (item.GetAttribute("畢業審查") == "不通過")
+                            {
+                                pass = false;
+                            }
+                        }
+                        docCreditReport.DocumentElement.SetAttribute("畢業審查", pass == null ? "" : (pass.Value ? "通過" : "不通過"));
+                    } 
                     #endregion
                 }
                 else

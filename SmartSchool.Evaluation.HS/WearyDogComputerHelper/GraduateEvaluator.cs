@@ -214,6 +214,40 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                     }
                     #endregion
 
+                    //修滿所有部定必修課程
+                    #region 修滿所有部定必修課程
+                    {
+                        string ruleName = "應修所有部定必修課程";
+                        string ruleType = "修課學分數統計";
+                        string rulePath = "修滿所有部定必修課程";
+
+                        XmlElement reportEle = docCreditReport.CreateElement("畢業規則");
+                        evalReport.AppendChild(reportEle);
+                        reportEle.SetAttribute("規則", ruleName);
+                        reportEle.SetAttribute("類型", ruleType);
+                        reportEle.SetAttribute("啟用", "否");
+                        reportEle.SetAttribute("設定值", "");
+                        reportEle.SetAttribute("課規總學分數", "0");
+                        reportEle.SetAttribute("通過標準", "0");
+                        reportEle.SetAttribute("累計學分", "0");
+                        reportEle.SetAttribute("畢業審查", "");
+
+                        creditCheckConfigList.Add(new CreditCheckConfig()
+                        {
+                            Name = ruleName,
+                            Type = ruleType,
+                            Active = rule.SelectSingleNode(rulePath) != null && rule.SelectSingleNode(rulePath).InnerText.Trim() == "True",
+                            AcceptOtherSource = false,// 不採計課規外的必修學分數
+                            SetupValue = rule.SelectSingleNode(rulePath) != null && rule.SelectSingleNode(rulePath).InnerText.Trim() == "True" ? "100%" : "",
+                            XmlElement = reportEle,
+                            DoCheck = delegate (string domain, decimal credit, string entry, string required, string requiredBy, string subjectName, string subjectLevel)
+                            {
+                                return required == "必修";
+                            }
+                        });
+                    }
+                    #endregion
+
                     //應修專業及實習總學分數
                     #region 應修總學分數
                     {

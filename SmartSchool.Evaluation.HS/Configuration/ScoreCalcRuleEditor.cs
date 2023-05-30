@@ -269,18 +269,26 @@ namespace SmartSchool.Evaluation.Configuration
             #endregion
 
             #region 必需修滿課程規劃表中所列必修課程
-            //if (radioButton16.Checked)
-            //{
             element = (XmlElement)_scrContent.SelectSingleNode("修滿所有必修課程");
             if (element != null && bool.TryParse(element.InnerText, out tryParseBool))
             {
                 checkBoxX9.Tag = checkBoxX9.Checked = tryParseBool;
             }
-            //}
-            //else
-            //{
-            //    checkBoxX9.Tag = checkBoxX9.Checked = false;
-            //}
+            else
+            {
+                checkBoxX9.Tag = checkBoxX9.Checked = false;
+            }
+            #endregion
+            #region 必需修滿課程規劃表中所列部定必修課程
+            element = (XmlElement)_scrContent.SelectSingleNode("修滿所有部定必修課程");
+            if (element != null && bool.TryParse(element.InnerText, out tryParseBool))
+            {
+                checkBoxX28.Tag = checkBoxX28.Checked = tryParseBool;
+            }
+            else
+            {
+                checkBoxX28.Tag = checkBoxX28.Checked = false;
+            }
             #endregion
             #region 各項成績計算位數
             if (_scrContent.SelectSingleNode("各項成績計算位數") != null)
@@ -770,6 +778,11 @@ namespace SmartSchool.Evaluation.Configuration
             #region 必需修滿課程規劃表中所列必修課程
             element = doc.CreateElement("修滿所有必修課程");
             element.InnerText = "" + checkBoxX9.Checked;
+            doc.DocumentElement.AppendChild(element);
+            #endregion
+            #region 必需修滿課程規劃表中所列必修課程
+            element = doc.CreateElement("修滿所有部定必修課程");
+            element.InnerText = "" + checkBoxX28.Checked;
             doc.DocumentElement.AppendChild(element);
             #endregion
             #region 各項成績計算位數
@@ -1308,21 +1321,6 @@ namespace SmartSchool.Evaluation.Configuration
 
         private void radioButton16_CheckedChanged(object sender, EventArgs e)
         {
-            //if (checkBoxX9.Enabled != radioButton16.Checked)
-            //{
-            //    checkBoxX9.Enabled = radioButton16.Checked;
-            //    if (checkBoxX9.Enabled)
-            //    {
-            //        checkBoxX9.Checked = (bool)checkBoxX9.Tag;
-            //        checkBoxX9.Text = "必需修滿課程規劃表中所列必修課程";
-            //    }
-            //    else
-            //    {
-            //        checkBoxX9.Tag = checkBoxX9.Checked;
-            //        checkBoxX9.Checked = false;
-            //        checkBoxX9.Text = "必需修滿課程規劃表中所列必修課程(需成績屬性需選用課程規劃表判斷)";
-            //    }
-            //}
             foreach (TextBox tbox in new TextBox[] { textBoxX1, textBoxX2, textBoxX3, textBoxX4, textBoxX6, textBoxX7, textBoxX8, textBoxX10, textBoxX11 })
             {
                 ValidateCredit(tbox);

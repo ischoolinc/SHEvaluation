@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.itemContainer9 = new DevComponents.DotNetBar.ItemContainer();
             this.labelItem1 = new DevComponents.DotNetBar.LabelItem();
             this.panelEx1 = new DevComponents.DotNetBar.PanelEx();
@@ -208,6 +208,7 @@
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.superTooltip1 = new DevComponents.DotNetBar.SuperTooltip();
+            this.checkBoxX28 = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.panelEx1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -616,13 +617,15 @@
             this.groupPanel21.BackColor = System.Drawing.Color.Transparent;
             this.groupPanel21.CanvasColor = System.Drawing.SystemColors.Control;
             this.groupPanel21.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel21.Controls.Add(this.cmbProfessionalSubjectTable);
             this.groupPanel21.Controls.Add(this.groupPanel22);
+            this.groupPanel21.Controls.Add(this.labelX26);
             this.groupPanel21.Controls.Add(this.groupPanel5);
             this.groupPanel21.Controls.Add(this.groupPanel16);
             this.groupPanel21.Controls.Add(this.groupPanel13);
             this.groupPanel21.Location = new System.Drawing.Point(167, 152);
             this.groupPanel21.Name = "groupPanel21";
-            this.groupPanel21.Size = new System.Drawing.Size(644, 569);
+            this.groupPanel21.Size = new System.Drawing.Size(644, 628);
             // 
             // 
             // 
@@ -661,6 +664,7 @@
             this.groupPanel22.BackColor = System.Drawing.Color.Transparent;
             this.groupPanel22.CanvasColor = System.Drawing.SystemColors.Control;
             this.groupPanel22.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel22.Controls.Add(this.checkBoxX28);
             this.groupPanel22.Controls.Add(this.labelX27);
             this.groupPanel22.Controls.Add(this.checkBoxX9);
             this.groupPanel22.Controls.Add(this.labelX24);
@@ -669,7 +673,7 @@
             this.groupPanel22.DrawTitleBox = false;
             this.groupPanel22.Location = new System.Drawing.Point(15, 262);
             this.groupPanel22.Name = "groupPanel22";
-            this.groupPanel22.Size = new System.Drawing.Size(608, 82);
+            this.groupPanel22.Size = new System.Drawing.Size(608, 112);
             // 
             // 
             // 
@@ -852,12 +856,10 @@
             this.groupPanel5.BackColor = System.Drawing.Color.Transparent;
             this.groupPanel5.CanvasColor = System.Drawing.SystemColors.Control;
             this.groupPanel5.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.groupPanel5.Controls.Add(this.cmbProfessionalSubjectTable);
-            this.groupPanel5.Controls.Add(this.labelX26);
             this.groupPanel5.Controls.Add(this.labelX13);
             this.groupPanel5.Controls.Add(this.listView1);
             this.groupPanel5.DrawTitleBox = false;
-            this.groupPanel5.Location = new System.Drawing.Point(15, 353);
+            this.groupPanel5.Location = new System.Drawing.Point(15, 380);
             this.groupPanel5.Name = "groupPanel5";
             this.groupPanel5.Size = new System.Drawing.Size(608, 185);
             // 
@@ -900,7 +902,7 @@
             this.cmbProfessionalSubjectTable.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbProfessionalSubjectTable.FormattingEnabled = true;
             this.cmbProfessionalSubjectTable.ItemHeight = 19;
-            this.cmbProfessionalSubjectTable.Location = new System.Drawing.Point(175, 134);
+            this.cmbProfessionalSubjectTable.Location = new System.Drawing.Point(181, 571);
             this.cmbProfessionalSubjectTable.Name = "cmbProfessionalSubjectTable";
             this.cmbProfessionalSubjectTable.Size = new System.Drawing.Size(121, 25);
             this.cmbProfessionalSubjectTable.TabIndex = 5;
@@ -915,7 +917,7 @@
             this.labelX26.BackgroundStyle.Class = "";
             this.labelX26.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX26.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelX26.Location = new System.Drawing.Point(9, 134);
+            this.labelX26.Location = new System.Drawing.Point(15, 571);
             this.labelX26.Name = "labelX26";
             this.labelX26.Size = new System.Drawing.Size(167, 21);
             this.labelX26.TabIndex = 4;
@@ -2262,14 +2264,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewX1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewX1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewX1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewX1.ColumnHeadersHeight = 40;
             this.dataGridViewX1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridViewX1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -2282,14 +2284,14 @@
             this.Column6,
             this.Column7,
             this.Column9});
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewX1.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewX1.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridViewX1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dataGridViewX1.Location = new System.Drawing.Point(8, 3);
             this.dataGridViewX1.Name = "dataGridViewX1";
@@ -3491,6 +3493,20 @@
             // 
             this.superTooltip1.LicenseKey = "F962CEC7-CD8F-4911-A9E9-CAB39962FC1F";
             // 
+            // checkBoxX28
+            // 
+            this.checkBoxX28.AutoSize = true;
+            // 
+            // 
+            // 
+            this.checkBoxX28.BackgroundStyle.Class = "";
+            this.checkBoxX28.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX28.Location = new System.Drawing.Point(159, 57);
+            this.checkBoxX28.Name = "checkBoxX28";
+            this.checkBoxX28.Size = new System.Drawing.Size(268, 21);
+            this.checkBoxX28.TabIndex = 7;
+            this.checkBoxX28.Text = "必需修滿課程規劃表中所列部定必修課程";
+            // 
             // ScoreCalcRuleEditor
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -3513,6 +3529,7 @@
             this.groupPanel24.ResumeLayout(false);
             this.groupPanel24.PerformLayout();
             this.groupPanel21.ResumeLayout(false);
+            this.groupPanel21.PerformLayout();
             this.groupPanel22.ResumeLayout(false);
             this.groupPanel22.PerformLayout();
             this.groupPanel25.ResumeLayout(false);
@@ -3757,5 +3774,6 @@
         private DevComponents.DotNetBar.LabelX labelX30;
         private DevComponents.DotNetBar.Controls.TextBoxX textBoxX3;
         private DevComponents.DotNetBar.SuperTooltip superTooltip1;
+        private DevComponents.DotNetBar.Controls.CheckBoxX checkBoxX28;
     }
 }

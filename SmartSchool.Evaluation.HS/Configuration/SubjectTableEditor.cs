@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
+using SmartSchool.Evaluation.GraduationPlan;
 
 namespace SmartSchool.Evaluation.Configuration
 {
@@ -10,6 +11,8 @@ namespace SmartSchool.Evaluation.Configuration
         private int _SelectedRowIndex;
 
         private bool _ProgramTable = false;
+
+        private List<GraduationPlanSimple> _SelectedSubjects=new List<GraduationPlanSimple>();
 
         public SubjectTableEditor()
         {
@@ -381,6 +384,81 @@ namespace SmartSchool.Evaluation.Configuration
             }
             return levelNumber;
         }
+
+        private void btnGPsubj_Click(object sender, EventArgs e)
+        {
+            GraduationPlanSimplePicker gpPicker = new GraduationPlanSimplePicker();
+            gpPicker.FormClosed+=new FormClosedEventHandler(gpPicker_FormClosed);
+            gpPicker.ShowDialog();
+        }
+
+        private void gpPicker_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            GraduationPlanSimplePicker openForm = (GraduationPlanSimplePicker)sender;
+            _SelectedSubjects.Clear();
+            _SelectedSubjects = openForm.getGPSelection();
+            if(_SelectedSubjects.Count>0)
+            {
+                foreach (GraduationPlanSimple gpSimple in _SelectedSubjects)
+                {
+                    bool find = false;
+                    foreach (DataGridViewRow dr in dataGridViewX1.Rows)
+                    {
+                        if ("" + dr.Cells[0].Tag == gpSimple.SubjectName)
+                        {
+                            dr.Cells[0].Value = dr.Cells[0].Tag + getLevelList(gpSimple.LevelList);
+
+                            dr.Cells[1].Tag = convStrListToIntList(gpSimple.LevelList);
+                            dr.Cells[1].Value = gpSimple.LevelList;
+
+                            find = true;
+                            break;
+                        }
+                    }
+                    if (!find)
+                    {
+                        DataGridViewRow row = new DataGridViewRow();
+                        row.CreateCells(dataGridViewX1);
+                        row.Cells[0].Value = gpSimple.SubjectName + getLevelList(gpSimple.LevelList);
+                        row.Cells[0].Tag = gpSimple.SubjectName;
+
+                        row.Cells[1].Tag = convStrListToIntList(gpSimple.LevelList);
+                        row.Cells[1].Value = gpSimple.LevelList;
+                        dataGridViewX1.Rows.Add(row);
+                    }
+                }
+
+            }
+        }
+
+        private List<int> convStrListToIntList(string strList)
+        {
+            List<int> intList = new List<int>();
+            string[] strArray = strList.Split(',');
+            foreach (string str in strArray)
+            {
+                intList.Add(Int32.Parse(str));
+            }
+            return intList;
+        }
+
+        private string getLevelList(string levelList)
+        {
+            string[] lArray= levelList.Split(',');
+            string levelString = "";
+            if(lArray.Length>0)
+            {
+                levelString = "(" + GetNumber(Int32.Parse(lArray[0]));
+                for (int i = 1; i < lArray.Length; i++)
+                {
+                    levelString += "、" + GetNumber(Int32.Parse(lArray[i]));
+                }
+                levelString += ")";
+
+            }
+            return levelString;
+        }
+
 
     }
 }

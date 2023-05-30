@@ -26,7 +26,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\1campus_desktop_x64\1campus_desktop_x64_SH_Test\modules\SHEvaluation\</OutputPath>
+    <OutputPath>..\..\..\1campus_desktop_x64\1campus_desktop_x64 - CoreDev\modules\SHEvaluation\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -375,6 +375,7 @@
     </Compile>
     <Compile Include="GraduationPlan\Editor\IGraduationPlanEditor.cs" />
     <Compile Include="GraduationPlan\GraduationPlan.cs" />
+    <Compile Include="GraduationPlan\GraduationPlanSimple.cs" />
     <Compile Include="GraduationPlan\GraduationPlanInfo.cs" />
     <Compile Include="GraduationPlan\GraduationPlanInfoCollection.cs" />
     <Compile Include="GraduationPlan\GraduationPlanSelector.cs">
@@ -384,6 +385,12 @@
       <DependentUpon>GraduationPlanSelector.cs</DependentUpon>
     </Compile>
     <Compile Include="GraduationPlan\GraduationPlanSubject.cs" />
+    <Compile Include="Configuration\GraduationPlanSimplePicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Configuration\GraduationPlanSimplePicker.Designer.cs">
+      <DependentUpon>GraduationPlanSimplePicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="GraduationPlan\Validate\ValidateGraduationPlanInfo.cs" />
     <Compile Include="ImportExport\ExportGradScore.cs" />
     <Compile Include="ImportExport\ExportSemesterEntryScore.cs" />
@@ -935,6 +942,9 @@
     <EmbeddedResource Include="GraduationPlan\GraduationPlanSelector.resx">
       <DependentUpon>GraduationPlanSelector.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuration\GraduationPlanSimplePicker.resx">
+      <DependentUpon>GraduationPlanSimplePicker.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Process\AssignClass.resx">
       <DependentUpon>AssignClass.cs</DependentUpon>

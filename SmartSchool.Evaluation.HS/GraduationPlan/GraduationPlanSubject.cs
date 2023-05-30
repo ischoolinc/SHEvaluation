@@ -22,6 +22,7 @@ namespace SmartSchool.Evaluation.GraduationPlan
         readonly private bool _NotIncludedInCalc;
         readonly private string _SubjectCode;
 
+
         // 授課學期學分
         readonly private string _SubjectCredit;
         private XmlElement _SubjectElement;

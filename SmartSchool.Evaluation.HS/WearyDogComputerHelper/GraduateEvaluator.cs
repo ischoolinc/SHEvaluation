@@ -695,7 +695,16 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                 // 累計課程規劃表學分數
                                 if (gplanSubject.SubjectElement.GetAttribute("分組名稱") == "")
                                 {
-                                    check.GPlanCount += credit;
+                                    if (filterSameSubject)
+                                    {
+                                        if (subjectElement.SelectNodes("開課設定[@課程群組=\"\"]").Count == 1)
+                                            check.GPlanCount += credit;
+                                        else
+                                            subjectElement.SetAttribute("課規科目級別重複", "不重複採計");
+                                    }
+                                    else
+                                        check.GPlanCount += credit;
+
                                 }
                                 // 用開課年級+開課學期+分組名稱判斷此分組名稱有沒有採計過
                                 else if (check.XmlElement.SelectNodes("科目/開課設定[@開課年級=\"" + gplanSubject.SubjectElement.GetAttribute("GradeYear")
@@ -982,7 +991,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                                 else
                                                 {
                                                     XmlElement subjectElement = check.XmlElement.SelectSingleNode("科目[@科目名稱=\"" + subjectScore.Subject.Trim() + "\" and @科目級別=\"" + subjectScore.Level.Trim() + "\"]") as XmlElement;
-                                                    subjectElement.SetAttribute("科目級別成績重複", "不重複採計");
+                                                    subjectElement.SetAttribute("成績科目級別重複", "不重複採計");
                                                 }
                                             }
                                             break;
@@ -1033,7 +1042,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                                         }
                                                         else
                                                         {
-                                                            subjectElement.SetAttribute("科目級別成績重複", "不重複採計");
+                                                            subjectElement.SetAttribute("成績科目級別重複", "不重複採計");
                                                         }
                                                     }
                                                     else

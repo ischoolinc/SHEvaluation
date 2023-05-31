@@ -242,7 +242,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                             XmlElement = reportEle,
                             DoCheck = delegate (string domain, decimal credit, string entry, string required, string requiredBy, string subjectName, string subjectLevel)
                             {
-                                return required == "必修";
+                                return required == "必修" && requiredBy == "部訂";
                             }
                         });
                     }

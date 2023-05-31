@@ -979,6 +979,11 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                                         }
                                                     }
                                                 }
+                                                else
+                                                {
+                                                    XmlElement subjectElement = check.XmlElement.SelectSingleNode("科目[@科目名稱=\"" + subjectScore.Subject.Trim() + "\" and @科目級別=\"" + subjectScore.Level.Trim() + "\"]") as XmlElement;
+                                                    subjectElement.SetAttribute("科目級別成績重複", "不重複採計");
+                                                }
                                             }
                                             break;
                                         case "取得學分數統計":
@@ -1025,6 +1030,10 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                                             subjectElement.SetAttribute("取得學分數", "" + (decimal.Parse(subjectElement.GetAttribute("取得學分數")) + credit));
                                                             check.AttendCount += credit;
                                                             check.PassCount += credit;
+                                                        }
+                                                        else
+                                                        {
+                                                            subjectElement.SetAttribute("科目級別成績重複", "不重複採計");
                                                         }
                                                     }
                                                     else

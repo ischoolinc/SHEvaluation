@@ -31,10 +31,14 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panelEx1 = new DevComponents.DotNetBar.PanelEx();
+            this.cboSubjAttrib = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.emptyAttrib = new DevComponents.Editors.ComboItem();
+            this.labelX5 = new DevComponents.DotNetBar.LabelX();
             this.cboEntry = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.emptyEntry = new DevComponents.Editors.ComboItem();
             this.dgGraduationPlan = new DevComponents.DotNetBar.Controls.DataGridViewX();
             this.colDomain = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSubjAttrib = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colEntry = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSubjName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colRequiredBy = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -67,6 +71,8 @@
             // 
             this.panelEx1.CanvasColor = System.Drawing.SystemColors.Control;
             this.panelEx1.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.panelEx1.Controls.Add(this.cboSubjAttrib);
+            this.panelEx1.Controls.Add(this.labelX5);
             this.panelEx1.Controls.Add(this.cboEntry);
             this.panelEx1.Controls.Add(this.dgGraduationPlan);
             this.panelEx1.Controls.Add(this.cboRequired);
@@ -86,7 +92,7 @@
             this.panelEx1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.panelEx1.Location = new System.Drawing.Point(0, 0);
             this.panelEx1.Name = "panelEx1";
-            this.panelEx1.Size = new System.Drawing.Size(629, 452);
+            this.panelEx1.Size = new System.Drawing.Size(762, 452);
             this.panelEx1.Style.Alignment = System.Drawing.StringAlignment.Center;
             this.panelEx1.Style.BackColor1.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
             this.panelEx1.Style.BackColor2.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
@@ -95,6 +101,36 @@
             this.panelEx1.Style.ForeColor.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
             this.panelEx1.Style.GradientAngle = 90;
             this.panelEx1.TabIndex = 0;
+            // 
+            // cboSubjAttrib
+            // 
+            this.cboSubjAttrib.DisplayMember = "Text";
+            this.cboSubjAttrib.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboSubjAttrib.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboSubjAttrib.FormattingEnabled = true;
+            this.cboSubjAttrib.ItemHeight = 19;
+            this.cboSubjAttrib.Items.AddRange(new object[] {
+            this.emptyAttrib});
+            this.cboSubjAttrib.Location = new System.Drawing.Point(241, 39);
+            this.cboSubjAttrib.Name = "cboSubjAttrib";
+            this.cboSubjAttrib.Size = new System.Drawing.Size(147, 25);
+            this.cboSubjAttrib.TabIndex = 19;
+            this.cboSubjAttrib.SelectedIndexChanged += new System.EventHandler(this.cbo_SelectedIndexChanged);
+            // 
+            // labelX5
+            // 
+            this.labelX5.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX5.BackgroundStyle.Class = "";
+            this.labelX5.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX5.Enabled = false;
+            this.labelX5.Location = new System.Drawing.Point(203, 41);
+            this.labelX5.Name = "labelX5";
+            this.labelX5.Size = new System.Drawing.Size(47, 21);
+            this.labelX5.TabIndex = 18;
+            this.labelX5.Text = "屬性：";
             // 
             // cboEntry
             // 
@@ -105,9 +141,9 @@
             this.cboEntry.ItemHeight = 19;
             this.cboEntry.Items.AddRange(new object[] {
             this.emptyEntry});
-            this.cboEntry.Location = new System.Drawing.Point(281, 39);
+            this.cboEntry.Location = new System.Drawing.Point(425, 39);
             this.cboEntry.Name = "cboEntry";
-            this.cboEntry.Size = new System.Drawing.Size(103, 25);
+            this.cboEntry.Size = new System.Drawing.Size(89, 25);
             this.cboEntry.TabIndex = 17;
             this.cboEntry.SelectedIndexChanged += new System.EventHandler(this.cbo_SelectedIndexChanged);
             // 
@@ -118,6 +154,7 @@
             this.dgGraduationPlan.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgGraduationPlan.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colDomain,
+            this.colSubjAttrib,
             this.colEntry,
             this.colSubjName,
             this.colRequiredBy,
@@ -132,11 +169,11 @@
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgGraduationPlan.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgGraduationPlan.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
-            this.dgGraduationPlan.Location = new System.Drawing.Point(3, 70);
+            this.dgGraduationPlan.Location = new System.Drawing.Point(3, 68);
             this.dgGraduationPlan.Name = "dgGraduationPlan";
             this.dgGraduationPlan.RowTemplate.Height = 24;
             this.dgGraduationPlan.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgGraduationPlan.Size = new System.Drawing.Size(618, 342);
+            this.dgGraduationPlan.Size = new System.Drawing.Size(747, 342);
             this.dgGraduationPlan.TabIndex = 16;
             // 
             // colDomain
@@ -145,6 +182,11 @@
             this.colDomain.Name = "colDomain";
             this.colDomain.ReadOnly = true;
             this.colDomain.Width = 80;
+            // 
+            // colSubjAttrib
+            // 
+            this.colSubjAttrib.HeaderText = "科目屬性";
+            this.colSubjAttrib.Name = "colSubjAttrib";
             // 
             // colEntry
             // 
@@ -190,7 +232,7 @@
             this.cboRequired.ItemHeight = 19;
             this.cboRequired.Items.AddRange(new object[] {
             this.emptyRequired});
-            this.cboRequired.Location = new System.Drawing.Point(557, 39);
+            this.cboRequired.Location = new System.Drawing.Point(687, 39);
             this.cboRequired.Name = "cboRequired";
             this.cboRequired.Size = new System.Drawing.Size(61, 25);
             this.cboRequired.TabIndex = 15;
@@ -205,7 +247,7 @@
             this.labelX7.BackgroundStyle.Class = "";
             this.labelX7.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX7.Enabled = false;
-            this.labelX7.Location = new System.Drawing.Point(512, 41);
+            this.labelX7.Location = new System.Drawing.Point(642, 41);
             this.labelX7.Name = "labelX7";
             this.labelX7.Size = new System.Drawing.Size(50, 21);
             this.labelX7.TabIndex = 14;
@@ -220,7 +262,7 @@
             this.cboRequiredBy.ItemHeight = 19;
             this.cboRequiredBy.Items.AddRange(new object[] {
             this.emptyRequiredBy});
-            this.cboRequiredBy.Location = new System.Drawing.Point(436, 39);
+            this.cboRequiredBy.Location = new System.Drawing.Point(566, 39);
             this.cboRequiredBy.Name = "cboRequiredBy";
             this.cboRequiredBy.Size = new System.Drawing.Size(67, 25);
             this.cboRequiredBy.TabIndex = 13;
@@ -235,7 +277,7 @@
             this.labelX6.BackgroundStyle.Class = "";
             this.labelX6.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX6.Enabled = false;
-            this.labelX6.Location = new System.Drawing.Point(390, 41);
+            this.labelX6.Location = new System.Drawing.Point(520, 41);
             this.labelX6.Name = "labelX6";
             this.labelX6.Size = new System.Drawing.Size(50, 21);
             this.labelX6.TabIndex = 12;
@@ -252,7 +294,7 @@
             this.emptyDomain});
             this.cboDomain.Location = new System.Drawing.Point(52, 39);
             this.cboDomain.Name = "cboDomain";
-            this.cboDomain.Size = new System.Drawing.Size(184, 25);
+            this.cboDomain.Size = new System.Drawing.Size(150, 25);
             this.cboDomain.TabIndex = 7;
             this.cboDomain.SelectedIndexChanged += new System.EventHandler(this.cbo_SelectedIndexChanged);
             // 
@@ -294,7 +336,7 @@
             this.cboGPlan.ItemHeight = 19;
             this.cboGPlan.Location = new System.Drawing.Point(191, 7);
             this.cboGPlan.Name = "cboGPlan";
-            this.cboGPlan.Size = new System.Drawing.Size(427, 25);
+            this.cboGPlan.Size = new System.Drawing.Size(559, 25);
             this.cboGPlan.TabIndex = 1;
             this.cboGPlan.SelectedIndexChanged += new System.EventHandler(this.cboGPlan_SelectedIndexChanged);
             // 
@@ -303,7 +345,7 @@
             this.buttonX2.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.buttonX2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonX2.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.buttonX2.Location = new System.Drawing.Point(558, 419);
+            this.buttonX2.Location = new System.Drawing.Point(691, 419);
             this.buttonX2.Name = "buttonX2";
             this.buttonX2.Size = new System.Drawing.Size(59, 23);
             this.buttonX2.TabIndex = 2;
@@ -315,7 +357,7 @@
             this.btnSelect.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSelect.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnSelect.Location = new System.Drawing.Point(493, 419);
+            this.btnSelect.Location = new System.Drawing.Point(626, 419);
             this.btnSelect.Name = "btnSelect";
             this.btnSelect.Size = new System.Drawing.Size(59, 23);
             this.btnSelect.TabIndex = 0;
@@ -361,7 +403,7 @@
             this.labelX4.BackgroundStyle.Class = "";
             this.labelX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX4.Enabled = false;
-            this.labelX4.Location = new System.Drawing.Point(242, 41);
+            this.labelX4.Location = new System.Drawing.Point(387, 41);
             this.labelX4.Name = "labelX4";
             this.labelX4.Size = new System.Drawing.Size(47, 21);
             this.labelX4.TabIndex = 8;
@@ -374,7 +416,7 @@
             // GraduationPlanSimplePicker
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(629, 452);
+            this.ClientSize = new System.Drawing.Size(762, 452);
             this.Controls.Add(this.panelEx1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -410,13 +452,17 @@
         private DevComponents.Editors.ComboItem emptyDomain;
         private DevComponents.Editors.ComboItem emptyRequired;
         private DevComponents.Editors.ComboItem emptyRequiredBy;
+        private DevComponents.DotNetBar.Controls.ComboBoxEx cboEntry;
+        private DevComponents.Editors.ComboItem emptyEntry;
+        private DevComponents.DotNetBar.Controls.ComboBoxEx cboSubjAttrib;
+        private DevComponents.Editors.ComboItem emptyAttrib;
+        private DevComponents.DotNetBar.LabelX labelX5;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDomain;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSubjAttrib;
         private System.Windows.Forms.DataGridViewTextBoxColumn colEntry;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSubjName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colRequiredBy;
         private System.Windows.Forms.DataGridViewTextBoxColumn colRequired;
         private System.Windows.Forms.DataGridViewTextBoxColumn colLevelList;
-        private DevComponents.DotNetBar.Controls.ComboBoxEx cboEntry;
-        private DevComponents.Editors.ComboItem emptyEntry;
     }
 }

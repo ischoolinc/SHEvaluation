@@ -17,33 +17,32 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Linq;
 using System.Drawing.Design;
-using SmartSchool.Evaluation.GraduationPlan;
 
 namespace SmartSchool.Evaluation.Configuration
 {
     public partial class GraduationPlanSimplePicker : FISCA.Presentation.Controls.BaseForm
     {
-        private BackgroundWorker _BKWGraduationPlanLoader;
-
         private List<GraduationPlanSimple> gpSimpleCollection=new List<GraduationPlanSimple>();
 
         private List<GraduationPlanSimple> gpTargetCollection = new List<GraduationPlanSimple>();
 
         private List<GraduationPlanSimple> gpSelectedCollection = new List<GraduationPlanSimple>();
 
-        internal XmlElement _CopyElement;
+        private string _Catalog; // 科目表類別
 
-        public GraduationPlanSimplePicker()
+        public GraduationPlanSimplePicker(string cata)
         {
             InitializeComponent();
 
             // 預設為目前的學年度
+            _Catalog = cata;
             iiSchoolYear.Text = K12.Data.School.DefaultSchoolYear;
             loadGPCbo(iiSchoolYear.Text);
             loadDomainCbo(cboDomain);
             loadEntryCbo(cboEntry);
             loadRequiredByCbo(cboRequiredBy);
             loadRequiredCbo(cboRequired);
+            loadSubjAttrib(cboSubjAttrib);
         }
         public List<GraduationPlanSimple> getGPSelection()
         {
@@ -251,13 +250,50 @@ namespace SmartSchool.Evaluation.Configuration
             cbox.SelectedIndex = 0;
         }
 
+
+
+        /// <summary>
+        /// 取得科目屬性
+        /// </summary>
+        public void loadSubjAttrib(ComboBoxEx cbox)
+        {
+            Dictionary<string, string> value = new Dictionary<string, string>();
+            value.Add("0", "不分屬性");
+            value.Add("1", "一般科目");
+            value.Add("2", "專業科目");
+            value.Add("3", "實習科目");
+            value.Add("4", "專精科目");
+            value.Add("5", "專精科目(核心科目)");
+            value.Add("6", "特殊需求領域");
+            value.Add("A", "自主學習");
+            value.Add("B", "選手培訓");
+            value.Add("C", "充實補強(不授予學分)");
+            value.Add("D", "充實補強(授予學分)");
+            value.Add("E", "學校特色活動");
+            value.Add("F", "專精(專業)科目");
+            value.Add("G", "專精(實習)科目");
+            value.Add("H", "專精(專業)科目(核心)");
+            value.Add("I", "專精(實習)科目(核心)");
+
+            foreach (string key in value.Keys)
+            {
+                ComboItem item = new ComboItem();
+                item.Text = value[key].ToString();
+                item.Tag = key;
+                cbox.Items.Add(item);
+            }
+            cbox.SelectedIndex = 0;
+        }
+
+
+
         public void loadEntryCbo(ComboBoxEx cbox)
         {
             List<string> entryList = new List<string>()
             {"學業","專業科目","實習科目" };
             foreach (string key in entryList)
             {
-                DevComponents.Editors.ComboItem item = new DevComponents.Editors.ComboItem();
+                ComboItem item = new ComboItem();
                 item.Text = key;
                 item.Tag = key;
                 cbox.Items.Add(item);
@@ -271,7 +307,7 @@ namespace SmartSchool.Evaluation.Configuration
             {"校訂","部訂"};
             foreach (string key in entryList)
             {
-                DevComponents.Editors.ComboItem item = new DevComponents.Editors.ComboItem();
+                ComboItem item = new ComboItem();
                 item.Text = key;
                 item.Tag = key;
                 cbox.Items.Add(item);
@@ -305,11 +341,12 @@ namespace SmartSchool.Evaluation.Configuration
                     int rowIdx = dgGraduationPlan.Rows.Add();
                     dgGraduationPlan.Rows[rowIdx].Tag = dps;
                     dgGraduationPlan.Rows[rowIdx].Cells[0].Value = dps.Domain;
-                    dgGraduationPlan.Rows[rowIdx].Cells[1].Value = dps.Entry;
-                    dgGraduationPlan.Rows[rowIdx].Cells[2].Value = dps.SubjectName;
-                    dgGraduationPlan.Rows[rowIdx].Cells[3].Value = dps.RequiredBy;
-                    dgGraduationPlan.Rows[rowIdx].Cells[4].Value = dps.Required;
-                    dgGraduationPlan.Rows[rowIdx].Cells[5].Value = dps.LevelList;
+                    dgGraduationPlan.Rows[rowIdx].Cells[1].Value = dps.Attribute;
+                    dgGraduationPlan.Rows[rowIdx].Cells[2].Value = dps.Entry;
+                    dgGraduationPlan.Rows[rowIdx].Cells[3].Value = dps.SubjectName;
+                    dgGraduationPlan.Rows[rowIdx].Cells[4].Value = dps.RequiredBy;
+                    dgGraduationPlan.Rows[rowIdx].Cells[5].Value = dps.Required;
+                    dgGraduationPlan.Rows[rowIdx].Cells[6].Value = dps.LevelList;
 
                 }
             }
@@ -320,6 +357,7 @@ namespace SmartSchool.Evaluation.Configuration
 "DISTINCT array_to_string(xpath('//Subject/@SubjectName', subject), '')::text AS SubjectName, " +
 "array_to_string(xpath('//Subject/@課程代碼', Subject), '')::text as Code, " +
 "array_to_string(xpath('//Subject/@Domain', Subject), '')::text as Domain, " +
+"SUBSTRING(array_to_string(xpath('//Subject/@CourseAttr', Subject), '')::text,2,1) as CourseAttrib, " +
 "array_to_string(xpath('//Subject/@Entry', Subject), '')::text as Entry, " +
 "array_to_string(xpath('//Subject/@RequiredBy', Subject), '')::text as RequiredBy, " +
 "array_to_string(xpath('//Subject/@Required', Subject), '')::text as Required, " +
@@ -329,7 +367,7 @@ namespace SmartSchool.Evaluation.Configuration
 "FROM graduation_plan " +
 "WHERE id = " + gpID + " " +
 ") AS SubjQry " +
-"GROUP BY SubjectName,Code,Domain,Entry,RequiredBy,Required " +
+"GROUP BY SubjectName,Code,Domain,CourseAttrib,Entry,RequiredBy,Required " +
 "ORDER BY Code ";
 
             QueryHelper qh = new QueryHelper();
@@ -379,6 +417,11 @@ namespace SmartSchool.Evaluation.Configuration
             if (cboDomain.SelectedIndex>0)
             {
                 gpTargetCollection=gpTargetCollection.Where(x=>x.Domain.Contains(itemDomain.Text)).ToList();
+            }
+            ComboItem itemAttrib = (ComboItem)cboSubjAttrib.SelectedItem;
+            if (cboSubjAttrib.SelectedIndex > 0)
+            {
+                gpTargetCollection = gpTargetCollection.Where(x => x.Attribute.Contains(itemAttrib.Text)).ToList();
             }
             ComboItem itemEntry = (ComboItem)cboEntry.SelectedItem;
             if (cboEntry.SelectedIndex>0)

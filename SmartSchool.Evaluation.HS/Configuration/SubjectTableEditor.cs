@@ -387,7 +387,7 @@ namespace SmartSchool.Evaluation.Configuration
 
         private void btnGPsubj_Click(object sender, EventArgs e)
         {
-            GraduationPlanSimplePicker gpPicker = new GraduationPlanSimplePicker();
+            GraduationPlanSimplePicker gpPicker = new GraduationPlanSimplePicker((_ProgramTable) ? "學程科目表" : "核心科目表");
             gpPicker.FormClosed+=new FormClosedEventHandler(gpPicker_FormClosed);
             gpPicker.ShowDialog();
         }
@@ -408,7 +408,7 @@ namespace SmartSchool.Evaluation.Configuration
                         {
                             dr.Cells[0].Value = dr.Cells[0].Tag + getLevelList(gpSimple.LevelList);
 
-                            dr.Cells[1].Tag = convStrListToIntList(gpSimple.LevelList);
+                            dr.Tag = convStrListToIntList(gpSimple.LevelList);
                             dr.Cells[1].Value = gpSimple.LevelList;
 
                             find = true;
@@ -422,7 +422,7 @@ namespace SmartSchool.Evaluation.Configuration
                         row.Cells[0].Value = gpSimple.SubjectName + getLevelList(gpSimple.LevelList);
                         row.Cells[0].Tag = gpSimple.SubjectName;
 
-                        row.Cells[1].Tag = convStrListToIntList(gpSimple.LevelList);
+                        row.Tag = convStrListToIntList(gpSimple.LevelList);
                         row.Cells[1].Value = gpSimple.LevelList;
                         dataGridViewX1.Rows.Add(row);
                     }

@@ -934,42 +934,41 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                     subjectScore.Level.Trim()
                                     ))
                                 {
-
-                                    switch (check.Type)
+                                    XmlElement subjectElement = check.XmlElement.SelectSingleNode("科目[@科目名稱=\"" + subjectScore.Subject.Trim() + "\" and @科目級別=\"" + subjectScore.Level.Trim() + "\"]") as XmlElement;
+                                    // 非課程規劃表課程 且 允許採計時採計
+                                    if (subjectElement == null && check.AcceptOtherSource)
                                     {
-                                        case "修課學分數統計":
-                                            {
-                                                bool isCount = true;
-                                                if (filterSameSubject)
-                                                {
-                                                    SubjectName sn = new SubjectName(subjectScore.Subject.Trim(), subjectScore.Level.Trim());
-                                                    if (dicAttendSubjects[check].Contains(sn))
-                                                    {
-                                                        isCount = false;
-                                                    }
-                                                    else
-                                                        dicAttendSubjects[check].Add(sn);
-                                                }
-                                                if (isCount)
-                                                {
-                                                    XmlElement subjectElement = check.XmlElement.SelectSingleNode("科目[@科目名稱=\"" + subjectScore.Subject.Trim() + "\" and @科目級別=\"" + subjectScore.Level.Trim() + "\"]") as XmlElement;
-                                                    // 非課程規劃表課程 且 允許採計時採計
-                                                    if (subjectElement == null && check.AcceptOtherSource)
-                                                    {
-                                                        subjectElement = check.XmlElement.OwnerDocument.CreateElement("科目");
-                                                        check.XmlElement.AppendChild(subjectElement);
-                                                        subjectElement.SetAttribute("科目名稱", subjectScore.Subject.Trim());
-                                                        subjectElement.SetAttribute("科目級別", subjectScore.Level.Trim());
-                                                        subjectElement.SetAttribute("學分數", subjectScore.Detail.GetAttribute("畢業採計-學分數"));
-                                                        subjectElement.SetAttribute("取得學分數", "0");
-                                                        subjectElement.SetAttribute("修課學年度", "");
-                                                        subjectElement.SetAttribute("修課年級", "");
-                                                        subjectElement.SetAttribute("修課學期", "");
-                                                        subjectElement.SetAttribute("狀態", "未修習");
-                                                        subjectElement.SetAttribute("非課程規劃表課程", "非課程規劃表課程");
-                                                    }
+                                        subjectElement = check.XmlElement.OwnerDocument.CreateElement("科目");
+                                        check.XmlElement.AppendChild(subjectElement);
+                                        subjectElement.SetAttribute("科目名稱", subjectScore.Subject.Trim());
+                                        subjectElement.SetAttribute("科目級別", subjectScore.Level.Trim());
+                                        subjectElement.SetAttribute("學分數", subjectScore.Detail.GetAttribute("畢業採計-學分數"));
+                                        subjectElement.SetAttribute("取得學分數", "0");
+                                        subjectElement.SetAttribute("修課學年度", "");
+                                        subjectElement.SetAttribute("修課年級", "");
+                                        subjectElement.SetAttribute("修課學期", "");
+                                        subjectElement.SetAttribute("狀態", "未修習");
+                                        subjectElement.SetAttribute("非課程規劃表課程", "非課程規劃表課程");
+                                    }
 
-                                                    if (subjectElement != null)
+                                    if (subjectElement != null)
+                                    {
+                                        switch (check.Type)
+                                        {
+                                            case "修課學分數統計":
+                                                {
+                                                    bool isCount = true;
+                                                    if (filterSameSubject)
+                                                    {
+                                                        SubjectName sn = new SubjectName(subjectScore.Subject.Trim(), subjectScore.Level.Trim());
+                                                        if (dicAttendSubjects[check].Contains(sn))
+                                                        {
+                                                            isCount = false;
+                                                        }
+                                                        else
+                                                            dicAttendSubjects[check].Add(sn);
+                                                    }
+                                                    if (isCount)
                                                     {
                                                         subjectElement.SetAttribute("修課學年度", "" + subjectScore.SchoolYear);
                                                         subjectElement.SetAttribute("修課年級", "" + subjectScore.GradeYear);
@@ -987,33 +986,13 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                                             check.PassCount += credit;
                                                         }
                                                     }
+                                                    else
+                                                    {
+                                                        subjectElement.SetAttribute("成績科目級別重複", "不重複採計");
+                                                    }
                                                 }
-                                                else
-                                                {
-                                                    XmlElement subjectElement = check.XmlElement.SelectSingleNode("科目[@科目名稱=\"" + subjectScore.Subject.Trim() + "\" and @科目級別=\"" + subjectScore.Level.Trim() + "\"]") as XmlElement;
-                                                    subjectElement.SetAttribute("成績科目級別重複", "不重複採計");
-                                                }
-                                            }
-                                            break;
-                                        case "取得學分數統計":
-                                            {
-                                                XmlElement subjectElement = check.XmlElement.SelectSingleNode("科目[@科目名稱=\"" + subjectScore.Subject.Trim() + "\" and @科目級別=\"" + subjectScore.Level.Trim() + "\"]") as XmlElement;
-                                                // 非課程規劃表課程 且 允許採計時採計
-                                                if (subjectElement == null && check.AcceptOtherSource)
-                                                {
-                                                    subjectElement = check.XmlElement.OwnerDocument.CreateElement("科目");
-                                                    check.XmlElement.AppendChild(subjectElement);
-                                                    subjectElement.SetAttribute("科目名稱", subjectScore.Subject.Trim());
-                                                    subjectElement.SetAttribute("科目級別", subjectScore.Level.Trim());
-                                                    subjectElement.SetAttribute("學分數", subjectScore.Detail.GetAttribute("畢業採計-學分數"));
-                                                    subjectElement.SetAttribute("取得學分數", "0");
-                                                    subjectElement.SetAttribute("修課學年度", "");
-                                                    subjectElement.SetAttribute("修課年級", "");
-                                                    subjectElement.SetAttribute("修課學期", "");
-                                                    subjectElement.SetAttribute("狀態", "未修習");
-                                                    subjectElement.SetAttribute("非課程規劃表課程", "非課程規劃表課程");
-                                                }
-                                                if (subjectElement != null)
+                                                break;
+                                            case "取得學分數統計":
                                                 {
                                                     if (subjectScore.Pass)
                                                     {
@@ -1066,8 +1045,8 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                                         }
                                                     }
                                                 }
-                                            }
-                                            break;
+                                                break;
+                                        }
                                     }
                                 }
                             }

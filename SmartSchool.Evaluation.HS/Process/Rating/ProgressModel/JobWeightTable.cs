@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
 
 namespace SmartSchool.Evaluation.Process.Rating
 {
@@ -46,7 +44,7 @@ namespace SmartSchool.Evaluation.Process.Rating
                 float total = 0;
                 foreach (float each in _progress_weight.Values)
                     total += each;
-                
+
                 return total;
             }
         }

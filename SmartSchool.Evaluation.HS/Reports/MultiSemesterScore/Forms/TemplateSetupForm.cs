@@ -1,16 +1,10 @@
+using Aspose.Words;
+using DevComponents.DotNetBar.Rendering;
+using SmartSchool.Common;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using DevComponents.DotNetBar;
 using System.IO;
-using Aspose.Words;
-using System.Xml;
-using SmartSchool.Common;
-using DevComponents.DotNetBar.Rendering;
+using System.Windows.Forms;
 
 namespace SmartSchool.Evaluation.Reports.MultiSemesterScore.Forms
 {
@@ -26,9 +20,9 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore.Forms
             InitializeComponent();
 
             #region 如果系統的Renderer是Office2007Renderer，同化_ClassTeacherView,_CategoryView的顏色
-            if ( GlobalManager.Renderer is Office2007Renderer )
+            if (GlobalManager.Renderer is Office2007Renderer)
             {
-                ( (Office2007Renderer)GlobalManager.Renderer ).ColorTableChanged += new EventHandler(ScoreCalcRuleEditor_ColorTableChanged);
+                ((Office2007Renderer)GlobalManager.Renderer).ColorTableChanged += new EventHandler(ScoreCalcRuleEditor_ColorTableChanged);
                 SetForeColor(this);
             }
             #endregion
@@ -43,13 +37,13 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore.Forms
 
         private void SetForeColor(Control parent)
         {
-            foreach ( Control var in parent.Controls )
+            foreach (Control var in parent.Controls)
             {
-                if ( var is CheckBox )
-                    var.ForeColor = ( (Office2007Renderer)GlobalManager.Renderer ).ColorTable.CheckBoxItem.Default.Text;
+                if (var is CheckBox)
+                    var.ForeColor = ((Office2007Renderer)GlobalManager.Renderer).ColorTable.CheckBoxItem.Default.Text;
                 SetForeColor(var);
             }
-        } 
+        }
 
         private void Load()
         {
@@ -58,7 +52,7 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore.Forms
             else
                 radioButton2.Checked = true;
 
-            foreach ( CheckBox cbox in new CheckBox[] { checkBox1,checkBox2,checkBox3,checkBox4,checkBox5,checkBox6} )
+            foreach (CheckBox cbox in new CheckBox[] { checkBox1, checkBox2, checkBox3, checkBox4, checkBox5, checkBox6 })
             {
                 cbox.Checked = Option.PrintEntries.Contains(cbox.Text);
             }
@@ -69,7 +63,7 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore.Forms
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            if (radioButton1.Checked)            
+            if (radioButton1.Checked)
                 radioButton2.Checked = false;
         }
 
@@ -162,9 +156,9 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore.Forms
             Option.PrintSemester = integerInput1.Value;
 
             List<string> list = new List<string>();
-            foreach ( CheckBox cbox in new CheckBox[] { checkBox1, checkBox2, checkBox3, checkBox4, checkBox5, checkBox6 } )
+            foreach (CheckBox cbox in new CheckBox[] { checkBox1, checkBox2, checkBox3, checkBox4, checkBox5, checkBox6 })
             {
-                if ( cbox.Checked )
+                if (cbox.Checked)
                 {
                     list.Add(cbox.Text);
                 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SmartSchool.Evaluation.Content.Model
+﻿namespace SmartSchool.Evaluation.Content.Model
 {
     //學期成績封存
     class StudentSemsSocreArchive

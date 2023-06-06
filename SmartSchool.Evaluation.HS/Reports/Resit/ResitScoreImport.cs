@@ -1,15 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.ComponentModel;
 using Aspose.Cells;
+using FISCA.Presentation;
+using SmartSchool.Common;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
-using System.Xml;
-using FISCA.DSAUtil;
-using SmartSchool.Common;
-using FISCA.Presentation;
 
 namespace SmartSchool.Evaluation.Reports
 {
@@ -383,7 +380,7 @@ namespace SmartSchool.Evaluation.Reports
             aInfo.Add("场璹", info.Detail.HasAttribute("揭场璹") ? info.Detail.GetAttribute("揭场璹") : "");
             aInfo.Add("﹍Θ罿", info.Detail.HasAttribute("﹍Θ罿") ? info.Detail.GetAttribute("﹍Θ罿") : "");
 
-          //  aInfo.Add("干σ夹非", info.Detail.HasAttribute("干σ夹非") ? info.Detail.GetAttribute("干σ夹非") : "");
+            //  aInfo.Add("干σ夹非", info.Detail.HasAttribute("干σ夹非") ? info.Detail.GetAttribute("干σ夹非") : "");
 
             aInfo.Add("干σ夹非", info.Detail.HasAttribute("揭干σ夹非") ? info.Detail.GetAttribute("揭干σ夹非") : "");
 

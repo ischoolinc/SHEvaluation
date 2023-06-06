@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SmartSchool.Evaluation.ExtandColumn
 {
-    class ClassGraduationPlan:SmartSchool.Customization.PlugIn.ExtendedColumn.IColumnItem
+    class ClassGraduationPlan : SmartSchool.Customization.PlugIn.ExtendedColumn.IColumnItem
     {
         private Dictionary<string, string> _Values = new Dictionary<string, string>();
 
@@ -15,7 +14,7 @@ namespace SmartSchool.Evaluation.ExtandColumn
 
         void Instance_ClassReferenceGranduationPlanChanged(object sender, EventArgs e)
         {
-            if ( VariableChanged != null )
+            if (VariableChanged != null)
                 VariableChanged.Invoke(this, new EventArgs());
         }
 
@@ -34,9 +33,9 @@ namespace SmartSchool.Evaluation.ExtandColumn
         public void FillExtendedValues(List<string> identities)
         {
             _Values.Clear();
-            foreach ( string var in identities )
+            foreach (string var in identities)
             {
-                if ( GraduationPlan.GraduationPlan.Instance.GetClassGraduationPlan(var) == null )
+                if (GraduationPlan.GraduationPlan.Instance.GetClassGraduationPlan(var) == null)
                     _Values.Add(var, "");
                 else
                     _Values.Add(var, GraduationPlan.GraduationPlan.Instance.GetClassGraduationPlan(var).Name);

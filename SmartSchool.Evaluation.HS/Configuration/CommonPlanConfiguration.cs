@@ -1,9 +1,9 @@
-﻿using System;
-using System.ComponentModel;
-using System.Xml;
-using SmartSchool.Common;
+﻿using SmartSchool.Common;
 using SmartSchool.Evaluation.GraduationPlan.Editor;
 using SmartSchool.Feature.GraduationPlan;
+using System;
+using System.ComponentModel;
+using System.Xml;
 
 namespace SmartSchool.Evaluation.Configuration
 {
@@ -16,7 +16,7 @@ namespace SmartSchool.Evaluation.Configuration
         public CommonPlanConfiguration()
         {
             InitializeComponent();
-            
+
             _CommonPlanEditor = commonPlanEditor1;
             _CommonPlanEditor.IsDirtyChanged += new EventHandler(_CommonPlanEditor_IsDirtyChanged);
             _BKWCommonPlanLoader = new BackgroundWorker();
@@ -63,6 +63,6 @@ namespace SmartSchool.Evaluation.Configuration
             EditGraduationPlan.SetCommon(_CommonPlanEditor.GetSource());
             EventHub.Instance.InvokCommonPlanUpdated();
             LoadGraduationPlan();
-        }    
+        }
     }
 }

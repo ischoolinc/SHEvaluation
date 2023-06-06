@@ -1,19 +1,15 @@
-﻿using FISCA.Permission;
+﻿using FISCA.Data;
+using FISCA.Permission;
 using FISCA.Presentation;
+using FISCA.Presentation.Controls;
+using FISCA.UDT;
+using SmartSchool.Evaluation.Content.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Xml;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using FISCA.DSAUtil;
-using FISCA.Presentation.Controls;
-using FISCA.Data;
-using FISCA.UDT;
-using SmartSchool.Evaluation.Content.Model;
 
 namespace SmartSchool.Evaluation.Content
 {
@@ -102,7 +98,7 @@ namespace SmartSchool.Evaluation.Content
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            btnView.Enabled = (listView1.SelectedIndices.Count == 1 && (FISCA.Permission.UserAcl.Current[Permissions.學期成績封存].Viewable|| FISCA.Permission.UserAcl.Current[Permissions.學期成績封存].Editable));
+            btnView.Enabled = (listView1.SelectedIndices.Count == 1 && (FISCA.Permission.UserAcl.Current[Permissions.學期成績封存].Viewable || FISCA.Permission.UserAcl.Current[Permissions.學期成績封存].Editable));
             btnDelete.Enabled = (listView1.SelectedIndices.Count == 1 && FISCA.Permission.UserAcl.Current[Permissions.學期成績封存].Editable);
         }
 
@@ -119,7 +115,7 @@ namespace SmartSchool.Evaluation.Content
             }
 
             UpdateHelper updateHelper = new UpdateHelper();
-           // QueryHelper qh = new QueryHelper();
+            // QueryHelper qh = new QueryHelper();
 
             if (MsgBox.Show("您確定要刪除此學期成績(封存)？", "", MessageBoxButtons.YesNo) == DialogResult.No) return;
 
@@ -134,7 +130,7 @@ namespace SmartSchool.Evaluation.Content
                 //刪除科目成績
                 sql2 = string.Format(sql2, sssa.Uid);
 
-                 List<string> sqls = new List<string>();
+                List<string> sqls = new List<string>();
                 sqls.Add(sql);
                 sqls.Add(sql2);
                 //string sqls = sql + sql2;
@@ -212,7 +208,7 @@ WHERE a.ref_student_id={0}";
             {
                 MsgBox.Show("取得學生學期成績(封存)發生錯誤。");
             }
-            _ReloadArchiveData = false ;    //Cyn
+            _ReloadArchiveData = false;    //Cyn
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

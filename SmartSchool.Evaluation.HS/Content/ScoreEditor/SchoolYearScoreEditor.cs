@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
-using System.Xml;
-using FISCA.DSAUtil;
+﻿using FISCA.DSAUtil;
 using SmartSchool.ApplicationLog;
 using SmartSchool.Common;
 using SmartSchool.Feature.Score;
 using SmartSchool.StudentRelated;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Windows.Forms;
+using System.Xml;
 
 namespace SmartSchool.Evaluation.Content.ScoreEditor
 {

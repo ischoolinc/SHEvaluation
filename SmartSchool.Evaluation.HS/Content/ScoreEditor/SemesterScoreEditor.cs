@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Xml;
-using DevComponents.DotNetBar.Controls;
+﻿using DevComponents.DotNetBar.Controls;
 using FISCA.DSAUtil;
 using SmartSchool.ApplicationLog;
 using SmartSchool.Common;
 using SmartSchool.Evaluation.GraduationPlan;
 using SmartSchool.Feature.Score;
 using SmartSchool.StudentRelated;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
+using System.Xml;
 //using SHCourseGroupCodeDAL;
 
 namespace SmartSchool.Evaluation.Content.ScoreEditor

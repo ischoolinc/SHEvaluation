@@ -1,10 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Xml;
 using FISCA.DSAUtil;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
-using SmartSchool.Evaluation.GraduationPlan;
+using System.Collections.Generic;
+using System.Xml;
 
 namespace SmartSchool.Evaluation.WearyDogComputerHelper
 {

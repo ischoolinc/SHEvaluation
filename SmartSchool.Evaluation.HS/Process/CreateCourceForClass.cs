@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Xml;
+﻿using FISCA.Data;
 using FISCA.DSAUtil;
 using SmartSchool.Common;
 using SmartSchool.Customization.Data;
 using SmartSchool.Evaluation.GraduationPlan;
-using SmartSchool.ExceptionHandler;
 using SmartSchool.Security;
-using SystemInformation = SmartSchool.Customization.Data.SystemInformation;
-using SHSchool.Data;
-using FISCA.Data;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
+using System.Windows.Forms;
+using System.Xml;
 
 namespace SmartSchool.Evaluation.Process
 {

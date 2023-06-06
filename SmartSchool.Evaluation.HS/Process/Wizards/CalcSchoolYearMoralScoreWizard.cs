@@ -1,15 +1,11 @@
-﻿using System;
+﻿using DevComponents.DotNetBar;
+using DevComponents.DotNetBar.Rendering;
+using SmartSchool.Customization.Data;
+using SmartSchool.Customization.Data.StudentExtension;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using DevComponents.DotNetBar;
-using SmartSchool.Customization.Data;
 using System.Xml;
-using SmartSchool.Customization.Data.StudentExtension;
-using DevComponents.DotNetBar.Rendering;
 
 namespace SmartSchool.Evaluation.Process.Wizards
 {

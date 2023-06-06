@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
+﻿using DevComponents.DotNetBar;
 using System.Windows.Forms;
-using SmartSchool.Common;
-using DevComponents.DotNetBar;
 
 namespace SmartSchool.Evaluation.Process
 {

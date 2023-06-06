@@ -1,11 +1,11 @@
+using FISCA.DSAUtil;
+using SmartSchool.Customization.Data;
+using SmartSchool.Feature.ScoreCalcRule;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 using System.Xml;
-using FISCA.DSAUtil;
-using SmartSchool.Customization.Data;
-using SmartSchool.Feature.ScoreCalcRule;
 
 namespace SmartSchool.Evaluation.ScoreCalcRule
 {
@@ -159,7 +159,7 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
                         _Items.Add(scr.SelectSingleNode("@ID").InnerText, new ScoreCalcRuleInfo(scr));
                     }
                 }
-                catch(Exception exc)
+                catch (Exception exc)
                 {
                     SmartSchool.ExceptionHandler.BugReporter.ReportException(new Exception("取得成績計算規則資料時發生錯誤。", exc), false);
                 }

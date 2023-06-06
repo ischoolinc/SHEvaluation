@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Text;
-using System.Windows.Forms;
-using System.Xml;
-using FISCA.Data;
+﻿using FISCA.Data;
 using FISCA.DSAUtil;
 using FISCA.UDT;
 using SmartSchool.AccessControl;
@@ -13,6 +6,13 @@ using SmartSchool.ApplicationLog;
 using SmartSchool.Common;
 using SmartSchool.Feature.Score;
 using SmartSchool.StudentRelated;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Text;
+using System.Windows.Forms;
+using System.Xml;
 
 namespace SmartSchool.Evaluation.Content
 {
@@ -458,7 +458,7 @@ namespace SmartSchool.Evaluation.Content
             //寫入log
             StringBuilder sb_log = new StringBuilder();
             //封存 (複製sems_subj_score 和 sems_entry_score)
-            
+
             if (MsgBox.Show("確定將" + listView1.SelectedItems[0].SubItems[0].Text + "-" + listView1.SelectedItems[0].SubItems[1].Text + "學期成績，複製到「學期成績(封存)」？", "", MessageBoxButtons.YesNo) == DialogResult.No) return;
 
             UpdateHelper updateHelper = new UpdateHelper();
@@ -467,65 +467,66 @@ namespace SmartSchool.Evaluation.Content
 
             string searchSql = "SELECT id FROM sems_subj_score WHERE ref_student_id ={0} AND school_year={1} AND semester={2}";
             searchSql = string.Format(searchSql, _CurrentID, listView1.SelectedItems[0].SubItems[0].Text, listView1.SelectedItems[0].SubItems[1].Text);
-           
-            
+
+
             DataTable searchIDdt = qh.Select(searchSql);
-            if (searchIDdt.Rows.Count>0)
+            if (searchIDdt.Rows.Count > 0)
             {
-            try
-            {
-                foreach (XmlElement var in QueryScore.GetSemesterEntryScoreBySemester(int.Parse(listView1.SelectedItems[0].SubItems[0].Text), int.Parse(listView1.SelectedItems[0].SubItems[1].Text), _CurrentID).GetContent().GetElements("SemesterEntryScore"))
+                try
                 {
-                    //複製學期分項成績(不複製德行成績)
-                    string sql = @"INSERT INTO $semester_entry_score_archive (ref_student_id,school_year,semester, grade_year, score_info) 
+                    foreach (XmlElement var in QueryScore.GetSemesterEntryScoreBySemester(int.Parse(listView1.SelectedItems[0].SubItems[0].Text), int.Parse(listView1.SelectedItems[0].SubItems[1].Text), _CurrentID).GetContent().GetElements("SemesterEntryScore"))
+                    {
+                        //複製學期分項成績(不複製德行成績)
+                        string sql = @"INSERT INTO $semester_entry_score_archive (ref_student_id,school_year,semester, grade_year, score_info) 
                                                     SELECT ref_student_id,school_year,semester, grade_year, score_info 
                                                     FROM sems_entry_score 
                                                     WHERE entry_group=1  AND id={0}
                                                     RETURNING uid";
 
-                    sql = string.Format(sql, var.SelectSingleNode("@ID").InnerText);
-                    //updateHelper.Execute(sql);
-                    //取得回傳的uid讓$semester_subject_score_archive 寫入ref_sems_entry_uid
-                    DataTable dt = qh.Select(sql);
-                    foreach (DataRow dr in dt.Rows)
-                    {
-                        uid = int.Parse(dr["uid"].ToString());
+                        sql = string.Format(sql, var.SelectSingleNode("@ID").InnerText);
+                        //updateHelper.Execute(sql);
+                        //取得回傳的uid讓$semester_subject_score_archive 寫入ref_sems_entry_uid
+                        DataTable dt = qh.Select(sql);
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            uid = int.Parse(dr["uid"].ToString());
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                MsgBox.Show("取得學生學期分項成績發生錯誤。"+ex.Message);
-            }
-
-            try
-            {
-                foreach (XmlElement var in QueryScore.GetSemesterSubjectScoreBySemester(int.Parse(listView1.SelectedItems[0].SubItems[0].Text), int.Parse(listView1.SelectedItems[0].SubItems[1].Text), _CurrentID).GetContent().GetElements("SemesterSubjectScore"))
+                catch (Exception ex)
                 {
-                    //複製學期科目成績
-                    string sql = @"INSERT INTO $semester_subject_score_archive (ref_student_id,school_year,semester, grade_year, score_info,ref_sems_entry_uid) 
+                    MsgBox.Show("取得學生學期分項成績發生錯誤。" + ex.Message);
+                }
+
+                try
+                {
+                    foreach (XmlElement var in QueryScore.GetSemesterSubjectScoreBySemester(int.Parse(listView1.SelectedItems[0].SubItems[0].Text), int.Parse(listView1.SelectedItems[0].SubItems[1].Text), _CurrentID).GetContent().GetElements("SemesterSubjectScore"))
+                    {
+                        //複製學期科目成績
+                        string sql = @"INSERT INTO $semester_subject_score_archive (ref_student_id,school_year,semester, grade_year, score_info,ref_sems_entry_uid) 
                                                     SELECT ref_student_id,school_year,semester, grade_year, score_info ,{0}
                                                     FROM sems_subj_score 
                                                     WHERE  id={1} ";
 
-                    sql = string.Format(sql, uid, var.SelectSingleNode("@ID").InnerText);
+                        sql = string.Format(sql, uid, var.SelectSingleNode("@ID").InnerText);
 
-                    updateHelper.Execute(sql);
+                        updateHelper.Execute(sql);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                MsgBox.Show("取得學生學期科目成績發生錯誤。" + ex.Message);
-                return;
-            }
-            sb_log.AppendLine("複製學生「" + Student.Instance.Items[_CurrentID].Name + "(學號" + Student.Instance.Items[_CurrentID].StudentNumber + ")」" + listView1.SelectedItems[0].SubItems[0].Text + "學年度第" + listView1.SelectedItems[0].SubItems[1].Text + "學期的學期成績至「學期成績(封存)」。");
-            FISCA.LogAgent.ApplicationLog.Log("學期成績", "封存", "學生", Student.Instance.Items[_CurrentID].ID, sb_log.ToString());
-            MsgBox.Show("封存成功。");
+                catch (Exception ex)
+                {
+                    MsgBox.Show("取得學生學期科目成績發生錯誤。" + ex.Message);
+                    return;
+                }
+                sb_log.AppendLine("複製學生「" + Student.Instance.Items[_CurrentID].Name + "(學號" + Student.Instance.Items[_CurrentID].StudentNumber + ")」" + listView1.SelectedItems[0].SubItems[0].Text + "學年度第" + listView1.SelectedItems[0].SubItems[1].Text + "學期的學期成績至「學期成績(封存)」。");
+                FISCA.LogAgent.ApplicationLog.Log("學期成績", "封存", "學生", Student.Instance.Items[_CurrentID].ID, sb_log.ToString());
+                MsgBox.Show("封存成功。");
 
-            //todo 封存後，更新封存資料項目。
-            EventHub.OnArchiveChanged(); //Cynthia
-            }else
-                MsgBox.Show(listView1.SelectedItems[0].SubItems[0].Text + "學年度第" + listView1.SelectedItems[0].SubItems[1].Text+"學期沒有科目成績。");
+                //todo 封存後，更新封存資料項目。
+                EventHub.OnArchiveChanged(); //Cynthia
+            }
+            else
+                MsgBox.Show(listView1.SelectedItems[0].SubItems[0].Text + "學年度第" + listView1.SelectedItems[0].SubItems[1].Text + "學期沒有科目成績。");
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

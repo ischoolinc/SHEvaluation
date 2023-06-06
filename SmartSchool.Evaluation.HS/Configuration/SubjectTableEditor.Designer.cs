@@ -29,13 +29,15 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
             this.dataGridViewX1 = new DevComponents.DotNetBar.Controls.DataGridViewX();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCore = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.panelEx1 = new DevComponents.DotNetBar.PanelEx();
+            this.lblUnSave = new DevComponents.DotNetBar.LabelX();
+            this.btnGPsubj = new DevComponents.DotNetBar.ButtonX();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.textBoxX1 = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
@@ -47,7 +49,6 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.btnGPsubj = new DevComponents.DotNetBar.ButtonX();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewX1)).BeginInit();
             this.panelEx1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -81,14 +82,14 @@
             this.dataGridViewTextBoxColumn1,
             this.dataGridViewTextBoxColumn2,
             this.colCore});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewX1.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewX1.DefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridViewX1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dataGridViewX1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dataGridViewX1.HighlightSelectedColumnHeaders = false;
@@ -130,9 +131,10 @@
             // 
             this.panelEx1.CanvasColor = System.Drawing.SystemColors.Control;
             this.panelEx1.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.panelEx1.Controls.Add(this.btnGPsubj);
+            this.panelEx1.Controls.Add(this.lblUnSave);
             this.panelEx1.Controls.Add(this.flowLayoutPanel1);
             this.panelEx1.Controls.Add(this.dataGridViewX1);
+            this.panelEx1.Controls.Add(this.btnGPsubj);
             this.panelEx1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelEx1.Location = new System.Drawing.Point(0, 0);
             this.panelEx1.Name = "panelEx1";
@@ -145,6 +147,34 @@
             this.panelEx1.Style.GradientAngle = 90;
             this.panelEx1.TabIndex = 1;
             // 
+            // lblUnSave
+            // 
+            this.lblUnSave.BackColor = System.Drawing.Color.Red;
+            // 
+            // 
+            // 
+            this.lblUnSave.BackgroundStyle.Class = "";
+            this.lblUnSave.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.lblUnSave.Location = new System.Drawing.Point(530, 9);
+            this.lblUnSave.Name = "lblUnSave";
+            this.lblUnSave.Size = new System.Drawing.Size(81, 23);
+            this.lblUnSave.TabIndex = 6;
+            this.lblUnSave.Text = "未儲存";
+            this.lblUnSave.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.lblUnSave.Visible = false;
+            // 
+            // btnGPsubj
+            // 
+            this.btnGPsubj.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnGPsubj.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnGPsubj.Location = new System.Drawing.Point(442, 9);
+            this.btnGPsubj.Name = "btnGPsubj";
+            this.btnGPsubj.Size = new System.Drawing.Size(82, 23);
+            this.btnGPsubj.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.btnGPsubj.TabIndex = 4;
+            this.btnGPsubj.Text = "課規科目";
+            this.btnGPsubj.Click += new System.EventHandler(this.btnGPsubj_Click);
+            // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.labelX1);
@@ -154,7 +184,7 @@
             this.flowLayoutPanel1.Controls.Add(this.labelX3);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 5);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(515, 30);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(424, 30);
             this.flowLayoutPanel1.TabIndex = 3;
             // 
             // textBoxX1
@@ -166,7 +196,7 @@
             this.textBoxX1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.textBoxX1.Location = new System.Drawing.Point(123, 3);
             this.textBoxX1.Name = "textBoxX1";
-            this.textBoxX1.Size = new System.Drawing.Size(80, 25);
+            this.textBoxX1.Size = new System.Drawing.Size(47, 25);
             this.textBoxX1.TabIndex = 4;
             // 
             // labelX2
@@ -178,7 +208,7 @@
             // 
             this.labelX2.BackgroundStyle.Class = "";
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(209, 5);
+            this.labelX2.Location = new System.Drawing.Point(176, 5);
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(67, 21);
             this.labelX2.TabIndex = 1;
@@ -191,9 +221,9 @@
             // 
             this.textBoxX2.Border.Class = "TextBoxBorder";
             this.textBoxX2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX2.Location = new System.Drawing.Point(282, 3);
+            this.textBoxX2.Location = new System.Drawing.Point(249, 3);
             this.textBoxX2.Name = "textBoxX2";
-            this.textBoxX2.Size = new System.Drawing.Size(80, 25);
+            this.textBoxX2.Size = new System.Drawing.Size(45, 25);
             this.textBoxX2.TabIndex = 5;
             // 
             // labelX3
@@ -205,11 +235,11 @@
             // 
             this.labelX3.BackgroundStyle.Class = "";
             this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX3.Location = new System.Drawing.Point(368, 5);
+            this.labelX3.Location = new System.Drawing.Point(300, 5);
             this.labelX3.Name = "labelX3";
-            this.labelX3.Size = new System.Drawing.Size(121, 21);
+            this.labelX3.Size = new System.Drawing.Size(107, 21);
             this.labelX3.TabIndex = 1;
-            this.labelX3.Text = "  學分為成績及格。";
+            this.labelX3.Text = "  學分成績及格。";
             // 
             // colSubject
             // 
@@ -244,18 +274,6 @@
             // errorProvider2
             // 
             this.errorProvider2.ContainerControl = this;
-            // 
-            // btnGPsubj
-            // 
-            this.btnGPsubj.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.btnGPsubj.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnGPsubj.Location = new System.Drawing.Point(533, 8);
-            this.btnGPsubj.Name = "btnGPsubj";
-            this.btnGPsubj.Size = new System.Drawing.Size(75, 23);
-            this.btnGPsubj.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.btnGPsubj.TabIndex = 4;
-            this.btnGPsubj.Text = "課規科目";
-            this.btnGPsubj.Click += new System.EventHandler(this.btnGPsubj_Click);
             // 
             // SubjectTableEditor
             // 
@@ -295,5 +313,6 @@
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.ErrorProvider errorProvider2;
         private DevComponents.DotNetBar.ButtonX btnGPsubj;
+        private DevComponents.DotNetBar.LabelX lblUnSave;
     }
 }

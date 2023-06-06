@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using SmartSchool.Common.Validate;
-using SmartSchool.Common;
-using System.Threading;
-using System.Xml;
+﻿using SmartSchool.Common.Validate;
 using SmartSchool.Evaluation.GraduationPlan.Editor;
 using SmartSchool.ExceptionHandler;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Xml;
 
 namespace SmartSchool.Evaluation.GraduationPlan.Validate
 {
@@ -25,7 +23,7 @@ namespace SmartSchool.Evaluation.GraduationPlan.Validate
         {
             _Editor = new SmartSchool.Evaluation.GraduationPlan.Editor.GraduationPlanEditor();
             _Editor.SuspendLayout();
-            ExtendValidater.AddRange( extendValidaters);
+            ExtendValidater.AddRange(extendValidaters);
         }
 
         #region IValidater<GraduationPlanInfo> 成員
@@ -36,22 +34,22 @@ namespace SmartSchool.Evaluation.GraduationPlan.Validate
             bool pass = true;
             try
             {
-                if ( !_PassedList.Contains(info) )
+                if (!_PassedList.Contains(info))
                 {
                     _Editor.SetSource(info.GraduationPlanElement);
                     pass &= _Editor.IsValidated;
                     pass &= _Editor.GetSource().SelectNodes("Subject").Count == info.GraduationPlanElement.SelectNodes("Subject").Count;
-                    if ( pass )
+                    if (pass)
                     {
-                        foreach ( XmlNode var in _Editor.GetSource().SelectNodes("Subject") )
+                        foreach (XmlNode var in _Editor.GetSource().SelectNodes("Subject"))
                         {
                             XmlElement subject1 = (XmlElement)var;
                             XmlElement subject2 = (XmlElement)info.GraduationPlanElement.SelectSingleNode("Subject[@SubjectName='" + subject1.GetAttribute("SubjectName") + "' and @Level='" + subject1.GetAttribute("Level") + "']");
-                            if ( subject2 != null )
+                            if (subject2 != null)
                             {
-                                foreach ( XmlAttribute attributeInfo in subject1.Attributes )
+                                foreach (XmlAttribute attributeInfo in subject1.Attributes)
                                 {
-                                    if ( subject1.GetAttribute(attributeInfo.Name) != subject2.GetAttribute(attributeInfo.Name) )
+                                    if (subject1.GetAttribute(attributeInfo.Name) != subject2.GetAttribute(attributeInfo.Name))
                                     {
                                         pass = false;
                                         break;
@@ -65,27 +63,27 @@ namespace SmartSchool.Evaluation.GraduationPlan.Validate
                             }
                         }
                     }
-                    if ( pass )
+                    if (pass)
                         _PassedList.Add(info);
                 }
-                if ( pass )
+                if (pass)
                 {
-                    foreach ( IValidater<GraduationPlanInfo> extendValidater in _ExtendValidater )
+                    foreach (IValidater<GraduationPlanInfo> extendValidater in _ExtendValidater)
                     {
                         pass &= extendValidater.Validate(info, responseViewer);
                     }
                 }
                 else
                 {
-                    if ( responseViewer != null )
+                    if (responseViewer != null)
                         responseViewer.SetMessage("課程規畫表：\"" + info.Name + "\"驗證失敗");
                     pass = false;
                 }
                 _OneTimeOneCheck.Set();
             }
-            catch ( Exception ex )
+            catch (Exception ex)
             {
-                if ( responseViewer != null )
+                if (responseViewer != null)
                     responseViewer.SetMessage("課程規畫表：\"" + info.Name + "\"在驗證過程中發生未預期錯誤");
                 BugReporter.ReportException("SmartSchool", CurrentUser.Instance.SystemVersion, ex, false);
                 _OneTimeOneCheck.Set();

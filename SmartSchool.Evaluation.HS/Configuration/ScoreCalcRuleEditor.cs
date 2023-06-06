@@ -1,11 +1,11 @@
-﻿using System;
+﻿using DevComponents.DotNetBar;
+using DevComponents.DotNetBar.Controls;
+using DevComponents.DotNetBar.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Xml;
-using DevComponents.DotNetBar;
-using DevComponents.DotNetBar.Controls;
-using DevComponents.DotNetBar.Rendering;
 
 namespace SmartSchool.Evaluation.Configuration
 {

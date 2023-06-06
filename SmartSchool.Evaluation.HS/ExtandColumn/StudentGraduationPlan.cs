@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SmartSchool.Evaluation.ExtandColumn
 {
-    class StudentGraduationPlan:SmartSchool.Customization.PlugIn.ExtendedColumn.IColumnItem
+    class StudentGraduationPlan : SmartSchool.Customization.PlugIn.ExtendedColumn.IColumnItem
     {
         private Dictionary<string, string> _Values = new Dictionary<string, string>();
 
@@ -16,13 +15,13 @@ namespace SmartSchool.Evaluation.ExtandColumn
 
         void Instance_StudentReferenceGranduationPlanChanged(object sender, EventArgs e)
         {
-            if ( VariableChanged != null )
+            if (VariableChanged != null)
                 VariableChanged.Invoke(this, new EventArgs());
         }
 
         void Instance_ClassReferenceGranduationPlanChanged(object sender, EventArgs e)
         {
-            if ( VariableChanged != null )
+            if (VariableChanged != null)
                 VariableChanged.Invoke(this, new EventArgs());
         }
 
@@ -41,12 +40,12 @@ namespace SmartSchool.Evaluation.ExtandColumn
         public void FillExtendedValues(List<string> identities)
         {
             _Values.Clear();
-            foreach ( string var in identities )
+            foreach (string var in identities)
             {
-                if ( GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(var) == null )
+                if (GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(var) == null)
                     _Values.Add(var, "");
                 else
-                    _Values.Add(var,  ( GraduationPlan.GraduationPlan.Instance .IsStudentOverrided(var)?"(指定)":"")+GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(var).Name );
+                    _Values.Add(var, (GraduationPlan.GraduationPlan.Instance.IsStudentOverrided(var) ? "(指定)" : "") + GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(var).Name);
             }
         }
 

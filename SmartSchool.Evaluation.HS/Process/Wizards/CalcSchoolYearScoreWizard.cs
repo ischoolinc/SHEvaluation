@@ -1,7 +1,6 @@
-﻿using System;
-using System.Windows.Forms;
-using SmartSchool.Common;
+﻿using SmartSchool.Common;
 using SmartSchool.Evaluation.Process.Rating;
+using System;
 
 namespace SmartSchool.Evaluation.Process.Wizards
 {

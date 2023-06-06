@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
-using System.Text;
-using System.Xml;
 //using SmartSchool.ClassRelated;
-using SmartSchool.Customization.Data;
 
 namespace SmartSchool.Evaluation.GraduationPlan
 {
@@ -37,8 +33,25 @@ namespace SmartSchool.Evaluation.GraduationPlan
             _Entry = dr["Entry"].ToString();
             _RequiredBy = dr["RequiredBy"].ToString();
             _Required = dr["Required"].ToString();
-            _LevelList = dr["LevelList"].ToString();
+            _LevelList = eliminateDupStr(dr["LevelList"].ToString());
         }
+        //刪除相同的級別
+        private string eliminateDupStr(string input)
+        {
+            string[] numStr = input.Split(',');
+            List<string> uniqueNumStr = new List<string>();
+
+            foreach (string nStr in numStr)
+            {
+                if (!uniqueNumStr.Contains(nStr))
+                {
+                    uniqueNumStr.Add(nStr);
+                }
+            }
+
+            return string.Join(",", uniqueNumStr);
+        }
+
         public string SubjectName { get { return _SubjectName; } }
         public string Code { get { return _Code; } }
         public string Domain { get { return _Domain; } }
@@ -47,5 +60,5 @@ namespace SmartSchool.Evaluation.GraduationPlan
         public string RequiredBy { get { return _RequiredBy; } }
         public string Required { get { return _Required; } }
         public string LevelList { get { return _LevelList; } }
-    }    
+    }
 }

@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
-using SmartSchool.Evaluation;
-using SmartSchool.Customization.Data;
+using System.Collections.Generic;
 
 namespace SmartSchool.Evaluation.WearyDogComputerHelper
 {
@@ -33,7 +31,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
 
         //                //下學期科目成績
         //                decimal? DownScore = K12.Data.Decimal.ParseAllowNull(records[1].Detail.GetAttribute("MaxScore"));
-                        
+
         //                //判斷是否上學期科目成績大於50小於60，並且下學期科目成績大於60
         //                if ((UpScore >= 50 && UpScore < 60) && DownScore >= 60)
         //                    SchoolYearSubjects.Add(records[0].Subject);
@@ -111,7 +109,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                 {
                     Scores.Remove(scoreInfo);
                 }
-            }  
+            }
         }
 
         /// <summary>
@@ -120,7 +118,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
         /// <param name="Scores">學期科目成績</param>
         /// <param name="gradeyear">年級</param>
         /// <param name="schoolyear">學年度</param>
-        public static void FilterSemesterSubjectScore(this List<SemesterSubjectScoreInfo> Scores, int? gradeyear,int schoolyear) 
+        public static void FilterSemesterSubjectScore(this List<SemesterSubjectScoreInfo> Scores, int? gradeyear, int schoolyear)
         {
             if (gradeyear != null)
             {
@@ -151,7 +149,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                 {
                     Scores.Remove(scoreInfo);
                 }
-            } 
+            }
         }
 
         public static Dictionary<string, decimal> CalculateSchoolYearEntryScore(this StudentRecord student, Dictionary<string, bool> calcEntry, Dictionary<string, bool> calcInStudy, int schoolyear, int gradeyear, WearyDogComputer.RoundMode mode, int decimals)
@@ -181,7 +179,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
 
             #region 計算該年級的分項成績
             //Dictionary<string, List<decimal>> entryScores = new Dictionary<string, List<decimal>>();
-            
+
             //foreach (SemesterEntryScoreInfo score in Scores)
             //{
             //    if (calcEntry.ContainsKey(score.Entry) && score.SchoolYear <= schoolyear && score.GradeYear == gradeyear)
@@ -191,7 +189,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
             //        entryScores[score.Entry].Add(score.Score);
             //    }
             //}
-            
+
             //foreach (string key in entryScores.Keys)
             //{
             //    decimal sum = 0;
@@ -218,8 +216,8 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                     //    continue;
                     #region 分項類別跟學分數
                     //string entry = subjectNode.Detail.GetAttribute("開課分項類別");
-                     //int credit = subjectNode.CreditDec();
-                    decimal credit = subjectCreditCount.ContainsKey(subjectNode.Subject)?subjectCreditCount[subjectNode.Subject]:0 ;
+                    //int credit = subjectNode.CreditDec();
+                    decimal credit = subjectCreditCount.ContainsKey(subjectNode.Subject) ? subjectCreditCount[subjectNode.Subject] : 0;
                     #endregion
                     decimal maxScore = subjectNode.Score;
                     #region 取得最高分數

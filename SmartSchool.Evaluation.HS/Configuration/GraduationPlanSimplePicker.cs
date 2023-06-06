@@ -1,28 +1,18 @@
-﻿using System;
-using System.ComponentModel;
-using System.Xml;
+﻿using DevComponents.DotNetBar.Controls;
 using DevComponents.Editors;
-using SmartSchool.Evaluation.GraduationPlan;
 using FISCA.Data;
-using SmartSchool.Feature.GraduationPlan;
-using System.Data;
+using SmartSchool.Evaluation.GraduationPlan;
+using System;
 using System.Collections.Generic;
-using DevComponents.DotNetBar.Controls;
-using SmartSchool.ClassRelated.RibbonBars;
-using SmartSchool.Evaluation.WearyDogComputerHelper;
-using static System.ComponentModel.Design.ObjectSelectorEditor;
-using System.IO;
-using System.Web.UI.WebControls;
-using System.Windows.Forms;
-using System.Xml.Linq;
+using System.Data;
 using System.Linq;
-using System.Drawing.Design;
+using System.Windows.Forms;
 
 namespace SmartSchool.Evaluation.Configuration
 {
     public partial class GraduationPlanSimplePicker : FISCA.Presentation.Controls.BaseForm
     {
-        private List<GraduationPlanSimple> gpSimpleCollection=new List<GraduationPlanSimple>();
+        private List<GraduationPlanSimple> gpSimpleCollection = new List<GraduationPlanSimple>();
 
         private List<GraduationPlanSimple> gpTargetCollection = new List<GraduationPlanSimple>();
 
@@ -56,10 +46,10 @@ namespace SmartSchool.Evaluation.Configuration
 
         private void buttonX1_Click(object sender, EventArgs e)
         {
-            if(dgGraduationPlan.SelectedRows.Count>0)
+            if (dgGraduationPlan.SelectedRows.Count > 0)
             {
                 gpSelectedCollection.Clear();
-                foreach(DataGridViewRow row in dgGraduationPlan.SelectedRows)
+                foreach (DataGridViewRow row in dgGraduationPlan.SelectedRows)
                 {
                     gpSelectedCollection.Add((GraduationPlanSimple)row.Tag);
                 }
@@ -82,10 +72,10 @@ namespace SmartSchool.Evaluation.Configuration
         private void loadGPCbo(string schoolYear)
         {
             cboGPlan.Items.Clear();
-            string query = "SELECT id,name, array_to_string(xpath('//GraduationPlan/@SchoolYear', xmlparse(content content)), '')::text as SchoolYear FROM graduation_plan WHERE array_to_string(xpath('//GraduationPlan/@SchoolYear', xmlparse(content content)), '')::text ='" + schoolYear + "'";            
+            string query = "SELECT id,name, array_to_string(xpath('//GraduationPlan/@SchoolYear', xmlparse(content content)), '')::text as SchoolYear FROM graduation_plan WHERE array_to_string(xpath('//GraduationPlan/@SchoolYear', xmlparse(content content)), '')::text ='" + schoolYear + "'";
             QueryHelper qh = new QueryHelper();
             DataTable dt = qh.Select(query);
-            ComboItem leadItem=new ComboItem();
+            ComboItem leadItem = new ComboItem();
             if (dt.Rows.Count > 0)
             {
                 leadItem.Text = "請選擇課程規劃表";
@@ -120,7 +110,7 @@ namespace SmartSchool.Evaluation.Configuration
             cboRequired.SelectedIndex = 0;
             cboRequiredBy.SelectedIndex = 0;
         }
-        
+
 
         /// <summary>
         /// 取得領域對照
@@ -240,7 +230,7 @@ namespace SmartSchool.Evaluation.Configuration
             value.Add("G3", "職場實務技能");
             value.Add("G1", "英語文技能");
             value.Add("G2", "日語文技能");
-            foreach(string key in value.Keys)
+            foreach (string key in value.Keys)
             {
                 DevComponents.Editors.ComboItem item = new DevComponents.Editors.ComboItem();
                 item.Text = value[key].ToString();
@@ -334,9 +324,9 @@ namespace SmartSchool.Evaluation.Configuration
         private void loadGPDataGrid()
         {
             dgGraduationPlan.Rows.Clear();
-            if(gpTargetCollection.Count > 0 )
+            if (gpTargetCollection.Count > 0)
             {
-                foreach(GraduationPlanSimple dps in gpTargetCollection)
+                foreach (GraduationPlanSimple dps in gpTargetCollection)
                 {
                     int rowIdx = dgGraduationPlan.Rows.Add();
                     dgGraduationPlan.Rows[rowIdx].Tag = dps;
@@ -371,8 +361,8 @@ namespace SmartSchool.Evaluation.Configuration
 "ORDER BY Code ";
 
             QueryHelper qh = new QueryHelper();
-            DataTable dt = qh.Select(query); 
-            if(dt.Rows.Count > 0)
+            DataTable dt = qh.Select(query);
+            if (dt.Rows.Count > 0)
             {
                 gpSimpleCollection.Clear();
                 foreach (DataRow dr in dt.Rows)
@@ -412,11 +402,11 @@ namespace SmartSchool.Evaluation.Configuration
         private void processFiltering()
         {
             gpTargetCollection.Clear();
-            gpTargetCollection=gpSimpleCollection.ToList();
+            gpTargetCollection = gpSimpleCollection.ToList();
             ComboItem itemDomain = (ComboItem)cboDomain.SelectedItem;
-            if (cboDomain.SelectedIndex>0)
+            if (cboDomain.SelectedIndex > 0)
             {
-                gpTargetCollection=gpTargetCollection.Where(x=>x.Domain.Contains(itemDomain.Text)).ToList();
+                gpTargetCollection = gpTargetCollection.Where(x => x.Domain.Contains(itemDomain.Text)).ToList();
             }
             ComboItem itemAttrib = (ComboItem)cboSubjAttrib.SelectedItem;
             if (cboSubjAttrib.SelectedIndex > 0)
@@ -424,7 +414,7 @@ namespace SmartSchool.Evaluation.Configuration
                 gpTargetCollection = gpTargetCollection.Where(x => x.Attribute.Contains(itemAttrib.Text)).ToList();
             }
             ComboItem itemEntry = (ComboItem)cboEntry.SelectedItem;
-            if (cboEntry.SelectedIndex>0)
+            if (cboEntry.SelectedIndex > 0)
             {
                 gpTargetCollection = gpTargetCollection.Where(x => x.Entry.Contains(itemEntry.Text)).ToList();
             }
@@ -434,7 +424,7 @@ namespace SmartSchool.Evaluation.Configuration
                 gpTargetCollection = gpTargetCollection.Where(x => x.RequiredBy.Contains(itemRequiredBy.Text)).ToList();
             }
             ComboItem itemRequired = (ComboItem)cboRequired.SelectedItem;
-            if (cboRequired.SelectedIndex>0)
+            if (cboRequired.SelectedIndex > 0)
             {
                 gpTargetCollection = gpTargetCollection.Where(x => x.Required.Contains(itemRequired.Text)).ToList();
             }

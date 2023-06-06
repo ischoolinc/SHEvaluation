@@ -3,19 +3,19 @@ using System.Xml;
 
 namespace SmartSchool.Evaluation.Configuration
 {
-    interface  IMoralConductInstance
+    interface IMoralConductInstance
     {
-        string XPath { get;}
+        string XPath { get; }
 
         void SetSource(XmlElement source);
 
         XmlElement GetSource();
 
-        bool IsValidate{get;}
+        bool IsValidate { get; }
 
         event EventHandler IsValidateChanged;
 
-        bool IsDirty { get;}
+        bool IsDirty { get; }
 
         event EventHandler IsDirtyChanged;
 

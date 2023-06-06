@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.ComponentModel;
-using SmartSchool.Customization.Data.StudentExtension;
-using SmartSchool.Customization.Data;
-using Aspose.Cells;
-using System.IO;
-using System.Xml;
-using FISCA.DSAUtil;
-using SmartSchool.Common;
-using SmartSchool.Evaluation.Reports.Retake;
+﻿using Aspose.Cells;
 using FISCA.Presentation;
+using SmartSchool.Common;
+using SmartSchool.Customization.Data;
+using SmartSchool.Customization.Data.StudentExtension;
+using SmartSchool.Evaluation.Reports.Retake;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 
 namespace SmartSchool.Evaluation.Reports
 {
@@ -32,7 +29,7 @@ namespace SmartSchool.Evaluation.Reports
             _BWRepeatScoreImport.ProgressChanged += new ProgressChangedEventHandler(_BWRepeatScoreImport_ProgressChanged);
             _BWRepeatScoreImport.WorkerReportsProgress = true;
             //_BWRepeatScoreImport.RunWorkerAsync(new object[] { form.SchoolYear, form.Semester, form.IsPrintAllSemester, form.GradeYear, form.IsPrintAllGradeYear });
-            _BWRepeatScoreImport.RunWorkerAsync(new object[] { form.SchoolYear, form.Semester, form.IsPrintAllSemester});
+            _BWRepeatScoreImport.RunWorkerAsync(new object[] { form.SchoolYear, form.Semester, form.IsPrintAllSemester });
 
         }
 

@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using SmartSchool;
-using SmartSchool.Evaluation.Reports;
 using FISCA.Presentation;
+using SmartSchool.Evaluation.Reports;
+using System;
 
 namespace SmartSchool.Evaluation.Process
 {

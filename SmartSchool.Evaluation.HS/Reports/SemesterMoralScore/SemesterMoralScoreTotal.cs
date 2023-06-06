@@ -1,15 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using SmartSchool.Customization.PlugIn.Report;
-using SmartSchool.Customization.PlugIn;
-using System.ComponentModel;
 using Aspose.Cells;
+using SmartSchool.Common;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
-using System.Xml;
+using SmartSchool.Customization.PlugIn;
+using SmartSchool.Customization.PlugIn.Report;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
-using SmartSchool.Common;
+using System.Text;
+using System.Xml;
 
 namespace SmartSchool.Evaluation.Reports
 {
@@ -156,7 +156,7 @@ namespace SmartSchool.Evaluation.Reports
 
             computer.FillDemonScore(dataSeed, schoolyear, semester, allStudents);
             dataSeed.StudentHelper.FillSemesterEntryScore(true, allStudents);
-            if ( semester == 2 )
+            if (semester == 2)
             {
                 dataSeed.StudentHelper.FillSchoolYearEntryScore(true, allStudents);
                 dataSeed.StudentHelper.FillSemesterHistory(allStudents);
@@ -206,11 +206,11 @@ namespace SmartSchool.Evaluation.Reports
 
             //缺曠加減分
             int ptColIndex = 17;
-            foreach ( SmartSchool.Evaluation.AngelDemonComputer.UsefulPeriodAbsence var in computer.UsefulPeriodAbsences )
+            foreach (SmartSchool.Evaluation.AngelDemonComputer.UsefulPeriodAbsence var in computer.UsefulPeriodAbsences)
             {
-                if ( !periodAbsence.ContainsKey(var.Period) )
+                if (!periodAbsence.ContainsKey(var.Period))
                     periodAbsence.Add(var.Period, new List<string>());
-                if ( !periodAbsence[var.Period].Contains(var.Absence) )
+                if (!periodAbsence[var.Period].Contains(var.Absence))
                     periodAbsence[var.Period].Add(var.Absence);
 
                 prototypeSheet.Cells.CreateRange(ptColIndex, 2, true).Copy(tempAbsence);
@@ -271,7 +271,7 @@ namespace SmartSchool.Evaluation.Reports
                 ptColIndex++;
             }
 
-            if ( semester == 2 )
+            if (semester == 2)
             {
                 prototypeSheet.Cells.CreateRange(ptColIndex, 1, true).Copy(tempOtherDiff);
                 prototypeSheet.Cells[1, ptColIndex].PutValue("上學期德行成績");
@@ -432,19 +432,19 @@ namespace SmartSchool.Evaluation.Reports
                     ws.Cells[dataIndex, columnIndexTable["學期成績"]].PutValue(score.ToString());
 
                     //填入上學期&學年成績
-                    if ( semester == 2 )
+                    if (semester == 2)
                     {
                         //沒有學期歷程就用當下的學期
-                        if ( gradeYear == -1 && schoolyear == SystemInformation.SchoolYear )
+                        if (gradeYear == -1 && schoolyear == SystemInformation.SchoolYear)
                         {
                             int.TryParse(aStudent.RefClass.GradeYear, out gradeYear);
                         }
                         //填入上學期成績
-                        foreach ( SemesterEntryScoreInfo semesterEntryScore in aStudent.SemesterEntryScoreList )
+                        foreach (SemesterEntryScoreInfo semesterEntryScore in aStudent.SemesterEntryScoreList)
                         {
-                            if ( semesterEntryScore.Entry == "德行" && semesterEntryScore.GradeYear == gradeYear && semesterEntryScore.Semester == 1 )
+                            if (semesterEntryScore.Entry == "德行" && semesterEntryScore.GradeYear == gradeYear && semesterEntryScore.Semester == 1)
                             {
-                                if ( !over100 && semesterEntryScore.Score > 100 )
+                                if (!over100 && semesterEntryScore.Score > 100)
                                     ws.Cells[dataIndex, columnIndexTable["上學期成績"]].PutValue("100");
                                 else
                                     ws.Cells[dataIndex, columnIndexTable["上學期成績"]].PutValue(semesterEntryScore.Score.ToString());
@@ -453,11 +453,11 @@ namespace SmartSchool.Evaluation.Reports
                         }
 
                         //填入學年成績
-                        foreach ( SchoolYearEntryScoreInfo schoolyearEntryScore in aStudent.SchoolYearEntryScoreList )
+                        foreach (SchoolYearEntryScoreInfo schoolyearEntryScore in aStudent.SchoolYearEntryScoreList)
                         {
-                            if ( schoolyearEntryScore.Entry == "德行" && schoolyearEntryScore.GradeYear == gradeYear )
+                            if (schoolyearEntryScore.Entry == "德行" && schoolyearEntryScore.GradeYear == gradeYear)
                             {
-                                if ( !over100 && schoolyearEntryScore.Score > 100 )
+                                if (!over100 && schoolyearEntryScore.Score > 100)
                                     ws.Cells[dataIndex, columnIndexTable["學年成績"]].PutValue("100");
                                 else
                                     ws.Cells[dataIndex, columnIndexTable["學年成績"]].PutValue(schoolyearEntryScore.Score.ToString());
@@ -467,7 +467,7 @@ namespace SmartSchool.Evaluation.Reports
                     }
 
                     //填入等第
-                    string degree =score==null?"": computer.ParseLevel((decimal)score);
+                    string degree = score == null ? "" : computer.ParseLevel((decimal)score);
                     ws.Cells[dataIndex, columnIndexTable["等第"]].PutValue(degree);
 
                     //計算等第出現次數

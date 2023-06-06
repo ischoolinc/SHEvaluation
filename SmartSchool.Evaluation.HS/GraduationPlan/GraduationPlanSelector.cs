@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using DevComponents.DotNetBar;
+using System;
 using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
-using DevComponents.DotNetBar;
 
 namespace SmartSchool.Evaluation.GraduationPlan
 {
@@ -15,19 +11,19 @@ namespace SmartSchool.Evaluation.GraduationPlan
         {
             InitializeComponent();
             this.cardPanelEx1.SuspendLayout();
-            int count=0;
-            foreach ( GraduationPlanInfo info in SmartSchool.Evaluation.GraduationPlan.GraduationPlan.Instance.Items )
+            int count = 0;
+            foreach (GraduationPlanInfo info in SmartSchool.Evaluation.GraduationPlan.GraduationPlan.Instance.Items)
             {
                 count++;
                 DevComponents.DotNetBar.ButtonX item = new DevComponents.DotNetBar.ButtonX();
-                item.Text = (info.Name.Length>10?info.Name.Substring(0,10)+"...":info.Name);
+                item.Text = (info.Name.Length > 10 ? info.Name.Substring(0, 10) + "..." : info.Name);
                 item.Tooltip = info.Name;
                 item.Tag = info;
                 item.TextAlignment = eButtonTextAlignment.Left;
                 item.ColorTable = eButtonColor.OrangeWithBackground;
                 item.Size = new Size(cardPanelEx1.CardWidth, 23);
                 item.Click += new EventHandler(item_Click);
-                item.MouseHover+=new EventHandler(SetFocus);
+                item.MouseHover += new EventHandler(SetFocus);
                 cardPanelEx1.Controls.Add(item);
             }
             if (count <= 13)
@@ -67,6 +63,6 @@ namespace SmartSchool.Evaluation.GraduationPlan
         {
             _item = gplan;
         }
-        public GraduationPlanInfo Item{get{return _item;}}
+        public GraduationPlanInfo Item { get { return _item; } }
     }
 }

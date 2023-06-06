@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SmartSchool.Evaluation.Reports.MultiSemesterScore.DataModel
 {
@@ -74,12 +73,12 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore.DataModel
         public void FixToLimit(decimal limit)
         {
             List<int> fixSem = new List<int>();
-            foreach ( int sem in _sems_scores.Keys )
+            foreach (int sem in _sems_scores.Keys)
             {
-                if ( _sems_scores[sem] > limit )
+                if (_sems_scores[sem] > limit)
                     fixSem.Add(sem);
             }
-            foreach ( int sem in fixSem )
+            foreach (int sem in fixSem)
             {
                 _sems_scores[sem] = limit;
             }

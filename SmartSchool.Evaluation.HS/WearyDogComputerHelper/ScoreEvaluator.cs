@@ -1,7 +1,5 @@
-﻿using System;
+﻿using SmartSchool.Customization.Data;
 using System.Collections.Generic;
-using System.Text;
-using SmartSchool.Customization.Data;
 
 namespace SmartSchool.Evaluation.WearyDogComputerHelper
 {
@@ -12,7 +10,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
         private List<StudentRecord> SourceStudents { get; set; }
         private int SchoolYear { get; set; }
 
-        public ScoreEvaluator(int schoolyear,AccessHelper accesshelper, List<StudentRecord> students)
+        public ScoreEvaluator(int schoolyear, AccessHelper accesshelper, List<StudentRecord> students)
         {
             DataSource = accesshelper;
             SourceStudents = students;

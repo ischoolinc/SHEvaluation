@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using FISCA.DSAUtil;
 using SmartSchool.Feature.Score;
-using FISCA.DSAUtil;
 using SmartSchool.Feature.Score.Rating;
+using System;
+using System.Collections.Generic;
 using System.Xml;
 
 namespace SmartSchool.Evaluation.Process.Rating

@@ -143,7 +143,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
             List<SemesterData> allsems = new List<SemesterData>(this);
 
             //以年級、學年度、學期排序。
-            allsems.Sort(delegate(SemesterData x, SemesterData y) { return x.Order.CompareTo(y.Order); });
+            allsems.Sort(delegate (SemesterData x, SemesterData y) { return x.Order.CompareTo(y.Order); });
 
             Dictionary<int, SemesterData> gradeyears = new Dictionary<int, SemesterData>();
             foreach (SemesterData each in allsems)

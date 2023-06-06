@@ -1,7 +1,5 @@
-﻿using System;
+﻿using SmartSchool.Customization.Data;
 using System.Collections.Generic;
-using System.Text;
-using SmartSchool.Customization.Data;
 
 namespace SmartSchool.Evaluation.Process.Wizards
 {

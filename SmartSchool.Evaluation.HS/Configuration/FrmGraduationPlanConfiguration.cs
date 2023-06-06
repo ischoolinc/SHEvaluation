@@ -9,10 +9,8 @@ using SmartSchool.Feature.GraduationPlan;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace SmartSchool.Evaluation.Configuration
@@ -193,14 +191,14 @@ namespace SmartSchool.Evaluation.Configuration
             {
                 if (DialogResult.No == MsgBox.Show("變更尚未儲存，確定離開？", MessageBoxButtons.YesNo))
                 {
-                 
+
                     return;
                 }
                 GraduationPlanInfo info = (GraduationPlanInfo)this.advTree1.SelectedNode.Tag;
                 _GraduationPlanEditor.SetSource(info.GraduationPlanElement);
                 SaveAdvTreeExpandStatus();
             }
-            GraduationPlanCreator graduationPlanCreator  =  new GraduationPlanCreator();
+            GraduationPlanCreator graduationPlanCreator = new GraduationPlanCreator();
             if (graduationPlanCreator.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 _GraduationPlanEditor.SetSource(graduationPlanCreator._CopyElement);

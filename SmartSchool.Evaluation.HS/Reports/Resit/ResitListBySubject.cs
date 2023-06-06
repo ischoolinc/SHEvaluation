@@ -1,13 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.ComponentModel;
-using SmartSchool.Customization.Data;
 using Aspose.Cells;
-using SmartSchool.Customization.Data.StudentExtension;
-using System.IO;
-using SmartSchool.Common;
 using FISCA.Presentation;
+using SmartSchool.Common;
+using SmartSchool.Customization.Data;
+using SmartSchool.Customization.Data.StudentExtension;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 
 namespace SmartSchool.Evaluation.Reports
 {
@@ -214,7 +212,7 @@ namespace SmartSchool.Evaluation.Reports
                 default:
                     levelNumber = "" + (p);
                     break;
-                #endregion
+                    #endregion
             }
             return levelNumber;
         }
@@ -372,7 +370,7 @@ namespace SmartSchool.Evaluation.Reports
                             data.Add("ゲ匡", info.Require ? "ゲ" : "匡");
                             data.Add("场璹", info.Detail.HasAttribute("揭场璹") ? info.Detail.GetAttribute("揭场璹") : "");
                             //      data.Add("干σ夹非", info.Detail.HasAttribute("干σ夹非") ? info.Detail.GetAttribute("干σ夹非") : "");
-                            
+
                             data.Add("干σ夹非", info.Detail.HasAttribute("揭干σ夹非") ? info.Detail.GetAttribute("揭干σ夹非") : "");
                             data.Add("﹍Θ罿", info.Detail.HasAttribute("﹍Θ罿") ? info.Detail.GetAttribute("﹍Θ罿") : "");
 

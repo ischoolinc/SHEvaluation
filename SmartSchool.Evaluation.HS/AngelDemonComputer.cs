@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Xml;
-using FISCA.DSAUtil;
+﻿using FISCA.DSAUtil;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
 using SmartSchool.Feature.ScoreCalcRule;
+using System.Collections.Generic;
+using System.Threading;
+using System.Xml;
 
 namespace SmartSchool.Evaluation
 {
@@ -13,7 +13,7 @@ namespace SmartSchool.Evaluation
         //private enum RoundMode { 四捨五入, 無條件進位, 無條件捨去 }
         private static decimal GetRoundScore(decimal score, int decimals, SmartSchool.Evaluation.WearyDogComputer.RoundMode mode)
         {
-            return WearyDogComputer.GetRoundScore(score,decimals,mode);
+            return WearyDogComputer.GetRoundScore(score, decimals, mode);
         }
 
         private XmlElement _MoralConductElement;
@@ -94,28 +94,28 @@ namespace SmartSchool.Evaluation
 
         private void fillReward(object item)
         {
-            AccessHelper dataSeed = (AccessHelper)( ( (object[])item )[0] );
-            int schoolyear = (int)( ( (object[])item )[1] );
-            int semester = (int)( ( (object[])item )[2] );
-            List<StudentRecord> students = (List<StudentRecord>)( ( (object[])item )[3] );
+            AccessHelper dataSeed = (AccessHelper)(((object[])item)[0]);
+            int schoolyear = (int)(((object[])item)[1]);
+            int semester = (int)(((object[])item)[2]);
+            List<StudentRecord> students = (List<StudentRecord>)(((object[])item)[3]);
             dataSeed.StudentHelper.FillReward(schoolyear, semester, students);
         }
 
         private void fillAttendance(object item)
         {
-            AccessHelper dataSeed = (AccessHelper)( ( (object[])item )[0] );
-            int schoolyear = (int)( ( (object[])item )[1] );
-            int semester = (int)( ( (object[])item )[2] );
-            List<StudentRecord> students = (List<StudentRecord>)( ( (object[])item )[3] );
+            AccessHelper dataSeed = (AccessHelper)(((object[])item)[0]);
+            int schoolyear = (int)(((object[])item)[1]);
+            int semester = (int)(((object[])item)[2]);
+            List<StudentRecord> students = (List<StudentRecord>)(((object[])item)[3]);
             dataSeed.StudentHelper.FillAttendance(schoolyear, semester, students);
         }
 
         private void fillSemesterMoralScore(object item)
         {
-            AccessHelper dataSeed = (AccessHelper)( ( (object[])item )[0] );
-            int schoolyear = (int)( ( (object[])item )[1] );
-            int semester = (int)( ( (object[])item )[2] );
-            List<StudentRecord> students = (List<StudentRecord>)( ( (object[])item )[3] );
+            AccessHelper dataSeed = (AccessHelper)(((object[])item)[0]);
+            int schoolyear = (int)(((object[])item)[1]);
+            int semester = (int)(((object[])item)[2]);
+            List<StudentRecord> students = (List<StudentRecord>)(((object[])item)[3]);
             dataSeed.StudentHelper.FillSemesterMoralScore(true, students);
         }
 
@@ -123,14 +123,14 @@ namespace SmartSchool.Evaluation
         {
             decimal finalScore = 0m;
             #region 處理大功
-            if ( AwardACount > 0 )
+            if (AwardACount > 0)
             {
                 decimal subScore = 0;
                 decimal addScore = 0;
-                for ( int i = 0 ; i < AwardACount ; i++ )
+                for (int i = 0; i < AwardACount; i++)
                 {
                     decimal newscore;
-                    if ( decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@AwardA" + ( i + 1 )), out newscore) )
+                    if (decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@AwardA" + (i + 1)), out newscore))
                         addScore = newscore;
                     subScore += addScore;
                 }
@@ -138,14 +138,14 @@ namespace SmartSchool.Evaluation
             }
             #endregion
             #region 處理小功
-            if ( AwardBCount > 0 )
+            if (AwardBCount > 0)
             {
                 decimal subScore = 0;
                 decimal addScore = 0;
-                for ( int i = 0 ; i < AwardBCount ; i++ )
+                for (int i = 0; i < AwardBCount; i++)
                 {
                     decimal newscore;
-                    if ( decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@AwardB" + ( i + 1 )), out newscore) )
+                    if (decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@AwardB" + (i + 1)), out newscore))
                         addScore = newscore;
                     subScore += addScore;
                 }
@@ -153,14 +153,14 @@ namespace SmartSchool.Evaluation
             }
             #endregion
             #region 處理嘉獎
-            if ( AwardCCount > 0 )
+            if (AwardCCount > 0)
             {
                 decimal subScore = 0;
                 decimal addScore = 0;
-                for ( int i = 0 ; i < AwardCCount ; i++ )
+                for (int i = 0; i < AwardCCount; i++)
                 {
                     decimal newscore;
-                    if ( decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@AwardC" + ( i + 1 )), out newscore) )
+                    if (decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@AwardC" + (i + 1)), out newscore))
                         addScore = newscore;
                     subScore += addScore;
                 }
@@ -168,45 +168,45 @@ namespace SmartSchool.Evaluation
             }
             #endregion
             #region 處理大過
-            if ( FaultACount > 0 )
+            if (FaultACount > 0)
             {
                 decimal subScore = 0;
                 decimal addScore = 0;
-                for ( int i = 0 ; i < FaultACount ; i++ )
+                for (int i = 0; i < FaultACount; i++)
                 {
                     decimal newscore;
-                    if ( decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@FaultA" + ( i + 1 )), out newscore) )
-                        addScore = newscore * ( -1 );
+                    if (decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@FaultA" + (i + 1)), out newscore))
+                        addScore = newscore * (-1);
                     subScore += addScore;
                 }
                 finalScore += subScore;
             }
             #endregion
             #region 處理小過
-            if ( FaultBCount > 0 )
+            if (FaultBCount > 0)
             {
                 decimal subScore = 0;
                 decimal addScore = 0;
-                for ( int i = 0 ; i < FaultBCount ; i++ )
+                for (int i = 0; i < FaultBCount; i++)
                 {
                     decimal newscore;
-                    if ( decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@FaultB" + ( i + 1 )), out newscore) )
-                        addScore = newscore * ( -1 );
+                    if (decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@FaultB" + (i + 1)), out newscore))
+                        addScore = newscore * (-1);
                     subScore += addScore;
                 }
                 finalScore += subScore;
             }
             #endregion
             #region 處理警告
-            if ( FaultCCount > 0 )
+            if (FaultCCount > 0)
             {
                 decimal subScore = 0;
                 decimal addScore = 0;
-                for ( int i = 0 ; i < FaultCCount ; i++ )
+                for (int i = 0; i < FaultCCount; i++)
                 {
                     decimal newscore;
-                    if ( decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@FaultC" + ( i + 1 )), out newscore) )
-                        addScore = newscore * ( -1 );
+                    if (decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@FaultC" + (i + 1)), out newscore))
+                        addScore = newscore * (-1);
                     subScore += addScore;
                 }
                 finalScore += subScore;
@@ -217,11 +217,11 @@ namespace SmartSchool.Evaluation
 
         public decimal ComputeAttendanceScore(string period, string absence, int times)
         {
-            foreach ( UsefulPeriodAbsence u in UsefulPeriodAbsences )
+            foreach (UsefulPeriodAbsence u in UsefulPeriodAbsences)
             {
-                if ( u.Period == period && u.Absence == absence )
+                if (u.Period == period && u.Absence == absence)
                 {
-                    return u.Subtract * ( times / u.Aggregated * ( -1 ) );
+                    return u.Subtract * (times / u.Aggregated * (-1));
                 }
             }
             return 0m;
@@ -250,7 +250,7 @@ namespace SmartSchool.Evaluation
             threadAttendance.Join();
 
             XmlDocument doc = new XmlDocument();
-            foreach ( StudentRecord student in students )
+            foreach (StudentRecord student in students)
             {
                 XmlElement element = doc.CreateElement("DemonScore");
                 XmlElement subScoreElement;
@@ -258,11 +258,11 @@ namespace SmartSchool.Evaluation
                 decimal finalScore = 0;
                 //精準位數
                 int decimals = 2;
-                if ( !int.TryParse(_MoralConductHelper.GetText("BasicScore/@Decimals"), out decimals) )
+                if (!int.TryParse(_MoralConductHelper.GetText("BasicScore/@Decimals"), out decimals))
                     decimals = 2;
                 //進位模式
                 SmartSchool.Evaluation.WearyDogComputer.RoundMode mode = SmartSchool.Evaluation.WearyDogComputer.RoundMode.四捨五入;
-                switch ( _MoralConductHelper.GetText("BasicScore/@DecimalType") )
+                switch (_MoralConductHelper.GetText("BasicScore/@DecimalType"))
                 {
                     default:
                     case "四捨五入":
@@ -276,11 +276,11 @@ namespace SmartSchool.Evaluation
                         break;
                 }
                 //超過一百分以一百分計
-                bool limit100 = _MoralConductHelper.GetText("BasicScore/@Over100")=="以100分計";
+                bool limit100 = _MoralConductHelper.GetText("BasicScore/@Over100") == "以100分計";
                 #region 處理獎懲
                 //銷過紀錄是否計算
                 bool calcCancel = false;
-                if ( !bool.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@CalcCancel"), out calcCancel) )
+                if (!bool.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@CalcCancel"), out calcCancel))
                     calcCancel = false;
                 #region 統計獎懲次數
                 int AwardACount = 0;
@@ -290,11 +290,11 @@ namespace SmartSchool.Evaluation
                 int FaultBCount = 0;
                 int FaultCCount = 0;
                 bool hasUltimateAdmonition = false;
-                foreach ( RewardInfo reward in student.RewardList )
+                foreach (RewardInfo reward in student.RewardList)
                 {
-                    if ( reward.SchoolYear != schoolyear || reward.Semester != semester )
+                    if (reward.SchoolYear != schoolyear || reward.Semester != semester)
                         continue;
-                    if ( !reward.Cleared || calcCancel )
+                    if (!reward.Cleared || calcCancel)
                     {
                         AwardACount += reward.AwardA;
                         AwardBCount += reward.AwardB;
@@ -310,7 +310,7 @@ namespace SmartSchool.Evaluation
                 subScoreElement = doc.CreateElement("SubScore");
                 subScore = 0;
                 subScoreElement.SetAttribute("Type", "基分");
-                if ( hasUltimateAdmonition )
+                if (hasUltimateAdmonition)
                 {
                     subScoreElement.SetAttribute("Status", "留校查看");
                     decimal.TryParse(_MoralConductHelper.GetText("BasicScore/@UltimateAdmonitionScore"), out subScore);
@@ -327,7 +327,7 @@ namespace SmartSchool.Evaluation
                 #endregion
                 #region 計算獎懲項目成績
                 #region 處理大功
-                if ( AwardACount > 0 )
+                if (AwardACount > 0)
                 {
                     subScoreElement = doc.CreateElement("SubScore");
                     subScore = 0;
@@ -335,10 +335,10 @@ namespace SmartSchool.Evaluation
                     subScoreElement.SetAttribute("Name", "大功");
                     subScoreElement.SetAttribute("Count", "" + AwardACount);
                     decimal addScore = 0;
-                    for ( int i = 0 ; i < AwardACount ; i++ )
+                    for (int i = 0; i < AwardACount; i++)
                     {
                         decimal newscore;
-                        if ( decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@AwardA" + ( i + 1 )), out newscore) )
+                        if (decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@AwardA" + (i + 1)), out newscore))
                             addScore = newscore;
                         subScore += addScore;
                     }
@@ -348,7 +348,7 @@ namespace SmartSchool.Evaluation
                 }
                 #endregion
                 #region 處理小功
-                if ( AwardBCount > 0 )
+                if (AwardBCount > 0)
                 {
                     subScoreElement = doc.CreateElement("SubScore");
                     subScore = 0;
@@ -356,10 +356,10 @@ namespace SmartSchool.Evaluation
                     subScoreElement.SetAttribute("Name", "小功");
                     subScoreElement.SetAttribute("Count", "" + AwardBCount);
                     decimal addScore = 0;
-                    for ( int i = 0 ; i < AwardBCount ; i++ )
+                    for (int i = 0; i < AwardBCount; i++)
                     {
                         decimal newscore;
-                        if ( decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@AwardB" + ( i + 1 )), out newscore) )
+                        if (decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@AwardB" + (i + 1)), out newscore))
                             addScore = newscore;
                         subScore += addScore;
                     }
@@ -369,7 +369,7 @@ namespace SmartSchool.Evaluation
                 }
                 #endregion
                 #region 處理嘉獎
-                if ( AwardCCount > 0 )
+                if (AwardCCount > 0)
                 {
                     subScoreElement = doc.CreateElement("SubScore");
                     subScore = 0;
@@ -377,10 +377,10 @@ namespace SmartSchool.Evaluation
                     subScoreElement.SetAttribute("Name", "嘉獎");
                     subScoreElement.SetAttribute("Count", "" + AwardCCount);
                     decimal addScore = 0;
-                    for ( int i = 0 ; i < AwardCCount ; i++ )
+                    for (int i = 0; i < AwardCCount; i++)
                     {
                         decimal newscore;
-                        if ( decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@AwardC" + ( i + 1 )), out newscore) )
+                        if (decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@AwardC" + (i + 1)), out newscore))
                             addScore = newscore;
                         subScore += addScore;
                     }
@@ -390,7 +390,7 @@ namespace SmartSchool.Evaluation
                 }
                 #endregion
                 #region 處理大過
-                if ( FaultACount > 0 )
+                if (FaultACount > 0)
                 {
                     subScoreElement = doc.CreateElement("SubScore");
                     subScore = 0;
@@ -398,11 +398,11 @@ namespace SmartSchool.Evaluation
                     subScoreElement.SetAttribute("Name", "大過");
                     subScoreElement.SetAttribute("Count", "" + FaultACount);
                     decimal addScore = 0;
-                    for ( int i = 0 ; i < FaultACount ; i++ )
+                    for (int i = 0; i < FaultACount; i++)
                     {
                         decimal newscore;
-                        if ( decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@FaultA" + ( i + 1 )), out newscore) )
-                            addScore = newscore * ( -1 );
+                        if (decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@FaultA" + (i + 1)), out newscore))
+                            addScore = newscore * (-1);
                         subScore += addScore;
                     }
                     subScoreElement.SetAttribute("Score", "" + subScore);
@@ -411,7 +411,7 @@ namespace SmartSchool.Evaluation
                 }
                 #endregion
                 #region 處理小過
-                if ( FaultBCount > 0 )
+                if (FaultBCount > 0)
                 {
                     subScoreElement = doc.CreateElement("SubScore");
                     subScore = 0;
@@ -419,11 +419,11 @@ namespace SmartSchool.Evaluation
                     subScoreElement.SetAttribute("Name", "小過");
                     subScoreElement.SetAttribute("Count", "" + FaultBCount);
                     decimal addScore = 0;
-                    for ( int i = 0 ; i < FaultBCount ; i++ )
+                    for (int i = 0; i < FaultBCount; i++)
                     {
                         decimal newscore;
-                        if ( decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@FaultB" + ( i + 1 )), out newscore) )
-                            addScore = newscore * ( -1 );
+                        if (decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@FaultB" + (i + 1)), out newscore))
+                            addScore = newscore * (-1);
                         subScore += addScore;
                     }
                     subScoreElement.SetAttribute("Score", "" + subScore);
@@ -432,7 +432,7 @@ namespace SmartSchool.Evaluation
                 }
                 #endregion
                 #region 處理警告
-                if ( FaultCCount > 0 )
+                if (FaultCCount > 0)
                 {
                     subScoreElement = doc.CreateElement("SubScore");
                     subScore = 0;
@@ -440,11 +440,11 @@ namespace SmartSchool.Evaluation
                     subScoreElement.SetAttribute("Name", "警告");
                     subScoreElement.SetAttribute("Count", "" + FaultCCount);
                     decimal addScore = 0;
-                    for ( int i = 0 ; i < FaultCCount ; i++ )
+                    for (int i = 0; i < FaultCCount; i++)
                     {
                         decimal newscore;
-                        if ( decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@FaultC" + ( i + 1 )), out newscore) )
-                            addScore = newscore * ( -1 );
+                        if (decimal.TryParse(_MoralConductHelper.GetText("RewardCalcRule/@FaultC" + (i + 1)), out newscore))
+                            addScore = newscore * (-1);
                         subScore += addScore;
                     }
                     subScoreElement.SetAttribute("Score", "" + subScore);
@@ -457,13 +457,13 @@ namespace SmartSchool.Evaluation
                 #region 處理缺曠
                 Dictionary<string, int> attendanceCount = new Dictionary<string, int>();
                 bool noabsence = true;
-                foreach ( UsefulPeriodAbsence u in UsefulPeriodAbsences )
+                foreach (UsefulPeriodAbsence u in UsefulPeriodAbsences)
                 {
                     attendanceCount.Add(u.Period + "_" + u.Absence, 0);
                 }
-                foreach ( AttendanceInfo attendance in student.AttendanceList )
+                foreach (AttendanceInfo attendance in student.AttendanceList)
                 {
-                    if ( attendance.SchoolYear != schoolyear || attendance.Semester != semester )
+                    if (attendance.SchoolYear != schoolyear || attendance.Semester != semester)
                         continue;
                     //假別次數
 
@@ -475,17 +475,17 @@ namespace SmartSchool.Evaluation
                     }
 
                     //全勤判斷
-                    if ( !_NoabsenceList.Contains(attendance.Absence) )
+                    if (!_NoabsenceList.Contains(attendance.Absence))
                         noabsence = false;
                 }
                 //填入加減分缺曠
-                foreach ( UsefulPeriodAbsence u in UsefulPeriodAbsences )
+                foreach (UsefulPeriodAbsence u in UsefulPeriodAbsences)
                 {
-                    if ( attendanceCount[u.Period + "_" + u.Absence] > 0 )
+                    if (attendanceCount[u.Period + "_" + u.Absence] > 0)
                     {
                         subScoreElement = doc.CreateElement("SubScore");
                         subScore = 0;
-                        subScore = u.Subtract * ( attendanceCount[u.Period + "_" + u.Absence] / u.Aggregated * ( -1 ) );
+                        subScore = u.Subtract * (attendanceCount[u.Period + "_" + u.Absence] / u.Aggregated * (-1));
                         subScoreElement.SetAttribute("Type", "缺曠");
                         subScoreElement.SetAttribute("Absence", u.Absence);
                         subScoreElement.SetAttribute("PeriodType", u.Period);
@@ -496,7 +496,7 @@ namespace SmartSchool.Evaluation
                     }
                 }
                 //填入全勤加分
-                if ( noabsence )
+                if (noabsence)
                 {
                     subScoreElement = doc.CreateElement("SubScore");
                     subScore = 0;
@@ -508,10 +508,10 @@ namespace SmartSchool.Evaluation
                 }
                 #endregion
                 #region 處理加減分及評語
-                foreach ( SemesterMoralScoreInfo moralscore in student.SemesterMoralScoreList )
+                foreach (SemesterMoralScoreInfo moralscore in student.SemesterMoralScoreList)
                 {
                     //是這學期的
-                    if ( moralscore.SchoolYear == schoolyear && moralscore.Semester == semester )
+                    if (moralscore.SchoolYear == schoolyear && moralscore.Semester == semester)
                     {
                         //導師加減分
                         subScoreElement = doc.CreateElement("SubScore");
@@ -523,9 +523,9 @@ namespace SmartSchool.Evaluation
                         element.AppendChild(subScoreElement);
                         finalScore += subScore;
                         #region 其他加減分
-                        if ( moralscore.OtherDiff != null )
+                        if (moralscore.OtherDiff != null)
                         {
-                            foreach ( string diffItem in moralscore.OtherDiff.Keys )
+                            foreach (string diffItem in moralscore.OtherDiff.Keys)
                             {
                                 subScoreElement = doc.CreateElement("SubScore");
                                 subScore = 0;
@@ -548,7 +548,7 @@ namespace SmartSchool.Evaluation
                 #endregion
                 element.SetAttribute("RealScore", "" + finalScore);
                 element.SetAttribute("Score", "" + GetRoundScore(
-                    (limit100&&finalScore>100)?100:finalScore,//超過一百以一百分計
+                    (limit100 && finalScore > 100) ? 100 : finalScore,//超過一百以一百分計
                     decimals,
                     mode));
                 student.Fields.Add("DemonScore", element);
@@ -560,18 +560,18 @@ namespace SmartSchool.Evaluation
             Dictionary<StudentRecord, List<string>> _ErrorList = new Dictionary<StudentRecord, List<string>>();
             //抓成績資料
             accesshelper.StudentHelper.FillSemesterEntryScore(false, students);
-            foreach ( StudentRecord var in students )
+            foreach (StudentRecord var in students)
             {
                 //計算結果
                 Dictionary<string, decimal> entryCalcScores = new Dictionary<string, decimal>();
 
                 //精準位數
                 int decimals = 2;
-                if ( !int.TryParse(_MoralConductHelper.GetText("BasicScore/@Decimals"), out decimals) )
+                if (!int.TryParse(_MoralConductHelper.GetText("BasicScore/@Decimals"), out decimals))
                     decimals = 2;
                 //進位模式
                 SmartSchool.Evaluation.WearyDogComputer.RoundMode mode = SmartSchool.Evaluation.WearyDogComputer.RoundMode.四捨五入;
-                switch ( _MoralConductHelper.GetText("BasicScore/@DecimalType") )
+                switch (_MoralConductHelper.GetText("BasicScore/@DecimalType"))
                 {
                     default:
                     case "四捨五入":
@@ -587,71 +587,71 @@ namespace SmartSchool.Evaluation
 
                 int? gradeyear = null;
                 #region 抓年級
-                foreach ( SemesterEntryScoreInfo score in var.SemesterEntryScoreList )
+                foreach (SemesterEntryScoreInfo score in var.SemesterEntryScoreList)
                 {
-                    if ( score.Entry == "德行" && score.SchoolYear == schoolyear )
+                    if (score.Entry == "德行" && score.SchoolYear == schoolyear)
                     {
-                        if ( gradeyear == null || score.GradeYear > gradeyear )
+                        if (gradeyear == null || score.GradeYear > gradeyear)
                             gradeyear = score.GradeYear;
                     }
                 }
                 #endregion
-                if ( gradeyear != null )
+                if (gradeyear != null)
                 {
                     #region 移除不需要成績
                     Dictionary<int, int> ApplySemesterSchoolYear = new Dictionary<int, int>();
                     //先掃一遍抓出該年級最高的學年度
-                    foreach ( SemesterEntryScoreInfo scoreInfo in var.SemesterEntryScoreList )
+                    foreach (SemesterEntryScoreInfo scoreInfo in var.SemesterEntryScoreList)
                     {
-                        if ( scoreInfo.SchoolYear <= schoolyear && scoreInfo.GradeYear == gradeyear )
+                        if (scoreInfo.SchoolYear <= schoolyear && scoreInfo.GradeYear == gradeyear)
                         {
-                            if ( !ApplySemesterSchoolYear.ContainsKey(scoreInfo.Semester) )
+                            if (!ApplySemesterSchoolYear.ContainsKey(scoreInfo.Semester))
                                 ApplySemesterSchoolYear.Add(scoreInfo.Semester, scoreInfo.SchoolYear);
                             else
                             {
-                                if ( ApplySemesterSchoolYear[scoreInfo.Semester] < scoreInfo.SchoolYear )
+                                if (ApplySemesterSchoolYear[scoreInfo.Semester] < scoreInfo.SchoolYear)
                                     ApplySemesterSchoolYear[scoreInfo.Semester] = scoreInfo.SchoolYear;
                             }
                         }
                     }
                     //如果成績資料的年級學年度不在清單中就移掉
                     List<SemesterEntryScoreInfo> removeList = new List<SemesterEntryScoreInfo>();
-                    foreach ( SemesterEntryScoreInfo scoreInfo in var.SemesterEntryScoreList )
+                    foreach (SemesterEntryScoreInfo scoreInfo in var.SemesterEntryScoreList)
                     {
-                        if ( !ApplySemesterSchoolYear.ContainsKey(scoreInfo.Semester) || ApplySemesterSchoolYear[scoreInfo.Semester] != scoreInfo.SchoolYear )
+                        if (!ApplySemesterSchoolYear.ContainsKey(scoreInfo.Semester) || ApplySemesterSchoolYear[scoreInfo.Semester] != scoreInfo.SchoolYear)
                             removeList.Add(scoreInfo);
                     }
-                    foreach ( SemesterEntryScoreInfo scoreInfo in removeList )
+                    foreach (SemesterEntryScoreInfo scoreInfo in removeList)
                     {
                         var.SemesterEntryScoreList.Remove(scoreInfo);
                     }
                     #endregion
                     #region 計算該年級的分項成績
                     Dictionary<string, List<decimal>> entryScores = new Dictionary<string, List<decimal>>();
-                    foreach ( SemesterEntryScoreInfo score in var.SemesterEntryScoreList )
+                    foreach (SemesterEntryScoreInfo score in var.SemesterEntryScoreList)
                     {
-                        if ( score.Entry == "德行" && score.SchoolYear <= schoolyear && score.GradeYear == gradeyear )
+                        if (score.Entry == "德行" && score.SchoolYear <= schoolyear && score.GradeYear == gradeyear)
                         {
-                            if ( !entryScores.ContainsKey(score.Entry) )
+                            if (!entryScores.ContainsKey(score.Entry))
                                 entryScores.Add(score.Entry, new List<decimal>());
                             entryScores[score.Entry].Add(score.Score);
                         }
                     }
-                    foreach ( string key in entryScores.Keys )
+                    foreach (string key in entryScores.Keys)
                     {
                         decimal sum = 0;
                         decimal count = 0;
-                        foreach ( decimal sc in entryScores[key] )
+                        foreach (decimal sc in entryScores[key])
                         {
                             sum += sc;
                             count += 1;
                         }
-                        if ( count > 0 )
+                        if (count > 0)
                             entryCalcScores.Add(key, GetRoundScore(sum / count, decimals, mode));
                     }
                     #endregion
                 }
-                if ( var.Fields.ContainsKey("CalcSchoolYearMoralScores") )
+                if (var.Fields.ContainsKey("CalcSchoolYearMoralScores"))
                     var.Fields["CalcSchoolYearMoralScores"] = entryCalcScores;
                 else
                     var.Fields.Add("CalcSchoolYearMoralScores", entryCalcScores);
@@ -680,7 +680,7 @@ namespace SmartSchool.Evaluation
             private string _Period;
             private decimal _Subtract;
             private int _Aggregated;
-            public UsefulPeriodAbsence(string absence,string period,decimal subtract,int aggregated)
+            public UsefulPeriodAbsence(string absence, string period, decimal subtract, int aggregated)
             {
                 _Absence = absence;
                 _Period = period;

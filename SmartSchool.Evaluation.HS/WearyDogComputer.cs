@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml;
-using System.Linq;
+﻿using FISCA.Data;
 using FISCA.DSAUtil;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
 using SmartSchool.Evaluation.WearyDogComputerHelper;
-using FISCA.Data;
+using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace SmartSchool.Evaluation
@@ -1520,7 +1519,7 @@ namespace SmartSchool.Evaluation
                             string subjectCode = subjectNode.Detail.GetAttribute("修課科目代碼");
                             if (subjectCode.Length >= 23) //共23碼
                             {
-                                if (subjectCode[16].ToString() + subjectCode[18].ToString() == "9D"|| subjectCode[16].ToString() + subjectCode[18].ToString() == "9d")
+                                if (subjectCode[16].ToString() + subjectCode[18].ToString() == "9D" || subjectCode[16].ToString() + subjectCode[18].ToString() == "9d")
                                     continue;
                             }
 

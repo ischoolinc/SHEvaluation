@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
+﻿using FISCA.DSAUtil;
 using SmartSchool.Common;
 using SmartSchool.Customization.Data;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
 using SystemInformation = SmartSchool.Customization.Data.SystemInformation;
-using FISCA.DSAUtil;
-using DevComponents.DotNetBar;
 
 namespace SmartSchool.Evaluation.Process.Wizards
 {
@@ -283,7 +279,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
                 default:
                     levelNumber = "" + (p);
                     break;
-                #endregion
+                    #endregion
             }
             return levelNumber;
         }

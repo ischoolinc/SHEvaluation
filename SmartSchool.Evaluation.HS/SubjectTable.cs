@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using FISCA.DSAUtil;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Xml;
-using FISCA.DSAUtil;
 
 namespace SmartSchool.Evaluation
 {
@@ -10,9 +10,9 @@ namespace SmartSchool.Evaluation
         static private SubjectTable _Items = null;
         static public SubjectTable Items
         {
-            get 
+            get
             {
-                if ( _Items == null ) _Items = new SubjectTable();
+                if (_Items == null) _Items = new SubjectTable();
                 return _Items;
             }
         }
@@ -23,16 +23,16 @@ namespace SmartSchool.Evaluation
         {
             get
             {
-                lock ( _SubjectTableCatalog )
+                lock (_SubjectTableCatalog)
                 {
-                    if ( !_SubjectTableCatalog.ContainsKey(catalog) )
+                    if (!_SubjectTableCatalog.ContainsKey(catalog))
                         _SubjectTableCatalog.Add(catalog, new SubjectTableCollection(catalog));
                 }
                 return _SubjectTableCatalog[catalog];
             }
         }
     }
-    class SubjectTableCollection:Collection<SubjectTableItem>
+    class SubjectTableCollection : Collection<SubjectTableItem>
     {
         private string _Catalog = "";
 
@@ -43,9 +43,9 @@ namespace SmartSchool.Evaluation
         }
 
         public void Reflash()
-        { 
+        {
             this.Clear();
-            foreach ( XmlElement var in SmartSchool.Feature.SubjectTable.QuerySubejctTable.GetSubejctTableList(_Catalog).GetContent().GetElements("SubjectTable") )
+            foreach (XmlElement var in SmartSchool.Feature.SubjectTable.QuerySubejctTable.GetSubejctTableList(_Catalog).GetContent().GetElements("SubjectTable"))
             {
                 this.Add(new SubjectTableItem(var));
             }
@@ -55,9 +55,9 @@ namespace SmartSchool.Evaluation
         {
             get
             {
-                foreach ( SubjectTableItem table in this.Items )
+                foreach (SubjectTableItem table in this.Items)
                 {
-                    if ( table.Name == name )
+                    if (table.Name == name)
                         return table;
                 }
                 return null;
@@ -66,9 +66,9 @@ namespace SmartSchool.Evaluation
 
         public bool Contains(string name)
         {
-            foreach ( SubjectTableItem table in this.Items )
+            foreach (SubjectTableItem table in this.Items)
             {
-                if ( table.Name == name )
+                if (table.Name == name)
                     return true;
             }
             return false;
@@ -86,7 +86,7 @@ namespace SmartSchool.Evaluation
 
         public SubjectTableItem(XmlElement subjectTableElement)
         {
-            DSXmlHelper helper=new DSXmlHelper(subjectTableElement);
+            DSXmlHelper helper = new DSXmlHelper(subjectTableElement);
             _ID = subjectTableElement.GetAttribute("ID");
             _Name = helper.GetText("Name");
             _Catalog = helper.GetText("Catalog");

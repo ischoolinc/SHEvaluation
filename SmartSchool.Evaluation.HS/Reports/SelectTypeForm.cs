@@ -1,14 +1,9 @@
+using SmartSchool.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Xml;
 using System.Windows.Forms;
-using DevComponents.DotNetBar;
-using FISCA.DSAUtil;
-using SmartSchool.Common;
+using System.Xml;
 
 namespace SmartSchool.Evaluation.Reports
 {
@@ -33,7 +28,7 @@ namespace SmartSchool.Evaluation.Reports
         }
 
         void _BGWAbsenceAndPeriodList_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {            
+        {
             System.Windows.Forms.DataGridViewTextBoxColumn colName = new DataGridViewTextBoxColumn();
             colName.HeaderText = "節次分類";
             colName.MinimumWidth = 70;
@@ -45,13 +40,13 @@ namespace SmartSchool.Evaluation.Reports
 
             foreach (string absence in absenceList)
             {
-                System.Windows.Forms.DataGridViewCheckBoxColumn newCol=new DataGridViewCheckBoxColumn();
+                System.Windows.Forms.DataGridViewCheckBoxColumn newCol = new DataGridViewCheckBoxColumn();
                 newCol.HeaderText = absence;
                 newCol.Width = 55;
                 newCol.ReadOnly = false;
                 newCol.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-                newCol.Tag = absence ;
-                newCol.ValueType=typeof(bool);
+                newCol.Tag = absence;
+                newCol.ValueType = typeof(bool);
                 this.dataGridViewX1.Columns.Add(newCol);
             }
             foreach (string type in typeList)
@@ -143,14 +138,14 @@ namespace SmartSchool.Evaluation.Reports
                 foreach (DataGridViewCell cell in row.Cells)
                 {
                     XmlElement absence = config.OwnerDocument.CreateElement("Absence");
-                    absence.SetAttribute("Text", ""+cell.OwningColumn.Tag);
+                    absence.SetAttribute("Text", "" + cell.OwningColumn.Tag);
                     if (cell.Value is bool && ((bool)cell.Value))
                     {
                         needToAppend = true;
                         type.AppendChild(absence);
                     }
                 }
-                if(needToAppend)
+                if (needToAppend)
                     config.AppendChild(type);
             }
 
@@ -172,7 +167,7 @@ namespace SmartSchool.Evaluation.Reports
             {
                 foreach (DataGridViewCell cell in row.Cells)
                 {
-                    if (cell.Value is bool &&((bool)cell.Value ))
+                    if (cell.Value is bool && ((bool)cell.Value))
                         columnNumber++;
                 }
             }

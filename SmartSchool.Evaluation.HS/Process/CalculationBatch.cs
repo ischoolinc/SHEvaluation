@@ -1,10 +1,9 @@
-using System;
-using System.Windows.Forms;
 using FISCA.Presentation;
 using SmartSchool.AccessControl;
 using SmartSchool.Evaluation.Process.Rating;
 //using SmartSchool.StudentRelated;
 using SmartSchool.Evaluation.Process.Wizards;
+using System;
 
 namespace SmartSchool.Evaluation.Process
 {
@@ -25,7 +24,7 @@ namespace SmartSchool.Evaluation.Process
             buttonItem103["學年成績處理"].Click += new System.EventHandler(this.buttonItem8_Click_1);
 
             var buttonItem9 = MotherForm.RibbonBarItems["學務作業", "成績作業"]["德行成績(舊制)"];
-            buttonItem9.Image = ( (System.Drawing.Image)( resources.GetObject("buttonItem9.Image") ) );
+            buttonItem9.Image = ((System.Drawing.Image)(resources.GetObject("buttonItem9.Image")));
             buttonItem9.Enable = CurrentUser.Acl["Button0705"].Executable;
             buttonItem9["計算德行學期成績(舊制)"].Click += new System.EventHandler(this.buttonItem6_Click);
             buttonItem9["計算德行學年成績(舊制)"].Click += new System.EventHandler(this.buttonItem8_Click);

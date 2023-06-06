@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SmartSchool.AccessControl;
+using SmartSchool.API.PlugIn;
 //using SmartSchool.Customization.PlugIn.ImportExport;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
-using SmartSchool.AccessControl;
-using SmartSchool.API.PlugIn;
-using FISCA.Data;
-using System.Data;
-using System.Xml.Linq;
+using System.Collections.Generic;
 
 namespace SmartSchool.Evaluation.ImportExport
 {

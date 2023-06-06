@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace SmartSchool.Evaluation
 {
@@ -43,7 +40,7 @@ namespace SmartSchool.Evaluation
         private Dictionary<string, int> _Group1RankDict = new Dictionary<string, int>();
 
 
-        public void AddClassCount(string name,int count)
+        public void AddClassCount(string name, int count)
         {
             if (!_ClassCountDict.ContainsKey(name))
                 _ClassCountDict.Add(name, count);
@@ -97,8 +94,8 @@ namespace SmartSchool.Evaluation
         /// <param name="name"></param>
         /// <returns></returns>
         public string GetClassCount(string name)
-        { 
-            string value="";
+        {
+            string value = "";
             if (_ClassCountDict.ContainsKey(name))
                 value = _ClassCountDict[name].ToString();
 
@@ -127,9 +124,9 @@ namespace SmartSchool.Evaluation
         public string GetClassRankP(string name)
         {
             string value = "";
-            if (_ClassRankDict.ContainsKey(name) && _ClassCountDict.ContainsKey(name))            
-                value = Utility.ParseRankPercent(_ClassRankDict[name], _ClassCountDict[name]).ToString();            
-            
+            if (_ClassRankDict.ContainsKey(name) && _ClassCountDict.ContainsKey(name))
+                value = Utility.ParseRankPercent(_ClassRankDict[name], _ClassCountDict[name]).ToString();
+
             return value;
         }
 

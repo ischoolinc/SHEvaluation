@@ -1,9 +1,9 @@
-using System;
-using System.ComponentModel;
-using System.Xml;
 using DevComponents.Editors;
 using SmartSchool.Evaluation.ScoreCalcRule;
 using SmartSchool.Feature.ScoreCalcRule;
+using System;
+using System.ComponentModel;
+using System.Xml;
 
 namespace SmartSchool.Evaluation.Configuration
 {

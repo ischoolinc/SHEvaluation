@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using System.Xml;
 using FISCA.DSAUtil;
 using SmartSchool.StudentRelated;
 using SmartSchool.TagManage;
+using System.Collections.Generic;
+using System.Xml;
 
 namespace SmartSchool.Evaluation.ScoreCalcRule
 {
@@ -25,7 +25,7 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
             _ID = scrElement.GetAttribute("ID");
             _Name = scrElement.SelectSingleNode("Name").InnerText;
             _ScoreCalcRuleElement = (XmlElement)scrElement.SelectSingleNode("Content/ScoreCalcRule");
-            
+
             _SchoolYear = _ScoreCalcRuleElement.HasAttribute("SchoolYear") ? _ScoreCalcRuleElement.GetAttribute("SchoolYear") : string.Empty;
             _TrimName = _Name;
             if (!string.IsNullOrEmpty(_SchoolYear))
@@ -53,7 +53,7 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
 
         public XmlElement CalculateSemesterEntryScore(XmlElement semesterSubjectScore)
         {
-             Dictionary<string, decimal> entryCreditCount = new Dictionary<string, decimal>();
+            Dictionary<string, decimal> entryCreditCount = new Dictionary<string, decimal>();
             Dictionary<string, List<decimal>> entrySubjectScores = new Dictionary<string, List<decimal>>();
             Dictionary<string, decimal> entryDividend = new Dictionary<string, decimal>();
             Dictionary<string, bool> calcEntry = new Dictionary<string, bool>();
@@ -140,7 +140,7 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
                 string subjectCode = subjectElement.GetAttribute("修課科目代碼");
                 if (subjectCode.Length >= 23) //共23碼
                 {
-                    if (subjectCode[16].ToString() + subjectCode[18].ToString() == "9D"|| subjectCode[16].ToString() + subjectCode[18].ToString() == "9d")
+                    if (subjectCode[16].ToString() + subjectCode[18].ToString() == "9D" || subjectCode[16].ToString() + subjectCode[18].ToString() == "9d")
                         continue;
                 }
                 #region 分項類別跟學分數

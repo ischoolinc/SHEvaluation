@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace SmartSchool.Evaluation.Process.Rating
 {
     interface IRatingTarget
     {
-        string Name { get;}
+        string Name { get; }
 
         bool ContainsScore(Student student);
 

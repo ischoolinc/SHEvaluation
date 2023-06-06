@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Windows.Forms;
-using DevComponents.DotNetBar;
+﻿using DevComponents.DotNetBar;
 using FISCA.Presentation;
 using SmartSchool.Common;
 using SmartSchool.Customization.Data;
@@ -11,6 +6,11 @@ using SmartSchool.Evaluation.GraduationPlan;
 using SmartSchool.Evaluation.GraduationPlan.Editor;
 //using SmartSchool.ClassRelated;
 using SmartSchool.Feature.GraduationPlan;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace SmartSchool.Evaluation.Configuration
 {
@@ -30,7 +30,7 @@ namespace SmartSchool.Evaluation.Configuration
 
         private Dictionary<GraduationPlanInfo, ButtonItem> _GPlanMapping;
 
-        private AccessHelper _AccessHelper = new AccessHelper();  
+        private AccessHelper _AccessHelper = new AccessHelper();
 
         public GraduationPlanConfiguration()
         {
@@ -253,13 +253,13 @@ namespace SmartSchool.Evaluation.Configuration
             listViewEx1.Groups.Clear();
             Dictionary<ClassRecord, int> classCount = new Dictionary<ClassRecord, int>();
             List<StudentRecord> noClassStudents = new List<StudentRecord>();
-            foreach ( StudentRecord stu in _AccessHelper .StudentHelper.GetAllStudent())
+            foreach (StudentRecord stu in _AccessHelper.StudentHelper.GetAllStudent())
             {
-                if ( GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(stu.StudentID) == info )
+                if (GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(stu.StudentID) == info)
                 {
-                    if ( stu.RefClass != null )
+                    if (stu.RefClass != null)
                     {
-                        if ( !classCount.ContainsKey(stu.RefClass) )
+                        if (!classCount.ContainsKey(stu.RefClass))
                             classCount.Add(stu.RefClass, 0);
                         classCount[stu.RefClass]++;
                     }
@@ -269,27 +269,27 @@ namespace SmartSchool.Evaluation.Configuration
                     }
                 }
             }
-            foreach ( ClassRecord var in classCount.Keys )
+            foreach (ClassRecord var in classCount.Keys)
             {
                 string groupKey;
                 int a;
-                if ( int.TryParse(var.GradeYear, out a) )
+                if (int.TryParse(var.GradeYear, out a))
                 {
                     groupKey = var.GradeYear + "　年級";
                 }
                 else
                     groupKey = var.GradeYear;
                 ListViewGroup group = listViewEx1.Groups[groupKey];
-                if ( group == null )
+                if (group == null)
                     group = listViewEx1.Groups.Add(groupKey, groupKey);
                 listViewEx1.Items.Add(new ListViewItem(var.ClassName + "(" + classCount[var] + ")　", 0, group));
             }
-            if ( noClassStudents.Count > 0 )
+            if (noClassStudents.Count > 0)
             {
                 ListViewGroup group = listViewEx1.Groups["未分班"];
-                if ( group == null )
+                if (group == null)
                     group = listViewEx1.Groups.Add("未分班", "未分班");
-                foreach ( StudentRecord stu in noClassStudents )
+                foreach (StudentRecord stu in noClassStudents)
                 {
                     listViewEx1.Items.Add(new ListViewItem(stu.StudentName + "[" + stu.StudentNumber + "] 　", 1, group));
                 }
@@ -395,7 +395,7 @@ namespace SmartSchool.Evaluation.Configuration
 
         private void listViewEx1_MouseHover(object sender, EventArgs e)
         {
-            if ( this.TopLevelControl != null && this.TopLevelControl.ContainsFocus && !listViewEx1.ContainsFocus )
+            if (this.TopLevelControl != null && this.TopLevelControl.ContainsFocus && !listViewEx1.ContainsFocus)
                 listViewEx1.Focus();
         }
 

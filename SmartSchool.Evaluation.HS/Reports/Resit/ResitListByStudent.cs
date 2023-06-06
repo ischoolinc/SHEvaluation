@@ -1,13 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.ComponentModel;
+using Aspose.Cells;
+using FISCA.Presentation;
+using SmartSchool.Common;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
-using Aspose.Cells;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
-using SmartSchool.Common;
-using FISCA.Presentation;
 
 namespace SmartSchool.Evaluation.Reports
 {
@@ -272,7 +271,7 @@ namespace SmartSchool.Evaluation.Reports
             Range eachRow = template.Worksheets[0].Cells.CreateRange(2, 1, false);
 
             //if (printAllYear)
-                ws.Cells[0, 0].PutValue(SystemInformation.SchoolChineseName + " " + schoolyear + " 學年度 第 " + semester + " 學期 學生補考名單");
+            ws.Cells[0, 0].PutValue(SystemInformation.SchoolChineseName + " " + schoolyear + " 學年度 第 " + semester + " 學期 學生補考名單");
             //else
             //    ws.Cells[0, 0].PutValue(SystemInformation.SchoolChineseName + " " + schoolyear + " 學年度 第 " + semester + " 學期 " + gradeYear + "年級學生補考名單");
 

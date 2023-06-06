@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using SmartSchool.Customization.PlugIn;
-using System.ComponentModel;
-using Aspose.Cells;
-using System.IO;
+﻿using Aspose.Cells;
+using SmartSchool.Common;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
-using SmartSchool.Common;
+using SmartSchool.Customization.PlugIn;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 
 namespace SmartSchool.Evaluation.Reports.Retake
 {
-    class RetakeWithCourseList:ButtonAdapter
+    class RetakeWithCourseList : ButtonAdapter
     {
         public RetakeWithCourseList()
         {
@@ -20,7 +18,7 @@ namespace SmartSchool.Evaluation.Reports.Retake
             this.OnClick += delegate
             {
                 SelectSemesterForm form = new SelectSemesterForm();
-                if ( form.ShowDialog() == System.Windows.Forms.DialogResult.OK )
+                if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     int schoolYear = form.SchoolYear, semester = form.Semester;
                     AccessHelper helper = new AccessHelper();
@@ -29,15 +27,15 @@ namespace SmartSchool.Evaluation.Reports.Retake
                     MultiThreadBackgroundWorker<StudentRecord> dataLoader = new MultiThreadBackgroundWorker<StudentRecord>();
                     //dataLoader.Loading = SmartSchool.Common.MultiThreadLoading.Heavy;
                     dataLoader.PackageSize = 125;
-                    dataLoader.DoWork += delegate(object sender, PackageDoWorkEventArgs<StudentRecord> e)
+                    dataLoader.DoWork += delegate (object sender, PackageDoWorkEventArgs<StudentRecord> e)
                     {
                         helper.StudentHelper.FillSemesterSubjectScore(true, e.Items);
                         helper.StudentHelper.FillAttendCourse(schoolYear, semester, e.Items);
                     };
-                    dataLoader.ProgressChanged += delegate(object sender, ProgressChangedEventArgs e) { SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("隨堂重修課程表產生中...", e.ProgressPercentage * 70 / 100); };
-                    dataLoader.RunWorkerCompleted += delegate(object se, RunWorkerCompletedEventArgs ex)
+                    dataLoader.ProgressChanged += delegate (object sender, ProgressChangedEventArgs e) { SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("隨堂重修課程表產生中...", e.ProgressPercentage * 70 / 100); };
+                    dataLoader.RunWorkerCompleted += delegate (object se, RunWorkerCompletedEventArgs ex)
                     {
-                        if ( ex.Error != null )
+                        if (ex.Error != null)
                             throw ex.Error;
                         #region 資料抓完就生張報表出來
                         Workbook template = new Workbook();
@@ -49,25 +47,25 @@ namespace SmartSchool.Evaluation.Reports.Retake
                         BackgroundWorker worker = new BackgroundWorker();
                         worker.WorkerReportsProgress = true;
                         worker.RunWorkerCompleted += delegate { SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("隨堂重修課程表產生完成"); Common.Excel.Save("隨堂重修課程表", workBook); };
-                        worker.ProgressChanged += delegate(object sender, ProgressChangedEventArgs e) { SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("隨堂重修課程表產生中...", e.ProgressPercentage); };
+                        worker.ProgressChanged += delegate (object sender, ProgressChangedEventArgs e) { SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("隨堂重修課程表產生中...", e.ProgressPercentage); };
                         worker.DoWork += delegate
                         {
                             #region 產生報表
                             #region 填入報表
                             int rowIndex = 1;
                             int count = 0, sum = studentList.Count;
-                            foreach ( StudentRecord studentRec in studentList )
+                            foreach (StudentRecord studentRec in studentList)
                             {
-                                foreach ( StudentAttendCourseRecord attendRecord in studentRec.AttendCourseList )
+                                foreach (StudentAttendCourseRecord attendRecord in studentRec.AttendCourseList)
                                 {
-                                    foreach ( SemesterSubjectScoreInfo subjectScore in studentRec.SemesterSubjectScoreList )
+                                    foreach (SemesterSubjectScoreInfo subjectScore in studentRec.SemesterSubjectScoreList)
                                     {
-                                        if ( ( subjectScore.SchoolYear * 10 + subjectScore.Semester ) < ( schoolYear * 10 + semester ) && subjectScore.Subject == attendRecord.Subject && subjectScore.Level == attendRecord.SubjectLevel )
+                                        if ((subjectScore.SchoolYear * 10 + subjectScore.Semester) < (schoolYear * 10 + semester) && subjectScore.Subject == attendRecord.Subject && subjectScore.Level == attendRecord.SubjectLevel)
                                         {
                                             #region 如果需要換頁就填入下一頁的樣版
-                                            if ( rowIndex % 45 == 0 )
+                                            if (rowIndex % 45 == 0)
                                             {
-                                                for ( int i = 0 ; i < 45 ; i++ )
+                                                for (int i = 0; i < 45; i++)
                                                 {
                                                     workBook.Worksheets[0].Cells.CopyRow(template.Worksheets[0].Cells, i, rowIndex + i);
                                                     workBook.Worksheets[0].Cells.SetRowHeight(rowIndex + i, template.Worksheets[0].Cells.GetRowHeight(i));
@@ -92,7 +90,7 @@ namespace SmartSchool.Evaluation.Reports.Retake
                             #endregion
                             #endregion
                         };
-                        worker.RunWorkerAsync(); 
+                        worker.RunWorkerAsync();
                         #endregion
                     };
                     dataLoader.RunWorkerAsync(studentList);

@@ -1,16 +1,16 @@
-﻿using DevComponents.DotNetBar.Controls;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
+using System.Xml;
+using DevComponents.DotNetBar.Controls;
 using FISCA.DSAUtil;
 using SmartSchool.ApplicationLog;
 using SmartSchool.Common;
 using SmartSchool.Evaluation.GraduationPlan;
 using SmartSchool.Feature.Score;
 using SmartSchool.StudentRelated;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Xml;
 //using SHCourseGroupCodeDAL;
 
 namespace SmartSchool.Evaluation.Content.ScoreEditor
@@ -108,6 +108,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             textBoxX11.ReadOnly = !CurrentUser.Acl[SemesterScorePalmerworm.FeatureCode].Editable;
             textBoxX12.ReadOnly = !CurrentUser.Acl[SemesterScorePalmerworm.FeatureCode].Editable;
             textBoxX13.ReadOnly = !CurrentUser.Acl[SemesterScorePalmerworm.FeatureCode].Editable;
+
         }
 
         private void buttonX2_Click(object sender, EventArgs e)
@@ -151,6 +152,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                     _beforeXml.AddElement("SubjectCollection", var);
                     DataGridViewRow row = new DataGridViewRow();
                     row.CreateCells(dataGridViewX1,
+                        "", // 選科目按鈕
                         var.GetAttribute("領域"), // 領域名稱
                         var.GetAttribute("開課分項類別"),
                         var.GetAttribute("科目"),
@@ -179,7 +181,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                         var.GetAttribute("免修") == "是",
                         var.GetAttribute("抵免") == "是",
                         var.GetAttribute("指定學年科目名稱"),
-                        var.GetAttribute("修課科目代碼")
+                        var.GetAttribute("修課科目代碼"),
+                        var.GetAttribute("報部科目名稱")
                         );
                     row.Cells[SubjectColumn].ToolTipText = GetSubjectScorePlace(row);
 
@@ -335,7 +338,9 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 {
                     #region 比對各項目資料
                     GraduationPlanInfo gplan = GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(_StudentID);
-                    GraduationPlanSubject subject = gplan.GetSubjectInfo("" + row.Cells[2].Value, "" + row.Cells[3].Value);
+
+                    // 科目3,級別4
+                    GraduationPlanSubject subject = gplan.GetSubjectInfo("" + row.Cells[3].Value, "" + row.Cells[4].Value);
 
                     int index = 0; // 領域名稱檢查規則，因為舊資料中都會缺少領域欄位，故先不進行檢查，允許空值 --2022.10.05 俊緯
                     //if ("" + row.Cells[index].Value != subject.Domain)
@@ -351,7 +356,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                     //    row.Cells[index].Style.ForeColor = dataGridViewX1.DefaultCellStyle.ForeColor;
                     //}
 
-                    index = 1;
+                    //  分項 2
+                    index = 2;
                     if ("" + row.Cells[index].Value != subject.Entry)
                     {
                         row.Cells[index].ToolTipText = "在課程規劃表 \"" + gplan.Name + "\"中\n值為: " + subject.Entry;
@@ -364,7 +370,9 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                         row.Cells[index].Style.BackColor = dataGridViewX1.DefaultCellStyle.BackColor;
                         row.Cells[index].Style.ForeColor = dataGridViewX1.DefaultCellStyle.ForeColor;
                     }
-                    index = 4;
+
+                    // 學分 5
+                    index = 5;
                     if ("" + row.Cells[index].Value != subject.Credit)
                     {
                         row.Cells[index].ToolTipText = "在課程規劃表 \"" + gplan.Name + "\"中\n值為: " + subject.Credit;
@@ -377,7 +385,9 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                         row.Cells[index].Style.BackColor = dataGridViewX1.DefaultCellStyle.BackColor;
                         row.Cells[index].Style.ForeColor = dataGridViewX1.DefaultCellStyle.ForeColor;
                     }
-                    index = 5;
+
+                    // 校部定 6
+                    index = 6;
                     string req = subject.RequiredBy;
                     if (req == "部訂") req = "部定";
                     if ("" + row.Cells[index].Value != req)
@@ -392,7 +402,9 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                         row.Cells[index].Style.BackColor = dataGridViewX1.DefaultCellStyle.BackColor;
                         row.Cells[index].Style.ForeColor = dataGridViewX1.DefaultCellStyle.ForeColor;
                     }
-                    index = 6;
+
+                    // 必選修 7
+                    index = 7;
                     if ("" + row.Cells[index].Value != subject.Required)
                     {
                         row.Cells[index].ToolTipText = "在課程規劃表 \"" + gplan.Name + "\"中\n值為: " + subject.Required;
@@ -405,7 +417,10 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                         row.Cells[index].Style.BackColor = dataGridViewX1.DefaultCellStyle.BackColor;
                         row.Cells[index].Style.ForeColor = dataGridViewX1.DefaultCellStyle.ForeColor;
                     }
-                    index = 13;
+
+
+                    // 不計學分14
+                    index = 14;
                     if ((row.Cells[index].Value != null && (bool)row.Cells[index].Value) != subject.NotIncludedInCredit)
                     {
                         row.Cells[index].ToolTipText = "在課程規劃表 \"" + gplan.Name + "\"中\n值為: " + (subject.NotIncludedInCredit ? "是" : "否");
@@ -418,7 +433,9 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                         row.Cells[index].Style.BackColor = dataGridViewX1.DefaultCellStyle.BackColor;
                         row.Cells[index].Style.ForeColor = dataGridViewX1.DefaultCellStyle.ForeColor;
                     }
-                    index = 14;
+
+                    // 不需評分 15
+                    index = 15;
                     if ((row.Cells[index].Value != null && (bool)row.Cells[index].Value) != subject.NotIncludedInCalc)
                     {
                         row.Cells[index].ToolTipText = "在課程規劃表 \"" + gplan.Name + "\"中\n值為: " + (subject.NotIncludedInCalc ? "是" : "否");
@@ -437,7 +454,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 {
                     //改變顏色
                     //foreach (int index in new int[] { 0, 1, 4, 5, 6, 13, 14 }) // 領域名稱檢查規則，因為舊資料中都會缺少領域欄位，故先不進行檢查，允許空值 --2022.10.05 俊緯
-                    foreach (int index in new int[] { 1, 4, 5, 6, 13, 14 })
+                    //foreach (int index in new int[] { 1, 4, 5, 6, 13, 14 }) // 2023/5/18，前面多一個功能，所以要往後移一個
+                    foreach (int index in new int[] { 2, 5, 6, 7, 14, 15 })
                     {
                         row.Cells[index].ToolTipText = "學生課程規劃表未設定，無法比較與課程規畫表差異。";
                         row.Cells[index].Style.BackColor = Color.Gainsboro;
@@ -831,22 +849,22 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 if (row.IsNewRow)
                     break;
                 XmlElement subjectElement = doc.CreateElement("Subject");
-                subjectElement.SetAttribute("領域", "" + row.Cells[0].Value);
-                subjectElement.SetAttribute("開課分項類別", "" + row.Cells[1].Value);
-                subjectElement.SetAttribute("科目", "" + row.Cells[2].Value);
-                subjectElement.SetAttribute("科目級別", "" + row.Cells[3].Value);
-                subjectElement.SetAttribute("開課學分數", "" + row.Cells[4].Value);
-                subjectElement.SetAttribute("修課校部訂", "" + row.Cells[5].Value == "部定" ? "部訂" : row.Cells[5].Value.ToString());
-                subjectElement.SetAttribute("修課必選修", "" + row.Cells[6].Value);
-                subjectElement.SetAttribute("是否取得學分", (row.Cells[7].Value != null && (bool)row.Cells[7].Value) ? "是" : "否");
-                subjectElement.SetAttribute("原始成績", "" + row.Cells[8].Value);
-                subjectElement.SetAttribute("補考成績", "" + row.Cells[9].Value);
-                subjectElement.SetAttribute("重修成績", "" + row.Cells[10].Value);
-                subjectElement.SetAttribute("擇優採計成績", "" + row.Cells[11].Value);
-                subjectElement.SetAttribute("學年調整成績", "" + row.Cells[12].Value);
-                subjectElement.SetAttribute("不計學分", (row.Cells[13].Value != null && (bool)row.Cells[13].Value) ? "是" : "否");
-                subjectElement.SetAttribute("不需評分", (row.Cells[14].Value != null && (bool)row.Cells[14].Value) ? "是" : "否");
-                subjectElement.SetAttribute("註記", "" + row.Cells[15].Value);
+                subjectElement.SetAttribute("領域", "" + row.Cells[1].Value);
+                subjectElement.SetAttribute("開課分項類別", "" + row.Cells[2].Value);
+                subjectElement.SetAttribute("科目", "" + row.Cells[3].Value);
+                subjectElement.SetAttribute("科目級別", "" + row.Cells[4].Value);
+                subjectElement.SetAttribute("開課學分數", "" + row.Cells[5].Value);
+                subjectElement.SetAttribute("修課校部訂", "" + row.Cells[6].Value == "部定" ? "部訂" : row.Cells[6].Value.ToString());
+                subjectElement.SetAttribute("修課必選修", "" + row.Cells[7].Value);
+                subjectElement.SetAttribute("是否取得學分", (row.Cells[8].Value != null && (bool)row.Cells[8].Value) ? "是" : "否");
+                subjectElement.SetAttribute("原始成績", "" + row.Cells[9].Value);
+                subjectElement.SetAttribute("補考成績", "" + row.Cells[10].Value);
+                subjectElement.SetAttribute("重修成績", "" + row.Cells[11].Value);
+                subjectElement.SetAttribute("擇優採計成績", "" + row.Cells[12].Value);
+                subjectElement.SetAttribute("學年調整成績", "" + row.Cells[13].Value);
+                subjectElement.SetAttribute("不計學分", (row.Cells[14].Value != null && (bool)row.Cells[14].Value) ? "是" : "否");
+                subjectElement.SetAttribute("不需評分", (row.Cells[15].Value != null && (bool)row.Cells[15].Value) ? "是" : "否");
+                subjectElement.SetAttribute("註記", "" + row.Cells[16].Value);
                 subjectElement.SetAttribute("修課及格標準", "" + row.Cells[colPassingStandard.Index].Value);
                 subjectElement.SetAttribute("修課補考標準", "" + row.Cells[colMakeupStandard.Index].Value);
                 subjectElement.SetAttribute("修課直接指定總成績", "" + row.Cells[colDesignateFinalScore.Index].Value);
@@ -924,6 +942,24 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 validatePass &= ValidateRow(row.Index);
             }
             #endregion
+
+
+            // 檢查科目名稱+級別是否重複
+            List<string> chkSubjectLevel = new List<string>();
+            foreach (DataGridViewRow row in dataGridViewX1.Rows)
+            {
+                string key = row.Cells[3].Value + "_" + row.Cells[4].Value;
+                if (chkSubjectLevel.Contains(key))
+                {
+                    row.Cells[3].ErrorText = "科目名稱+級別重複";
+                    row.Cells[4].ErrorText = "科目名稱+級別重複";
+                    validatePass &= false;
+                }
+                else
+                {
+                    chkSubjectLevel.Add(key);
+                }
+            }
             return validatePass;
         }
 
@@ -935,7 +971,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             CompareSubjectInfo(row);
 
             //foreach (int i in new int[] { 0, 1, 2, 4, 5, 6 })
-            foreach (int i in new int[] { 1, 2, 4, 5, 6 }) // 領域名稱檢查規則，因為舊資料中都會缺少領域欄位，故先不進行檢查，允許空值 --2022.10.05 俊緯
+            //foreach (int i in new int[] { 1, 2, 4, 5, 6 }) // 領域名稱檢查規則，因為舊資料中都會缺少領域欄位，故先不進行檢查，允許空值 --2022.10.05 俊緯
+            foreach (int i in new int[] { 2, 3, 5, 6, 7 })   // 2023/5/19，因選科目功能往後移  CT
             {
                 row.Cells[i].ErrorText = "";
                 if ("" + row.Cells[i].Value == "")
@@ -946,7 +983,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 dataGridViewX1.UpdateCellErrorText(i, row.Index);
             }
 
-            foreach (int i in new int[] { 3, 21, 22, 23, 24 })
+            //foreach (int i in new int[] { 3, 21, 22, 23, 24 })
+            foreach (int i in new int[] { 4, 22, 23, 24, 25 })
             {
                 row.Cells[i].ErrorText = "";
                 int x = 0;
@@ -957,7 +995,9 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 }
                 dataGridViewX1.UpdateCellErrorText(i, row.Index);
             }
-            foreach (int i in new int[] { 4 })
+
+            // foreach (int i in new int[] { 4 })
+            foreach (int i in new int[] { 5 })
             {
                 row.Cells[i].ErrorText = "";
                 decimal x = 0;
@@ -968,7 +1008,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 }
                 dataGridViewX1.UpdateCellErrorText(i, row.Index);
             }
-            foreach (int i in new int[] { 8, 9, 10, 11, 12, 16, 17, 18 })
+            // foreach (int i in new int[] { 8, 9, 10, 11, 12, 16, 17, 18 }) // 2023/5/18,因前面多一個功能往後移
+            foreach (int i in new int[] { 9, 10, 11, 12, 13, 17, 18, 19 })
             {
                 row.Cells[i].ErrorText = "";
                 double x = 0;
@@ -980,41 +1021,42 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 dataGridViewX1.UpdateCellErrorText(i, row.Index);
             }
 
-            #region 檢查補修相關資料
-            row.Cells[20].ErrorText = "";
-            row.Cells[21].ErrorText = "";
-            row.Cells[22].ErrorText = "";
+            // 2023/5/17 CT,因為補修要預計挖洞設定，定義驗證規則與這有差，將這註解不使用
+            //#region 檢查補修相關資料
+            //row.Cells[20].ErrorText = "";
+            //row.Cells[21].ErrorText = "";
+            //row.Cells[22].ErrorText = "";
 
-            if ("" + row.Cells[20].Value != "" && "" + row.Cells[20].Value == "True")
-            {
+            //if ("" + row.Cells[20].Value != "" && "" + row.Cells[20].Value == "True")
+            //{
 
-                if ("" + row.Cells[21].Value == "")
-                {
-                    validatePass &= false;
-                    row.Cells[21].ErrorText = "必須輸入整數";
-                }
+            //    if ("" + row.Cells[21].Value == "")
+            //    {
+            //        validatePass &= false;
+            //        row.Cells[21].ErrorText = "必須輸入整數";
+            //    }
 
-                if ("" + row.Cells[22].Value == "")
-                {
-                    validatePass &= false;
-                    row.Cells[22].ErrorText = "必須輸入整數";
-                }
-            }
+            //    if ("" + row.Cells[22].Value == "")
+            //    {
+            //        validatePass &= false;
+            //        row.Cells[22].ErrorText = "必須輸入整數";
+            //    }
+            //}
 
-            if ("" + row.Cells[21].Value != "" || "" + row.Cells[22].Value != "")
-            {
-                if ("" + row.Cells[20].Value != "" && "" + row.Cells[20].Value == "True")
-                {
+            //if ("" + row.Cells[21].Value != "" || "" + row.Cells[22].Value != "")
+            //{
+            //    if ("" + row.Cells[20].Value != "" && "" + row.Cells[20].Value == "True")
+            //    {
 
-                }
-                else
-                {
-                    validatePass &= false;
-                    row.Cells[20].ErrorText = "是否補修成績必須打勾";
-                }
+            //    }
+            //    else
+            //    {
+            //        validatePass &= false;
+            //        row.Cells[20].ErrorText = "是否補修成績必須打勾";
+            //    }
 
-            }
-            #endregion
+            //}
+            //#endregion
 
             #region 檢查重修相關欄位
             if ("" + row.Cells[Column8.Index].Value != "")
@@ -1357,7 +1399,167 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             }
         }
 
+        private void dataGridViewX1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // 選取科目按鈕
+            try
+            {
+                if (e.ColumnIndex == 0 && e.RowIndex > -1)
+                {
+                    // 取得目前科目名稱與級別
+                    List<string> subjLevelList = new List<string>();
+                    foreach (DataGridViewRow row in dataGridViewX1.Rows)
+                    {
+                        if (row.Index == e.RowIndex) continue;
 
+                        string key = row.Cells[3].Value + "_" + row.Cells[4].Value;
+                        subjLevelList.Add(key);
+                    }
+
+                    frmPickSubject frm = new frmPickSubject();
+
+                    if (dataGridViewX1.Rows[e.RowIndex].IsNewRow)
+                        frm.SetIsNewRow(true);
+                    else
+                        frm.SetIsNewRow(false);
+
+                    frm.SetHasSubjectNameAndLevel(subjLevelList);
+                    frm.SetStudentID(_StudentID);
+                    if (frm.ShowDialog() == DialogResult.OK)
+                    {
+                        // 取得選取的科目
+                        List<SubjectInfo> ssList = frm.GetPickSubjects();
+
+                        // 只有1筆覆蓋或新增在NewRow，多筆直接新增
+                        if (ssList.Count > 0)
+                        {
+                            if (ssList.Count == 1)
+                            {
+                                SubjectInfo ss = ssList[0];
+
+                                if (ss != null)
+                                {
+                                    // 領域
+                                    dataGridViewX1.Rows[e.RowIndex].Cells[1].Value = ss.Domain;
+                                    // 分項
+                                    dataGridViewX1.Rows[e.RowIndex].Cells[2].Value = ss.Entry;
+                                    // 科目
+                                    dataGridViewX1.Rows[e.RowIndex].Cells[3].Value = ss.SubjectName;
+                                    // 級別
+                                    dataGridViewX1.Rows[e.RowIndex].Cells[4].Value = ss.SubjectLevel;
+                                    // 學分
+                                    dataGridViewX1.Rows[e.RowIndex].Cells[5].Value = ss.Credit;
+                                    // 校部定
+                                    dataGridViewX1.Rows[e.RowIndex].Cells[6].Value = ss.RequiredBy;
+                                    // 必選修
+                                    dataGridViewX1.Rows[e.RowIndex].Cells[7].Value = ss.Required;
+
+                                    // 不計學分14
+
+                                    if (ss.NotIncludedInCredit == "是")
+                                        dataGridViewX1.Rows[e.RowIndex].Cells[14].Value = true;
+                                    else
+                                        dataGridViewX1.Rows[e.RowIndex].Cells[14].Value = false;
+
+                                    // 不需評分15
+                                    if (ss.NotIncludedInCalc == "是")
+                                        dataGridViewX1.Rows[e.RowIndex].Cells[15].Value = true;
+                                    else
+                                        dataGridViewX1.Rows[e.RowIndex].Cells[15].Value = false;
+
+                                    // 指定學年科目名稱
+                                    dataGridViewX1.Rows[e.RowIndex].Cells[ColSpecifySubjectName.Index].Value = ss.SchoolYearSubjectName;
+
+                                    // 課程代碼
+                                    dataGridViewX1.Rows[e.RowIndex].Cells[colCourseCode.Index].Value = ss.CourseCode;
+
+                                    // 課程代碼
+                                    dataGridViewX1.Rows[e.RowIndex].Cells[colCourseCode.Index].Value = ss.CourseCode;
+
+                                    // 報部科目名稱
+                                    dataGridViewX1.Rows[e.RowIndex].Cells[colDSubjectName.Index].Value = ss.DeptSubjectName;
+                                }
+
+                            }
+                            else
+                            {
+                                // 多筆往後加
+                                foreach (SubjectInfo ss in ssList)
+                                {
+                                    if (ss != null)
+                                    {
+                                        int rowIdx = dataGridViewX1.Rows.Add();
+                                        // 領域
+                                        dataGridViewX1.Rows[rowIdx].Cells[1].Value = ss.Domain;
+                                        // 分項
+                                        dataGridViewX1.Rows[rowIdx].Cells[2].Value = ss.Entry;
+                                        // 科目
+                                        dataGridViewX1.Rows[rowIdx].Cells[3].Value = ss.SubjectName;
+                                        // 級別
+                                        dataGridViewX1.Rows[rowIdx].Cells[4].Value = ss.SubjectLevel;
+                                        // 學分
+                                        dataGridViewX1.Rows[rowIdx].Cells[5].Value = ss.Credit;
+                                        // 校部定
+                                        dataGridViewX1.Rows[rowIdx].Cells[6].Value = ss.RequiredBy;
+                                        // 必選修
+                                        dataGridViewX1.Rows[rowIdx].Cells[7].Value = ss.Required;
+
+                                        // 不計學分14
+
+                                        if (ss.NotIncludedInCredit == "是")
+                                            dataGridViewX1.Rows[rowIdx].Cells[14].Value = true;
+                                        else
+                                            dataGridViewX1.Rows[rowIdx].Cells[14].Value = false;
+
+                                        // 不需評分15
+                                        if (ss.NotIncludedInCalc == "是")
+                                            dataGridViewX1.Rows[rowIdx].Cells[15].Value = true;
+                                        else
+                                            dataGridViewX1.Rows[rowIdx].Cells[15].Value = false;
+
+                                        // 指定學年科目名稱
+                                        dataGridViewX1.Rows[rowIdx].Cells[ColSpecifySubjectName.Index].Value = ss.SchoolYearSubjectName;
+
+                                        // 課程代碼
+                                        dataGridViewX1.Rows[rowIdx].Cells[colCourseCode.Index].Value = ss.CourseCode;
+
+                                        // 課程代碼
+                                        dataGridViewX1.Rows[rowIdx].Cells[colCourseCode.Index].Value = ss.CourseCode;
+
+                                        // 報部科目名稱
+                                        dataGridViewX1.Rows[rowIdx].Cells[colDSubjectName.Index].Value = ss.DeptSubjectName;
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
+
+        private void groupPanel1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridViewX1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+
+            if (dataGridViewX1.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
+            {
+                DataGridViewButtonCell buttonCell = (DataGridViewButtonCell)dataGridViewX1.Rows[e.RowIndex].Cells[e.ColumnIndex];
+
+                buttonCell.Style.BackColor = Color.SkyBlue;
+                buttonCell.ToolTipText = "選取科目";
+                buttonCell.Value = "...";
+            }
+        }
 
         class EntryScoreToolTipProvider
         {

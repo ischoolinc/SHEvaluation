@@ -1088,6 +1088,15 @@ namespace SmartSchool.Evaluation.Configuration
         private void dataGridViewX1_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
 
+            // 2023/6/8，CT 當使用者輸入儲存格為數字，先將輸入法關閉，不然輸入0的全形與半形看不出來，會產生驗證錯誤。
+            if (e.RowIndex > -1 && e.ColumnIndex > -1)
+            {
+                if (e.ColumnIndex > 0)
+                {                    
+                    dataGridViewX1.ImeMode = ImeMode.Off;
+                }
+            }
+
             if (dataGridViewX1.SelectedCells.Count == 1)
                 dataGridViewX1.BeginEdit(true);
         }

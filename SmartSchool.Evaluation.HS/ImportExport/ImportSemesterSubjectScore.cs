@@ -381,23 +381,23 @@ namespace SmartSchool.Evaluation.ImportExport
                         }
 
 
-                        // 檢查補修學年度、補修學期
-                        if (e.SelectFields.Contains("是否補修成績") && e.SelectFields.Contains("補修學年度") && e.SelectFields.Contains("補修學期"))
-                        {
-                            if (e.Data["是否補修成績"] == "是")
-                            {
-                                if (e.Data["補修學年度"] == "" || e.Data["補修學期"] == "")
-                                {
-                                    errorMessage += (errorMessage == "" ? "" : "\n") + "補修學年度、補修學期 必填!";
-                                }
-                            }
+                        //// 檢查補修學年度、補修學期
+                        //if (e.SelectFields.Contains("是否補修成績") && e.SelectFields.Contains("補修學年度") && e.SelectFields.Contains("補修學期"))
+                        //{
+                        //    if (e.Data["是否補修成績"] == "是")
+                        //    {
+                        //        if (e.Data["補修學年度"] == "" || e.Data["補修學期"] == "")
+                        //        {
+                        //            errorMessage += (errorMessage == "" ? "" : "\n") + "補修學年度、補修學期 必填!";
+                        //        }
+                        //    }
 
-                            if (e.Data["補修學年度"] != "" || e.Data["補修學期"] != "")
-                            {
-                                if (e.Data["是否補修成績"] != "是")
-                                    errorMessage += (errorMessage == "" ? "" : "\n") + "是否補修成績 必填 是";
-                            }
-                        }
+                        //    if (e.Data["補修學年度"] != "" || e.Data["補修學期"] != "")
+                        //    {
+                        //        if (e.Data["是否補修成績"] != "是")
+                        //            errorMessage += (errorMessage == "" ? "" : "\n") + "是否補修成績 必填 是";
+                        //    }
+                        //}
 
                         // 檢查重修學年度、重修學期
                         if (e.SelectFields.Contains("重修成績") && e.SelectFields.Contains("重修學年度") && e.SelectFields.Contains("重修學期"))

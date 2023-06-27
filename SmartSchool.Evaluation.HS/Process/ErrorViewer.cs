@@ -1,12 +1,7 @@
-﻿using System;
+﻿using SmartSchool.Customization.Data;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using DevComponents.DotNetBar;
-using SmartSchool.Customization.Data;
 
 
 namespace SmartSchool.Evaluation.Process
@@ -64,7 +59,7 @@ namespace SmartSchool.Evaluation.Process
                 dataGridViewX1.Rows.Add(row);
 
             }
-            toolStripStatusLabel1.Text ="總計"+dataGridViewX1.Rows.Count+"個錯誤。";
+            toolStripStatusLabel1.Text = "總計" + dataGridViewX1.Rows.Count + "個錯誤。";
         }
 
         public void Clear()
@@ -76,13 +71,13 @@ namespace SmartSchool.Evaluation.Process
 
         // 匯出
         private void buttonX1_Click(object sender, EventArgs e)
-        {            
+        {
             #region 匯出
             if (saveFileDialog1.ShowDialog() != DialogResult.OK) return;
 
             DataGridViewExport export = new DataGridViewExport(dataGridViewX1);
             export.Save(saveFileDialog1.FileName);
-            
+
             if (new CompleteForm().ShowDialog() == DialogResult.Yes)
                 System.Diagnostics.Process.Start(saveFileDialog1.FileName);
             #endregion
@@ -99,10 +94,10 @@ namespace SmartSchool.Evaluation.Process
                     TemporalStud.Add("" + var.Tag);
                 }
             }
-            
+
             K12.Presentation.NLDPanels.Student.AddToTemp(TemporalStud);
             FISCA.Presentation.Controls.MsgBox.Show("新增 " + TemporalStud.Count + " 名學生於待處理");
-            
+
         }
     }
 }

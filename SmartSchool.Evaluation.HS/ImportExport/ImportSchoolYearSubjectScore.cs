@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Xml;
-using SmartSchool.AccessControl;
+﻿using SmartSchool.AccessControl;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
 using SmartSchool.Customization.PlugIn.ImportExport;
+using System.Collections.Generic;
+using System.Threading;
+using System.Xml;
 
 namespace SmartSchool.Evaluation.ImportExport
 {
@@ -29,11 +29,11 @@ namespace SmartSchool.Evaluation.ImportExport
             this.Title = "匯入學年科目成績";
             this.Group = "學年科目成績";
             this.PackageLimit = 3000;
-            foreach (string field in new string[] { "科目", "學年度", "成績年級", "結算成績", "補考成績", "重修成績"})
+            foreach (string field in new string[] { "科目", "學年度", "成績年級", "結算成績", "補考成績", "重修成績" })
             {
                 this.ImportableFields.Add(field);
             }
-            foreach (string field in new string[] { "科目", "學年度", "成績年級"})
+            foreach (string field in new string[] { "科目", "學年度", "成績年級" })
             {
                 this.RequiredFields.Add(field);
             }
@@ -480,7 +480,7 @@ namespace SmartSchool.Evaluation.ImportExport
                         {
                             XmlElement newScore = doc.CreateElement("Subject");
                             #region 建立newScore
-                            foreach (string field in new string[] {"科目", "結算成績", "補考成績", "重修成績"})
+                            foreach (string field in new string[] { "科目", "結算成績", "補考成績", "重修成績" })
                             {
                                 if (args.ImportFields.Contains(field))
                                 {
@@ -528,7 +528,7 @@ namespace SmartSchool.Evaluation.ImportExport
                     {
                         XmlElement newScore = doc.CreateElement("Subject");
                         #region 建立newScore
-                        foreach (string field in new string[] {"科目", "結算成績", "補考成績", "重修成績"})
+                        foreach (string field in new string[] { "科目", "結算成績", "補考成績", "重修成績" })
                         {
                             if (args.ImportFields.Contains(field))
                             {

@@ -1,12 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using System.Xml;
-using SmartSchool.Common;
 
 namespace SmartSchool.Evaluation.Reports
 {
@@ -30,7 +23,7 @@ namespace SmartSchool.Evaluation.Reports
         {
             get { return _paperSize; }
         }
-	
+
 
         public ClassSemesterScoreForm()
         {
@@ -82,7 +75,7 @@ namespace SmartSchool.Evaluation.Reports
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            ClassSemesterScoreConfig form = new ClassSemesterScoreConfig(_over100, _paperSize,_UseSourceScore);
+            ClassSemesterScoreConfig form = new ClassSemesterScoreConfig(_over100, _paperSize, _UseSourceScore);
             if (form.ShowDialog() == DialogResult.OK)
             {
                 LoadPreference();

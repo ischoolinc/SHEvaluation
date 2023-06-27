@@ -2,11 +2,7 @@
 using FISCA.Presentation.Controls;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -59,7 +55,7 @@ namespace SmartSchool.Evaluation.Configuration
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             if (_SelectItem == null) return;
-            
+
             if (subjectTableEditor1.IsValidated())
             {
                 SaveAdvTreeExpandStatus();
@@ -240,7 +236,7 @@ namespace SmartSchool.Evaluation.Configuration
             // 排序
             #region 排序
             List<string> sortedKey = itemNodes.Keys.ToList<string>();
-            sortedKey.Sort(delegate(string key1, string key2)
+            sortedKey.Sort(delegate (string key1, string key2)
             {
                 if (key1 == "未分類") return 1;
                 if (key2 == "未分類") return -1;
@@ -282,7 +278,7 @@ namespace SmartSchool.Evaluation.Configuration
         /// <param name="e"></param>
         private void advTree1_NodeClick(object sender, DevComponents.AdvTree.TreeNodeMouseEventArgs e)
         {
-            
+
             if (!(e.Node.Tag is SubjectTableItem))
             {
                 // 假如使用者點到母節點, 清掉選擇選項, 以免有問題
@@ -300,7 +296,7 @@ namespace SmartSchool.Evaluation.Configuration
             _SelectItem.Checked = true;
             BtnEnabled(true);
             this.subjectTableEditor1.Visible = true;
-            
+
         }
 
         /// <summary>
@@ -329,7 +325,7 @@ namespace SmartSchool.Evaluation.Configuration
                 _AdvTreeExpandStatus[node.TagString] = node.Expanded;
             }
         }
-        
+
         /// <summary>
         /// 取得目前node的full path (去除";" & "未分類")
         /// </summary>

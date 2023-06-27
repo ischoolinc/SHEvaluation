@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using DevComponents.DotNetBar;
-using SmartSchool.Customization.Data;
 
 namespace SmartSchool.Evaluation.Process
 {
@@ -21,14 +14,14 @@ namespace SmartSchool.Evaluation.Process
 
             _hasErorr = hasError;
 
-            buttonX1.Enabled = ! _hasErorr; // 如果有錯誤清單則就不給點選上傳
+            buttonX1.Enabled = !_hasErorr; // 如果有錯誤清單則就不給點選上傳
         }
         public void SetMessage(string item, string messages)
         {
 
             dataGridViewX1.Rows.Add(item, messages);
-            
-            toolStripStatusLabel1.Text ="總計"+dataGridViewX1.Rows.Count+"個警告。";
+
+            toolStripStatusLabel1.Text = "總計" + dataGridViewX1.Rows.Count + "個警告。";
         }
 
         public void Clear()

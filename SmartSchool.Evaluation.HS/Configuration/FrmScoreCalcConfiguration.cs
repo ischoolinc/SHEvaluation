@@ -4,10 +4,8 @@ using SmartSchool.Feature.ScoreCalcRule;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace SmartSchool.Evaluation.Configuration
@@ -185,7 +183,7 @@ namespace SmartSchool.Evaluation.Configuration
             SetAdvTreeExpandStatus(e.NewSchoolYear, true);
             ScoreCalcRule.ScoreCalcRule.Instance.Invok_ScoreCalcRuleUpdated();
         }
-        
+
         /// <summary>
         /// 檢查名稱是否重複
         /// </summary>
@@ -250,7 +248,7 @@ namespace SmartSchool.Evaluation.Configuration
             // 針對學年度排序
             #region 針對學年度排序
             List<string> sortedKey = itemNodes.Keys.ToList<string>();
-            sortedKey.Sort(delegate(string key1, string key2)
+            sortedKey.Sort(delegate (string key1, string key2)
             {
                 if (key1 == "未分類") return 1;
                 if (key2 == "未分類") return -1;
@@ -279,7 +277,7 @@ namespace SmartSchool.Evaluation.Configuration
 
             advTree1.EndUpdate();
             #endregion 把結果填入畫面
-            
+
             if (_SelectItem != null)
             {
                 advTree1.SelectedNode = _SelectItem;

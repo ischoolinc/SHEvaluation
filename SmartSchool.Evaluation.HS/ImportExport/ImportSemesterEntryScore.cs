@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Xml;
-using SmartSchool.AccessControl;
+﻿using SmartSchool.AccessControl;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
 using SmartSchool.Customization.PlugIn.ImportExport;
 using SmartSchool.Feature.Score;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Xml;
 
 namespace SmartSchool.Evaluation.ImportExport
 {
@@ -430,14 +430,14 @@ namespace SmartSchool.Evaluation.ImportExport
                                 //, "體育"
                                 //, "國防通識"
                                 //, "健康與護理"
-                                , "實習科目" 
-                                , "專業科目" 
+                                , "實習科目"
+                                , "專業科目"
                                 , "學業(原始)"
                                 //, "體育(原始)"
                                 //, "國防通識(原始)"
                                 //, "健康與護理(原始)"
-                                , "實習科目(原始)" 
-                                , "專業科目(原始)" 
+                                , "實習科目(原始)"
+                                , "專業科目(原始)"
                                 })
                             {
                                 if (semesterImportScore[sy][se].ContainsKey(key) ||//有匯入此分項成績
@@ -508,14 +508,14 @@ namespace SmartSchool.Evaluation.ImportExport
                                 , "體育"
                                 , "國防通識"
                                 , "健康與護理"
-                                , "實習科目" 
-                                , "專業科目"     
+                                , "實習科目"
+                                , "專業科目"
                                 , "學業(原始)"
                                 , "體育(原始)"
                                 , "國防通識(原始)"
                                 , "健康與護理(原始)"
-                                , "實習科目(原始)" 
-                                , "專業科目(原始) "     
+                                , "實習科目(原始)"
+                                , "專業科目(原始) "
                             })
                             {
                                 if (semesterScoreDictionary.ContainsKey(sy) && semesterScoreDictionary[sy].ContainsKey(se) && semesterScoreDictionary[sy][se].ContainsKey(key)) //原本有此分項成績                        

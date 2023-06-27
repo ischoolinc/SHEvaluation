@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using FISCA.DSAUtil;
 using SmartSchool.Feature.Score;
-using SmartSchool.Common;
-using FISCA.DSAUtil;
+using SmartSchool.Feature.Score.Rating;
+using System;
+using System.Collections.Generic;
 using System.Xml;
 using RankStudent = SmartSchool.Evaluation.Process.Rating.Student;
-using SmartSchool.Feature.Score.Rating;
 
 namespace SmartSchool.Evaluation.Process.Rating
 {

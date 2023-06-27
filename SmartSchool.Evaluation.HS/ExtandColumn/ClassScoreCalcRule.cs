@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SmartSchool.Evaluation.ExtandColumn
 {
@@ -15,7 +14,7 @@ namespace SmartSchool.Evaluation.ExtandColumn
 
         void Instance_ClassReferenceCaleRuleChanged(object sender, EventArgs e)
         {
-            if ( VariableChanged != null )
+            if (VariableChanged != null)
                 VariableChanged.Invoke(this, new EventArgs());
         }
 
@@ -34,9 +33,9 @@ namespace SmartSchool.Evaluation.ExtandColumn
         public void FillExtendedValues(List<string> identities)
         {
             _Values.Clear();
-            foreach ( string var in identities )
+            foreach (string var in identities)
             {
-                if ( ScoreCalcRule.ScoreCalcRule.Instance.GetClassScoreCalcRuleInfo(var) == null )
+                if (ScoreCalcRule.ScoreCalcRule.Instance.GetClassScoreCalcRuleInfo(var) == null)
                     _Values.Add(var, "");
                 else
                     _Values.Add(var, ScoreCalcRule.ScoreCalcRule.Instance.GetClassScoreCalcRuleInfo(var).Name);

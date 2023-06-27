@@ -1,26 +1,23 @@
-﻿using System;
+﻿using DevComponents.DotNetBar;
+using DevComponents.DotNetBar.Rendering;
+using FISCA.DSAUtil;
+using SmartSchool.Customization.Data;
+using SmartSchool.Customization.Data.StudentExtension;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using DevComponents.DotNetBar;
-using SmartSchool.Customization.Data;
 using System.Xml;
-using SmartSchool.Customization.Data.StudentExtension;
-using FISCA.DSAUtil;
-using DevComponents.DotNetBar.Rendering;
 
 namespace SmartSchool.Evaluation.Process.Wizards
 {
     public partial class CalcSemesterMoralScoreWizard : SmartSchool.Common.BaseForm
     {
-        private const int _MaxPackageSize =250;
+        private const int _MaxPackageSize = 250;
 
         private ErrorViewer _ErrorViewer = new ErrorViewer();
 
-        private BackgroundWorker runningBackgroundWorker=new BackgroundWorker();
+        private BackgroundWorker runningBackgroundWorker = new BackgroundWorker();
 
         private SelectType _Type;
 
@@ -31,22 +28,22 @@ namespace SmartSchool.Evaluation.Process.Wizards
 
             #region 設定Wizard會跟著Style跑
             //this.wizard1.FooterStyle.ApplyStyle(( GlobalManager.Renderer as Office2007Renderer ).ColorTable.GetClass(ElementStyleClassKeys.RibbonFileMenuBottomContainerKey));
-            this.wizard1.HeaderStyle.ApplyStyle(( GlobalManager.Renderer as Office2007Renderer ).ColorTable.GetClass(ElementStyleClassKeys.RibbonFileMenuBottomContainerKey));
+            this.wizard1.HeaderStyle.ApplyStyle((GlobalManager.Renderer as Office2007Renderer).ColorTable.GetClass(ElementStyleClassKeys.RibbonFileMenuBottomContainerKey));
             this.wizard1.FooterStyle.BackColorGradientAngle = -90;
             this.wizard1.FooterStyle.BackColorGradientType = eGradientType.Linear;
-            this.wizard1.FooterStyle.BackColor = ( GlobalManager.Renderer as Office2007Renderer ).ColorTable.RibbonBar.Default.TopBackground.Start;
-            this.wizard1.FooterStyle.BackColor2 = ( GlobalManager.Renderer as Office2007Renderer ).ColorTable.RibbonBar.Default.TopBackground.End;
-            this.wizard1.BackColor = ( GlobalManager.Renderer as Office2007Renderer ).ColorTable.RibbonBar.Default.TopBackground.Start;
+            this.wizard1.FooterStyle.BackColor = (GlobalManager.Renderer as Office2007Renderer).ColorTable.RibbonBar.Default.TopBackground.Start;
+            this.wizard1.FooterStyle.BackColor2 = (GlobalManager.Renderer as Office2007Renderer).ColorTable.RibbonBar.Default.TopBackground.End;
+            this.wizard1.BackColor = (GlobalManager.Renderer as Office2007Renderer).ColorTable.RibbonBar.Default.TopBackground.Start;
             this.wizard1.BackgroundImage = null;
-            for ( int i = 0 ; i < 5 ; i++ )
+            for (int i = 0; i < 5; i++)
             {
-                ( this.wizard1.Controls[1].Controls[i] as ButtonX ).ColorTable = eButtonColor.OrangeWithBackground;
+                (this.wizard1.Controls[1].Controls[i] as ButtonX).ColorTable = eButtonColor.OrangeWithBackground;
             }
-            ( this.wizard1.Controls[0].Controls[1] as System.Windows.Forms.Label ).ForeColor = ( GlobalManager.Renderer as Office2007Renderer ).ColorTable.RibbonBar.MouseOver.TitleText;
-            ( this.wizard1.Controls[0].Controls[2] as System.Windows.Forms.Label ).ForeColor = ( GlobalManager.Renderer as Office2007Renderer ).ColorTable.RibbonBar.Default.TitleText;
+            (this.wizard1.Controls[0].Controls[1] as System.Windows.Forms.Label).ForeColor = (GlobalManager.Renderer as Office2007Renderer).ColorTable.RibbonBar.MouseOver.TitleText;
+            (this.wizard1.Controls[0].Controls[2] as System.Windows.Forms.Label).ForeColor = (GlobalManager.Renderer as Office2007Renderer).ColorTable.RibbonBar.Default.TitleText;
             #endregion
 
-            switch ( _Type )
+            switch (_Type)
             {
                 default:
                 case SelectType.Student:
@@ -77,11 +74,11 @@ namespace SmartSchool.Evaluation.Process.Wizards
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            switch ( _Type )
+            switch (_Type)
             {
                 default:
                 case SelectType.Student:
-                    if ( this.numericUpDown1.Value == SmartSchool.Customization.Data.SystemInformation.SchoolYear && this.numericUpDown2.Value == SmartSchool.Customization.Data.SystemInformation.Semester )
+                    if (this.numericUpDown1.Value == SmartSchool.Customization.Data.SystemInformation.SchoolYear && this.numericUpDown2.Value == SmartSchool.Customization.Data.SystemInformation.Semester)
                     {
                         checkBox1.Checked = true;
                         checkBox1.Enabled = true;
@@ -122,7 +119,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
             List<StudentRecord> selectedStudents;
             int schooyYear;
             int semester;
-            switch ( _Type )
+            switch (_Type)
             {
                 default:
                 case SelectType.Student:
@@ -132,10 +129,10 @@ namespace SmartSchool.Evaluation.Process.Wizards
                     break;
                 case SelectType.GradeYearStudent:
                     selectedStudents = new List<StudentRecord>();
-                    foreach ( ClassRecord classrecord in helper.ClassHelper.GetAllClass() )
+                    foreach (ClassRecord classrecord in helper.ClassHelper.GetAllClass())
                     {
                         int tryParseGradeYear;
-                        if ( int.TryParse(classrecord.GradeYear, out tryParseGradeYear) && tryParseGradeYear == (int)numericUpDown1.Value )
+                        if (int.TryParse(classrecord.GradeYear, out tryParseGradeYear) && tryParseGradeYear == (int)numericUpDown1.Value)
                             selectedStudents.AddRange(classrecord.Students);
                     }
                     schooyYear = SmartSchool.Customization.Data.SystemInformation.SchoolYear;
@@ -150,7 +147,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
             runningBackgroundWorker.ProgressChanged += new ProgressChangedEventHandler(bkw_ProgressChanged);
             runningBackgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bkw_RunWorkerCompleted);
             runningBackgroundWorker.DoWork += new DoWorkEventHandler(bkw_DoWork);
-            runningBackgroundWorker.RunWorkerAsync(new object[] { schooyYear, semester, helper, selectedStudents,checkBox1.Checked });
+            runningBackgroundWorker.RunWorkerAsync(new object[] { schooyYear, semester, helper, selectedStudents, checkBox1.Checked });
         }
 
         void bkw_DoWork(object sender, DoWorkEventArgs e)
@@ -160,7 +157,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
             int semester = (int)((object[])e.Argument)[1];
             AccessHelper helper = (AccessHelper)((object[])e.Argument)[2];
             List<StudentRecord> selectedStudents = (List<StudentRecord>)((object[])e.Argument)[3];
-            bool registerSemesterHistory = (bool)((object[])e.Argument)[4];            
+            bool registerSemesterHistory = (bool)((object[])e.Argument)[4];
             AngelDemonComputer computer = new AngelDemonComputer();
             int packageSize = 50;
             int packageCount = 0;
@@ -181,35 +178,35 @@ namespace SmartSchool.Evaluation.Process.Wizards
                 }
                 package.Add(s);
                 packageCount--;
-            } 
+            }
             #endregion
             double maxStudents = selectedStudents.Count;
             if (maxStudents == 0)
                 maxStudents = 1;
             double computedStudents = 0;
-            bool allPass=true;
+            bool allPass = true;
 
             List<SmartSchool.Feature.Score.AddScore.InsertInfo> insertList = new List<SmartSchool.Feature.Score.AddScore.InsertInfo>();
             List<SmartSchool.Feature.Score.EditScore.UpdateInfo> updateList = new List<SmartSchool.Feature.Score.EditScore.UpdateInfo>();
             XmlDocument doc = new XmlDocument();
             foreach (List<StudentRecord> var in packages)
             {
-                if ( registerSemesterHistory )
+                if (registerSemesterHistory)
                 {
                     #region 重設學期歷程
-                    if ( var.Count > 0 )
+                    if (var.Count > 0)
                     {
                         helper.StudentHelper.FillField("SemesterHistory", var);
                         List<StudentRecord> editList = new List<StudentRecord>();
                         #region 檢查並編及每個選取學生的學期歷程
-                        foreach ( StudentRecord stu in var )
+                        foreach (StudentRecord stu in var)
                         {
                             int gyear;
-                            if ( stu.RefClass != null && int.TryParse(stu.RefClass.GradeYear, out gyear) )
+                            if (stu.RefClass != null && int.TryParse(stu.RefClass.GradeYear, out gyear))
                             {
                                 XmlElement semesterHistory = (XmlElement)stu.Fields["SemesterHistory"];
                                 XmlElement historyElement = null;
-                                foreach ( XmlElement history in new DSXmlHelper(semesterHistory).GetElements("History") )
+                                foreach (XmlElement history in new DSXmlHelper(semesterHistory).GetElements("History"))
                                 {
                                     int year, sems, gradeyear;
                                     if (
@@ -221,7 +218,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
                                         historyElement = history;
                                     }
                                 }
-                                if ( historyElement == null )
+                                if (historyElement == null)
                                 {
                                     historyElement = semesterHistory.OwnerDocument.CreateElement("History");
                                     historyElement.SetAttribute("SchoolYear", "" + schoolyear);
@@ -232,7 +229,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
                                 }
                                 else
                                 {
-                                    if ( historyElement.GetAttribute("GradeYear") != "" + gyear )
+                                    if (historyElement.GetAttribute("GradeYear") != "" + gyear)
                                     {
                                         historyElement.SetAttribute("GradeYear", "" + gyear);
                                         editList.Add(stu);
@@ -243,10 +240,10 @@ namespace SmartSchool.Evaluation.Process.Wizards
                         #endregion
 
                         string req = "<UpdateStudentList>";
-                        foreach ( StudentRecord stu in var )
+                        foreach (StudentRecord stu in var)
                         {
                             int tryParseInt;
-                            req += "<Student><Field><SemesterHistory>" + ( (XmlElement)stu.Fields["SemesterHistory"] ).InnerXml + "</SemesterHistory></Field><Condition><ID>" + stu.StudentID + "</ID></Condition></Student>";
+                            req += "<Student><Field><SemesterHistory>" + ((XmlElement)stu.Fields["SemesterHistory"]).InnerXml + "</SemesterHistory></Field><Condition><ID>" + stu.StudentID + "</ID></Condition></Student>";
                         }
                         req += "</UpdateStudentList>";
                         DSRequest dsreq = new DSRequest(req);
@@ -321,13 +318,13 @@ namespace SmartSchool.Evaluation.Process.Wizards
                                     entry.SetAttribute("分項", "德行");
                                     entry.SetAttribute("成績", scoreElement.GetAttribute("Score"));
                                     element.AppendChild(entry);
-                                    insertList.Add(new SmartSchool.Feature.Score.AddScore.InsertInfo(""+stu.StudentID, ""+schoolyear, ""+semester, ""+gradeYear, "行為", element));
+                                    insertList.Add(new SmartSchool.Feature.Score.AddScore.InsertInfo("" + stu.StudentID, "" + schoolyear, "" + semester, "" + gradeYear, "行為", element));
                                 }
                                 else
                                 {
-                                    bool lockScore=false;
+                                    bool lockScore = false;
                                     //沒有指定是否鎖定或鎖定為否
-                                    if ( bool.TryParse(updateEntryScore.Detail.GetAttribute("鎖定"), out lockScore)==false || lockScore == false )
+                                    if (bool.TryParse(updateEntryScore.Detail.GetAttribute("鎖定"), out lockScore) == false || lockScore == false)
                                     {
                                         Dictionary<int, Dictionary<int, Dictionary<string, string>>> scoreID = (Dictionary<int, Dictionary<int, Dictionary<string, string>>>)stu.Fields["SemesterEntryScoreID"];
                                         string id = scoreID[updateEntryScore.SchoolYear][updateEntryScore.Semester]["行為"];
@@ -361,7 +358,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
         {
             if (!((BackgroundWorker)sender).CancellationPending)
             {
-                if (e.Result==null)
+                if (e.Result == null)
                 {
                     linkLabel1.Visible = true;
                     labelX4.Text = "計算失敗，請檢查錯誤訊息。";
@@ -441,8 +438,8 @@ namespace SmartSchool.Evaluation.Process.Wizards
         {
             BackgroundWorker bkw = ((BackgroundWorker)sender);
             List<SmartSchool.Feature.Score.AddScore.InsertInfo> insertList = (List<SmartSchool.Feature.Score.AddScore.InsertInfo>)((object[])e.Argument)[0];
-            List<SmartSchool.Feature.Score.EditScore.UpdateInfo> updateList = (List<SmartSchool.Feature.Score.EditScore.UpdateInfo>)( (object[])e.Argument )[1];
-            List<StudentRecord> selectedStudents = (List<StudentRecord>)( (object[])e.Argument )[2];
+            List<SmartSchool.Feature.Score.EditScore.UpdateInfo> updateList = (List<SmartSchool.Feature.Score.EditScore.UpdateInfo>)((object[])e.Argument)[1];
+            List<StudentRecord> selectedStudents = (List<StudentRecord>)((object[])e.Argument)[2];
             double maxItems = insertList.Count + updateList.Count;
             if (maxItems == 0) maxItems = 1;
             double uploadedItems = 0;
@@ -511,7 +508,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
         {
             List<StudentRecord> selectedStudents = (List<StudentRecord>)e.Result;
             List<string> idList = new List<string>();
-            foreach ( StudentRecord var in selectedStudents )
+            foreach (StudentRecord var in selectedStudents)
             {
                 idList.Add(var.StudentID);
             }
@@ -525,7 +522,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
             LogUtility.WriteLog(_Type, selectedStudents, numericUpDown1.Value.ToString(), numericUpDown2.Value.ToString(), "德行");
 
             #endregion
-        } 
+        }
         #endregion
     }
 }

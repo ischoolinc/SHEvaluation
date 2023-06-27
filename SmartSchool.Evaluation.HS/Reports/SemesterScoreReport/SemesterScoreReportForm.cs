@@ -1,13 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using System.IO;
+using System.Windows.Forms;
 using System.Xml;
-using SmartSchool.Common;
 
 namespace SmartSchool.Evaluation.Reports
 {
@@ -63,7 +58,7 @@ namespace SmartSchool.Evaluation.Reports
         {
             get { return _over100; }
         }
-	
+
 
         public SemesterScoreReportForm()
         {
@@ -96,7 +91,7 @@ namespace SmartSchool.Evaluation.Reports
                 }
 
                 //½d¥»
-                if(config.HasAttribute("UseDefault"))
+                if (config.HasAttribute("UseDefault"))
                     _useDefaultTemplate = bool.Parse(config.GetAttribute("UseDefault"));
                 else
                 {
@@ -130,7 +125,7 @@ namespace SmartSchool.Evaluation.Reports
                     _address = int.Parse(print.GetAttribute("Address"));
                     _resitSign = print.GetAttribute("ResitSign");
                     _repeatSign = print.GetAttribute("RepeatSign");
-                    if(!string.IsNullOrEmpty(print.GetAttribute("AllowMoralScoreOver100")))
+                    if (!string.IsNullOrEmpty(print.GetAttribute("AllowMoralScoreOver100")))
                         _over100 = bool.Parse(print.GetAttribute("AllowMoralScoreOver100"));
                 }
                 else

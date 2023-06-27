@@ -5,7 +5,7 @@ using System.Xml;
 
 namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
 {
-    public partial class AppraiseRuleEditor : UserControl,IMoralConductInstance
+    public partial class AppraiseRuleEditor : UserControl, IMoralConductInstance
     {
         private bool _SourceSetting = false;
 
@@ -22,7 +22,7 @@ namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
         public AppraiseRuleEditor()
         {
             InitializeComponent();
-            this.textBoxX1.TextChanged+=new EventHandler(CheckIsDirty);
+            this.textBoxX1.TextChanged += new EventHandler(CheckIsDirty);
         }
 
         #region IMoralConductInstance 成員
@@ -49,7 +49,7 @@ namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
             this.textBoxX1.Text = _Source.GetAttribute("Range");
             textBoxX1_TextChanged(null, null);
             _SourceSetting = false;
-            _BaseString = this.GetSource().OuterXml; 
+            _BaseString = this.GetSource().OuterXml;
         }
 
         public System.Xml.XmlElement GetSource()
@@ -80,7 +80,7 @@ namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
             listView1.Items.Clear();
             foreach (XmlElement element in SmartSchool.Feature.Basic.Config.GetMoralDiffItemList().GetContent().GetElements("DiffItem"))
             {
-                listView1.Items.Add(element.GetAttribute("Name")).ImageIndex=0;
+                listView1.Items.Add(element.GetAttribute("Name")).ImageIndex = 0;
                 _Names.Add(element.GetAttribute("Name"));
             }
         }
@@ -103,7 +103,7 @@ namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
             set
             {
                 _IsDirty = value;
-                if ( IsDirtyChanged != null )
+                if (IsDirtyChanged != null)
                 {
                     IsDirtyChanged.Invoke(this, new EventArgs());
                 }
@@ -153,7 +153,7 @@ namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
         private void btnAdd_Click(object sender, EventArgs e)
         {
             ListViewItem newItem = this.listView1.Items.Add("新增項目");
-            newItem.ImageIndex=0;
+            newItem.ImageIndex = 0;
             newItem.BeginEdit();
         }
 
@@ -174,15 +174,15 @@ namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
 
         private void CheckIsDirty(object sender, EventArgs e)
         {
-            if ( !_SourceSetting )
+            if (!_SourceSetting)
             {
                 bool dirty;
-                dirty = ( _BaseString != this.GetSource().OuterXml );
-                if ( listView1.Items.Count == _Names.Count )
+                dirty = (_BaseString != this.GetSource().OuterXml);
+                if (listView1.Items.Count == _Names.Count)
                 {
-                    foreach ( ListViewItem var in listView1.Items )
+                    foreach (ListViewItem var in listView1.Items)
                     {
-                        if ( !_Names.Contains(var.Text) )
+                        if (!_Names.Contains(var.Text))
                             dirty |= true;
                     }
                 }
@@ -194,7 +194,7 @@ namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
 
         private void listView1_AfterLabelEdit(object sender, LabelEditEventArgs e)
         {
-            if ( e.Label != null )
+            if (e.Label != null)
             {
                 listView1.Items[e.Item].Text = e.Label;
             }

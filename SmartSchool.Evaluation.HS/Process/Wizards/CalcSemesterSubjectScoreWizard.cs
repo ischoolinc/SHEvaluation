@@ -1,16 +1,14 @@
-﻿using System;
+﻿using DevComponents.DotNetBar;
+using DevComponents.DotNetBar.Rendering;
+using FISCA.Data;
+using FISCA.DSAUtil;
+using SmartSchool.Customization.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using DevComponents.DotNetBar;
-using SmartSchool.Customization.Data;
 using System.Xml;
-using DevComponents.DotNetBar.Rendering;
-using FISCA.DSAUtil;
-using FISCA.Data;
 
 namespace SmartSchool.Evaluation.Process.Wizards
 {
@@ -218,15 +216,15 @@ namespace SmartSchool.Evaluation.Process.Wizards
                                 "LEFT OUTER JOIN " +
                                 "class " +
                                 " ON student.ref_class_id = class.id " +
-                                " WHERE student.id IN("+string.Join(",",studIDList.ToArray())+");"; 
-             
+                                " WHERE student.id IN(" + string.Join(",", studIDList.ToArray()) + ");";
+
 
                             DataTable dt = qh.Select(qry);
 
                             foreach (DataRow dr in dt.Rows)
                             {
                                 string sid = dr["student_id"] + "";
-                                string groupCode = dr["gdc_code"] +"";
+                                string groupCode = dr["gdc_code"] + "";
                                 if (!studGDCCodeDict.ContainsKey(sid))
                                     studGDCCodeDict.Add(sid, groupCode);
                             }

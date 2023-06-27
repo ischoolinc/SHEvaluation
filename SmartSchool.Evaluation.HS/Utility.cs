@@ -1,9 +1,8 @@
-﻿using System;
+﻿using FISCA.Data;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FISCA.Data;
 using System.Data;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace SmartSchool.Evaluation
@@ -479,7 +478,7 @@ namespace SmartSchool.Evaluation
                     _retValue[sid].Add(sserx);
                 }
             }
-         
+
             return _retValue;
         }
 

@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml;
-using FISCA.DSAUtil;
+﻿using FISCA.DSAUtil;
 using SmartSchool.Evaluation.GraduationPlan;
 using SmartSchool.Feature.GraduationPlan;
+using System;
+using System.Collections.Generic;
+using System.Xml;
 
 namespace SmartSchool.Evaluation
 {
@@ -11,11 +11,11 @@ namespace SmartSchool.Evaluation
     class EventHub
     {
         private static EventHub _Instance = null;
-        public static EventHub Instance 
+        public static EventHub Instance
         {
-            get 
+            get
             {
-                if ( _Instance == null ) _Instance = new EventHub();
+                if (_Instance == null) _Instance = new EventHub();
                 return _Instance;
             }
         }
@@ -23,8 +23,8 @@ namespace SmartSchool.Evaluation
         public event EventHandler<ScoreChangedEventArgs> ScoreChanged;
         public void InvokScoreChanged(params string[] studentIDList)
         {
-            if ( studentIDList.Length == 0 ) return;
-            if ( ScoreChanged != null )
+            if (studentIDList.Length == 0) return;
+            if (ScoreChanged != null)
             {
                 ScoreChangedEventArgs args = new ScoreChangedEventArgs(studentIDList);
                 ScoreChanged.Invoke(this, args);
@@ -43,7 +43,7 @@ namespace SmartSchool.Evaluation
         public void InvokCommonPlanUpdated()
         {
             GraduationPlan.GraduationPlan.Instance.LoadCommonPlan();
-            if ( CommonPlanUpdated != null )
+            if (CommonPlanUpdated != null)
                 CommonPlanUpdated.Invoke(this, new EventArgs());
         }
 
@@ -51,7 +51,7 @@ namespace SmartSchool.Evaluation
         public void InvokGraduationPlanInserted()
         {
             GraduationPlan.GraduationPlan.Instance.LoadGraduationPlan();
-            if ( GraduationPlanInserted != null )
+            if (GraduationPlanInserted != null)
                 GraduationPlanInserted.Invoke(this, new EventArgs());
         }
 
@@ -60,13 +60,13 @@ namespace SmartSchool.Evaluation
         {
             GraduationPlanInfo oldInfo = null;
             GraduationPlanInfo newInfo = null;
-            if ( GraduationPlan.GraduationPlan.Instance._Items.ContainsKey(id) )
+            if (GraduationPlan.GraduationPlan.Instance._Items.ContainsKey(id))
             {
                 oldInfo = GraduationPlan.GraduationPlan.Instance._Items[id];
                 DSResponse resp = QueryGraduationPlan.GetGraduationPlan(id);
                 List<XmlElement> SortList = new List<XmlElement>();
                 XmlElement gPlan = resp.GetContent().GetElement("GraduationPlan");
-                if ( gPlan != null )
+                if (gPlan != null)
                 {
                     newInfo = new GraduationPlanInfo(gPlan);
                     GraduationPlan.GraduationPlan.Instance._Items[id] = newInfo;
@@ -74,46 +74,46 @@ namespace SmartSchool.Evaluation
                 else
                     GraduationPlan.GraduationPlan.Instance._Items.Remove(id);
             }
-            if ( GraduationPlanUpdated != null )
+            if (GraduationPlanUpdated != null)
                 GraduationPlanUpdated.Invoke(this, new UpdateGraduationPlanEventArgs(oldInfo, newInfo));
         }
 
         public event EventHandler<DeleteGraduationPlanEventArgs> GraduationPlanDeleted;
         public void InvokGraduationPlanDeleted(string id)
         {
-            if (GraduationPlan.GraduationPlan.Instance._Items.ContainsKey(id) )
+            if (GraduationPlan.GraduationPlan.Instance._Items.ContainsKey(id))
             {
                 GraduationPlan.GraduationPlan.Instance._Items.Remove(id);
             }
-            if ( GraduationPlanDeleted != null )
+            if (GraduationPlanDeleted != null)
                 GraduationPlanDeleted.Invoke(this, new DeleteGraduationPlanEventArgs(id));
         }
 
         public event EventHandler StudentReferenceGranduationPlanChanged;
         public void InvokeStudentReferenceGranduationPlanChanged()
         {
-            if ( StudentReferenceGranduationPlanChanged != null )
+            if (StudentReferenceGranduationPlanChanged != null)
                 StudentReferenceGranduationPlanChanged.Invoke(this, new EventArgs());
         }
-        
+
         public event EventHandler ClassReferenceGranduationPlanChanged;
         public void InvokeClassReferenceGranduationPlanChanged()
         {
-            if ( ClassReferenceGranduationPlanChanged != null )
+            if (ClassReferenceGranduationPlanChanged != null)
                 ClassReferenceGranduationPlanChanged.Invoke(this, new EventArgs());
         }
 
         public event EventHandler StudentReferenceCaleRuleChanged;
         public void InvokeStudentReferenceCaleRuleChanged()
         {
-            if ( StudentReferenceCaleRuleChanged != null )
+            if (StudentReferenceCaleRuleChanged != null)
                 StudentReferenceCaleRuleChanged.Invoke(this, new EventArgs());
         }
 
         public event EventHandler ClassReferenceCaleRuleChanged;
         public void InvokeClassReferenceCaleRuleChanged()
         {
-            if ( ClassReferenceCaleRuleChanged != null )
+            if (ClassReferenceCaleRuleChanged != null)
                 ClassReferenceCaleRuleChanged.Invoke(this, new EventArgs());
         }
     }
@@ -123,7 +123,7 @@ namespace SmartSchool.Evaluation
         public ScoreChangedEventArgs(params string[] items)
         {
             _Items = new List<string>();
-            foreach ( string var in items )
+            foreach (string var in items)
             {
                 _Items.Add(var);
             }

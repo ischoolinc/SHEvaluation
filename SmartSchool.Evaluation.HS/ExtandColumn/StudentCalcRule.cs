@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SmartSchool.Evaluation.ExtandColumn
 {
@@ -16,13 +15,13 @@ namespace SmartSchool.Evaluation.ExtandColumn
 
         void Instance_StudentReferenceCaleRuleChanged(object sender, EventArgs e)
         {
-            if ( VariableChanged != null )
+            if (VariableChanged != null)
                 VariableChanged.Invoke(this, new EventArgs());
         }
 
         void Instance_ClassReferenceCaleRuleChanged(object sender, EventArgs e)
         {
-            if ( VariableChanged != null )
+            if (VariableChanged != null)
                 VariableChanged.Invoke(this, new EventArgs());
         }
 
@@ -41,12 +40,12 @@ namespace SmartSchool.Evaluation.ExtandColumn
         public void FillExtendedValues(List<string> identities)
         {
             _Values.Clear();
-            foreach ( string var in identities )
+            foreach (string var in identities)
             {
-                if ( ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var) == null )
+                if (ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var) == null)
                     _Values.Add(var, "");
                 else
-                    _Values.Add(var, ( ScoreCalcRule.ScoreCalcRule.Instance.IsStudentOverrided(var) ? "(指定)" : "" ) + ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var).Name);
+                    _Values.Add(var, (ScoreCalcRule.ScoreCalcRule.Instance.IsStudentOverrided(var) ? "(指定)" : "") + ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var).Name);
             }
         }
 

@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using DevComponents.DotNetBar;
-using System.Xml;
 using SmartSchool.Common;
+using System;
+using System.Windows.Forms;
+using System.Xml;
 
 namespace SmartSchool.Evaluation.Reports
 {
@@ -28,7 +22,7 @@ namespace SmartSchool.Evaluation.Reports
         }
 
         private void buttonX1_Click(object sender, EventArgs e)
-        {            
+        {
             #region 儲存 Preference
 
             XmlElement config = CurrentUser.Instance.Preference["德行成績試算表"];

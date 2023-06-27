@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Xml;
-using SmartSchool.Common;
 
 namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
 {
@@ -28,9 +26,9 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
 
             XmlElement config = CurrentUser.Instance.Preference["多學期成績單"];
 
-            if ( config != null )
+            if (config != null)
             {
-                if(config.HasAttribute("FixMoralScore"))
+                if (config.HasAttribute("FixMoralScore"))
                 {
                     bool.TryParse(config.GetAttribute("FixMoralScore"), out fix_moral_score);
                 }
@@ -39,23 +37,23 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
                 XmlElement customize = (XmlElement)config.SelectSingleNode("CustomizeTemplate");
                 XmlElement printsemester = (XmlElement)config.SelectSingleNode("PrintSemesters");
 
-                if ( config.SelectNodes("PrintEntry").Count > 0 )
+                if (config.SelectNodes("PrintEntry").Count > 0)
                 {
                     print_entries.Clear();
-                    foreach ( XmlElement var in config.SelectNodes("PrintEntry"))
+                    foreach (XmlElement var in config.SelectNodes("PrintEntry"))
                     {
                         print_entries.Add(var.InnerText);
                     }
                 }
 
-                if ( print != null )
+                if (print != null)
                 {
                     int tryInt;
-                    score = (ScoreType)( print.HasAttribute("ScoreType") ? ( int.TryParse(print.GetAttribute("ScoreType"), out tryInt) ? tryInt : 0 ) : 0 );
-                    rating = (RatingMethod)( print.HasAttribute("RatingMethod") ? ( int.TryParse(print.GetAttribute("RatingMethod"), out tryInt) ? tryInt : 0 ) : 0 );
+                    score = (ScoreType)(print.HasAttribute("ScoreType") ? (int.TryParse(print.GetAttribute("ScoreType"), out tryInt) ? tryInt : 0) : 0);
+                    rating = (RatingMethod)(print.HasAttribute("RatingMethod") ? (int.TryParse(print.GetAttribute("RatingMethod"), out tryInt) ? tryInt : 0) : 0);
 
                     bool tryBool;
-                    if ( print.HasAttribute("Default") && bool.TryParse(print.GetAttribute("Default"), out tryBool) )
+                    if (print.HasAttribute("Default") && bool.TryParse(print.GetAttribute("Default"), out tryBool))
                         is_default_template = tryBool;
                     else
                         is_default_template = true;
@@ -66,9 +64,9 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
                     config.AppendChild(print);
                 }
 
-                if ( customize != null )
+                if (customize != null)
                 {
-                    customize_template = ( !string.IsNullOrEmpty(customize.InnerText) ) ? Convert.FromBase64String(customize.InnerText) : null;
+                    customize_template = (!string.IsNullOrEmpty(customize.InnerText)) ? Convert.FromBase64String(customize.InnerText) : null;
                 }
                 else
                 {
@@ -76,11 +74,11 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
                     config.AppendChild(customize);
                 }
 
-                if ( printsemester != null )
+                if (printsemester != null)
                 {
                     int tryInt;
-                    int.TryParse(printsemester.InnerText,out printSemesters);
-                    
+                    int.TryParse(printsemester.InnerText, out printSemesters);
+
                 }
                 else
                 {
@@ -111,7 +109,7 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
 
             XmlElement config = CurrentUser.Instance.Preference["多學期成績單"];
 
-            if ( config == null )
+            if (config == null)
                 config = new XmlDocument().CreateElement("多學期成績單");
 
             XmlElement print = config.OwnerDocument.CreateElement("Print");
@@ -126,18 +124,18 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
             config.AppendChild(customize);
             config.AppendChild(printsemester);
 
-            foreach ( string entry in print_entries )
+            foreach (string entry in print_entries)
             {
                 XmlElement printentry = config.OwnerDocument.CreateElement("PrintEntry");
                 printentry.InnerText = entry;
                 config.AppendChild(printentry);
             }
 
-            print.SetAttribute("ScoreType", "" + ( score == ScoreType.原始成績 ? 0 : ( score == ScoreType.原始補考擇優 ? 1 : 2 ) ));
+            print.SetAttribute("ScoreType", "" + (score == ScoreType.原始成績 ? 0 : (score == ScoreType.原始補考擇優 ? 1 : 2)));
             print.SetAttribute("RatingMethod", rating.ToString());
             print.SetAttribute("Default", is_default_template.ToString());
 
-            config.SetAttribute("FixMoralScore",""+fix_moral_score);
+            config.SetAttribute("FixMoralScore", "" + fix_moral_score);
 
             CurrentUser.Instance.Preference["多學期成績單"] = config;
 
@@ -182,7 +180,7 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
         {
             get
             {
-                if ( customize_template == null )
+                if (customize_template == null)
                     return Properties.Resources.多學期成績單;
                 return customize_template;
             }
@@ -196,7 +194,7 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
             set { fix_moral_score = value; }
         }
 
-        private List<string> print_entries = new List<string>(new  string[] { "學業","體育","健康與護理","國防通識","實習科目","德行"});
+        private List<string> print_entries = new List<string>(new string[] { "學業", "體育", "健康與護理", "國防通識", "實習科目", "德行" });
         public List<string> PrintEntries
         {
             get { return print_entries; }

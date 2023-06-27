@@ -1,11 +1,11 @@
-﻿using System;
-using System.ComponentModel;
-using System.Drawing;
-using System.Windows.Forms;
-using DevComponents.DotNetBar;
+﻿using DevComponents.DotNetBar;
 using SmartSchool.Common;
 using SmartSchool.Evaluation.ScoreCalcRule;
 using SmartSchool.Feature.ScoreCalcRule;
+using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace SmartSchool.Evaluation.Configuration
 {
@@ -71,7 +71,7 @@ namespace SmartSchool.Evaluation.Configuration
                 _SelectItem.Checked = false;
             btn_update.Enabled = false;
             btn_delete.Enabled = false;
-            scoreCalcRuleEditor1.Visible = (sender != null);         
+            scoreCalcRuleEditor1.Visible = (sender != null);
             if (sender != null)
             {
                 ButtonItem item = (ButtonItem)sender;
@@ -88,7 +88,7 @@ namespace SmartSchool.Evaluation.Configuration
         }
         void _BGWScoreCalcRuleLoader_DoWork(object sender, DoWorkEventArgs e)
         {
-            if ( (bool)e.Argument ) ScoreCalcRule.ScoreCalcRule.Instance.Reflash();
+            if ((bool)e.Argument) ScoreCalcRule.ScoreCalcRule.Instance.Reflash();
             e.Result = ScoreCalcRule.ScoreCalcRule.Instance.Items;
         }
 

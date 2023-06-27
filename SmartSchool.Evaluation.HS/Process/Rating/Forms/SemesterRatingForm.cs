@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
+﻿using SmartSchool.Common;
+using System;
 using System.Windows.Forms;
-using SmartSchool.Common;
 
 namespace SmartSchool.Evaluation.Process.Rating
 {
@@ -82,7 +77,7 @@ namespace SmartSchool.Evaluation.Process.Rating
 
             if (progress.ShowDialog() == DialogResult.OK)
             {
-                Utility.LogRank("學期成績固定排名",parameters, true);
+                Utility.LogRank("學期成績固定排名", parameters, true);
                 MsgBox.Show("排名完成。");
             }
         }

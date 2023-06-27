@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using FISCA.DSAUtil;
+using System;
 using System.Xml;
-using FISCA.DSAUtil;
 
 namespace SmartSchool.Evaluation.Process.Rating
 {

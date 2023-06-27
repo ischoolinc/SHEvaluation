@@ -1,7 +1,7 @@
-﻿using System;
-using System.Xml;
-using SmartSchool.Common;
+﻿using SmartSchool.Common;
 using SmartSchool.ExceptionHandler;
+using System;
+using System.Xml;
 
 namespace SmartSchool.Evaluation.Configuration
 {
@@ -13,15 +13,15 @@ namespace SmartSchool.Evaluation.Configuration
 
         public SubjectTableCreator(string catalog)
         {
-            this._Catalog=catalog;
+            this._Catalog = catalog;
             InitializeComponent();
 
             this.Text = "新增" + catalog;
 
             comboBoxEx1.SelectedItem = comboItem1;
-            foreach ( SubjectTableItem var in SubjectTable.Items[_Catalog])
+            foreach (SubjectTableItem var in SubjectTable.Items[_Catalog])
             {
-                comboBoxEx1.Items.Add(var) ;   
+                comboBoxEx1.Items.Add(var);
             }
 
             textBoxX1.Focus();
@@ -47,7 +47,7 @@ namespace SmartSchool.Evaluation.Configuration
 
         private void buttonX1_Click(object sender, EventArgs e)
         {
-            if ( textBoxX1.Text != "" )
+            if (textBoxX1.Text != "")
             {
                 string ruleName = (iiSchoolYear.Value > 0 ? "" + iiSchoolYear.Value : "") + textBoxX1.Text;
 
@@ -57,7 +57,7 @@ namespace SmartSchool.Evaluation.Configuration
                 {
                     SmartSchool.Feature.SubjectTable.AddSubejctTable.Insert(ruleName, _Catalog, _CopyElement);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     CurrentUser user = CurrentUser.Instance;
                     BugReporter.ReportException("SmartSchool", user.SystemVersion, ex, false);
@@ -76,11 +76,11 @@ namespace SmartSchool.Evaluation.Configuration
 
         private void comboBoxEx1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if ( comboBoxEx1.SelectedItem == comboItem1 )
+            if (comboBoxEx1.SelectedItem == comboItem1)
                 _CopyElement = new XmlDocument().CreateElement("SubjectTableContent");
             else
             {
-                _CopyElement = (XmlElement)( (SubjectTableItem)comboBoxEx1.SelectedItem ).Content.SelectSingleNode("SubjectTableContent");
+                _CopyElement = (XmlElement)((SubjectTableItem)comboBoxEx1.SelectedItem).Content.SelectSingleNode("SubjectTableContent");
 
                 if (_CopyElement != null && _CopyElement.HasAttribute("SchoolYear"))
                 {

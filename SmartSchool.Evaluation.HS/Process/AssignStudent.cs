@@ -1,22 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
-using System.Windows.Forms;
-//using SmartSchool.StudentRelated;
-using DevComponents.DotNetBar;
+﻿//using SmartSchool.StudentRelated;
 //using SmartSchool.ClassRelated;
 using FISCA.DSAUtil;
-using SmartSchool.Feature.Class;
+using FISCA.Presentation;
+using SmartSchool.Common;
+using SmartSchool.Customization.Data;
 using SmartSchool.Customization.PlugIn;
 using SmartSchool.Evaluation.GraduationPlan;
 using SmartSchool.Evaluation.ScoreCalcRule;
-using SmartSchool.Common;
-using SmartSchool.Customization.Data;
-using SmartSchool.StudentRelated;
-using FISCA.Presentation;
+using System;
 
 namespace SmartSchool.Evaluation.Process
 {
@@ -39,16 +30,16 @@ namespace SmartSchool.Evaluation.Process
 
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AssignStudent));
             var buttonItem56 = K12.Presentation.NLDPanels.Student.RibbonBarItems["指定"]["課程規劃"];
-            buttonItem56.Image = ( (System.Drawing.Image)( resources.GetObject("buttonItem56.Image") ) );
+            buttonItem56.Image = ((System.Drawing.Image)(resources.GetObject("buttonItem56.Image")));
             buttonItem56.Enable = K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0 && CurrentUser.Acl["Button0113"].Executable;
             buttonItem56.PopupOpen += new EventHandler<FISCA.Presentation.PopupOpenEventArgs>(buttonItem56_PopupOpen);
             buttonItem56.SupposeHasChildern = true;
             var buttonItem65 = K12.Presentation.NLDPanels.Student.RibbonBarItems["指定"]["計算規則"];
-            buttonItem65.Image = ( (System.Drawing.Image)( resources.GetObject("buttonItem65.Image") ) );
+            buttonItem65.Image = ((System.Drawing.Image)(resources.GetObject("buttonItem65.Image")));
             buttonItem65.PopupOpen += new EventHandler<FISCA.Presentation.PopupOpenEventArgs>(buttonItem65_PopupOpen);
             buttonItem65.Enable = K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0 && CurrentUser.Acl["Button0116"].Executable;
             buttonItem65.SupposeHasChildern = true;
-            K12.Presentation.NLDPanels.Student.SelectedSourceChanged+= delegate
+            K12.Presentation.NLDPanels.Student.SelectedSourceChanged += delegate
             {
                 buttonItem56.Enable = K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0 && CurrentUser.Acl["Button0113"].Executable;
                 buttonItem65.Enable = K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0 && CurrentUser.Acl["Button0116"].Executable;
@@ -99,11 +90,11 @@ namespace SmartSchool.Evaluation.Process
             var item = e.VirtualButtons["不指定"];
             item.Click += new EventHandler(item_Click);
             bool b = true;
-            foreach ( GraduationPlanInfo info in SmartSchool.Evaluation.GraduationPlan.GraduationPlan.Instance.Items )
+            foreach (GraduationPlanInfo info in SmartSchool.Evaluation.GraduationPlan.GraduationPlan.Instance.Items)
             {
                 var btn = e.VirtualButtons[info.Name];
                 btn.Tag = info;
-                if ( b )
+                if (b)
                 {
                     b = false;
                     btn.BeginGroup = true;
@@ -115,31 +106,31 @@ namespace SmartSchool.Evaluation.Process
         void btn_Click(object sender, EventArgs e)
         {
             AccessHelper accessHelper = new AccessHelper();
-            if ( accessHelper.StudentHelper.GetSelectedStudent().Count > 0 )
+            if (accessHelper.StudentHelper.GetSelectedStudent().Count > 0)
             {
                 string ErrorMessage = "";
                 try
                 {
-                    var info = ( (MenuButton)sender ).Tag as GraduationPlanInfo;
+                    var info = ((MenuButton)sender).Tag as GraduationPlanInfo;
                     DSXmlHelper helper = new DSXmlHelper("UpdateStudentList");
                     helper.AddElement("Student");
                     helper.AddElement("Student", "Field");
                     helper.AddElement("Student/Field", "RefGraduationPlanID", info.ID);
                     helper.AddElement("Student", "Condition");
-                    foreach ( StudentRecord studentInfo in accessHelper.StudentHelper.GetSelectedStudent() )
+                    foreach (StudentRecord studentInfo in accessHelper.StudentHelper.GetSelectedStudent())
                     {
                         helper.AddElement("Student/Condition", "ID", studentInfo.StudentID);
                     }
                     SmartSchool.Feature.EditStudent.Update(new DSRequest(helper));
 
                     //log
-                    foreach ( StudentRecord studentInfo in accessHelper.StudentHelper.GetSelectedStudent() )
+                    foreach (StudentRecord studentInfo in accessHelper.StudentHelper.GetSelectedStudent())
                     {
                         CurrentUser.Instance.AppLog.Write(
                             SmartSchool.ApplicationLog.EntityType.Student,
                             "指定學生課程規劃",
                             studentInfo.StudentID,
-                            string.Format("指定「{0}」採用課程規劃：{1}", studentInfo.StudentName + ( string.IsNullOrEmpty(studentInfo.StudentNumber) ? "" : " (" + studentInfo.StudentNumber + ")" ), info.Name),
+                            string.Format("指定「{0}」採用課程規劃：{1}", studentInfo.StudentName + (string.IsNullOrEmpty(studentInfo.StudentNumber) ? "" : " (" + studentInfo.StudentNumber + ")"), info.Name),
                             "學生",
                             string.Format("學生ID: {0}，課程規劃ID: {1}", studentInfo.StudentID, info.ID));
                     }
@@ -161,7 +152,7 @@ namespace SmartSchool.Evaluation.Process
         void item_Click(object sender, EventArgs e)
         {
             AccessHelper accessHelper = new AccessHelper();
-            if ( accessHelper.StudentHelper.GetSelectedStudent().Count > 0 )
+            if (accessHelper.StudentHelper.GetSelectedStudent().Count > 0)
             {
                 string ErrorMessage = "";
                 try
@@ -171,20 +162,20 @@ namespace SmartSchool.Evaluation.Process
                     helper.AddElement("Student", "Field");
                     helper.AddElement("Student/Field", "RefGraduationPlanID", "");
                     helper.AddElement("Student", "Condition");
-                    foreach ( StudentRecord studentInfo in accessHelper.StudentHelper.GetSelectedStudent() )
+                    foreach (StudentRecord studentInfo in accessHelper.StudentHelper.GetSelectedStudent())
                     {
                         helper.AddElement("Student/Condition", "ID", studentInfo.StudentID);
                     }
                     SmartSchool.Feature.EditStudent.Update(new DSRequest(helper));
 
                     //log
-                    foreach ( StudentRecord studentInfo in accessHelper.StudentHelper.GetSelectedStudent() )
+                    foreach (StudentRecord studentInfo in accessHelper.StudentHelper.GetSelectedStudent())
                     {
                         CurrentUser.Instance.AppLog.Write(
                             SmartSchool.ApplicationLog.EntityType.Student,
                             "指定學生課程規劃",
                             studentInfo.StudentID,
-                            string.Format("指定「{0}」採用課程規劃：{1}", studentInfo.StudentName + ( string.IsNullOrEmpty(studentInfo.StudentNumber) ? "" : " (" + studentInfo.StudentNumber + ")" ), "<不指定>"),
+                            string.Format("指定「{0}」採用課程規劃：{1}", studentInfo.StudentName + (string.IsNullOrEmpty(studentInfo.StudentNumber) ? "" : " (" + studentInfo.StudentNumber + ")"), "<不指定>"),
                             "學生",
                             string.Format("學生ID: {0}，課程規劃ID: {1}", studentInfo.StudentID, "<空白>"));
                     }
@@ -205,47 +196,47 @@ namespace SmartSchool.Evaluation.Process
 
         //void selector_GraduationPlanSelected(object sender, GraduationPlanSelectedEventArgs e)
         //{
-            //AccessHelper accessHelper = new AccessHelper();
-            //if (accessHelper.StudentHelper.GetSelectedStudent().Count > 0)
-            //{
-            //    string ErrorMessage = "";
-            //    try
-            //    {
-            //        DSXmlHelper helper = new DSXmlHelper("UpdateStudentList");
-            //        helper.AddElement("Student");
-            //        helper.AddElement("Student", "Field");
-            //        helper.AddElement("Student/Field", "RefGraduationPlanID", e.Item.ID);
-            //        helper.AddElement("Student", "Condition");
-            //        foreach (StudentRecord studentInfo in accessHelper.StudentHelper.GetSelectedStudent())
-            //        {
-            //            helper.AddElement("Student/Condition", "ID", studentInfo.StudentID);
-            //        }
-            //        SmartSchool.Feature.EditStudent.Update(new DSRequest(helper));
+        //AccessHelper accessHelper = new AccessHelper();
+        //if (accessHelper.StudentHelper.GetSelectedStudent().Count > 0)
+        //{
+        //    string ErrorMessage = "";
+        //    try
+        //    {
+        //        DSXmlHelper helper = new DSXmlHelper("UpdateStudentList");
+        //        helper.AddElement("Student");
+        //        helper.AddElement("Student", "Field");
+        //        helper.AddElement("Student/Field", "RefGraduationPlanID", e.Item.ID);
+        //        helper.AddElement("Student", "Condition");
+        //        foreach (StudentRecord studentInfo in accessHelper.StudentHelper.GetSelectedStudent())
+        //        {
+        //            helper.AddElement("Student/Condition", "ID", studentInfo.StudentID);
+        //        }
+        //        SmartSchool.Feature.EditStudent.Update(new DSRequest(helper));
 
-            //        //log
-            //        foreach (StudentRecord studentInfo in accessHelper.StudentHelper.GetSelectedStudent())
-            //        {
-            //            CurrentUser.Instance.AppLog.Write(
-            //                SmartSchool.ApplicationLog.EntityType.Student,
-            //                "指定學生課程規劃",
-            //                studentInfo.StudentID,
-            //                string.Format("指定「{0}」採用課程規劃：{1}", studentInfo.StudentName + (string.IsNullOrEmpty(studentInfo.StudentNumber) ? "" : " (" + studentInfo.StudentNumber + ")"), e.Item.Name),
-            //                "學生",
-            //                string.Format("學生ID: {0}，課程規劃ID: {1}", studentInfo.StudentID, e.Item.ID));
-            //        }
-            //    }
-            //    catch
-            //    {
-            //        GraduationPlan.GraduationPlan.Instance.LoadStudentReference();
-            //        EventHub.Instance.InvokeStudentReferenceGranduationPlanChanged();
-            //        MsgBox.Show("設定課程規劃表發生錯誤。");
-            //        return;
-            //    }
-            //    GraduationPlan.GraduationPlan.Instance.LoadStudentReference();
-            //    EventHub.Instance.InvokeStudentReferenceGranduationPlanChanged();
-            //    Global.SetStatusBarMessage("課程規劃表設定完成");
-            //    //MsgBox.Show("課程規劃表設定完成");
-            //}
+        //        //log
+        //        foreach (StudentRecord studentInfo in accessHelper.StudentHelper.GetSelectedStudent())
+        //        {
+        //            CurrentUser.Instance.AppLog.Write(
+        //                SmartSchool.ApplicationLog.EntityType.Student,
+        //                "指定學生課程規劃",
+        //                studentInfo.StudentID,
+        //                string.Format("指定「{0}」採用課程規劃：{1}", studentInfo.StudentName + (string.IsNullOrEmpty(studentInfo.StudentNumber) ? "" : " (" + studentInfo.StudentNumber + ")"), e.Item.Name),
+        //                "學生",
+        //                string.Format("學生ID: {0}，課程規劃ID: {1}", studentInfo.StudentID, e.Item.ID));
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        GraduationPlan.GraduationPlan.Instance.LoadStudentReference();
+        //        EventHub.Instance.InvokeStudentReferenceGranduationPlanChanged();
+        //        MsgBox.Show("設定課程規劃表發生錯誤。");
+        //        return;
+        //    }
+        //    GraduationPlan.GraduationPlan.Instance.LoadStudentReference();
+        //    EventHub.Instance.InvokeStudentReferenceGranduationPlanChanged();
+        //    Global.SetStatusBarMessage("課程規劃表設定完成");
+        //    //MsgBox.Show("課程規劃表設定完成");
+        //}
         //}
         #endregion
 
@@ -278,11 +269,11 @@ namespace SmartSchool.Evaluation.Process
         {
             var item = e.VirtualButtons["不指定"];
             item.Click += new EventHandler(item_Click3);
-            bool b=true;
-            foreach ( SmartSchool.Evaluation.ScoreCalcRule.ScoreCalcRuleInfo var in SmartSchool.Evaluation.ScoreCalcRule.ScoreCalcRule.Instance.Items )
+            bool b = true;
+            foreach (SmartSchool.Evaluation.ScoreCalcRule.ScoreCalcRuleInfo var in SmartSchool.Evaluation.ScoreCalcRule.ScoreCalcRule.Instance.Items)
             {
                 var btn = e.VirtualButtons[var.Name];
-                if ( b )
+                if (b)
                 {
                     b = false;
                     btn.BeginGroup = true;
@@ -295,7 +286,7 @@ namespace SmartSchool.Evaluation.Process
         void item_Click3(object sender, EventArgs e)
         {
             AccessHelper accessHelper = new AccessHelper();
-            if ( accessHelper.StudentHelper.GetSelectedStudent().Count > 0 )
+            if (accessHelper.StudentHelper.GetSelectedStudent().Count > 0)
             {
                 try
                 {
@@ -305,20 +296,20 @@ namespace SmartSchool.Evaluation.Process
                     helper.AddElement("Student", "Field");
                     helper.AddElement("Student/Field", "RefScoreCalcRuleID", "");
                     helper.AddElement("Student", "Condition");
-                    foreach ( StudentRecord studentInfo in accessHelper.StudentHelper.GetSelectedStudent() )
+                    foreach (StudentRecord studentInfo in accessHelper.StudentHelper.GetSelectedStudent())
                     {
                         helper.AddElement("Student/Condition", "ID", studentInfo.StudentID);
                     }
                     SmartSchool.Feature.EditStudent.Update(new DSRequest(helper));
 
                     //log
-                    foreach ( StudentRecord studentInfo in accessHelper.StudentHelper.GetSelectedStudent() )
+                    foreach (StudentRecord studentInfo in accessHelper.StudentHelper.GetSelectedStudent())
                     {
                         CurrentUser.Instance.AppLog.Write(
                             SmartSchool.ApplicationLog.EntityType.Student,
                             "指定學生計算規則",
                             studentInfo.StudentID,
-                            string.Format("指定「{0}」採用計算規則：{1}", studentInfo.StudentName + ( string.IsNullOrEmpty(studentInfo.StudentNumber) ? "" : " (" + studentInfo.StudentNumber + ")" ), "<不指定>"),
+                            string.Format("指定「{0}」採用計算規則：{1}", studentInfo.StudentName + (string.IsNullOrEmpty(studentInfo.StudentNumber) ? "" : " (" + studentInfo.StudentNumber + ")"), "<不指定>"),
                             "學生",
                             string.Format("學生ID: {0}，計算規則ID: {1}", studentInfo.StudentID, "<空白>"));
                     }
@@ -340,7 +331,7 @@ namespace SmartSchool.Evaluation.Process
         void item_Click2(object sender, EventArgs e)
         {
             AccessHelper accessHelper = new AccessHelper();
-            if ( accessHelper.StudentHelper.GetSelectedStudent().Count > 0 )
+            if (accessHelper.StudentHelper.GetSelectedStudent().Count > 0)
             {
                 try
                 {
@@ -348,24 +339,24 @@ namespace SmartSchool.Evaluation.Process
                     DSXmlHelper helper = new DSXmlHelper("UpdateStudentList");
                     helper.AddElement("Student");
                     helper.AddElement("Student", "Field");
-                    helper.AddElement("Student/Field", "RefScoreCalcRuleID", ( item.Tag as ScoreCalcRuleInfo ).ID);
+                    helper.AddElement("Student/Field", "RefScoreCalcRuleID", (item.Tag as ScoreCalcRuleInfo).ID);
                     helper.AddElement("Student", "Condition");
-                    foreach ( StudentRecord studentInfo in accessHelper.StudentHelper.GetSelectedStudent() )
+                    foreach (StudentRecord studentInfo in accessHelper.StudentHelper.GetSelectedStudent())
                     {
                         helper.AddElement("Student/Condition", "ID", studentInfo.StudentID);
                     }
                     SmartSchool.Feature.EditStudent.Update(new DSRequest(helper));
 
                     //log
-                    foreach ( StudentRecord studentInfo in accessHelper.StudentHelper.GetSelectedStudent() )
+                    foreach (StudentRecord studentInfo in accessHelper.StudentHelper.GetSelectedStudent())
                     {
                         CurrentUser.Instance.AppLog.Write(
                             SmartSchool.ApplicationLog.EntityType.Student,
                             "指定學生計算規則",
                             studentInfo.StudentID,
-                            string.Format("指定「{0}」採用計算規則：{1}", studentInfo.StudentName + ( string.IsNullOrEmpty(studentInfo.StudentNumber) ? "" : " (" + studentInfo.StudentNumber + ")" ), ( item.Tag as ScoreCalcRuleInfo ).Name),
+                            string.Format("指定「{0}」採用計算規則：{1}", studentInfo.StudentName + (string.IsNullOrEmpty(studentInfo.StudentNumber) ? "" : " (" + studentInfo.StudentNumber + ")"), (item.Tag as ScoreCalcRuleInfo).Name),
                             "學生",
-                            string.Format("學生ID: {0}，計算規則ID: {1}", studentInfo.StudentID, ( item.Tag as ScoreCalcRuleInfo ).ID));
+                            string.Format("學生ID: {0}，計算規則ID: {1}", studentInfo.StudentID, (item.Tag as ScoreCalcRuleInfo).ID));
                     }
                 }
                 catch

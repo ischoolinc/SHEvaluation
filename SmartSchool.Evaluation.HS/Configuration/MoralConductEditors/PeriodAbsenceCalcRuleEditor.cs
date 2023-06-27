@@ -1,14 +1,14 @@
-﻿using System;
+﻿using FISCA.DSAUtil;
+//using SmartSchool.SmartPlugIn.Student.AttendanceEditor;
+using SmartSchool.Feature.Basic;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
-using FISCA.DSAUtil;
-//using SmartSchool.SmartPlugIn.Student.AttendanceEditor;
-using SmartSchool.Feature.Basic;
 
 namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
 {
-    public partial class PeriodAbsenceCalcRuleEditor : UserControl,IMoralConductInstance
+    public partial class PeriodAbsenceCalcRuleEditor : UserControl, IMoralConductInstance
     {
         private bool _SourceSetting = false;
 
@@ -17,9 +17,9 @@ namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
         private bool _IsValidate = true;
         private Dictionary<Control, ErrorProvider> _errorProviderDictionary = new Dictionary<Control, ErrorProvider>();
 
-        private static int SortPeriod(XmlElement period1,XmlElement period2)
+        private static int SortPeriod(XmlElement period1, XmlElement period2)
         {
-            int a=0, b=0;
+            int a = 0, b = 0;
             int.TryParse(period1.GetAttribute("Sort"), out a);
             int.TryParse(period2.GetAttribute("Sort"), out b);
             return a.CompareTo(b);
@@ -55,20 +55,20 @@ namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
         {
             bool isPass = true;
             decimal dec;
-            if ( decimal.TryParse(textBoxX1.Text, out dec) )
+            if (decimal.TryParse(textBoxX1.Text, out dec))
                 ResetErrorProvider(textBoxX1);
             else
             {
                 SetErrorProvider(textBoxX1, "必須輸入分數。");
                 isPass &= false;
             }
-            foreach ( DataGridViewRow row in dataGridViewX1.Rows )
+            foreach (DataGridViewRow row in dataGridViewX1.Rows)
             {
                 isPass &= ValidateRow(row);
             }
             IsValidate = isPass;
-            if ( !_SourceSetting )
-                this.IsDirty = ( _BaseString != this.GetSource().OuterXml );
+            if (!_SourceSetting)
+                this.IsDirty = (_BaseString != this.GetSource().OuterXml);
         }
 
         private bool ValidateRow(DataGridViewRow row)
@@ -101,7 +101,7 @@ namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
             #endregion
             int aggregated = 0;
             #region 驗證累計單位，必須填入正整數，若減分為0則可以填入空白。
-            if (!(sub == 0 && "" + row.Cells[2].Value =="")&&(!int.TryParse("" + row.Cells[2].Value, out aggregated) || aggregated <= 0))
+            if (!(sub == 0 && "" + row.Cells[2].Value == "") && (!int.TryParse("" + row.Cells[2].Value, out aggregated) || aggregated <= 0))
             {
                 pass &= false;
                 row.Cells[2].ErrorText = "累計單位請填入正整數。";
@@ -156,7 +156,7 @@ namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
             {
                 PeriodInfoList.Add(element);
             }
-            PeriodInfoList.Sort(SortPeriod); 
+            PeriodInfoList.Sort(SortPeriod);
             #endregion
 
             #region 抓假別
@@ -165,7 +165,7 @@ namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
             foreach (XmlElement element in dsrsp.GetContent().GetElements("Absence"))
             {
                 AbsenceInfoList.Add(element);
-            } 
+            }
             #endregion
 
             #region 填入節次假別
@@ -180,7 +180,7 @@ namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
                         dataGridViewX1.Rows.Add(period.GetAttribute("Type"), absence.GetAttribute("Name"));
                     }
                 }
-            } 
+            }
             #endregion
             _Source = source;
             if (source != null)
@@ -188,7 +188,7 @@ namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
                 textBoxX1.Text = _Source.GetAttribute("NoAbsenceReward");
                 foreach (DataGridViewRow row in dataGridViewX1.Rows)
                 {
-                    XmlElement ele=(XmlElement) source.SelectSingleNode("Rule[@Period='" + row.Cells[0].Value + "' and @Absence='" + row.Cells[1].Value + "']");
+                    XmlElement ele = (XmlElement)source.SelectSingleNode("Rule[@Period='" + row.Cells[0].Value + "' and @Absence='" + row.Cells[1].Value + "']");
                     if (ele != null)
                     {
                         row.Cells[2].Value = ele.GetAttribute("Aggregated");
@@ -259,7 +259,7 @@ namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
             set
             {
                 _IsDirty = value;
-                if ( IsDirtyChanged != null )
+                if (IsDirtyChanged != null)
                 {
                     IsDirtyChanged.Invoke(this, new EventArgs());
                 }

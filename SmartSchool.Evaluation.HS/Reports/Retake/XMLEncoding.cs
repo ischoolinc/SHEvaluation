@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
-using System.Xml;
-using System.Web;
-using System.Security;
-using System.IO;
+﻿using System.Security;
 
 namespace SmartSchool.Evaluation.Reports.Retake
 {

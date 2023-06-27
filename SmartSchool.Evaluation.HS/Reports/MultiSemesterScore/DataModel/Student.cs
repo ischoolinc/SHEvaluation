@@ -1,8 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
+using System.Collections.Generic;
 
 namespace SmartSchool.Evaluation.Reports.MultiSemesterScore.DataModel
 {
@@ -31,7 +29,7 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore.DataModel
 
 
 
-        public Student(StudentRecord income_stu, ScoreType score_type,int semesters,List<string> printEntries)
+        public Student(StudentRecord income_stu, ScoreType score_type, int semesters, List<string> printEntries)
         {
             _dept = income_stu.Department;
             _class = income_stu.RefClass == null ? "" : income_stu.RefClass.ClassName;
@@ -50,29 +48,29 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore.DataModel
         private void ProcessScoreList(int semesters, List<string> printEntries)
         {
             //統計有成績的學期
-            if ( semesters <= 0 ) semesters = int.MaxValue;
+            if (semesters <= 0) semesters = int.MaxValue;
             List<int> semesterlist = new List<int>();
-            foreach ( SemesterSubjectScoreInfo info in _student.SemesterSubjectScoreList )
+            foreach (SemesterSubjectScoreInfo info in _student.SemesterSubjectScoreList)
             {
-                if ( info.Detail.GetAttribute("不需評分") == "是" )
+                if (info.Detail.GetAttribute("不需評分") == "是")
                     continue;
-                if ( !semesterlist.Contains(( info.GradeYear - 1 ) * 2 + info.Semester) )
-                    semesterlist.Add(( info.GradeYear - 1 ) * 2 + info.Semester);
+                if (!semesterlist.Contains((info.GradeYear - 1) * 2 + info.Semester))
+                    semesterlist.Add((info.GradeYear - 1) * 2 + info.Semester);
             }
 
-            foreach ( SemesterEntryScoreInfo info in _student.SemesterEntryScoreList )
+            foreach (SemesterEntryScoreInfo info in _student.SemesterEntryScoreList)
             {
-                if ( !semesterlist.Contains(( info.GradeYear - 1 ) * 2 + info.Semester) )
-                    semesterlist.Add(( info.GradeYear - 1 ) * 2 + info.Semester);
+                if (!semesterlist.Contains((info.GradeYear - 1) * 2 + info.Semester))
+                    semesterlist.Add((info.GradeYear - 1) * 2 + info.Semester);
             }
             semesterlist.Sort();
 
             foreach (SemesterSubjectScoreInfo info in _student.SemesterSubjectScoreList)
             {
-                if ( info.Detail.GetAttribute("不需評分") == "是" )
+                if (info.Detail.GetAttribute("不需評分") == "是")
                     continue;
                 //超過統計學期當沒看到
-                if ( semesterlist.Count > semesters && ( info.GradeYear - 1 ) * 2 + info.Semester > semesterlist[semesters - 1] )
+                if (semesterlist.Count > semesters && (info.GradeYear - 1) * 2 + info.Semester > semesterlist[semesters - 1])
                     continue;
                 if (!_subjects.ContainsKey(info.Subject))
                 {
@@ -89,10 +87,10 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore.DataModel
             foreach (SemesterEntryScoreInfo info in _student.SemesterEntryScoreList)
             {
                 //超過統計學期當沒看到
-                if ( semesterlist.Count > semesters && ( info.GradeYear - 1 ) * 2 + info.Semester > semesterlist[semesters - 1] )
+                if (semesterlist.Count > semesters && (info.GradeYear - 1) * 2 + info.Semester > semesterlist[semesters - 1])
                     continue;
                 //不是要列印的分項當沒看到
-                if ( !printEntries.Contains(info.Entry) )
+                if (!printEntries.Contains(info.Entry))
                     continue;
                 if (!_entries.ContainsKey(info.Entry))
                 {
@@ -127,17 +125,17 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore.DataModel
                         bool hasValue = false;
                         decimal value = decimal.MinValue;
                         decimal tryValue;
-                        if ( info.Detail.HasAttribute("原始成績") )
+                        if (info.Detail.HasAttribute("原始成績"))
                         {
-                            if ( decimal.TryParse(info.Detail.GetAttribute("原始成績"), out tryValue) )
+                            if (decimal.TryParse(info.Detail.GetAttribute("原始成績"), out tryValue))
                             {
                                 value = tryValue;
                                 hasValue = true;
                             }
                         }
-                        if ( info.Detail.HasAttribute("補考成績") )
+                        if (info.Detail.HasAttribute("補考成績"))
                         {
-                            if ( decimal.TryParse(info.Detail.GetAttribute("補考成績"), out tryValue) )
+                            if (decimal.TryParse(info.Detail.GetAttribute("補考成績"), out tryValue))
                             {
                                 value = tryValue > value ? tryValue : value;
                                 hasValue = true;

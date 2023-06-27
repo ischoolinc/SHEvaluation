@@ -1,19 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Aspose.Words;
+using SmartSchool.Common;
+using SmartSchool.Customization.Data;
 using SmartSchool.Customization.PlugIn;
 using SmartSchool.Customization.PlugIn.Report;
-using SmartSchool.Customization.Data;
-using SmartSchool.Customization.Data.StudentExtension;
-using System.ComponentModel;
-using SmartSchool.Evaluation.Reports.MultiSemesterScore.Forms;
 using SmartSchool.Evaluation.Reports.MultiSemesterScore.DataModel;
-using Aspose.Words;
-using System.IO;
-using System.Windows.Forms;
-using System.Xml;
+using SmartSchool.Evaluation.Reports.MultiSemesterScore.Forms;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
-using SmartSchool.Common;
+using System.IO;
+using System.Text;
+using System.Windows.Forms;
 
 namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
 {
@@ -122,14 +120,14 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
             {
                 foreach (string noResultID in noResultStudentList)
                 {
-                    if(noResultID== studentRecord.StudentID)
+                    if (noResultID == studentRecord.StudentID)
                     {
-                        s.AppendLine((studentRecord.RefClass==null?"": studentRecord.RefClass.ClassName) + "　" + studentRecord.SeatNo + "　" + studentRecord.StudentName + "　" + studentRecord.StudentNumber);
+                        s.AppendLine((studentRecord.RefClass == null ? "" : studentRecord.RefClass.ClassName) + "　" + studentRecord.SeatNo + "　" + studentRecord.StudentName + "　" + studentRecord.StudentNumber);
                     }
                 }
             }
 
-            if (noResultStudentList.Count> 0)
+            if (noResultStudentList.Count > 0)
             {
                 MsgBox.Show("下列學生沒有可列印的資料，請先從 班級>成績相關報表>多學期成績單，產出資訊後，才有辦法產學生的多學期成績單。\r\n" + s.ToString());
             }

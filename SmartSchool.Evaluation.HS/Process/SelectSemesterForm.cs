@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
+﻿using SmartSchool.Common;
+using System;
 using System.Windows.Forms;
-using SmartSchool.Common;
 
 namespace SmartSchool.Evaluation.Process
 {
@@ -14,15 +9,15 @@ namespace SmartSchool.Evaluation.Process
         // 是否開全部課程
         public bool isCreateAll = false;
 
-    
+
         K12.Data.Configuration.ConfigData cd = K12.Data.School.Configuration["依課程規劃表開課設定畫面"];
 
         public SelectSemesterForm()
         {
             InitializeComponent();
-            
+
             Text = "選擇學年度學期";
-            bool.TryParse(cd["含選修課"].ToString(),out isCreateAll);
+            bool.TryParse(cd["含選修課"].ToString(), out isCreateAll);
             chkCreateAll.Checked = isCreateAll;
             try
             {

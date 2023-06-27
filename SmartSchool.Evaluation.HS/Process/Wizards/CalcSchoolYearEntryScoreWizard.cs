@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows.Forms;
-using System.Xml;
-using DevComponents.DotNetBar;
+﻿using DevComponents.DotNetBar;
 using DevComponents.DotNetBar.Rendering;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
 using SmartSchool.Evaluation.WearyDogComputerHelper;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Xml;
 
 namespace SmartSchool.Evaluation.Process.Wizards
 {
@@ -22,12 +22,12 @@ namespace SmartSchool.Evaluation.Process.Wizards
 
         private SchoolYearScoreCalcType _CalcType;
 
-        public CalcSchoolYearEntryScoreWizard(SelectType type):this(type, SchoolYearScoreCalcType.SemesterEntryScore)
+        public CalcSchoolYearEntryScoreWizard(SelectType type) : this(type, SchoolYearScoreCalcType.SemesterEntryScore)
         {
 
         }
 
-        public CalcSchoolYearEntryScoreWizard(SelectType type,SchoolYearScoreCalcType calctype)
+        public CalcSchoolYearEntryScoreWizard(SelectType type, SchoolYearScoreCalcType calctype)
         {
             _Type = type;
             _CalcType = calctype;

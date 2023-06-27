@@ -65,6 +65,7 @@ namespace SmartSchool.Evaluation.ImportExport
                 , "抵免"
                 , "指定學年科目名稱"
                 , "課程代碼"
+                , "報部科目名稱"
                 );
             filterRepeat.CheckedChanged += delegate
             {
@@ -244,6 +245,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                     case "免修": row.Add(field, var.Detail.GetAttribute("免修") == "是" ? "是" : ""); break;
                                     case "抵免": row.Add(field, var.Detail.GetAttribute("抵免") == "是" ? "是" : ""); break;
                                     case "指定學年科目名稱": row.Add(field, var.Detail.HasAttribute("指定學年科目名稱") ? var.Detail.GetAttribute("指定學年科目名稱") : ""); break;
+                                    case "報部科目名稱": row.Add(field, var.Detail.HasAttribute("報部科目名稱") ? var.Detail.GetAttribute("報部科目名稱") : ""); break;
 
                                 }
                             }

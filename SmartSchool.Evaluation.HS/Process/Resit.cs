@@ -1,19 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Threading;
-using FISCA.DSAUtil;
-using System.Xml;
-using Aspose.Cells;
-using SmartSchool;
-using System.IO;
-using System.Diagnostics;
-using SmartSchool.Evaluation.Reports;
 using FISCA.Presentation;
+using SmartSchool.Evaluation.Reports;
+using System;
 
 namespace SmartSchool.Evaluation.Process
 {
@@ -34,7 +21,7 @@ namespace SmartSchool.Evaluation.Process
             buttonItem89.Enable = CurrentUser.Acl["Button0690"].Executable;
         }
 
-        
+
 
         public override string ProcessTabName
         {
@@ -46,7 +33,7 @@ namespace SmartSchool.Evaluation.Process
 
         private void buttonItem1_Click(object sender, EventArgs e)
         {
-            new ResitListByStudent ();
+            new ResitListByStudent();
         }
 
         private void buttonItem2_Click(object sender, EventArgs e)

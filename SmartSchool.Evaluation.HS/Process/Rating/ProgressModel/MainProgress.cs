@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using DevComponents.DotNetBar;
 using DevComponents.DotNetBar.Controls;
-using DevComponents.DotNetBar;
-using System.Windows.Forms;
 using SmartSchool.Common;
+using System;
 
 namespace SmartSchool.Evaluation.Process.Rating
 {

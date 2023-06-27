@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Xml;
-using DevComponents.DotNetBar.Controls;
+﻿using DevComponents.DotNetBar.Controls;
 using FISCA.DSAUtil;
 using FISCA.Presentation;
 using SmartSchool.Common;
 using SmartSchool.Feature.ScoreCalcRule;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Xml;
 
 namespace SmartSchool.Evaluation.Configuration
 {
@@ -39,15 +39,15 @@ namespace SmartSchool.Evaluation.Configuration
                 doc.LoadXml("<MoralConductScoreCalcRule/>");
                 _MoralConductElement = doc.DocumentElement;
             }
-            DSXmlHelper helper = new DSXmlHelper(_MoralConductElement); 
+            DSXmlHelper helper = new DSXmlHelper(_MoralConductElement);
             foreach (IMoralConductInstance item in _Instances)
             {
                 item.SetSource(helper.GetElement(item.XPath));
                 item.GetDependenceData();
 
-                if(!item.IsValidate)
-                    SetWarring(item,(GroupPanel)((Control)item).Parent);
-                item.IsValidateChanged+=new EventHandler(item_IsValidateChanged);
+                if (!item.IsValidate)
+                    SetWarring(item, (GroupPanel)((Control)item).Parent);
+                item.IsValidateChanged += new EventHandler(item_IsValidateChanged);
             }
             //MotherForm.ResetWaitCursor();
         }

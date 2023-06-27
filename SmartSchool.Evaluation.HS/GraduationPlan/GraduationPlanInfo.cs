@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Xml;
 //using SmartSchool.ClassRelated;
-using SmartSchool.Customization.Data;
 
 namespace SmartSchool.Evaluation.GraduationPlan
 {
@@ -39,17 +36,17 @@ namespace SmartSchool.Evaluation.GraduationPlan
         {
             get
             {
-                return  (XmlElement)(new XmlDocument().ImportNode(_GraduationPlanElement,true)); 
+                return (XmlElement)(new XmlDocument().ImportNode(_GraduationPlanElement, true));
             }
         }
         public List<GraduationPlanSubject> Subjects
         {
-            get 
+            get
             {
                 List<GraduationPlanSubject> list = new List<GraduationPlanSubject>();
                 foreach (XmlNode var in _GraduationPlanElement.SelectNodes("Subject"))
                 {
-                        list.Add(new GraduationPlanSubject((XmlElement)var));
+                    list.Add(new GraduationPlanSubject((XmlElement)var));
                 }
                 return list;
             }
@@ -58,7 +55,7 @@ namespace SmartSchool.Evaluation.GraduationPlan
         public List<GraduationPlanSubject> SemesterSubjects(int gradeYear, int semester)
         {
             List<GraduationPlanSubject> list = new List<GraduationPlanSubject>();
-            foreach ( XmlNode var in _GraduationPlanElement.SelectNodes("Subject[@GradeYear='" + gradeYear + "' and @Semester='"+semester+"']") )
+            foreach (XmlNode var in _GraduationPlanElement.SelectNodes("Subject[@GradeYear='" + gradeYear + "' and @Semester='" + semester + "']"))
             {
                 list.Add(new GraduationPlanSubject((XmlElement)var));
             }
@@ -79,7 +76,7 @@ namespace SmartSchool.Evaluation.GraduationPlan
             //doc.LoadXml("<Subject Category=\"\" Credit=\"0\" Domain=\"\" Entry=\"學業\" FullName=\"預設\" Level=\"\" NotIncludedInCalc=\"False\" NotIncludedInCredit=\"False\" Required=\"選修\" RequiredBy=\"校訂\" SubjectName=\"預設\"/>");
             doc.LoadXml("<Subject Category=\"\" Credit=\"0\" Domain=\"\" Entry=\"學業\" FullName=\"預設\" Level=\"\" NotIncludedInCalc=\"False\" NotIncludedInCredit=\"False\" Required=\"選修\" RequiredBy=\"校訂\" SubjectName=\"預設\" 課程類別=\"\" 開課方式=\"\" 科目屬性=\"\" 學分=\"\" 領域名稱=\"\" 課程名稱=\"\"  授課學期學分=\"\" 課程代碼=\"\"/>");
 
-            GraduationPlanSubject defaultResponse =new GraduationPlanSubject(doc.DocumentElement);
+            GraduationPlanSubject defaultResponse = new GraduationPlanSubject(doc.DocumentElement);
             foreach (XmlNode var in GraduationPlan.Instance.CommonPlan.SelectNodes("Subject"))
             {
                 GraduationPlanSubject subjectInfo = new GraduationPlanSubject((XmlElement)var);

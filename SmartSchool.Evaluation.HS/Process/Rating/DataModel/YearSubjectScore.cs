@@ -1,8 +1,6 @@
-﻿using System;
+﻿using FISCA.DSAUtil;
 using System.Collections.Generic;
-using System.Text;
 using System.Xml;
-using FISCA.DSAUtil;
 
 namespace SmartSchool.Evaluation.Process.Rating
 {
@@ -18,7 +16,7 @@ namespace SmartSchool.Evaluation.Process.Rating
 
             ScoreName = hlpData.GetText("@科目");
             Score = Utility.ParseDecimal(hlpData.GetText("@學年成績"), int.MinValue);
-            _subject_name=ScoreName;
+            _subject_name = ScoreName;
         }
 
         private string _subject_name;

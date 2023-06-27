@@ -1,6 +1,6 @@
+using SmartSchool.Common;
 using System;
 using System.Windows.Forms;
-using SmartSchool.Common;
 
 namespace SmartSchool.Evaluation.Configuration
 {
@@ -10,7 +10,7 @@ namespace SmartSchool.Evaluation.Configuration
         public SubjectTableConfiguration(string catalog)
         {
             InitializeComponent();
-            this.expandablePanel1.TitleText=this.Caption = _Catalog = catalog;
+            this.expandablePanel1.TitleText = this.Caption = _Catalog = catalog;
             if (catalog == "學程科目表")
             {
                 this.subjectTableEditor1.ProgramTable = true;
@@ -36,13 +36,13 @@ namespace SmartSchool.Evaluation.Configuration
         private void RefillSubjectTables()
         {
             string selectedName = "";
-            if ( dataGridViewX1.SelectedRows.Count == 1 )
+            if (dataGridViewX1.SelectedRows.Count == 1)
                 selectedName = dataGridViewX1.SelectedRows[0].Cells[0].Value.ToString();
 
             dataGridViewX1.Rows.Clear();
-            foreach ( SubjectTableItem item in SubjectTable.Items[_Catalog] )
+            foreach (SubjectTableItem item in SubjectTable.Items[_Catalog])
             {
-                if ( item.Name == selectedName )
+                if (item.Name == selectedName)
                 {
                     dataGridViewX1.Rows[dataGridViewX1.Rows.Add(item)].Selected = true;
                 }
@@ -53,11 +53,11 @@ namespace SmartSchool.Evaluation.Configuration
 
         private void buttonX1_Click(object sender, EventArgs e)
         {
-            if ( dataGridViewX1.SelectedRows.Count == 1 )
+            if (dataGridViewX1.SelectedRows.Count == 1)
             {
                 if (MsgBox.Show("確定要刪除 '" + dataGridViewX1.SelectedRows[0].Cells[0].Value + "' ？", "確定", MessageBoxButtons.OKCancel) == DialogResult.OK)
                 {
-                    SmartSchool.Feature.SubjectTable.RemoveSubejctTable.Delete(( (SubjectTableItem)dataGridViewX1.SelectedRows[0].Cells[0].Value ).ID);
+                    SmartSchool.Feature.SubjectTable.RemoveSubejctTable.Delete(((SubjectTableItem)dataGridViewX1.SelectedRows[0].Cells[0].Value).ID);
                     SubjectTable.Items[_Catalog].Reflash();
                     RefillSubjectTables();
                 }
@@ -66,20 +66,20 @@ namespace SmartSchool.Evaluation.Configuration
 
         private void dataGridViewX1_SelectionChanged(object sender, EventArgs e)
         {
-            this.subjectTableEditor1.Visible = ( dataGridViewX1.SelectedRows.Count == 1 );
-            if ( dataGridViewX1.SelectedRows.Count == 1 )
+            this.subjectTableEditor1.Visible = (dataGridViewX1.SelectedRows.Count == 1);
+            if (dataGridViewX1.SelectedRows.Count == 1)
             {
-                subjectTableEditor1.Content = ( (SubjectTableItem)dataGridViewX1.SelectedRows[0].Cells[0].Value ).Content;
+                subjectTableEditor1.Content = ((SubjectTableItem)dataGridViewX1.SelectedRows[0].Cells[0].Value).Content;
             }
         }
 
         private void buttonX2_Click(object sender, EventArgs e)
         {
-            if ( dataGridViewX1.SelectedRows.Count == 1 )
+            if (dataGridViewX1.SelectedRows.Count == 1)
             {
-                if ( subjectTableEditor1.IsValidated() )
+                if (subjectTableEditor1.IsValidated())
                 {
-                    SmartSchool.Feature.SubjectTable.EditSubejctTable.UpdateSubject(( (SubjectTableItem)dataGridViewX1.SelectedRows[0].Cells[0].Value ).ID, this.subjectTableEditor1.Content);
+                    SmartSchool.Feature.SubjectTable.EditSubejctTable.UpdateSubject(((SubjectTableItem)dataGridViewX1.SelectedRows[0].Cells[0].Value).ID, this.subjectTableEditor1.Content);
                     SubjectTable.Items[_Catalog].Reflash();
                     RefillSubjectTables();
                 }

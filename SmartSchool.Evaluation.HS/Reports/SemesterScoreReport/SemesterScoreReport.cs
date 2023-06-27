@@ -1,18 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using SmartSchool.Customization.PlugIn;
-using SmartSchool.Customization.PlugIn.Report;
-using System.ComponentModel;
 using Aspose.Words;
-using System.IO;
+using FISCA.DSAUtil;
+using SHSchool.Data;
+using SmartSchool.Common;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
+using SmartSchool.Customization.PlugIn;
+using SmartSchool.Customization.PlugIn.Report;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using System.Xml;
-using FISCA.DSAUtil;
-using SmartSchool.Common;
-using SHSchool.Data;
 
 namespace SmartSchool.Evaluation.Reports
 {
@@ -483,7 +483,7 @@ namespace SmartSchool.Evaluation.Reports
                 //    }
                 //}
 
-                mergeKeyValue.Add("科目成績起始位置", new object[] { subjectScore, resitSign, repeatSign,var });
+                mergeKeyValue.Add("科目成績起始位置", new object[] { subjectScore, resitSign, repeatSign, var });
                 //mergeKeyValue.Add("取得學分數", "學期" + (schoolyearscore ? "/學年" : "") + "取得學分數");
                 //mergeKeyValue.Add("名次", "");
                 //mergeKeyValue.Add("學分數", thisSemesterTotalCredit.ToString());
@@ -611,13 +611,13 @@ namespace SmartSchool.Evaluation.Reports
                 int MaxSubjectCount = SSRowNumber * 2;
 
                 try
-                {                    
+                {
                     // 當科目數超過範本可存放數，不列入處理
                     if (subjectScore.Keys.Count > MaxSubjectCount)
                     {
                         if (_ErrorMessage.Length < 1)
                         {
-                            _ErrorMessage.AppendLine("產生資料發生錯誤：學生成績科目數超過範本可顯示科目數:"+MaxSubjectCount+" ，請調整範本科目數後再列印");
+                            _ErrorMessage.AppendLine("產生資料發生錯誤：學生成績科目數超過範本可顯示科目數:" + MaxSubjectCount + " ，請調整範本科目數後再列印");
                         }
 
                         string className = "";
@@ -664,13 +664,13 @@ namespace SmartSchool.Evaluation.Reports
                                 SSTableRowIndex = 1;
                                 SSTableColIndex += 4;
                             }
-                        }                        
+                        }
                     }
                     e.Text = string.Empty;
                 }
                 catch (Exception ex)
                 {
-                    SmartSchool.ExceptionHandler.BugReporter.ReportException(ex,true);                
+                    SmartSchool.ExceptionHandler.BugReporter.ReportException(ex, true);
                 }
             }
 

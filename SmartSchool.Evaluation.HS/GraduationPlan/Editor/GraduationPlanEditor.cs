@@ -1,12 +1,8 @@
-﻿using System;
+﻿using DevComponents.DotNetBar.Rendering;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 using System.Xml;
-using DevComponents.DotNetBar.Rendering;
 
 namespace SmartSchool.Evaluation.GraduationPlan.Editor
 {

@@ -1,18 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using SmartSchool.Customization.PlugIn;
-using SmartSchool.Customization.PlugIn.Report;
-using System.ComponentModel;
 using Aspose.Words;
-using System.IO;
+using FISCA.DSAUtil;
+using SHSchool.Data;
+using SmartSchool.Common;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
+using SmartSchool.Customization.PlugIn;
+using SmartSchool.Customization.PlugIn.Report;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Windows.Forms;
 using System.Xml;
-using FISCA.DSAUtil;
-using SmartSchool.Common;
-using SHSchool.Data;
 
 namespace SmartSchool.Evaluation.Reports
 {
@@ -556,7 +555,7 @@ namespace SmartSchool.Evaluation.Reports
                     }
                 }
 
-                
+
 
                 foreach (AttendanceInfo info in eachStudent.AttendanceList)
                 {
@@ -860,7 +859,7 @@ namespace SmartSchool.Evaluation.Reports
                 {
                     DocumentBuilder builder = new DocumentBuilder(e.Document);
                     builder.MoveToField(e.Field, false);
-                    
+
                     Cell temp;
 
                     double width = (builder.CurrentParagraph.ParentNode as Cell).CellFormat.Width;
@@ -870,10 +869,10 @@ namespace SmartSchool.Evaluation.Reports
                     foreach (XmlElement each in objectValue.SelectNodes("TextScore/Morality"))
                     {
                         string face = each.GetAttribute("Face");
-                        
+
                         //如果學生身上的face不存在對照表上，就不印出來
                         if ((SmartSchool.Customization.Data.SystemInformation.Fields["文字評量對照表"] as XmlElement).SelectSingleNode("Content/Morality[@Face='" + face + "']") == null) continue;
-                        
+
                         string comment = each.InnerText;
 
                         temp = builder.InsertCell();

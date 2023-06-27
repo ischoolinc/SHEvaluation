@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SmartSchool.AccessControl;
+using SmartSchool.API.PlugIn;
 //using SmartSchool.Customization.PlugIn.ImportExport;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
-using SmartSchool.AccessControl;
-using SmartSchool.API.PlugIn;
+using System.Collections.Generic;
 
 namespace SmartSchool.Evaluation.ImportExport
 {
@@ -23,7 +21,7 @@ namespace SmartSchool.Evaluation.ImportExport
             wizard.Options.Add(filterRepeat);
             wizard.ExportableFields.AddRange("學年度", "成績年級", "科目", "學年成績", "結算成績", "補考成績", "重修成績");
             AccessHelper _AccessHelper = new AccessHelper();
-            wizard.ExportPackage += delegate(object sender, SmartSchool.API.PlugIn.Export.ExportPackageEventArgs e)
+            wizard.ExportPackage += delegate (object sender, SmartSchool.API.PlugIn.Export.ExportPackageEventArgs e)
             {
                 List<StudentRecord> students = _AccessHelper.StudentHelper.GetStudents(e.List);
                 _AccessHelper.StudentHelper.FillSchoolYearSubjectScore(filterRepeat.Checked, students);

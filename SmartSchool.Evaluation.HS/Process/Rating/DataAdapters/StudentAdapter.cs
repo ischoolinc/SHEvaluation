@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using FISCA.DSAUtil;
+﻿using FISCA.DSAUtil;
 using SmartSchool.Feature;
+using System;
 using System.Xml;
 using RankStudent = SmartSchool.Evaluation.Process.Rating.Student;
 

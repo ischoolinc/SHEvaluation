@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using FISCA.DSAUtil;
+using SmartSchool.Customization.Data;
 using SmartSchool.Feature.GraduationPlan;
-using FISCA.DSAUtil;
-using System.Xml;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
-using SmartSchool.Customization.Data;
+using System.Xml;
 
 namespace SmartSchool.Evaluation.GraduationPlan
 {

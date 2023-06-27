@@ -1,17 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using SmartSchool.Customization.PlugIn;
-using System.ComponentModel;
 using Aspose.Cells;
-using System.IO;
+using SmartSchool.Common;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
+using SmartSchool.Customization.PlugIn;
 using SmartSchool.Customization.PlugIn.Report;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
-using SmartSchool.Common;
 using System.Globalization;
+using System.IO;
+using System.Text;
 
 namespace SmartSchool.Evaluation.Reports
 {

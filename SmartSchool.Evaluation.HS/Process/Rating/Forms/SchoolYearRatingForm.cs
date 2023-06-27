@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
+﻿using SmartSchool.Common;
+using System;
 using System.Windows.Forms;
-using SmartSchool.Common;
 
 namespace SmartSchool.Evaluation.Process.Rating
 {

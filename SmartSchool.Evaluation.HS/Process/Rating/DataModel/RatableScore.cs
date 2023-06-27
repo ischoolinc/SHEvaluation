@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SmartSchool.Evaluation.Process.Rating
+﻿namespace SmartSchool.Evaluation.Process.Rating
 {
     /// <summary>
     /// 代表一個學生的某個成績。

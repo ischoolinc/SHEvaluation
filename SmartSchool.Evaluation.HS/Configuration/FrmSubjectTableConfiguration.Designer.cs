@@ -28,9 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.contentPanel = new System.Windows.Forms.Panel();
-            this.subjectTableEditor1 = new SmartSchool.Evaluation.Configuration.SubjectTableEditor();
-            this.expandableSplitter1 = new DevComponents.DotNetBar.ExpandableSplitter();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panelEx1 = new DevComponents.DotNetBar.PanelEx();
             this.expandablePanel1 = new DevComponents.DotNetBar.ExpandablePanel();
             this.advTree1 = new DevComponents.AdvTree.AdvTree();
@@ -40,70 +39,29 @@
             this.btnEditName = new DevComponents.DotNetBar.ButtonX();
             this.btnUpdate = new DevComponents.DotNetBar.ButtonX();
             this.btnDelete = new DevComponents.DotNetBar.ButtonX();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.contentPanel.SuspendLayout();
+            this.expandableSplitter1 = new DevComponents.DotNetBar.ExpandableSplitter();
+            this.contentPanel = new System.Windows.Forms.Panel();
+            this.subjectTableEditor1 = new SmartSchool.Evaluation.Configuration.SubjectTableEditor();
             this.panelEx1.SuspendLayout();
             this.expandablePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advTree1)).BeginInit();
+            this.contentPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // contentPanel
+            // dataGridViewTextBoxColumn1
             // 
-            this.contentPanel.BackColor = System.Drawing.Color.Transparent;
-            this.contentPanel.Controls.Add(this.subjectTableEditor1);
-            this.contentPanel.Controls.Add(this.expandableSplitter1);
-            this.contentPanel.Controls.Add(this.panelEx1);
-            this.contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.contentPanel.Location = new System.Drawing.Point(0, 0);
-            this.contentPanel.Name = "contentPanel";
-            this.contentPanel.Size = new System.Drawing.Size(775, 498);
-            this.contentPanel.TabIndex = 0;
+            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn1.HeaderText = "名稱";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
             // 
-            // subjectTableEditor1
+            // dataGridViewTextBoxColumn2
             // 
-            this.subjectTableEditor1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.subjectTableEditor1.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.subjectTableEditor1.Location = new System.Drawing.Point(159, 0);
-            this.subjectTableEditor1.Margin = new System.Windows.Forms.Padding(4);
-            this.subjectTableEditor1.Name = "subjectTableEditor1";
-            this.subjectTableEditor1.ProgramTable = false;
-            this.subjectTableEditor1.Size = new System.Drawing.Size(616, 498);
-            this.subjectTableEditor1.TabIndex = 2;
-            this.subjectTableEditor1.Visible = false;
-            // 
-            // expandableSplitter1
-            // 
-            this.expandableSplitter1.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(147)))), ((int)(((byte)(207)))));
-            this.expandableSplitter1.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.expandableSplitter1.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.expandableSplitter1.Expandable = false;
-            this.expandableSplitter1.ExpandFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(147)))), ((int)(((byte)(207)))));
-            this.expandableSplitter1.ExpandFillColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.expandableSplitter1.ExpandLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.expandableSplitter1.ExpandLineColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.ItemText;
-            this.expandableSplitter1.GripDarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.expandableSplitter1.GripDarkColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.ItemText;
-            this.expandableSplitter1.GripLightColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(239)))), ((int)(((byte)(255)))));
-            this.expandableSplitter1.GripLightColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.BarBackground;
-            this.expandableSplitter1.HotBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(151)))), ((int)(((byte)(61)))));
-            this.expandableSplitter1.HotBackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(184)))), ((int)(((byte)(94)))));
-            this.expandableSplitter1.HotBackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.ItemPressedBackground2;
-            this.expandableSplitter1.HotBackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.ItemPressedBackground;
-            this.expandableSplitter1.HotExpandFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(147)))), ((int)(((byte)(207)))));
-            this.expandableSplitter1.HotExpandFillColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.expandableSplitter1.HotExpandLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.expandableSplitter1.HotExpandLineColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.ItemText;
-            this.expandableSplitter1.HotGripDarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(147)))), ((int)(((byte)(207)))));
-            this.expandableSplitter1.HotGripDarkColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.expandableSplitter1.HotGripLightColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(239)))), ((int)(((byte)(255)))));
-            this.expandableSplitter1.HotGripLightColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.BarBackground;
-            this.expandableSplitter1.Location = new System.Drawing.Point(156, 0);
-            this.expandableSplitter1.Name = "expandableSplitter1";
-            this.expandableSplitter1.Size = new System.Drawing.Size(3, 498);
-            this.expandableSplitter1.Style = DevComponents.DotNetBar.eSplitterStyle.Office2007;
-            this.expandableSplitter1.TabIndex = 1;
-            this.expandableSplitter1.TabStop = false;
+            this.dataGridViewTextBoxColumn2.HeaderText = "學分數";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Visible = false;
+            this.dataGridViewTextBoxColumn2.Width = 50;
             // 
             // panelEx1
             // 
@@ -113,7 +71,7 @@
             this.panelEx1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelEx1.Location = new System.Drawing.Point(0, 0);
             this.panelEx1.Name = "panelEx1";
-            this.panelEx1.Size = new System.Drawing.Size(156, 498);
+            this.panelEx1.Size = new System.Drawing.Size(156, 470);
             this.panelEx1.Style.Alignment = System.Drawing.StringAlignment.Center;
             this.panelEx1.Style.BackColor1.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
             this.panelEx1.Style.BackColor2.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
@@ -135,7 +93,7 @@
             this.expandablePanel1.ExpandButtonVisible = false;
             this.expandablePanel1.Location = new System.Drawing.Point(0, 0);
             this.expandablePanel1.Name = "expandablePanel1";
-            this.expandablePanel1.Size = new System.Drawing.Size(156, 498);
+            this.expandablePanel1.Size = new System.Drawing.Size(156, 470);
             this.expandablePanel1.Style.Alignment = System.Drawing.StringAlignment.Center;
             this.expandablePanel1.Style.BackColor1.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
             this.expandablePanel1.Style.BackColor2.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
@@ -173,7 +131,7 @@
             this.advTree1.NodesConnector = this.nodeConnector1;
             this.advTree1.NodeStyle = this.elementStyle1;
             this.advTree1.PathSeparator = ";";
-            this.advTree1.Size = new System.Drawing.Size(156, 380);
+            this.advTree1.Size = new System.Drawing.Size(156, 352);
             this.advTree1.Styles.Add(this.elementStyle1);
             this.advTree1.TabIndex = 7;
             this.advTree1.Text = "advTree1";
@@ -195,7 +153,7 @@
             this.btnCreate.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnCreate.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnCreate.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnCreate.Location = new System.Drawing.Point(0, 406);
+            this.btnCreate.Location = new System.Drawing.Point(0, 378);
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.Size = new System.Drawing.Size(156, 23);
             this.btnCreate.TabIndex = 6;
@@ -207,7 +165,7 @@
             this.btnEditName.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnEditName.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnEditName.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnEditName.Location = new System.Drawing.Point(0, 429);
+            this.btnEditName.Location = new System.Drawing.Point(0, 401);
             this.btnEditName.Name = "btnEditName";
             this.btnEditName.Size = new System.Drawing.Size(156, 23);
             this.btnEditName.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -220,7 +178,7 @@
             this.btnUpdate.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnUpdate.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnUpdate.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnUpdate.Location = new System.Drawing.Point(0, 452);
+            this.btnUpdate.Location = new System.Drawing.Point(0, 424);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(156, 23);
             this.btnUpdate.TabIndex = 5;
@@ -232,61 +190,100 @@
             this.btnDelete.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.btnDelete.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnDelete.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnDelete.Location = new System.Drawing.Point(0, 475);
+            this.btnDelete.Location = new System.Drawing.Point(0, 447);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(156, 23);
             this.btnDelete.TabIndex = 4;
             this.btnDelete.Text = "刪除";
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // dataGridViewTextBoxColumn1
+            // expandableSplitter1
             // 
-            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dataGridViewTextBoxColumn1.HeaderText = "名稱";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.expandableSplitter1.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(147)))), ((int)(((byte)(207)))));
+            this.expandableSplitter1.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.expandableSplitter1.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.expandableSplitter1.Expandable = false;
+            this.expandableSplitter1.ExpandFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(147)))), ((int)(((byte)(207)))));
+            this.expandableSplitter1.ExpandFillColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.expandableSplitter1.ExpandLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.expandableSplitter1.ExpandLineColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.ItemText;
+            this.expandableSplitter1.GripDarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.expandableSplitter1.GripDarkColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.ItemText;
+            this.expandableSplitter1.GripLightColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(239)))), ((int)(((byte)(255)))));
+            this.expandableSplitter1.GripLightColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.BarBackground;
+            this.expandableSplitter1.HotBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(151)))), ((int)(((byte)(61)))));
+            this.expandableSplitter1.HotBackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(184)))), ((int)(((byte)(94)))));
+            this.expandableSplitter1.HotBackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.ItemPressedBackground2;
+            this.expandableSplitter1.HotBackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.ItemPressedBackground;
+            this.expandableSplitter1.HotExpandFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(147)))), ((int)(((byte)(207)))));
+            this.expandableSplitter1.HotExpandFillColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.expandableSplitter1.HotExpandLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.expandableSplitter1.HotExpandLineColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.ItemText;
+            this.expandableSplitter1.HotGripDarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(147)))), ((int)(((byte)(207)))));
+            this.expandableSplitter1.HotGripDarkColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.expandableSplitter1.HotGripLightColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(239)))), ((int)(((byte)(255)))));
+            this.expandableSplitter1.HotGripLightColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.BarBackground;
+            this.expandableSplitter1.Location = new System.Drawing.Point(156, 0);
+            this.expandableSplitter1.Name = "expandableSplitter1";
+            this.expandableSplitter1.Size = new System.Drawing.Size(3, 470);
+            this.expandableSplitter1.Style = DevComponents.DotNetBar.eSplitterStyle.Office2007;
+            this.expandableSplitter1.TabIndex = 1;
+            this.expandableSplitter1.TabStop = false;
             // 
-            // dataGridViewTextBoxColumn2
+            // contentPanel
             // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "學分數";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            this.dataGridViewTextBoxColumn2.Visible = false;
-            this.dataGridViewTextBoxColumn2.Width = 50;
+            this.contentPanel.BackColor = System.Drawing.Color.Transparent;
+            this.contentPanel.Controls.Add(this.subjectTableEditor1);
+            this.contentPanel.Controls.Add(this.expandableSplitter1);
+            this.contentPanel.Controls.Add(this.panelEx1);
+            this.contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.contentPanel.Location = new System.Drawing.Point(0, 0);
+            this.contentPanel.Name = "contentPanel";
+            this.contentPanel.Size = new System.Drawing.Size(876, 470);
+            this.contentPanel.TabIndex = 0;
+            // 
+            // subjectTableEditor1
+            // 
+            this.subjectTableEditor1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.subjectTableEditor1.Location = new System.Drawing.Point(156, 0);
+            this.subjectTableEditor1.Name = "subjectTableEditor1";
+            this.subjectTableEditor1.ProgramTable = false;
+            this.subjectTableEditor1.Size = new System.Drawing.Size(720, 470);
+            this.subjectTableEditor1.TabIndex = 2;
             // 
             // FrmSubjectTableConfiguration
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(775, 498);
+            this.ClientSize = new System.Drawing.Size(876, 470);
             this.Controls.Add(this.contentPanel);
+            this.DoubleBuffered = true;
             this.MaximizeBox = true;
             this.Name = "FrmSubjectTableConfiguration";
             this.Text = "自訂畢業應修及格科目表";
             this.Load += new System.EventHandler(this.FrmSubjectTableConfiguration_Load);
-            this.contentPanel.ResumeLayout(false);
             this.panelEx1.ResumeLayout(false);
             this.expandablePanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.advTree1)).EndInit();
+            this.contentPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel contentPanel;
-        private DevComponents.DotNetBar.ExpandableSplitter expandableSplitter1;
-        private DevComponents.DotNetBar.PanelEx panelEx1;
-        private SubjectTableEditor subjectTableEditor1;
-        private DevComponents.DotNetBar.ExpandablePanel expandablePanel1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-        private DevComponents.DotNetBar.ButtonX btnCreate;
-        private DevComponents.DotNetBar.ButtonX btnUpdate;
-        private DevComponents.DotNetBar.ButtonX btnDelete;
+        private DevComponents.DotNetBar.PanelEx panelEx1;
+        private DevComponents.DotNetBar.ExpandablePanel expandablePanel1;
         private DevComponents.AdvTree.AdvTree advTree1;
         private DevComponents.AdvTree.NodeConnector nodeConnector1;
         private DevComponents.DotNetBar.ElementStyle elementStyle1;
+        private DevComponents.DotNetBar.ButtonX btnCreate;
         private DevComponents.DotNetBar.ButtonX btnEditName;
+        private DevComponents.DotNetBar.ButtonX btnUpdate;
+        private DevComponents.DotNetBar.ButtonX btnDelete;
+        private DevComponents.DotNetBar.ExpandableSplitter expandableSplitter1;
+        private System.Windows.Forms.Panel contentPanel;
+        private SubjectTableEditor subjectTableEditor1;
     }
 }

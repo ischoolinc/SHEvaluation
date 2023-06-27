@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // 組件的一般資訊是由下列的屬性集控制。
@@ -30,5 +29,5 @@ using System.Runtime.InteropServices;
 //      修訂編號
 //
 
-[assembly: AssemblyVersion("1.0.7.65")]
-[assembly: AssemblyFileVersion("1.0.7.65")]
+[assembly: AssemblyVersion("1.0.7.68")]
+[assembly: AssemblyFileVersion("1.0.7.68")]

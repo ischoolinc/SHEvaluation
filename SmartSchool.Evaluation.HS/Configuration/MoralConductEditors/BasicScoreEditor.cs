@@ -5,7 +5,7 @@ using System.Xml;
 
 namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
 {
-    public partial class BasicScoreEditor : UserControl,IMoralConductInstance
+    public partial class BasicScoreEditor : UserControl, IMoralConductInstance
     {
         private bool _SourceSetting = false;
 
@@ -53,11 +53,11 @@ namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
             this.textBoxX1.Text = _Source.GetAttribute("NormalScore");
             this.textBoxX2.Text = _Source.GetAttribute("UltimateAdmonitionScore");
             decimal dec = 2;
-            if ( !decimal.TryParse(_Source.GetAttribute("Decimals"), out dec) ) 
+            if (!decimal.TryParse(_Source.GetAttribute("Decimals"), out dec))
                 dec = 2;
             numericUpDown2.Value = dec;
-            switch ( _Source.GetAttribute("DecimalType") )
-            { 
+            switch (_Source.GetAttribute("DecimalType"))
+            {
                 default:
                 case "四捨五入":
                     comboBox1.SelectedIndex = 0;
@@ -69,7 +69,7 @@ namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
                     comboBox1.SelectedIndex = 2;
                     break;
             }
-            switch ( _Source.GetAttribute("Over100") )
+            switch (_Source.GetAttribute("Over100"))
             {
                 default:
                 case "以實際分數計":
@@ -79,14 +79,14 @@ namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
                     comboBox2.SelectedIndex = 1;
                     break;
             }
-            TextChanged(null, null); 
+            TextChanged(null, null);
             _SourceSetting = false;
             _BaseString = this.GetSource().OuterXml;
         }
 
         public System.Xml.XmlElement GetSource()
         {
-            if ( _Source == null )
+            if (_Source == null)
             {
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml("<BasicScore/>");
@@ -118,7 +118,7 @@ namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
 
         public void GetDependenceData()
         {
-            
+
         }
 
         public void SetDependenceData()
@@ -134,7 +134,7 @@ namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
             set
             {
                 _IsDirty = value;
-                if ( IsDirtyChanged != null )
+                if (IsDirtyChanged != null)
                 {
                     IsDirtyChanged.Invoke(this, new EventArgs());
                 }
@@ -194,8 +194,8 @@ namespace SmartSchool.Evaluation.Configuration.MoralConductEditors
 
         private void CheckIsDirty(object sender, EventArgs e)
         {
-            if ( !_SourceSetting )
-                this.IsDirty = ( _BaseString != this.GetSource().OuterXml );
+            if (!_SourceSetting)
+                this.IsDirty = (_BaseString != this.GetSource().OuterXml);
         }
     }
 }

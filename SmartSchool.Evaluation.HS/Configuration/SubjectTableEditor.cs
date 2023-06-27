@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmartSchool.Evaluation.GraduationPlan;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml;
@@ -11,11 +12,15 @@ namespace SmartSchool.Evaluation.Configuration
 
         private bool _ProgramTable = false;
 
+        public bool unSave = false;
+
+        private List<GraduationPlanSimple> _SelectedSubjects = new List<GraduationPlanSimple>();
+
         public SubjectTableEditor()
         {
             InitializeComponent();
 
-            textBoxX1.TextChanged += (sender,e) =>
+            textBoxX1.TextChanged += (sender, e) =>
             {
                 errorProvider1.Clear();
                 decimal integer;
@@ -36,18 +41,19 @@ namespace SmartSchool.Evaluation.Configuration
         {
             set
             {
+                lblUnSave.Visible = false;
                 textBoxX1.Text = string.Empty;
                 textBoxX2.Text = string.Empty;
 
                 dataGridViewX1.Rows.Clear();
                 XmlElement element = (XmlElement)value.SelectSingleNode("SubjectTableContent");
-                if ( element != null )
+                if (element != null)
                 {
-                     decimal integer;
-                     decimal CoreInteger;
+                    decimal integer;
+                    decimal CoreInteger;
 
                     //學程科目表 (2011/4/21修改)
-                    if (_ProgramTable) 
+                    if (_ProgramTable)
                     {
                         //2011/4/21將integerInput改為textBox，解決dataGrid在編輯模式時無法切換輸入
                         //if (int.TryParse(element.GetAttribute("CreditCount"), out integer))
@@ -56,12 +62,12 @@ namespace SmartSchool.Evaluation.Configuration
                         //    integerInput2.Value = integer;
 
                         if (decimal.TryParse(element.GetAttribute("CreditCount"), out integer))
-                            textBoxX1.Text = ""+integer;
+                            textBoxX1.Text = "" + integer;
                         if (decimal.TryParse(element.GetAttribute("CoreCount"), out CoreInteger))
-                             textBoxX2.Text = "" + CoreInteger;
+                            textBoxX2.Text = "" + CoreInteger;
                     }
                     //核心科目表 (2011/4/21 修改)
-                    else 
+                    else
                     {
                         //2011/4/21將integerInput改為textBox，解決dataGrid在編輯模式時無法切換輸入
                         //if (int.TryParse(element.GetAttribute("AttendCount"), out integer))
@@ -69,18 +75,18 @@ namespace SmartSchool.Evaluation.Configuration
                         //if (int.TryParse(element.GetAttribute("CreditCount"), out integer))
                         //    integerInput2.Value = integer;
 
-                         if (decimal.TryParse(element.GetAttribute("AttendCount"), out CoreInteger))
-                              textBoxX1.Text = "" + CoreInteger;
+                        if (decimal.TryParse(element.GetAttribute("AttendCount"), out CoreInteger))
+                            textBoxX1.Text = "" + CoreInteger;
                         if (decimal.TryParse(element.GetAttribute("CreditCount"), out integer))
-                            textBoxX2.Text = ""+integer;
+                            textBoxX2.Text = "" + integer;
                     }
 
-                    foreach ( XmlElement subjectNode in element.SelectNodes("Subject") )
+                    foreach (XmlElement subjectNode in element.SelectNodes("Subject"))
                     {
                         string name;
-                        name =subjectNode.GetAttribute("Name");
+                        name = subjectNode.GetAttribute("Name");
                         List<int> levels = new List<int>();
-                        foreach ( XmlNode levelNode in subjectNode.SelectNodes("Level") )
+                        foreach (XmlNode levelNode in subjectNode.SelectNodes("Level"))
                         {
                             levels.Add(int.Parse(levelNode.InnerText));
                         }
@@ -93,16 +99,16 @@ namespace SmartSchool.Evaluation.Configuration
                         }
                         else //核心科目表
                         {
-                            row.CreateCells(dataGridViewX1, name, "",false);
+                            row.CreateCells(dataGridViewX1, name, "", false);
                         }
                         row.Cells[0].Tag = name;
                         row.Tag = levels;
 
-                        if ( levels.Count != 0 )
+                        if (levels.Count != 0)
                         {
                             string cellString = "" + levels[0];
-                            string levelString = "(" +GetNumber( levels[0]);
-                            for ( int i = 1 ; i < levels.Count ; i++ )
+                            string levelString = "(" + GetNumber(levels[0]);
+                            for (int i = 1; i < levels.Count; i++)
                             {
                                 levelString += "、" + GetNumber(levels[i]);
                                 cellString += "," + levels[i];
@@ -121,7 +127,7 @@ namespace SmartSchool.Evaluation.Configuration
             get
             {
                 XmlElement element = new XmlDocument().CreateElement("SubjectTableContent");
-                
+
                 if (_ProgramTable) //學程科目表
                 {
                     //2011/4/21將integerInput改為textBox，解決dataGrid在編輯模式時無法切換輸入
@@ -141,26 +147,26 @@ namespace SmartSchool.Evaluation.Configuration
                     element.SetAttribute("CreditCount", "" + textBoxX2.Text);
                 }
 
-                foreach ( DataGridViewRow row in dataGridViewX1.Rows )
+                foreach (DataGridViewRow row in dataGridViewX1.Rows)
                 {
                     #region 科目
-                    if ( row.IsNewRow ) continue;
+                    if (row.IsNewRow) continue;
                     XmlElement subjectElement = (XmlElement)element.AppendChild(element.OwnerDocument.CreateElement("Subject"));
                     subjectElement.SetAttribute("Name", "" + row.Cells[0].Tag);
-                    if ( _ProgramTable )
+                    if (_ProgramTable)
                     {
                         subjectElement.SetAttribute("IsCore", "" + row.Cells[2].Value);
                     }
-                    if ( row.Tag is List <int> )
+                    if (row.Tag is List<int>)
                     {
                         #region 級別
-                        foreach ( int level in (List<int>)row.Tag )
+                        foreach (int level in (List<int>)row.Tag)
                         {
                             XmlElement levelElement = (XmlElement)subjectElement.AppendChild(element.OwnerDocument.CreateElement("Level"));
-                            levelElement.InnerText = ""+level;
-                        } 
+                            levelElement.InnerText = "" + level;
+                        }
                         #endregion
-                    } 
+                    }
                     #endregion
                 }
                 return element;
@@ -170,10 +176,10 @@ namespace SmartSchool.Evaluation.Configuration
         public bool IsValidated()
         {
             bool pass = true;
-            foreach ( DataGridViewRow row in dataGridViewX1.Rows )
+            foreach (DataGridViewRow row in dataGridViewX1.Rows)
             {
-                if ( row.IsNewRow ) continue;
-                if ( row.Cells[1].ErrorText != "" )
+                if (row.IsNewRow) continue;
+                if (row.Cells[1].ErrorText != "")
                     pass &= false;
             }
 
@@ -206,7 +212,7 @@ namespace SmartSchool.Evaluation.Configuration
                 {
                     labelX1.Text = "下方列舉科目應修";
                     labelX2.Text = "  學分，且";
-                    labelX3.Text = "  學分為成績及格。";
+                    labelX3.Text = "  學分成績及格。";
                 }
             }
         }
@@ -214,21 +220,21 @@ namespace SmartSchool.Evaluation.Configuration
         private void dataGridViewX1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             //編輯科目行時先還原成只有科目名稱
-            if ( e.ColumnIndex == 0 && e.RowIndex >= 0 )
+            if (e.ColumnIndex == 0 && e.RowIndex >= 0)
                 dataGridViewX1.Rows[e.RowIndex].Cells[0].Value = "" + dataGridViewX1.Rows[e.RowIndex].Cells[0].Tag;
         }
 
         private void dataGridViewX1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            if ( e.ColumnIndex == 0 && e.RowIndex >= 0 )
+            if (e.ColumnIndex == 0 && e.RowIndex >= 0)
             {
-                if ( dataGridViewX1.Rows[e.RowIndex].Tag is List<int> )
+                if (dataGridViewX1.Rows[e.RowIndex].Tag is List<int>)
                 {
                     List<int> levels = (List<int>)dataGridViewX1.Rows[e.RowIndex].Tag;
-                    if ( levels.Count != 0 )
+                    if (levels.Count != 0)
                     {
                         string levelString = "(" + GetNumber(levels[0]);
-                        for ( int i = 1 ; i < levels.Count ; i++ )
+                        for (int i = 1; i < levels.Count; i++)
                         {
                             levelString += "、" + GetNumber(levels[i]);
                         }
@@ -249,25 +255,25 @@ namespace SmartSchool.Evaluation.Configuration
         {
             DataGridViewCell cell = dataGridViewX1.CurrentCell;
             //如果是編輯科目欄則將科目名稱存入 tag以供合併級還原
-            if ( cell.ColumnIndex == 0 )
+            if (cell.ColumnIndex == 0)
             {
                 dataGridViewX1.Rows[cell.RowIndex].Cells[0].Tag = dataGridViewX1.Rows[cell.RowIndex].Cells[0].Value;
             }
             //如果是編輯級別欄位，整理輸入的級別資料成為級別清單
-            if ( cell.ColumnIndex == 1 )
+            if (cell.ColumnIndex == 1)
             {
                 List<int> levels = new List<int>();
                 try
                 {
-                    foreach ( string levelrange in ( "" + cell.Value as string ).Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries) )
+                    foreach (string levelrange in ("" + cell.Value as string).Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
                     {
-                        string[] levelsp=levelrange.Split("-".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                        if ( levelsp.Length == 2 )
-                        { 
-                            int end=int.Parse(levelsp[1]);
-                            for ( int i = int.Parse(levelsp[0]) ; i <=end ; i++ )
+                        string[] levelsp = levelrange.Split("-".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                        if (levelsp.Length == 2)
+                        {
+                            int end = int.Parse(levelsp[1]);
+                            for (int i = int.Parse(levelsp[0]); i <= end; i++)
                             {
-                                levels.Add(i);    
+                                levels.Add(i);
                             }
                         }
                         else
@@ -284,13 +290,13 @@ namespace SmartSchool.Evaluation.Configuration
                 dataGridViewX1.Rows[cell.RowIndex].Tag = levels;
             }
             //重新合併科目跟級別
-            if ( dataGridViewX1.Rows[cell.RowIndex].Tag is List<int > )
+            if (dataGridViewX1.Rows[cell.RowIndex].Tag is List<int>)
             {
                 List<int> levels = (List<int>)dataGridViewX1.Rows[cell.RowIndex].Tag;
-                if ( levels.Count != 0 )
+                if (levels.Count != 0)
                 {
                     string levelString = "(" + GetNumber(levels[0]);
-                    for ( int i = 1 ; i < levels.Count ; i++ )
+                    for (int i = 1; i < levels.Count; i++)
                     {
                         levelString += "、" + GetNumber(levels[i]);
                     }
@@ -304,7 +310,8 @@ namespace SmartSchool.Evaluation.Configuration
             {
                 dataGridViewX1.Rows[cell.RowIndex].Cells[0].Value = "" + dataGridViewX1.Rows[cell.RowIndex].Cells[0].Tag;
             }
-
+            lblUnSave.Visible = true;
+            unSave = true;
 
             cell.Value = cell.EditedFormattedValue;
             dataGridViewX1.EndEdit();
@@ -319,12 +326,12 @@ namespace SmartSchool.Evaluation.Configuration
 
         private void dataGridViewX1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if ( e.RowIndex > 0 && e.ColumnIndex < 0 && e.Button == MouseButtons.Right )
+            if (e.RowIndex > 0 && e.ColumnIndex < 0 && e.Button == MouseButtons.Right)
             {
                 _SelectedRowIndex = e.RowIndex;
-                foreach ( DataGridViewRow var in dataGridViewX1.SelectedRows )
+                foreach (DataGridViewRow var in dataGridViewX1.SelectedRows)
                 {
-                    if ( var.Index != _SelectedRowIndex )
+                    if (var.Index != _SelectedRowIndex)
                         var.Selected = false;
                 }
                 dataGridViewX1.Rows[_SelectedRowIndex].Selected = true;
@@ -334,14 +341,18 @@ namespace SmartSchool.Evaluation.Configuration
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            if ( _SelectedRowIndex > 0 && dataGridViewX1.Rows.Count - 1 > _SelectedRowIndex )
+            if (_SelectedRowIndex > 0 && dataGridViewX1.Rows.Count - 1 > _SelectedRowIndex)
+            {
                 dataGridViewX1.Rows.RemoveAt(_SelectedRowIndex);
+                lblUnSave.Visible = true;
+                unSave = true;
+            }
         }
 
         private string GetNumber(int p)
         {
             string levelNumber;
-            switch ( p )
+            switch (p)
             {
                 #region 對應levelNumber
                 case 1:
@@ -375,12 +386,86 @@ namespace SmartSchool.Evaluation.Configuration
                     levelNumber = "X";
                     break;
                 default:
-                    levelNumber = "" + ( p );
+                    levelNumber = "" + (p);
                     break;
-                #endregion
+                    #endregion
             }
             return levelNumber;
         }
 
+        private void btnGPsubj_Click(object sender, EventArgs e)
+        {
+            GraduationPlanSimplePicker gpPicker = new GraduationPlanSimplePicker((_ProgramTable) ? "學程科目表" : "核心科目表");
+            gpPicker.FormClosed += new FormClosedEventHandler(gpPicker_FormClosed);
+            gpPicker.ShowDialog();
+        }
+
+        private void gpPicker_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            GraduationPlanSimplePicker openForm = (GraduationPlanSimplePicker)sender;
+            _SelectedSubjects.Clear();
+            _SelectedSubjects = openForm.getGPSelection();
+            if (_SelectedSubjects.Count > 0)
+            {
+                foreach (GraduationPlanSimple gpSimple in _SelectedSubjects)
+                {
+                    bool find = false;
+                    foreach (DataGridViewRow dr in dataGridViewX1.Rows)
+                    {
+                        if ("" + dr.Cells[0].Tag == gpSimple.SubjectName)
+                        {
+                            dr.Cells[0].Value = dr.Cells[0].Tag + getLevelList(gpSimple.LevelList);
+
+                            dr.Tag = convStrListToIntList(gpSimple.LevelList);
+                            dr.Cells[1].Value = gpSimple.LevelList;
+
+                            find = true;
+                            break;
+                        }
+                    }
+                    if (!find)
+                    {
+                        DataGridViewRow row = new DataGridViewRow();
+                        row.CreateCells(dataGridViewX1);
+                        row.Cells[0].Value = gpSimple.SubjectName + getLevelList(gpSimple.LevelList);
+                        row.Cells[0].Tag = gpSimple.SubjectName;
+
+                        row.Tag = convStrListToIntList(gpSimple.LevelList);
+                        row.Cells[1].Value = gpSimple.LevelList;
+                        dataGridViewX1.Rows.Add(row);
+                        lblUnSave.Visible = true;
+                    }
+                }
+
+            }
+        }
+
+        private List<int> convStrListToIntList(string strList)
+        {
+            List<int> intList = new List<int>();
+            string[] strArray = strList.Split(',');
+            foreach (string str in strArray)
+            {
+                intList.Add(Int32.Parse(str));
+            }
+            return intList;
+        }
+
+        private string getLevelList(string levelList)
+        {
+            string[] lArray = levelList.Split(',');
+            string levelString = "";
+            if (lArray.Length > 0)
+            {
+                levelString = "(" + GetNumber(Int32.Parse(lArray[0]));
+                for (int i = 1; i < lArray.Length; i++)
+                {
+                    levelString += "、" + GetNumber(Int32.Parse(lArray[i]));
+                }
+                levelString += ")";
+
+            }
+            return levelString;
+        }
     }
 }

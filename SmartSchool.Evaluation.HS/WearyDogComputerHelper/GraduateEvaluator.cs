@@ -653,64 +653,70 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                     #endregion
 
                     // 掃描課程規劃表寫入採計科目
-                    foreach (GraduationPlan.GraduationPlanSubject gplanSubject in GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(student.StudentID).Subjects)
+                    //2023/6/27 - 錯誤
+                    //先判斷有沒有課程規畫表
+                    //在進行相關邏輯 - Dylan
+                    if (GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(student.StudentID) != null)
                     {
-                        // 略過特殊需求領域
-                        if (gplanSubject.Domain.StartsWith("特殊需求領域")) continue;
-
-                        decimal credit = 0;
-                        decimal.TryParse(gplanSubject.Credit, out credit);
-                        foreach (CreditCheckConfig check in creditCheckConfigList)
+                        foreach (GraduationPlan.GraduationPlanSubject gplanSubject in GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(student.StudentID).Subjects)
                         {
-                            // 如果這個科目是這項規則有採計的
-                            if (check.DoCheck(gplanSubject.Domain, credit, gplanSubject.Entry, gplanSubject.Required, gplanSubject.RequiredBy, gplanSubject.SubjectName, gplanSubject.Level))
-                            {
-                                // 將科目寫入報告
-                                XmlElement subjectElement = check.XmlElement.SelectSingleNode("科目[@科目名稱=\"" + gplanSubject.SubjectName.Trim() + "\" and @科目級別=\"" + gplanSubject.Level.Trim() + "\"]") as XmlElement;
-                                if (subjectElement == null)
-                                {
-                                    subjectElement = check.XmlElement.OwnerDocument.CreateElement("科目");
-                                    check.XmlElement.AppendChild(subjectElement);
-                                    subjectElement.SetAttribute("科目名稱", gplanSubject.SubjectName.Trim());
-                                    subjectElement.SetAttribute("科目級別", gplanSubject.Level.Trim());
-                                    subjectElement.SetAttribute("學分數", gplanSubject.Credit);
-                                    subjectElement.SetAttribute("取得學分數", "0");
-                                    subjectElement.SetAttribute("修課學年度", "");
-                                    subjectElement.SetAttribute("修課年級", "");
-                                    subjectElement.SetAttribute("修課學期", "");
-                                    subjectElement.SetAttribute("狀態", "未修習");
-                                }
-                                else
-                                    subjectElement.SetAttribute("學分數", gplanSubject.Credit);
-                                // 建立開課學期
-                                XmlElement semesterElement = docCreditReport.CreateElement("開課設定");
-                                subjectElement.AppendChild(semesterElement);
-                                semesterElement.SetAttribute("開課年級", gplanSubject.SubjectElement.GetAttribute("GradeYear"));
-                                semesterElement.SetAttribute("開課學期", gplanSubject.SubjectElement.GetAttribute("Semester"));
-                                semesterElement.SetAttribute("課程群組", gplanSubject.SubjectElement.GetAttribute("分組名稱"));
-                                semesterElement.SetAttribute("群組修課學分數", gplanSubject.SubjectElement.GetAttribute("分組修課學分數"));
+                            // 略過特殊需求領域
+                            if (gplanSubject.Domain.StartsWith("特殊需求領域")) continue;
 
-                                // 累計課程規劃表學分數
-                                if (gplanSubject.SubjectElement.GetAttribute("分組名稱") == "")
+                            decimal credit = 0;
+                            decimal.TryParse(gplanSubject.Credit, out credit);
+                            foreach (CreditCheckConfig check in creditCheckConfigList)
+                            {
+                                // 如果這個科目是這項規則有採計的
+                                if (check.DoCheck(gplanSubject.Domain, credit, gplanSubject.Entry, gplanSubject.Required, gplanSubject.RequiredBy, gplanSubject.SubjectName, gplanSubject.Level))
                                 {
-                                    if (filterSameSubject)
+                                    // 將科目寫入報告
+                                    XmlElement subjectElement = check.XmlElement.SelectSingleNode("科目[@科目名稱=\"" + gplanSubject.SubjectName.Trim() + "\" and @科目級別=\"" + gplanSubject.Level.Trim() + "\"]") as XmlElement;
+                                    if (subjectElement == null)
                                     {
-                                        if (subjectElement.SelectNodes("開課設定[@課程群組=\"\"]").Count == 1)
-                                            check.GPlanCount += credit;
-                                        else
-                                            subjectElement.SetAttribute("課規科目級別重複", "不重複採計");
+                                        subjectElement = check.XmlElement.OwnerDocument.CreateElement("科目");
+                                        check.XmlElement.AppendChild(subjectElement);
+                                        subjectElement.SetAttribute("科目名稱", gplanSubject.SubjectName.Trim());
+                                        subjectElement.SetAttribute("科目級別", gplanSubject.Level.Trim());
+                                        subjectElement.SetAttribute("學分數", gplanSubject.Credit);
+                                        subjectElement.SetAttribute("取得學分數", "0");
+                                        subjectElement.SetAttribute("修課學年度", "");
+                                        subjectElement.SetAttribute("修課年級", "");
+                                        subjectElement.SetAttribute("修課學期", "");
+                                        subjectElement.SetAttribute("狀態", "未修習");
                                     }
                                     else
-                                        check.GPlanCount += credit;
+                                        subjectElement.SetAttribute("學分數", gplanSubject.Credit);
+                                    // 建立開課學期
+                                    XmlElement semesterElement = docCreditReport.CreateElement("開課設定");
+                                    subjectElement.AppendChild(semesterElement);
+                                    semesterElement.SetAttribute("開課年級", gplanSubject.SubjectElement.GetAttribute("GradeYear"));
+                                    semesterElement.SetAttribute("開課學期", gplanSubject.SubjectElement.GetAttribute("Semester"));
+                                    semesterElement.SetAttribute("課程群組", gplanSubject.SubjectElement.GetAttribute("分組名稱"));
+                                    semesterElement.SetAttribute("群組修課學分數", gplanSubject.SubjectElement.GetAttribute("分組修課學分數"));
 
-                                }
-                                // 用開課年級+開課學期+分組名稱判斷此分組名稱有沒有採計過
-                                else if (check.XmlElement.SelectNodes("科目/開課設定[@開課年級=\"" + gplanSubject.SubjectElement.GetAttribute("GradeYear")
-                                    + "\" and @開課學期=\"" + gplanSubject.SubjectElement.GetAttribute("Semester")
-                                    + "\" and @課程群組=\"" + gplanSubject.SubjectElement.GetAttribute("分組名稱") + "\"]").Count == 1)
-                                {
-                                    decimal.TryParse(gplanSubject.SubjectElement.GetAttribute("分組修課學分數"), out credit);
-                                    check.GPlanCount += credit;
+                                    // 累計課程規劃表學分數
+                                    if (gplanSubject.SubjectElement.GetAttribute("分組名稱") == "")
+                                    {
+                                        if (filterSameSubject)
+                                        {
+                                            if (subjectElement.SelectNodes("開課設定[@課程群組=\"\"]").Count == 1)
+                                                check.GPlanCount += credit;
+                                            else
+                                                subjectElement.SetAttribute("課規科目級別重複", "不重複採計");
+                                        }
+                                        else
+                                            check.GPlanCount += credit;
+
+                                    }
+                                    // 用開課年級+開課學期+分組名稱判斷此分組名稱有沒有採計過
+                                    else if (check.XmlElement.SelectNodes("科目/開課設定[@開課年級=\"" + gplanSubject.SubjectElement.GetAttribute("GradeYear")
+                                        + "\" and @開課學期=\"" + gplanSubject.SubjectElement.GetAttribute("Semester")
+                                        + "\" and @課程群組=\"" + gplanSubject.SubjectElement.GetAttribute("分組名稱") + "\"]").Count == 1)
+                                    {
+                                        decimal.TryParse(gplanSubject.SubjectElement.GetAttribute("分組修課學分數"), out credit);
+                                        check.GPlanCount += credit;
+                                    }
                                 }
                             }
                         }

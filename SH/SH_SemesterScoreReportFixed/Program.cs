@@ -1450,16 +1450,16 @@ namespace SH_SemesterScoreReportFixed
                             List<string> subjects1 = new List<string>();//本學期
                             List<string> subjects2 = new List<string>();//上學期
                             List<string> subjects3 = new List<string>();//學年
-                            // 進校判斷升級重讀: key= 科目名稱+校部定+必選修+學分數, Value=上下學期實得學分加總
+                            // 進校判斷升級重讀: key= 科目名稱, Value=上下學期實得學分加總
                             Dictionary<string, decimal> subjectCreditDic = new Dictionary<string, decimal>();
 
                             foreach (var semesterSubjectScore in stuRec.SemesterSubjectScoreList)
                             {
                                 if (semesterSubjectScore.SchoolYear.ToString() == conf.SchoolYear && semesterSubjectScore.Detail.GetAttribute("不計學分") != "是")
                                 {
-                                    string skey = semesterSubjectScore.Subject + "_" + semesterSubjectScore.Detail.GetAttribute("修課校部訂") + "_" + semesterSubjectScore.Require.ToString().ToLower() + "_" + semesterSubjectScore.CreditDec();
+                                    string skey = semesterSubjectScore.Subject;
                                     if (semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱") != "")
-                                        skey = semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱") + "_" + semesterSubjectScore.Detail.GetAttribute("修課校部訂") + "_" + semesterSubjectScore.Require.ToString().ToLower() + "_" + semesterSubjectScore.CreditDec();
+                                        skey = semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱");
 
                                     if (!subjectCreditDic.ContainsKey(skey))
                                         subjectCreditDic.Add(skey, 0);
@@ -1472,13 +1472,13 @@ namespace SH_SemesterScoreReportFixed
                                 {
                                     if (semesterSubjectScore.Detail.GetAttribute("不計學分") != "是")
                                     {
-                                        //科目_校部定_必選修(bool)_學分
+                                        //科目_科目代碼
                                         //subjects1.Add(semesterSubjectScore.Subject);
                                         //指定學年科目名稱
                                         if (semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱") != "")
-                                            subjects1.Add(semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱") + "_" + semesterSubjectScore.Detail.GetAttribute("修課校部訂") + "_" + semesterSubjectScore.Require.ToString().ToLower() + "_" + semesterSubjectScore.CreditDec());
+                                            subjects1.Add(semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱"));
                                         else
-                                            subjects1.Add(semesterSubjectScore.Subject + "_" + semesterSubjectScore.Detail.GetAttribute("修課校部訂") + "_" + semesterSubjectScore.Require.ToString().ToLower() + "_" + semesterSubjectScore.CreditDec());
+                                            subjects1.Add(semesterSubjectScore.Subject);
                                         currentGradeYear = semesterSubjectScore.GradeYear;
                                     }
                                 }
@@ -1487,7 +1487,6 @@ namespace SH_SemesterScoreReportFixed
                             {
                                 foreach (var subjectName in studentExamSores[studentID].Keys)
                                 {
-
                                     foreach (var courseID in studentExamSores[studentID][subjectName].Keys)
                                     {
                                         if (conf.PrintSubjectList.Contains(subjectName))
@@ -1508,9 +1507,6 @@ namespace SH_SemesterScoreReportFixed
                                                 if (("" + semesterSubjectScore.SchoolYear) == conf.SchoolYear
                                                     && ("" + semesterSubjectScore.Semester) == conf.Semester
                                                     && newSemesterSubjectName == newExamSubjectName
-                                                    && semesterSubjectScore.Detail.GetAttribute("修課校部訂") == accessHelper.CourseHelper.GetCourse(courseID)[0].RequiredBy
-                                                    && semesterSubjectScore.Require == accessHelper.CourseHelper.GetCourse(courseID)[0].Required
-                                                    && semesterSubjectScore.CreditDec() == accessHelper.CourseHelper.GetCourse(courseID)[0].CreditDec()
                                                     && semesterSubjectScore.Level == accessHelper.CourseHelper.GetCourse(courseID)[0].SubjectLevel)
                                                 {
                                                     match = true;
@@ -1520,7 +1516,7 @@ namespace SH_SemesterScoreReportFixed
                                             if (!match)
                                             {
                                                 //指定學年科目名稱
-                                                subjects1.Add(newExamSubjectName + "_" + accessHelper.CourseHelper.GetCourse(courseID)[0].RequiredBy + "_" + accessHelper.CourseHelper.GetCourse(courseID)[0].Required.ToString().ToLower() + "_" + accessHelper.CourseHelper.GetCourse(courseID)[0].CreditDec());
+                                                subjects1.Add(newExamSubjectName);
                                             }
                                             #endregion
                                         }
@@ -1537,11 +1533,9 @@ namespace SH_SemesterScoreReportFixed
                                         {
                                             if (semesterSubjectScore.Detail.GetAttribute("不計學分") != "是")
                                                 if (semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱") != "")
-                                                    subjects2.Add(semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱") + "_" + semesterSubjectScore.Detail.GetAttribute("修課校部訂") + "_" + semesterSubjectScore.Require.ToString().ToLower() + "_" + semesterSubjectScore.CreditDec());
+                                                    subjects2.Add(semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱"));
                                                 else
-                                                    subjects2.Add(semesterSubjectScore.Subject + "_" + semesterSubjectScore.Detail.GetAttribute("修課校部訂") + "_" + semesterSubjectScore.Require.ToString().ToLower() + "_" + semesterSubjectScore.CreditDec());
-
-                                            //subjects2.Add(semesterSubjectScore.Subject + "_" + semesterSubjectScore.Detail.GetAttribute("修課校部訂") + "_" + semesterSubjectScore.Require.ToString().ToLower() + "_" + semesterSubjectScore.CreditDec());
+                                                    subjects2.Add(semesterSubjectScore.Subject);
                                         }
                                     }
                                 }
@@ -1562,10 +1556,7 @@ namespace SH_SemesterScoreReportFixed
                                     {
                                         if (("" + schoolYearSubjectScore.SchoolYear) == conf.SchoolYear)
                                         {
-                                            string required = "false";
-                                            if (schoolYearSubjectScore.Detail.GetAttribute("必選修") == "必修")
-                                                required = "true";
-                                            subjects3.Add(schoolYearSubjectScore.Subject + "_" + schoolYearSubjectScore.Detail.GetAttribute("校部定") + "_" + required + "_" + schoolYearSubjectScore.Detail.GetAttribute("識別學分數"));
+                                            subjects3.Add(schoolYearSubjectScore.Subject);
                                         }
                                     }
                                 }
@@ -1676,7 +1667,6 @@ namespace SH_SemesterScoreReportFixed
                             // 學期科目與定期評量
                             foreach (string subjectName in subjectNameList)
                             {
-                                string[] subjectInfoArray = subjectName.Split('_');
                                 if (subjectIndex <= conf.SubjectLimit)
                                 {
                                     decimal? subjectNumber = null;
@@ -1691,10 +1681,7 @@ namespace SH_SemesterScoreReportFixed
                                             newSemesterSubjectName = semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱");
 
                                         if (semesterSubjectScore.Detail.GetAttribute("不計學分") != "是"
-                                            && newSemesterSubjectName == subjectInfoArray[0]//subjectName
-                                            && semesterSubjectScore.Detail.GetAttribute("修課校部訂") == subjectInfoArray[1]
-                                            && semesterSubjectScore.Require.ToString().ToLower() == subjectInfoArray[2].ToLower()
-                                            && semesterSubjectScore.CreditDec().ToString() == subjectInfoArray[3]
+                                            && newSemesterSubjectName == subjectName
                                             && ("" + semesterSubjectScore.SchoolYear) == conf.SchoolYear
                                             && ("" + semesterSubjectScore.Semester) == conf.Semester)
                                         {
@@ -2162,11 +2149,11 @@ namespace SH_SemesterScoreReportFixed
 
                                         if (studentExamSores.ContainsKey(studentID))
                                         {
-                                            if (studentExamSores[studentID].ContainsKey(subjectInfoArray[0]))
+                                            if (studentExamSores[studentID].ContainsKey(subjectName))
                                             {
-                                                foreach (var courseID in studentExamSores[studentID][subjectInfoArray[0]].Keys)
+                                                foreach (var courseID in studentExamSores[studentID][subjectName].Keys)
                                                 {
-                                                    var sceTakeRecord = studentExamSores[studentID][subjectInfoArray[0]][courseID];
+                                                    var sceTakeRecord = studentExamSores[studentID][subjectName][courseID];
                                                     if (sceTakeRecord != null)
                                                     {//有輸入
                                                         if (conf.PrintSubjectList.Contains(sceTakeRecord.Subject))
@@ -2420,7 +2407,7 @@ namespace SH_SemesterScoreReportFixed
                                                             ? ("" + studentRefExamSores[studentID][courseID].ExamScore)
                                                             : studentRefExamSores[studentID][courseID].SpecialCase;
                                                     }
-                                                    studentExamSores[studentID][subjectInfoArray[0]].Remove(courseID);
+                                                    studentExamSores[studentID][subjectName].Remove(courseID);
                                                     break;
                                                 }
                                             }
@@ -2437,10 +2424,7 @@ namespace SH_SemesterScoreReportFixed
                                                 newSemesterSubjectName = semesterSubjectScore.Detail.GetAttribute("指定學年科目名稱");
 
                                             if (semesterSubjectScore.Detail.GetAttribute("不計學分") != "是"
-                                                && newSemesterSubjectName == subjectInfoArray[0]//subjectName
-                                                && semesterSubjectScore.Detail.GetAttribute("修課校部訂") == subjectInfoArray[1]
-                                                && semesterSubjectScore.Require.ToString().ToLower() == subjectInfoArray[2].ToLower()
-                                                && semesterSubjectScore.CreditDec().ToString() == subjectInfoArray[3]
+                                                && newSemesterSubjectName == subjectName
                                                 && semesterSubjectScore.Semester == 1
                                                 && semesterSubjectScore.GradeYear == currentGradeYear)
                                             {
@@ -2565,16 +2549,8 @@ namespace SH_SemesterScoreReportFixed
                                     {
                                         foreach (var schoolYearSubjectScore in stuRec.SchoolYearSubjectScoreList)
                                         {
-                                            string required = "false";
-                                            if (schoolYearSubjectScore.Detail.GetAttribute("必選修") == "必修")
-                                                required = "true";
                                             if (("" + schoolYearSubjectScore.SchoolYear) == conf.SchoolYear
-                                            //&& schoolYearSubjectScore.Subject == subjectName
-                                            && schoolYearSubjectScore.Subject == subjectInfoArray[0]
-                                            && schoolYearSubjectScore.Detail.GetAttribute("校部定") == subjectInfoArray[1]
-                                            && required == subjectInfoArray[2].ToLower()
-
-                                                && schoolYearSubjectScore.Detail.GetAttribute("識別學分數") == subjectInfoArray[3])
+                                            && schoolYearSubjectScore.Subject == subjectName)
                                             {
                                                 if (!findInSemesterSubjectScore
                                                     && !findInSemester1SubjectScore
@@ -3853,10 +3829,7 @@ namespace SH_SemesterScoreReportFixed
             {
                 if (ss.SchoolYear.ToString() == schoolYear && ss.GradeYear == gradeYear)
                 {
-                    string required = "false";
-                    if (ss.Detail.GetAttribute("必選修") == "必修")
-                        required = "true";
-                    string sKey = ss.Subject + "_" + ss.Detail.GetAttribute("校部定") + "_" + required + "_" + ss.Detail.GetAttribute("識別學分數");
+                    string sKey = ss.Subject;
 
                     //  所有科目每週教學總節數(ischool 無課時，故取學分)
                     if (subjectCreditDic.ContainsKey(sKey))

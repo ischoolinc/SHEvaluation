@@ -1047,8 +1047,8 @@ namespace SH_SemesterScoreReportFixed
                                     decimal tag2SubjectCreditSum = 0;
                                     foreach (var subjectName in studentExamSores[studentID].Keys)
                                     {
-                                        if (conf.PrintSubjectList.Contains(subjectName))
-                                        {
+                                        //if (conf.PrintSubjectList.Contains(subjectName))
+                                        //{
                                             #region 是列印科目
                                             foreach (var sceTakeRecord in studentExamSores[studentID][subjectName].Values)
                                             {
@@ -1060,6 +1060,7 @@ namespace SH_SemesterScoreReportFixed
                                                     printSubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
                                                     printSubjectCreditSum += sceTakeRecord.CreditDec();
 
+                                                //    Console.WriteLine(studentID + "," + sceTakeRecord.ExamName + "," + sceTakeRecord.ExamScore + "," + printSubjectSumW + "," + printSubjectCreditSum + "," + sceTakeRecord.Subject);
                                                 }
                                                 else
                                                 {
@@ -1067,7 +1068,7 @@ namespace SH_SemesterScoreReportFixed
                                                 }
                                             }
                                             #endregion
-                                        }
+                                       // }
 
                                     }
                                     if (printSubjectCount > 0)

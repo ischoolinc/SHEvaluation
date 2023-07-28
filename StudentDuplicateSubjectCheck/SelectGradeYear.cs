@@ -16,6 +16,7 @@ using System.Xml.Linq;
 using System.Xml;
 using FISCA.DSAUtil;
 using SmartSchool.Evaluation.WearyDogComputerHelper;
+using StudentDuplicateSubjectCheck.DAO;
 
 namespace StudentDuplicateSubjectCheck
 {
@@ -31,6 +32,18 @@ namespace StudentDuplicateSubjectCheck
         DataTable dtErrorTable = new DataTable();
         List<DataRow> hasScoreList = new List<DataRow>();
         List<DataRow> hasSubjectCodeList = new List<DataRow>();
+
+        // 指定學年科目名稱
+        Dictionary<string, CourseSpecifySubjectNameInfo> hasSpecifySubjectNameDict = new Dictionary<string, CourseSpecifySubjectNameInfo>();
+
+        // 課程規劃表科目學分數上下學期不同
+        Dictionary<string, List<GPlanSubjectCreditDifInfo>> hasDiffSubjectCreditDict = new Dictionary<string, List<GPlanSubjectCreditDifInfo>>();
+
+        // 課程規劃表科目學分數上下學期不同
+        Dictionary<string, List<GPlanSubjectCreditDifInfo>> SubejctCreditDifCheckData = new Dictionary<string, List<GPlanSubjectCreditDifInfo>>();
+
+        Dictionary<string, List<GPlanSubjectCreditDifInfo>> SubejctCreditDifDataList = new Dictionary<string, List<GPlanSubjectCreditDifInfo>>();
+
         DataTable dtSubjectCode = new DataTable();
 
         List<SCAttendRecord> scaDuplicateList = new List<SCAttendRecord>();
@@ -134,12 +147,21 @@ namespace StudentDuplicateSubjectCheck
                 FISCA.Presentation.MotherForm.SetStatusBarMessage("取得課程規劃資料中...", e.ProgressPercentage);
 
             }
+            else if (e.ProgressPercentage == 65)
+            {
+                FISCA.Presentation.MotherForm.SetStatusBarMessage("檢查課程規劃資料中...", e.ProgressPercentage);
+
+            }
             else if (e.ProgressPercentage == 70)
             {
-                FISCA.Presentation.MotherForm.SetStatusBarMessage("寫入課程代碼中...", e.ProgressPercentage);
+                FISCA.Presentation.MotherForm.SetStatusBarMessage("取得課程代碼中...", e.ProgressPercentage);
+            }
+            else if (e.ProgressPercentage == 80)
+            {
+                FISCA.Presentation.MotherForm.SetStatusBarMessage("取得指定學年科目名稱中...", e.ProgressPercentage);
             }
 
-            else if (e.ProgressPercentage == 75)
+            else if (e.ProgressPercentage == 90)
             { FISCA.Presentation.MotherForm.SetStatusBarMessage("取得重覆級別科目中...", e.ProgressPercentage); }
             else
             {
@@ -253,6 +275,95 @@ namespace StudentDuplicateSubjectCheck
                         catch (Exception ex)
                         {
                             MessageBox.Show("覆蓋課程代碼發生錯誤" + ex.Message);
+
+                            //Console.WriteLine(ex.Message);
+                        }
+                    }
+
+                }
+
+
+                if (mus.Name == "檢查課程規劃表")
+                {
+                    if (SubejctCreditDifDataList.Count > 0)
+                    {
+                        hasSubjectCreditDiffForm hf = new hasSubjectCreditDiffForm();
+                        hf.StartPosition = FormStartPosition.CenterScreen;
+                        hf.SetData(SubejctCreditDifDataList);
+                        hf.ShowDialog();
+                    }
+                }
+
+                if (mus.Name == "指定學年科目名稱")
+                {
+
+                    bool isUpdateNull = false;
+                    bool isUpdate = false;
+                    if (hasSpecifySubjectNameDict.Count > 0)
+                    {
+                        hasSpecifySubjectNameForm hscf = new hasSpecifySubjectNameForm();
+                        hscf.StartPosition = FormStartPosition.CenterScreen;
+                        hscf.SetData(hasSpecifySubjectNameDict);
+                        // 確定覆蓋
+                        if (hscf.ShowDialog() == DialogResult.Yes)
+                        {
+                            isUpdate = true;
+                        }
+                        else
+                        {
+                            // 當選離開時，只更新有空值得課程代碼。
+                            isUpdateNull = true;
+                        }
+                    }
+                    else
+                    {
+                        isUpdate = true;
+                    }
+
+                    List<string> updateCourseSpecifySubjectNameList = new List<string>();
+
+                    if (isUpdate)
+                    {
+                        // 整理需要回寫課程指定學年科目名稱資料
+                        foreach (CourseSpecifySubjectNameInfo ci in hasSpecifySubjectNameDict.Values)
+                        {
+                            string updateStr = "UPDATE " +
+                                "course " +
+                                "SET specify_subject_name = '" + ci.SpecifySubjectName + "' " +
+                                "WHERE " +
+                                "id =" + ci.CourseID + ";";
+                            updateCourseSpecifySubjectNameList.Add(updateStr);
+                        }
+                    }
+
+                    if (isUpdateNull)
+                    {
+                        // 整理需要回寫課程指定學年科目名稱資料，只寫入原本是空白                        
+                        foreach (CourseSpecifySubjectNameInfo ci in hasSpecifySubjectNameDict.Values)
+                        {
+                            // 舊資料室空白
+                            if (ci.SpecifySubjectNameOld == "" && ci.SpecifySubjectName != "")
+                            {
+                                string updateStr = "UPDATE " +
+                             "course " +
+                             "SET specify_subject_name = '" + ci.SpecifySubjectName + "' " +
+                             "WHERE " +
+                             "id =" + ci.CourseID + ";";
+                                updateCourseSpecifySubjectNameList.Add(updateStr);
+                            }
+                        }
+                    }
+
+                    if (updateCourseSpecifySubjectNameList.Count > 0)
+                    {
+                        try
+                        {
+                            UpdateHelper uhSubj = new UpdateHelper();
+                            uhSubj.Execute(updateCourseSpecifySubjectNameList);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("覆蓋指定學年科目名稱發生錯誤" + ex.Message);
 
                             //Console.WriteLine(ex.Message);
                         }
@@ -718,18 +829,86 @@ namespace StudentDuplicateSubjectCheck
             DataTable dtGpPlanData = qhGpPlan.Select(qryGpPlanData);
 
             Dictionary<string, XElement> gpDataDict = new Dictionary<string, XElement>();
+            // 課規id,name
+            Dictionary<string, string> gpIDNameDict = new Dictionary<string, string>();
             foreach (DataRow dr in dtGpPlanData.Rows)
             {
-                string id = dr["id"].ToString();
+                string id = dr["id"] + "";
+                string name = dr["name"] + "";
                 XElement elm = XElement.Parse(dr["content"].ToString());
                 gpDataDict.Add(id, elm);
+                if (!gpIDNameDict.ContainsKey(id))
+                    gpIDNameDict.Add(id, name);
             }
+
+            SubejctCreditDifCheckData.Clear();
+            SubejctCreditDifDataList.Clear();
+
+            // 檢查課程規劃表內科目同一年上下學期學分數不同，又沒有設定指定學年科目名稱
+            foreach (string id in gpDataDict.Keys)
+            {
+                foreach (XElement elm in gpDataDict[id].Elements("Subject"))
+                {
+                    string key = id + "_" + elm.Attribute("GradeYear").Value + "_" + elm.Attribute("SubjectName").Value;
+
+                    if (!SubejctCreditDifCheckData.ContainsKey(key))
+                        SubejctCreditDifCheckData.Add(key, new List<GPlanSubjectCreditDifInfo>());
+
+                    GPlanSubjectCreditDifInfo gi = new GPlanSubjectCreditDifInfo();
+                    gi.GPlanID = id;
+                    if (gpIDNameDict.ContainsKey(id))
+                        gi.GPlanName = gpIDNameDict[id];
+
+                    gi.GradeYear = elm.Attribute("GradeYear").Value;
+                    gi.SubjectName = elm.Attribute("SubjectName").Value;
+                    gi.Credit = elm.Attribute("Credit").Value;
+                    gi.Semester = elm.Attribute("Semester").Value;
+
+                    gi.SpecifySubjectName = "";
+                    if (elm.Attribute("指定學年科目名稱") != null)
+                    {
+                        gi.SpecifySubjectName = elm.Attribute("指定學年科目名稱").Value;
+                    }
+
+
+                    SubejctCreditDifCheckData[key].Add(gi);
+                }
+            }
+
+            // 檢查有科目同年級學分數不同
+            foreach (string key in SubejctCreditDifCheckData.Keys)
+            {
+                // 有上下學期才檢查
+                if (SubejctCreditDifCheckData[key].Count == 2)
+                {
+                    // 指定學年科目名稱都空白才需要判斷
+                    if(SubejctCreditDifCheckData[key][0].SpecifySubjectName == "" && SubejctCreditDifCheckData[key][1].SpecifySubjectName == "")
+                    {
+                        // 上下學期學分數不同
+                        if (SubejctCreditDifCheckData[key][0].Credit != SubejctCreditDifCheckData[key][1].Credit)
+                        {
+                            if (!SubejctCreditDifDataList.ContainsKey(key))
+                                SubejctCreditDifDataList.Add(key, new List<GPlanSubjectCreditDifInfo>());
+
+                            SubejctCreditDifDataList[key].Add(SubejctCreditDifCheckData[key][0]);
+                            SubejctCreditDifDataList[key].Add(SubejctCreditDifCheckData[key][1]);
+                        }
+                    }
+                    
+                }
+            }
+
+            Console.WriteLine(SubejctCreditDifDataList.Count);
+
 
             // 取得學生修課科目代碼
             string qryScAttendSubjectCode = "" +
                 "SELECT " +
                 "sc_attend.id AS sc_attend_id" +
                 ",course.id AS course_id" +
+                ",course.course_name" +
+                ",course.school_year" +
+                ",course.semester" +
                 ",course.subject AS subject_name" +
                 ",course.subj_level AS subj_level" +
                 ",ref_student_id AS student_id" +
@@ -739,6 +918,7 @@ namespace StudentDuplicateSubjectCheck
                 ", CASE WHEN course. c_is_required = '1' THEN '必修' ELSE '選修' END AS is_required " +
                 ", course.score_type AS entry " +
                 ", course.credit " +
+                ", course.specify_subject_name " +
                 "FROM " +
                 "course " +
                 "INNER JOIN sc_attend " +
@@ -748,11 +928,14 @@ namespace StudentDuplicateSubjectCheck
             QueryHelper qhSubjectCode = new QueryHelper();
             dtSubjectCode = qhSubjectCode.Select(qryScAttendSubjectCode);
 
+            hasSpecifySubjectNameDict.Clear();
 
             #region 課程規劃表
             foreach (DataRow dr in dtSubjectCode.Rows)
             {
-                string sid = dr["student_id"].ToString();
+                string sid = dr["student_id"] + "";
+                string coid = dr["course_id"] + "";
+
                 if (studentGraduationPlanDict.ContainsKey(sid))
                 {
                     string gpid = studentGraduationPlanDict[sid];
@@ -771,12 +954,42 @@ namespace StudentDuplicateSubjectCheck
 
                             // 科目名稱+科目級別 相同
                             if (dr["subject_name"] + "" == subjName && dr["subj_level"] + "" == subjLevel)
+                            {
                                 dr["subject_code"] = subjCode;
+
+                                // 處理指定學年科目名稱
+                                if (!hasSpecifySubjectNameDict.ContainsKey(coid))
+                                {
+                                    CourseSpecifySubjectNameInfo ci = new CourseSpecifySubjectNameInfo();
+                                    ci.CourseID = coid;
+                                    ci.CourseName = dr["course_name"] + "";
+                                    ci.SchoolYear = dr["school_year"] + "";
+                                    ci.Semester = dr["semester"] + "";
+                                    ci.SubjectName = subjName;
+                                    ci.SubjectLevel = subjLevel;
+                                    ci.SpecifySubjectNameOld = dr["specify_subject_name"] + "";
+                                    ci.SpecifySubjectName = "";
+
+                                    if (elm.Attribute("指定學年科目名稱") != null)
+                                    {
+                                        ci.SpecifySubjectName = elm.Attribute("指定學年科目名稱").Value;
+                                    }
+
+                                    if (ci.SpecifySubjectName != "")
+                                        hasSpecifySubjectNameDict.Add(coid, ci);
+                                }
+                            }
+
                         }
                     }
                 }
             }
             #endregion
+
+            MyUserState mus01 = new MyUserState();
+            mus01.Name = "檢查課程規劃表";
+            mus01.Value = "650";
+            _backgroundWorker.ReportProgress(65, mus01);
 
             MyUserState mus1 = new MyUserState();
             mus1.Name = "課程代碼";
@@ -784,40 +997,46 @@ namespace StudentDuplicateSubjectCheck
             _backgroundWorker.ReportProgress(70, mus1);
 
 
-            // 回寫課程規劃課程代碼到修課紀錄上科目代碼
-            List<string> updateScSubjCodeList = new List<string>();
-            foreach (DataRow dr in dtSubjectCode.Rows)
-            {
-                string sc_id = dr["sc_attend_id"] + "";
-                string subj_code = "";
-                if (dr["subject_code"] != null)
-                {
-                    subj_code = dr["subject_code"] + "";
-                }
+            //// 回寫課程規劃課程代碼到修課紀錄上科目代碼
+            //List<string> updateScSubjCodeList = new List<string>();
+            //foreach (DataRow dr in dtSubjectCode.Rows)
+            //{
+            //    string sc_id = dr["sc_attend_id"] + "";
+            //    string subj_code = "";
+            //    if (dr["subject_code"] != null)
+            //    {
+            //        subj_code = dr["subject_code"] + "";
+            //    }
 
-                string updateStr = "UPDATE " +
-                    "sc_attend " +
-                    "SET subject_code = '" + subj_code + "' " +
-                    "WHERE " +
-                    "id =" + sc_id + ";";
-                updateScSubjCodeList.Add(updateStr);
-            }
+            //    string updateStr = "UPDATE " +
+            //        "sc_attend " +
+            //        "SET subject_code = '" + subj_code + "' " +
+            //        "WHERE " +
+            //        "id =" + sc_id + ";";
+            //    updateScSubjCodeList.Add(updateStr);
+            //}
 
-            if (updateScSubjCodeList.Count > 0)
-            {
-                try
-                {
-                    UpdateHelper uhSubj = new UpdateHelper();
-                    uhSubj.Execute(updateScSubjCodeList);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
+            //if (updateScSubjCodeList.Count > 0)
+            //{
+            //    try
+            //    {
+            //        UpdateHelper uhSubj = new UpdateHelper();
+            //        uhSubj.Execute(updateScSubjCodeList);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Console.WriteLine(ex.Message);
+            //    }
+            //}
+
+            MyUserState mus2 = new MyUserState();
+            mus2.Name = "指定學年科目名稱";
+            mus2.Value = "80";
+            _backgroundWorker.ReportProgress(80, mus2);
 
 
-            _backgroundWorker.ReportProgress(75);
+
+            _backgroundWorker.ReportProgress(90);
 
             #region 舊寫法
             // 2018/5/23 穎驊 筆記 使用ischool API 抓不到 scattend 中的 extensions 資料，故採用SQL 來抓

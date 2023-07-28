@@ -128,6 +128,8 @@
     <Compile Include="CompleteForm.designer.cs">
       <DependentUpon>CompleteForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="DAO\CourseSpecifySubjectNameInfo.cs" />
+    <Compile Include="DAO\GPlanSubjectCreditDifInfo.cs" />
     <Compile Include="DataGridViewExport.cs" />
     <Compile Include="ErrorMessageForm.cs">
       <SubType>Form</SubType>
@@ -142,11 +144,23 @@
     <Compile Include="HasPassScoreForm.Designer.cs">
       <DependentUpon>HasPassScoreForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="hasSpecifySubjectNameForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="hasSpecifySubjectNameForm.Designer.cs">
+      <DependentUpon>hasSpecifySubjectNameForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="hasSubjectCodeForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="hasSubjectCodeForm.Designer.cs">
       <DependentUpon>hasSubjectCodeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="hasSubjectCreditDiffForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="hasSubjectCreditDiffForm.Designer.cs">
+      <DependentUpon>hasSubjectCreditDiffForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MyUserState.cs" />
     <Compile Include="Program.cs" />
@@ -163,6 +177,7 @@
       <DependentUpon>SelectGradeYear.cs</DependentUpon>
     </Compile>
     <Compile Include="SCAttendRecord.cs" />
+    <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Library\Aspose.Cells_201402.dll" />
@@ -213,8 +228,14 @@
     <EmbeddedResource Include="HasPassScoreForm.resx">
       <DependentUpon>HasPassScoreForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="hasSpecifySubjectNameForm.resx">
+      <DependentUpon>hasSpecifySubjectNameForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="hasSubjectCodeForm.resx">
       <DependentUpon>hasSubjectCodeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="hasSubjectCreditDiffForm.resx">
+      <DependentUpon>hasSubjectCreditDiffForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -228,6 +249,8 @@
   <ItemGroup>
     <None Include="Template\已有及格補考標準清單.xls" />
     <None Include="Template\已有課程代碼清單.xls" />
+    <None Include="Template\課程已有指定學年科目名稱樣板.xlsx" />
+    <None Include="Template\課程規劃科目同年級學分數不同.xlsx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

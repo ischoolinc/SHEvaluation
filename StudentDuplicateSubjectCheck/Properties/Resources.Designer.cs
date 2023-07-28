@@ -79,5 +79,25 @@ namespace StudentDuplicateSubjectCheck.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] 課程已有指定學年科目名稱樣板 {
+            get {
+                object obj = ResourceManager.GetObject("課程已有指定學年科目名稱樣板", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] 課程規劃科目同年級學分數不同 {
+            get {
+                object obj = ResourceManager.GetObject("課程規劃科目同年級學分數不同", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

@@ -117,17 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="已有及格補考標準清單" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\template\已有及格補考標準清單.xls;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="已有課程代碼清單" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\template\已有課程代碼清單.xls;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="課程已有指定學年科目名稱樣板" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\template\課程已有指定學年科目名稱樣板.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="課程規劃科目同年級學分數不同" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\template\課程規劃科目同年級學分數不同.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
 </root>

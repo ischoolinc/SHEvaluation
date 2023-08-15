@@ -496,6 +496,7 @@ namespace SH_SemesterScoreReportFixed
 
                 // 導師評語 --
                 table.Columns.Add("導師評語");
+                table.Columns.Add("上學期導師評語");
                 // 獎懲統計 --
                 table.Columns.Add("大功統計");
                 table.Columns.Add("小功統計");
@@ -884,15 +885,18 @@ namespace SH_SemesterScoreReportFixed
 
                         }
                         // 2021-12-28 Cynthia 避免舊的變數不能使用，增加新版文字評量變數，舊版綜合表現OOO不移除
+                        // 2023/8/15，CT,新增支援顯示上學期文字評量
                         for (int i = 1; i <= 10; i++)
                         {
                             table.Columns.Add("文字評量" + i);
+                            table.Columns.Add("上學期文字評量" + i);
                         }
                         for (int i = 1; i <= 10; i++)
                         {
                             table.Columns.Add("文字評量名稱" + i);
+                            table.Columns.Add("上學期文字評量名稱" + i);
                         }
-
+                        
                         #endregion
                         #region 缺曠對照表
                         List<K12.Data.PeriodMappingInfo> periodMappingInfos = K12.Data.PeriodMapping.SelectAll();
@@ -3640,8 +3644,45 @@ namespace SH_SemesterScoreReportFixed
                             List<string> faceList = new List<string>();
                             foreach (SemesterMoralScoreInfo info in stuRec.SemesterMoralScoreList)
                             {
+                                // 處理上學期文字評量
+                                if (conf.Semester == "2" && (""+info.SchoolYear ) == conf.SchoolYear && info.Semester == 1)
+                                {
+                                    faceList.Clear();
+                                    commentList.Clear();
+                                    
+                                    row["上學期導師評語"] = info.SupervisedByComment;
+                                    System.Xml.XmlElement xml = info.Detail;
+                                    foreach (System.Xml.XmlElement each in xml.SelectNodes("TextScore/Morality"))
+                                    {
+                                        string face = each.GetAttribute("Face");
+                                        if ((SmartSchool.Customization.Data.SystemInformation.Fields["文字評量對照表"] as System.Xml.XmlElement).SelectSingleNode("Content/Morality[@Face='" + face + "']") != null)
+                                        {
+                                            string comment = each.InnerText;
+                                            row["綜合表現：" + face] = each.InnerText;
+
+                                            // 2021-12-28 Cynthia 避免舊的變數不能使用，增加新版文字評量變數，舊版綜合表現OOO不移除
+                                            commentList.Add(comment);
+                                            faceList.Add(face);
+                                            for (int i = 1; i <= faceList.Count; i++)
+                                            {
+                                                if (faceList.Count <= 10)
+                                                    row["上學期文字評量名稱" + i] = faceList[i - 1];
+                                            }
+                                            for (int i = 1; i <= commentList.Count; i++)
+                                            {
+                                                if (commentList.Count <= 10)
+                                                    row["上學期文字評量" + i] = commentList[i - 1];
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+
                                 if (("" + info.Semester) == conf.Semester && ("" + info.SchoolYear) == conf.SchoolYear)
                                 {
+                                    faceList.Clear();
+                                    commentList.Clear();
+
                                     row["導師評語"] = info.SupervisedByComment;
                                     System.Xml.XmlElement xml = info.Detail;
                                     foreach (System.Xml.XmlElement each in xml.SelectNodes("TextScore/Morality"))
@@ -3667,7 +3708,7 @@ namespace SH_SemesterScoreReportFixed
                                             }
                                         }
                                     }
-                                    break;
+                                   // break;
                                 }
                             }
                             #endregion

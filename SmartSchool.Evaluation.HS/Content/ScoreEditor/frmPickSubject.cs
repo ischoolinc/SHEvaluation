@@ -184,9 +184,9 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                     }
 
                     // 報部科目名稱
-                    if (firstElm.Attribute("報部科目名稱") != null)
+                    if (firstElm.Attribute("OfficialSubjectName") != null)
                     {
-                        dgvMain.Rows[rowIdx].Cells[colMainOfficialSubjectName.Index].Value = firstElm.Attribute("報部科目名稱").Value;
+                        dgvMain.Rows[rowIdx].Cells[colMainOfficialSubjectName.Index].Value = firstElm.Attribute("OfficialSubjectName").Value;
                     }
 
                     // 解析學分

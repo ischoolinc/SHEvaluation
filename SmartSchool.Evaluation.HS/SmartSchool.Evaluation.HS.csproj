@@ -26,7 +26,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\ModulesToFix\Fix Jobs\OpenSHEvaluationSH\OpenSHEvaluationSH\Output\SHEvaluation\</OutputPath>
+    <OutputPath>..\..\..\1campus_desktop_x64\1campus_desktop_x64_SH_Test\modules\SHEvaluation\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>

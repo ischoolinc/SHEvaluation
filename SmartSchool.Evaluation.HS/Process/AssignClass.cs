@@ -6,6 +6,7 @@ using SmartSchool.Evaluation.GraduationPlan;
 using SmartSchool.Evaluation.ScoreCalcRule;
 using SmartSchool.Feature.Class;
 using System;
+using System.Collections.Generic;
 
 namespace SmartSchool.Evaluation.Process
 {
@@ -103,11 +104,17 @@ namespace SmartSchool.Evaluation.Process
 
         void buttonItem56_PopupOpen(object sender, FISCA.Presentation.PopupOpenEventArgs e)
         {
+          
+            Dictionary<string, GraduationPlanInfo> dic = new Dictionary<string, GraduationPlanInfo>();
+            
             foreach (GraduationPlanInfo info in SmartSchool.Evaluation.GraduationPlan.GraduationPlan.Instance.Items)
             {
-                var btn = e.VirtualButtons[info.Name];
-                btn.Tag = info;
-                btn.Click += new EventHandler(btn_Click);
+                if((Int32.Parse(info.SchoolYear)< Int32.Parse(K12.Data.School.DefaultSchoolYear)+2) && (Int32.Parse(info.SchoolYear) > Int32.Parse(K12.Data.School.DefaultSchoolYear)-3))
+                {
+                    var btn = e.VirtualButtons[info.Name];
+                    btn.Tag = info;
+                    btn.Click += new EventHandler(btn_Click);
+                }
             }
         }
 

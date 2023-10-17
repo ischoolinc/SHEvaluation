@@ -17,6 +17,7 @@ using System.Xml;
 using FISCA.DSAUtil;
 using SmartSchool.Evaluation.WearyDogComputerHelper;
 using StudentDuplicateSubjectCheck.DAO;
+using System.Security.Cryptography;
 
 namespace StudentDuplicateSubjectCheck
 {
@@ -57,13 +58,13 @@ namespace StudentDuplicateSubjectCheck
 
 
             this.numericUpDown1.Minimum = 1;
-            this.numericUpDown1.Maximum = 5;
+            this.numericUpDown1.Maximum = 12;
             this.numericUpDown1.Value = 1;
 
             labelX2.Text = "本功能將會對本學期學生的修課紀錄有3項檢查：\n" +
                 "1.檢查成績計算規則，並將及格標準、補考標準、學生身分寫入修課紀錄。\n" +
                 //"2.檢查課程規劃，並將課程代碼寫入修課紀錄。" + Environment.NewLine +
-                "2.及格標準、補考標準只會寫入一次並不會覆蓋已寫入的紀錄。" + Environment.NewLine +
+                "2.及格標準、補考標準，可選擇覆蓋已寫入的紀錄。" + Environment.NewLine +
                 "3.假若與先前的學期成績有重覆的科目級別則會列出，由人工設定計算方式。";
 
             _backgroundWorker = new BackgroundWorker();
@@ -76,7 +77,6 @@ namespace StudentDuplicateSubjectCheck
 
         private void buttonX1_Click(object sender, EventArgs e)
         {
-
             targetGradeYear = "" + this.numericUpDown1.Value;
             FreezeUI();
             _backgroundWorker.RunWorkerAsync();
@@ -90,10 +90,18 @@ namespace StudentDuplicateSubjectCheck
             {
                 if (errorMessage != "")
                 {
-                    ErrorMessageForm emf = new ErrorMessageForm();
-                    emf.SetDataTable(dtErrorTable);
-                    emf.SetMessage(errorMessage);
-                    emf.ShowDialog();
+                    if (dtErrorTable.Rows.Count > 0)
+                    {
+                        ErrorMessageForm emf = new ErrorMessageForm();
+                        emf.SetDataTable(dtErrorTable);
+                        emf.SetMessage(errorMessage);
+                        emf.ShowDialog();
+                    }
+                    else
+                    {
+                        MsgBox.Show(errorMessage, "檢查發生錯誤", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                    }
+
                     FISCA.Presentation.MotherForm.SetStatusBarMessage("檢查發生錯誤。");
                 }
             }
@@ -174,12 +182,57 @@ namespace StudentDuplicateSubjectCheck
             {
                 if (mus.Name == "及格補考標準")
                 {
+                    bool isUpdatePassScore = false;
+                    List<string> UpdatePassScoreList = new List<string>();
                     if (hasScoreList.Count > 0)
                     {
                         HasPassScoreForm hpsf = new HasPassScoreForm();
                         hpsf.StartPosition = FormStartPosition.CenterScreen;
                         hpsf.SetDataRows(hasScoreList);
-                        hpsf.ShowDialog();
+                        if (hpsf.ShowDialog() == DialogResult.Yes)
+                        {
+                            isUpdatePassScore = true;
+                        }
+                    }
+
+                    if (isUpdatePassScore)
+                    {
+                        // 覆蓋及格與補考標準
+                        foreach (DataRow dr in hasScoreList)
+                        {
+                            string passing_standard = "null";
+                            string makeup_standard = "null";
+
+                            if (dr["passing_standard_new"] != null)
+                                passing_standard = dr["passing_standard_new"].ToString();
+
+                            if (dr["makeup_standard_new"] != null)
+                                makeup_standard = dr["makeup_standard_new"].ToString();
+
+                            string sc_id = dr["sc_attend_id"].ToString();
+
+                            string updateStr = "UPDATE " +
+                                "sc_attend " +
+                                 " SET passing_standard=" + passing_standard +
+                                 ",makeup_standard =" + makeup_standard +
+                                " WHERE " +
+                                "id =" + sc_id + ";";
+                            UpdatePassScoreList.Add(updateStr);
+                        }
+                    }
+
+                    if (UpdatePassScoreList.Count > 0)
+                    {
+
+                        try
+                        {
+                            UpdateHelper uhSubj = new UpdateHelper();
+                            uhSubj.Execute(UpdatePassScoreList);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("覆蓋及格標準與補考標準發生錯誤" + ex.Message);
+                        }
                     }
                 }
 
@@ -395,6 +448,14 @@ namespace StudentDuplicateSubjectCheck
                 sidList.Add("" + dr["id"]);
             }
 
+            // 年級沒有資料時
+            if (sidList.Count == 0)
+            {
+                this.errorMessage = "沒有" + targetGradeYear + "年級的學生";
+                e.Cancel = true;
+                return;
+            }
+
             _backgroundWorker.ReportProgress(20);
 
             #region 舊的抓取成績方式 (有問題!)
@@ -570,7 +631,7 @@ namespace StudentDuplicateSubjectCheck
                             else
                             {
                                 makeupStandardDict.Add(student.StudentID, makeupStandard);
-                            }
+                            }                           
                         }
                     }
                 }
@@ -615,26 +676,34 @@ namespace StudentDuplicateSubjectCheck
 
             // 取得學生當學期修課
             QueryHelper qhScAttend = new QueryHelper();
-            string qryScAttend = "SELECT " +
-                "sc_attend.id AS sc_attend_id" +
-                ",course.id AS course_id" +
-                ",course.school_year AS school_year" +
-                ",course.semester AS semester" +
-                ",course.course_name AS course_name" +
-                ",student.id AS student_id" +
-                ",student.name AS student_name" +
-                ",student.student_number AS student_number" +
-                ",sc_attend.passing_standard" +
-                ",sc_attend.makeup_standard" +
-                ",sc_attend.remark" +
-                ",sc_attend.subject_code" +
-                " FROM " +
-                "course INNER JOIN sc_attend" +
-                " ON course.id = sc_attend.ref_course_id INNER JOIN" +
-                " student ON sc_attend.ref_student_id = student.id " +
-                " WHERE student.id IN(" + string.Join(",", studentIDList.ToArray()) + ") AND course.school_year = " + schoolYear + " AND course.semester = " + semester + "" +
-                " ORDER BY course.course_name,student.seat_no; ";
-
+            string qryScAttend = string.Format(@"
+            SELECT
+                sc_attend.id AS sc_attend_id,
+                course.id AS course_id,
+                course.school_year AS school_year,
+                course.semester AS semester,
+                course.course_name AS course_name,
+                student.id AS student_id,
+                student.name AS student_name,
+                student.student_number AS student_number,
+                sc_attend.passing_standard,
+                sc_attend.makeup_standard,
+                sc_attend.remark,
+                sc_attend.subject_code,
+                0 AS passing_standard_new,
+                0 AS makeup_standard_new
+            FROM
+                course
+                INNER JOIN sc_attend ON course.id = sc_attend.ref_course_id
+                INNER JOIN student ON sc_attend.ref_student_id = student.id
+            WHERE
+                student.id IN({0})
+                AND course.school_year = {1}
+                AND course.semester = {2}
+            ORDER BY
+                course.course_name,
+                student.seat_no;
+            ", string.Join(",", studentIDList.ToArray()), schoolYear, semester);
             DataTable dtScAttend = qh1.Select(qryScAttend);
 
             List<DataRow> updateScoreList = new List<DataRow>();
@@ -657,6 +726,16 @@ namespace StudentDuplicateSubjectCheck
                         hasScore = true;
 
 
+                // 填入新的及格標準、補考標準，更新使用
+                if (passingStandardDict.ContainsKey(sid))
+                {
+                    dr["passing_standard_new"] = passingStandardDict[sid];
+                }
+                if (makeupStandardDict.ContainsKey(sid))
+                {
+                    dr["makeup_standard_new"] = makeupStandardDict[sid];
+                }
+                
                 // 是否有課程代碼
                 bool hasSubjectCode = false;
 
@@ -882,7 +961,7 @@ namespace StudentDuplicateSubjectCheck
                 if (SubejctCreditDifCheckData[key].Count == 2)
                 {
                     // 指定學年科目名稱都空白才需要判斷
-                    if(SubejctCreditDifCheckData[key][0].SpecifySubjectName == "" && SubejctCreditDifCheckData[key][1].SpecifySubjectName == "")
+                    if (SubejctCreditDifCheckData[key][0].SpecifySubjectName == "" && SubejctCreditDifCheckData[key][1].SpecifySubjectName == "")
                     {
                         // 上下學期學分數不同
                         if (SubejctCreditDifCheckData[key][0].Credit != SubejctCreditDifCheckData[key][1].Credit)
@@ -894,7 +973,7 @@ namespace StudentDuplicateSubjectCheck
                             SubejctCreditDifDataList[key].Add(SubejctCreditDifCheckData[key][1]);
                         }
                     }
-                    
+
                 }
             }
 
@@ -1128,12 +1207,14 @@ namespace StudentDuplicateSubjectCheck
         {
             buttonX1.Enabled = false;
             buttonX2.Enabled = false;
+            numericUpDown1.Enabled = false;
         }
 
         private void ActivateUI()
         {
             buttonX1.Enabled = true;
             buttonX2.Enabled = true;
+            numericUpDown1.Enabled = true;
         }
 
         private void SelectGradeYear_Load(object sender, EventArgs e)

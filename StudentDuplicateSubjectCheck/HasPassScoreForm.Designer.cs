@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgData = new DevComponents.DotNetBar.Controls.DataGridViewX();
             this.colSchoolYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSemester = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -42,6 +42,8 @@
             this.btnExportList = new DevComponents.DotNetBar.ButtonX();
             this.btnExit = new DevComponents.DotNetBar.ButtonX();
             this.lblMsg = new DevComponents.DotNetBar.LabelX();
+            this.btnWrite = new DevComponents.DotNetBar.ButtonX();
+            this.labelX1 = new DevComponents.DotNetBar.LabelX();
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).BeginInit();
             this.SuspendLayout();
             // 
@@ -64,19 +66,19 @@
             this.colPassingStandard,
             this.colMakeupStandard,
             this.colRemark});
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgData.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgData.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgData.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
-            this.dgData.Location = new System.Drawing.Point(22, 23);
+            this.dgData.Location = new System.Drawing.Point(22, 37);
             this.dgData.Name = "dgData";
             this.dgData.RowTemplate.Height = 24;
-            this.dgData.Size = new System.Drawing.Size(869, 240);
+            this.dgData.Size = new System.Drawing.Size(869, 303);
             this.dgData.TabIndex = 0;
             // 
             // colSchoolYear
@@ -137,7 +139,7 @@
             this.btnAddTemp.AutoSize = true;
             this.btnAddTemp.BackColor = System.Drawing.Color.Transparent;
             this.btnAddTemp.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnAddTemp.Location = new System.Drawing.Point(22, 278);
+            this.btnAddTemp.Location = new System.Drawing.Point(22, 355);
             this.btnAddTemp.Name = "btnAddTemp";
             this.btnAddTemp.Size = new System.Drawing.Size(105, 25);
             this.btnAddTemp.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -152,7 +154,7 @@
             this.btnExportList.AutoSize = true;
             this.btnExportList.BackColor = System.Drawing.Color.Transparent;
             this.btnExportList.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExportList.Location = new System.Drawing.Point(141, 278);
+            this.btnExportList.Location = new System.Drawing.Point(141, 355);
             this.btnExportList.Name = "btnExportList";
             this.btnExportList.Size = new System.Drawing.Size(91, 25);
             this.btnExportList.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -167,7 +169,7 @@
             this.btnExit.AutoSize = true;
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExit.Location = new System.Drawing.Point(816, 278);
+            this.btnExit.Location = new System.Drawing.Point(816, 355);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 25);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -185,17 +187,49 @@
             // 
             this.lblMsg.BackgroundStyle.Class = "";
             this.lblMsg.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lblMsg.Location = new System.Drawing.Point(262, 279);
+            this.lblMsg.Location = new System.Drawing.Point(262, 356);
             this.lblMsg.Name = "lblMsg";
-            this.lblMsg.Size = new System.Drawing.Size(529, 23);
+            this.lblMsg.Size = new System.Drawing.Size(462, 23);
             this.lblMsg.TabIndex = 4;
             this.lblMsg.Click += new System.EventHandler(this.lblMsg_Click);
+            // 
+            // btnWrite
+            // 
+            this.btnWrite.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnWrite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnWrite.AutoSize = true;
+            this.btnWrite.BackColor = System.Drawing.Color.Transparent;
+            this.btnWrite.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnWrite.Location = new System.Drawing.Point(730, 356);
+            this.btnWrite.Name = "btnWrite";
+            this.btnWrite.Size = new System.Drawing.Size(75, 25);
+            this.btnWrite.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.btnWrite.TabIndex = 5;
+            this.btnWrite.Text = "覆蓋";
+            this.btnWrite.Click += new System.EventHandler(this.btnWrite_Click);
+            // 
+            // labelX1
+            // 
+            this.labelX1.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX1.BackgroundStyle.Class = "";
+            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX1.ForeColor = System.Drawing.Color.Black;
+            this.labelX1.Location = new System.Drawing.Point(22, 11);
+            this.labelX1.Name = "labelX1";
+            this.labelX1.Size = new System.Drawing.Size(869, 23);
+            this.labelX1.TabIndex = 6;
+            this.labelX1.Text = "覆蓋：將學生成績計算規則的及格標準與補考標準，更新至學生修課及格標準與補考標準。";
             // 
             // HasPassScoreForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(903, 315);
+            this.ClientSize = new System.Drawing.Size(903, 392);
+            this.Controls.Add(this.labelX1);
+            this.Controls.Add(this.btnWrite);
             this.Controls.Add(this.lblMsg);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnExportList);
@@ -226,5 +260,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colMakeupStandard;
         private System.Windows.Forms.DataGridViewTextBoxColumn colRemark;
         private DevComponents.DotNetBar.LabelX lblMsg;
+        private DevComponents.DotNetBar.ButtonX btnWrite;
+        private DevComponents.DotNetBar.LabelX labelX1;
     }
 }

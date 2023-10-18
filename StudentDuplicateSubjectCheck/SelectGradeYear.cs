@@ -58,7 +58,7 @@ namespace StudentDuplicateSubjectCheck
 
 
             this.numericUpDown1.Minimum = 1;
-            this.numericUpDown1.Maximum = 12;
+            this.numericUpDown1.Maximum = 4; // 因為成績計算規則只支援1~4年級
             this.numericUpDown1.Value = 1;
 
             labelX2.Text = "本功能將會對本學期學生的修課紀錄有3項檢查：\n" +

@@ -1182,17 +1182,25 @@ namespace RegularAssessmentTranscriptFixedRank
                                     }
                                 }
                             }
-                            subjectNameList.Sort(new StringComparer("國文"
-                                                , "英文"
-                                                , "數學"
-                                                , "理化"
-                                                , "生物"
-                                                , "社會"
-                                                , "物理"
-                                                , "化學"
-                                                , "歷史"
-                                                , "地理"
-                                                , "公民"));
+
+                            // 取得中英文對照表中文名稱
+                            List<string> ChineseSubjectNameMapList = Utility.GetChineseSubjectNameList();
+
+                            //subjectNameList.Sort(new StringComparer("國文"
+                            //                    , "英文"
+                            //                    , "數學"
+                            //                    , "理化"
+                            //                    , "生物"
+                            //                    , "社會"
+                            //                    , "物理"
+                            //                    , "化學"
+                            //                    , "歷史"
+                            //                    , "地理"
+                            //                    , "公民"));
+
+                            // 排序
+                            subjectNameList.Sort(new StringComparer(ChineseSubjectNameMapList.ToArray()));
+
                             #endregion
                             int subjectIndex = 1;
                             // 學期科目與定期評量

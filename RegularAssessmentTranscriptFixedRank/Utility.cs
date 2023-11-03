@@ -7,6 +7,7 @@ using FISCA.UDT;
 using FISCA.Data;
 using System.Data;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace RegularAssessmentTranscriptFixedRank
 {
@@ -458,6 +459,49 @@ namespace RegularAssessmentTranscriptFixedRank
 
                 if (!value[sid].ContainsKey(key))
                     value[sid].Add(key, dr);
+            }
+
+            return value;
+        }
+
+        // 取得中英文對照表中文科目名稱(排序用)
+        public static List<string> GetChineseSubjectNameList()
+        {
+            List<string> value = new List<string>();
+
+            /* content 格式：
+            <Content>
+                <Subject Chinese="國文 " English="Chinese"/>
+            </Content> 
+             */
+
+            // 讀取 SQL 
+            string strSQL = string.Format(@"
+            SELECT
+                content
+            FROM
+                list
+            WHERE
+                name = '科目中英文對照表'
+            ");
+
+            QueryHelper qh = new QueryHelper();
+            DataTable dt = qh.Select(strSQL);
+            if (dt.Rows.Count > 0)
+            {
+                try
+                {
+                    XElement elmRoot = XElement.Parse(dt.Rows[0]["content"] + "");
+                    foreach (XElement elm in elmRoot.Elements("Subject"))
+                    {
+                        if (elm.Attribute("Chinese") != null)
+                            value.Add(elm.Attribute("Chinese").Value);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }                
             }
 
             return value;

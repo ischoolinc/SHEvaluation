@@ -2,6 +2,7 @@ using FISCA.DSAUtil;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
 using System.Collections.Generic;
+using System.Data;
 using System.Xml;
 
 namespace SmartSchool.Evaluation.WearyDogComputerHelper
@@ -1141,6 +1142,18 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                         summaryElement.SetAttribute("可補修", "" + check.MakeupCount);
                         summaryElement.SetAttribute("未修習", "" + check.NotAttendCount);
 
+                        decimal needCredit = 0;
+                        // 計算不足學分
+                        if (check.Type == "取得學分數統計")
+                        {
+                            needCredit = check.PassLimit - check.PassCount;
+                        }
+                        else
+                        {
+                            needCredit = check.PassLimit - check.AttendCount;
+                        }
+
+                        summaryElement.SetAttribute("不足學分", "" + needCredit);
 
                         if (check.Active)
                         {

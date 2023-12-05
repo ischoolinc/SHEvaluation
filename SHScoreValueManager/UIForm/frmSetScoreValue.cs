@@ -201,30 +201,52 @@ namespace SHScoreValueManager.UIForm
         // 儲存設定資料
         private void SaveData()
         {
-            // 重新讀取資料轉成物件
-            XElement elmRoot = new XElement("Settings");
-            foreach (DataGridViewRow row in dgData.Rows)
+            try
             {
-                if (row.IsNewRow)
-                    continue;
+                // 重新讀取資料轉成物件
+                XElement elmRoot = new XElement("Settings");
+                List<string> logStr = new List<string>();
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("== 缺考設定 ==");
+                foreach (DataGridViewRow row in dgData.Rows)
+                {
+                    if (row.IsNewRow)
+                        continue;
 
-                XElement elm = new XElement("Setting");
-                string ScoreType = row.Cells["分數認定"].Value + "";
-                elm.SetElementValue("UseText", "" + row.Cells["輸入內容"].Value);
-                elm.SetElementValue("ScoreType", ScoreType);
-                elm.SetElementValue("ReportValue", "" + row.Cells["缺考原因"].Value);
+                    logStr.Clear();
+                    XElement elm = new XElement("Setting");
+                    string ScoreType = "" + row.Cells["分數認定"].Value;
+                    string UseText = "" + row.Cells["輸入內容"].Value;
+                    string ReportValue = "" + row.Cells["缺考原因"].Value;
+                    elm.SetElementValue("UseText", UseText);
+                    elm.SetElementValue("ScoreType", ScoreType);
+                    elm.SetElementValue("ReportValue", ReportValue);
 
+                    // log
+                    logStr.Add("缺考原因：" + ReportValue);
+                    logStr.Add("輸入內容：" + UseText);
+                    logStr.Add("分數認定：" + ScoreType);
+                    sb.AppendLine(string.Join(",", logStr.ToArray()));
 
-                if (ScoreType == "0分")
-                    elm.SetElementValue("UseValue", "-1");
-                else if (ScoreType == "免試")
-                    elm.SetElementValue("UseValue", "-2");
-                else elm.SetElementValue("UseValue", "0");
+                    if (ScoreType == "0分")
+                        elm.SetElementValue("UseValue", "-1");
+                    else if (ScoreType == "免試")
+                        elm.SetElementValue("UseValue", "-2");
+                    else elm.SetElementValue("UseValue", "0");
 
-                elmRoot.Add(elm);
+                    elmRoot.Add(elm);
+                }
+                cd["Settings"] = elmRoot.ToString();
+                cd.Save();
+
+                // 紀錄log
+                FISCA.LogAgent.ApplicationLog.Log("缺考設定", "儲存", sb.ToString());
             }
-            cd["Settings"] = elmRoot.ToString();
-            cd.Save();
+            catch (Exception ex)
+            {
+                MsgBox.Show("儲存過程發生錯誤," + ex.Message);
+                return;
+            }
         }
 
         // 檢查資料
@@ -232,6 +254,8 @@ namespace SHScoreValueManager.UIForm
         {
             bool value = true;
             int rowCount = 0;
+            List<string> chkUseTextSame = new List<string>();
+
             // 檢查 DataGridView 資料
             foreach (DataGridViewRow row in dgData.Rows)
             {
@@ -246,13 +270,28 @@ namespace SHScoreValueManager.UIForm
                 else
                     row.Cells["缺考原因"].ErrorText = "";
 
-                if ("" + row.Cells["輸入內容"].Value == "")
+                string UseText = "" + row.Cells["輸入內容"].Value;
+                if (UseText == "")
                 {
                     row.Cells["輸入內容"].ErrorText = "必填";
                     value = false;
                 }
                 else
+                {
                     row.Cells["輸入內容"].ErrorText = "";
+                    // 檢查輸入內容是否重複
+                    if (chkUseTextSame.Contains(UseText))
+                    {
+                        row.Cells["輸入內容"].ErrorText = UseText + " 重複!";
+                        value = false;
+                    }
+                    else
+                    {
+                        chkUseTextSame.Add(UseText);
+                    }
+
+                }
+
 
                 if ("" + row.Cells["分數認定"].Value == "")
                 {
@@ -274,5 +313,10 @@ namespace SHScoreValueManager.UIForm
             return value;
         }
 
+        private void dgData_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex > -1 && e.ColumnIndex > -1)
+                dgData.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = "";
+        }
     }
 }

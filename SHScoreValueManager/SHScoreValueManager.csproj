@@ -51,6 +51,11 @@
       <HintPath>Library\FISCA.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="FISCA.LogAgent, Version=1.0.0.8, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\FISCA.LogAgent.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="FISCA.Permission, Version=1.2.0.2, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\FISCA.Permission.dll</HintPath>
@@ -98,6 +103,9 @@
     <Content Include="Library\FISCA.Data.dll" />
     <Content Include="Library\FISCA.Data.xml" />
     <Content Include="Library\FISCA.dll" />
+    <Content Include="Library\FISCA.LogAgent.dll" />
+    <Content Include="Library\FISCA.LogAgent.pdb" />
+    <Content Include="Library\FISCA.LogAgent.XML" />
     <Content Include="Library\FISCA.Permission.dll" />
     <Content Include="Library\FISCA.Permission.xml" />
     <Content Include="Library\FISCA.Presentation.dll" />

@@ -51,11 +51,12 @@
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgData.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgData.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
-            this.dgData.Location = new System.Drawing.Point(18, 15);
+            this.dgData.Location = new System.Drawing.Point(18, 12);
             this.dgData.Name = "dgData";
             this.dgData.RowTemplate.Height = 24;
             this.dgData.Size = new System.Drawing.Size(452, 211);
             this.dgData.TabIndex = 0;
+            this.dgData.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgData_CellValueChanged);
             // 
             // btnSave
             // 

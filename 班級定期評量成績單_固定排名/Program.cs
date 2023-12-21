@@ -459,6 +459,20 @@ namespace 班級定期評量成績單_固定排名
                             total += gss.Count;
                         }
                         bkw.ReportProgress(40);
+
+                        // 取得學生ID
+                        List<string> StudentID9DList = new List<string>();
+                        foreach (ClassRecord classRecord in selectedClasses)
+                        {
+                            foreach (var studentRec in classRecord.Students)
+                            {
+                                StudentID9DList.Add(studentRec.StudentID);
+                            }
+                        }
+                        // 取得學生課程規劃表9D科目名稱
+                        Dictionary<string, List<string>> Student9DSubjectNameDict = Utility.GetStudent9DSubjectNameByID(StudentID9DList);
+
+
                         //foreach (string gradeyear in gradeyearStudents.Keys)
                         // 根據所選取得學生
                         foreach (ClassRecord classRecord in selectedClasses)
@@ -519,18 +533,35 @@ namespace 班級定期評量成績單_固定排名
                                     decimal tag2SubjectCreditSum = 0;
                                     foreach (var subjectName in studentExamSores[studentID].Keys)
                                     {
-                                        if (conf.PrintSubjectList.Contains(subjectName))
+                                        // 需要過濾9D課程不計算總分與平均成績
+                                        bool isClac = true;
+                                        if (Student9DSubjectNameDict.ContainsKey(studentID))
                                         {
+                                            if (Student9DSubjectNameDict[studentID].Contains(subjectName))
+                                            {
+                                                isClac = false;
+                                            }
+                                        }
+
+                                        if (conf.PrintSubjectList.Contains(subjectName))
+                                        {                                          
+
                                             #region 是列印科目
                                             foreach (var sceTakeRecord in studentExamSores[studentID][subjectName].Values)
                                             {
                                                 if (sceTakeRecord != null && sceTakeRecord.SpecialCase == "")
                                                 {
-                                                    printSubjectSum += sceTakeRecord.ExamScore;//計算總分
-                                                    printSubjectCount++;
-                                                    //計算加權總分
-                                                    printSubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
-                                                    printSubjectCreditSum += sceTakeRecord.CreditDec();
+                                                  
+
+                                                    if (isClac)
+                                                    {
+                                                        printSubjectSum += sceTakeRecord.ExamScore;//計算總分
+                                                        printSubjectCount++;
+                                                        //計算加權總分
+                                                        printSubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
+                                                        printSubjectCreditSum += sceTakeRecord.CreditDec();
+                                                    }
+
                                                     if (rank && sceTakeRecord.Status == "一般")// 不在過濾名單且為一般生才做排名
                                                     {
                                                         if (sceTakeRecord.RefClass != null)
@@ -579,11 +610,17 @@ namespace 班級定期評量成績單_固定排名
                                                 {
                                                     if (sceTakeRecord != null && sceTakeRecord.SpecialCase == "")
                                                     {
-                                                        tag1SubjectSum += sceTakeRecord.ExamScore;//計算總分
-                                                        tag1SubjectCount++;
-                                                        //計算加權總分
-                                                        tag1SubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
-                                                        tag1SubjectCreditSum += sceTakeRecord.CreditDec();
+                                                        // 9D 科目不計算總分與平均
+                                                        if (isClac)
+                                                        {
+                                                            tag1SubjectSum += sceTakeRecord.ExamScore;//計算總分
+                                                            tag1SubjectCount++;
+                                                            //計算加權總分
+                                                            tag1SubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
+                                                            tag1SubjectCreditSum += sceTakeRecord.CreditDec();
+
+                                                        }
+
                                                         //各科目類別1排名
                                                         if (rank && sceTakeRecord.Status == "一般")//不在過濾名單且為一般生才做排名
                                                         {
@@ -615,11 +652,17 @@ namespace 班級定期評量成績單_固定排名
                                                 {
                                                     if (sceTakeRecord != null && sceTakeRecord.SpecialCase == "")
                                                     {
-                                                        tag2SubjectSum += sceTakeRecord.ExamScore;//計算總分
-                                                        tag2SubjectCount++;
-                                                        //計算加權總分
-                                                        tag2SubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
-                                                        tag2SubjectCreditSum += sceTakeRecord.CreditDec();
+                                                        // 9D科目不需要計算總分與平均
+                                                        if (isClac)
+                                                        {
+                                                            tag2SubjectSum += sceTakeRecord.ExamScore;//計算總分
+                                                            tag2SubjectCount++;
+                                                            //計算加權總分
+                                                            tag2SubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
+                                                            tag2SubjectCreditSum += sceTakeRecord.CreditDec();
+
+                                                        }
+
                                                         //各科目類別2排名
                                                         if (rank && sceTakeRecord.Status == "一般")//不在過濾名單且為一般生才做排名
                                                         {

@@ -896,7 +896,7 @@ namespace SH_SemesterScoreReportFixed
                             table.Columns.Add("文字評量名稱" + i);
                             table.Columns.Add("上學期文字評量名稱" + i);
                         }
-                        
+
                         #endregion
                         #region 缺曠對照表
                         List<K12.Data.PeriodMappingInfo> periodMappingInfos = K12.Data.PeriodMapping.SelectAll();
@@ -1024,6 +1024,21 @@ namespace SH_SemesterScoreReportFixed
                             total += gss.Count;
                         }
                         bkw.ReportProgress(40);
+
+
+                        // 取得學生ID
+                        List<string> StudentID9DList = new List<string>();
+                        foreach (string gradeyear in gradeyearStudents.Keys)
+                        {
+                            //找出全年級學生
+                            foreach (var studentRec in gradeyearStudents[gradeyear])
+                            {
+                                StudentID9DList.Add(studentRec.StudentID);
+                            }
+                        }
+                        // 取得學生課程規劃表9D科目名稱
+                        Dictionary<string, List<string>> Student9DSubjectNameDict = Utility.GetStudent9DSubjectNameByID(StudentID9DList);
+
                         foreach (string gradeyear in gradeyearStudents.Keys)
                         {
                             //找出全年級學生
@@ -1051,28 +1066,43 @@ namespace SH_SemesterScoreReportFixed
                                     decimal tag2SubjectCreditSum = 0;
                                     foreach (var subjectName in studentExamSores[studentID].Keys)
                                     {
+                                        // 需要過濾9D課程不計算總分與平均成績
+                                        bool isClac = true;
+                                        if (Student9DSubjectNameDict.ContainsKey(studentID))
+                                        {
+                                            if (Student9DSubjectNameDict[studentID].Contains(subjectName))
+                                            {
+                                                isClac = false;
+                                            }
+                                        }
+
                                         //if (conf.PrintSubjectList.Contains(subjectName))
                                         //{
-                                            #region 是列印科目
-                                            foreach (var sceTakeRecord in studentExamSores[studentID][subjectName].Values)
+                                        #region 是列印科目
+                                        foreach (var sceTakeRecord in studentExamSores[studentID][subjectName].Values)
+                                        {
+                                            if (sceTakeRecord != null && sceTakeRecord.SpecialCase == "")
                                             {
-                                                if (sceTakeRecord != null && sceTakeRecord.SpecialCase == "")
+
+                                                if (isClac)
                                                 {
                                                     printSubjectSum += sceTakeRecord.ExamScore;//計算總分
                                                     printSubjectCount++;
                                                     //計算加權總分
                                                     printSubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
                                                     printSubjectCreditSum += sceTakeRecord.CreditDec();
+                                                }
+
 
                                                 //    Console.WriteLine(studentID + "," + sceTakeRecord.ExamName + "," + sceTakeRecord.ExamScore + "," + printSubjectSumW + "," + printSubjectCreditSum + "," + sceTakeRecord.Subject);
-                                                }
-                                                else
-                                                {
-                                                    summaryRank = false;
-                                                }
                                             }
-                                            #endregion
-                                       // }
+                                            else
+                                            {
+                                                summaryRank = false;
+                                            }
+                                        }
+                                        #endregion
+                                        // }
 
                                     }
                                     if (printSubjectCount > 0)
@@ -3645,11 +3675,11 @@ namespace SH_SemesterScoreReportFixed
                             foreach (SemesterMoralScoreInfo info in stuRec.SemesterMoralScoreList)
                             {
                                 // 處理上學期文字評量
-                                if (conf.Semester == "2" && (""+info.SchoolYear ) == conf.SchoolYear && info.Semester == 1)
+                                if (conf.Semester == "2" && ("" + info.SchoolYear) == conf.SchoolYear && info.Semester == 1)
                                 {
                                     faceList.Clear();
                                     commentList.Clear();
-                                    
+
                                     row["上學期導師評語"] = info.SupervisedByComment;
                                     System.Xml.XmlElement xml = info.Detail;
                                     foreach (System.Xml.XmlElement each in xml.SelectNodes("TextScore/Morality"))
@@ -3675,7 +3705,7 @@ namespace SH_SemesterScoreReportFixed
                                             }
                                         }
                                     }
-                                    
+
                                 }
 
                                 if (("" + info.Semester) == conf.Semester && ("" + info.SchoolYear) == conf.SchoolYear)
@@ -3708,7 +3738,7 @@ namespace SH_SemesterScoreReportFixed
                                             }
                                         }
                                     }
-                                   // break;
+                                    // break;
                                 }
                             }
                             #endregion

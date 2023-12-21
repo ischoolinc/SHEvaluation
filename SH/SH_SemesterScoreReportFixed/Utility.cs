@@ -757,5 +757,81 @@ rank_batch
             return retVal;
         }
 
+        // 取得學生課程規畫表內9D科目名稱
+        public static Dictionary<string, List<string>> GetStudent9DSubjectNameByID(List<string> studentIDs)
+        {
+            Dictionary<string, List<string>> value = new Dictionary<string, List<string>>();
+
+            if (studentIDs.Count > 0)
+            {
+                QueryHelper qh = new QueryHelper();
+                string query = string.Format(@"
+                WITH student_data AS(
+                    SELECT
+                        student.id AS student_id,
+                        COALESCE(
+                            student.ref_graduation_plan_id,
+                            class.ref_graduation_plan_id
+                        ) AS graduation_plan_id
+                    FROM
+                        student
+                        LEFT JOIN class ON student.ref_class_id = class.id
+                    WHERE
+                        student.id IN({0})
+                ),
+                graduation_plan_expand AS(
+                    SELECT
+                        graduation_plan_id,
+                        array_to_string(xpath('//Subject/@SubjectName', subject_ele), '') :: TEXT AS subject_name,
+                        array_to_string(xpath('//Subject/@課程代碼', subject_ele), '') :: TEXT AS 課程代碼
+                    FROM
+                        (
+                            SELECT
+                                graduation_plan_id,
+                                unnest(
+                                    xpath(
+                                        '//GraduationPlan/Subject',
+                                        xmlparse(content graduation_plan.content)
+                                    )
+                                ) AS subject_ele
+                            FROM
+                                (
+                                    SELECT
+                                        DISTINCT graduation_plan_id
+                                    FROM
+                                        student_data
+                                ) AS target_graduation_plan
+                                INNER JOIN graduation_plan ON graduation_plan.id = target_graduation_plan.graduation_plan_id
+                        ) AS graduation_plan_expand
+                )
+                SELECT
+                    DISTINCT student_data.student_id,
+                    graduation_plan_expand.subject_name                    
+                FROM
+                    student_data
+                    LEFT JOIN graduation_plan_expand ON student_data.graduation_plan_id = graduation_plan_expand.graduation_plan_id
+                WHERE
+                    SUBSTRING(graduation_plan_expand.課程代碼, 17, 1) = '9'
+                    AND SUBSTRING(graduation_plan_expand.課程代碼, 19, 1) = 'D'
+                ORDER BY
+                    subject_name
+                ", string.Join(",", studentIDs.ToArray()));
+
+                DataTable dt = qh.Select(query);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string sid = dr["student_id"] + "";
+                    string SubjectName = dr["subject_name"] + "";
+                    if (!value.ContainsKey(sid))
+                        value.Add(sid, new List<string>());
+
+                    if (!value[sid].Contains(SubjectName))
+                        value[sid].Add(SubjectName);
+
+                }
+            }
+            return value;
+        }
+
     }
 }

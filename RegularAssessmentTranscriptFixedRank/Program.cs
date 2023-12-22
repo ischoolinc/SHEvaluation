@@ -11,6 +11,7 @@ using FISCA.Data;
 using FISCA.Permission;
 using SmartSchool;
 using Campus.ePaperCloud;
+using RegularAssessmentTranscriptFixedRank.DAO;
 
 namespace RegularAssessmentTranscriptFixedRank
 {
@@ -373,9 +374,15 @@ namespace RegularAssessmentTranscriptFixedRank
                 table.Columns.Add("學習服務區間加總");
                 table.Columns.Add("學習服務當學期加總");
 
-                // 標頭
-                table.TableName = "ss";
-                table.WriteXmlSchema(Application.StartupPath + "\\sS.xml");
+                // 新增人數統計
+                table.Columns.Add("班級人數");
+                table.Columns.Add("科別人數");
+                table.Columns.Add("年級人數");
+
+
+                //// 標頭
+                //table.TableName = "ss";
+                //table.WriteXmlSchema(Application.StartupPath + "\\sS.xml");
 
                 #endregion
                 //宣告產生的報表
@@ -736,6 +743,32 @@ namespace RegularAssessmentTranscriptFixedRank
                             total += gss.Count;
                         }
                         bkw.ReportProgress(40);
+
+                        // 取得學生ID
+                        List<string> StudentID9DList = new List<string>();
+                        foreach (string gradeyear in gradeyearStudents.Keys)
+                        {
+                            //找出全年級學生
+                            foreach (var studentRec in gradeyearStudents[gradeyear])
+                            {
+                                StudentID9DList.Add(studentRec.StudentID);
+                            }
+                        }
+                        // 取得學生課程規劃表9D科目名稱
+                        Dictionary<string, List<string>> Student9DSubjectNameDict = Utility.GetStudent9DSubjectNameByID(StudentID9DList);
+
+                        // 取得人數統計
+                        StudentCountInfo sci = new StudentCountInfo();
+                        sci.SetStudentSourceIDs(StudentID9DList);
+                        sci.CalcStudents();
+                        foreach (string name in sci.GetPrefixList())
+                        {
+                            string colName = name + "人數";
+                            if (!table.Columns.Contains(colName))
+                                table.Columns.Add(colName);
+
+                        }
+
                         foreach (string gradeyear in gradeyearStudents.Keys)
                         {
                             //找出全年級學生
@@ -792,6 +825,16 @@ namespace RegularAssessmentTranscriptFixedRank
                                     decimal tag2SubjectCreditSum = 0;
                                     foreach (var subjectName in studentExamSores[studentID].Keys)
                                     {
+                                        // 需要過濾9D課程不計算總分與平均成績
+                                        bool isClac = true;
+                                        if (Student9DSubjectNameDict.ContainsKey(studentID))
+                                        {
+                                            if (Student9DSubjectNameDict[studentID].Contains(subjectName))
+                                            {
+                                                isClac = false;
+                                            }
+                                        }
+
                                         if (conf.PrintSubjectList.Contains(subjectName))
                                         {
                                             #region 是列印科目
@@ -799,11 +842,14 @@ namespace RegularAssessmentTranscriptFixedRank
                                             {
                                                 if (sceTakeRecord != null && sceTakeRecord.SpecialCase == "")
                                                 {
-                                                    printSubjectSum += sceTakeRecord.ExamScore;//計算總分
-                                                    printSubjectCount++;
-                                                    //計算加權總分 - 2014/10/9 改為decimal
-                                                    printSubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
-                                                    printSubjectCreditSum += sceTakeRecord.CreditDec();
+                                                    if (isClac)
+                                                    {
+                                                        printSubjectSum += sceTakeRecord.ExamScore;//計算總分
+                                                        printSubjectCount++;
+                                                        //計算加權總分 - 2014/10/9 改為decimal
+                                                        printSubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
+                                                        printSubjectCreditSum += sceTakeRecord.CreditDec();
+                                                    }
                                                 }
                                                 else
                                                 {
@@ -819,11 +865,15 @@ namespace RegularAssessmentTranscriptFixedRank
                                             {
                                                 if (sceTakeRecord != null && sceTakeRecord.SpecialCase == "")
                                                 {
-                                                    tag1SubjectSum += sceTakeRecord.ExamScore;//計算總分
-                                                    tag1SubjectCount++;
-                                                    //計算加權總分
-                                                    tag1SubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
-                                                    tag1SubjectCreditSum += sceTakeRecord.CreditDec();
+                                                    if (isClac)
+                                                    {
+                                                        tag1SubjectSum += sceTakeRecord.ExamScore;//計算總分
+                                                        tag1SubjectCount++;
+                                                        //計算加權總分
+                                                        tag1SubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
+                                                        tag1SubjectCreditSum += sceTakeRecord.CreditDec();
+                                                    }
+
                                                 }
                                                 else
                                                 {
@@ -839,11 +889,14 @@ namespace RegularAssessmentTranscriptFixedRank
                                             {
                                                 if (sceTakeRecord != null && sceTakeRecord.SpecialCase == "")
                                                 {
-                                                    tag2SubjectSum += sceTakeRecord.ExamScore;//計算總分
-                                                    tag2SubjectCount++;
-                                                    //計算加權總分
-                                                    tag2SubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
-                                                    tag2SubjectCreditSum += sceTakeRecord.CreditDec();
+                                                    if (isClac)
+                                                    {
+                                                        tag2SubjectSum += sceTakeRecord.ExamScore;//計算總分
+                                                        tag2SubjectCount++;
+                                                        //計算加權總分
+                                                        tag2SubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
+                                                        tag2SubjectCreditSum += sceTakeRecord.CreditDec();
+                                                    }
                                                 }
                                                 else
                                                 {
@@ -946,6 +999,33 @@ namespace RegularAssessmentTranscriptFixedRank
                             string studentID = stuRec.StudentID;
                             string gradeYear = (stuRec.RefClass == null ? "" : "" + stuRec.RefClass.GradeYear);
                             DataRow row = table.NewRow();
+
+                            // 處理人數統計
+                            if (stuRec.RefClass != null)
+                            {
+                                row["班級人數"] = sci.GetClassStudentCount(stuRec.RefClass.ClassName);
+                            }
+                            if (stuRec.RefClass != null)
+                            {
+                                string deptName = stuRec.RefClass.Department;
+                                if (stuRec.Department != "")
+                                    deptName = stuRec.Department;
+
+                                row["科別人數"] = sci.GetDeptStudentCount(gradeYear, deptName);
+                            }
+                            row["年級人數"] = sci.GetGradeStudentCount(gradeYear);
+
+                            // 處理類別人數
+                            List<string> prefixList = sci.GetStudentPrefixList(stuRec.StudentID);
+                            if (prefixList.Count > 0)
+                            {
+                                foreach (string name in prefixList)
+                                {
+                                    string keyName = name + "人數";
+
+                                    row[keyName] = sci.GetTagStudentCount(gradeYear, name);
+                                }
+                            }
 
                             // 這區段是新增功能資料
                             // 畫面上開始結束日期
@@ -1960,6 +2040,7 @@ namespace RegularAssessmentTranscriptFixedRank
 
                         document = conf.Template;
                         document.MailMerge.Execute(table);
+                        document.MailMerge.DeleteFields();
 
                         //// debug
                         //table.TableName = "dt";

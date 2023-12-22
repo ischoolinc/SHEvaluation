@@ -369,96 +369,104 @@ namespace RegularAssessmentTranscriptFixedRank
         {
             Dictionary<string, Dictionary<string, DataRow>> value = new Dictionary<string, Dictionary<string, DataRow>>();
 
-            // 沒有學生不處理
-            if (StudentIDList.Count == 0)
-                return value;
-
-            QueryHelper qh = new QueryHelper();
-            string query = "" +
-               " SELECT " +
-" 	rank_matrix.id AS rank_matrix_id" +
-" 	, rank_matrix.school_year" +
-" 	, rank_matrix.semester" +
-" 	, rank_matrix.grade_year" +
-" 	, rank_matrix.item_type" +
-" 	, rank_matrix.ref_exam_id AS exam_id" +
-" 	, rank_matrix.item_name" +
-" 	, rank_matrix.rank_type" +
-" 	, rank_matrix.rank_name" +
-" 	, class.class_name" +
-" 	, student.seat_no" +
-" 	, student.student_number" +
-" 	, student.name" +
-" 	, rank_detail.ref_student_id AS student_id " +
-" 	, rank_detail.rank" +
-"   , rank_matrix.matrix_count " +
-" 	, rank_detail.pr" +
-" 	, rank_detail.percentile" +
-"   , rank_matrix.avg_top_25" +
-"   , rank_matrix.avg_top_50" +
-"   , rank_matrix.avg" +
-"   , rank_matrix.avg_bottom_50" +
-"   , rank_matrix.avg_bottom_25" +
-"    , rank_matrix.pr_88" +
-"    ,rank_matrix.pr_75" +
-"    ,rank_matrix.pr_50" +
-"    ,rank_matrix.pr_25" +
-"    ,rank_matrix.pr_12" +
-"    ,rank_matrix.std_dev_pop" +
-" 	, rank_matrix.level_gte100" +
-" 	, rank_matrix.level_90" +
-" 	, rank_matrix.level_80" +
-" 	, rank_matrix.level_70" +
-" 	, rank_matrix.level_60" +
-" 	, rank_matrix.level_50" +
-" 	, rank_matrix.level_40" +
-" 	, rank_matrix.level_30" +
-" 	, rank_matrix.level_20" +
-" 	, rank_matrix.level_10" +
-" 	, rank_matrix.level_lt10" +
-"  , level_gte100+level_90 + level_80 + level_70 + level_60 AS level_60up" +
-"  , level_50+level_40 + level_30 + level_20 + level_10 + level_lt10 AS level_60down" +
-" FROM " +
-" 	rank_matrix" +
-" 	LEFT OUTER JOIN rank_detail" +
-" 		ON rank_detail.ref_matrix_id = rank_matrix.id" +
-" 	LEFT OUTER JOIN student" +
-" 		ON student.id = rank_detail.ref_student_id" +
-" 	LEFT OUTER JOIN class" +
-" 		ON class.id = student.ref_class_id" +
-" WHERE" +
-" 	rank_matrix.is_alive = true" +
-" 	AND rank_matrix.school_year = " + SchoolYear +
-"     AND rank_matrix.semester = " + Semester +
-" 	AND rank_matrix.item_type like '定期評量%'" +
-" 	AND rank_matrix.ref_exam_id = " + ExamID +
-"     AND ref_student_id IN (" + string.Join(",", StudentIDList.ToArray()) + ") " +
-" ORDER BY " +
-" 	rank_matrix.id" +
-" 	, rank_detail.rank" +
-" 	, class.grade_year" +
-" 	, class.display_order" +
-" 	, class.class_name" +
-" 	, student.seat_no" +
-" 	, student.id";
-
-            DataTable dt = qh.Select(query);
-            //dt.TableName = "d5";
-            //dt.WriteXmlSchema(Application.StartupPath + "\\d5s.xml");
-            //dt.WriteXml(Application.StartupPath + "\\d5d.xml");
-
-            // student id key
-            // key = item_type + item_name +  rank_name 
-            foreach (DataRow dr in dt.Rows)
+            try
             {
-                string sid = dr["student_id"].ToString();
-                if (!value.ContainsKey(sid))
-                    value.Add(sid, new Dictionary<string, DataRow>());
 
-                string key = dr["item_type"].ToString() + "_" + dr["item_name"].ToString() + "_" + dr["rank_type"].ToString();
+                // 沒有學生不處理
+                if (StudentIDList.Count == 0)
+                    return value;
 
-                if (!value[sid].ContainsKey(key))
-                    value[sid].Add(key, dr);
+                QueryHelper qh = new QueryHelper();
+                string query = "" +
+                   " SELECT " +
+    " 	rank_matrix.id AS rank_matrix_id" +
+    " 	, rank_matrix.school_year" +
+    " 	, rank_matrix.semester" +
+    " 	, rank_matrix.grade_year" +
+    " 	, rank_matrix.item_type" +
+    " 	, rank_matrix.ref_exam_id AS exam_id" +
+    " 	, rank_matrix.item_name" +
+    " 	, rank_matrix.rank_type" +
+    " 	, rank_matrix.rank_name" +
+    " 	, class.class_name" +
+    " 	, student.seat_no" +
+    " 	, student.student_number" +
+    " 	, student.name" +
+    " 	, rank_detail.ref_student_id AS student_id " +
+    " 	, rank_detail.rank" +
+    "   , rank_matrix.matrix_count " +
+    " 	, rank_detail.pr" +
+    " 	, rank_detail.percentile" +
+    "   , rank_matrix.avg_top_25" +
+    "   , rank_matrix.avg_top_50" +
+    "   , rank_matrix.avg" +
+    "   , rank_matrix.avg_bottom_50" +
+    "   , rank_matrix.avg_bottom_25" +
+    "    , rank_matrix.pr_88" +
+    "    ,rank_matrix.pr_75" +
+    "    ,rank_matrix.pr_50" +
+    "    ,rank_matrix.pr_25" +
+    "    ,rank_matrix.pr_12" +
+    "    ,rank_matrix.std_dev_pop" +
+    " 	, rank_matrix.level_gte100" +
+    " 	, rank_matrix.level_90" +
+    " 	, rank_matrix.level_80" +
+    " 	, rank_matrix.level_70" +
+    " 	, rank_matrix.level_60" +
+    " 	, rank_matrix.level_50" +
+    " 	, rank_matrix.level_40" +
+    " 	, rank_matrix.level_30" +
+    " 	, rank_matrix.level_20" +
+    " 	, rank_matrix.level_10" +
+    " 	, rank_matrix.level_lt10" +
+    "  , level_gte100+level_90 + level_80 + level_70 + level_60 AS level_60up" +
+    "  , level_50+level_40 + level_30 + level_20 + level_10 + level_lt10 AS level_60down" +
+    " FROM " +
+    " 	rank_matrix" +
+    " 	LEFT OUTER JOIN rank_detail" +
+    " 		ON rank_detail.ref_matrix_id = rank_matrix.id" +
+    " 	LEFT OUTER JOIN student" +
+    " 		ON student.id = rank_detail.ref_student_id" +
+    " 	LEFT OUTER JOIN class" +
+    " 		ON class.id = student.ref_class_id" +
+    " WHERE" +
+    " 	rank_matrix.is_alive = true" +
+    " 	AND rank_matrix.school_year = " + SchoolYear +
+    "     AND rank_matrix.semester = " + Semester +
+    " 	AND rank_matrix.item_type like '定期評量%'" +
+    " 	AND rank_matrix.ref_exam_id = " + ExamID +
+    "     AND ref_student_id IN (" + string.Join(",", StudentIDList.ToArray()) + ") " +
+    " ORDER BY " +
+    " 	rank_matrix.id" +
+    " 	, rank_detail.rank" +
+    " 	, class.grade_year" +
+    " 	, class.display_order" +
+    " 	, class.class_name" +
+    " 	, student.seat_no" +
+    " 	, student.id";
+
+                DataTable dt = qh.Select(query);
+                //dt.TableName = "d5";
+                //dt.WriteXmlSchema(Application.StartupPath + "\\d5s.xml");
+                //dt.WriteXml(Application.StartupPath + "\\d5d.xml");
+
+                // student id key
+                // key = item_type + item_name +  rank_name 
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string sid = dr["student_id"].ToString();
+                    if (!value.ContainsKey(sid))
+                        value.Add(sid, new Dictionary<string, DataRow>());
+
+                    string key = dr["item_type"].ToString() + "_" + dr["item_name"].ToString() + "_" + dr["rank_type"].ToString();
+
+                    if (!value[sid].ContainsKey(key))
+                        value[sid].Add(key, dr);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
 
             return value;
@@ -501,11 +509,94 @@ namespace RegularAssessmentTranscriptFixedRank
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
-                }                
+                }
             }
 
             return value;
         }
 
+        // 取得學生課程規畫表內9D科目名稱
+        public static Dictionary<string, List<string>> GetStudent9DSubjectNameByID(List<string> studentIDs)
+        {
+            Dictionary<string, List<string>> value = new Dictionary<string, List<string>>();
+
+            try
+            {
+                if (studentIDs.Count > 0)
+                {
+                    QueryHelper qh = new QueryHelper();
+                    string query = string.Format(@"
+                WITH student_data AS(
+                    SELECT
+                        student.id AS student_id,
+                        COALESCE(
+                            student.ref_graduation_plan_id,
+                            class.ref_graduation_plan_id
+                        ) AS graduation_plan_id
+                    FROM
+                        student
+                        LEFT JOIN class ON student.ref_class_id = class.id
+                    WHERE
+                        student.id IN({0})
+                ),
+                graduation_plan_expand AS(
+                    SELECT
+                        graduation_plan_id,
+                        array_to_string(xpath('//Subject/@SubjectName', subject_ele), '') :: TEXT AS subject_name,
+                        array_to_string(xpath('//Subject/@課程代碼', subject_ele), '') :: TEXT AS 課程代碼
+                    FROM
+                        (
+                            SELECT
+                                graduation_plan_id,
+                                unnest(
+                                    xpath(
+                                        '//GraduationPlan/Subject',
+                                        xmlparse(content graduation_plan.content)
+                                    )
+                                ) AS subject_ele
+                            FROM
+                                (
+                                    SELECT
+                                        DISTINCT graduation_plan_id
+                                    FROM
+                                        student_data
+                                ) AS target_graduation_plan
+                                INNER JOIN graduation_plan ON graduation_plan.id = target_graduation_plan.graduation_plan_id
+                        ) AS graduation_plan_expand
+                )
+                SELECT
+                    DISTINCT student_data.student_id,
+                    graduation_plan_expand.subject_name                    
+                FROM
+                    student_data
+                    LEFT JOIN graduation_plan_expand ON student_data.graduation_plan_id = graduation_plan_expand.graduation_plan_id
+                WHERE
+                    SUBSTRING(graduation_plan_expand.課程代碼, 17, 1) = '9'
+                    AND SUBSTRING(graduation_plan_expand.課程代碼, 19, 1) = 'D'
+                ORDER BY
+                    subject_name
+                ", string.Join(",", studentIDs.ToArray()));
+
+                    DataTable dt = qh.Select(query);
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        string sid = dr["student_id"] + "";
+                        string SubjectName = dr["subject_name"] + "";
+                        if (!value.ContainsKey(sid))
+                            value.Add(sid, new List<string>());
+
+                        if (!value[sid].Contains(SubjectName))
+                            value[sid].Add(SubjectName);
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return value;
+        }
     }
 }

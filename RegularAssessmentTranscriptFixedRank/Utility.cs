@@ -299,10 +299,10 @@ namespace RegularAssessmentTranscriptFixedRank
               ",hours " +
               "FROM $k12.service.learning.record " +
               "WHERE ref_student_id " +
-              "IN('" + string.Join("','", StudentIDList.ToArray()) + "') " +
-              "AND school_year=" + SchoolYear +
-              "AND semester =" + Semester +
-              "ORDER BY ref_student_id;";
+              " IN('" + string.Join("','", StudentIDList.ToArray()) + "') " +
+              " AND school_year=" + SchoolYear +
+              " AND semester =" + Semester +
+              " ORDER BY ref_student_id;";
 
             DataTable dt2 = qh.Select(query2);
             if (dt2 != null)

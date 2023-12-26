@@ -1055,6 +1055,14 @@ namespace SH_SemesterScoreReportFixed
 
                         }
 
+                        foreach (string name in sci.GetFullNameTagList())
+                        {
+                            string colName = name + "人數";
+                            if (!table.Columns.Contains(colName))
+                                table.Columns.Add(colName);
+
+                        }
+
                         // 取得學生課程規劃表9D科目名稱
                         Dictionary<string, List<string>> Student9DSubjectNameDict = Utility.GetStudent9DSubjectNameByID(StudentID9DList);
 
@@ -3894,6 +3902,17 @@ namespace SH_SemesterScoreReportFixed
                                 }
                             }
 
+                            // 處理完整類別人數
+                            List<string> FullNameList = sci.GetStudentFullNameTagList(stuRec.StudentID);
+                            if (FullNameList.Count > 0)
+                            {
+                                foreach (string name in FullNameList)
+                                {
+                                    string keyName = name + "人數";
+
+                                    row[keyName] = sci.GetFullNameTagStudentCount(gradeYear, name);
+                                }
+                            }
 
                             #endregion
 

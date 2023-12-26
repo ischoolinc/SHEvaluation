@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using FISCA.Data;
+using System.Windows.Forms;
 
 namespace SH_SemesterScoreReportFixed.DAO
 {
@@ -16,8 +17,9 @@ namespace SH_SemesterScoreReportFixed.DAO
         Dictionary<string, int> _DeptStudentCountDict; // 科別人數統計結果
         Dictionary<string, int> _GradeStudentCountDict; // 年級人數統計結果
         Dictionary<string, int> _TagStudentCountDict; // 類別人數統計結果
+        Dictionary<string, int> _FullNameTagStudentCountDict; // 類別完整名稱人數統計結果
         Dictionary<string, List<string>> _StudentTagPrefixList; // 來源學生前置類別清單
-
+        Dictionary<string, List<string>> _StudentFullNameTagList; // 來源學生完整類別清單
 
         public StudentCountInfo()
         {
@@ -27,6 +29,8 @@ namespace SH_SemesterScoreReportFixed.DAO
             _GradeStudentCountDict = new Dictionary<string, int>();
             _TagStudentCountDict = new Dictionary<string, int>();
             _StudentTagPrefixList = new Dictionary<string, List<string>>();
+            _StudentFullNameTagList = new Dictionary<string, List<string>>();
+            _FullNameTagStudentCountDict = new Dictionary<string, int>();
         }
 
         // 設定統計來源學生
@@ -291,6 +295,98 @@ namespace SH_SemesterScoreReportFixed.DAO
                 {
                     Console.WriteLine("取得來源學生類別前置:" + ex.Message);
                 }
+
+
+                // 計算年級完整類別人數
+                _FullNameTagStudentCountDict.Clear();
+                try
+                {
+                    strSQL = string.Format(@"
+                    SELECT
+                        class.grade_year AS grade_year,
+                        -- tag.prefix AS tag_prefix,
+                        tag.prefix || ':' || tag.name AS tag_full_name,
+                        count(student.id) AS 人數
+                    FROM
+                        student
+                        INNER JOIN class ON student.ref_class_id = class.id
+                        INNER JOIN tag_student ON tag_student.ref_student_id = student.id
+                        INNER JOIN tag ON tag.id = tag_student.ref_tag_id
+                    WHERE
+                        student.status IN (1, 2)
+                        AND tag_student.ref_tag_id IN(
+                            SELECT
+                                DISTINCT ref_tag_id
+                            FROM
+                                student
+                                INNER JOIN tag_student ON tag_student.ref_student_id = student.id
+                            WHERE
+                                student.id IN({0})
+                        )
+                    GROUP BY
+                        class.grade_year,
+                        tag_full_name    
+                    ORDER BY
+                        class.grade_year,
+                        tag_full_name
+                    ", string.Join(",", _StudentSourceIDs.ToArray()));
+
+                    DataTable dtTag = new DataTable();
+                    dtTag = qh.Select(strSQL);
+                    foreach (DataRow dr in dtTag.Rows)
+                    {
+                        int count = 0;
+                        string grade_year = dr["grade_year"] + "";
+                        string tag_fullname = dr["tag_full_name"] + "";
+                        string key = grade_year + "_" + tag_fullname;
+                        if (int.TryParse(dr["人數"] + "", out count))
+                        {
+                            if (!_FullNameTagStudentCountDict.ContainsKey(key))
+                                _FullNameTagStudentCountDict.Add(key, count);
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("計算年級類別完整名稱人數:" + ex.Message);
+                }
+
+                _StudentFullNameTagList.Clear();
+                // 取得來源學生類別完整名稱
+                try
+                {
+                    strSQL = string.Format(@"
+                    SELECT
+                        ref_student_id AS student_id,
+                         tag.prefix || ':' || tag.name AS tag_full_name
+                    FROM
+                        tag_student 
+                        INNER JOIN tag ON tag.id = tag_student.ref_tag_id
+                    WHERE
+                        tag_student.ref_student_id IN({0})
+                    ", string.Join(",", _StudentSourceIDs.ToArray()));
+
+
+                    DataTable dtTag = new DataTable();
+                    dtTag = qh.Select(strSQL);
+                    foreach (DataRow dr in dtTag.Rows)
+                    {
+                        string sid = dr["student_id"] + "";
+                        string fullname = dr["tag_full_name"] + "";
+                        if (!_StudentFullNameTagList.ContainsKey(sid))
+                            _StudentFullNameTagList.Add(sid, new List<string>());
+
+                        if (!_StudentFullNameTagList[sid].Contains(fullname))
+                            _StudentFullNameTagList[sid].Add(fullname);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("取得來源學生類別完整名稱:" + ex.Message);
+                }
+
             }
         }
 
@@ -333,6 +429,17 @@ namespace SH_SemesterScoreReportFixed.DAO
 
         }
 
+        // 透過年級與類別完整名稱，取得年級類別人數
+        public int GetFullNameTagStudentCount(string grade_year, string fullname)
+        {
+            int count = 0;
+            string key = grade_year + "_" + fullname;
+            if (_FullNameTagStudentCountDict.ContainsKey(key))
+                count = _FullNameTagStudentCountDict[key];
+            return count;
+
+        }
+
         // 取得學生前置
         public List<string> GetStudentPrefixList(string StudentID)
         {
@@ -357,6 +464,31 @@ namespace SH_SemesterScoreReportFixed.DAO
 
             return value;
         }
-    }
 
+        // 取得學生完整類別名稱
+        public List<string> GetStudentFullNameTagList(string StudentID)
+        {
+            if (_StudentFullNameTagList.ContainsKey(StudentID))
+                return _StudentFullNameTagList[StudentID];
+            else
+                return new List<string>();
+        }
+
+        // 取得完整類別內容
+        public List<string> GetFullNameTagList()
+        {
+            List<string> value = new List<string>();
+            foreach (string id in _StudentFullNameTagList.Keys)
+            {
+                foreach (string name in _StudentFullNameTagList[id])
+                {
+                    if (!value.Contains(name))
+                        value.Add(name);
+                }
+            }
+
+            return value;
+        }
+
+    }
 }

@@ -3921,12 +3921,13 @@ namespace SH_SemesterScoreReportFixed
                             bkw.ReportProgress(70 + progressCount * 20 / selectedStudents.Count);
 
 
-                            table.TableName = "test";
-                            table.WriteXml(Application.StartupPath + "\\debug.xml");
+                            //table.TableName = "test";
+                            //table.WriteXml(Application.StartupPath + "\\debug.xml");
                         }
                         bkw.ReportProgress(90);
                         document = conf.Template;
                         document.MailMerge.Execute(table);
+                        document.MailMerge.DeleteFields();
 
                     }
                     catch (Exception exception)

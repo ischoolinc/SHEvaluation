@@ -769,6 +769,14 @@ namespace RegularAssessmentTranscriptFixedRank
 
                         }
 
+                        foreach (string name in sci.GetFullNameTagList())
+                        {
+                            string colName = name + "人數";
+                            if (!table.Columns.Contains(colName))
+                                table.Columns.Add(colName);
+
+                        }
+
                         foreach (string gradeyear in gradeyearStudents.Keys)
                         {
                             //找出全年級學生
@@ -1026,6 +1034,19 @@ namespace RegularAssessmentTranscriptFixedRank
                                     row[keyName] = sci.GetTagStudentCount(gradeYear, name);
                                 }
                             }
+
+                            // 處理完整類別人數
+                            List<string> FullNameList = sci.GetStudentFullNameTagList(stuRec.StudentID);
+                            if (FullNameList.Count > 0)
+                            {
+                                foreach (string name in FullNameList)
+                                {
+                                    string keyName = name + "人數";
+
+                                    row[keyName] = sci.GetFullNameTagStudentCount(gradeYear, name);
+                                }
+                            }
+                        
 
                             // 這區段是新增功能資料
                             // 畫面上開始結束日期

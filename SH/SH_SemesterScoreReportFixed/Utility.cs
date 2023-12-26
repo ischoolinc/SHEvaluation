@@ -446,95 +446,104 @@ namespace SH_SemesterScoreReportFixed
         {
             Dictionary<string, Dictionary<string, DataRow>> value = new Dictionary<string, Dictionary<string, DataRow>>();
 
-            // 沒有學生不處理
-            if (StudentIDList.Count == 0)
-                return value;
-
-            QueryHelper qh = new QueryHelper();
-            string query = "" +
-               " SELECT " +
-" 	rank_matrix.id AS rank_matrix_id" +
-" 	, rank_matrix.school_year" +
-" 	, rank_matrix.semester" +
-" 	, rank_matrix.grade_year" +
-" 	, rank_matrix.item_type" +
-" 	, rank_matrix.ref_exam_id AS exam_id" +
-" 	, rank_matrix.item_name" +
-" 	, rank_matrix.rank_type" +
-" 	, rank_matrix.rank_name" +
-" 	, class.class_name" +
-" 	, student.seat_no" +
-" 	, student.student_number" +
-" 	, student.name" +
-" 	, rank_detail.ref_student_id AS student_id " +
-" 	, rank_detail.rank" +
-"   , rank_matrix.matrix_count " +
-" 	, rank_detail.pr" +
-" 	, rank_detail.percentile" +
-"   , rank_matrix.avg_top_25" +
-"   , rank_matrix.avg_top_50" +
-"   , rank_matrix.avg" +
-"   , rank_matrix.avg_bottom_50" +
-"   , rank_matrix.avg_bottom_25" +
-"   , rank_matrix.pr_88" +
-"   , rank_matrix.pr_75" +
-"   , rank_matrix.pr_50" +
-"   , rank_matrix.pr_25" +
-"   , rank_matrix.pr_12" +
-"   , rank_matrix.std_dev_pop" +
-" 	, rank_matrix.level_gte100" +
-" 	, rank_matrix.level_90" +
-" 	, rank_matrix.level_80" +
-" 	, rank_matrix.level_70" +
-" 	, rank_matrix.level_60" +
-" 	, rank_matrix.level_50" +
-" 	, rank_matrix.level_40" +
-" 	, rank_matrix.level_30" +
-" 	, rank_matrix.level_20" +
-" 	, rank_matrix.level_10" +
-" 	, rank_matrix.level_lt10" +
-" FROM " +
-" 	rank_matrix" +
-" 	LEFT OUTER JOIN rank_detail" +
-" 		ON rank_detail.ref_matrix_id = rank_matrix.id" +
-" 	LEFT OUTER JOIN student" +
-" 		ON student.id = rank_detail.ref_student_id" +
-" 	LEFT OUTER JOIN class" +
-" 		ON class.id = student.ref_class_id" +
-" WHERE" +
-" 	rank_matrix.is_alive = true" +
-" 	AND rank_matrix.school_year = " + SchoolYear +
-"     AND rank_matrix.semester = " + Semester +
-" 	AND rank_matrix.item_type like '定期評量%'" +
-" 	AND rank_matrix.ref_exam_id = " + ExamID +
-"     AND ref_student_id IN (" + string.Join(",", StudentIDList.ToArray()) + ") " +
-" ORDER BY " +
-" 	rank_matrix.id" +
-" 	, rank_detail.rank" +
-" 	, class.grade_year" +
-" 	, class.display_order" +
-" 	, class.class_name" +
-" 	, student.seat_no" +
-" 	, student.id";
-
-            DataTable dt = qh.Select(query);
-            //dt.TableName = "d5";
-            //dt.WriteXmlSchema(Application.StartupPath + "\\d5s.xml");
-            //dt.WriteXml(Application.StartupPath + "\\d5d.xml");
-
-            // student id key
-            // key = item_type + item_name +  rank_name 
-            foreach (DataRow dr in dt.Rows)
+            try
             {
-                string sid = dr["student_id"].ToString();
-                if (!value.ContainsKey(sid))
-                    value.Add(sid, new Dictionary<string, DataRow>());
 
-                string key = dr["item_type"].ToString() + "_" + dr["item_name"].ToString() + "_" + dr["rank_type"].ToString();
+                // 沒有學生不處理
+                if (StudentIDList.Count == 0)
+                    return value;
 
-                if (!value[sid].ContainsKey(key))
-                    value[sid].Add(key, dr);
+                QueryHelper qh = new QueryHelper();
+                string query = "" +
+                   " SELECT " +
+    " 	rank_matrix.id AS rank_matrix_id" +
+    " 	, rank_matrix.school_year" +
+    " 	, rank_matrix.semester" +
+    " 	, rank_matrix.grade_year" +
+    " 	, rank_matrix.item_type" +
+    " 	, rank_matrix.ref_exam_id AS exam_id" +
+    " 	, rank_matrix.item_name" +
+    " 	, rank_matrix.rank_type" +
+    " 	, rank_matrix.rank_name" +
+    " 	, class.class_name" +
+    " 	, student.seat_no" +
+    " 	, student.student_number" +
+    " 	, student.name" +
+    " 	, rank_detail.ref_student_id AS student_id " +
+    " 	, rank_detail.rank" +
+    "   , rank_matrix.matrix_count " +
+    " 	, rank_detail.pr" +
+    " 	, rank_detail.percentile" +
+    "   , rank_matrix.avg_top_25" +
+    "   , rank_matrix.avg_top_50" +
+    "   , rank_matrix.avg" +
+    "   , rank_matrix.avg_bottom_50" +
+    "   , rank_matrix.avg_bottom_25" +
+    "   , rank_matrix.pr_88" +
+    "   , rank_matrix.pr_75" +
+    "   , rank_matrix.pr_50" +
+    "   , rank_matrix.pr_25" +
+    "   , rank_matrix.pr_12" +
+    "   , rank_matrix.std_dev_pop" +
+    " 	, rank_matrix.level_gte100" +
+    " 	, rank_matrix.level_90" +
+    " 	, rank_matrix.level_80" +
+    " 	, rank_matrix.level_70" +
+    " 	, rank_matrix.level_60" +
+    " 	, rank_matrix.level_50" +
+    " 	, rank_matrix.level_40" +
+    " 	, rank_matrix.level_30" +
+    " 	, rank_matrix.level_20" +
+    " 	, rank_matrix.level_10" +
+    " 	, rank_matrix.level_lt10" +
+    " FROM " +
+    " 	rank_matrix" +
+    " 	LEFT OUTER JOIN rank_detail" +
+    " 		ON rank_detail.ref_matrix_id = rank_matrix.id" +
+    " 	LEFT OUTER JOIN student" +
+    " 		ON student.id = rank_detail.ref_student_id" +
+    " 	LEFT OUTER JOIN class" +
+    " 		ON class.id = student.ref_class_id" +
+    " WHERE" +
+    " 	rank_matrix.is_alive = true" +
+    " 	AND rank_matrix.school_year = " + SchoolYear +
+    "     AND rank_matrix.semester = " + Semester +
+    " 	AND rank_matrix.item_type like '定期評量%'" +
+    " 	AND rank_matrix.ref_exam_id = " + ExamID +
+    "     AND ref_student_id IN (" + string.Join(",", StudentIDList.ToArray()) + ") " +
+    " ORDER BY " +
+    " 	rank_matrix.id" +
+    " 	, rank_detail.rank" +
+    " 	, class.grade_year" +
+    " 	, class.display_order" +
+    " 	, class.class_name" +
+    " 	, student.seat_no" +
+    " 	, student.id";
+
+                DataTable dt = qh.Select(query);
+                //dt.TableName = "d5";
+                //dt.WriteXmlSchema(Application.StartupPath + "\\d5s.xml");
+                //dt.WriteXml(Application.StartupPath + "\\d5d.xml");
+
+                // student id key
+                // key = item_type + item_name +  rank_name 
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string sid = dr["student_id"].ToString();
+                    if (!value.ContainsKey(sid))
+                        value.Add(sid, new Dictionary<string, DataRow>());
+
+                    string key = dr["item_type"].ToString() + "_" + dr["item_name"].ToString() + "_" + dr["rank_type"].ToString();
+
+                    if (!value[sid].ContainsKey(key))
+                        value[sid].Add(key, dr);
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
 
             return value;
         }
@@ -734,9 +743,9 @@ rank_batch
         /// <param name="SchoolYear"></param>
         /// <param name="Semester"></param>
         /// <returns></returns>
-        public static Dictionary<string,Dictionary<int, string>> GetCourseSpecifySubjectNameDict(string SchoolYear, string Semester)
+        public static Dictionary<string, Dictionary<int, string>> GetCourseSpecifySubjectNameDict(string SchoolYear, string Semester)
         {
-            Dictionary < string,Dictionary<int, string>> retVal = new Dictionary<string, Dictionary<int, string>>();
+            Dictionary<string, Dictionary<int, string>> retVal = new Dictionary<string, Dictionary<int, string>>();
             QueryHelper qh = new QueryHelper();
             string strSQL = "SELECT id, subject, specify_subject_name FROM course WHERE school_year = " + SchoolYear + " AND semester = " + Semester + "  AND specify_subject_name<>''";
             DataTable dt = qh.Select(strSQL);
@@ -762,10 +771,12 @@ rank_batch
         {
             Dictionary<string, List<string>> value = new Dictionary<string, List<string>>();
 
-            if (studentIDs.Count > 0)
+            try
             {
-                QueryHelper qh = new QueryHelper();
-                string query = string.Format(@"
+                if (studentIDs.Count > 0)
+                {
+                    QueryHelper qh = new QueryHelper();
+                    string query = string.Format(@"
                 WITH student_data AS(
                     SELECT
                         student.id AS student_id,
@@ -817,21 +828,70 @@ rank_batch
                     subject_name
                 ", string.Join(",", studentIDs.ToArray()));
 
-                DataTable dt = qh.Select(query);
-                foreach (DataRow dr in dt.Rows)
-                {
-                    string sid = dr["student_id"] + "";
-                    string SubjectName = dr["subject_name"] + "";
-                    if (!value.ContainsKey(sid))
-                        value.Add(sid, new List<string>());
+                    DataTable dt = qh.Select(query);
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        string sid = dr["student_id"] + "";
+                        string SubjectName = dr["subject_name"] + "";
+                        if (!value.ContainsKey(sid))
+                            value.Add(sid, new List<string>());
 
-                    if (!value[sid].Contains(SubjectName))
-                        value[sid].Add(SubjectName);
+                        if (!value[sid].Contains(SubjectName))
+                            value[sid].Add(SubjectName);
 
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
             return value;
         }
 
+
+        // 取得中英文對照表中文科目名稱(排序用)
+        public static List<string> GetChineseSubjectNameList()
+        {
+            List<string> value = new List<string>();
+
+            /* content 格式：
+            <Content>
+                <Subject Chinese="國文 " English="Chinese"/>
+            </Content> 
+             */
+
+            // 讀取 SQL 
+            string strSQL = string.Format(@"
+            SELECT
+                content
+            FROM
+                list
+            WHERE
+                name = '科目中英文對照表'
+            ");
+
+            QueryHelper qh = new QueryHelper();
+            DataTable dt = qh.Select(strSQL);
+            if (dt.Rows.Count > 0)
+            {
+                try
+                {
+                    XElement elmRoot = XElement.Parse(dt.Rows[0]["content"] + "");
+                    foreach (XElement elm in elmRoot.Elements("Subject"))
+                    {
+                        if (elm.Attribute("Chinese") != null)
+                            value.Add(elm.Attribute("Chinese").Value);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+            return value;
+        }
     }
 }

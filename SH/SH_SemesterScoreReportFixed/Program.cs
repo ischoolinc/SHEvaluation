@@ -13,6 +13,7 @@ using Campus.ePaperCloud;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using System.Xml;
+using SH_SemesterScoreReportFixed.DAO;
 
 namespace SH_SemesterScoreReportFixed
 {
@@ -606,7 +607,12 @@ namespace SH_SemesterScoreReportFixed
                     }
                 }
 
-                #endregion
+                // 新增人數統計
+                table.Columns.Add("班級人數");
+                table.Columns.Add("科別人數");
+                table.Columns.Add("年級人數");
+
+                                #endregion
                 //宣告產生的報表
                 Aspose.Words.Document document = new Aspose.Words.Document();
                 //用一個BackgroundWorker包起來
@@ -1036,6 +1042,19 @@ namespace SH_SemesterScoreReportFixed
                                 StudentID9DList.Add(studentRec.StudentID);
                             }
                         }
+
+                        // 取得人數統計
+                        StudentCountInfo sci = new StudentCountInfo();
+                        sci.SetStudentSourceIDs(StudentID9DList);
+                        sci.CalcStudents();
+                        foreach (string name in sci.GetPrefixList())
+                        {
+                            string colName = name + "人數";
+                            if (!table.Columns.Contains(colName))
+                                table.Columns.Add(colName);
+
+                        }
+
                         // 取得學生課程規劃表9D科目名稱
                         Dictionary<string, List<string>> Student9DSubjectNameDict = Utility.GetStudent9DSubjectNameByID(StudentID9DList);
 
@@ -1609,17 +1628,25 @@ namespace SH_SemesterScoreReportFixed
                                 if (subjects3.Contains(subject)) subjects3.Remove(subject);
                             }
                             subjectNameList.AddRange(subjects3);
-                            subjectNameList.Sort(new StringComparer("國文"
-                                            , "英文"
-                                            , "數學"
-                                            , "理化"
-                                            , "生物"
-                                            , "社會"
-                                            , "物理"
-                                            , "化學"
-                                            , "歷史"
-                                            , "地理"
-                                            , "公民"));
+
+                            //subjectNameList.Sort(new StringComparer("國文"
+                            //                , "英文"
+                            //                , "數學"
+                            //                , "理化"
+                            //                , "生物"
+                            //                , "社會"
+                            //                , "物理"
+                            //                , "化學"
+                            //                , "歷史"
+                            //                , "地理"
+                            //                , "公民"));
+
+                            // 取得中英文對照表中文名稱
+                            List<string> ChineseSubjectNameMapList = Utility.GetChineseSubjectNameList();
+
+                            // 科目排序
+                            subjectNameList.Sort(new StringComparer(ChineseSubjectNameMapList.ToArray()));
+
                             #endregion
 
 
@@ -3839,6 +3866,33 @@ namespace SH_SemesterScoreReportFixed
 
 
                             #endregion
+                            
+                            // 處理人數統計
+                            if (stuRec.RefClass != null)
+                            {
+                                row["班級人數"] = sci.GetClassStudentCount(stuRec.RefClass.ClassName);
+                            }
+                            if (stuRec.RefClass != null)
+                            {
+                                string deptName = stuRec.RefClass.Department;
+                                if (stuRec.Department != "")
+                                    deptName = stuRec.Department;
+
+                                row["科別人數"] = sci.GetDeptStudentCount(gradeYear, deptName);
+                            }
+                            row["年級人數"] = sci.GetGradeStudentCount(gradeYear);
+
+                            // 處理類別人數
+                            List<string> prefixList = sci.GetStudentPrefixList(stuRec.StudentID);
+                            if (prefixList.Count > 0)
+                            {
+                                foreach (string name in prefixList)
+                                {
+                                    string keyName = name + "人數";
+
+                                    row[keyName] = sci.GetTagStudentCount(gradeYear, name);
+                                }
+                            }
 
 
                             #endregion
@@ -3848,8 +3902,8 @@ namespace SH_SemesterScoreReportFixed
                             bkw.ReportProgress(70 + progressCount * 20 / selectedStudents.Count);
 
 
-                            //table.TableName = "test";
-                            //table.WriteXml(Application.StartupPath + "\\debug.xml");
+                            table.TableName = "test";
+                            table.WriteXml(Application.StartupPath + "\\debug.xml");
                         }
                         bkw.ReportProgress(90);
                         document = conf.Template;

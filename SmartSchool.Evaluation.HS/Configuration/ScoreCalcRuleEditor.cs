@@ -1096,7 +1096,8 @@ namespace SmartSchool.Evaluation.Configuration
             element = doc.CreateElement("專業科目表");
             element.InnerText = strProfessionalSubjectTableName;
             parentelement.AppendChild(element);
-
+            doc.DocumentElement.AppendChild(parentelement);
+            
             #region 特殊需求領域排除領域代碼
             parentelement = doc.CreateElement("特殊需求領域排除領域代碼");
             foreach (ListViewItem var in lVCourseCodeDomainSpec.CheckedItems)

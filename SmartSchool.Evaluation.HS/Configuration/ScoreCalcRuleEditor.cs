@@ -716,6 +716,44 @@ namespace SmartSchool.Evaluation.Configuration
                     item.Checked = true;
             }
             #endregion
+
+            #region 特殊需求領域排除領域代碼
+            List<string> checkDomainCodeList = new List<string>();
+            // 課程計畫平台課程領域特殊需求代碼            
+            Dictionary<string, string> CousreDomainCodeDict = new Dictionary<string, string>();
+            CousreDomainCodeDict.Add("11", "特殊需求領域(身心障礙)");
+            CousreDomainCodeDict.Add("12", "特殊需求領域(資賦優異)");
+            CousreDomainCodeDict.Add("13", "特殊需求領域(音樂專長)");
+            CousreDomainCodeDict.Add("14", "特殊需求領域(美術專長)");
+            CousreDomainCodeDict.Add("15", "特殊需求領域(舞蹈專長)");
+            CousreDomainCodeDict.Add("16", "特殊需求領域(戲劇專長)");
+            CousreDomainCodeDict.Add("17", "特殊需求領域(體育專長)");
+            CousreDomainCodeDict.Add("18", "特殊需求領域(實驗課程)");
+
+
+            foreach (XmlNode var in _scrContent.SelectNodes("特殊需求領域排除領域代碼/領域代碼"))
+            {
+                checkDomainCodeList.Add(var.InnerText);
+            }
+            lVCourseCodeDomainSpec.Items.Clear();
+
+            foreach(string key in CousreDomainCodeDict.Keys)
+            {
+                ListViewItem item = new ListViewItem();
+                item.Text = CousreDomainCodeDict[key];
+                item.Tag = key;
+                item.Name = CousreDomainCodeDict[key];
+
+                if (checkDomainCodeList.Contains(key))
+                    item.Checked = true;
+
+                lVCourseCodeDomainSpec.Items.Add(item);
+            }
+            
+
+            #endregion
+
+
             #region 學期科目成績計算至學年科目成績計算規則(2010/6/24 騉翔新增)
             element = _scrContent.SelectSingleNode("學期科目成績計算至學年科目成績規則") as XmlElement;
 
@@ -1058,6 +1096,17 @@ namespace SmartSchool.Evaluation.Configuration
             element = doc.CreateElement("專業科目表");
             element.InnerText = strProfessionalSubjectTableName;
             parentelement.AppendChild(element);
+
+            #region 特殊需求領域排除領域代碼
+            parentelement = doc.CreateElement("特殊需求領域排除領域代碼");
+            foreach (ListViewItem var in lVCourseCodeDomainSpec.CheckedItems)
+            {
+                element = doc.CreateElement("領域代碼");
+                element.InnerText = var.Tag.ToString();
+                parentelement.AppendChild(element);
+            }
+
+            #endregion
 
             doc.DocumentElement.AppendChild(parentelement);
             #endregion

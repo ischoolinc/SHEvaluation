@@ -49,7 +49,9 @@
             this.radioButton23 = new System.Windows.Forms.RadioButton();
             this.labelX14 = new DevComponents.DotNetBar.LabelX();
             this.groupPanel21 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.cmbProfessionalSubjectTable = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.groupPanel22 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.checkBoxX28 = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.labelX27 = new DevComponents.DotNetBar.LabelX();
             this.checkBoxX9 = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.labelX24 = new DevComponents.DotNetBar.LabelX();
@@ -58,9 +60,8 @@
             this.radioButton28 = new System.Windows.Forms.RadioButton();
             this.radioButton33 = new System.Windows.Forms.RadioButton();
             this.labelX28 = new DevComponents.DotNetBar.LabelX();
-            this.groupPanel5 = new DevComponents.DotNetBar.Controls.GroupPanel();
-            this.cmbProfessionalSubjectTable = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.labelX26 = new DevComponents.DotNetBar.LabelX();
+            this.groupPanel5 = new DevComponents.DotNetBar.Controls.GroupPanel();
             this.labelX13 = new DevComponents.DotNetBar.LabelX();
             this.listView1 = new SmartSchool.Common.ListViewEX();
             this.groupPanel16 = new DevComponents.DotNetBar.Controls.GroupPanel();
@@ -208,7 +209,9 @@
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.superTooltip1 = new DevComponents.DotNetBar.SuperTooltip();
-            this.checkBoxX28 = new DevComponents.DotNetBar.Controls.CheckBoxX();
+            this.groupPanel28 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.labelX32 = new DevComponents.DotNetBar.LabelX();
+            this.lVCourseCodeDomainSpec = new SmartSchool.Common.ListViewEX();
             this.panelEx1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -256,6 +259,7 @@
             this.groupPanel18.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
+            this.groupPanel28.SuspendLayout();
             this.SuspendLayout();
             // 
             // itemContainer9
@@ -321,7 +325,7 @@
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedTabFont = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Bold);
+            this.tabControl1.SelectedTabFont = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Bold);
             this.tabControl1.SelectedTabIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1002, 710);
             this.tabControl1.Style = DevComponents.DotNetBar.eTabStripStyle.Office2007Document;
@@ -617,6 +621,7 @@
             this.groupPanel21.BackColor = System.Drawing.Color.Transparent;
             this.groupPanel21.CanvasColor = System.Drawing.SystemColors.Control;
             this.groupPanel21.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel21.Controls.Add(this.groupPanel28);
             this.groupPanel21.Controls.Add(this.cmbProfessionalSubjectTable);
             this.groupPanel21.Controls.Add(this.groupPanel22);
             this.groupPanel21.Controls.Add(this.labelX26);
@@ -625,7 +630,7 @@
             this.groupPanel21.Controls.Add(this.groupPanel13);
             this.groupPanel21.Location = new System.Drawing.Point(167, 152);
             this.groupPanel21.Name = "groupPanel21";
-            this.groupPanel21.Size = new System.Drawing.Size(644, 628);
+            this.groupPanel21.Size = new System.Drawing.Size(642, 794);
             // 
             // 
             // 
@@ -658,6 +663,18 @@
             this.groupPanel21.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.groupPanel21.TabIndex = 2;
             this.groupPanel21.Text = "畢業資格審查規則";
+            // 
+            // cmbProfessionalSubjectTable
+            // 
+            this.cmbProfessionalSubjectTable.DisplayMember = "Text";
+            this.cmbProfessionalSubjectTable.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbProfessionalSubjectTable.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbProfessionalSubjectTable.FormattingEnabled = true;
+            this.cmbProfessionalSubjectTable.ItemHeight = 19;
+            this.cmbProfessionalSubjectTable.Location = new System.Drawing.Point(181, 571);
+            this.cmbProfessionalSubjectTable.Name = "cmbProfessionalSubjectTable";
+            this.cmbProfessionalSubjectTable.Size = new System.Drawing.Size(121, 25);
+            this.cmbProfessionalSubjectTable.TabIndex = 5;
             // 
             // groupPanel22
             // 
@@ -706,6 +723,20 @@
             this.groupPanel22.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.groupPanel22.TabIndex = 3;
             this.groupPanel22.Text = "其他成績判斷規則";
+            // 
+            // checkBoxX28
+            // 
+            this.checkBoxX28.AutoSize = true;
+            // 
+            // 
+            // 
+            this.checkBoxX28.BackgroundStyle.Class = "";
+            this.checkBoxX28.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.checkBoxX28.Location = new System.Drawing.Point(159, 57);
+            this.checkBoxX28.Name = "checkBoxX28";
+            this.checkBoxX28.Size = new System.Drawing.Size(268, 21);
+            this.checkBoxX28.TabIndex = 7;
+            this.checkBoxX28.Text = "必需修滿課程規劃表中所列部定必修課程";
             // 
             // labelX27
             // 
@@ -851,6 +882,22 @@
             this.labelX28.TabIndex = 0;
             this.labelX28.Text = "學業成績計算方式";
             // 
+            // labelX26
+            // 
+            this.labelX26.AutoSize = true;
+            this.labelX26.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX26.BackgroundStyle.Class = "";
+            this.labelX26.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX26.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.labelX26.Location = new System.Drawing.Point(15, 571);
+            this.labelX26.Name = "labelX26";
+            this.labelX26.Size = new System.Drawing.Size(167, 21);
+            this.labelX26.TabIndex = 4;
+            this.labelX26.Text = "列印學籍表用專業科目表：";
+            // 
             // groupPanel5
             // 
             this.groupPanel5.BackColor = System.Drawing.Color.Transparent;
@@ -894,34 +941,6 @@
             this.groupPanel5.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.groupPanel5.TabIndex = 2;
             this.groupPanel5.Text = "自訂畢業應修及格科目表";
-            // 
-            // cmbProfessionalSubjectTable
-            // 
-            this.cmbProfessionalSubjectTable.DisplayMember = "Text";
-            this.cmbProfessionalSubjectTable.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbProfessionalSubjectTable.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbProfessionalSubjectTable.FormattingEnabled = true;
-            this.cmbProfessionalSubjectTable.ItemHeight = 19;
-            this.cmbProfessionalSubjectTable.Location = new System.Drawing.Point(181, 571);
-            this.cmbProfessionalSubjectTable.Name = "cmbProfessionalSubjectTable";
-            this.cmbProfessionalSubjectTable.Size = new System.Drawing.Size(121, 25);
-            this.cmbProfessionalSubjectTable.TabIndex = 5;
-            // 
-            // labelX26
-            // 
-            this.labelX26.AutoSize = true;
-            this.labelX26.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX26.BackgroundStyle.Class = "";
-            this.labelX26.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX26.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelX26.Location = new System.Drawing.Point(15, 571);
-            this.labelX26.Name = "labelX26";
-            this.labelX26.Size = new System.Drawing.Size(167, 21);
-            this.labelX26.TabIndex = 4;
-            this.labelX26.Text = "列印學籍表用專業科目表：";
             // 
             // labelX13
             // 
@@ -2266,7 +2285,7 @@
             this.dataGridViewX1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -2286,7 +2305,7 @@
             this.Column9});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
@@ -3150,7 +3169,7 @@
             // 
             this.checkBoxX5.BackgroundStyle.Class = "";
             this.checkBoxX5.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.checkBoxX5.Font = new System.Drawing.Font("微軟正黑體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.checkBoxX5.Font = new System.Drawing.Font("Microsoft JhengHei", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.checkBoxX5.Location = new System.Drawing.Point(4, 3);
             this.checkBoxX5.Name = "checkBoxX5";
             this.checkBoxX5.Size = new System.Drawing.Size(626, 23);
@@ -3493,26 +3512,91 @@
             // 
             this.superTooltip1.LicenseKey = "F962CEC7-CD8F-4911-A9E9-CAB39962FC1F";
             // 
-            // checkBoxX28
+            // groupPanel28
             // 
-            this.checkBoxX28.AutoSize = true;
+            this.groupPanel28.BackColor = System.Drawing.Color.Transparent;
+            this.groupPanel28.CanvasColor = System.Drawing.SystemColors.Control;
+            this.groupPanel28.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel28.Controls.Add(this.labelX32);
+            this.groupPanel28.Controls.Add(this.lVCourseCodeDomainSpec);
+            this.groupPanel28.DrawTitleBox = false;
+            this.groupPanel28.Location = new System.Drawing.Point(15, 607);
+            this.groupPanel28.Name = "groupPanel28";
+            this.groupPanel28.Size = new System.Drawing.Size(608, 139);
             // 
             // 
             // 
-            this.checkBoxX28.BackgroundStyle.Class = "";
-            this.checkBoxX28.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.checkBoxX28.Location = new System.Drawing.Point(159, 57);
-            this.checkBoxX28.Name = "checkBoxX28";
-            this.checkBoxX28.Size = new System.Drawing.Size(268, 21);
-            this.checkBoxX28.TabIndex = 7;
-            this.checkBoxX28.Text = "必需修滿課程規劃表中所列部定必修課程";
+            this.groupPanel28.Style.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.groupPanel28.Style.BackColorGradientAngle = 90;
+            this.groupPanel28.Style.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.groupPanel28.Style.BorderBottom = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel28.Style.BorderBottomWidth = 1;
+            this.groupPanel28.Style.BorderColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.groupPanel28.Style.BorderLeft = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel28.Style.BorderLeftWidth = 1;
+            this.groupPanel28.Style.BorderRight = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel28.Style.BorderRightWidth = 1;
+            this.groupPanel28.Style.BorderTop = DevComponents.DotNetBar.eStyleBorderType.Solid;
+            this.groupPanel28.Style.BorderTopWidth = 1;
+            this.groupPanel28.Style.Class = "";
+            this.groupPanel28.Style.CornerDiameter = 4;
+            this.groupPanel28.Style.CornerType = DevComponents.DotNetBar.eCornerType.Rounded;
+            this.groupPanel28.Style.TextColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.groupPanel28.Style.TextLineAlignment = DevComponents.DotNetBar.eStyleTextAlignment.Near;
+            // 
+            // 
+            // 
+            this.groupPanel28.StyleMouseDown.Class = "";
+            this.groupPanel28.StyleMouseDown.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // 
+            // 
+            this.groupPanel28.StyleMouseOver.Class = "";
+            this.groupPanel28.StyleMouseOver.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.groupPanel28.TabIndex = 6;
+            this.groupPanel28.Text = "特殊需求領域";
+            // 
+            // labelX32
+            // 
+            this.labelX32.AutoSize = true;
+            // 
+            // 
+            // 
+            this.labelX32.BackgroundStyle.Class = "";
+            this.labelX32.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX32.Location = new System.Drawing.Point(13, 3);
+            this.labelX32.Name = "labelX32";
+            this.labelX32.Size = new System.Drawing.Size(221, 21);
+            this.labelX32.TabIndex = 1;
+            this.labelX32.Text = "請勾選下列需要排除的特殊需求領域";
+            // 
+            // lVCourseCodeDomainSpec
+            // 
+            this.lVCourseCodeDomainSpec.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            // 
+            // 
+            // 
+            this.lVCourseCodeDomainSpec.Border.Class = "ListViewBorder";
+            this.lVCourseCodeDomainSpec.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.lVCourseCodeDomainSpec.CheckBoxes = true;
+            this.lVCourseCodeDomainSpec.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.lVCourseCodeDomainSpec.HideSelection = false;
+            this.lVCourseCodeDomainSpec.Location = new System.Drawing.Point(11, 30);
+            this.lVCourseCodeDomainSpec.Name = "lVCourseCodeDomainSpec";
+            this.lVCourseCodeDomainSpec.ShowGroups = false;
+            this.lVCourseCodeDomainSpec.Size = new System.Drawing.Size(586, 85);
+            this.lVCourseCodeDomainSpec.TabIndex = 0;
+            this.lVCourseCodeDomainSpec.UseCompatibleStateImageBehavior = false;
+            this.lVCourseCodeDomainSpec.View = System.Windows.Forms.View.List;
             // 
             // ScoreCalcRuleEditor
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoScroll = true;
             this.Controls.Add(this.panelEx1);
-            this.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ScoreCalcRuleEditor";
             this.Size = new System.Drawing.Size(1002, 710);
@@ -3591,6 +3675,8 @@
             this.groupPanel18.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
+            this.groupPanel28.ResumeLayout(false);
+            this.groupPanel28.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -3775,5 +3861,8 @@
         private DevComponents.DotNetBar.Controls.TextBoxX textBoxX3;
         private DevComponents.DotNetBar.SuperTooltip superTooltip1;
         private DevComponents.DotNetBar.Controls.CheckBoxX checkBoxX28;
+        private DevComponents.DotNetBar.Controls.GroupPanel groupPanel28;
+        private DevComponents.DotNetBar.LabelX labelX32;
+        private Common.ListViewEX lVCourseCodeDomainSpec;
     }
 }

@@ -82,6 +82,10 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
 
 
                 XmlElement rule = ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(student.StudentID) == null ? null : ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(student.StudentID).ScoreCalcRuleElement;
+
+                // 取得需要過濾特殊需求領域帶碼
+                List<string> CourseDomainCodeSpecList = new List<string>();
+
                 if (rule == null)
                 {
                     if (!_ErrorList.ContainsKey(student))
@@ -653,6 +657,14 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                     }
                     #endregion
 
+
+                    
+                    CourseDomainCodeSpecList.Clear();
+                    foreach (XmlNode var in rule.SelectNodes("特殊需求領域排除領域代碼/領域代碼"))
+                    {
+                        CourseDomainCodeSpecList.Add(var.InnerText);
+                    }
+
                     // 掃描課程規劃表寫入採計科目
                     //2023/6/27 - 錯誤
                     //先判斷有沒有課程規畫表
@@ -661,8 +673,19 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                     {
                         foreach (GraduationPlan.GraduationPlanSubject gplanSubject in GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(student.StudentID).Subjects)
                         {
-                            // 略過特殊需求領域
-                            if (gplanSubject.Domain.StartsWith("特殊需求領域")) continue;
+                            // 使用課程代碼第20,21碼判斷領域代碼
+                            string domainCode = "";
+                            if (gplanSubject.SubjectCode.Length > 22)
+                            {
+                                // 取得課程代碼第20,21碼
+                                domainCode = gplanSubject.SubjectCode.Substring(19, 2);
+                            }
+
+                            //// 略過特殊需求領域
+                            //if (gplanSubject.Domain.StartsWith("特殊需求領域")) continue;
+
+                            // 略過特殊需求領域需要過濾代碼
+                            if (CourseDomainCodeSpecList.Contains(domainCode)) continue;
 
                             decimal credit = 0;
                             decimal.TryParse(gplanSubject.Credit, out credit);
@@ -894,6 +917,10 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                             subjectScore.Detail.SetAttribute("畢業採計-必選修", gPlanSubject.Required);
                             subjectScore.Detail.SetAttribute("畢業採計-校部訂", gPlanSubject.RequiredBy);
                             subjectScore.Detail.SetAttribute("畢業採計-不計學分", gPlanSubject.NotIncludedInCredit ? "是" : "否");
+
+                            // 畢業採計-課程代碼
+                            subjectScore.Detail.SetAttribute("畢業採計-課程代碼", gPlanSubject.SubjectCode);
+
                             #endregion
                         }
                         else
@@ -905,12 +932,27 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                             subjectScore.Detail.SetAttribute("畢業採計-必選修", subjectScore.Require ? "必修" : "選修");
                             subjectScore.Detail.SetAttribute("畢業採計-校部訂", subjectScore.Detail.GetAttribute("修課校部訂"));
                             subjectScore.Detail.SetAttribute("畢業採計-不計學分", subjectScore.Detail.GetAttribute("不計學分"));
+
+                            // 畢業採計-課程代碼
+                            subjectScore.Detail.SetAttribute("畢業採計-課程代碼", subjectScore.Detail.GetAttribute("修課科目代碼"));
                             #endregion
                         }
                         #endregion
 
-                        // 略過特殊需求領域
-                        if (subjectScore.Detail.GetAttribute("畢業採計-領域").StartsWith("特殊需求領域")) continue;
+                        // 略過特殊需求排除領域代碼
+                        // 使用課程代碼第20,21碼判斷領域代碼
+                        string domainCode = "";
+                        if (subjectScore.Detail.GetAttribute("畢業採計-課程代碼").Length > 22)
+                        {
+                            // 取得課程代碼第20,21碼
+                            domainCode = subjectScore.Detail.GetAttribute("畢業採計-課程代碼").Substring(19, 2);
+                        }
+
+                        // 略過特殊需求領域需要過濾代碼
+                        if (CourseDomainCodeSpecList.Contains(domainCode)) continue;
+
+                        //// 略過特殊需求領域
+                        //if (subjectScore.Detail.GetAttribute("畢業採計-領域").StartsWith("特殊需求領域")) continue;
 
                         //不計學分不用算
                         if (subjectScore.Detail.GetAttribute("畢業採計-不計學分") == "是")

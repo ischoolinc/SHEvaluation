@@ -104,8 +104,8 @@ namespace StudentDuplicateSubjectCheck
                     wb.Worksheets[0].Cells[rowIdx, 2].PutValue(dr["course_name"].ToString());
                     wb.Worksheets[0].Cells[rowIdx, 3].PutValue(dr["student_name"].ToString());
                     wb.Worksheets[0].Cells[rowIdx, 4].PutValue(dr["student_number"].ToString());
-                    wb.Worksheets[0].Cells[rowIdx, 5].PutValue(dr["passing_standard"].ToString());
-                    wb.Worksheets[0].Cells[rowIdx, 6].PutValue(dr["makeup_standard"].ToString());
+                    wb.Worksheets[0].Cells[rowIdx, 5].PutValue(dr["passing_standard_new"].ToString());
+                    wb.Worksheets[0].Cells[rowIdx, 6].PutValue(dr["makeup_standard_new"].ToString());
                     wb.Worksheets[0].Cells[rowIdx, 7].PutValue(dr["remark"].ToString());
                     rowIdx++;
                 }
@@ -120,7 +120,7 @@ namespace StudentDuplicateSubjectCheck
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.Yes;
+            DialogResult = DialogResult.No;
         }
 
         private void btnAddTemp_Click(object sender, EventArgs e)
@@ -158,8 +158,8 @@ namespace StudentDuplicateSubjectCheck
                 dgData.Rows[rowIdx].Cells[colCourseName.Index].Value = dr["course_name"].ToString();
                 dgData.Rows[rowIdx].Cells[colStudentName.Index].Value = dr["student_name"].ToString();
                 dgData.Rows[rowIdx].Cells[colStudentNumber.Index].Value = dr["student_number"].ToString();
-                dgData.Rows[rowIdx].Cells[colPassingStandard.Index].Value = dr["passing_standard"].ToString();
-                dgData.Rows[rowIdx].Cells[colMakeupStandard.Index].Value = dr["makeup_standard"].ToString();
+                dgData.Rows[rowIdx].Cells[colPassingStandard.Index].Value = dr["passing_standard_new"].ToString();
+                dgData.Rows[rowIdx].Cells[colMakeupStandard.Index].Value = dr["makeup_standard_new"].ToString();
                 dgData.Rows[rowIdx].Cells[colRemark.Index].Value = dr["remark"].ToString();
             }
         }

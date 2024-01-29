@@ -64,7 +64,7 @@ namespace StudentDuplicateSubjectCheck
             labelX2.Text = "本功能將會對本學期學生的修課紀錄有3項檢查：\n" +
                 "1.檢查成績計算規則，並將及格標準、補考標準、學生身分寫入修課紀錄。\n" +
                 //"2.檢查課程規劃，並將課程代碼寫入修課紀錄。" + Environment.NewLine +
-                "2.及格標準、補考標準，可選擇覆蓋已寫入的紀錄。" + Environment.NewLine +
+                "2.及格標準、補考標準、備註，可選擇覆蓋已寫入的紀錄。" + Environment.NewLine +
                 "3.假若與先前的學期成績有重覆的科目級別則會列出，由人工設定計算方式。";
 
             _backgroundWorker = new BackgroundWorker();
@@ -202,6 +202,7 @@ namespace StudentDuplicateSubjectCheck
                         {
                             string passing_standard = "null";
                             string makeup_standard = "null";
+                            string remark = "";
 
                             if (dr["passing_standard_new"] != null)
                                 passing_standard = dr["passing_standard_new"].ToString();
@@ -209,12 +210,16 @@ namespace StudentDuplicateSubjectCheck
                             if (dr["makeup_standard_new"] != null)
                                 makeup_standard = dr["makeup_standard_new"].ToString();
 
+                            if (dr["remark_new"] != null)
+                                remark = dr["remark_new"] + "";
+
                             string sc_id = dr["sc_attend_id"].ToString();
 
                             string updateStr = "UPDATE " +
                                 "sc_attend " +
                                  " SET passing_standard=" + passing_standard +
                                  ",makeup_standard =" + makeup_standard +
+                                 ",remark ='" + remark + "' " +
                                 " WHERE " +
                                 "id =" + sc_id + ";";
                             UpdatePassScoreList.Add(updateStr);
@@ -518,7 +523,13 @@ namespace StudentDuplicateSubjectCheck
             accesshelper.StudentHelper.FillSemesterSubjectScore(false, students);
             _backgroundWorker.ReportProgress(30);
 
-
+            // 即時取得學生目前類別
+            List<string> sids = new List<string>();
+            foreach (SmartSchool.Customization.Data.StudentRecord student in students)
+            {
+                sids.Add(student.StudentID);
+            }
+            Dictionary<string, List<StudentTagInfo>> StudentTagInfoDict = DataAccess.GetStudentTagInfoDictByStduentIDs(sids);
 
             _backgroundWorker.ReportProgress(40);
 
@@ -533,6 +544,8 @@ namespace StudentDuplicateSubjectCheck
             dtErrorTable.Columns.Add("seat_no");
             dtErrorTable.Columns.Add("student_name");
             dtErrorTable.Columns.Add("student_id");
+
+
 
             List<string> studentIDList = new List<string>();
             bool chkCalcHasError = false;
@@ -559,6 +572,7 @@ namespace StudentDuplicateSubjectCheck
                 else
                 {
 
+
                     DSXmlHelper helper = new DSXmlHelper(scoreCalcRule);
                     decimal passingStandard = -1;
                     decimal makeupStandard = -1;
@@ -568,10 +582,19 @@ namespace StudentDuplicateSubjectCheck
                         string cat = element.GetAttribute("類別");
                         bool useful = false;
                         //掃描學生的類別作比對
-                        foreach (CategoryInfo catinfo in student.StudentCategorys)
+                        //foreach (CategoryInfo catinfo in student.StudentCategorys)
+                        //{
+                        //    if (catinfo.Name == cat || catinfo.FullName == cat)
+                        //        useful = true;
+                        //}
+
+                        if (StudentTagInfoDict.ContainsKey(student.StudentID))
                         {
-                            if (catinfo.Name == cat || catinfo.FullName == cat)
-                                useful = true;
+                            foreach (StudentTagInfo tag in StudentTagInfoDict[student.StudentID])
+                            {
+                                if (tag.Name == cat || tag.FullName == cat)
+                                    useful = true;
+                            }
                         }
 
                         if (useful)
@@ -631,7 +654,7 @@ namespace StudentDuplicateSubjectCheck
                             else
                             {
                                 makeupStandardDict.Add(student.StudentID, makeupStandard);
-                            }                           
+                            }
                         }
                     }
                 }
@@ -691,7 +714,8 @@ namespace StudentDuplicateSubjectCheck
                 sc_attend.remark,
                 sc_attend.subject_code,
                 0 AS passing_standard_new,
-                0 AS makeup_standard_new
+                0 AS makeup_standard_new,
+                '' AS remark_new
             FROM
                 course
                 INNER JOIN sc_attend ON course.id = sc_attend.ref_course_id
@@ -735,7 +759,12 @@ namespace StudentDuplicateSubjectCheck
                 {
                     dr["makeup_standard_new"] = makeupStandardDict[sid];
                 }
-                
+
+                if (remarkDict.ContainsKey(sid))
+                {
+                    dr["remark_new"] = "學生身分：" + remarkDict[sid];
+                }
+
                 // 是否有課程代碼
                 bool hasSubjectCode = false;
 

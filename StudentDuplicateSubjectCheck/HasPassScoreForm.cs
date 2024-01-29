@@ -106,7 +106,7 @@ namespace StudentDuplicateSubjectCheck
                     wb.Worksheets[0].Cells[rowIdx, 4].PutValue(dr["student_number"].ToString());
                     wb.Worksheets[0].Cells[rowIdx, 5].PutValue(dr["passing_standard_new"].ToString());
                     wb.Worksheets[0].Cells[rowIdx, 6].PutValue(dr["makeup_standard_new"].ToString());
-                    wb.Worksheets[0].Cells[rowIdx, 7].PutValue(dr["remark"].ToString());
+                    wb.Worksheets[0].Cells[rowIdx, 7].PutValue(dr["remark_new"].ToString());
                     rowIdx++;
                 }
 
@@ -160,7 +160,7 @@ namespace StudentDuplicateSubjectCheck
                 dgData.Rows[rowIdx].Cells[colStudentNumber.Index].Value = dr["student_number"].ToString();
                 dgData.Rows[rowIdx].Cells[colPassingStandard.Index].Value = dr["passing_standard_new"].ToString();
                 dgData.Rows[rowIdx].Cells[colMakeupStandard.Index].Value = dr["makeup_standard_new"].ToString();
-                dgData.Rows[rowIdx].Cells[colRemark.Index].Value = dr["remark"].ToString();
+                dgData.Rows[rowIdx].Cells[colRemark.Index].Value = dr["remark_new"].ToString();
             }
         }
 

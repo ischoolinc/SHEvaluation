@@ -129,7 +129,9 @@
       <DependentUpon>CompleteForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DAO\CourseSpecifySubjectNameInfo.cs" />
+    <Compile Include="DAO\DataAccess.cs" />
     <Compile Include="DAO\GPlanSubjectCreditDifInfo.cs" />
+    <Compile Include="DAO\StudentTagInfo.cs" />
     <Compile Include="DataGridViewExport.cs" />
     <Compile Include="ErrorMessageForm.cs">
       <SubType>Form</SubType>

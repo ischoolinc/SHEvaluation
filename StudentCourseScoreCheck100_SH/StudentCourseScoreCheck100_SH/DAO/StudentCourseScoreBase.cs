@@ -57,5 +57,10 @@ namespace StudentCourseScoreCheck100_SH.DAO
         /// 課程編號,名稱(courseid,name)
         /// </summary>
         public Dictionary<string, string> CourseNameDict = new Dictionary<string, string>();
+
+        /// <summary>
+        /// 評量成績(試別、使用文字)(courseid,examName,UseText)
+        /// </summary>
+        public Dictionary<string, Dictionary<string, string>> ExamScoreTextDict = new Dictionary<string, Dictionary<string, string>>();
     }
 }

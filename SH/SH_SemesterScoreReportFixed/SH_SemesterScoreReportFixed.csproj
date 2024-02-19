@@ -91,6 +91,10 @@
       <HintPath>Library\SHSchool.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SHStudentExamExtension, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\SHStudentExamExtension.dll</HintPath>
+    </Reference>
     <Reference Include="SmartSchool.Core, Version=1.0.4.6, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\SmartSchool.Core.dll</HintPath>
@@ -186,6 +190,8 @@
     <Content Include="Library\SHSchool.Data.dll" />
     <Content Include="Library\SHSchool.Data.pdb" />
     <Content Include="Library\SHSchool.Data.xml" />
+    <Content Include="Library\SHStudentExamExtension.dll" />
+    <Content Include="Library\SHStudentExamExtension.pdb" />
     <Content Include="Library\SmartSchool.Core.dll" />
     <Content Include="Library\SmartSchool.Customization.Data.dll" />
     <Content Include="Library\SmartSchool.Customization.Data.xml" />

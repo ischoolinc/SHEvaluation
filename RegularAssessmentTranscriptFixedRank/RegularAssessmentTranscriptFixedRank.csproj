@@ -31,11 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Cells">
+    <Reference Include="Aspose.Cells, Version=4.3.0.0, Culture=neutral, PublicKeyToken=9a40d5a4b59e5256, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\Aspose.Cells.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Aspose.Words_201402">
+    <Reference Include="Aspose.Words_201402, Version=14.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\Aspose.Words_201402.dll</HintPath>
     </Reference>
     <Reference Include="Campus.ePaperCloud">
@@ -79,6 +81,11 @@
       <HintPath>Library\SHSchool.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SHStudentExamExtension, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\SHStudentExamExtension.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="SmartSchool.Core">
       <HintPath>Library\SmartSchool.Core.dll</HintPath>
       <Private>False</Private>
@@ -113,7 +120,6 @@
     </Compile>
     <Compile Include="Configure.cs" />
     <Compile Include="DAO\StudentCountInfo.cs" />
-    <Compile Include="DAO\StudSceTakeInfo.cs" />
     <Compile Include="NewConfigure.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -147,9 +153,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Library\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Resources\Template.doc" />
     <None Include="Resources\個人學期成績單%28學生清單%29.xls" />
@@ -159,6 +163,36 @@
     <None Include="Resources\學生定期評量成績單樣板_20211101_1.doc" />
     <None Include="Resources\學生定期評量成績單樣板_20221012.doc" />
     <None Include="Resources\歡樂的合併欄位總表.doc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Library\Aspose.Cells.dll" />
+    <Content Include="Library\Aspose.Cells.xml" />
+    <Content Include="Library\Aspose.Words.dll" />
+    <Content Include="Library\Aspose.Words.xml" />
+    <Content Include="Library\Aspose.Words_201402.dll" />
+    <Content Include="Library\Campus.ePaperCloud.dll" />
+    <Content Include="Library\DevComponents.DotNetBar2.dll" />
+    <Content Include="Library\DevComponents.DotNetBar2.xml" />
+    <Content Include="Library\FISCA.Data.dll" />
+    <Content Include="Library\FISCA.Data.xml" />
+    <Content Include="Library\FISCA.dll" />
+    <Content Include="Library\FISCA.Permission.dll" />
+    <Content Include="Library\FISCA.Presentation.dll" />
+    <Content Include="Library\FISCA.Presentation.xml" />
+    <Content Include="Library\FISCA.UDT.dll" />
+    <Content Include="Library\FISCA.UDT.xml" />
+    <Content Include="Library\FISCA.xml" />
+    <Content Include="Library\K12.Data.dll" />
+    <Content Include="Library\K12.Data.xml" />
+    <Content Include="Library\K12.Presentation.dll" />
+    <Content Include="Library\K12.Presentation.xml" />
+    <Content Include="Library\SHSchool.Data.dll" />
+    <Content Include="Library\SHSchool.Data.xml" />
+    <Content Include="Library\SHStudentExamExtension.dll" />
+    <Content Include="Library\SHStudentExamExtension.pdb" />
+    <Content Include="Library\SmartSchool.Core.dll" />
+    <Content Include="Library\SmartSchool.Customization.Data.dll" />
+    <Content Include="Library\SmartSchool.Customization.Data.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -12,6 +12,7 @@ using FISCA.Permission;
 using SmartSchool;
 using Campus.ePaperCloud;
 using RegularAssessmentTranscriptFixedRank.DAO;
+using SHStudentExamExtension;
 
 namespace RegularAssessmentTranscriptFixedRank
 {
@@ -503,7 +504,7 @@ namespace RegularAssessmentTranscriptFixedRank
                 {
 
                     // 學生評量缺考資料
-                    Dictionary<string, StudSceTakeInfo> StudSceTakeInfoDict = new Dictionary<string, StudSceTakeInfo>();
+                    Dictionary<string, SHStudentExamExtension.DAO.StudSceTakeInfo> StudSceTakeInfoDict = new Dictionary<string, SHStudentExamExtension.DAO.StudSceTakeInfo>();
 
 
                     //取得家長代碼
@@ -537,7 +538,7 @@ namespace RegularAssessmentTranscriptFixedRank
 
 
                         // // 取得學生特定學期評量缺考資料
-                        StudSceTakeInfoDict = Utility.GetStudSceTakeInfoDict(sSchoolYear, sSemester, selectedStudents);
+                        StudSceTakeInfoDict = StudentExam.GetStudSceTakeInfoDict(sSchoolYear, sSemester, selectedStudents);
 
                         #region 整理學生定期評量成績
                         #region 篩選課程學年度、學期、科目取得有可能有需要的資料

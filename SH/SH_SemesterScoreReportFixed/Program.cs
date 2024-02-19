@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using System.Xml;
 using SH_SemesterScoreReportFixed.DAO;
+using SHStudentExamExtension;
 
 namespace SH_SemesterScoreReportFixed
 {
@@ -328,6 +329,9 @@ namespace SH_SemesterScoreReportFixed
                     table.Columns.Add("學期科目需要重修標示" + subjectIndex);
                     table.Columns.Add("學期科目重修成績標示" + subjectIndex);
                     table.Columns.Add("學期科目補修成績標示" + subjectIndex);
+                    table.Columns.Add("科目缺考原因" + subjectIndex);
+                    table.Columns.Add("前次科目缺考原因" + subjectIndex);
+
 
                     // 新增學期科目排名
                     table.Columns.Add("學期科目排名成績" + subjectIndex);
@@ -708,6 +712,9 @@ namespace SH_SemesterScoreReportFixed
                         }
                     }
 
+                    // 學生評量缺考資料
+                    Dictionary<string, SHStudentExamExtension.DAO.StudSceTakeInfo> StudSceTakeInfoDict = new Dictionary<string, SHStudentExamExtension.DAO.StudSceTakeInfo>();
+                    
                     Dictionary<string, Dictionary<string, Dictionary<string, ExamScoreInfo>>> studentExamSores = new Dictionary<string, Dictionary<string, Dictionary<string, ExamScoreInfo>>>();
                     Dictionary<string, Dictionary<string, ExamScoreInfo>> studentRefExamSores = new Dictionary<string, Dictionary<string, ExamScoreInfo>>();
                     //課程上指定學年科目名稱(KEY: courseID,)
@@ -746,6 +753,9 @@ namespace SH_SemesterScoreReportFixed
                         {
                             if (conf.ExamRecord != null || conf.RefenceExamRecord != null)
                             {
+                                // 取得學生特定學期評量缺考資料
+                                StudSceTakeInfoDict = StudentExam.GetStudSceTakeInfoDict(sSchoolYear, sSemester, selectedStudents);
+
                                 accessHelper.CourseHelper.FillExam(targetCourseList);
                                 var tcList = new List<CourseRecord>();
                                 var totalList = new List<CourseRecord>();
@@ -2255,6 +2265,15 @@ namespace SH_SemesterScoreReportFixed
                                                                 row["學分數" + subjectIndex] = sceTakeRecord.CreditDec();
                                                             }
                                                             row["科目成績" + subjectIndex] = sceTakeRecord.SpecialCase == "" ? ("" + sceTakeRecord.ExamScore) : sceTakeRecord.SpecialCase;
+
+                                                            // 判斷如果有缺考原因，使用缺考輸入文字與原因
+                                                            string examUseTextKey = sceTakeRecord.StudentID + "_" + sceTakeRecord.CourseID + "_" + sceTakeRecord.ExamName;
+                                                            if (StudSceTakeInfoDict.ContainsKey(examUseTextKey))
+                                                            {
+                                                                row["科目成績" + subjectIndex] = StudSceTakeInfoDict[examUseTextKey].UseText;
+                                                                row["科目缺考原因" + subjectIndex] = StudSceTakeInfoDict[examUseTextKey].ReportValue;
+                                                            }
+
                                                             #region 班排名及落點分析
                                                             string k1 = "";
                                                             if (RankMatrixDataDict.ContainsKey(studentID))
@@ -2476,6 +2495,15 @@ namespace SH_SemesterScoreReportFixed
                                                             studentRefExamSores[studentID][courseID].SpecialCase == ""
                                                             ? ("" + studentRefExamSores[studentID][courseID].ExamScore)
                                                             : studentRefExamSores[studentID][courseID].SpecialCase;
+
+                                                        // 判斷如果有缺考原因，使用缺考輸入文字與原因
+                                                        string examUseTextKey = studentID + "_" + studentID + "_" + studentRefExamSores[studentID][courseID].ExamName;
+                                                        if (StudSceTakeInfoDict.ContainsKey(examUseTextKey))
+                                                        {
+                                                            row["前次成績" + subjectIndex] = StudSceTakeInfoDict[examUseTextKey].UseText;
+                                                            row["前次科目缺考原因" + subjectIndex] = StudSceTakeInfoDict[examUseTextKey].ReportValue;
+                                                        }
+
                                                     }
                                                     studentExamSores[studentID][subjectName].Remove(courseID);
                                                     break;
@@ -3919,10 +3947,9 @@ namespace SH_SemesterScoreReportFixed
                             table.Rows.Add(row);
                             progressCount++;
                             bkw.ReportProgress(70 + progressCount * 20 / selectedStudents.Count);
-
-
-                            //table.TableName = "test";
-                            //table.WriteXml(Application.StartupPath + "\\debug.xml");
+                            
+                            table.TableName = "test";
+                            table.WriteXml(Application.StartupPath + "\\debug.xml");
                         }
                         bkw.ReportProgress(90);
                         document = conf.Template;

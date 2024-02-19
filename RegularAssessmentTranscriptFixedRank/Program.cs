@@ -114,6 +114,7 @@ namespace RegularAssessmentTranscriptFixedRank
                 Configure conf = form.Configure;
                 //建立測試的選取學生(先期不管怎麼選就是印這些人)
                 List<string> selectedStudents = K12.Presentation.NLDPanels.Student.SelectedSource;
+
                 //建立合併欄位總表
                 DataTable table = new DataTable();
                 #region 所有的合併欄位
@@ -244,6 +245,8 @@ namespace RegularAssessmentTranscriptFixedRank
                     table.Columns.Add("類別2排名母數" + subjectIndex);
                     table.Columns.Add("全校排名" + subjectIndex);
                     table.Columns.Add("全校排名母數" + subjectIndex);
+                    table.Columns.Add("科目缺考原因" + subjectIndex);
+                    table.Columns.Add("前次科目缺考原因" + subjectIndex);
 
                     foreach (string r3 in r3List)
                     {
@@ -498,6 +501,11 @@ namespace RegularAssessmentTranscriptFixedRank
                 };
                 bkw.DoWork += delegate (object sender, System.ComponentModel.DoWorkEventArgs e)
                 {
+
+                    // 學生評量缺考資料
+                    Dictionary<string, StudSceTakeInfo> StudSceTakeInfoDict = new Dictionary<string, StudSceTakeInfo>();
+
+
                     //取得家長代碼
                     QueryHelper q = new QueryHelper();
                     string ids = string.Join("','", selectedStudents);
@@ -526,6 +534,11 @@ namespace RegularAssessmentTranscriptFixedRank
                         int sSchoolYear, sSemester;
                         int.TryParse(conf.SchoolYear, out sSchoolYear);
                         int.TryParse(conf.Semester, out sSemester);
+
+
+                        // // 取得學生特定學期評量缺考資料
+                        StudSceTakeInfoDict = Utility.GetStudSceTakeInfoDict(sSchoolYear, sSemester, selectedStudents);
+
                         #region 整理學生定期評量成績
                         #region 篩選課程學年度、學期、科目取得有可能有需要的資料
                         List<CourseRecord> targetCourseList = new List<CourseRecord>();
@@ -1046,7 +1059,7 @@ namespace RegularAssessmentTranscriptFixedRank
                                     row[keyName] = sci.GetFullNameTagStudentCount(gradeYear, name);
                                 }
                             }
-                        
+
 
                             // 這區段是新增功能資料
                             // 畫面上開始結束日期
@@ -1326,6 +1339,7 @@ namespace RegularAssessmentTranscriptFixedRank
                                                     if (sceTakeRecord != null)
                                                     {//有輸入
 
+                                                        // 處理缺考資料
                                                         decimal level;
                                                         subjectNumber = decimal.TryParse(sceTakeRecord.SubjectLevel, out level) ? (decimal?)level : null;
                                                         row["領域名稱" + subjectIndex] = sceTakeRecord.Domain;
@@ -1339,6 +1353,15 @@ namespace RegularAssessmentTranscriptFixedRank
                                                         row["學分數" + subjectIndex] = sceTakeRecord.CreditDec();
 
                                                         row["科目成績" + subjectIndex] = sceTakeRecord.SpecialCase == "" ? ("" + sceTakeRecord.ExamScore) : sceTakeRecord.SpecialCase;
+                                                        
+                                                        // 判斷如果有缺考原因，使用缺考輸入文字與原因
+                                                        string examUseTextKey = sceTakeRecord.StudentID + "_" + sceTakeRecord.CourseID + "_" + sceTakeRecord.ExamName; 
+                                                        if (StudSceTakeInfoDict.ContainsKey(examUseTextKey))
+                                                        {
+                                                            row["科目成績" + subjectIndex] = StudSceTakeInfoDict[examUseTextKey].UseText;
+                                                            row["科目缺考原因" + subjectIndex] = StudSceTakeInfoDict[examUseTextKey].ReportValue;
+                                                        }
+
                                                         #region 班排名及落點分析
                                                         string k1 = "";
                                                         if (RankMatrixDataDict.ContainsKey(studentID))
@@ -1493,6 +1516,16 @@ namespace RegularAssessmentTranscriptFixedRank
                                                                 studentRefExamSores[studentID][courseID].SpecialCase == ""
                                                                 ? ("" + studentRefExamSores[studentID][courseID].ExamScore)
                                                                 : studentRefExamSores[studentID][courseID].SpecialCase;
+
+                                                        // 判斷如果有缺考原因，使用缺考輸入文字與原因
+                                                        string examUseTextKey = studentID + "_" + studentID + "_" + studentRefExamSores[studentID][courseID].ExamName;
+                                                        if (StudSceTakeInfoDict.ContainsKey(examUseTextKey))
+                                                        {
+                                                            row["前次成績" + subjectIndex] = StudSceTakeInfoDict[examUseTextKey].UseText;
+                                                            row["前次科目缺考原因" + subjectIndex] = StudSceTakeInfoDict[examUseTextKey].ReportValue;
+                                                        }
+
+
                                                     }
                                                     #endregion
                                                     studentExamSores[studentID][subjectName].Remove(courseID);

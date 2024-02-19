@@ -113,6 +113,7 @@
     </Compile>
     <Compile Include="Configure.cs" />
     <Compile Include="DAO\StudentCountInfo.cs" />
+    <Compile Include="DAO\StudSceTakeInfo.cs" />
     <Compile Include="NewConfigure.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -8,6 +8,7 @@ using FISCA.Data;
 using System.Data;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using RegularAssessmentTranscriptFixedRank.DAO;
 
 namespace RegularAssessmentTranscriptFixedRank
 {
@@ -598,5 +599,105 @@ namespace RegularAssessmentTranscriptFixedRank
 
             return value;
         }
+
+        // 依傳入學年度、學期、學生系統編號，取得評量缺考資料，回傳：key:StudentID_CourseID_ExamName
+        public static Dictionary<string, StudSceTakeInfo> GetStudSceTakeInfoDict(int SchoolYear, int Semester, List<string> StudentIDs)
+        {
+            Dictionary<string, StudSceTakeInfo> value = new Dictionary<string, StudSceTakeInfo>();
+            try
+            {
+                if (StudentIDs.Count > 0)
+                {
+                    QueryHelper qh = new QueryHelper();
+                    string query = string.Format(@"
+                WITH exam_extension_map AS(
+                    SELECT
+                        array_to_string(xpath('//UseText/text()', settings), '') AS use_text,
+                        array_to_string(xpath('//ScoreType/text()', settings), '') AS score_type,
+                        array_to_string(xpath('//ReportValue/text()', settings), '') AS report_value,
+                        array_to_string(xpath('//UseValue/text()', settings), '') AS use_value
+                    FROM
+                        (
+                            SELECT
+                                unnest(
+                                    xpath(
+                                        '//Configurations/Configuration/Settings/Setting',
+                                        xmlparse(
+                                            content REPLACE(REPLACE(content, '&lt;', '<'), '&gt;', '>')
+                                        )
+                                    )
+                                ) AS settings
+                            FROM
+                                list
+                            WHERE
+                                name = '評量成績缺考設定'
+                        ) AS content
+                ),
+                student_exam_extesion AS(
+                    SELECT
+                        course.id AS course_id,
+                        sc_attend.ref_student_id AS student_id,
+                        exam.exam_name AS exam_name,
+                        sce_take.score,
+                        unnest(
+                            xpath(
+                                '//Extension/UseText/text()',
+                                xmlparse(content sce_take.extension)
+                            )
+                        ) :: text AS use_text
+                    FROM
+                        course
+                        INNER JOIN sc_attend ON course.id = sc_attend.ref_course_id
+                        INNER JOIN sce_take ON sc_attend.id = sce_take.ref_sc_attend_id
+                        INNER JOIN exam ON sce_take.ref_exam_id = exam.id
+                    WHERE
+                        sc_attend.ref_student_id IN ({0})
+                        AND course.school_year = {1}
+                        AND course.semester = {2}
+                        AND sce_take.extension <> ''
+                ),
+                student_exam_use_text AS(
+                    SELECT
+                        student_exam_extesion.course_id,
+                        student_exam_extesion.student_id,
+                        student_exam_extesion.exam_name,
+                        student_exam_extesion.score,
+                        student_exam_extesion.use_text,
+                        report_value
+                    FROM
+                        student_exam_extesion
+                        LEFT JOIN exam_extension_map ON student_exam_extesion.use_text = exam_extension_map.use_text
+                )
+                SELECT
+                    *
+                FROM
+                    student_exam_use_text
+                ", string.Join(",", StudentIDs.ToArray()), SchoolYear, Semester);
+
+                    DataTable dt = qh.Select(query);
+
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        // key:StudentID + CourseID +ExamName
+                        StudSceTakeInfo sc = new StudSceTakeInfo();
+                        sc.StudentID = dr["student_id"] + "";
+                        sc.CourseID = dr["course_id"] + "";
+                        sc.ExamName = dr["exam_name"] + "";
+                        sc.UseText = dr["use_text"] + "";
+                        sc.ReportValue = dr["report_value"] + "";
+                        string key = sc.StudentID + "_" + sc.CourseID + "_" + sc.ExamName;
+                        if (!value.ContainsKey(key))
+                            value.Add(key, sc);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return value;
+        }
+
     }
 }

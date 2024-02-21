@@ -12,6 +12,7 @@ using FISCA.Permission;
 using 班級定期評量成績單_固定排名.Service;
 using 班級定期評量成績單_固定排名.Model;
 using FISCA.Data;
+using SHStudentExamExtension;
 
 namespace 班級定期評量成績單_固定排名
 {
@@ -222,6 +223,8 @@ namespace 班級定期評量成績單_固定排名
                     Dictionary<string, Dictionary<string, ExamScoreInfo>> studentRefExamSores = new Dictionary<string, Dictionary<string, ExamScoreInfo>>();
                     ManualResetEvent scoreReady = new ManualResetEvent(false);
                     ManualResetEvent elseReady = new ManualResetEvent(false);
+                    // 學生評量缺考資料
+                    Dictionary<string, SHStudentExamExtension.DAO.StudSceTakeInfo> StudSceTakeInfoDict = new Dictionary<string, SHStudentExamExtension.DAO.StudSceTakeInfo>();
 
                     bkw.ReportProgress(3);
                     new Thread(new ThreadStart(delegate
@@ -258,6 +261,10 @@ namespace 班級定期評量成績單_固定排名
                             {
                                 if (conf.ExamRecord != null || conf.RefenceExamRecord != null)
                                 {
+                                    List<string> StudentIDs = selectedStudents.Select(x => x.StudentID).ToList();
+                                    // 取得學生特定學期評量缺考資料
+                                    StudSceTakeInfoDict = StudentExam.GetStudSceTakeInfoDict(sSchoolYear, sSemester, StudentIDs);
+
                                     accessHelper.CourseHelper.FillExam(targetCourseList);
                                     var tcList = new List<CourseRecord>();
                                     var totalList = new List<CourseRecord>();
@@ -544,14 +551,14 @@ namespace 班級定期評量成績單_固定排名
                                         }
 
                                         if (conf.PrintSubjectList.Contains(subjectName))
-                                        {                                          
+                                        {
 
                                             #region 是列印科目
                                             foreach (var sceTakeRecord in studentExamSores[studentID][subjectName].Values)
                                             {
                                                 if (sceTakeRecord != null && sceTakeRecord.SpecialCase == "")
                                                 {
-                                                  
+
 
                                                     if (isClac)
                                                     {
@@ -1219,6 +1226,15 @@ namespace 班級定期評量成績單_固定排名
 
                                                                     row["科目成績" + ClassStuNum + "-" + subjectIndex] = sceTakeRecord.SpecialCase == "" ? ("" + sceTakeRecord.ExamScore) : sceTakeRecord.SpecialCase;
 
+                                                                    // 判斷如果有缺考原因，使用缺考輸入文字與原因
+                                                                    string examUseTextKey = sceTakeRecord.StudentID + "_" + sceTakeRecord.CourseID + "_" + sceTakeRecord.ExamName;
+                                                                    if (StudSceTakeInfoDict.ContainsKey(examUseTextKey))
+                                                                    {
+                                                                        row["科目成績" + ClassStuNum + "-" + subjectIndex] = StudSceTakeInfoDict[examUseTextKey].UseText;
+                                              
+                                                                        row["科目缺考原因" + ClassStuNum + "-" + subjectIndex] = StudSceTakeInfoDict[examUseTextKey].ReportValue;
+                                                                    }
+
                                                                     #region 班排名及落點分析
                                                                     if (stuRec.RefClass != null)
                                                                     {
@@ -1371,6 +1387,16 @@ namespace 班級定期評量成績單_固定排名
                                                                         studentRefExamSores[studentID][courseID].SpecialCase == ""
                                                                         ? ("" + studentRefExamSores[studentID][courseID].ExamScore)
                                                                         : studentRefExamSores[studentID][courseID].SpecialCase;
+
+                                                                // 判斷如果有缺考原因，使用缺考輸入文字與原因
+                                                                string examUseTextKey = studentID + "_" + studentID + "_" + studentRefExamSores[studentID][courseID].ExamName;
+                                                                if (StudSceTakeInfoDict.ContainsKey(examUseTextKey))
+                                                                {
+                                                                    row["前次成績" + ClassStuNum + "-" + subjectIndex] = StudSceTakeInfoDict[examUseTextKey].UseText;
+                                                                    row["前次科目缺考原因" + ClassStuNum + "-" + subjectIndex] = StudSceTakeInfoDict[examUseTextKey].ReportValue;
+                                                                }
+
+
                                                             }
                                                             #endregion
                                                             break;
@@ -2275,6 +2301,18 @@ namespace 班級定期評量成績單_固定排名
                         bkw.ReportProgress(90);
                         document = conf.Template;
 
+                        // debug 使用
+                        //string fPath = Application.StartupPath + "\\debug.txt";
+                        //using (StreamWriter sw = new StreamWriter(fPath))
+                        //{
+                        //    foreach (DataRow dr in table.Rows)
+                        //    {
+                        //        foreach (DataColumn dc in table.Columns)
+                        //        {
+                        //            sw.WriteLine(dc.ColumnName + ":" + dr[dc.ColumnName] + "");
+                        //        }
+                        //    }
+                        //}
 
                         document.MailMerge.Execute(table);
 

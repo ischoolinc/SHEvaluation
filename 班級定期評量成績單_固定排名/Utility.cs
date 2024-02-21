@@ -172,6 +172,7 @@ namespace 班級定期評量成績單_固定排名
                     builder.InsertCell();
                     builder.InsertField("MERGEFIELD 校部定/必選修" + stuIndex + "-" + i + " \\* MERGEFORMAT ", "«RB/R" + i + "» ");
                     builder.InsertField("MERGEFIELD 科目成績" + stuIndex + "-" + i + " \\* MERGEFORMAT ", "«S" + i + "»");
+                    builder.InsertField("MERGEFIELD 科目缺考原因" + stuIndex + "-" + i + " \\* MERGEFORMAT ", "«R" + i + "»");
                 }
                 builder.EndRow();
             }
@@ -313,6 +314,8 @@ namespace 班級定期評量成績單_固定排名
                     builder.InsertCell();
                     builder.InsertField("MERGEFIELD 校部定/必選修" + stuIndex + "-" + i + " \\* MERGEFORMAT ", "«RB/R" + i + "» ");
                     builder.InsertField("MERGEFIELD 前次成績" + stuIndex + "-" + i + " \\* MERGEFORMAT ", "«S" + i + "»");
+                    builder.InsertField("MERGEFIELD 前次科目缺考原因" + stuIndex + "-" + i + " \\* MERGEFORMAT ", "«R" + i + "»");
+
                 }
                 builder.EndRow();
             }
@@ -1593,6 +1596,10 @@ namespace 班級定期評量成績單_固定排名
                     // table.Columns.Add("全校排名母數" + Num + "-" + subjectIndex);
                     table.Columns.Add("年排名" + Num + "-" + subjectIndex);
                     table.Columns.Add("年排名母數" + Num + "-" + subjectIndex);
+
+                    // 因缺考新增
+                    table.Columns.Add("前次科目缺考原因" + Num + "-" + subjectIndex);
+                    table.Columns.Add("科目缺考原因" + Num + "-" + subjectIndex);
                 }
                 table.Columns.Add("總分" + Num);
                 table.Columns.Add("總分班排名" + Num);

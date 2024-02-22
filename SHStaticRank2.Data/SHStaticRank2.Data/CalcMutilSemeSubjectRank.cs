@@ -6711,6 +6711,7 @@ namespace SHStaticRank2.Data
                                             }
                                             if (studRec.Fields.ContainsKey("tag2"))
                                             {
+                                                key4 = "加權平均類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
                                                 if (ranks.ContainsKey(key4))
                                                 {
                                                     if (ranks[key4].IndexOf(selectScore[id].avgScoreAC2) >= 0)
@@ -7541,6 +7542,7 @@ namespace SHStaticRank2.Data
                                             }
                                             if (studRec.Fields.ContainsKey("tag2"))
                                             {
+                                                key4 = "加權平均類別2排名_回歸_" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
                                                 if (ranks.ContainsKey(key4))
                                                 {
                                                     if (ranks[key4].IndexOf(selectScore[id].avgScoreAC2) >= 0)
@@ -10058,6 +10060,8 @@ namespace SHStaticRank2.Data
                                                     }
                                                     if (studRec.Fields.ContainsKey("tag2"))
                                                     {
+                                                        key4 = "加權平均類別2排名" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
+
                                                         if (ranks.ContainsKey(key4))
                                                         {
                                                             if (ranks[key4].IndexOf(selectScore[id].avgScoreAC2) >= 0)
@@ -10889,6 +10893,7 @@ namespace SHStaticRank2.Data
                                                     }
                                                     if (studRec.Fields.ContainsKey("tag2"))
                                                     {
+                                                        key4 = "加權平均類別2排名_回歸_" + studRec.Fields["tag2"] + "^^^" + gradeyear + "^^^" + subjName;
                                                         if (ranks.ContainsKey(key4))
                                                         {
                                                             if (ranks[key4].IndexOf(selectScore[id].avgScoreAC2) >= 0)

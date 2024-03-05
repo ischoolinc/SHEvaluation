@@ -1,4 +1,5 @@
-﻿using FISCA.Data;
+﻿using Aspose.Words;
+using FISCA.Data;
 using FISCA.DSAUtil;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
@@ -1505,9 +1506,13 @@ namespace SmartSchool.Evaluation
                     {
                         if (subjectNode.SchoolYear == schoolyear && subjectNode.Semester == semester)
                         {
-                            //不計學分或不需評分不用算
-                            if (subjectNode.Detail.GetAttribute("不需評分") == "是" || subjectNode.Detail.GetAttribute("不計學分") == "是")
+                            // 2024/3/4 討論結果，不需評分 ="是"，不計算
+                            if (subjectNode.Detail.GetAttribute("不需評分") == "是")
                                 continue;
+
+                            ////不計學分或不需評分不用算
+                            //if (subjectNode.Detail.GetAttribute("不需評分") == "是" || subjectNode.Detail.GetAttribute("不計學分") == "是")
+                            //    continue;
 
                             // 若為補修成績且補修成績不採計，則不計算
                             if (takeRepairScore == false)
@@ -1516,12 +1521,12 @@ namespace SmartSchool.Evaluation
                                     continue;
                             }
 
-                            string subjectCode = subjectNode.Detail.GetAttribute("修課科目代碼");
-                            if (subjectCode.Length >= 23) //共23碼
-                            {
-                                if (subjectCode[16].ToString() + subjectCode[18].ToString() == "9D" || subjectCode[16].ToString() + subjectCode[18].ToString() == "9d")
-                                    continue;
-                            }
+                            //string subjectCode = subjectNode.Detail.GetAttribute("修課科目代碼");
+                            //if (subjectCode.Length >= 23) //共23碼
+                            //{
+                            //    if (subjectCode[16].ToString() + subjectCode[18].ToString() == "9D" || subjectCode[16].ToString() + subjectCode[18].ToString() == "9d")
+                            //        continue;
+                            //}
 
                             #region 分項類別跟學分數
                             string entry = subjectNode.Detail.GetAttribute("開課分項類別");
@@ -2099,14 +2104,20 @@ namespace SmartSchool.Evaluation
                             if (!ApplySemesterSchoolYear.ContainsKey(scoreInfo.Semester) || ApplySemesterSchoolYear[scoreInfo.Semester] != scoreInfo.SchoolYear)
                                 removeList.Add(scoreInfo);
 
-                            string subjectCode = scoreInfo.Detail.GetAttribute("修課科目代碼");
-                            if (subjectCode.Length == 23)
+                            // 2024/3/4 討論結果，不需評分 ="是"，不計算
+                            if (scoreInfo.Detail.GetAttribute("不需評分") == "是")
                             {
-                                if (subjectCode[16].ToString() + subjectCode[18].ToString() == "9D" || subjectCode[16].ToString() + subjectCode[18].ToString() == "9d")
-                                {
-                                    removeList.Add(scoreInfo);
-                                }
+                                removeList.Add(scoreInfo);
                             }
+
+                            //string subjectCode = scoreInfo.Detail.GetAttribute("修課科目代碼");
+                            //if (subjectCode.Length == 23)
+                            //{
+                            //    if (subjectCode[16].ToString() + subjectCode[18].ToString() == "9D" || subjectCode[16].ToString() + subjectCode[18].ToString() == "9d")
+                            //    {
+                            //        removeList.Add(scoreInfo);
+                            //    }
+                            //}
 
                             // 若為補修成績，且成績計算不採計，則移除
                             if (takeRepairScore == false && scoreInfo.Detail.GetAttribute("是否補修成績") == "是")
@@ -2637,6 +2648,12 @@ namespace SmartSchool.Evaluation
                                     continue;
                                 decimal realCredit = 0;
                                 decimal.TryParse(GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(var.StudentID).GetSubjectInfo(subjectScoreInfo.Subject, subjectScoreInfo.Level).Credit, out realCredit);
+                                                               
+
+                                // 2024/3/4 討論結果，不需評分 ="是"，不計算
+                                if (subjectScoreInfo.Detail.GetAttribute("不需評分") == "是")
+                                    continue;
+
                                 scoreSum += subjectScoreInfo.Score * realCredit;
                                 creditCount += realCredit;
                             }

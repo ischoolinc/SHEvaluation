@@ -171,6 +171,10 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
             #region 加總學年科目成績對應到的學期科目成績，各個科目的學分數加總
             foreach (SemesterSubjectScoreInfo score in student.SemesterSubjectScoreList)
             {
+                // 2024/3/4 討論結果，不需評分 ="是"，不計算
+                if (score.Detail.GetAttribute("不需評分") == "是")
+                    continue;                
+
                 if (!subjectCreditCount.ContainsKey(score.Subject))
                     subjectCreditCount.Add(score.Subject, 0);
                 subjectCreditCount[score.Subject] += score.CreditDec();

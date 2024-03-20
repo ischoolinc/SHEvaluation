@@ -122,6 +122,7 @@
             this.ColSpecifySubjectName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCourseCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDSubjectName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colReread = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.panelEx1.SuspendLayout();
             this.groupPanel2.SuspendLayout();
             this.groupPanel1.SuspendLayout();
@@ -161,7 +162,7 @@
             // 
             // labelX10
             // 
-            this.labelX10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.labelX10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             // 
             // 
@@ -213,7 +214,7 @@
             // 
             // groupPanel2
             // 
-            this.groupPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.groupPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupPanel2.CanvasColor = System.Drawing.SystemColors.Control;
             this.groupPanel2.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
@@ -689,8 +690,8 @@
             // 
             // groupPanel1
             // 
-            this.groupPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.groupPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupPanel1.CanvasColor = System.Drawing.SystemColors.Control;
             this.groupPanel1.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
@@ -736,8 +737,8 @@
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.Controls.Add(this.dataGridViewX1);
             this.panel1.Location = new System.Drawing.Point(6, 40);
@@ -790,7 +791,8 @@
             this.colScoreN2,
             this.ColSpecifySubjectName,
             this.colCourseCode,
-            this.colDSubjectName});
+            this.colDSubjectName,
+            this.colReread});
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -1266,6 +1268,16 @@
             this.colDSubjectName.Name = "colDSubjectName";
             this.colDSubjectName.ReadOnly = true;
             // 
+            // colReread
+            // 
+            this.colReread.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.colReread.FillWeight = 74F;
+            this.colReread.HeaderText = "是否重讀";
+            this.colReread.MinimumWidth = 40;
+            this.colReread.Name = "colReread";
+            this.colReread.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.colReread.Width = 40;
+            // 
             // SemesterScoreEditor
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1383,5 +1395,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColSpecifySubjectName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCourseCode;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDSubjectName;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colReread;
     }
 }

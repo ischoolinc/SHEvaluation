@@ -182,7 +182,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                         var.GetAttribute("抵免") == "是",
                         var.GetAttribute("指定學年科目名稱"),
                         var.GetAttribute("修課科目代碼"),
-                        var.GetAttribute("報部科目名稱")
+                        var.GetAttribute("報部科目名稱"),
+                        var.GetAttribute("是否重讀") == "是"
                         );
                     row.Cells[SubjectColumn].ToolTipText = GetSubjectScorePlace(row);
 
@@ -879,6 +880,9 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 subjectElement.SetAttribute("免修", (row.Cells[colScoreN1.Index].Value != null && (bool)row.Cells[colScoreN1.Index].Value) ? "是" : "否");
                 subjectElement.SetAttribute("抵免", (row.Cells[colScoreN2.Index].Value != null && (bool)row.Cells[colScoreN2.Index].Value) ? "是" : "否");
                 subjectElement.SetAttribute("指定學年科目名稱", "" + row.Cells[ColSpecifySubjectName.Index].Value);
+
+                subjectElement.SetAttribute("是否重讀", (row.Cells[colReread.Index].Value != null && (bool)row.Cells[colReread.Index].Value) ? "是" : "否");
+
                 subjectScoreInfo.AppendChild(subjectElement);
 
                 _afterXml.AddElement("SubjectCollection", subjectElement);
@@ -1471,14 +1475,14 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                                     dataGridViewX1.Rows[e.RowIndex].Cells[ColSpecifySubjectName.Index].Value = ss.SchoolYearSubjectName;
 
                                     // 課程代碼
-                                    dataGridViewX1.Rows[e.RowIndex].Cells[colCourseCode.Index].Value = ss.CourseCode;
-
-                                    // 課程代碼
-                                    dataGridViewX1.Rows[e.RowIndex].Cells[colCourseCode.Index].Value = ss.CourseCode;
+                                    dataGridViewX1.Rows[e.RowIndex].Cells[colCourseCode.Index].Value = ss.CourseCode;       
 
                                     // 報部科目名稱
                                     dataGridViewX1.Rows[e.RowIndex].Cells[colDSubjectName.Index].Value = ss.DeptSubjectName;
                                 }
+
+                                // 是否重讀
+                                dataGridViewX1.Rows[e.RowIndex].Cells[colReread.Index].Value = ss.ReRead;
 
                             }
                             else
@@ -1522,12 +1526,13 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
 
                                         // 課程代碼
                                         dataGridViewX1.Rows[rowIdx].Cells[colCourseCode.Index].Value = ss.CourseCode;
-
-                                        // 課程代碼
-                                        dataGridViewX1.Rows[rowIdx].Cells[colCourseCode.Index].Value = ss.CourseCode;
-
+                                        
                                         // 報部科目名稱
                                         dataGridViewX1.Rows[rowIdx].Cells[colDSubjectName.Index].Value = ss.DeptSubjectName;
+
+                                        // 是否重讀
+                                        dataGridViewX1.Rows[rowIdx].Cells[colReread.Index].Value = ss.ReRead;
+
                                     }
                                 }
                             }

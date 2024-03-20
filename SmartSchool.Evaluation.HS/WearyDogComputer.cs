@@ -765,7 +765,9 @@ namespace SmartSchool.Evaluation
 
 
                                     #endregion
-                                    updateScoreElement.SetAttribute("原始成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
+                                    //         updateScoreElement.SetAttribute("原始成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
+
+                                    updateScoreElement.SetAttribute("原始成績", ("" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
 
                                     // 當有直接指定總成績覆蓋
                                     if (studentFinalScoreDict.ContainsKey(sacRecord.StudentID))
@@ -796,20 +798,20 @@ namespace SmartSchool.Evaluation
                                                 designate_final_score = dr["designate_final_score"].ToString();
 
                                             if (decimal.TryParse(passing_standard, out passing_standard_score))
-                                                updateScoreElement.SetAttribute("修課及格標準", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(passing_standard_score, decimals, mode)));
+                                                updateScoreElement.SetAttribute("修課及格標準", ("" + GetRoundScore(passing_standard_score, decimals, mode)));
                                             else
                                                 updateScoreElement.SetAttribute("修課及格標準", "");
 
                                             if (decimal.TryParse(makeup_standard, out makeup_standard_score))
-                                                updateScoreElement.SetAttribute("修課補考標準", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(makeup_standard_score, decimals, mode)));
+                                                updateScoreElement.SetAttribute("修課補考標準", ("" + GetRoundScore(makeup_standard_score, decimals, mode)));
                                             else
                                                 updateScoreElement.SetAttribute("修課補考標準", "");
 
                                             if (decimal.TryParse(designate_final_score, out designate_final_score_score))
                                             {
-                                                updateScoreElement.SetAttribute("修課直接指定總成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(designate_final_score_score, decimals, mode)));
+                                                updateScoreElement.SetAttribute("修課直接指定總成績", ("" + GetRoundScore(designate_final_score_score, decimals, mode)));
                                                 updateScoreElement.SetAttribute("原始成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(designate_final_score_score, decimals, mode)));
-                                                updateScoreElement.SetAttribute("註記", "修課成績：" + (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
+                                                updateScoreElement.SetAttribute("註記", "修課成績：" + ("" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
                                             }
                                             else
                                             {
@@ -918,7 +920,7 @@ namespace SmartSchool.Evaluation
                                     newScoreInfo.SetAttribute("科目級別", sacRecord.SubjectLevel);
                                     newScoreInfo.SetAttribute("開課分項類別", sacRecord.Entry);
                                     newScoreInfo.SetAttribute("開課學分數", "" + sacRecord.CreditDec());
-                                    newScoreInfo.SetAttribute("原始成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
+                                    newScoreInfo.SetAttribute("原始成績", ("" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
                                     if (specifySubjectNameDict.ContainsKey(sacRecord.StudentID))
                                     {
                                         string sKey = sacRecord.Subject + "_" + sacRecord.SubjectLevel;
@@ -955,21 +957,21 @@ namespace SmartSchool.Evaluation
                                                 designate_final_score = dr["designate_final_score"].ToString();
 
                                             if (decimal.TryParse(passing_standard, out passing_standard_score))
-                                                newScoreInfo.SetAttribute("修課及格標準", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(passing_standard_score, decimals, mode)));
+                                                newScoreInfo.SetAttribute("修課及格標準", ("" + GetRoundScore(passing_standard_score, decimals, mode)));
                                             else
                                                 newScoreInfo.SetAttribute("修課及格標準", "");
 
                                             if (decimal.TryParse(makeup_standard, out makeup_standard_score))
-                                                newScoreInfo.SetAttribute("修課補考標準", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(makeup_standard_score, decimals, mode)));
+                                                newScoreInfo.SetAttribute("修課補考標準", ("" + GetRoundScore(makeup_standard_score, decimals, mode)));
                                             else
                                                 newScoreInfo.SetAttribute("修課補考標準", "");
 
                                             if (decimal.TryParse(designate_final_score, out designate_final_score_score))
                                             {
-                                                newScoreInfo.SetAttribute("修課直接指定總成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(designate_final_score_score, decimals, mode)));
+                                                newScoreInfo.SetAttribute("修課直接指定總成績", ("" + GetRoundScore(designate_final_score_score, decimals, mode)));
 
-                                                newScoreInfo.SetAttribute("原始成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(designate_final_score_score, decimals, mode)));
-                                                newScoreInfo.SetAttribute("註記", "修課成績：" + (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
+                                                newScoreInfo.SetAttribute("原始成績", ("" + GetRoundScore(designate_final_score_score, decimals, mode)));
+                                                newScoreInfo.SetAttribute("註記", "修課成績：" + ("" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
                                             }
                                             else
                                             {
@@ -2485,6 +2487,10 @@ namespace SmartSchool.Evaluation
                         {//&& subjectCalcScores.ContainsKey(score.Subject) && subjectCalcScores[score.Subject] >= applylimit
                             foreach (var schoolYearSubjectScore in var.SchoolYearSubjectScoreList)
                             {
+                                // 2024/3/14 加入判斷，當補修成績與重修成績，不處理
+                                if (score.Detail.GetAttribute("是否補修成績") == "是" || score.Detail.GetAttribute("重修學年度") != "" || score.Detail.GetAttribute("重修學期") != "")
+                                    continue;
+
                                 string semesterSubject = score.Subject;
                                 if (score.Detail.GetAttribute("指定學年科目名稱") != "")
                                     semesterSubject = score.Detail.GetAttribute("指定學年科目名稱");
@@ -2648,7 +2654,7 @@ namespace SmartSchool.Evaluation
                                     continue;
                                 decimal realCredit = 0;
                                 decimal.TryParse(GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(var.StudentID).GetSubjectInfo(subjectScoreInfo.Subject, subjectScoreInfo.Level).Credit, out realCredit);
-                                                               
+
 
                                 // 2024/3/4 討論結果，不需評分 ="是"，不計算
                                 if (subjectScoreInfo.Detail.GetAttribute("不需評分") == "是")

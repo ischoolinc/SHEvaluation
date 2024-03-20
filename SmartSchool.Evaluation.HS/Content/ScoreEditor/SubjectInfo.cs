@@ -46,5 +46,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
 
         // 學期成績已經有科目名稱級別
         public bool HasSubjectNameLevel { get; set; }
+
+        // 是否重讀
+        public string ReRead { get; set; }
     }
 }

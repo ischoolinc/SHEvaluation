@@ -66,6 +66,7 @@ namespace SmartSchool.Evaluation.ImportExport
                 , "指定學年科目名稱"
                 , "課程代碼"
                 , "報部科目名稱"
+                , "是否重讀"
                 );
             filterRepeat.CheckedChanged += delegate
             {
@@ -247,6 +248,8 @@ namespace SmartSchool.Evaluation.ImportExport
                                     case "指定學年科目名稱": row.Add(field, var.Detail.HasAttribute("指定學年科目名稱") ? var.Detail.GetAttribute("指定學年科目名稱") : ""); break;
                                     case "報部科目名稱": row.Add(field, var.Detail.HasAttribute("報部科目名稱") ? var.Detail.GetAttribute("報部科目名稱") : ""); break;
 
+                                    case "是否重讀": row.Add(field, var.Detail.GetAttribute("是否重讀") == "是" ? "是" : ""); break;
+                                        
                                 }
                             }
                         }

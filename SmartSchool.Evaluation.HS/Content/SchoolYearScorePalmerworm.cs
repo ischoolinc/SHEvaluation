@@ -90,12 +90,14 @@ namespace SmartSchool.Evaluation.Content
 
             WaitingPicVisible = false;
             Dictionary<string, string[]> EntryScore = new Dictionary<string, string[]>();
-            Dictionary<string, decimal> Credit = new Dictionary<string, decimal>();
+            Dictionary<string, decimal> Credit = new Dictionary<string, decimal>();            
+
             foreach (XmlElement var in _SubjectResponse.GetContent().GetElements("SemesterSubjectScore"))
             {
                 #region 統計取得學分數
                 string schoolyear = var.SelectSingleNode("SchoolYear").InnerText;
                 string gradeyear = var.SelectSingleNode("GradeYear").InnerText;
+
                 decimal creditCount = 0;
                 foreach (XmlNode cnode in var.SelectNodes("ScoreInfo/SemesterSubjectScoreInfo/Subject"))
                 {
@@ -172,6 +174,8 @@ namespace SmartSchool.Evaluation.Content
                 #endregion
             }
             #region 填入總學分數
+          
+
             foreach (string var in Credit.Keys)
             {
                 string[] subItems;
@@ -186,7 +190,8 @@ namespace SmartSchool.Evaluation.Content
                     subItems[1] = var.Split("_".ToCharArray())[1];
                     EntryScore.Add(var, subItems);
                 }
-                subItems[9] = Credit[var].ToString();
+
+                subItems[9] = Credit[var] + "";               
             }
             #endregion
             foreach (string[] subItems in EntryScore.Values)

@@ -181,11 +181,12 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore
         void FormStart(AccessHelper helper, List<ClassRecord> selected_classes)
         {
             Option = new ReportOptions();
-
+            
             MultiSemesterScoreForm form = new MultiSemesterScoreForm(Option);
             if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 Option.Save();
+                
                 if (MsgBox.Show("將會重新產生成績單，學生的班排名有可能會改變。\n\n如需列印已產生過的成績單，請使用學生的\"多學期成績單\"功能。\n\n產生報表並列印?", "重新產生並覆蓋就有多學期成績單", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     _bgworker = new BackgroundWorker();

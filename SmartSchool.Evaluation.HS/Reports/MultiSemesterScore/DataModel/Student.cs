@@ -84,6 +84,23 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore.DataModel
                 }
             }
 
+            // 整理分項成績
+            Dictionary<string, EntryScoreInfo> StudEntryScoreDict = new Dictionary<string, EntryScoreInfo>();
+            foreach (SemesterEntryScoreInfo info in _student.SemesterEntryScoreList)
+            {
+                string key = info.GradeYear + "_" + info.Semester + "_" + info.Entry.Replace("(原始)", "");
+                if (!StudEntryScoreDict.ContainsKey(key))
+                    StudEntryScoreDict.Add(key, new EntryScoreInfo());
+
+                if (info.Entry.Contains("原始"))
+                    StudEntryScoreDict[key].OriginScore = info.Score;
+                else
+                {
+                    StudEntryScoreDict[key].EntryName = info.Entry;
+                    StudEntryScoreDict[key].Score = info.Score;
+                }
+            }
+
             foreach (SemesterEntryScoreInfo info in _student.SemesterEntryScoreList)
             {
                 //超過統計學期當沒看到
@@ -92,17 +109,56 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore.DataModel
                 //不是要列印的分項當沒看到
                 if (!printEntries.Contains(info.Entry))
                     continue;
+
+                decimal entry_score = 0;
+                string key = info.GradeYear + "_" + info.Semester + "_" + info.Entry.Replace("(原始)", "");
+                if (StudEntryScoreDict.ContainsKey(key))
+                {
+                    switch (_score_type)
+                    {
+                        case ScoreType.原始成績:
+                            entry_score = StudEntryScoreDict[key].OriginScore;
+                            break;
+
+                        case ScoreType.原始補考擇優:
+                            entry_score = StudEntryScoreDict[key].OriginScore;
+                            if (StudEntryScoreDict[key].Score > entry_score)
+                                entry_score = StudEntryScoreDict[key].Score;
+                            break;
+                        case ScoreType.擇優成績:
+                            entry_score = StudEntryScoreDict[key].Score;
+                            break;
+                    }
+                }
+
+
                 if (!_entries.ContainsKey(info.Entry))
                 {
                     EntryInfo new_info = new EntryInfo(info.Entry);
                     _entries.Add(info.Entry, new_info);
-                    new_info.AddSemsScore(info.GradeYear, info.Semester, info.Score);
+                    new_info.AddSemsScore(info.GradeYear, info.Semester, entry_score);
                 }
                 else
                 {
-                    _entries[info.Entry].AddSemsScore(info.GradeYear, info.Semester, info.Score);
+                    _entries[info.Entry].AddSemsScore(info.GradeYear, info.Semester, entry_score);
                 }
             }
+        }
+
+        private decimal SelectEntryScore(SemesterEntryScoreInfo info)
+        {
+            decimal value = 0;
+            switch (_score_type)
+            {
+                case ScoreType.原始成績:
+
+                    break;
+
+                case ScoreType.原始補考擇優: break;
+                case ScoreType.擇優成績: break;
+
+            }
+            return value;
         }
 
         private decimal SelectScore(SemesterSubjectScoreInfo info)

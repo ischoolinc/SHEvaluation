@@ -34,7 +34,6 @@ namespace SmartSchool.Evaluation.Reports.MultiSemesterScore.Forms
         {
             //Option.RatingMethod = (RatingMethod)comboBoxEx1.SelectedIndex;
             Option.ScoreType = (ScoreType)comboBoxEx2.SelectedIndex;
-
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

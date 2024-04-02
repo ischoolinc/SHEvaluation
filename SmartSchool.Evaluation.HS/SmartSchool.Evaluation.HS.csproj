@@ -621,6 +621,7 @@
     <Compile Include="Reports\CreditStatistic\CreditCalcluator.cs" />
     <Compile Include="Reports\CreditStatistic\CreditStatistic.cs" />
     <Compile Include="Reports\MultiSemesterScore\DataModel\EntryInfo.cs" />
+    <Compile Include="Reports\MultiSemesterScore\DataModel\EntryScoreInfo.cs" />
     <Compile Include="Reports\MultiSemesterScore\DataModel\IScoreInfo.cs" />
     <Compile Include="Reports\MultiSemesterScore\DataModel\ScoreInfo.cs" />
     <Compile Include="Reports\MultiSemesterScore\DataModel\Student.cs" />

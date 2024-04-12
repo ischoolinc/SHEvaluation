@@ -881,6 +881,9 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 subjectElement.SetAttribute("抵免", (row.Cells[colScoreN2.Index].Value != null && (bool)row.Cells[colScoreN2.Index].Value) ? "是" : "否");
                 subjectElement.SetAttribute("指定學年科目名稱", "" + row.Cells[ColSpecifySubjectName.Index].Value);
 
+                // 回填報部科目名稱
+                subjectElement.SetAttribute("報部科目名稱", "" + row.Cells[colDSubjectName.Index].Value);
+
                 subjectElement.SetAttribute("是否重讀", (row.Cells[colReread.Index].Value != null && (bool)row.Cells[colReread.Index].Value) ? "是" : "否");
 
                 subjectScoreInfo.AppendChild(subjectElement);

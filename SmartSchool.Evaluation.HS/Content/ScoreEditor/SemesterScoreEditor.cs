@@ -1187,6 +1187,13 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
 
         private void buttonX3_Click(object sender, EventArgs e)
         {
+            dataGridViewX1.EndEdit();
+            if (!ValidateAll())
+            {
+                MsgBox.Show("資料有誤，請修正。");
+                return;
+            }
+
             if (ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(_StudentID) == null)
             {
                 MsgBox.Show("學生尚未設定計算標準");

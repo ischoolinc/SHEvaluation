@@ -384,39 +384,39 @@ namespace SmartSchool.Evaluation
                     }
                     #endregion
 
-                    #region 檢查課程的校部定、必選修
-                    //bool hasError = false;
-                    if (courseRequied.ContainsKey(var.StudentID))
-                    {
-                        bool hasError = false;
-                        foreach (string courseName in courseRequied[var.StudentID].Keys)
-                        {
-                            if (courseRequied[var.StudentID][courseName]["required_by"] == "")
-                            {
-                                if (!_ErrorList.ContainsKey(var))
-                                    _ErrorList.Add(var, new List<string>());
+                    //#region 檢查課程的校部定、必選修
+                    ////bool hasError = false;
+                    //if (courseRequied.ContainsKey(var.StudentID))
+                    //{
+                    //    bool hasError = false;
+                    //    foreach (string courseName in courseRequied[var.StudentID].Keys)
+                    //    {
+                    //        if (courseRequied[var.StudentID][courseName]["required_by"] == "")
+                    //        {
+                    //            if (!_ErrorList.ContainsKey(var))
+                    //                _ErrorList.Add(var, new List<string>());
 
-                                _ErrorList[var].Add("沒有" + courseName + "的校部訂，無法計算。");
+                    //            _ErrorList[var].Add("沒有" + courseName + "的校部訂，無法計算。");
 
-                                hasError = true;
-                            }
+                    //            hasError = true;
+                    //        }
 
-                            if (courseRequied[var.StudentID][courseName]["is_required"] == "")
-                            {
-                                if (!_ErrorList.ContainsKey(var))
-                                    _ErrorList.Add(var, new List<string>());
+                    //        if (courseRequied[var.StudentID][courseName]["is_required"] == "")
+                    //        {
+                    //            if (!_ErrorList.ContainsKey(var))
+                    //                _ErrorList.Add(var, new List<string>());
 
-                                _ErrorList[var].Add("沒有" + courseName + "的必選修，無法計算。");
+                    //            _ErrorList[var].Add("沒有" + courseName + "的必選修，無法計算。");
 
-                                hasError = true;
-                            }
-                        }
-                        if (hasError)
-                        {
-                            canCalc = false;
-                        }
-                    }
-                    #endregion
+                    //            hasError = true;
+                    //        }
+                    //    }
+                    //    if (hasError)
+                    //    {
+                    //        canCalc = false;
+                    //    }
+                    //}
+                    //#endregion
 
 
                     #region 處理計算規則
@@ -765,9 +765,13 @@ namespace SmartSchool.Evaluation
 
 
                                     #endregion
-                                    //         updateScoreElement.SetAttribute("原始成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
 
-                                    updateScoreElement.SetAttribute("原始成績", ("" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
+                                    // 沒有修課成績填空
+                                    if (sacRecord.HasFinalScore)
+                                        updateScoreElement.SetAttribute("原始成績", ("" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
+                                    else
+                                        updateScoreElement.SetAttribute("原始成績", "");
+
 
                                     // 當有直接指定總成績覆蓋
                                     if (studentFinalScoreDict.ContainsKey(sacRecord.StudentID))
@@ -810,7 +814,11 @@ namespace SmartSchool.Evaluation
                                             if (decimal.TryParse(designate_final_score, out designate_final_score_score))
                                             {
                                                 updateScoreElement.SetAttribute("修課直接指定總成績", ("" + GetRoundScore(designate_final_score_score, decimals, mode)));
-                                                updateScoreElement.SetAttribute("原始成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(designate_final_score_score, decimals, mode)));
+
+                                                // 註解是因經過2024/4/26討論，修課直接指定總成績不應該覆蓋原始成績，需要保留原始成績。
+                                                //updateScoreElement.SetAttribute("原始成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(designate_final_score_score, decimals, mode)));
+
+
                                                 updateScoreElement.SetAttribute("註記", "修課成績：" + ("" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
                                             }
                                             else
@@ -893,11 +901,13 @@ namespace SmartSchool.Evaluation
                                 int sy = schoolyear, se = semester;
                                 if (!insertSemesterSubjectScoreList.ContainsKey(sy) || !insertSemesterSubjectScoreList[sy].ContainsKey(se) || !insertSemesterSubjectScoreList[sy][se].ContainsKey(key))
                                 {
-                                    //允許的分項類別清單
-                                    List<string> entrys = new List<string>(new string[] { "學業", "體育", "國防通識", "健康與護理", "實習科目", "專業科目" });
+                                    ////允許的分項類別清單
+                                    //List<string> entrys = new List<string>(new string[] { "學業", "體育", "國防通識", "健康與護理", "實習科目", "專業科目" });
 
-                                    //科目名稱空白或分項類別有錯誤時執行
-                                    if (string.IsNullOrEmpty(sacRecord.Subject) || !entrys.Contains(sacRecord.Entry))
+                                    ////科目名稱空白或分項類別有錯誤時執行
+                                    //if (string.IsNullOrEmpty(sacRecord.Subject) || !entrys.Contains(sacRecord.Entry))
+                                    //科目名稱空白有錯誤時執行，2024/5/23討論，當課程的科目空白不計算
+                                    if (string.IsNullOrEmpty(sacRecord.Subject) || string.IsNullOrWhiteSpace(sacRecord.Subject))
                                     {
                                         //_WarningList為空就先建立
                                         if (_WarningList == null) _WarningList = new List<string>();
@@ -920,7 +930,14 @@ namespace SmartSchool.Evaluation
                                     newScoreInfo.SetAttribute("科目級別", sacRecord.SubjectLevel);
                                     newScoreInfo.SetAttribute("開課分項類別", sacRecord.Entry);
                                     newScoreInfo.SetAttribute("開課學分數", "" + sacRecord.CreditDec());
-                                    newScoreInfo.SetAttribute("原始成績", ("" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
+
+                                    // 沒有修課成績填空
+                                    if (sacRecord.HasFinalScore)
+                                        newScoreInfo.SetAttribute("原始成績", ("" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
+                                    else
+                                        newScoreInfo.SetAttribute("原始成績", "");
+
+
                                     if (specifySubjectNameDict.ContainsKey(sacRecord.StudentID))
                                     {
                                         string sKey = sacRecord.Subject + "_" + sacRecord.SubjectLevel;
@@ -970,7 +987,10 @@ namespace SmartSchool.Evaluation
                                             {
                                                 newScoreInfo.SetAttribute("修課直接指定總成績", ("" + GetRoundScore(designate_final_score_score, decimals, mode)));
 
-                                                newScoreInfo.SetAttribute("原始成績", ("" + GetRoundScore(designate_final_score_score, decimals, mode)));
+                                                // 註解是因經過2024/4/26討論，修課直接指定總成績不應該覆蓋原始成績，需要保留原始成績。
+                                                //newScoreInfo.SetAttribute("原始成績", ("" + GetRoundScore(designate_final_score_score, decimals, mode)));
+
+
                                                 newScoreInfo.SetAttribute("註記", "修課成績：" + ("" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
                                             }
                                             else

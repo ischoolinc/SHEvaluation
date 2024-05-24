@@ -442,7 +442,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
 
                 foreach (string s in warningList)
                 {
-                    _WarnViewer.SetMessage("課程:" + s, "科目名稱或分項類別有錯誤, 故此課程不列入計算");
+                    _WarnViewer.SetMessage("課程:" + s, "科目名稱有錯誤, 故此課程不列入計算");
                 }
 
                 if (hasError && !hasWarning) // 有錯誤 沒警告

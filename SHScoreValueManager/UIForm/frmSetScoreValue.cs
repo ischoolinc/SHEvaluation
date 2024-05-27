@@ -11,6 +11,8 @@ using FISCA.Presentation.Controls;
 using System.Xml.Linq;
 using System.Web.Script.Serialization;
 using SHScoreValueManager.DAO;
+using System.Text.RegularExpressions;
+using Aspose.Cells;
 
 namespace SHScoreValueManager.UIForm
 {
@@ -22,7 +24,7 @@ namespace SHScoreValueManager.UIForm
 
         // 設定資料內容
         List<ScoreSettingConfig> ScoreSettingConfigList;
-
+        List<string> chkUseTextSame = new List<string>();
 
         public frmSetScoreValue()
         {
@@ -254,7 +256,7 @@ namespace SHScoreValueManager.UIForm
         {
             bool value = true;
             int rowCount = 0;
-            List<string> chkUseTextSame = new List<string>();
+            chkUseTextSame.Clear();
 
             // 檢查 DataGridView 資料
             foreach (DataGridViewRow row in dgData.Rows)
@@ -290,6 +292,12 @@ namespace SHScoreValueManager.UIForm
                         chkUseTextSame.Add(UseText);
                     }
 
+                    if (ContainsSpecialCharacters(UseText))
+                    {
+                        row.Cells["輸入內容"].ErrorText = "不可包含特殊字元";
+                        value = false;
+                    }
+
                 }
 
 
@@ -313,10 +321,97 @@ namespace SHScoreValueManager.UIForm
             return value;
         }
 
+        // 檢查特殊自字元
+        private bool ContainsSpecialCharacters(string input)
+        {
+            // 定義一個正則表達式來匹配特殊字元
+            string pattern = @"[!@#$%^&*?""{}|<>]";
+            Regex regex = new Regex(pattern);
+
+            return regex.IsMatch(input);
+        }
+
         private void dgData_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex > -1 && e.ColumnIndex > -1)
                 dgData.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = "";
+        }
+
+        private void dgData_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex > -1 && e.ColumnIndex > -1)
+                dgData.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = "";
+        }
+
+        private void dgData_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {    
+            if (e.RowIndex > -1 && e.ColumnIndex > -1)
+            {
+                // 判斷是否是新列
+                if (dgData.Rows[e.RowIndex].IsNewRow)
+                    return;
+
+                if (dgData.Columns[e.ColumnIndex].Name == "缺考原因")
+                {
+                    string ReportValue = ("" + dgData.Rows[e.RowIndex].Cells["缺考原因"].Value).Trim();
+                    if (ReportValue == "")
+                    {
+                        dgData.Rows[e.RowIndex].Cells["缺考原因"].ErrorText = "必填";                      
+                    }
+                    else
+                    {
+                        dgData.Rows[e.RowIndex].Cells["缺考原因"].ErrorText = "";
+                        // 檢查輸入內容是否包含特殊字元
+                        if (ContainsSpecialCharacters(ReportValue))
+                        {
+                            dgData.Rows[e.RowIndex].Cells["缺考原因"].ErrorText = "不可包含特殊字元";
+                        }
+
+                    }
+                }
+
+                if (dgData.Columns[e.ColumnIndex].Name == "輸入內容") {
+                    string UseText = ("" + dgData.Rows[e.RowIndex].Cells["輸入內容"].Value).Trim();
+                    if (UseText == "")
+                    {
+                        dgData.Rows[e.RowIndex].Cells["輸入內容"].ErrorText = "必填";
+                    }
+                    else
+                    {
+                        
+                        chkUseTextSame.Clear();
+                        dgData.Rows[e.RowIndex].Cells["輸入內容"].ErrorText = "";
+                        // 檢查輸入內容是否重複
+                        if (chkUseTextSame.Contains(UseText))
+                        {
+                            dgData.Rows[e.RowIndex].Cells["輸入內容"].ErrorText = UseText + " 重複!";
+                        }
+                        else
+                        {
+                            chkUseTextSame.Add(UseText);
+                        }
+
+                        // 檢查輸入內容是否包含特殊字元
+                        if (ContainsSpecialCharacters(UseText))
+                        {
+                            dgData.Rows[e.RowIndex].Cells["輸入內容"].ErrorText = "不可包含特殊字元";
+                        }
+                    }
+                }
+
+                if (dgData.Columns[e.ColumnIndex].Name == "分數認定")
+                {
+
+                    if ("" + dgData.Rows[e.RowIndex].Cells["分數認定"].Value == "")
+                    {
+                        dgData.Rows[e.RowIndex].Cells["分數認定"].ErrorText = "必填";                      
+                    }
+                    else
+                        dgData.Rows[e.RowIndex].Cells["分數認定"].ErrorText = "";
+                }
+
+            }
+
         }
     }
 }

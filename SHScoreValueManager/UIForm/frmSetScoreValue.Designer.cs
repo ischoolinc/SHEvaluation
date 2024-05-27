@@ -56,6 +56,8 @@
             this.dgData.RowTemplate.Height = 24;
             this.dgData.Size = new System.Drawing.Size(452, 211);
             this.dgData.TabIndex = 0;
+            this.dgData.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgData_CellEndEdit);
+            this.dgData.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgData_CellValidating);
             this.dgData.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgData_CellValueChanged);
             // 
             // btnSave

@@ -7,6 +7,7 @@ using SmartSchool.Evaluation.WearyDogComputerHelper;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -117,6 +118,7 @@ namespace SmartSchool.Evaluation
     , course.specify_subject_name
 	, COALESCE(sc_attend.required_by, course.c_required_by)  AS required_by
 	, COALESCE(sc_attend.is_required, course.c_is_required)  AS is_required
+    , course.score_type
 	FROM sc_attend 
 	LEFT JOIN student ON sc_attend.ref_student_id =student.id 
 	LEFT JOIN class ON student.ref_class_id =class.id  
@@ -147,27 +149,27 @@ namespace SmartSchool.Evaluation
             // 學生有指定總成績
             Dictionary<string, Dictionary<string, decimal>> studentHasFinalScoreDict = new Dictionary<string, Dictionary<string, decimal>>();
 
-            string strFinalScore = "SELECT " +
-                "sc_attend.id AS sc_attend_id" +
-                ",student.id AS student_id" +
-                ",course.subject" +
-                ",course.subj_level" +
-                ",sc_attend.passing_standard" +
-                ",sc_attend.makeup_standard" +
-                ",sc_attend.remark" +
-                ",designate_final_score" +
-                ",sc_attend.subject_code AS subject_code" +
-                ",course.course_name " +
-                "FROM sc_attend " +
-                "INNER JOIN course " +
-                "ON sc_attend.ref_course_id = course.id " +
-                "INNER JOIN student " +
-                "ON sc_attend.ref_student_id = student.id " +
-                "WHERE " +
-                "course.school_year = " + schoolyear + " " +
-                "AND course.semester = " + semester + " " +
-                "AND student.id IN(" + sid + ") " +
-                ";";
+            string strFinalScore = string.Format(@"
+            SELECT
+                sc_attend.id AS sc_attend_id,
+                student.id AS student_id,
+                course.subject,
+                course.subj_level,
+                sc_attend.passing_standard,
+                sc_attend.makeup_standard,
+                sc_attend.remark,
+                designate_final_score,
+                sc_attend.subject_code AS subject_code,
+                course.course_name
+            FROM
+                sc_attend
+                INNER JOIN course ON sc_attend.ref_course_id = course.id
+                INNER JOIN student ON sc_attend.ref_student_id = student.id
+            WHERE
+                course.school_year = {0} 
+                AND course.semester = {1} 
+                AND student.id IN({2});
+            ", schoolyear, semester, sid);
 
             DataTable dtFinalScore = qh1.Select(strFinalScore);
 
@@ -258,11 +260,14 @@ namespace SmartSchool.Evaluation
                 string level = "";
                 if (dr["subjectLevel"] != null)
                     level = dr["subjectLevel"].ToString().Trim();
-                string subjectKey = dr["subjectName"].ToString().Trim() + "_" + level;
+
+                string subjectName = dr["subjectName"].ToString().Trim();
+                string subjectKey = subjectName + "_" + level;
                 string specifySubjectName = dr["specify_subject_name"].ToString().Trim();
                 string courseName = dr["courseName"].ToString();
                 string required_by = dr["required_by"].ToString();
                 string is_required = dr["is_required"].ToString();
+                string score_type = dr["score_type"].ToString();
                 if (!specifySubjectNameDict.ContainsKey(student_id))
                     specifySubjectNameDict.Add(student_id, new Dictionary<string, string>());
 
@@ -271,16 +276,23 @@ namespace SmartSchool.Evaluation
                 else
                     specifySubjectNameDict[student_id][subjectKey] = specifySubjectName;
 
-                #region 校部定/必選修
-                if (!courseRequied.ContainsKey(student_id))
-                    courseRequied.Add(student_id, new Dictionary<string, Dictionary<string, string>>());
-                if (!courseRequied[student_id].ContainsKey(courseName))
-                    courseRequied[student_id].Add(courseName, new Dictionary<string, string>());
-                if (!courseRequied[student_id][courseName].ContainsKey("required_by"))
-                    courseRequied[student_id][courseName].Add("required_by", required_by);
-                if (!courseRequied[student_id][courseName].ContainsKey("is_required"))
-                    courseRequied[student_id][courseName].Add("is_required", is_required);
-                #endregion
+                // 2024/5/27 CT,調整當有科目名稱才檢查，這三項
+                if (!string.IsNullOrEmpty(subjectName))
+                {
+                    #region 校部定/必選修/分項類別
+                    if (!courseRequied.ContainsKey(student_id))
+                        courseRequied.Add(student_id, new Dictionary<string, Dictionary<string, string>>());
+                    if (!courseRequied[student_id].ContainsKey(courseName))
+                        courseRequied[student_id].Add(courseName, new Dictionary<string, string>());
+                    if (!courseRequied[student_id][courseName].ContainsKey("required_by"))
+                        courseRequied[student_id][courseName].Add("required_by", required_by);
+                    if (!courseRequied[student_id][courseName].ContainsKey("is_required"))
+                        courseRequied[student_id][courseName].Add("is_required", is_required);
+                    if (!courseRequied[student_id][courseName].ContainsKey("score_type"))
+                        courseRequied[student_id][courseName].Add("score_type", score_type);
+
+                    #endregion
+                }
                 #endregion
             }
 
@@ -384,39 +396,67 @@ namespace SmartSchool.Evaluation
                     }
                     #endregion
 
-                    //#region 檢查課程的校部定、必選修
-                    ////bool hasError = false;
-                    //if (courseRequied.ContainsKey(var.StudentID))
-                    //{
-                    //    bool hasError = false;
-                    //    foreach (string courseName in courseRequied[var.StudentID].Keys)
-                    //    {
-                    //        if (courseRequied[var.StudentID][courseName]["required_by"] == "")
-                    //        {
-                    //            if (!_ErrorList.ContainsKey(var))
-                    //                _ErrorList.Add(var, new List<string>());
+                    #region 檢查課程的校部定、必選修、分項類別
+                    //bool hasError = false;
+                    if (courseRequied.ContainsKey(var.StudentID))
+                    {
+                        bool hasError = false;
+                        foreach (string courseName in courseRequied[var.StudentID].Keys)
+                        {
+                            if (courseRequied[var.StudentID][courseName]["required_by"] == "")
+                            {
+                                if (!_ErrorList.ContainsKey(var))
+                                    _ErrorList.Add(var, new List<string>());
 
-                    //            _ErrorList[var].Add("沒有" + courseName + "的校部訂，無法計算。");
+                                _ErrorList[var].Add("沒有" + courseName + "的校部訂，無法計算。");
 
-                    //            hasError = true;
-                    //        }
+                                hasError = true;
+                            }
 
-                    //        if (courseRequied[var.StudentID][courseName]["is_required"] == "")
-                    //        {
-                    //            if (!_ErrorList.ContainsKey(var))
-                    //                _ErrorList.Add(var, new List<string>());
+                            if (courseRequied[var.StudentID][courseName]["is_required"] == "")
+                            {
+                                if (!_ErrorList.ContainsKey(var))
+                                    _ErrorList.Add(var, new List<string>());
 
-                    //            _ErrorList[var].Add("沒有" + courseName + "的必選修，無法計算。");
+                                _ErrorList[var].Add("沒有" + courseName + "的必選修，無法計算。");
 
-                    //            hasError = true;
-                    //        }
-                    //    }
-                    //    if (hasError)
-                    //    {
-                    //        canCalc = false;
-                    //    }
-                    //}
-                    //#endregion
+                                hasError = true;
+                            }
+
+                            if (courseRequied[var.StudentID][courseName]["score_type"] == "")
+                            {
+
+                                if (!_ErrorList.ContainsKey(var))
+                                    _ErrorList.Add(var, new List<string>());
+
+                                _ErrorList[var].Add("沒有" + courseName + "的分項類別，無法計算。");
+
+                                hasError = true;
+                            }
+                            else
+                            {
+                                //允許的分項類別清單
+                                List<string> entrys = new List<string>(new string[] { "學業", "體育", "國防通識", "健康與護理", "實習科目", "專業科目" });
+
+                                // 分項類別錯誤，無法計算
+                                string entry = courseRequied[var.StudentID][courseName]["score_type"];
+                                if (!entrys.Contains(entry))
+                                {
+                                    if (!_ErrorList.ContainsKey(var))
+                                        _ErrorList.Add(var, new List<string>());
+
+                                    _ErrorList[var].Add("分項類別錯誤，無法計算。");
+
+                                    hasError = true;
+                                }
+                            }
+                        }
+                        if (hasError)
+                        {
+                            canCalc = false;
+                        }
+                    }
+                    #endregion
 
 
                     #region 處理計算規則
@@ -901,11 +941,6 @@ namespace SmartSchool.Evaluation
                                 int sy = schoolyear, se = semester;
                                 if (!insertSemesterSubjectScoreList.ContainsKey(sy) || !insertSemesterSubjectScoreList[sy].ContainsKey(se) || !insertSemesterSubjectScoreList[sy][se].ContainsKey(key))
                                 {
-                                    ////允許的分項類別清單
-                                    //List<string> entrys = new List<string>(new string[] { "學業", "體育", "國防通識", "健康與護理", "實習科目", "專業科目" });
-
-                                    ////科目名稱空白或分項類別有錯誤時執行
-                                    //if (string.IsNullOrEmpty(sacRecord.Subject) || !entrys.Contains(sacRecord.Entry))
                                     //科目名稱空白有錯誤時執行，2024/5/23討論，當課程的科目空白不計算
                                     if (string.IsNullOrEmpty(sacRecord.Subject) || string.IsNullOrWhiteSpace(sacRecord.Subject))
                                     {
@@ -918,6 +953,7 @@ namespace SmartSchool.Evaluation
                                         }
                                         continue;
                                     }
+
 
                                     #region 加入新的資料
                                     XmlElement newScoreInfo = doc.CreateElement("Subject");

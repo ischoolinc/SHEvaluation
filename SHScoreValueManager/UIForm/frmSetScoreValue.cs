@@ -26,15 +26,45 @@ namespace SHScoreValueManager.UIForm
         List<ScoreSettingConfig> ScoreSettingConfigList;
         List<string> chkUseTextSame = new List<string>();
 
+        // 紀錄修改前
+        StringBuilder CheckOldSB;
+
+        // 紀錄修改後
+        StringBuilder CheckNewSB;
+
         public frmSetScoreValue()
         {
             InitializeComponent();
             ScoreSettingConfigList = new List<ScoreSettingConfig>();
+            CheckOldSB = new StringBuilder();
+            CheckNewSB = new StringBuilder();
         }
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            this.Close();
+            if (CheckDataSB())
+                this.Close();
+            else
+            {
+                DialogResult dr = MsgBox.Show("資料已修改，尚未儲存，確定離開?", MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
+                if (dr == DialogResult.No)
+                    return;
+                else
+                    this.Close();
+            }
+        }
+
+        // 離開提示
+        private void frmSetScoreValue_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (CheckDataSB())
+                e.Cancel = false;
+            else
+            {
+                DialogResult dr = MsgBox.Show("資料已修改，尚未儲存，確定離開?", MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
+                if (dr == DialogResult.No)
+                    e.Cancel = true;
+            }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -56,7 +86,7 @@ namespace SHScoreValueManager.UIForm
 
         private void frmSetScoreValue_Load(object sender, EventArgs e)
         {
-          
+
             // 載入欄位
             LoadDataGridViewColumns();
 
@@ -67,6 +97,40 @@ namespace SHScoreValueManager.UIForm
             // 檢查資料
             CheckData();
             dgData.ImeMode = ImeMode.OnHalf;
+
+            // 清除修改前紀錄
+            CheckOldSB.Clear();
+            RecordChangeData(CheckOldSB);
+        }
+
+        // 記錄修改資料
+        private void RecordChangeData(StringBuilder sb)
+        {
+            sb.Clear();
+
+            foreach (DataGridViewRow dr in dgData.Rows)
+            {
+                if (dr.IsNewRow) continue;
+                foreach (DataGridViewCell cell in dr.Cells)
+                {
+                    if (cell != null)
+                    {
+                        sb.Append(cell.Value);
+                    }
+                }
+            }
+        }
+
+        // 比對新舊記錄是否相同
+        private bool CheckDataSB()
+        {
+            // 整理目前資料
+            RecordChangeData(CheckNewSB);
+
+            if (CheckOldSB.ToString() == CheckNewSB.ToString())
+                return true;
+            else
+                return false;
         }
 
         // 載入資料至畫面DataGridView
@@ -291,7 +355,7 @@ namespace SHScoreValueManager.UIForm
                         value = false;
                     }
                 }
-                    
+
 
                 // 檢查輸入內容
                 string UseText = ("" + row.Cells["輸入內容"].Value).Trim();
@@ -342,7 +406,7 @@ namespace SHScoreValueManager.UIForm
         private bool ContainsSpecialCharacters(string input)
         {
             // 定義一個正則表達式來匹配特殊字元
-            string pattern = @"[!@#$%^&*?""{}|<>]";
+            string pattern = @"[!@#$%^&*?""{}|<>]\/";
             Regex regex = new Regex(pattern);
 
             return regex.IsMatch(input);
@@ -376,7 +440,7 @@ namespace SHScoreValueManager.UIForm
                         // 檢查輸入內容是否包含特殊字元
                         if (ContainsSpecialCharacters(ReportValue))
                         {
-                            dgData.Rows[e.RowIndex].Cells["缺考原因"].ErrorText = "不可包含特殊字元";                           
+                            dgData.Rows[e.RowIndex].Cells["缺考原因"].ErrorText = "不可包含特殊字元";
                         }
 
                     }
@@ -415,13 +479,13 @@ namespace SHScoreValueManager.UIForm
 
                         if (chkUseTextSame.Contains(UseText))
                         {
-                            dgData.Rows[e.RowIndex].Cells["輸入內容"].ErrorText = UseText + " 重複!";                           
+                            dgData.Rows[e.RowIndex].Cells["輸入內容"].ErrorText = UseText + " 重複!";
                         }
 
                         // 檢查輸入內容是否包含特殊字元
                         if (ContainsSpecialCharacters(UseText))
                         {
-                            dgData.Rows[e.RowIndex].Cells["輸入內容"].ErrorText = "不可包含特殊字元";                            
+                            dgData.Rows[e.RowIndex].Cells["輸入內容"].ErrorText = "不可包含特殊字元";
                         }
                     }
                 }
@@ -431,7 +495,7 @@ namespace SHScoreValueManager.UIForm
                     dgData.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = "";
                     if ("" + dgData.Rows[e.RowIndex].Cells["分數認定"].FormattedValue == "")
                     {
-                        dgData.Rows[e.RowIndex].Cells["分數認定"].ErrorText = "必填";                        
+                        dgData.Rows[e.RowIndex].Cells["分數認定"].ErrorText = "必填";
                     }
                     else
                         dgData.Rows[e.RowIndex].Cells["分數認定"].ErrorText = "";
@@ -442,7 +506,7 @@ namespace SHScoreValueManager.UIForm
 
         private void dgData_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
-           
+
 
         }
 
@@ -450,6 +514,28 @@ namespace SHScoreValueManager.UIForm
         {
             dgData.ImeMode = ImeMode.OnHalf;
             dgData.ImeMode = ImeMode.Off;
+        }
+
+        private void dgData_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex > -1 && e.ColumnIndex > -1)
+            {
+                // 判斷是否是新列
+                if (dgData.Rows[e.RowIndex].IsNewRow)
+                    return;
+
+
+                if (dgData.Columns[e.ColumnIndex].Name == "分數認定")
+                {
+                    dgData.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = "";
+                    if ("" + dgData.Rows[e.RowIndex].Cells["分數認定"].FormattedValue == "")
+                    {
+                        dgData.Rows[e.RowIndex].Cells["分數認定"].ErrorText = "必填";
+                    }
+                    else
+                        dgData.Rows[e.RowIndex].Cells["分數認定"].ErrorText = "";
+                }
+            }
         }
     }
 }

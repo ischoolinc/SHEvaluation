@@ -528,6 +528,11 @@ namespace SHScoreValueManager.UIForm
                 if (dgData.Columns[e.ColumnIndex].Name == "分數認定")
                 {
                     dgData.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = "";
+
+                    // 如果是空值，則預設為0分
+                    if ("" + dgData.Rows[e.RowIndex].Cells["分數認定"].Value == "")
+                        dgData.Rows[e.RowIndex].Cells["分數認定"].Value = "0分";
+
                     if ("" + dgData.Rows[e.RowIndex].Cells["分數認定"].FormattedValue == "")
                     {
                         dgData.Rows[e.RowIndex].Cells["分數認定"].ErrorText = "必填";

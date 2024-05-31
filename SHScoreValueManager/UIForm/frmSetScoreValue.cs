@@ -406,7 +406,7 @@ namespace SHScoreValueManager.UIForm
         private bool ContainsSpecialCharacters(string input)
         {
             // 定義一個正則表達式來匹配特殊字元
-            string pattern = @"[!@#$%^&*?""{}|<>]\/";
+            string pattern = @"[!@#$%^&*?""{}|<>/\\]";
             Regex regex = new Regex(pattern);
 
             return regex.IsMatch(input);

@@ -32,6 +32,9 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.gpMainData = new DevComponents.DotNetBar.Controls.GroupPanel();
             this.dgvMain = new DevComponents.DotNetBar.Controls.DataGridViewX();
+            this.labelGPName = new DevComponents.DotNetBar.LabelX();
+            this.labelX1 = new DevComponents.DotNetBar.LabelX();
+            this.btnAddSubject = new DevComponents.DotNetBar.ButtonX();
             this.colMainSubjectName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colMainDomainName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colMainEntry = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -48,17 +51,16 @@
             this.colMainOfficialSubjectName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colMainSchoolYearGroupName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.課程代碼 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.labelGPName = new DevComponents.DotNetBar.LabelX();
-            this.labelX1 = new DevComponents.DotNetBar.LabelX();
-            this.btnAddSubject = new DevComponents.DotNetBar.ButtonX();
+            this.colPassStandard = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMakeUpStandard = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gpMainData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
             this.SuspendLayout();
             // 
             // gpMainData
             // 
-            this.gpMainData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.gpMainData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gpMainData.BackColor = System.Drawing.Color.Transparent;
             this.gpMainData.CanvasColor = System.Drawing.SystemColors.Control;
@@ -105,8 +107,8 @@
             this.dgvMain.AllowUserToAddRows = false;
             this.dgvMain.AllowUserToDeleteRows = false;
             this.dgvMain.AllowUserToOrderColumns = true;
-            this.dgvMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.dgvMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvMain.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
@@ -134,7 +136,9 @@
             this.不需評分,
             this.colMainOfficialSubjectName,
             this.colMainSchoolYearGroupName,
-            this.課程代碼});
+            this.課程代碼,
+            this.colPassStandard,
+            this.colMakeUpStandard});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -153,6 +157,51 @@
             this.dgvMain.Size = new System.Drawing.Size(1203, 573);
             this.dgvMain.TabIndex = 6;
             this.dgvMain.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMain_CellClick);
+            // 
+            // labelGPName
+            // 
+            this.labelGPName.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelGPName.BackgroundStyle.Class = "";
+            this.labelGPName.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelGPName.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.labelGPName.Location = new System.Drawing.Point(12, 12);
+            this.labelGPName.Name = "labelGPName";
+            this.labelGPName.Size = new System.Drawing.Size(504, 23);
+            this.labelGPName.TabIndex = 9;
+            this.labelGPName.Text = "課規名稱";
+            // 
+            // labelX1
+            // 
+            this.labelX1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelX1.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX1.BackgroundStyle.Class = "";
+            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX1.ForeColor = System.Drawing.Color.Red;
+            this.labelX1.Location = new System.Drawing.Point(1016, 22);
+            this.labelX1.Name = "labelX1";
+            this.labelX1.Size = new System.Drawing.Size(166, 23);
+            this.labelX1.TabIndex = 10;
+            this.labelX1.Text = "請點選學分數進行選取。";
+            // 
+            // btnAddSubject
+            // 
+            this.btnAddSubject.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnAddSubject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddSubject.BackColor = System.Drawing.Color.Transparent;
+            this.btnAddSubject.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnAddSubject.Location = new System.Drawing.Point(921, 22);
+            this.btnAddSubject.Name = "btnAddSubject";
+            this.btnAddSubject.Size = new System.Drawing.Size(75, 23);
+            this.btnAddSubject.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.btnAddSubject.TabIndex = 11;
+            this.btnAddSubject.Text = "加入科目";
+            this.btnAddSubject.Click += new System.EventHandler(this.btnAddSubject_Click);
             // 
             // colMainSubjectName
             // 
@@ -279,50 +328,17 @@
             this.課程代碼.ReadOnly = true;
             this.課程代碼.Width = 120;
             // 
-            // labelGPName
+            // colPassStandard
             // 
-            this.labelGPName.BackColor = System.Drawing.Color.Transparent;
+            this.colPassStandard.HeaderText = "及格標準";
+            this.colPassStandard.Name = "colPassStandard";
+            this.colPassStandard.ReadOnly = true;
             // 
+            // colMakeUpStandard
             // 
-            // 
-            this.labelGPName.BackgroundStyle.Class = "";
-            this.labelGPName.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelGPName.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.labelGPName.Location = new System.Drawing.Point(12, 12);
-            this.labelGPName.Name = "labelGPName";
-            this.labelGPName.Size = new System.Drawing.Size(504, 23);
-            this.labelGPName.TabIndex = 9;
-            this.labelGPName.Text = "課規名稱";
-            // 
-            // labelX1
-            // 
-            this.labelX1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelX1.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX1.BackgroundStyle.Class = "";
-            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX1.ForeColor = System.Drawing.Color.Red;
-            this.labelX1.Location = new System.Drawing.Point(1016, 22);
-            this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(166, 23);
-            this.labelX1.TabIndex = 10;
-            this.labelX1.Text = "請點選學分數進行選取。";
-            // 
-            // btnAddSubject
-            // 
-            this.btnAddSubject.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.btnAddSubject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddSubject.BackColor = System.Drawing.Color.Transparent;
-            this.btnAddSubject.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnAddSubject.Location = new System.Drawing.Point(921, 22);
-            this.btnAddSubject.Name = "btnAddSubject";
-            this.btnAddSubject.Size = new System.Drawing.Size(75, 23);
-            this.btnAddSubject.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.btnAddSubject.TabIndex = 11;
-            this.btnAddSubject.Text = "加入科目";
-            this.btnAddSubject.Click += new System.EventHandler(this.btnAddSubject_Click);
+            this.colMakeUpStandard.HeaderText = "補考標準";
+            this.colMakeUpStandard.Name = "colMakeUpStandard";
+            this.colMakeUpStandard.ReadOnly = true;
             // 
             // frmPickSubject
             // 
@@ -347,6 +363,9 @@
 
         private DevComponents.DotNetBar.Controls.GroupPanel gpMainData;
         private DevComponents.DotNetBar.Controls.DataGridViewX dgvMain;
+        private DevComponents.DotNetBar.LabelX labelGPName;
+        private DevComponents.DotNetBar.LabelX labelX1;
+        private DevComponents.DotNetBar.ButtonX btnAddSubject;
         private System.Windows.Forms.DataGridViewTextBoxColumn colMainSubjectName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colMainDomainName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colMainEntry;
@@ -363,8 +382,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colMainOfficialSubjectName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colMainSchoolYearGroupName;
         private System.Windows.Forms.DataGridViewTextBoxColumn 課程代碼;
-        private DevComponents.DotNetBar.LabelX labelGPName;
-        private DevComponents.DotNetBar.LabelX labelX1;
-        private DevComponents.DotNetBar.ButtonX btnAddSubject;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colPassStandard;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMakeUpStandard;
     }
 }

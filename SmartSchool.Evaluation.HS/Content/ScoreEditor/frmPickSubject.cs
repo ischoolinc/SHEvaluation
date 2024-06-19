@@ -10,6 +10,9 @@ using System.Windows.Forms;
 using FISCA.Presentation.Controls;
 using FISCA.Data;
 using System.Xml.Linq;
+using System.Xml;
+using SmartSchool.Customization.Data;
+using FISCA.DSAUtil;
 
 namespace SmartSchool.Evaluation.Content.ScoreEditor
 {
@@ -19,6 +22,9 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
         List<SubjectInfo> pickSubjects;
         string StudentID = "";
 
+        decimal StudPassStandard = 0;
+        decimal StudMakeUpStandard = 0;
+
         // 學生課程規畫表 XML
         XElement GraduationPlanXml = null;
 
@@ -26,6 +32,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
         string GraduationPlanName = "";
 
         bool isNewRow = false;
+
+        int _GradeYear = 0;
 
         // 已經有的科目名稱與級別
         List<string> hasSubjectNameAndLevel = new List<string>();
@@ -40,6 +48,10 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
         {
             // 取得學生課程規畫XML
             LoadGraduationPlanXml();
+
+            // 取得學生及格與補考標準
+            LoadStudentPassScore();
+
             LoadXMLToDataGridView();
         }
 
@@ -53,6 +65,12 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
         public void SetStudentID(string id)
         {
             StudentID = id;
+        }
+
+        // 設定學生年級，學生及格補考標準使用
+        public void SetGradeYear(string grYear)
+        {
+            int.TryParse(grYear, out _GradeYear);
         }
 
         // 讀取學生課程規劃 XML 
@@ -113,6 +131,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 }
                 this.labelGPName.Text = GraduationPlanName;
             }
+
         }
 
         // 將 XML 資料填入畫面 DataGridView
@@ -248,6 +267,10 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                                     dgvMain.Rows[rowIdx].Cells[colMain3_2.Index].Style.BackColor = Color.LightGray;
                             }
 
+                            // 填入及格與補考標準
+                            dgvMain.Rows[rowIdx].Cells[colPassStandard.Index].Value = StudPassStandard;
+                            dgvMain.Rows[rowIdx].Cells[colMakeUpStandard.Index].Value = StudMakeUpStandard;
+
                         }
                         catch (Exception ex)
                         {
@@ -268,6 +291,147 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 }
             }
         }
+
+        // 取得學生及格與補考標準
+        private void LoadStudentPassScore()
+        {
+            List<StudentTagInfo> StudTagList = new List<StudentTagInfo>();
+            // 透過學生系統編號取得學生類別
+            QueryHelper qh = new QueryHelper();
+            string query = string.Format(@"
+            SELECT
+                tag_student.ref_student_id AS student_id,
+                tag.prefix AS tag_prefix,
+                tag.name AS tag_name
+            FROM
+                tag_student
+                INNER JOIN tag ON tag_student.ref_tag_id = tag.id
+            WHERE
+                tag_student.ref_student_id = {0};
+            ", StudentID);
+
+            DataTable dt = qh.Select(query);
+            foreach (DataRow dr in dt.Rows)
+            {
+                StudentTagInfo sti = new StudentTagInfo();
+                sti.Prefix = dr["tag_prefix"] + "";
+                sti.Name = dr["tag_name"] + "";
+                sti.FullName = sti.Prefix + ":" + sti.Name;
+                StudTagList.Add(sti);
+            }
+
+            // 讀取學生成績計算規則
+            XmlElement scoreCalcRule = ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(StudentID) == null ? null : ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(StudentID).ScoreCalcRuleElement;
+
+            DSXmlHelper helper = new DSXmlHelper(scoreCalcRule);
+            bool tryParsebool;
+            int tryParseint;
+            decimal tryParseDecimal;
+            //及格標準<年及,及格標準>
+            Dictionary<int, decimal> applyLimit = new Dictionary<int, decimal>();
+            // 補考標準
+            Dictionary<int, decimal> resitLimit = new Dictionary<int, decimal>();
+            if (scoreCalcRule != null)
+            {
+                foreach (XmlElement element in helper.GetElements("及格標準/學生類別"))
+                {
+                    string cat = element.GetAttribute("類別");
+                    bool useful = false;
+                    //掃描學生的類別作比對
+                    foreach (StudentTagInfo catinfo in StudTagList)
+                    {
+                        if (catinfo.Prefix == cat || catinfo.FullName == cat)
+                            useful = true;
+                    }
+                    //學生是指定的類別或類別為"預設"
+                    if (cat == "預設" || useful)
+                    {
+                        for (int gyear = 1; gyear <= 4; gyear++)
+                        {
+                            switch (gyear)
+                            {
+                                case 1:
+                                    if (decimal.TryParse(element.GetAttribute("一年級及格標準"), out tryParseDecimal))
+                                    {
+                                        if (!applyLimit.ContainsKey(gyear))
+                                            applyLimit.Add(gyear, tryParseDecimal);
+                                        if (applyLimit[gyear] > tryParseDecimal)
+                                            applyLimit[gyear] = tryParseDecimal;
+                                    }
+                                    if (decimal.TryParse(element.GetAttribute("一年級補考標準"), out tryParseDecimal))
+                                    {
+                                        if (!resitLimit.ContainsKey(gyear))
+                                            resitLimit.Add(gyear, tryParseDecimal);
+                                        if (resitLimit[gyear] > tryParseDecimal)
+                                            resitLimit[gyear] = tryParseDecimal;
+                                    }
+                                    break;
+                                case 2:
+                                    if (decimal.TryParse(element.GetAttribute("二年級及格標準"), out tryParseDecimal))
+                                    {
+                                        if (!applyLimit.ContainsKey(gyear))
+                                            applyLimit.Add(gyear, tryParseDecimal);
+                                        if (applyLimit[gyear] > tryParseDecimal)
+                                            applyLimit[gyear] = tryParseDecimal;
+                                    }
+                                    if (decimal.TryParse(element.GetAttribute("二年級補考標準"), out tryParseDecimal))
+                                    {
+                                        if (!resitLimit.ContainsKey(gyear))
+                                            resitLimit.Add(gyear, tryParseDecimal);
+                                        if (resitLimit[gyear] > tryParseDecimal)
+                                            resitLimit[gyear] = tryParseDecimal;
+                                    }
+                                    break;
+                                case 3:
+                                    if (decimal.TryParse(element.GetAttribute("三年級及格標準"), out tryParseDecimal))
+                                    {
+                                        if (!applyLimit.ContainsKey(gyear))
+                                            applyLimit.Add(gyear, tryParseDecimal);
+                                        if (applyLimit[gyear] > tryParseDecimal)
+                                            applyLimit[gyear] = tryParseDecimal;
+                                    }
+                                    if (decimal.TryParse(element.GetAttribute("三年級補考標準"), out tryParseDecimal))
+                                    {
+                                        if (!resitLimit.ContainsKey(gyear))
+                                            resitLimit.Add(gyear, tryParseDecimal);
+                                        if (resitLimit[gyear] > tryParseDecimal)
+                                            resitLimit[gyear] = tryParseDecimal;
+                                    }
+                                    break;
+                                case 4:
+                                    if (decimal.TryParse(element.GetAttribute("四年級及格標準"), out tryParseDecimal))
+                                    {
+                                        if (!applyLimit.ContainsKey(gyear))
+                                            applyLimit.Add(gyear, tryParseDecimal);
+                                        if (applyLimit[gyear] > tryParseDecimal)
+                                            applyLimit[gyear] = tryParseDecimal;
+                                    }
+                                    if (decimal.TryParse(element.GetAttribute("四年級補考標準"), out tryParseDecimal))
+                                    {
+                                        if (!resitLimit.ContainsKey(gyear))
+                                            resitLimit.Add(gyear, tryParseDecimal);
+                                        if (resitLimit[gyear] > tryParseDecimal)
+                                            resitLimit[gyear] = tryParseDecimal;
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 填入學生及格標準
+            if (applyLimit.ContainsKey(_GradeYear))
+                StudPassStandard = applyLimit[_GradeYear];
+
+            // 填入學生補考標準
+            if (resitLimit.ContainsKey(_GradeYear))
+                StudMakeUpStandard = resitLimit[_GradeYear];
+
+        }
+
 
         // 檢查科目名稱與級別是否存在
         private bool CheckHasSubjectNameLevel(XElement elm)
@@ -391,6 +555,9 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                                 }
 
 
+                                ss.PassStandard = StudPassStandard;
+                                ss.MakeUpStandard = StudMakeUpStandard;
+
                                 pickSubjects.Add(ss);
                             }
                         }
@@ -398,7 +565,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 }
             }
 
-            Console.WriteLine(pickSubjects.Count);
+            //Console.WriteLine(pickSubjects.Count);
             this.DialogResult = DialogResult.OK;
         }
     }

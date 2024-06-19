@@ -350,6 +350,7 @@
     <Compile Include="Content\ScoreEditor\SemesterScoreEditor.Designer.cs">
       <DependentUpon>SemesterScoreEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Content\ScoreEditor\StudentTagInfo.cs" />
     <Compile Include="Content\ScoreEditor\SubjectInfo.cs" />
     <Compile Include="Content\SemesterScorePalmerworm.cs">
       <SubType>UserControl</SubType>
@@ -922,6 +923,9 @@
     <EmbeddedResource Include="Content\SchoolYearScorePalmerworm.resx">
       <DependentUpon>SchoolYearScorePalmerworm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\ScoreEditor\frmPickSubject.resx">
+      <DependentUpon>frmPickSubject.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Content\ScoreEditor\SchoolYearScoreEditor.resx">
       <DependentUpon>SchoolYearScoreEditor.cs</DependentUpon>

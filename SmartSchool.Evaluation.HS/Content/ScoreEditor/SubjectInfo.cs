@@ -49,5 +49,11 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
 
         // 是否重讀
         public string ReRead { get; set; }
+
+        // 及格標準
+        public decimal PassStandard { get; set; }
+
+        // 補考標準
+        public decimal MakeUpStandard { get; set; }
     }
 }

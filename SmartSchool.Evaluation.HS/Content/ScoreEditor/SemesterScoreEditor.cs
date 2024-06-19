@@ -11,6 +11,8 @@ using SmartSchool.Common;
 using SmartSchool.Evaluation.GraduationPlan;
 using SmartSchool.Feature.Score;
 using SmartSchool.StudentRelated;
+using SmartSchool.Customization.Data;
+using System.Runtime.Versioning;
 //using SHCourseGroupCodeDAL;
 
 namespace SmartSchool.Evaluation.Content.ScoreEditor
@@ -62,6 +64,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             }
             comboBoxEx2.Items.AddRange(new object[] { "1", "2" });
             cboAttendGradeYear.Items.AddRange(new object[] { "1", "2", "3", "4" });
+
             ValidateAll();
         }
 
@@ -1439,6 +1442,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
 
                     frm.SetHasSubjectNameAndLevel(subjLevelList);
                     frm.SetStudentID(_StudentID);
+                    frm.SetGradeYear(Student.Instance.Items[_StudentID].GradeYear);
+
                     if (frm.ShowDialog() == DialogResult.OK)
                     {
                         // 取得選取的科目
@@ -1485,7 +1490,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                                     dataGridViewX1.Rows[e.RowIndex].Cells[ColSpecifySubjectName.Index].Value = ss.SchoolYearSubjectName;
 
                                     // 課程代碼
-                                    dataGridViewX1.Rows[e.RowIndex].Cells[colCourseCode.Index].Value = ss.CourseCode;       
+                                    dataGridViewX1.Rows[e.RowIndex].Cells[colCourseCode.Index].Value = ss.CourseCode;
 
                                     // 報部科目名稱
                                     dataGridViewX1.Rows[e.RowIndex].Cells[colDSubjectName.Index].Value = ss.DeptSubjectName;
@@ -1494,6 +1499,15 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                                 // 是否重讀
                                 dataGridViewX1.Rows[e.RowIndex].Cells[colReread.Index].Value = ss.ReRead;
 
+                                // 修課及格標準
+                                dataGridViewX1.Rows[e.RowIndex].Cells[colPassingStandard.Index].Value = ss.PassStandard;
+
+                                // 修課補考標準
+                                dataGridViewX1.Rows[e.RowIndex].Cells[colMakeupStandard.Index].Value = ss.MakeUpStandard;
+
+                                // 2024/6/16校務討論，是否補修成績需要填是
+                                dataGridViewX1.Rows[e.RowIndex].Cells[colIsMakeupScore.Index].Value = true;
+                                
                             }
                             else
                             {
@@ -1536,13 +1550,21 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
 
                                         // 課程代碼
                                         dataGridViewX1.Rows[rowIdx].Cells[colCourseCode.Index].Value = ss.CourseCode;
-                                        
+
                                         // 報部科目名稱
                                         dataGridViewX1.Rows[rowIdx].Cells[colDSubjectName.Index].Value = ss.DeptSubjectName;
 
                                         // 是否重讀
                                         dataGridViewX1.Rows[rowIdx].Cells[colReread.Index].Value = ss.ReRead;
 
+                                        // 修課及格標準
+                                        dataGridViewX1.Rows[rowIdx].Cells[colPassingStandard.Index].Value = ss.PassStandard;
+
+                                        // 修課補考標準
+                                        dataGridViewX1.Rows[rowIdx].Cells[colMakeupStandard.Index].Value = ss.MakeUpStandard;
+
+                                        // 2024/6/16校務討論，是否補修成績需要填是
+                                        dataGridViewX1.Rows[rowIdx].Cells[colIsMakeupScore.Index].Value = true;
                                     }
                                 }
                             }
@@ -1573,6 +1595,97 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 buttonCell.Style.BackColor = Color.SkyBlue;
                 buttonCell.ToolTipText = "選取科目";
                 buttonCell.Value = "...";
+            }
+        }
+
+        private void btnCheckCourseCode_Click(object sender, EventArgs e)
+        {
+            btnCheckCourseCode.Enabled = false;
+
+            // 檢查學生有課程規畫表才比對
+            if (GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(_StudentID) != null)
+            {
+                GraduationPlanInfo gplan = GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(_StudentID);
+
+                // 取得資料表內容
+                foreach (DataGridViewRow row in dataGridViewX1.Rows)
+                {
+                    if (row.IsNewRow) continue;
+                    // 使用科目名稱+科目級別 取得課規相同科目
+
+                    string SubjName = "" + row.Cells[3].Value + row.Cells[4].Value;
+
+
+                    // 有資料
+                    // 科目3,級別4
+                    GraduationPlanSubject subject = gplan.GetSubjectInfo("" + row.Cells[3].Value, "" + row.Cells[4].Value);
+
+                    // 測試後subject name 如果沒有比對到，科目名稱會變成預設   
+                    if (subject.SubjectName != "預設")
+                    {
+                        // 比對課程代碼相同，跳過不處理，課程代碼不同，以課規覆蓋後，抵免打勾。
+                        if (row.Cells[colCourseCode.Index].Value != null)
+                        {
+                            if (row.Cells[colCourseCode.Index].Value + "" == subject.SubjectCode)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                // 填入課程代碼
+                                row.Cells[colCourseCode.Index].Value = subject.SubjectCode;
+                                // 抵免打勾
+                                row.Cells[colScoreN2.Index].Value = true;
+                            }
+                        }
+                        else
+                        {
+                            // 完全沒有值
+                            // 填入課程代碼
+                            row.Cells[colCourseCode.Index].Value = subject.SubjectCode;
+                            // 抵免打勾
+                            row.Cells[colScoreN2.Index].Value = true;
+                        }
+
+                    }
+                    else
+                    {
+                        // 沒有資料，課程代碼空白，不計學分14、不須評分15 打勾
+                        row.Cells[colCourseCode.Index].Value = "";
+                        row.Cells[14].Value = true;
+                        row.Cells[15].Value = true;
+                    }
+
+                }
+            }
+
+            btnCheckCourseCode.Enabled = true;
+        }
+
+        private void dataGridViewX1_SelectionChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupPanel2_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewX1.SelectedRows.Count > 0)
+            {
+                // 有課程規劃
+                if (GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(_StudentID) != null)
+                {
+                    GraduationPlanInfo gplan = GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(_StudentID);
+
+                    foreach (DataGridViewRow row in dataGridViewX1.SelectedRows)
+                    {
+                        // 科目3,級別4
+                        GraduationPlanSubject subject = gplan.GetSubjectInfo("" + row.Cells[3].Value, "" + row.Cells[4].Value);
+
+                        // 填入課程代碼
+                        row.Cells[colCourseCode.Index].Value = subject.SubjectCode;
+
+                    }
+                }
             }
         }
 

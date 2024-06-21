@@ -52,6 +52,7 @@
             this.btnView = new DevComponents.DotNetBar.ButtonX();
             this.btnArchive = new DevComponents.DotNetBar.ButtonX();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.btnChangeSchoolYear = new DevComponents.DotNetBar.ButtonX();
             ((System.ComponentModel.ISupportInitialize)(this.picWaiting)).BeginInit();
             this.SuspendLayout();
             // 
@@ -239,15 +240,29 @@
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Location = new System.Drawing.Point(495, 198);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(37, 15);
+            this.linkLabel1.Size = new System.Drawing.Size(29, 12);
             this.linkLabel1.TabIndex = 11;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "說明";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
+            // btnChangeSchoolYear
+            // 
+            this.btnChangeSchoolYear.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnChangeSchoolYear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnChangeSchoolYear.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnChangeSchoolYear.Location = new System.Drawing.Point(341, 195);
+            this.btnChangeSchoolYear.Name = "btnChangeSchoolYear";
+            this.btnChangeSchoolYear.Size = new System.Drawing.Size(91, 23);
+            this.btnChangeSchoolYear.TabIndex = 12;
+            this.btnChangeSchoolYear.Text = "調整學年度";
+            this.btnChangeSchoolYear.Visible = false;
+            this.btnChangeSchoolYear.Click += new System.EventHandler(this.btnChangeSchoolYear_Click);
+            // 
             // SemesterScorePalmerworm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.Controls.Add(this.btnChangeSchoolYear);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.btnArchive);
             this.Controls.Add(this.picWaiting);
@@ -287,5 +302,6 @@
         private System.Windows.Forms.ColumnHeader col專業科目;
         private DevComponents.DotNetBar.ButtonX btnArchive;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private DevComponents.DotNetBar.ButtonX btnChangeSchoolYear;
     }
 }

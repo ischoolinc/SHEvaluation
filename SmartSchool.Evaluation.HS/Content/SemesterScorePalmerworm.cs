@@ -4,6 +4,7 @@ using FISCA.UDT;
 using SmartSchool.AccessControl;
 using SmartSchool.ApplicationLog;
 using SmartSchool.Common;
+using SmartSchool.Evaluation.Content.ChangeSchoolYear;
 using SmartSchool.Feature.Score;
 using SmartSchool.StudentRelated;
 using System;
@@ -258,7 +259,7 @@ namespace SmartSchool.Evaluation.Content
 
         public void LoadContent(string id)
         {
-            btnModify.Enabled = btnDelete.Enabled = btnArchive.Enabled = false;
+            btnModify.Enabled = btnDelete.Enabled = btnArchive.Enabled = btnChangeSchoolYear.Enabled = false;
             listView1.Items.Clear();
             _CurrentID = id;
             if (!_bkwEntryLoader.IsBusy)
@@ -337,6 +338,8 @@ namespace SmartSchool.Evaluation.Content
             btnView.Enabled = (listView1.SelectedIndices.Count == 1);
             btnModify.Enabled = (listView1.SelectedIndices.Count == 1 && _permission.Viewable);
             btnDelete.Enabled = (listView1.SelectedIndices.Count == 1 && _permission.Editable);
+            btnChangeSchoolYear.Enabled = (listView1.SelectedIndices.Count == 1 && _permission.Editable);
+
             btnArchive.Enabled = (listView1.SelectedIndices.Count == 1 && FISCA.Permission.UserAcl.Current[Permissions.學期成績封存].Editable);
         }
 
@@ -540,6 +543,26 @@ namespace SmartSchool.Evaluation.Content
                 "　　(1) 請先封存學生當前所有的學期成績至「學期成績(封存)」。\r\n" +
                 "　　(2) 進行轉科異動作業。\r\n" +
                 "　　(3) 將不可抵免的科目自學期成績中刪除。", "學期成績(封存)說明", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btnChangeSchoolYear_Click(object sender, EventArgs e)
+        {
+            btnChangeSchoolYear.Enabled = false;
+
+            frmChangeSemesterSchoolYearMain fm = new frmChangeSemesterSchoolYearMain();
+            // 傳入學年度、學期、年級
+            try
+            {
+                //   listView1.SelectedItems[0].SubItems[0].Text, listView1.SelectedItems[0].SubItems[1].Text
+                Console.WriteLine(listView1.SelectedItems[0].SubItems[0].Text);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            fm.ShowDialog();
+
+            btnChangeSchoolYear.Enabled = true;
         }
     }
 }

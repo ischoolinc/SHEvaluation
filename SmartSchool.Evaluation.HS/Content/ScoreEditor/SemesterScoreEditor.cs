@@ -1009,14 +1009,18 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // foreach (int i in new int[] { 4 })
             foreach (int i in new int[] { 5 })
             {
-                row.Cells[i].ErrorText = "";
-                decimal x = 0;
-                if ("" + row.Cells[i].Value != "" && !decimal.TryParse("" + row.Cells[i].Value, out x))
+                if (row.Cells[i].Value != null)
                 {
-                    validatePass &= false;
-                    row.Cells[i].ErrorText = "必須輸入數字";
+
+                    row.Cells[i].ErrorText = "";
+                    decimal x = 0;
+                    if ("" + row.Cells[i].Value != "" && !decimal.TryParse("" + row.Cells[i].Value, out x))
+                    {
+                        validatePass &= false;
+                        row.Cells[i].ErrorText = "必須輸入數字";
+                    }
+                    dataGridViewX1.UpdateCellErrorText(i, row.Index);
                 }
-                dataGridViewX1.UpdateCellErrorText(i, row.Index);
             }
             // foreach (int i in new int[] { 8, 9, 10, 11, 12, 16, 17, 18 }) // 2023/5/18,因前面多一個功能往後移
             foreach (int i in new int[] { 9, 10, 11, 12, 13, 17, 18, 19 })
@@ -1442,7 +1446,9 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
 
                     frm.SetHasSubjectNameAndLevel(subjLevelList);
                     frm.SetStudentID(_StudentID);
-                    frm.SetGradeYear(Student.Instance.Items[_StudentID].GradeYear);
+
+                    // 讀取成績年級
+                    frm.SetGradeYear(cboAttendGradeYear.Text);
 
                     if (frm.ShowDialog() == DialogResult.OK)
                     {
@@ -1507,7 +1513,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
 
                                 // 2024/6/16校務討論，是否補修成績需要填是
                                 dataGridViewX1.Rows[e.RowIndex].Cells[colIsMakeupScore.Index].Value = true;
-                                
+
                             }
                             else
                             {

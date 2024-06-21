@@ -312,6 +312,24 @@
     <Compile Include="Configuration\SubjectTableCreator.Designer.cs">
       <DependentUpon>SubjectTableCreator.cs</DependentUpon>
     </Compile>
+    <Compile Include="Content\ChangeSchoolYear\frmChangeSemesterSchoolYearHasData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Content\ChangeSchoolYear\frmChangeSemesterSchoolYearHasData.Designer.cs">
+      <DependentUpon>frmChangeSemesterSchoolYearHasData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Content\ChangeSchoolYear\frmChangeSemesterSchoolYearMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Content\ChangeSchoolYear\frmChangeSemesterSchoolYearMain.Designer.cs">
+      <DependentUpon>frmChangeSemesterSchoolYearMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Content\ChangeSchoolYear\frmChangeSemesterSchoolYearMsg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Content\ChangeSchoolYear\frmChangeSemesterSchoolYearMsg.Designer.cs">
+      <DependentUpon>frmChangeSemesterSchoolYearMsg.cs</DependentUpon>
+    </Compile>
     <Compile Include="Content\GradScorePalmerworm.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -915,6 +933,15 @@
     <EmbeddedResource Include="Configuration\SubjectTableCreator.resx">
       <DependentUpon>SubjectTableCreator.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\ChangeSchoolYear\frmChangeSemesterSchoolYearHasData.resx">
+      <DependentUpon>frmChangeSemesterSchoolYearHasData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\ChangeSchoolYear\frmChangeSemesterSchoolYearMain.resx">
+      <DependentUpon>frmChangeSemesterSchoolYearMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\ChangeSchoolYear\frmChangeSemesterSchoolYearMsg.resx">
+      <DependentUpon>frmChangeSemesterSchoolYearMsg.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Content\GradScorePalmerworm.resx">
       <SubType>Designer</SubType>

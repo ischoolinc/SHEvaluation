@@ -47,12 +47,21 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
         private void frmPickSubject_Load(object sender, EventArgs e)
         {
             // 取得學生課程規畫XML
-            LoadGraduationPlanXml();
+            if (LoadGraduationPlanXml() == 0)
+            {
+                MsgBox.Show("沒有課程規劃，請設定。");
+                Close();
+            }
 
             // 取得學生及格與補考標準
-            LoadStudentPassScore();
-
-            LoadXMLToDataGridView();
+            if (LoadStudentPassScore())
+            {
+                LoadXMLToDataGridView();
+            }
+            else
+            {
+                Close();
+            }
         }
 
         // 取得選取的科目
@@ -74,7 +83,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
         }
 
         // 讀取學生課程規劃 XML 
-        private void LoadGraduationPlanXml()
+        private int LoadGraduationPlanXml()
         {
             QueryHelper qh = new QueryHelper();
             string sql = string.Format(@"    
@@ -132,6 +141,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                 this.labelGPName.Text = GraduationPlanName;
             }
 
+            return dt.Rows.Count;
         }
 
         // 將 XML 資料填入畫面 DataGridView
@@ -293,7 +303,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
         }
 
         // 取得學生及格與補考標準
-        private void LoadStudentPassScore()
+        private bool LoadStudentPassScore()
         {
             List<StudentTagInfo> StudTagList = new List<StudentTagInfo>();
             // 透過學生系統編號取得學生類別
@@ -322,6 +332,13 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
 
             // 讀取學生成績計算規則
             XmlElement scoreCalcRule = ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(StudentID) == null ? null : ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(StudentID).ScoreCalcRuleElement;
+
+            if (scoreCalcRule == null)
+            {
+                MsgBox.Show("沒有成績計算規則，請設定。");
+                return false;
+            }
+
 
             DSXmlHelper helper = new DSXmlHelper(scoreCalcRule);
             bool tryParsebool;
@@ -430,6 +447,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             if (resitLimit.ContainsKey(_GradeYear))
                 StudMakeUpStandard = resitLimit[_GradeYear];
 
+            return true;
         }
 
 

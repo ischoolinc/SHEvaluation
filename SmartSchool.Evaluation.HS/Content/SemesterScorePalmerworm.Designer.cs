@@ -256,7 +256,6 @@
             this.btnChangeSchoolYear.Size = new System.Drawing.Size(91, 23);
             this.btnChangeSchoolYear.TabIndex = 12;
             this.btnChangeSchoolYear.Text = "調整學年度";
-            this.btnChangeSchoolYear.Visible = false;
             this.btnChangeSchoolYear.Click += new System.EventHandler(this.btnChangeSchoolYear_Click);
             // 
             // SemesterScorePalmerworm

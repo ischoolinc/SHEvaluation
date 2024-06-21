@@ -16,6 +16,11 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
         // 來源訊息
         private string SourceMessage = "";
 
+        // 調整訊息
+        private string ChangeMessage = "";
+
+        private string SourceSchoolYear = "", Semester = "", GradeYear = "";
+
         public frmChangeSemesterSchoolYearMain()
         {
             InitializeComponent();
@@ -29,9 +34,20 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
         private void btnChange_Click(object sender, EventArgs e)
         {
             btnChange.Enabled = false;
-            
+
             // 開啟確認視窗
-            
+            frmChangeSemesterSchoolYearMsg fmm = new frmChangeSemesterSchoolYearMsg();
+            fmm.SetSourceMessage(SourceSchoolYear, Semester, GradeYear);
+            fmm.SetChangeMessage(cboSchoolYear.Text, Semester, GradeYear);
+
+            if (fmm.ShowDialog() == DialogResult.Yes)
+            {
+
+            }
+            else
+            {
+                Close();
+            }
 
             btnChange.Enabled = true;
         }
@@ -61,6 +77,9 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
         public void SetSourceInfo(string SchoolYear, string Semester, string GradeYear)
         {
             SourceMessage = string.Format("{0}學年度第{1}學期成績年級{2}年級", SchoolYear, Semester, GradeYear);
+            SourceSchoolYear = SchoolYear;
+            this.Semester = Semester;
+            this.GradeYear = GradeYear;
         }
     }
 }

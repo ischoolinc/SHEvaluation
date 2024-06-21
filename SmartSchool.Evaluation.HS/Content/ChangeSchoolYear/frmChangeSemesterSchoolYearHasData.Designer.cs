@@ -28,20 +28,73 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.labelX1 = new DevComponents.DotNetBar.LabelX();
+            this.lnkHasDataList = new System.Windows.Forms.LinkLabel();
+            this.btnExit = new DevComponents.DotNetBar.ButtonX();
             this.SuspendLayout();
+            // 
+            // labelX1
+            // 
+            this.labelX1.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX1.BackgroundStyle.Class = "";
+            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX1.Location = new System.Drawing.Point(12, 22);
+            this.labelX1.Name = "labelX1";
+            this.labelX1.Size = new System.Drawing.Size(332, 45);
+            this.labelX1.TabIndex = 0;
+            this.labelX1.Text = "將107學年度第1學期成績年級1年級 已有重複科目名稱+級別，請確認後再進行作業。";
+            this.labelX1.TextLineAlignment = System.Drawing.StringAlignment.Near;
+            this.labelX1.WordWrap = true;
+            // 
+            // lnkHasDataList
+            // 
+            this.lnkHasDataList.AutoSize = true;
+            this.lnkHasDataList.BackColor = System.Drawing.Color.Transparent;
+            this.lnkHasDataList.Location = new System.Drawing.Point(12, 85);
+            this.lnkHasDataList.Name = "lnkHasDataList";
+            this.lnkHasDataList.Size = new System.Drawing.Size(86, 17);
+            this.lnkHasDataList.TabIndex = 1;
+            this.lnkHasDataList.TabStop = true;
+            this.lnkHasDataList.Text = "查看重複清單";
+            this.lnkHasDataList.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkHasDataList_LinkClicked);
+            // 
+            // btnExit
+            // 
+            this.btnExit.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnExit.BackColor = System.Drawing.Color.Transparent;
+            this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnExit.Location = new System.Drawing.Point(244, 85);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(75, 23);
+            this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.btnExit.TabIndex = 2;
+            this.btnExit.Text = "離開";
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
             // frmChangeSemesterSchoolYearHasData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(373, 151);
+            this.ClientSize = new System.Drawing.Size(355, 128);
+            this.Controls.Add(this.btnExit);
+            this.Controls.Add(this.lnkHasDataList);
+            this.Controls.Add(this.labelX1);
             this.DoubleBuffered = true;
             this.Name = "frmChangeSemesterSchoolYearHasData";
             this.Text = "變更學年度學期";
+            this.Load += new System.EventHandler(this.frmChangeSemesterSchoolYearHasData_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
+
+        private DevComponents.DotNetBar.LabelX labelX1;
+        private System.Windows.Forms.LinkLabel lnkHasDataList;
+        private DevComponents.DotNetBar.ButtonX btnExit;
     }
 }

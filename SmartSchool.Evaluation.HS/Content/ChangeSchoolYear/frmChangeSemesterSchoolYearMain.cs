@@ -16,14 +16,15 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
         // 來源訊息
         private string SourceMessage = "";
 
-        // 調整訊息
-        private string ChangeMessage = "";
+        // 學生資訊
+        private StudentInfo studentInfo = null;
 
         private string SourceSchoolYear = "", Semester = "", GradeYear = "";
 
         public frmChangeSemesterSchoolYearMain()
         {
             InitializeComponent();
+            studentInfo = new StudentInfo();
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -31,22 +32,47 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
             Close();
         }
 
+        public void SetStudentInfo(StudentInfo studentInfo)
+        {
+            this.studentInfo = studentInfo;
+        }
+
         private void btnChange_Click(object sender, EventArgs e)
         {
             btnChange.Enabled = false;
 
-            // 開啟確認視窗
-            frmChangeSemesterSchoolYearMsg fmm = new frmChangeSemesterSchoolYearMsg();
-            fmm.SetSourceMessage(SourceSchoolYear, Semester, GradeYear);
-            fmm.SetChangeMessage(cboSchoolYear.Text, Semester, GradeYear);
-
-            if (fmm.ShowDialog() == DialogResult.Yes)
+            try
             {
+                // 開啟確認視窗
+                frmChangeSemesterSchoolYearMsg fmm = new frmChangeSemesterSchoolYearMsg();
+                // 傳入來成績資料來源
+                fmm.SetSourceMessage(SourceSchoolYear, Semester, GradeYear);
+                // 傳入調整後成績學年度
+                fmm.SetChangeMessage(cboSchoolYear.Text, Semester, GradeYear);
 
+                // 檢查來源與調整學年度是否相同，相同不處理
+                if (SourceSchoolYear == cboSchoolYear.Text)
+                {
+                    MsgBox.Show("選擇成績學年度與欲調整學年度相同，無法進行調整。");
+                    btnChange.Enabled = true;
+                    return;
+                }
+
+                // 傳入學生
+                fmm.SetStudentInfo(studentInfo);
+
+                if (fmm.ShowDialog() == DialogResult.Yes)
+                {
+
+                }
+                else
+                {
+                    Close();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Close();
+                MsgBox.Show(ex.Message);
             }
 
             btnChange.Enabled = true;

@@ -28,26 +28,26 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.labelX1 = new DevComponents.DotNetBar.LabelX();
+            this.lblMsg = new DevComponents.DotNetBar.LabelX();
             this.lnkHasDataList = new System.Windows.Forms.LinkLabel();
             this.btnExit = new DevComponents.DotNetBar.ButtonX();
             this.SuspendLayout();
             // 
-            // labelX1
+            // lblMsg
             // 
-            this.labelX1.BackColor = System.Drawing.Color.Transparent;
+            this.lblMsg.BackColor = System.Drawing.Color.Transparent;
             // 
             // 
             // 
-            this.labelX1.BackgroundStyle.Class = "";
-            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX1.Location = new System.Drawing.Point(12, 22);
-            this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(332, 45);
-            this.labelX1.TabIndex = 0;
-            this.labelX1.Text = "將107學年度第1學期成績年級1年級 已有重複科目名稱+級別，請確認後再進行作業。";
-            this.labelX1.TextLineAlignment = System.Drawing.StringAlignment.Near;
-            this.labelX1.WordWrap = true;
+            this.lblMsg.BackgroundStyle.Class = "";
+            this.lblMsg.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.lblMsg.Location = new System.Drawing.Point(12, 22);
+            this.lblMsg.Name = "lblMsg";
+            this.lblMsg.Size = new System.Drawing.Size(332, 45);
+            this.lblMsg.TabIndex = 0;
+            this.lblMsg.Text = "將107學年度第1學期成績年級1年級 已有重複科目名稱+級別，請確認後再進行作業。";
+            this.lblMsg.TextLineAlignment = System.Drawing.StringAlignment.Near;
+            this.lblMsg.WordWrap = true;
             // 
             // lnkHasDataList
             // 
@@ -81,7 +81,7 @@
             this.ClientSize = new System.Drawing.Size(355, 128);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.lnkHasDataList);
-            this.Controls.Add(this.labelX1);
+            this.Controls.Add(this.lblMsg);
             this.DoubleBuffered = true;
             this.Name = "frmChangeSemesterSchoolYearHasData";
             this.Text = "變更學年度學期";
@@ -93,7 +93,7 @@
 
         #endregion
 
-        private DevComponents.DotNetBar.LabelX labelX1;
+        private DevComponents.DotNetBar.LabelX lblMsg;
         private System.Windows.Forms.LinkLabel lnkHasDataList;
         private DevComponents.DotNetBar.ButtonX btnExit;
     }

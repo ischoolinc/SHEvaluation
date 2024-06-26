@@ -330,6 +330,11 @@
     <Compile Include="Content\ChangeSchoolYear\frmChangeSemesterSchoolYearMsg.Designer.cs">
       <DependentUpon>frmChangeSemesterSchoolYearMsg.cs</DependentUpon>
     </Compile>
+    <Compile Include="Content\ChangeSchoolYear\SemesterScoreData.cs" />
+    <Compile Include="Content\ChangeSchoolYear\SemesterScoreDataTransfer.cs" />
+    <Compile Include="Content\ChangeSchoolYear\StudentInfo.cs" />
+    <Compile Include="Content\ChangeSchoolYear\SubjectScoreInfo.cs" />
+    <Compile Include="Content\ChangeSchoolYear\Utility.cs" />
     <Compile Include="Content\GradScorePalmerworm.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -764,6 +769,7 @@
     <Compile Include="WearyDogComputerHelper\WearyDogComputer_ExtensionMethod.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\ChangeSchoolYear\查看重複清單樣板.xls" />
     <None Include="Resources\calc_save_64.png" />
     <None Include="Resources\course_plan.png" />
     <Content Include="Library\Aspose.Cells.dll" />

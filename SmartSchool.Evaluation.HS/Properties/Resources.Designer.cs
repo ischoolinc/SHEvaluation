@@ -293,6 +293,16 @@ namespace SmartSchool.Evaluation.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] 查看重複清單樣板 {
+            get {
+                object obj = ResourceManager.GetObject("查看重複清單樣板", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] 班級學生學期成績一覽表A3 {
             get {
                 object obj = ResourceManager.GetObject("班級學生學期成績一覽表A3", resourceCulture);

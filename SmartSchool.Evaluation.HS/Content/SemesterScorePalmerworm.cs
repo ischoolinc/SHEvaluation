@@ -552,15 +552,25 @@ namespace SmartSchool.Evaluation.Content
             frmChangeSemesterSchoolYearMain fm = new frmChangeSemesterSchoolYearMain();
             // 傳入學年度 0、學期 1、年級 2
             try
-            {
-                //   listView1.SelectedItems[0].SubItems[0].Text, listView1.SelectedItems[0].SubItems[1].Text
+            {                
+                // 傳入選擇資料的 學年度、學期、年級
                 fm.SetSourceInfo(listView1.SelectedItems[0].SubItems[0].Text, listView1.SelectedItems[0].SubItems[1].Text, listView1.SelectedItems[0].SubItems[2].Text);
+                // 傳入學生
+                StudentInfo student = new StudentInfo();
+                student.StudentID = _CurrentID;
+                student.StudentName = Student.Instance.Items[_CurrentID].Name;
+                student.StudentNumber = Student.Instance.Items[_CurrentID].StudentNumber;
+                student.ClassName = Student.Instance.Items[_CurrentID].ClassName;
+                student.SeatNo = Student.Instance.Items[_CurrentID].SeatNo;
+                fm.SetStudentInfo(student);
+
+                fm.ShowDialog();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            fm.ShowDialog();
+            
 
             btnChangeSchoolYear.Enabled = true;
         }

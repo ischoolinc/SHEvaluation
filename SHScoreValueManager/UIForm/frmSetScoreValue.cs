@@ -406,7 +406,8 @@ namespace SHScoreValueManager.UIForm
         private bool ContainsSpecialCharacters(string input)
         {
             // 定義一個正則表達式來匹配特殊字元
-            string pattern = @"[!@#$%^&*?""{}|<>/\\]";
+            //string pattern = @"[!@#$%^&*?""{}|<>/\\]";
+            string pattern = @"[!@#$%^&*?""{}|<>/\\0123456789０１２３４５６７８９]";
             Regex regex = new Regex(pattern);
 
             return regex.IsMatch(input);
@@ -541,6 +542,12 @@ namespace SHScoreValueManager.UIForm
                         dgData.Rows[e.RowIndex].Cells["分數認定"].ErrorText = "";
                 }
             }
+        }
+
+        private void lnkNotInputChar_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmNotInputChar frm = new frmNotInputChar();
+            frm.ShowDialog();
         }
     }
 }

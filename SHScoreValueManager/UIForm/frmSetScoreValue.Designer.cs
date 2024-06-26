@@ -32,6 +32,8 @@
             this.dgData = new DevComponents.DotNetBar.Controls.DataGridViewX();
             this.btnSave = new DevComponents.DotNetBar.ButtonX();
             this.btnExit = new DevComponents.DotNetBar.ButtonX();
+            this.labelX1 = new DevComponents.DotNetBar.LabelX();
+            this.lnkNotInputChar = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).BeginInit();
             this.SuspendLayout();
             // 
@@ -54,7 +56,7 @@
             this.dgData.Location = new System.Drawing.Point(18, 12);
             this.dgData.Name = "dgData";
             this.dgData.RowTemplate.Height = 24;
-            this.dgData.Size = new System.Drawing.Size(452, 211);
+            this.dgData.Size = new System.Drawing.Size(452, 212);
             this.dgData.TabIndex = 0;
             this.dgData.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgData_CellClick);
             this.dgData.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgData_CellEndEdit);
@@ -68,7 +70,7 @@
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.BackColor = System.Drawing.Color.Transparent;
             this.btnSave.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnSave.Location = new System.Drawing.Point(300, 242);
+            this.btnSave.Location = new System.Drawing.Point(300, 249);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -82,7 +84,7 @@
             this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExit.Location = new System.Drawing.Point(395, 242);
+            this.btnExit.Location = new System.Drawing.Point(395, 249);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 23);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -90,11 +92,42 @@
             this.btnExit.Text = "離開";
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
+            // labelX1
+            // 
+            this.labelX1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelX1.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX1.BackgroundStyle.Class = "";
+            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX1.ForeColor = System.Drawing.Color.Red;
+            this.labelX1.Location = new System.Drawing.Point(18, 232);
+            this.labelX1.Name = "labelX1";
+            this.labelX1.Size = new System.Drawing.Size(224, 23);
+            this.labelX1.TabIndex = 3;
+            this.labelX1.Text = "輸入內容不得輸入數字及特殊符號。";
+            // 
+            // lnkNotInputChar
+            // 
+            this.lnkNotInputChar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lnkNotInputChar.AutoSize = true;
+            this.lnkNotInputChar.BackColor = System.Drawing.Color.Transparent;
+            this.lnkNotInputChar.Location = new System.Drawing.Point(18, 258);
+            this.lnkNotInputChar.Name = "lnkNotInputChar";
+            this.lnkNotInputChar.Size = new System.Drawing.Size(86, 17);
+            this.lnkNotInputChar.TabIndex = 4;
+            this.lnkNotInputChar.TabStop = true;
+            this.lnkNotInputChar.Text = "不得輸入字元";
+            this.lnkNotInputChar.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkNotInputChar_LinkClicked);
+            // 
             // frmSetScoreValue
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(489, 279);
+            this.ClientSize = new System.Drawing.Size(489, 286);
+            this.Controls.Add(this.lnkNotInputChar);
+            this.Controls.Add(this.labelX1);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.dgData);
@@ -104,6 +137,7 @@
             this.Load += new System.EventHandler(this.frmSetScoreValue_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -112,5 +146,7 @@
         private DevComponents.DotNetBar.Controls.DataGridViewX dgData;
         private DevComponents.DotNetBar.ButtonX btnSave;
         private DevComponents.DotNetBar.ButtonX btnExit;
+        private DevComponents.DotNetBar.LabelX labelX1;
+        private System.Windows.Forms.LinkLabel lnkNotInputChar;
     }
 }

@@ -20,7 +20,7 @@ namespace SHScoreValueManager.UIForm
 
         private void frmNotInputChar_Load(object sender, EventArgs e)
         {
-
+            this.MinimumSize = this.MaximumSize = this.Size;
         }
 
         private void btnExit_Click(object sender, EventArgs e)

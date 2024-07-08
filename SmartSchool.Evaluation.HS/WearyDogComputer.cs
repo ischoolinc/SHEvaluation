@@ -753,6 +753,14 @@ namespace SmartSchool.Evaluation
                                     }
 
                                     updateScoreElement.SetAttribute("是否取得學分", (updateScoreElement.GetAttribute("不需評分") == "是" || maxScore >= passscore) ? "是" : "否");
+
+                                    // 2024/7/5 會議決議，需要計算學分使用成績判斷是否取得學分
+                                    if (updateScoreElement.GetAttribute("不計學分") == "否")
+                                    {
+                                        updateScoreElement.SetAttribute("是否取得學分", maxScore >= passscore ? "是" : "否");
+                                    }
+
+
                                     #endregion
                                     if (!updateSemesterSubjectScoreList.ContainsKey(sy)) updateSemesterSubjectScoreList.Add(sy, new Dictionary<int, Dictionary<string, XmlElement>>());
                                     if (!updateSemesterSubjectScoreList[sy].ContainsKey(se)) updateSemesterSubjectScoreList[sy].Add(se, new Dictionary<string, XmlElement>());
@@ -931,6 +939,13 @@ namespace SmartSchool.Evaluation
                                     }
 
                                     updateScoreElement.SetAttribute("是否取得學分", (sacRecord.NotIncludedInCalc || maxScore >= passscore) ? "是" : "否");
+
+                                    // 2024/7/5 會議決議，需要計算學分使用成績判斷是否取得學分
+                                    if (sacRecord.NotIncludedInCredit == false)
+                                    {
+                                        updateScoreElement.SetAttribute("是否取得學分", maxScore >= passscore ? "是" : "否");
+                                    }
+
                                     #endregion
                                     if (!updateSemesterSubjectScoreList.ContainsKey(sy)) updateSemesterSubjectScoreList.Add(sy, new Dictionary<int, Dictionary<string, XmlElement>>());
                                     if (!updateSemesterSubjectScoreList[sy].ContainsKey(se)) updateSemesterSubjectScoreList[sy].Add(se, new Dictionary<string, XmlElement>());
@@ -1108,6 +1123,13 @@ namespace SmartSchool.Evaluation
 
                                     #endregion
                                     newScoreInfo.SetAttribute("是否取得學分", (sacRecord.NotIncludedInCalc || maxScore >= passscore) ? "是" : "否");
+
+                                    // 2024/7/5 會議決議，需要計算學分使用成績判斷是否取得學分
+                                    if (sacRecord.NotIncludedInCredit == false)
+                                    {
+                                        newScoreInfo.SetAttribute("是否取得學分", maxScore >= passscore ? "是" : "否");
+                                    }
+
                                     #endregion
                                     if (!insertSemesterSubjectScoreList.ContainsKey(sy)) insertSemesterSubjectScoreList.Add(sy, new Dictionary<int, Dictionary<string, XmlElement>>());
                                     if (!insertSemesterSubjectScoreList[sy].ContainsKey(se)) insertSemesterSubjectScoreList[sy].Add(se, new Dictionary<string, XmlElement>());

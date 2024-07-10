@@ -859,6 +859,8 @@ namespace SmartSchool.Evaluation
                                             else
                                                 updateScoreElement.SetAttribute("修課補考標準", "");
 
+                                            updateScoreElement.SetAttribute("註記", "");
+
                                             if (decimal.TryParse(designate_final_score, out designate_final_score_score))
                                             {
                                                 updateScoreElement.SetAttribute("修課直接指定總成績", ("" + GetRoundScore(designate_final_score_score, decimals, mode)));

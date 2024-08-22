@@ -55,12 +55,14 @@ namespace StudentDuplicateSubjectCheck
             //計算方式設定 的選項
             Column8.Items.Add("重修(寫回原學期)");
             Column8.Items.Add("重讀(擇優採計成績)");
+            Column8.Items.Add("抵免");
             Column8.Items.Add("視為一般修課");
             Column8.DropDownStyle = ComboBoxStyle.DropDownList; // 讓使用者不要亂輸入資料
 
             //計算方式設定 的選項
             comboBoxEx1.Items.Add("重修(寫回原學期)");
             comboBoxEx1.Items.Add("重讀(擇優採計成績)");
+            comboBoxEx1.Items.Add("抵免");
             comboBoxEx1.Items.Add("視為一般修課");
 
             labelX3.Text = school_year + "學年度" + "第" + semster + "學期";

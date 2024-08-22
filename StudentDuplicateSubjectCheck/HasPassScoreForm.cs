@@ -39,12 +39,12 @@ namespace StudentDuplicateSubjectCheck
             if (e.Error == null)
             {
                 Workbook wb = e.Result as Workbook;
-                wb.FileName = "已有及格補考標準清單";
+                wb.FileName = "已有修課備註清單";
 
                 string path = Path.Combine(System.Windows.Forms.Application.StartupPath, "Reports");
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
-                path = Path.Combine(path, "已有及格補考標準清單" + ".xlsx");
+                path = Path.Combine(path, "已有修課備註清單" + ".xlsx");
 
                 if (File.Exists(path))
                 {
@@ -69,7 +69,7 @@ namespace StudentDuplicateSubjectCheck
                 {
                     System.Windows.Forms.SaveFileDialog sd = new System.Windows.Forms.SaveFileDialog();
                     sd.Title = "另存新檔";
-                    sd.FileName = "已有及格補考標準清單.xlsx";
+                    sd.FileName = "已有修課備註清單.xlsx";
                     sd.Filter = "Excel檔案 (*.xlsx)|*.xlsx|所有檔案 (*.*)|*.*";
                     if (sd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
@@ -104,9 +104,9 @@ namespace StudentDuplicateSubjectCheck
                     wb.Worksheets[0].Cells[rowIdx, 2].PutValue(dr["course_name"].ToString());
                     wb.Worksheets[0].Cells[rowIdx, 3].PutValue(dr["student_name"].ToString());
                     wb.Worksheets[0].Cells[rowIdx, 4].PutValue(dr["student_number"].ToString());
-                    wb.Worksheets[0].Cells[rowIdx, 5].PutValue(dr["passing_standard_new"].ToString());
-                    wb.Worksheets[0].Cells[rowIdx, 6].PutValue(dr["makeup_standard_new"].ToString());
-                    wb.Worksheets[0].Cells[rowIdx, 7].PutValue(dr["remark_new"].ToString());
+                    //wb.Worksheets[0].Cells[rowIdx, 5].PutValue(dr["passing_standard_new"].ToString());
+                    //wb.Worksheets[0].Cells[rowIdx, 6].PutValue(dr["makeup_standard_new"].ToString());
+                    wb.Worksheets[0].Cells[rowIdx, 5].PutValue(dr["remark_new"].ToString());
                     rowIdx++;
                 }
 
@@ -158,8 +158,9 @@ namespace StudentDuplicateSubjectCheck
                 dgData.Rows[rowIdx].Cells[colCourseName.Index].Value = dr["course_name"].ToString();
                 dgData.Rows[rowIdx].Cells[colStudentName.Index].Value = dr["student_name"].ToString();
                 dgData.Rows[rowIdx].Cells[colStudentNumber.Index].Value = dr["student_number"].ToString();
-                dgData.Rows[rowIdx].Cells[colPassingStandard.Index].Value = dr["passing_standard_new"].ToString();
-                dgData.Rows[rowIdx].Cells[colMakeupStandard.Index].Value = dr["makeup_standard_new"].ToString();
+                //dgData.Rows[rowIdx].Cells[colPassingStandard.Index].Value = dr["passing_standard_new"].ToString();
+                //dgData.Rows[rowIdx].Cells[colMakeupStandard.Index].Value = dr["makeup_standard_new"].ToString();
+
                 dgData.Rows[rowIdx].Cells[colRemark.Index].Value = dr["remark_new"].ToString();
             }
         }

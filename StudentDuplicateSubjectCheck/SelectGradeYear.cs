@@ -62,9 +62,9 @@ namespace StudentDuplicateSubjectCheck
             this.numericUpDown1.Value = 1;
 
             labelX2.Text = "本功能將會對本學期學生的修課紀錄有3項檢查：\n" +
-                "1.檢查成績計算規則，並將及格標準、補考標準、學生身分寫入修課紀錄。\n" +
+                "1.檢查成績計算規則，並將學生身分寫入修課紀錄。\n" +
                 //"2.檢查課程規劃，並將課程代碼寫入修課紀錄。" + Environment.NewLine +
-                "2.及格標準、補考標準、備註，可選擇覆蓋已寫入的紀錄。" + Environment.NewLine +
+                "2.備註，可選擇覆蓋已寫入的紀錄。" + Environment.NewLine +
                 "3.假若與先前的學期成績有重覆的科目級別則會列出，由人工設定計算方式。";
 
             _backgroundWorker = new BackgroundWorker();
@@ -148,7 +148,9 @@ namespace StudentDuplicateSubjectCheck
             }
             else if (e.ProgressPercentage == 50)
             {
-                FISCA.Presentation.MotherForm.SetStatusBarMessage("寫入及格標準、補考標準、學生身分中...", e.ProgressPercentage);
+                //FISCA.Presentation.MotherForm.SetStatusBarMessage("寫入及格標準、補考標準、學生身分中...", e.ProgressPercentage);
+
+                FISCA.Presentation.MotherForm.SetStatusBarMessage("寫入學生身分中...", e.ProgressPercentage);
             }
             else if (e.ProgressPercentage == 60)
             {
@@ -197,18 +199,38 @@ namespace StudentDuplicateSubjectCheck
 
                     if (isUpdatePassScore)
                     {
-                        // 覆蓋及格與補考標準
+                        //// 覆蓋及格與補考標準
+                        //foreach (DataRow dr in hasScoreList)
+                        //{
+                        //    string passing_standard = "null";
+                        //    string makeup_standard = "null";
+                        //    string remark = "";
+
+                        //    if (dr["passing_standard_new"] != null)
+                        //        passing_standard = dr["passing_standard_new"].ToString();
+
+                        //    if (dr["makeup_standard_new"] != null)
+                        //        makeup_standard = dr["makeup_standard_new"].ToString();
+
+                        //    if (dr["remark_new"] != null)
+                        //        remark = dr["remark_new"] + "";
+
+                        //    string sc_id = dr["sc_attend_id"].ToString();
+
+                        //    string updateStr = "UPDATE " +
+                        //        "sc_attend " +
+                        //         " SET passing_standard=" + passing_standard +
+                        //         ",makeup_standard =" + makeup_standard +
+                        //         ",remark ='" + remark + "' " +
+                        //        " WHERE " +
+                        //        "id =" + sc_id + ";";
+                        //    UpdatePassScoreList.Add(updateStr);
+                        //}
+
+                        // 修改修課備註
                         foreach (DataRow dr in hasScoreList)
                         {
-                            string passing_standard = "null";
-                            string makeup_standard = "null";
                             string remark = "";
-
-                            if (dr["passing_standard_new"] != null)
-                                passing_standard = dr["passing_standard_new"].ToString();
-
-                            if (dr["makeup_standard_new"] != null)
-                                makeup_standard = dr["makeup_standard_new"].ToString();
 
                             if (dr["remark_new"] != null)
                                 remark = dr["remark_new"] + "";
@@ -217,9 +239,7 @@ namespace StudentDuplicateSubjectCheck
 
                             string updateStr = "UPDATE " +
                                 "sc_attend " +
-                                 " SET passing_standard=" + passing_standard +
-                                 ",makeup_standard =" + makeup_standard +
-                                 ",remark ='" + remark + "' " +
+                                 " SET remark ='" + remark + "' " +
                                 " WHERE " +
                                 "id =" + sc_id + ";";
                             UpdatePassScoreList.Add(updateStr);
@@ -236,7 +256,7 @@ namespace StudentDuplicateSubjectCheck
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show("覆蓋及格標準與補考標準發生錯誤" + ex.Message);
+                            MessageBox.Show("覆蓋修課備註發生錯誤" + ex.Message);
                         }
                     }
                 }
@@ -446,7 +466,28 @@ namespace StudentDuplicateSubjectCheck
 
             // 學生班級基本資料(學生狀態為一般)
             QueryHelper qh1 = new QueryHelper();
-            string query1 = "select student.id,class.grade_year,student_number,class.class_name,seat_no,student.name from student inner join class on student.ref_class_id=class.id where student.status=1 and class.grade_year ='" + targetGradeYear + "' order by class.grade_year,student_number;";
+            //string query1 = "select student.id,class.grade_year,student_number,class.class_name,seat_no,student.name from student inner join class on student.ref_class_id=class.id where student.status=1 and class.grade_year ='" + targetGradeYear + "' order by class.grade_year,student_number;";
+
+            // 學生狀態為一般或延修(1,2)
+            string query1 = string.Format(@"
+            SELECT
+                student.id,
+                class.grade_year,
+                student_number,
+                class.class_name,
+                seat_no,
+                student.name
+            FROM
+                student
+                INNER JOIN class ON student.ref_class_id = class.id
+            WHERE
+                student.status IN(1, 2)
+                AND class.grade_year = {0} 
+            ORDER BY
+                class.grade_year,
+                student_number;
+            ", targetGradeYear);
+
             DataTable dt1 = qh1.Select(query1);
             foreach (DataRow dr in dt1.Rows)
             {
@@ -820,15 +861,15 @@ namespace StudentDuplicateSubjectCheck
             // 只更新沒有及格補考標準
             foreach (DataRow dr in updateScoreList)
             {
-                string passing_standard = "null";
-                string makeup_standard = "null";
+                //string passing_standard = "null";
+                //string makeup_standard = "null";
                 string rem = "";
 
-                if (dr["passing_standard"] != null)
-                    passing_standard = dr["passing_standard"].ToString();
+                //if (dr["passing_standard"] != null)
+                //    passing_standard = dr["passing_standard"].ToString();
 
-                if (dr["makeup_standard"] != null)
-                    makeup_standard = dr["makeup_standard"].ToString();
+                //if (dr["makeup_standard"] != null)
+                //    makeup_standard = dr["makeup_standard"].ToString();
 
                 if (dr["remark"] != null)
                     rem = dr["remark"].ToString();
@@ -836,9 +877,9 @@ namespace StudentDuplicateSubjectCheck
                 string sc_id = dr["sc_attend_id"].ToString();
                 string updateStr = "" +
                     "UPDATE sc_attend " +
-                    " SET passing_standard=" + passing_standard +
-                    ",makeup_standard =" + makeup_standard +
-                    ",remark='" + rem + "'" +
+                    //" SET passing_standard=" + passing_standard +
+                    //",makeup_standard =" + makeup_standard +
+                    " SET remark='" + rem + "'" +
                     " WHERE id=" + sc_id + ";";
                 sbUpdateScAttend.Add(updateStr);
             }

@@ -30,6 +30,12 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgData = new DevComponents.DotNetBar.Controls.DataGridViewX();
+            this.btnAddTemp = new DevComponents.DotNetBar.ButtonX();
+            this.btnExportList = new DevComponents.DotNetBar.ButtonX();
+            this.btnExit = new DevComponents.DotNetBar.ButtonX();
+            this.lblMsg = new DevComponents.DotNetBar.LabelX();
+            this.btnWrite = new DevComponents.DotNetBar.ButtonX();
+            this.labelX1 = new DevComponents.DotNetBar.LabelX();
             this.colSchoolYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSemester = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCourseName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -38,12 +44,6 @@
             this.colPassingStandard = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colMakeupStandard = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colRemark = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnAddTemp = new DevComponents.DotNetBar.ButtonX();
-            this.btnExportList = new DevComponents.DotNetBar.ButtonX();
-            this.btnExit = new DevComponents.DotNetBar.ButtonX();
-            this.lblMsg = new DevComponents.DotNetBar.LabelX();
-            this.btnWrite = new DevComponents.DotNetBar.ButtonX();
-            this.labelX1 = new DevComponents.DotNetBar.LabelX();
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).BeginInit();
             this.SuspendLayout();
             // 
@@ -80,57 +80,6 @@
             this.dgData.RowTemplate.Height = 24;
             this.dgData.Size = new System.Drawing.Size(869, 303);
             this.dgData.TabIndex = 0;
-            // 
-            // colSchoolYear
-            // 
-            this.colSchoolYear.HeaderText = "學年度";
-            this.colSchoolYear.Name = "colSchoolYear";
-            this.colSchoolYear.ReadOnly = true;
-            this.colSchoolYear.Width = 70;
-            // 
-            // colSemester
-            // 
-            this.colSemester.HeaderText = "學期";
-            this.colSemester.Name = "colSemester";
-            this.colSemester.ReadOnly = true;
-            this.colSemester.Width = 60;
-            // 
-            // colCourseName
-            // 
-            this.colCourseName.HeaderText = "課程名稱";
-            this.colCourseName.Name = "colCourseName";
-            this.colCourseName.ReadOnly = true;
-            this.colCourseName.Width = 150;
-            // 
-            // colStudentName
-            // 
-            this.colStudentName.HeaderText = "姓名";
-            this.colStudentName.Name = "colStudentName";
-            this.colStudentName.ReadOnly = true;
-            // 
-            // colStudentNumber
-            // 
-            this.colStudentNumber.HeaderText = "學號";
-            this.colStudentNumber.Name = "colStudentNumber";
-            this.colStudentNumber.ReadOnly = true;
-            // 
-            // colPassingStandard
-            // 
-            this.colPassingStandard.HeaderText = "及格標準";
-            this.colPassingStandard.Name = "colPassingStandard";
-            this.colPassingStandard.ReadOnly = true;
-            // 
-            // colMakeupStandard
-            // 
-            this.colMakeupStandard.HeaderText = "補考標準";
-            this.colMakeupStandard.Name = "colMakeupStandard";
-            this.colMakeupStandard.ReadOnly = true;
-            // 
-            // colRemark
-            // 
-            this.colRemark.HeaderText = "備註";
-            this.colRemark.Name = "colRemark";
-            this.colRemark.ReadOnly = true;
             // 
             // btnAddTemp
             // 
@@ -221,7 +170,60 @@
             this.labelX1.Name = "labelX1";
             this.labelX1.Size = new System.Drawing.Size(869, 23);
             this.labelX1.TabIndex = 6;
-            this.labelX1.Text = "覆蓋：將學生成績計算規則的及格標準、補考標準與成績身分，更新至學生修課及格標準、補考標準與備註欄位。";
+            this.labelX1.Text = "覆蓋：將學生成績計算規則成績身分，更新至學生備註欄位。";
+            // 
+            // colSchoolYear
+            // 
+            this.colSchoolYear.HeaderText = "學年度";
+            this.colSchoolYear.Name = "colSchoolYear";
+            this.colSchoolYear.ReadOnly = true;
+            this.colSchoolYear.Width = 70;
+            // 
+            // colSemester
+            // 
+            this.colSemester.HeaderText = "學期";
+            this.colSemester.Name = "colSemester";
+            this.colSemester.ReadOnly = true;
+            this.colSemester.Width = 60;
+            // 
+            // colCourseName
+            // 
+            this.colCourseName.HeaderText = "課程名稱";
+            this.colCourseName.Name = "colCourseName";
+            this.colCourseName.ReadOnly = true;
+            this.colCourseName.Width = 150;
+            // 
+            // colStudentName
+            // 
+            this.colStudentName.HeaderText = "姓名";
+            this.colStudentName.Name = "colStudentName";
+            this.colStudentName.ReadOnly = true;
+            // 
+            // colStudentNumber
+            // 
+            this.colStudentNumber.HeaderText = "學號";
+            this.colStudentNumber.Name = "colStudentNumber";
+            this.colStudentNumber.ReadOnly = true;
+            // 
+            // colPassingStandard
+            // 
+            this.colPassingStandard.HeaderText = "及格標準";
+            this.colPassingStandard.Name = "colPassingStandard";
+            this.colPassingStandard.ReadOnly = true;
+            this.colPassingStandard.Visible = false;
+            // 
+            // colMakeupStandard
+            // 
+            this.colMakeupStandard.HeaderText = "補考標準";
+            this.colMakeupStandard.Name = "colMakeupStandard";
+            this.colMakeupStandard.ReadOnly = true;
+            this.colMakeupStandard.Visible = false;
+            // 
+            // colRemark
+            // 
+            this.colRemark.HeaderText = "備註";
+            this.colRemark.Name = "colRemark";
+            this.colRemark.ReadOnly = true;
             // 
             // HasPassScoreForm
             // 
@@ -237,7 +239,7 @@
             this.Controls.Add(this.dgData);
             this.DoubleBuffered = true;
             this.Name = "HasPassScoreForm";
-            this.Text = "已有及格標準或補考標準學生清單";
+            this.Text = "已有備註學生清單";
             this.Load += new System.EventHandler(this.HasPassScoreForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).EndInit();
             this.ResumeLayout(false);
@@ -251,6 +253,9 @@
         private DevComponents.DotNetBar.ButtonX btnAddTemp;
         private DevComponents.DotNetBar.ButtonX btnExportList;
         private DevComponents.DotNetBar.ButtonX btnExit;
+        private DevComponents.DotNetBar.LabelX lblMsg;
+        private DevComponents.DotNetBar.ButtonX btnWrite;
+        private DevComponents.DotNetBar.LabelX labelX1;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSchoolYear;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSemester;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCourseName;
@@ -259,8 +264,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colPassingStandard;
         private System.Windows.Forms.DataGridViewTextBoxColumn colMakeupStandard;
         private System.Windows.Forms.DataGridViewTextBoxColumn colRemark;
-        private DevComponents.DotNetBar.LabelX lblMsg;
-        private DevComponents.DotNetBar.ButtonX btnWrite;
-        private DevComponents.DotNetBar.LabelX labelX1;
     }
 }

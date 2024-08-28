@@ -52,6 +52,36 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
                 semsSourceData.GradeYear = GradeYear;
                 semsSourceData = semsTransfer.GetStudentScoreDataByIDSchoolYear(semsSourceData);
 
+                bool chkSourceHasData = true;
+                // 檢查來源資料是否有資料
+                if (string.IsNullOrEmpty(semsSourceData.ScoreInfo))
+                {
+                    chkSourceHasData = false;
+                }
+                else
+                {
+                    try
+                    {
+                        XElement elmRoot = XElement.Parse(semsSourceData.ScoreInfo);
+                        if (elmRoot.Elements("Subject").Count() == 0)
+                            chkSourceHasData = false;
+                    }
+                    catch (Exception ex)
+                    {
+                        chkSourceHasData = false;
+                        Console.WriteLine(ex.Message);
+                    }
+
+                }
+
+                if (chkSourceHasData == false)
+                {
+                    MsgBox.Show("沒有學期科目成績。");
+                    btnChange.Enabled = true;
+                    return;
+                }
+
+
                 // 預計寫入資料
                 semsChangeData = new SemesterScoreData();
                 semsChangeData.StudentID = studentInfo.StudentID;
@@ -60,8 +90,10 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
                 semsChangeData.GradeYear = GradeYear;
                 semsChangeData = semsTransfer.GetStudentScoreDataByIDSchoolYear(semsChangeData);
 
+                // CT,檢查資料庫 sems_subj_scoree 有資料庫限制，StudentID+SchoolYear+Semester 是為唯一值
+
                 // 檢查要寫入是否有資料
-                if (string.IsNullOrWhiteSpace(semsChangeData.ScoreInfo))
+                if (semsSourceData.SchoolYear != semsChangeData.SchoolYear && semsSourceData.Semester != semsChangeData.Semester)
                 {
                     // 更新資料                    
                     int result = semsTransfer.UpdateStudentSemesterScoreSchoolYearBySemsID(semsSourceData.ID, ChangeSchoolYear);
@@ -90,19 +122,20 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
 
                             CurrentUser.Instance.AppLog.Write(EntityType.Student, EntityAction.Update, semsSourceData.StudentID, updateDesc.ToString(), "學期成績", "");
 
-                            // 檢查學業分項成績學年度、學期、年級是否有資料，如果沒有相同就搬過去
+                            // 檢查學業分項成績學年度、學期是否有資料，如果沒有相同就搬過去
                             int resultEntry = semsTransfer.CheckAndUpdateStudentSemesterScoreSchoolYear(semsSourceData, ChangeSchoolYear);
 
                             if (resultEntry > 0)
                             {
                                 EventHub.Instance.InvokScoreChanged(semsSourceData.StudentID);
                                 MsgBox.Show("更新資料成功");
-                                this.Close();
+                                this.DialogResult = DialogResult.Yes;
                             }
                             else
                             {
                                 MsgBox.Show("更新學期成績成功，請重新計算學期分項成績。");
                                 EventHub.Instance.InvokScoreChanged(semsSourceData.StudentID);
+                                this.DialogResult = DialogResult.Yes;
                             }
                         }
                         catch (Exception ex)
@@ -111,7 +144,8 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
                     }
                     else
                     {
-                        MsgBox.Show("更新資料失敗");
+                        this.DialogResult = DialogResult.No;
+                        MsgBox.Show("更新學生學期科目成績學年度資料失敗。");
                     }
                 }
                 else
@@ -172,7 +206,7 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
                                 // 刪除原本來源
                                 int resultDel = semsTransfer.DeleteSemesScoreBySemsID(semsSourceData.ID);
                                 EventHub.Instance.InvokScoreChanged(semsChangeData.StudentID);
-                                
+
                                 if (resultDel > 0)
                                 {
                                     MsgBox.Show("更新學期成績成功，請重新計算學期分項成績。");

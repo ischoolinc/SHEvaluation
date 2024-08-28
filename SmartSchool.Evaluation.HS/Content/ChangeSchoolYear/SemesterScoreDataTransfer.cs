@@ -30,9 +30,8 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
                 WHERE
                     ref_student_id = {0}
                     AND school_year = {1}
-                    AND semester = {2}
-                    AND grade_year = {3}
-                ", sourceData.StudentID, ChangeSchoolYear, sourceData.Semester, sourceData.GradeYear);
+                    AND semester = {2}                    
+                ", sourceData.StudentID, ChangeSchoolYear, sourceData.Semester);
 
                 QueryHelper qh = new QueryHelper();
                 DataTable dt = qh.Select(query1);
@@ -48,9 +47,8 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
                     WHERE
                         ref_student_id = {0}
                         AND school_year = {1}
-                        AND semester = {2}
-                        AND grade_year = {3}
-                ", sourceData.StudentID, sourceData.SchoolYear, sourceData.Semester, sourceData.GradeYear);
+                        AND semester = {2}                        
+                ", sourceData.StudentID, sourceData.SchoolYear, sourceData.Semester);
 
                     DataTable dtSemsEnrty = qh.Select(querySource);
 
@@ -165,9 +163,8 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
             WHERE
                 ref_student_id = {0}
                 AND school_year = {1}
-                AND semester = {2}
-                AND grade_year = {3};
-            ", data.StudentID, data.SchoolYear, data.Semester, data.GradeYear);
+                AND semester = {2} ;
+            ", data.StudentID, data.SchoolYear, data.Semester);
 
                 QueryHelper qh = new QueryHelper();
                 DataTable dt = qh.Select(query);
@@ -296,7 +293,11 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
             try
             {
                 XElement elmSource = XElement.Parse(sourceScoreInfo);
-                XElement elmChange = XElement.Parse(changeScoreInfo);
+                XElement elmChange = null;
+                if (string.IsNullOrEmpty(changeScoreInfo))
+                    elmChange = new XElement("SemesterSubjectScoreInfo");
+                else
+                    elmChange = XElement.Parse(changeScoreInfo);
 
                 foreach (XElement elm in elmSource.Elements("Subject"))
                 {
@@ -311,5 +312,43 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
             }
             return value;
         }
+
+        // 取得學生目前有成績學年度、學期、年級
+        public static Dictionary<string, string> GetStudentHasSemsScoreSchoolYearSemesterByID(string StudentID)
+        {
+            // key:SchoolYear+Semester, value: GradeYear
+            Dictionary<string, string> value = new Dictionary<string, string>();
+
+            try
+            {
+                QueryHelper qh = new QueryHelper();
+                string query = string.Format(@"
+                SELECT
+                    school_year,
+                    semester,
+                    grade_year
+                FROM
+                    sems_subj_score
+                WHERE
+                    ref_student_id = {0} 
+                ", StudentID);
+
+                DataTable dt = qh.Select(query);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string key = dr["school_year"] + "_" + dr["semester"];
+                    if (!value.ContainsKey(key))
+                        value.Add(key, dr["grade_year"] + "");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("GetStudentHasSemsScoreSchoolYearSemesterByID," + ex.Message);
+            }
+
+            return value;
+        }
+
     }
 }

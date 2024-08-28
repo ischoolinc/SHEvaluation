@@ -29,7 +29,7 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            Close();
+            this.DialogResult = DialogResult.No;
         }
 
         public void SetStudentInfo(StudentInfo studentInfo)
@@ -43,12 +43,23 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
 
             try
             {
+                // 先取得這位學生有成績學年度學期
+                Dictionary<string, string> hasSemsScoreSchoolYearSemesterDict = SemesterScoreDataTransfer.GetStudentHasSemsScoreSchoolYearSemesterByID(studentInfo.StudentID);
+
+                string ChangGradeYear = GradeYear;
+
+                string sKey = cboSchoolYear.Text + "_" + Semester;
+                if (hasSemsScoreSchoolYearSemesterDict.ContainsKey(sKey))
+                {
+                    ChangGradeYear = hasSemsScoreSchoolYearSemesterDict[sKey];
+                }
+
                 // 開啟確認視窗
                 frmChangeSemesterSchoolYearMsg fmm = new frmChangeSemesterSchoolYearMsg();
                 // 傳入來成績資料來源
                 fmm.SetSourceMessage(SourceSchoolYear, Semester, GradeYear);
                 // 傳入調整後成績學年度
-                fmm.SetChangeMessage(cboSchoolYear.Text, Semester, GradeYear);
+                fmm.SetChangeMessage(cboSchoolYear.Text, Semester, ChangGradeYear);
 
                 // 檢查來源與調整學年度是否相同，相同不處理
                 if (SourceSchoolYear == cboSchoolYear.Text)
@@ -63,16 +74,16 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
 
                 if (fmm.ShowDialog() == DialogResult.Yes)
                 {
-
+                    this.DialogResult = DialogResult.Yes;
                 }
                 else
                 {
-                    Close();
+                    this.DialogResult = DialogResult.No;
                 }
             }
             catch (Exception ex)
             {
-                MsgBox.Show(ex.Message);
+                MsgBox.Show("調整學年度過程發生錯誤：" + ex.Message);
             }
 
             btnChange.Enabled = true;
@@ -81,6 +92,7 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
         private void frmChangeSemesterSchoolYearMain_Load(object sender, EventArgs e)
         {
             this.MaximumSize = this.MinimumSize = this.Size;
+            // 傳入訊息
             labelSourceMsg.Text = SourceMessage;
 
             try

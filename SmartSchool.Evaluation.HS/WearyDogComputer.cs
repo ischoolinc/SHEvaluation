@@ -2570,10 +2570,7 @@ namespace SmartSchool.Evaluation
                         if (!score.Pass && score.SchoolYear == schoolyear)
                         {//&& subjectCalcScores.ContainsKey(score.Subject) && subjectCalcScores[score.Subject] >= applylimit
                             foreach (var schoolYearSubjectScore in var.SchoolYearSubjectScoreList)
-                            {
-                                // 2024/3/14 加入判斷，當補修成績與重修成績，不處理
-                                if (score.Detail.GetAttribute("是否補修成績") == "是" || score.Detail.GetAttribute("重修學年度") != "" || score.Detail.GetAttribute("重修學期") != "")
-                                    continue;
+                            {  
 
                                 string semesterSubject = score.Subject;
                                 if (score.Detail.GetAttribute("指定學年科目名稱") != "")

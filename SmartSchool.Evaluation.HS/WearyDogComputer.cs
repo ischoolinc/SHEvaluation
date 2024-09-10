@@ -2570,7 +2570,7 @@ namespace SmartSchool.Evaluation
                         if (!score.Pass && score.SchoolYear == schoolyear)
                         {//&& subjectCalcScores.ContainsKey(score.Subject) && subjectCalcScores[score.Subject] >= applylimit
                             foreach (var schoolYearSubjectScore in var.SchoolYearSubjectScoreList)
-                            {  
+                            {
 
                                 string semesterSubject = score.Subject;
                                 if (score.Detail.GetAttribute("指定學年科目名稱") != "")
@@ -2602,6 +2602,12 @@ namespace SmartSchool.Evaluation
                                                 score.Detail.SetAttribute("學年調整成績", "60");
                                                 break;
                                             case 2:
+                                                // 讀取學期科目成績修課及格標準，當有設定使用修課
+                                                decimal d;
+                                                if (decimal.TryParse(score.Detail.GetAttribute("修課及格標準"), out d))
+                                                {
+                                                    applylimit = d;
+                                                }
                                                 score.Detail.SetAttribute("學年調整成績", "" + applylimit);
                                                 break;
                                         }

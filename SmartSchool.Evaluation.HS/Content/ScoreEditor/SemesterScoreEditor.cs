@@ -1460,6 +1460,9 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
                         {
                             if (ssList.Count == 1)
                             {
+                                if (dataGridViewX1.Rows[e.RowIndex].IsNewRow)
+                                    dataGridViewX1.Rows.Add();
+                                
                                 SubjectInfo ss = ssList[0];
 
                                 if (ss != null)

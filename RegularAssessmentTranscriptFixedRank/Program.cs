@@ -862,7 +862,7 @@ namespace RegularAssessmentTranscriptFixedRank
                                             #region 是列印科目
                                             foreach (var sceTakeRecord in studentExamSores[studentID][subjectName].Values)
                                             {
-                                                if (sceTakeRecord != null && sceTakeRecord.SpecialCase == "")
+                                                if (sceTakeRecord != null && sceTakeRecord.ExamScore != -2)
                                                 {
                                                     if (isClac)
                                                     {
@@ -885,7 +885,7 @@ namespace RegularAssessmentTranscriptFixedRank
                                             #region 有Tag1且是排名科目
                                             foreach (var sceTakeRecord in studentExamSores[studentID][subjectName].Values)
                                             {
-                                                if (sceTakeRecord != null && sceTakeRecord.SpecialCase == "")
+                                                if (sceTakeRecord != null && sceTakeRecord.ExamScore != -2)
                                                 {
                                                     if (isClac)
                                                     {
@@ -909,7 +909,7 @@ namespace RegularAssessmentTranscriptFixedRank
                                             #region 有Tag2且是排名科目
                                             foreach (var sceTakeRecord in studentExamSores[studentID][subjectName].Values)
                                             {
-                                                if (sceTakeRecord != null && sceTakeRecord.SpecialCase == "")
+                                                if (sceTakeRecord != null && sceTakeRecord.ExamScore != -2)
                                                 {
                                                     if (isClac)
                                                     {
@@ -1353,10 +1353,28 @@ namespace RegularAssessmentTranscriptFixedRank
                                                         row["分項類別" + subjectIndex] = sceTakeRecord.Entry;
                                                         row["學分數" + subjectIndex] = sceTakeRecord.CreditDec();
 
-                                                        row["科目成績" + subjectIndex] = sceTakeRecord.SpecialCase == "" ? ("" + sceTakeRecord.ExamScore) : sceTakeRecord.SpecialCase;
-                                                        
+                                                        // 因為缺免0分或免試調整，SpecialCase="缺",Score-1,0分，Score=-2免試，空白。
+                                                        //row["科目成績" + subjectIndex] = sceTakeRecord.SpecialCase == "" ? ("" + sceTakeRecord.ExamScore) : sceTakeRecord.SpecialCase;
+                                                        if (sceTakeRecord.SpecialCase == "缺")
+                                                        {
+                                                            row["科目成績" + subjectIndex] = 0;
+                                                        }
+                                                        else
+                                                        {
+                                                            if (sceTakeRecord.ExamScore == -1)
+                                                                row["科目成績" + subjectIndex] = 0;
+                                                            else if (sceTakeRecord.ExamScore == -2)
+                                                            {
+                                                                row["科目成績" + subjectIndex] = "免";
+                                                            }
+                                                            else
+                                                            {
+                                                                row["科目成績" + subjectIndex] = sceTakeRecord.ExamScore;
+                                                            }
+                                                        }
+
                                                         // 判斷如果有缺考原因，使用缺考輸入文字與原因
-                                                        string examUseTextKey = sceTakeRecord.StudentID + "_" + sceTakeRecord.CourseID + "_" + sceTakeRecord.ExamName; 
+                                                        string examUseTextKey = sceTakeRecord.StudentID + "_" + sceTakeRecord.CourseID + "_" + sceTakeRecord.ExamName;
                                                         if (StudSceTakeInfoDict.ContainsKey(examUseTextKey))
                                                         {
                                                             row["科目成績" + subjectIndex] = StudSceTakeInfoDict[examUseTextKey].UseText;
@@ -1513,10 +1531,30 @@ namespace RegularAssessmentTranscriptFixedRank
                                                     #region 參考成績
                                                     if (studentRefExamSores.ContainsKey(studentID) && studentRefExamSores[studentID].ContainsKey(courseID))
                                                     {
-                                                        row["前次成績" + subjectIndex] =
-                                                                studentRefExamSores[studentID][courseID].SpecialCase == ""
-                                                                ? ("" + studentRefExamSores[studentID][courseID].ExamScore)
-                                                                : studentRefExamSores[studentID][courseID].SpecialCase;
+                                                        //row["前次成績" + subjectIndex] =
+                                                        //        studentRefExamSores[studentID][courseID].SpecialCase == ""
+                                                        //        ? ("" + studentRefExamSores[studentID][courseID].ExamScore)
+                                                        //        : studentRefExamSores[studentID][courseID].SpecialCase;
+
+                                                        if (studentRefExamSores[studentID][courseID].SpecialCase == "缺")
+                                                        {
+                                                            row["前次成績" + subjectIndex] = 0;
+                                                        }
+                                                        else
+                                                        {
+                                                            if (studentRefExamSores[studentID][courseID].ExamScore == -1)
+                                                            {
+                                                                row["前次成績" + subjectIndex] = 0;
+                                                            }
+                                                            else if (studentRefExamSores[studentID][courseID].ExamScore == -2)
+                                                            {
+                                                                row["前次成績" + subjectIndex] = "免";
+                                                            }
+                                                            else
+                                                            {
+                                                                row["前次成績" + subjectIndex] = studentRefExamSores[studentID][courseID].ExamScore;
+                                                            }
+                                                        }
 
                                                         // 判斷如果有缺考原因，使用缺考輸入文字與原因
                                                         string examUseTextKey = studentID + "_" + studentID + "_" + studentRefExamSores[studentID][courseID].ExamName;

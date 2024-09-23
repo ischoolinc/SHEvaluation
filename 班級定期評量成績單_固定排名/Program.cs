@@ -556,16 +556,21 @@ namespace 班級定期評量成績單_固定排名
                                             #region 是列印科目
                                             foreach (var sceTakeRecord in studentExamSores[studentID][subjectName].Values)
                                             {
-                                                if (sceTakeRecord != null && sceTakeRecord.SpecialCase == "")
+                                                if (sceTakeRecord != null && sceTakeRecord.ExamScore != -2)
                                                 {
-
-
                                                     if (isClac)
                                                     {
-                                                        printSubjectSum += sceTakeRecord.ExamScore;//計算總分
+                                                        decimal examScore = sceTakeRecord.ExamScore;
+                                                        if (examScore == -1)
+                                                            examScore = 0;
+
+                                                        if (sceTakeRecord.SpecialCase == "缺")
+                                                            examScore = 0;
+
+                                                        printSubjectSum += examScore;//計算總分
                                                         printSubjectCount++;
                                                         //計算加權總分
-                                                        printSubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
+                                                        printSubjectSumW += examScore * sceTakeRecord.CreditDec();
                                                         printSubjectCreditSum += sceTakeRecord.CreditDec();
                                                     }
 
@@ -615,15 +620,22 @@ namespace 班級定期評量成績單_固定排名
                                                 #region 有Tag1且是排名科目
                                                 foreach (var sceTakeRecord in studentExamSores[studentID][subjectName].Values)
                                                 {
-                                                    if (sceTakeRecord != null && sceTakeRecord.SpecialCase == "")
+                                                    if (sceTakeRecord != null && sceTakeRecord.ExamScore != -2)
                                                     {
                                                         // 9D 科目不計算總分與平均
                                                         if (isClac)
                                                         {
-                                                            tag1SubjectSum += sceTakeRecord.ExamScore;//計算總分
+                                                            decimal examScore = sceTakeRecord.ExamScore;
+                                                            if (examScore == -1)
+                                                                examScore = 0;
+
+                                                            if (sceTakeRecord.SpecialCase == "缺")
+                                                                examScore = 0;
+
+                                                            tag1SubjectSum += examScore;//計算總分
                                                             tag1SubjectCount++;
                                                             //計算加權總分
-                                                            tag1SubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
+                                                            tag1SubjectSumW += examScore * sceTakeRecord.CreditDec();
                                                             tag1SubjectCreditSum += sceTakeRecord.CreditDec();
 
                                                         }
@@ -657,15 +669,23 @@ namespace 班級定期評量成績單_固定排名
                                                 #region 有Tag2且是排名科目
                                                 foreach (var sceTakeRecord in studentExamSores[studentID][subjectName].Values)
                                                 {
-                                                    if (sceTakeRecord != null && sceTakeRecord.SpecialCase == "")
+                                                    if (sceTakeRecord != null && sceTakeRecord.ExamScore != -2)
                                                     {
                                                         // 9D科目不需要計算總分與平均
                                                         if (isClac)
                                                         {
-                                                            tag2SubjectSum += sceTakeRecord.ExamScore;//計算總分
+                                                            decimal examScore = sceTakeRecord.ExamScore;
+
+                                                            if (examScore == -1)
+                                                                examScore = 0;
+
+                                                            if (sceTakeRecord.SpecialCase == "缺")
+                                                                examScore = 0;
+                                                            
+                                                            tag2SubjectSum += examScore;//計算總分
                                                             tag2SubjectCount++;
                                                             //計算加權總分
-                                                            tag2SubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
+                                                            tag2SubjectSumW += examScore * sceTakeRecord.CreditDec();
                                                             tag2SubjectCreditSum += sceTakeRecord.CreditDec();
 
                                                         }
@@ -1224,14 +1244,35 @@ namespace 班級定期評量成績單_固定排名
                                                                 {
                                                                     row["校部定/必選修" + ClassStuNum + "-" + subjectIndex] = "" + scoreRequiredBy[0].ToString() + scoreRequired[0].ToString();
 
-                                                                    row["科目成績" + ClassStuNum + "-" + subjectIndex] = sceTakeRecord.SpecialCase == "" ? ("" + sceTakeRecord.ExamScore) : sceTakeRecord.SpecialCase;
+                                                                    // 因為缺免0分或免試調整，SpecialCase="缺",Score-1,0分，Score=-2免試，空白。
+                                                                    if (sceTakeRecord.SpecialCase == "缺")
+                                                                    {
+                                                                        row["科目成績" + ClassStuNum + "-" + subjectIndex] = 0;
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        if (sceTakeRecord.ExamScore == -1)
+                                                                        {
+                                                                            row["科目成績" + ClassStuNum + "-" + subjectIndex] = 0;
+                                                                        }
+                                                                        else if (sceTakeRecord.ExamScore == -2)
+                                                                        {
+                                                                            row["科目成績" + ClassStuNum + "-" + subjectIndex] = "免";
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            row["科目成績" + ClassStuNum + "-" + subjectIndex] = sceTakeRecord.ExamScore;
+                                                                        }
+                                                                    }
+
+                                                                    //row["科目成績" + ClassStuNum + "-" + subjectIndex] = sceTakeRecord.SpecialCase == "" ? ("" + sceTakeRecord.ExamScore) : sceTakeRecord.SpecialCase;
 
                                                                     // 判斷如果有缺考原因，使用缺考輸入文字與原因
                                                                     string examUseTextKey = sceTakeRecord.StudentID + "_" + sceTakeRecord.CourseID + "_" + sceTakeRecord.ExamName;
                                                                     if (StudSceTakeInfoDict.ContainsKey(examUseTextKey))
                                                                     {
                                                                         row["科目成績" + ClassStuNum + "-" + subjectIndex] = StudSceTakeInfoDict[examUseTextKey].UseText;
-                                              
+
                                                                         row["科目缺考原因" + ClassStuNum + "-" + subjectIndex] = StudSceTakeInfoDict[examUseTextKey].ReportValue;
                                                                     }
 
@@ -1383,10 +1424,31 @@ namespace 班級定期評量成績單_固定排名
                                                             #region 參考成績
                                                             if (studentRefExamSores.ContainsKey(studentID) && studentRefExamSores[studentID].ContainsKey(courseID))
                                                             {
-                                                                row["前次成績" + ClassStuNum + "-" + subjectIndex] =
-                                                                        studentRefExamSores[studentID][courseID].SpecialCase == ""
-                                                                        ? ("" + studentRefExamSores[studentID][courseID].ExamScore)
-                                                                        : studentRefExamSores[studentID][courseID].SpecialCase;
+
+                                                                if (studentRefExamSores[studentID][courseID].SpecialCase == "缺")
+                                                                {
+                                                                    row["前次成績" + ClassStuNum + "-" + subjectIndex] = 0;
+                                                                }
+                                                                else
+                                                                {
+                                                                    if (studentRefExamSores[studentID][courseID].ExamScore == -1)
+                                                                    {
+                                                                        row["前次成績" + ClassStuNum + "-" + subjectIndex] = 0;
+                                                                    }
+                                                                    else if (studentRefExamSores[studentID][courseID].ExamScore == -2)
+                                                                    {
+                                                                        row["前次成績" + ClassStuNum + "-" + subjectIndex] = "免";
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        row["前次成績" + ClassStuNum + "-" + subjectIndex] = studentRefExamSores[studentID][courseID].ExamScore;
+                                                                    }
+                                                                }
+
+                                                                //row["前次成績" + ClassStuNum + "-" + subjectIndex] =
+                                                                //        studentRefExamSores[studentID][courseID].SpecialCase == ""
+                                                                //        ? ("" + studentRefExamSores[studentID][courseID].ExamScore)
+                                                                //        : studentRefExamSores[studentID][courseID].SpecialCase;
 
                                                                 // 判斷如果有缺考原因，使用缺考輸入文字與原因
                                                                 string examUseTextKey = studentID + "_" + studentID + "_" + studentRefExamSores[studentID][courseID].ExamName;

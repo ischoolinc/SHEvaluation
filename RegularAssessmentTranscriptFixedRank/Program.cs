@@ -866,10 +866,18 @@ namespace RegularAssessmentTranscriptFixedRank
                                                 {
                                                     if (isClac)
                                                     {
-                                                        printSubjectSum += sceTakeRecord.ExamScore;//計算總分
+                                                        decimal examScore = sceTakeRecord.ExamScore;
+
+                                                        if (examScore == -1)
+                                                            examScore = 0;
+                                                                                                              
+                                                        if (sceTakeRecord.SpecialCase == "缺")
+                                                            examScore = 0;
+
+                                                        printSubjectSum += examScore;//計算總分
                                                         printSubjectCount++;
                                                         //計算加權總分 - 2014/10/9 改為decimal
-                                                        printSubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
+                                                        printSubjectSumW += examScore * sceTakeRecord.CreditDec();
                                                         printSubjectCreditSum += sceTakeRecord.CreditDec();
                                                     }
                                                 }
@@ -889,10 +897,18 @@ namespace RegularAssessmentTranscriptFixedRank
                                                 {
                                                     if (isClac)
                                                     {
-                                                        tag1SubjectSum += sceTakeRecord.ExamScore;//計算總分
+                                                        decimal examScore = sceTakeRecord.ExamScore;
+
+                                                        if (examScore == -1)
+                                                            examScore = 0;
+
+                                                        if (sceTakeRecord.SpecialCase == "缺")
+                                                            examScore = 0;
+
+                                                        tag1SubjectSum += examScore;//計算總分
                                                         tag1SubjectCount++;
                                                         //計算加權總分
-                                                        tag1SubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
+                                                        tag1SubjectSumW += examScore * sceTakeRecord.CreditDec();
                                                         tag1SubjectCreditSum += sceTakeRecord.CreditDec();
                                                     }
 
@@ -913,10 +929,18 @@ namespace RegularAssessmentTranscriptFixedRank
                                                 {
                                                     if (isClac)
                                                     {
-                                                        tag2SubjectSum += sceTakeRecord.ExamScore;//計算總分
+                                                        decimal examScore = sceTakeRecord.ExamScore;
+
+                                                        if (examScore == -1)
+                                                            examScore = 0;
+
+                                                        if (sceTakeRecord.SpecialCase == "缺")
+                                                            examScore = 0;
+                                                        
+                                                        tag2SubjectSum += examScore;//計算總分
                                                         tag2SubjectCount++;
                                                         //計算加權總分
-                                                        tag2SubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
+                                                        tag2SubjectSumW += examScore * sceTakeRecord.CreditDec();
                                                         tag2SubjectCreditSum += sceTakeRecord.CreditDec();
                                                     }
                                                 }

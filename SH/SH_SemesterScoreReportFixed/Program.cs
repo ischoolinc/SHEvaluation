@@ -616,7 +616,7 @@ namespace SH_SemesterScoreReportFixed
                 table.Columns.Add("科別人數");
                 table.Columns.Add("年級人數");
 
-                                #endregion
+                #endregion
                 //宣告產生的報表
                 Aspose.Words.Document document = new Aspose.Words.Document();
                 //用一個BackgroundWorker包起來
@@ -714,7 +714,7 @@ namespace SH_SemesterScoreReportFixed
 
                     // 學生評量缺考資料
                     Dictionary<string, SHStudentExamExtension.DAO.StudSceTakeInfo> StudSceTakeInfoDict = new Dictionary<string, SHStudentExamExtension.DAO.StudSceTakeInfo>();
-                    
+
                     Dictionary<string, Dictionary<string, Dictionary<string, ExamScoreInfo>>> studentExamSores = new Dictionary<string, Dictionary<string, Dictionary<string, ExamScoreInfo>>>();
                     Dictionary<string, Dictionary<string, ExamScoreInfo>> studentRefExamSores = new Dictionary<string, Dictionary<string, ExamScoreInfo>>();
                     //課程上指定學年科目名稱(KEY: courseID,)
@@ -839,12 +839,12 @@ namespace SH_SemesterScoreReportFixed
                             // 拿掉 conf.WithSchoolYearScore 判斷，因為學校只有學期不需要學年成績
                             if (sSemester == 2)
                             {
-                                accessHelper.StudentHelper.FillSchoolYearEntryScore(true, studentRecords);
-                                accessHelper.StudentHelper.FillSchoolYearSubjectScore(true, studentRecords);
+                                accessHelper.StudentHelper.FillSchoolYearEntryScore(false, studentRecords);
+                                accessHelper.StudentHelper.FillSchoolYearSubjectScore(false, studentRecords);
                             }
-                            accessHelper.StudentHelper.FillSemesterEntryScore(true, studentRecords);
-                            accessHelper.StudentHelper.FillSemesterSubjectScore(true, studentRecords);
-                            accessHelper.StudentHelper.FillSemesterMoralScore(true, studentRecords);
+                            accessHelper.StudentHelper.FillSemesterEntryScore(false, studentRecords);
+                            accessHelper.StudentHelper.FillSemesterSubjectScore(false, studentRecords);
+                            accessHelper.StudentHelper.FillSemesterMoralScore(false, studentRecords);
                             //accessHelper.StudentHelper.FillField("SemesterEntryClassRating", studentRecords);
                             accessHelper.StudentHelper.FillField("SchoolYearEntryClassRating", studentRecords);
 
@@ -1118,15 +1118,22 @@ namespace SH_SemesterScoreReportFixed
                                         #region 是列印科目
                                         foreach (var sceTakeRecord in studentExamSores[studentID][subjectName].Values)
                                         {
-                                            if (sceTakeRecord != null && sceTakeRecord.SpecialCase == "")
+                                            if (sceTakeRecord != null && sceTakeRecord.ExamScore != -2)
                                             {
 
                                                 if (isClac)
                                                 {
-                                                    printSubjectSum += sceTakeRecord.ExamScore;//計算總分
+                                                    decimal examScore = sceTakeRecord.ExamScore;
+                                                    if (sceTakeRecord.SpecialCase == "缺")
+                                                        examScore = 0;
+                                                    
+                                                    if (examScore == -1)
+                                                        examScore = 0;
+
+                                                    printSubjectSum += examScore;//計算總分
                                                     printSubjectCount++;
                                                     //計算加權總分
-                                                    printSubjectSumW += sceTakeRecord.ExamScore * sceTakeRecord.CreditDec();
+                                                    printSubjectSumW += examScore * sceTakeRecord.CreditDec();
                                                     printSubjectCreditSum += sceTakeRecord.CreditDec();
                                                 }
 
@@ -2264,7 +2271,29 @@ namespace SH_SemesterScoreReportFixed
                                                                 row["科目校部定/科目必選修" + subjectIndex] = "" + requiredBy[0] + required[0];
                                                                 row["學分數" + subjectIndex] = sceTakeRecord.CreditDec();
                                                             }
-                                                            row["科目成績" + subjectIndex] = sceTakeRecord.SpecialCase == "" ? ("" + sceTakeRecord.ExamScore) : sceTakeRecord.SpecialCase;
+
+                                                            // 因為缺免0分或免試調整，SpecialCase="缺",Score-1,0分，Score=-2免試，空白。
+                                                            if (sceTakeRecord.SpecialCase == "缺")
+                                                            {
+                                                                row["科目成績" + subjectIndex] = 0;
+                                                            }
+                                                            else
+                                                            {
+                                                                if (sceTakeRecord.ExamScore == -1)
+                                                                {
+                                                                    row["科目成績" + subjectIndex] = 0;
+                                                                }
+                                                                else if (sceTakeRecord.ExamScore == -2)
+                                                                {
+                                                                    row["科目成績" + subjectIndex] = "免";
+                                                                }
+                                                                else
+                                                                {
+                                                                    row["科目成績" + subjectIndex] = sceTakeRecord.ExamScore;
+                                                                }
+                                                            }
+
+                                                            //row["科目成績" + subjectIndex] = sceTakeRecord.SpecialCase == "" ? ("" + sceTakeRecord.ExamScore) : sceTakeRecord.SpecialCase;
 
                                                             // 判斷如果有缺考原因，使用缺考輸入文字與原因
                                                             string examUseTextKey = sceTakeRecord.StudentID + "_" + sceTakeRecord.CourseID + "_" + sceTakeRecord.ExamName;
@@ -2491,10 +2520,30 @@ namespace SH_SemesterScoreReportFixed
                                                     }
                                                     if (studentRefExamSores.ContainsKey(studentID) && studentRefExamSores[studentID].ContainsKey(courseID))
                                                     {
-                                                        row["前次成績" + subjectIndex] =
-                                                            studentRefExamSores[studentID][courseID].SpecialCase == ""
-                                                            ? ("" + studentRefExamSores[studentID][courseID].ExamScore)
-                                                            : studentRefExamSores[studentID][courseID].SpecialCase;
+
+                                                        if (studentRefExamSores[studentID][courseID].SpecialCase == "缺")
+                                                        {
+                                                            row["前次成績" + subjectIndex] = 0;
+                                                        }
+                                                        else
+                                                        {
+                                                            if (studentRefExamSores[studentID][courseID].ExamScore == -1)
+                                                            {
+                                                                row["前次成績" + subjectIndex] = 0;
+                                                            }
+                                                            else if (studentRefExamSores[studentID][courseID].ExamScore == -2)
+                                                            {
+                                                                row["前次成績" + subjectIndex] = "免";
+                                                            }
+                                                            else
+                                                            {
+                                                                row["前次成績" + subjectIndex] = studentRefExamSores[studentID][courseID].ExamScore;
+                                                            }
+                                                        }
+                                                        //row["前次成績" + subjectIndex] =
+                                                        //    studentRefExamSores[studentID][courseID].SpecialCase == ""
+                                                        //    ? ("" + studentRefExamSores[studentID][courseID].ExamScore)
+                                                        //    : studentRefExamSores[studentID][courseID].SpecialCase;
 
                                                         // 判斷如果有缺考原因，使用缺考輸入文字與原因
                                                         string examUseTextKey = studentID + "_" + studentID + "_" + studentRefExamSores[studentID][courseID].ExamName;
@@ -3902,7 +3951,7 @@ namespace SH_SemesterScoreReportFixed
 
 
                             #endregion
-                            
+
                             // 處理人數統計
                             if (stuRec.RefClass != null)
                             {
@@ -3947,7 +3996,7 @@ namespace SH_SemesterScoreReportFixed
                             table.Rows.Add(row);
                             progressCount++;
                             bkw.ReportProgress(70 + progressCount * 20 / selectedStudents.Count);
-                            
+
                             table.TableName = "test";
                             table.WriteXml(Application.StartupPath + "\\debug.xml");
                         }

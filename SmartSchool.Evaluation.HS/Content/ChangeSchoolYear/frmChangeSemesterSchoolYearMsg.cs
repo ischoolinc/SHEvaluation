@@ -176,8 +176,17 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
                     {
                         // 沒有重複資料，直接接續寫入
                         semsChangeData.ScoreInfo = semsTransfer.AppendScoreData(semsSourceData.ScoreInfo, semsChangeData.ScoreInfo);
+                        int result = 0;
+                        // 判斷id是否存在
+                        if (semsChangeData.ID == null)
+                        {
+                            result = semsTransfer.InsertData(semsChangeData);
+                        }
+                        else
+                        {
+                            result = semsTransfer.UpdateScoreDataBySemesScoreID(semsChangeData);
+                        }
 
-                        int result = semsTransfer.UpdateScoreDataBySemesScoreID(semsChangeData);
                         if (result > 0)
                         {
                             // log 

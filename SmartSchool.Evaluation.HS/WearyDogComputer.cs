@@ -2567,6 +2567,13 @@ namespace SmartSchool.Evaluation
                         applylimit = applyLimit[(int)gradeyear];
                     foreach (SemesterSubjectScoreInfo score in var.SemesterSubjectScoreList)
                     {
+                        // CT,2024/10/15，當學期科目成績 是否補修 = "是"，略過不處理
+                        // 因工單：系統功能修改 事由[多校]計算學年調整成績時未排除補修成績判斷
+                        //https://3.basecamp.com/4399967/buckets/15765350/todos/7916166121
+
+                        if (score.Detail.GetAttribute("是否補修成績") == "是")
+                            continue;
+
                         if (!score.Pass && score.SchoolYear == schoolyear)
                         {//&& subjectCalcScores.ContainsKey(score.Subject) && subjectCalcScores[score.Subject] >= applylimit
                             foreach (var schoolYearSubjectScore in var.SchoolYearSubjectScoreList)

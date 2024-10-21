@@ -1227,7 +1227,7 @@ namespace StudentDuplicateSubjectCheck
 	LEFT JOIN class ON student.ref_class_id =class.id  
 	LEFT JOIN course ON sc_attend.ref_course_id =course.id  
 	WHERE 
-	student.status ='1' 
+	student.status IN (1,2) 
 	AND course.school_year = '{0}'
     AND course.semester = '{1}'
     AND class.grade_year = '{2}'

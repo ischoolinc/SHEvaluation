@@ -2636,6 +2636,13 @@ namespace SmartSchool.Evaluation
             return _ErrorList;
         }
 
+        public enum GradScoreCalcMode
+        {
+            SubjectWeighted,      // 學期科目成績加權
+            SemesterEntryAverage, // 學期分項成績平均
+            SchoolYearEntryAverage // 學年分項成績平均
+        }
+
         /// <summary>
         /// 計算學生畢業成績
         /// </summary>
@@ -2648,6 +2655,8 @@ namespace SmartSchool.Evaluation
             //抓成績資料
             accesshelper.StudentHelper.FillSemesterSubjectScore(true, students);
             accesshelper.StudentHelper.FillSemesterEntryScore(true, students);
+            accesshelper.StudentHelper.FillSchoolYearEntryScore(true, students); // 新增學年分項成績提取
+
             foreach (StudentRecord var in students)
             {
                 //可以計算(表示需要的資料都有)
@@ -2658,8 +2667,9 @@ namespace SmartSchool.Evaluation
                 RoundMode mode = RoundMode.四捨五入;
                 //計算資料採用課程規劃(預設採用課程規劃)
                 bool useGPlan = true;
-                //畢業成績使用所有科目成績加權計算(預設為否=>使用分項成績平均 )
-                bool useSubjectAdv = false;
+                ////畢業成績使用所有科目成績加權計算(預設為否=>使用分項成績平均 )
+                //bool useSubjectAdv = false;
+                GradScoreCalcMode calcMode = GradScoreCalcMode.SubjectWeighted; // 預設為科目加權
 
                 XmlElement scoreCalcRule = ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var.StudentID) == null ? null : ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var.StudentID).ScoreCalcRuleElement;
                 if (scoreCalcRule == null)
@@ -2709,7 +2719,27 @@ namespace SmartSchool.Evaluation
                     #region 處理畢業成績計算規則
                     if (scoreCalcRule.SelectSingleNode("畢業成績計算規則") != null)
                     {
-                        useSubjectAdv = scoreCalcRule.SelectSingleNode("畢業成績計算規則").InnerText == "學期科目成績加權";
+                        //useSubjectAdv = scoreCalcRule.SelectSingleNode("畢業成績計算規則").InnerText == "學期科目成績加權";
+
+                        string modeText = scoreCalcRule.SelectSingleNode("畢業成績計算規則").InnerText;
+                        switch (modeText)
+                        {
+                            case "學期科目成績加權":
+                                calcMode = GradScoreCalcMode.SubjectWeighted;
+                                break;
+                            case "學期分項成績平均":
+                                calcMode = GradScoreCalcMode.SemesterEntryAverage;
+                                break;
+                            case "學年分項成績平均":
+                                calcMode = GradScoreCalcMode.SchoolYearEntryAverage;
+                                break;
+                            default:
+                                if (!_ErrorList.ContainsKey(var))
+                                    _ErrorList.Add(var, new List<string>());
+                                _ErrorList[var].Add("畢業成績計算模式設定無效。");
+                                canCalc &= false;
+                                break;
+                        }
                     }
                     #endregion
                 }
@@ -2722,7 +2752,7 @@ namespace SmartSchool.Evaluation
                     Dictionary<string, decimal> entryCount = new Dictionary<string, decimal>();
                     Dictionary<string, decimal> entrySum = new Dictionary<string, decimal>();
                     //使用所有科目成績加權計算畢業成績(學業)
-                    if (useSubjectAdv)
+                    if (calcMode == GradScoreCalcMode.SubjectWeighted)
                     {
                         #region 使用所有科目成績加權計算畢業成績(總分及總數)
                         decimal creditCount = 0;
@@ -2798,13 +2828,14 @@ namespace SmartSchool.Evaluation
                         }
                         #endregion
                     }
-                    //計算各分項畢業成績(總分及總數)
-                    foreach (SemesterEntryScoreInfo entryScore in var.SemesterEntryScoreList)
+                    else if (calcMode == GradScoreCalcMode.SemesterEntryAverage)
                     {
-                        #region 計算各分項畢業成績
-                        //if (entryScore.Entry != "學業" || !useSubjectAdv)//其它分項或者是學業分項但不使用科目成績加權
-                        if (!useSubjectAdv)//其它分項或者是學業分項但不使用科目成績加權
+                        //計算各分項畢業成績(總分及總數)
+                        foreach (SemesterEntryScoreInfo entryScore in var.SemesterEntryScoreList)
                         {
+                            #region 計算各分項畢業成績
+                            //if (entryScore.Entry != "學業" || !useSubjectAdv)//其它分項或者是學業分項但不使用科目成績加權
+
                             if (!entryCount.ContainsKey(entryScore.Entry))
                                 entryCount.Add(entryScore.Entry, 0);
                             if (!entrySum.ContainsKey(entryScore.Entry))
@@ -2812,9 +2843,27 @@ namespace SmartSchool.Evaluation
 
                             entryCount[entryScore.Entry]++;
                             entrySum[entryScore.Entry] += entryScore.Score;
+
+                            #endregion
+                        }
+                    }
+                    else if (calcMode == GradScoreCalcMode.SchoolYearEntryAverage)
+                    {
+                        #region 學年分項成績平均
+                        foreach (SchoolYearEntryScoreInfo schoolYearScore in var.SchoolYearEntryScoreList)
+                        {
+                            if (!entryCount.ContainsKey(schoolYearScore.Entry))
+                                entryCount.Add(schoolYearScore.Entry, 0);
+                            if (!entrySum.ContainsKey(schoolYearScore.Entry))
+                                entrySum.Add(schoolYearScore.Entry, 0);
+
+                            entryCount[schoolYearScore.Entry]++;
+                            entrySum[schoolYearScore.Entry] += schoolYearScore.Score;
                         }
                         #endregion
                     }
+
+
                     //計算&填入分項畢業成績
                     foreach (string entry in entryCount.Keys)
                     {

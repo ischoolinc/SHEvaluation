@@ -608,11 +608,22 @@ namespace SmartSchool.Evaluation.Configuration
             element = (XmlElement)_scrContent.SelectSingleNode("畢業成績計算規則");
             if (element != null)
             {
+                radioButton23.Checked = radioButton24.Checked = radioButton25.Checked = false;
+
+                //if (element.InnerText == "學期科目成績加權")
+                //    radioButton23.Checked = true;
+                //else
+                //    radioButton24.Checked = true;
+
                 if (element.InnerText == "學期科目成績加權")
                     radioButton23.Checked = true;
-                else
+
+                if (element.InnerText == "學期分項成績平均")
                     radioButton24.Checked = true;
 
+                if (element.InnerText == "學年分項成績平均")
+                    radioButton25.Checked = true;
+                
                 //學年學業成績及格(new)
                 if (element.GetAttribute("學年學業成績及格") == "true")
                     checkBoxX7.Checked = true;
@@ -737,7 +748,7 @@ namespace SmartSchool.Evaluation.Configuration
             }
             lVCourseCodeDomainSpec.Items.Clear();
 
-            foreach(string key in CousreDomainCodeDict.Keys)
+            foreach (string key in CousreDomainCodeDict.Keys)
             {
                 ListViewItem item = new ListViewItem();
                 item.Text = CousreDomainCodeDict[key];
@@ -749,7 +760,7 @@ namespace SmartSchool.Evaluation.Configuration
 
                 lVCourseCodeDomainSpec.Items.Add(item);
             }
-            
+
 
             #endregion
 
@@ -983,7 +994,19 @@ namespace SmartSchool.Evaluation.Configuration
             #endregion
             #region 畢業成績計算規則
             parentelement = doc.CreateElement("畢業成績計算規則");
-            parentelement.InnerText = radioButton24.Checked ? "學期分項成績平均" : "學期科目成績加權";
+            // parentelement.InnerText = radioButton24.Checked ? "學期分項成績平均" : "學期科目成績加權";
+
+            parentelement.InnerText = "";
+            // 新增 學年分項成績平均
+            if (radioButton23.Checked)
+                parentelement.InnerText = "學期科目成績加權";
+
+            if (radioButton24.Checked)
+                parentelement.InnerText = "學期分項成績平均";
+
+            if (radioButton25.Checked)
+                parentelement.InnerText = "學年分項成績平均";
+
             if (checkBoxX7.Checked)
                 parentelement.SetAttribute("學年學業成績及格", "true");
             else
@@ -1097,7 +1120,7 @@ namespace SmartSchool.Evaluation.Configuration
             element.InnerText = strProfessionalSubjectTableName;
             parentelement.AppendChild(element);
             doc.DocumentElement.AppendChild(parentelement);
-            
+
             #region 特殊需求領域排除領域代碼
             parentelement = doc.CreateElement("特殊需求領域排除領域代碼");
             foreach (ListViewItem var in lVCourseCodeDomainSpec.CheckedItems)
@@ -1142,7 +1165,7 @@ namespace SmartSchool.Evaluation.Configuration
             if (e.RowIndex > -1 && e.ColumnIndex > -1)
             {
                 if (e.ColumnIndex > 0)
-                {                    
+                {
                     dataGridViewX1.ImeMode = ImeMode.Off;
                 }
             }

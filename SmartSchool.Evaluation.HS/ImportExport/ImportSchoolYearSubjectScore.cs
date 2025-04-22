@@ -92,7 +92,7 @@ namespace SmartSchool.Evaluation.ImportExport
                     _StudentSchoolYearGradeYearCollection.Add(stu.StudentID, new Dictionary<int, int>());
                     foreach (SemesterSubjectScoreInfo semescore in stu.SemesterSubjectScoreList)
                     {
-                        //統計此學年中學期科目成績中所包含的科目
+                        //統計此學年中學年科目成績中所包含的科目
                         if (!_StudentSchoolYearSubjectCollection[stu.StudentID].ContainsKey(semescore.SchoolYear))
                             _StudentSchoolYearSubjectCollection[stu.StudentID].Add(semescore.SchoolYear, new List<string>());
                         if (!_StudentSchoolYearSubjectCollection[stu.StudentID][semescore.SchoolYear].Contains(semescore.Subject))
@@ -105,7 +105,7 @@ namespace SmartSchool.Evaluation.ImportExport
 
                             _StudentSchoolYearSubjectCollection[stu.StudentID][semescore.SchoolYear].Add(subject);
                         }
-                        //填入學期科目成績的成績年級資料
+                        //填入學年科目成績的成績年級資料
                         if (!_StudentSchoolYearGradeYearCollection[stu.StudentID].ContainsKey(semescore.SchoolYear))
                             _StudentSchoolYearGradeYearCollection[stu.StudentID].Add(semescore.SchoolYear, semescore.GradeYear);
                     }
@@ -217,7 +217,7 @@ namespace SmartSchool.Evaluation.ImportExport
                         foreach (string field in new string[] { "科目", "學年度", "成績年級" })
                         {
                             if (!e.SelectFields.Contains(field))
-                                message += (message == "" ? "發現此學期無此科目，\n將會新增成績\n缺少成績必要欄位" : "、") + field;
+                                message += (message == "" ? "發現此學年無此科目，\n將會新增成績\n缺少成績必要欄位" : "、") + field;
                         }
                         bool hasScoreField = false;
                         foreach (string field in new string[] { "結算成績", "補考成績", "重修成績" })
@@ -227,7 +227,7 @@ namespace SmartSchool.Evaluation.ImportExport
                         }
                         if (!hasScoreField)
                         {
-                            message += (message == "" ? "發現此學期無此科目，\n將會新增成績\n缺少成績必要欄位" : "、") + "(結算成績、補考成績、重修成績 擇一)";
+                            message += (message == "" ? "發現此學年無此科目，\n將會新增成績\n缺少成績必要欄位" : "、") + "(結算成績、補考成績、重修成績 擇一)";
                         }
                         if (message != "")
                             errorMessage += (errorMessage == "" ? "" : "\n") + message;
@@ -239,18 +239,18 @@ namespace SmartSchool.Evaluation.ImportExport
                         _ID_SchoolYear_Subject.Add(key, new List<string>());
                     if (_ID_SchoolYear_Subject[key].Contains(skey))
                     {
-                        errorMessage += (errorMessage == "" ? "" : "\n") + "同一學期不允許多筆相同科目資料";
+                        errorMessage += (errorMessage == "" ? "" : "\n") + "同一學年不允許多筆相同科目資料";
                     }
                     else
                         _ID_SchoolYear_Subject[key].Add(skey);
                     #endregion
-                    #region 檢查學期成績包含此科目
+                    #region 檢查學年成績包含此科目
                     if (!_StudentSchoolYearSubjectCollection[e.Data.ID].ContainsKey((int)sy) || !_StudentSchoolYearSubjectCollection[e.Data.ID][(int)sy].Contains(subject))
                     {
                         if (!e.WarningFields.ContainsKey("科目"))
-                            e.WarningFields.Add("科目", "在此學年的學生學期科目成績中，查無此科目的成績。");
+                            e.WarningFields.Add("科目", "在此學年的學生學年科目成績中，查無此科目的成績。");
                         else
-                            e.WarningFields["科目"] += "、" + "在此學年的學生學期科目成績中，查無此科目的成績。";
+                            e.WarningFields["科目"] += "、" + "在此學年的學生學年科目成績中，查無此科目的成績。";
                     }
                     #endregion
                     if (e.SelectFields.Contains("成績年級"))
@@ -262,14 +262,14 @@ namespace SmartSchool.Evaluation.ImportExport
                             if (info.SchoolYear == sy && info.GradeYear != gy)
                             {
                                 if (!e.WarningFields.ContainsKey("成績年級"))
-                                    e.WarningFields.Add("成績年級", "修改成績年級資訊將會改變此學生在該學期的所有學年成績的成績年級");
+                                    e.WarningFields.Add("成績年級", "修改成績年級資訊將會改變此學生在該學年的所有學年成績的成績年級");
                                 else
-                                    e.WarningFields["成績年級"] += "、" + "修改成績年級資訊將會改變此學生在該學期的所有學年成績的成績年級";
+                                    e.WarningFields["成績年級"] += "、" + "修改成績年級資訊將會改變此學生在該學年的所有學年成績的成績年級";
                                 break;
                             }
                         }
                         #endregion
-                        #region 驗證同學期在匯入資料中成績年級會相同
+                        #region 驗證同學年在匯入資料中成績年級會相同
 
                         if (!_ID_SchoolYear_GradeYear.ContainsKey(key))
                             _ID_SchoolYear_GradeYear.Add(key, gy);
@@ -284,7 +284,7 @@ namespace SmartSchool.Evaluation.ImportExport
                             }
                         }
                         #endregion
-                        #region 驗證成績年級與學期成績相同
+                        #region 驗證成績年級與學年成績相同
                         if (_StudentSchoolYearGradeYearCollection[e.Data.ID].ContainsKey((int)sy) && _StudentSchoolYearGradeYearCollection[e.Data.ID][(int)sy] != gy)
                         {
                             if (!e.WarningFields.ContainsKey("成績年級"))
@@ -323,7 +323,7 @@ namespace SmartSchool.Evaluation.ImportExport
             {
                 XmlDocument doc = new XmlDocument();
                 StudentRecord studentRec = _StudentCollection[id];
-                //該學生的學期學年成績
+                //該學生的學年學年成績
                 Dictionary<int, Dictionary<string, SchoolYearSubjectScoreInfo>> schoolYearScoreDictionary = new Dictionary<int, Dictionary<string, SchoolYearSubjectScoreInfo>>();
                 Dictionary<int, string> schoolYearScoreID = new Dictionary<int, string>();
                 Dictionary<int, string> scoreID = (Dictionary<int, string>)studentRec.Fields["SchoolYearSubjectScoreID"];
@@ -340,7 +340,7 @@ namespace SmartSchool.Evaluation.ImportExport
                         schoolYearScoreID.Add(var.SchoolYear, scoreID[var.SchoolYear]);
                 }
                 #endregion
-                //要匯入的學期學年成績
+                //要匯入的學年學年成績
                 Dictionary<int, Dictionary<string, RowData>> schoolYearImportScoreDictionary = new Dictionary<int, Dictionary<string, RowData>>();
                 #region 整理要匯入的資料
                 foreach (RowData row in id_Rows[id])
@@ -359,13 +359,13 @@ namespace SmartSchool.Evaluation.ImportExport
                 }
                 #endregion
 
-                //學期年級重整
+                //學年年級重整
                 Dictionary<int, int> schoolYearGradeYear = new Dictionary<int, int>();
-                //要變更成績的學期
+                //要變更成績的學年
                 List<int> updatedSchoolYear = new List<int>();
-                //在變更學期中新增加的成績資料
+                //在變更學年中新增加的成績資料
                 Dictionary<int, List<RowData>> updatedNewSchoolYearScore = new Dictionary<int, List<RowData>>();
-                //要增加成績的學期
+                //要增加成績的學年
                 Dictionary<int, List<RowData>> insertNewSchoolYearScore = new Dictionary<int, List<RowData>>();
                 //開始處理ImportScore
                 #region 開始處理ImportScore
@@ -374,13 +374,13 @@ namespace SmartSchool.Evaluation.ImportExport
                     foreach (string key in schoolYearImportScoreDictionary[sy].Keys)
                     {
                         RowData data = schoolYearImportScoreDictionary[sy][key];
-                        //如果是本來沒有這筆學期的成績就加到insertNewSemesterScore
+                        //如果是本來沒有這筆學年的成績就加到insertNewSemesterScore
                         if (!schoolYearScoreDictionary.ContainsKey(sy))
                         {
                             if (!insertNewSchoolYearScore.ContainsKey(sy))
                                 insertNewSchoolYearScore.Add(sy, new List<RowData>());
                             insertNewSchoolYearScore[sy].Add(data);
-                            //加入學期年級
+                            //加入學年年級
                             int gy = int.Parse(data["成績年級"]);
                             if (!schoolYearGradeYear.ContainsKey(sy))
                                 schoolYearGradeYear.Add(sy, gy);
@@ -394,7 +394,7 @@ namespace SmartSchool.Evaluation.ImportExport
                             if (schoolYearScoreDictionary[sy].ContainsKey(key))
                             {
                                 SchoolYearSubjectScoreInfo score = schoolYearScoreDictionary[sy][key];
-                                #region 填入此學期的年級資料
+                                #region 填入此學年的年級資料
                                 if (!schoolYearGradeYear.ContainsKey(sy))
                                     schoolYearGradeYear.Add(sy, score.GradeYear);
                                 #endregion
@@ -436,15 +436,15 @@ namespace SmartSchool.Evaluation.ImportExport
                                 score.Detail.SetAttribute("學年成績", "" + topScore);
                                 #endregion
                             }
-                            else//加入新成績至已存在的學期
+                            else//加入新成績至已存在的學年
                             {
-                                //加入學期年級
+                                //加入學年年級
                                 int gy = int.Parse(data["成績年級"]);
                                 if (!schoolYearGradeYear.ContainsKey(sy))
                                     schoolYearGradeYear.Add(sy, gy);
                                 else
                                     schoolYearGradeYear[sy] = gy;
-                                //加入新成績至已存在的學期
+                                //加入新成績至已存在的學年
                                 if (!updatedNewSchoolYearScore.ContainsKey(sy))
                                     updatedNewSchoolYearScore.Add(sy, new List<RowData>());
                                 updatedNewSchoolYearScore[sy].Add(data);
@@ -453,7 +453,7 @@ namespace SmartSchool.Evaluation.ImportExport
                             //真的有變更
                             if (hasChanged)
                             {
-                                #region 登錄有變更的學期
+                                #region 登錄有變更的學年
                                 if (!updatedSchoolYear.Contains(sy))
                                     updatedSchoolYear.Add(sy);
                                 #endregion
@@ -462,14 +462,14 @@ namespace SmartSchool.Evaluation.ImportExport
                     }
                 }
                 #endregion
-                //處理已登錄要更新的學期成績
-                #region 處理已登錄要更新的學期成績
+                //處理已登錄要更新的學年成績
+                #region 處理已登錄要更新的學年成績
                 foreach (int sy in updatedSchoolYear)
                 {
                     string scoreid = schoolYearScoreID[sy];//從學年抓ID
                     string gradeyear = "" + schoolYearGradeYear[sy];//抓年級
                     XmlElement subjectScoreInfo = doc.CreateElement("SchoolYearSubjectScore");
-                    #region 產生該學期學年成績的XML
+                    #region 產生該學年學年成績的XML
                     foreach (SchoolYearSubjectScoreInfo scoreInfo in schoolYearScoreDictionary[sy].Values)
                     {
                         subjectScoreInfo.AppendChild(doc.ImportNode(scoreInfo.Detail, true));
@@ -518,8 +518,8 @@ namespace SmartSchool.Evaluation.ImportExport
                     updateList.Add(new SmartSchool.Feature.Score.EditScore.UpdateInfo(scoreid, gradeyear, subjectScoreInfo));
                 }
                 #endregion
-                //處理新增成績學期
-                #region 處理新增成績學期
+                //處理新增成績學年
+                #region 處理新增成績學年
                 foreach (int sy in insertNewSchoolYearScore.Keys)
                 {
                     XmlElement subjectScoreInfo = doc.CreateElement("SchoolYearSubjectScore");

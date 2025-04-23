@@ -248,9 +248,9 @@ namespace SmartSchool.Evaluation.ImportExport
                     if (!_StudentSchoolYearSubjectCollection[e.Data.ID].ContainsKey((int)sy) || !_StudentSchoolYearSubjectCollection[e.Data.ID][(int)sy].Contains(subject))
                     {
                         if (!e.WarningFields.ContainsKey("科目"))
-                            e.WarningFields.Add("科目", "在此學年的學生學年科目成績中，查無此科目的成績。");
+                            e.WarningFields.Add("科目", "在此學年的學生學期科目成績中，查無此科目的成績。");
                         else
-                            e.WarningFields["科目"] += "、" + "在此學年的學生學年科目成績中，查無此科目的成績。";
+                            e.WarningFields["科目"] += "、" + "在此學年的學生學期科目成績中，查無此科目的成績。";
                     }
                     #endregion
                     if (e.SelectFields.Contains("成績年級"))

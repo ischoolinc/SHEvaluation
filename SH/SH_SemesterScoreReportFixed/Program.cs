@@ -1795,7 +1795,7 @@ namespace SH_SemesterScoreReportFixed
                                             row["科目未取得學分註記" + subjectIndex] = semesterSubjectScore.Pass ? "" : "\f";
 
                                             //"原始成績", "學年調整成績", "擇優採計成績", "補考成績", "重修成績"
-                                            if (semesterSubjectScore.Detail.GetAttribute("不需評分") != "是")
+                                            //if (semesterSubjectScore.Detail.GetAttribute("不需評分") != "是")
                                             {
                                                 if (semesterSubjectScore.Pass == false)
                                                 {
@@ -2599,7 +2599,7 @@ namespace SH_SemesterScoreReportFixed
                                                 row["上學期科目未取得學分註記" + subjectIndex] = semesterSubjectScore.Pass ? "" : "\f";
 
                                                 //"原始成績", "學年調整成績", "擇優採計成績", "補考成績", "重修成績"
-                                                if (semesterSubjectScore.Detail.GetAttribute("不需評分") != "是")
+                                                //if (semesterSubjectScore.Detail.GetAttribute("不需評分") != "是")
                                                 {
 
                                                     if (semesterSubjectScore.Pass == false)

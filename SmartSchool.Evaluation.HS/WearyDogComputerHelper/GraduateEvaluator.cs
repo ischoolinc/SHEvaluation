@@ -687,6 +687,10 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                             // 略過特殊需求領域需要過濾代碼
                             if (CourseDomainCodeSpecList.Contains(domainCode)) continue;
 
+                            // 過濾不計學分
+                            if (gplanSubject.NotIncludedInCredit)
+                                continue;
+
                             decimal credit = 0;
                             decimal.TryParse(gplanSubject.Credit, out credit);
                             foreach (CreditCheckConfig check in creditCheckConfigList)

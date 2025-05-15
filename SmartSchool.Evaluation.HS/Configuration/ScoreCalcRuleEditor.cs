@@ -1308,7 +1308,6 @@ namespace SmartSchool.Evaluation.Configuration
 
         private bool ValidateCredit(TextBox txtCredit)
         {
-
             bool pass = true;
             #region 判斷輸入資料，沒輸入或輸入學分數或輸入百分比
             if (txtCredit.Text.Trim() != "")
@@ -1316,12 +1315,6 @@ namespace SmartSchool.Evaluation.Configuration
                 //%結尾
                 if (txtCredit.Text.EndsWith("%"))
                 {
-                    if (!radioButton16.Checked)
-                    {
-                        //部是由課程規畫表取得學分採計方式就不能使用百分比
-                        pass &= false;
-                        SetErrorProvider(txtCredit, "學分級修課資訊採計方式必需選擇\"由課程規畫表取得\"才能支援使用百分比判斷。");
-                    }
                     decimal d;
                     if (decimal.TryParse(txtCredit.Text.TrimEnd("%".ToCharArray()), out d))
                     {

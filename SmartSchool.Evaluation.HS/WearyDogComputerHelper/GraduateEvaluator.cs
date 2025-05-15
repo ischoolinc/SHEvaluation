@@ -124,12 +124,18 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                             evalReport.SetAttribute("學期科目成績屬性採計方式", "以課程規劃表內容為準");
                         }
                     }
-                    //判斷若以課程規為主，但是學生身上卻沒有課程規劃
-                    if (useGPlan && GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(student.StudentID) == null)
+
+                    //檢查是否需要課程規劃表
+                    bool needGraduationPlan = useGPlan || 
+                                            (rule.SelectSingleNode("修滿所有必修課程") != null && rule.SelectSingleNode("修滿所有必修課程").InnerText.Trim() == "True") ||
+                                            (rule.SelectSingleNode("修滿所有部定必修課程") != null && rule.SelectSingleNode("修滿所有部定必修課程").InnerText.Trim() == "True") ||
+                                            HasPercentageInGraduationCredits(rule);
+
+                    if (needGraduationPlan && GraduationPlan.GraduationPlan.Instance.GetStudentGraduationPlan(student.StudentID) == null)
                     {
                         if (!_ErrorList.ContainsKey(student))
                             _ErrorList.Add(student, new List<string>());
-                        _ErrorList[student].Add("沒有設定課程規劃表，當\"學期科目成績屬性採計方式\"設定使用\"以課程規劃表內容為準\"時，學生必須要有課程規劃表以做參考。");
+                        _ErrorList[student].Add("沒有設定課程規劃表，當使用課程規劃表相關功能時（如百分比標準、修滿所有必修課程等），學生必須要有課程規劃表以做參考。");
                         isDataReasonable &= false;
                     }
 
@@ -1405,6 +1411,36 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
             }
             #endregion
             return _ErrorList;
+        }
+
+        /// <summary>
+        /// 檢查畢業學分數設定中是否包含百分比
+        /// </summary>
+        /// <param name="rule">成績計算規則</param>
+        /// <returns>是否包含百分比設定</returns>
+        private bool HasPercentageInGraduationCredits(XmlElement rule)
+        {
+            string[] creditPaths = {
+                "畢業學分數/應修總學分數",
+                "畢業學分數/學科累計總學分數", 
+                "畢業學分數/應修專業及實習總學分數",
+                "畢業學分數/專業及實習總學分數",
+                "畢業學分數/必修學分數",
+                "畢業學分數/部訂必修學分數",
+                "畢業學分數/實習學分數",
+                "畢業學分數/選修學分數",
+                "畢業學分數/校訂必修學分數"
+            };
+            
+            foreach (string path in creditPaths)
+            {
+                XmlNode node = rule.SelectSingleNode(path);
+                if (node != null && node.InnerText.EndsWith("%"))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 

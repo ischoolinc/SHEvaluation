@@ -217,4 +217,13 @@
   <data name="查看重複清單樣板" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\content\changeschoolyear\查看重複清單樣板.xls;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="StudTypeMapping1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Process\Wizards\LearningHistory\StudTypeMapping1.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="StudTypeMapping2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Process\Wizards\LearningHistory\StudTypeMapping2.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="StudTypeMapping3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Process\Wizards\LearningHistory\StudTypeMapping3.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
 </root>

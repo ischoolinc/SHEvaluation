@@ -34,6 +34,8 @@
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
             this.labelX3 = new DevComponents.DotNetBar.LabelX();
+            this.btnCalLHScore = new DevComponents.DotNetBar.ButtonX();
+            this.labelX4 = new DevComponents.DotNetBar.LabelX();
             this.SuspendLayout();
             // 
             // buttonX1
@@ -65,7 +67,7 @@
             this.buttonX3.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.buttonX3.BackColor = System.Drawing.Color.Transparent;
             this.buttonX3.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.buttonX3.Location = new System.Drawing.Point(12, 244);
+            this.buttonX3.Location = new System.Drawing.Point(12, 306);
             this.buttonX3.Name = "buttonX3";
             this.buttonX3.Size = new System.Drawing.Size(146, 23);
             this.buttonX3.TabIndex = 2;
@@ -83,7 +85,7 @@
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX1.Location = new System.Drawing.Point(35, 41);
             this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(839, 91);
+            this.labelX1.Size = new System.Drawing.Size(671, 73);
             this.labelX1.TabIndex = 1;
             this.labelX1.Text = "計算本學期學期科目成績，依成績計算規則所規定的及格標準判斷是否取得學分。\r\n若非本學期末第一次計算，使成績更動，建議重新處理後續成績作業(分項成績、計算排名)，以" +
     "產生正確的資料。\r\n    ●當發現修課的科目與級別與舊成績有重覆時，將依本學期末設定 重覆修課採計方式 :\r\n        重修(寫回原學期)、重讀(擇優採" +
@@ -100,7 +102,7 @@
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX2.Location = new System.Drawing.Point(35, 155);
             this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(778, 91);
+            this.labelX2.Size = new System.Drawing.Size(623, 73);
             this.labelX2.TabIndex = 1;
             this.labelX2.Text = "將學生本學期之學期科目成績依照每個科目的分項類別加權計算成學期分項成績。\r\n　●科目之分項類別可為學業、專業科目及實習科目，\r\n        成績計算規則可設定" +
     "除學業外各分項是否計算成分項成績、以及各分項是否一併算入學業成績。\r\n　●德行成績為一分項成績，但不從科目成績計算而來，需由學務處使用「計算德行成績」功能計算之" +
@@ -115,16 +117,45 @@
             // 
             this.labelX3.BackgroundStyle.Class = "";
             this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX3.Location = new System.Drawing.Point(35, 273);
+            this.labelX3.Location = new System.Drawing.Point(35, 335);
             this.labelX3.Name = "labelX3";
-            this.labelX3.Size = new System.Drawing.Size(594, 48);
+            this.labelX3.Size = new System.Drawing.Size(475, 39);
             this.labelX3.TabIndex = 1;
             this.labelX3.Text = "計算學生科目成績或分項成績之排名，排名之結果不會隨成績之變動自動調整。\r\n　●若學生成績調整並希望影響排名時，請再次使用排名功能。";
+            // 
+            // btnCalLHScore
+            // 
+            this.btnCalLHScore.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnCalLHScore.BackColor = System.Drawing.Color.Transparent;
+            this.btnCalLHScore.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnCalLHScore.Location = new System.Drawing.Point(12, 241);
+            this.btnCalLHScore.Name = "btnCalLHScore";
+            this.btnCalLHScore.Size = new System.Drawing.Size(146, 23);
+            this.btnCalLHScore.TabIndex = 3;
+            this.btnCalLHScore.Text = "產生學期歷程成績";
+            this.btnCalLHScore.Click += new System.EventHandler(this.btnCalLHScore_Click);
+            // 
+            // labelX4
+            // 
+            this.labelX4.AutoSize = true;
+            this.labelX4.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX4.BackgroundStyle.Class = "";
+            this.labelX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX4.Location = new System.Drawing.Point(35, 272);
+            this.labelX4.Name = "labelX4";
+            this.labelX4.Size = new System.Drawing.Size(489, 21);
+            this.labelX4.TabIndex = 4;
+            this.labelX4.Text = "將學生本學期成績歷程記錄在「學期歷程資料項目中」，以供成績名冊產生使用。";
             // 
             // CalsSemesterScoreWizard
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(697, 319);
+            this.ClientSize = new System.Drawing.Size(697, 388);
+            this.Controls.Add(this.labelX4);
+            this.Controls.Add(this.btnCalLHScore);
             this.Controls.Add(this.labelX3);
             this.Controls.Add(this.labelX2);
             this.Controls.Add(this.labelX1);
@@ -148,5 +179,7 @@
         private DevComponents.DotNetBar.LabelX labelX1;
         private DevComponents.DotNetBar.LabelX labelX2;
         private DevComponents.DotNetBar.LabelX labelX3;
+        private DevComponents.DotNetBar.ButtonX btnCalLHScore;
+        private DevComponents.DotNetBar.LabelX labelX4;
     }
 }

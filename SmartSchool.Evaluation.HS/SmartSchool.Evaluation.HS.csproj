@@ -116,6 +116,11 @@
       <HintPath>Library\K12.Presentation.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="SHSchool.Data, Version=1.8.0.4, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\SHSchool.Data.dll</HintPath>
@@ -541,6 +546,12 @@
     <Compile Include="Process\SelectSemesterForm.Designer.cs">
       <DependentUpon>SelectSemesterForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Process\Wizards\CalcLearningHistoryScoreWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Process\Wizards\CalcLearningHistoryScoreWizard.Designer.cs">
+      <DependentUpon>CalcLearningHistoryScoreWizard.cs</DependentUpon>
+    </Compile>
     <Compile Include="Process\Wizards\CalcSchoolYearScoreWizard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -615,6 +626,14 @@
       <DependentUpon>CreateClassCourse.cs</DependentUpon>
     </Compile>
     <Compile Include="Process\Wizards\ISubjectCalcPostProcess.cs" />
+    <Compile Include="Process\Wizards\LearningHistory\JSubjectDetail.cs" />
+    <Compile Include="Process\Wizards\LearningHistory\JSubjectInfo.cs" />
+    <Compile Include="Process\Wizards\LearningHistory\LearningHistoryDataAccess.cs" />
+    <Compile Include="Process\Wizards\LearningHistory\StudentLearningHistoryProcessor.cs" />
+    <Compile Include="Process\Wizards\LearningHistory\SubjectScoreRec108.cs" />
+    <Compile Include="Process\Wizards\LearningHistory\SubjectScoreXML.cs" />
+    <Compile Include="Process\Wizards\LearningHistory\SubjectYearScoreRec108N.cs" />
+    <Compile Include="Process\Wizards\LearningHistory\Utility.cs" />
     <Compile Include="Process\Wizards\LogUtility.cs" />
     <Compile Include="Process\Wizards\CalcSchoolYearApplyScoreWizard.cs">
       <SubType>Form</SubType>
@@ -797,12 +816,12 @@
     <Content Include="Library\IntelliSchool.DSA.ClientFramework.xml" />
     <Content Include="Library\K12.Data.dll" />
     <Content Include="Library\K12.Data.pdb" />
-    <Content Include="Library\K12.Data.xml">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Library\K12.Data.xml" />
     <Content Include="Library\K12.Presentation.dll" />
     <Content Include="Library\K12.Presentation.pdb" />
     <Content Include="Library\K12.Presentation.xml" />
+    <Content Include="Library\Newtonsoft.Json.dll" />
+    <Content Include="Library\Newtonsoft.Json.xml" />
     <Content Include="Library\SHSchool.Data.dll" />
     <Content Include="Library\SHSchool.Data.pdb" />
     <Content Include="Library\SHSchool.Data.xml" />
@@ -838,6 +857,9 @@
     <Content Include="Library\SmartSchool.ExceptionHandler.pdb" />
     <None Include="Resources\classroom_64.ico" />
     <None Include="Resources\elementary_school_64.ico" />
+    <Content Include="Process\Wizards\LearningHistory\StudTypeMapping1.xml" />
+    <Content Include="Process\Wizards\LearningHistory\StudTypeMapping2.xml" />
+    <Content Include="Process\Wizards\LearningHistory\StudTypeMapping3.xml" />
     <Content Include="Resources\ExportScoreImage.png" />
     <Content Include="Resources\ImportScoreImage.png" />
     <None Include="Resources\subject_64.png" />
@@ -1040,6 +1062,9 @@
     <EmbeddedResource Include="Process\SelectSemesterForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>SelectSemesterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Process\Wizards\CalcLearningHistoryScoreWizard.resx">
+      <DependentUpon>CalcLearningHistoryScoreWizard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Process\Wizards\CalcSchoolYearScoreWizard.resx">
       <SubType>Designer</SubType>

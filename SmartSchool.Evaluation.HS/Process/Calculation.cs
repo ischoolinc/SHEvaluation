@@ -39,6 +39,9 @@ namespace SmartSchool.Evaluation.Process
             buttonItem103["計算學期科目成績"].Click += new System.EventHandler(this.buttonItem4_Click);
             buttonItem103["計算學期分項成績"].Click += new System.EventHandler(this.buttonItem5_Click);
 
+            buttonItem103["產生學期歷程成績"].Click += Calculation_Click41;
+            
+
             //var buttonItem7 = buttonItem103["計算學年成績"];
             //buttonItem103.BeginGroup = true;
             buttonItem103["計算學年科目成績"].BeginGroup = true;
@@ -74,6 +77,18 @@ namespace SmartSchool.Evaluation.Process
                 buttonItem103.Enable = CurrentUser.Acl["Button0040"].Executable && K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0;
                 buttonItem9.Enable = CurrentUser.Acl["Button0085"].Executable && K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0;
             };
+        }
+
+        // 產生學期歷程成績
+        private void Calculation_Click41(object sender, EventArgs e)
+        {
+            ISubjectCalcPostProcess obj = FISCA.InteractionService.DiscoverAPI<ISubjectCalcPostProcess>();
+            if (obj != null)
+            {
+                obj.ShowConfigForm();
+            }
+
+            new CalcLearningHistoryScoreWizard(SelectType.Student).ShowDialog();
         }
 
         //private void Instance_SelectionChanged(object sender, EventArgs e)

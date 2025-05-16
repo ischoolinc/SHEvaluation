@@ -56,7 +56,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
             (this.wizard1.Controls[0].Controls[1] as System.Windows.Forms.Label).ForeColor = (GlobalManager.Renderer as Office2007Renderer).ColorTable.RibbonBar.MouseOver.TitleText;
             (this.wizard1.Controls[0].Controls[2] as System.Windows.Forms.Label).ForeColor = (GlobalManager.Renderer as Office2007Renderer).ColorTable.RibbonBar.Default.TitleText;
             #endregion
-
+            this.wizard1.BackButtonWidth = 0;
             switch (_Type)
             {
                 default:
@@ -70,8 +70,8 @@ namespace SmartSchool.Evaluation.Process.Wizards
                     labelX3.Top += 10;
                     numericUpDown1.Top += 10;
                     numericUpDown2.Top += 10;
-                    this.numericUpDown1.ReadOnly = true;
-                    this.numericUpDown2.ReadOnly = true;
+                    this.numericUpDown1.Enabled = false;
+                    this.numericUpDown2.Enabled = false;
                     break;
                 case SelectType.GradeYearStudent:
                     this.Text = "產生" + SmartSchool.Customization.Data.SystemInformation.SchoolYear + "學年度第" + SmartSchool.Customization.Data.SystemInformation.Semester + "學期歷程成績";

@@ -100,7 +100,7 @@
             this.wizard1.LicenseKey = "F962CEC7-CD8F-4911-A9E9-CAB39962FC1F";
             this.wizard1.Location = new System.Drawing.Point(0, 0);
             this.wizard1.Name = "wizard1";
-            this.wizard1.NextButtonText = "下一步 >";
+            this.wizard1.NextButtonText = "產生";
             this.wizard1.NextButtonWidth = 65;
             this.wizard1.Size = new System.Drawing.Size(303, 169);
             this.wizard1.TabIndex = 1;
@@ -127,7 +127,7 @@
             this.wizardPage1.Location = new System.Drawing.Point(7, 42);
             this.wizardPage1.Name = "wizardPage1";
             this.wizardPage1.PageDescription = "< Wizard step description >";
-            this.wizardPage1.PageTitle = "選擇學年度學期";
+            this.wizardPage1.PageTitle = "";
             this.wizardPage1.Size = new System.Drawing.Size(289, 90);
             // 
             // 
@@ -231,7 +231,7 @@
             this.labelX1.Name = "labelX1";
             this.labelX1.Size = new System.Drawing.Size(101, 21);
             this.labelX1.TabIndex = 5;
-            this.labelX1.Text = "選擇學年度學期";
+            this.labelX1.Text = "";
             // 
             // wizardPage2
             // 

@@ -11,14 +11,14 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
     public class LearningHistoryDataAccess
     {
 
-        private JSubjectInfo CreateJSubjectInfo(SubjectScoreRec108 ssr, string serialNo, string name)
+        private JSubjectInfo CreateJSubjectInfo(SubjectScoreRec108 ssr, string serialNo, string name, int SchoolYear, int Semester)
         {
             JSubjectInfo JInfo = new JSubjectInfo();
             JInfo.refStudentID = ssr.StudentID;
             JInfo.serialNo = serialNo;
             JInfo.name = name;
-            JInfo.schoolYear = int.Parse(ssr.SchoolYear);
-            JInfo.semester = int.Parse(ssr.Semester);
+            JInfo.schoolYear = SchoolYear;
+            JInfo.semester = Semester;
             JInfo.subject = ssr.SubjectName;
             JInfo.subject = ssr.SubjectName;
             JInfo.subjectLevel = null;
@@ -29,17 +29,17 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             return JInfo;
         }
 
-        private JSubjectInfo CreateJSubjectInfoN(SubjectYearScoreRec108N ssr, string serialNo, string name)
+        private JSubjectInfo CreateJSubjectInfoN(SubjectYearScoreRec108N ssr, string serialNo, string name, int SchoolYear, int Semester)
         {
             JSubjectInfo JInfo = new JSubjectInfo();
             JInfo.refStudentID = ssr.StudentID;
             JInfo.serialNo = serialNo;
             JInfo.name = name;
-            JInfo.schoolYear = int.Parse(ssr.SchoolYear);
-            JInfo.semester = int.Parse(ssr.Semester);
+            JInfo.schoolYear = SchoolYear;
+            JInfo.semester = Semester;
             JInfo.subject = ssr.SubjectName;
             JInfo.subject = ssr.SubjectName;
-            JInfo.subjectLevel = null;         
+            JInfo.subjectLevel = null;
             JInfo.detail = new List<JSubjectDetail>();
 
             return JInfo;
@@ -66,7 +66,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             qh.Select(strSQL);
         }
 
-        public void SaveScores42(List<SubjectScoreRec108> scores)
+        public void SaveScores42(List<SubjectScoreRec108> scores, int SchoolYear, int Semester)
         {
             var jSubjectInfoList = new List<JSubjectInfo>();
             foreach (var ssr in scores)
@@ -79,7 +79,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                     if (!ssr.CodePass) //跳過課程代碼不可提交
                         continue;
 
-                    var jInfo = CreateJSubjectInfo(ssr, "4.2", "學期成績");
+                    var jInfo = CreateJSubjectInfo(ssr, "4.2", "學期成績", SchoolYear, Semester);
                     jInfo.detail = new List<JSubjectDetail>
                 {
                  CreateJSubjectDetail("4.2.1", "身分證號", ssr.IDNumber),
@@ -108,7 +108,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             }
             SaveToDatabase(GetSemesterScoreSqlTemplate42(jSubjectInfoList));
         }
-        public void SaveScores43(List<SubjectScoreRec108> scores)
+        public void SaveScores43(List<SubjectScoreRec108> scores, int SchoolYear, int Semester)
         {
             var jSubjectInfoList = new List<JSubjectInfo>();
             foreach (var ssr in scores)
@@ -121,7 +121,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                     // 補修
                     if (ssr.isScScore)
                     {
-                        var jInfo = CreateJSubjectInfo(ssr, "4.3", "補修成績");
+                        var jInfo = CreateJSubjectInfo(ssr, "4.3", "補修成績", SchoolYear, Semester);
                         jInfo.detail = new List<JSubjectDetail>
                         {
                             CreateJSubjectDetail("4.3.1", "身分證號", ssr.IDNumber),
@@ -156,7 +156,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             SaveToDatabase(GetSemesterScoreSqlTemplate43(jSubjectInfoList));
         }
 
-        public void SaveScores44(List<SubjectScoreRec108> scores)
+        public void SaveScores44(List<SubjectScoreRec108> scores, int SchoolYear, int Semester)
         {
             var jSubjectInfoList = new List<JSubjectInfo>();
             foreach (var ssr in scores)
@@ -166,7 +166,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                     if (!ssr.CodePass) //跳過課程代碼不可提交
                         continue;
 
-                    var jInfo = CreateJSubjectInfo(ssr, "4.4", "轉學轉科成績");
+                    var jInfo = CreateJSubjectInfo(ssr, "4.4", "轉學轉科成績", SchoolYear, Semester);
                     jInfo.detail = new List<JSubjectDetail>
                         {
                             CreateJSubjectDetail("4.4.1", "身分證號", ssr.IDNumber),
@@ -197,7 +197,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             SaveToDatabase(GetSemesterScoreSqlTemplate44(jSubjectInfoList));
         }
 
-        public void SaveScores52(List<SubjectScoreRec108> scores)
+        public void SaveScores52(List<SubjectScoreRec108> scores, int SchoolYear, int Semester)
         {
             var jSubjectInfoList = new List<JSubjectInfo>();
             foreach (var ssr in scores)
@@ -207,7 +207,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                     if (!ssr.CodePass) //跳過課程代碼不可提交
                         continue;
 
-                    var jInfo = CreateJSubjectInfo(ssr, "5.2", "重修成績");
+                    var jInfo = CreateJSubjectInfo(ssr, "5.2", "重修成績", SchoolYear, Semester);
                     jInfo.detail = new List<JSubjectDetail>
                         {
                          CreateJSubjectDetail("5.2.1", "身分證號", ssr.IDNumber),
@@ -237,7 +237,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             SaveToDatabase(GetSemesterScoreSqlTemplate52(jSubjectInfoList));
         }
 
-        public void SaveScores53(List<SubjectScoreRec108> scores)
+        public void SaveScores53(List<SubjectScoreRec108> scores, int SchoolYear, int Semester)
         {
             var jSubjectInfoList = new List<JSubjectInfo>();
             foreach (var ssr in scores)
@@ -247,7 +247,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                     if (!ssr.CodePass) //跳過課程代碼不可提交
                         continue;
 
-                    var jInfo = CreateJSubjectInfo(ssr, "5.3", "重讀成績");
+                    var jInfo = CreateJSubjectInfo(ssr, "5.3", "重讀成績", SchoolYear, Semester);
                     jInfo.detail = new List<JSubjectDetail>
                         {
                         CreateJSubjectDetail("5.3.1", "身分證號", ssr.IDNumber),
@@ -281,7 +281,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
         }
 
 
-        public void SaveScores62(List<SubjectScoreRec108> scores)
+        public void SaveScores62(List<SubjectScoreRec108> scores, int SchoolYear, int Semester)
         {
             var jSubjectInfoList = new List<JSubjectInfo>();
             foreach (var ssr in scores)
@@ -294,7 +294,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                     if (!ssr.CodePass) //跳過課程代碼不可提交
                         continue;
 
-                    var jInfo = CreateJSubjectInfo(ssr, "6.2", "學期成績");
+                    var jInfo = CreateJSubjectInfo(ssr, "6.2", "學期成績", SchoolYear, Semester);
                     jInfo.detail = new List<JSubjectDetail>
                               {
                     CreateJSubjectDetail("6.2.1", "身分證號", ssr.IDNumber),
@@ -323,7 +323,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             }
             SaveToDatabase(GetSemesterScoreSqlTemplate62(jSubjectInfoList));
         }
-        public void SaveScores63(List<SubjectYearScoreRec108N> scores)
+        public void SaveScores63(List<SubjectYearScoreRec108N> scores, int SchoolYear, int Semester)
         {
             var jSubjectInfoList = new List<JSubjectInfo>();
             foreach (var ssr in scores)
@@ -334,7 +334,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                         continue;
 
 
-                    var jInfo = CreateJSubjectInfoN(ssr, "6.3", "補考成績");
+                    var jInfo = CreateJSubjectInfoN(ssr, "6.3", "補考成績", SchoolYear, Semester);
                     jInfo.detail = new List<JSubjectDetail>
                   {
                     CreateJSubjectDetail("6.3.1", "身分證號", ssr.IDNumber),
@@ -365,7 +365,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             SaveToDatabase(GetSemesterScoreSqlTemplate63(jSubjectInfoList));
         }
 
-        public void SaveScores64(List<SubjectScoreRec108> scores)
+        public void SaveScores64(List<SubjectScoreRec108> scores, int SchoolYear, int Semester)
         {
             var jSubjectInfoList = new List<JSubjectInfo>();
             foreach (var ssr in scores)
@@ -375,7 +375,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                     if (!ssr.CodePass) //跳過課程代碼不可提交
                         continue;
 
-                    var jInfo = CreateJSubjectInfo(ssr, "6.4", "轉學轉科成績");
+                    var jInfo = CreateJSubjectInfo(ssr, "6.4", "轉學轉科成績", SchoolYear, Semester);
                     jInfo.detail = new List<JSubjectDetail>
                   {
                     CreateJSubjectDetail("6.4.1", "身分證號", ssr.IDNumber),

@@ -14,7 +14,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
     public class StudentLearningHistoryProcessor
     {
         private LearningHistoryDataAccess _learningHistoryDataAccess;
-        
+
         private int _SchoolYear = 0, _Semester = 0;
 
         public StudentLearningHistoryProcessor()
@@ -22,7 +22,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             _learningHistoryDataAccess = new LearningHistoryDataAccess();
         }
 
-        public void ProcessLearningHistory(SmartSchool.Customization.Data.AccessHelper accHelper,List<SmartSchool.Customization.Data.StudentRecord> StudentRecList, int schoolYear, int semester, BackgroundWorker bgWorker)
+        public void ProcessLearningHistory(SmartSchool.Customization.Data.AccessHelper accHelper, List<SmartSchool.Customization.Data.StudentRecord> StudentRecList, int schoolYear, int semester, BackgroundWorker bgWorker)
         {
             bgWorker.ReportProgress(1);
             _SchoolYear = schoolYear;
@@ -161,7 +161,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                     StudentSubjectReScoreDict.Add(student_id, new Dictionary<string, SubjectScoreXML>());
 
                 if (!StudentSubjectReScoreDict[student_id].ContainsKey(key))
-                    StudentSubjectReScoreDict[student_id][key] = ssx;
+                    StudentSubjectReScoreDict[student_id].Add(key, ssx);
             }
 
             // 有符合異動學生非當學年度學期資料
@@ -221,7 +221,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                                 StudentSubjectScoreOtherDict.Add(student_id, new Dictionary<string, SubjectScoreXML>());
 
                             if (!StudentSubjectScoreOtherDict[student_id].ContainsKey(key))
-                                StudentSubjectScoreOtherDict[student_id][key] = ssx;
+                                StudentSubjectScoreOtherDict[student_id].Add(key, ssx);
 
                         }
                     }
@@ -234,8 +234,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             // 因為這寫法在學生人數超過1200人，Client Out off memory,需要用SQL 直接取資料
             //accHelper.StudentHelper.FillSemesterSubjectScore(true, StudentRecList);
             Dictionary<string, Dictionary<string, SubjectScoreXML>> StudentSubjectScoreDict = new Dictionary<string, Dictionary<string, SubjectScoreXML>>();
-
-
+            
             // 依年級分批取得學生學期科目成績
             QueryHelper qhStudSemsScore = new QueryHelper();
             foreach (string className in ClassStudentDict.Keys)
@@ -261,7 +260,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                     DataTable dtSemsScore = qhStudSemsScore.Select(query);
                     foreach (DataRow dr in dtSemsScore.Rows)
                     {
-                        string student_id = dr["student_id"] + "";
+                        string student_id = "" + dr["student_id"];
 
                         SubjectScoreXML ssx = new SubjectScoreXML();
                         ssx.StudentID = student_id;
@@ -285,7 +284,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                             StudentSubjectScoreDict.Add(student_id, new Dictionary<string, SubjectScoreXML>());
 
                         if (!StudentSubjectScoreDict[student_id].ContainsKey(key))
-                            StudentSubjectScoreDict[student_id][key] = ssx;
+                            StudentSubjectScoreDict[student_id].Add(key, ssx);
 
                     }
                 }
@@ -1331,7 +1330,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
 
                                         //2021-11-09 重修成績最高分為及格標準，若沒有設定及格標準則以60分計算。
                                         ssr.ReAScore = passScore.ToString();
-                                    }                                   
+                                    }
 
                                 }
                                 else
@@ -1660,7 +1659,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                 }
 
             }
-                  
+
 
             // 驗證資料
             ValidateScores(SubjectScoreRec108List);
@@ -1674,7 +1673,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
 
             // 學生學年補考成績
             Dictionary<string, Dictionary<string, decimal>> StudentYearReScoreDict = new Dictionary<string, Dictionary<string, decimal>>();
-                   
+
 
             foreach (SmartSchool.Customization.Data.StudentRecord rec in StudentRecList)
             {
@@ -1705,7 +1704,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             {
                 StudentYearReScoreDict = new Dictionary<string, Dictionary<string, decimal>>();
             }
-        
+
 
             if (StudentHasUpdateCodeDict.Count > 0)
             {
@@ -1767,7 +1766,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                 }
             }
 
-            
+
             foreach (SmartSchool.Customization.Data.StudentRecord studRec in StudentRecList)
             {
                 string IDNumber = studRec.IDNumber.ToUpper();
@@ -1796,7 +1795,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                             ssr.SchoolYear = StudentSubjectScoreDict[studRec.StudentID][smsKey].SchoolYear;
                             ssr.Semester = StudentSubjectScoreDict[studRec.StudentID][smsKey].Semester;
                             ssr.SubjectName = Utility.GetAttribute(elmScore, "科目");
-
+                            ssr.SubjectLevel = Utility.GetAttribute(elmScore, "科目級別");
                             ssr.Name = studRec.StudentName;
                             ssr.ClassName = studRec.RefClass.ClassName;
                             ssr.SeatNo = studRec.SeatNo;
@@ -2016,6 +2015,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                             ssr.SchoolYear = StudentSubjectScoreOtherDict[studRec.StudentID][key].SchoolYear;
                             ssr.Semester = StudentSubjectScoreOtherDict[studRec.StudentID][key].Semester;
                             ssr.SubjectName = Utility.GetAttribute(elmScore, "科目");
+                            ssr.SubjectLevel = Utility.GetAttribute(elmScore, "科目級別");
 
                             ssr.Name = studRec.StudentName;
                             ssr.ClassName = studRec.RefClass.ClassName;
@@ -2407,27 +2407,27 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             }
 
             // 寫入學期成績
-            _learningHistoryDataAccess.SaveScores42(SubjectScoreRec108List);
+            _learningHistoryDataAccess.SaveScores42(SubjectScoreRec108List,_SchoolYear,_Semester);
             bgWorker.ReportProgress(75);
 
             // 寫入補修成績
-            _learningHistoryDataAccess.SaveScores43(SubjectScoreRec108ReScoreList);
+            _learningHistoryDataAccess.SaveScores43(SubjectScoreRec108ReScoreList, _SchoolYear, _Semester);
             bgWorker.ReportProgress(80);
 
             // 寫入轉學/轉科成績
-            _learningHistoryDataAccess.SaveScores44(SubjectScoreRec108OtherList);
+            _learningHistoryDataAccess.SaveScores44(SubjectScoreRec108OtherList, _SchoolYear, _Semester);
             bgWorker.ReportProgress(85);
-                        
+
 
             // 寫入重修成績
-            _learningHistoryDataAccess.SaveScores52(SubjectScoreRec108List1);
+            _learningHistoryDataAccess.SaveScores52(SubjectScoreRec108List1, _SchoolYear, _Semester);
             // 寫入重讀成績
-            _learningHistoryDataAccess.SaveScores53(SubjectScoreRec108List2);
+            _learningHistoryDataAccess.SaveScores53(SubjectScoreRec108List2, _SchoolYear, _Semester);
             bgWorker.ReportProgress(90);
 
-            _learningHistoryDataAccess.SaveScores62(SubjectScoreRec108ListN);
-            _learningHistoryDataAccess.SaveScores63(SubjectReScoreRec108ListN);
-            _learningHistoryDataAccess.SaveScores64(SubjectScoreRec108OtherListN);
+            _learningHistoryDataAccess.SaveScores62(SubjectScoreRec108ListN, _SchoolYear, _Semester);
+            _learningHistoryDataAccess.SaveScores63(SubjectReScoreRec108ListN, _SchoolYear, _Semester);
+            _learningHistoryDataAccess.SaveScores64(SubjectScoreRec108OtherListN, _SchoolYear, _Semester);
             bgWorker.ReportProgress(100);
         }
 

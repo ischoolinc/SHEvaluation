@@ -1674,6 +1674,61 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             // 學生學年補考成績
             Dictionary<string, Dictionary<string, decimal>> StudentYearReScoreDict = new Dictionary<string, Dictionary<string, decimal>>();
 
+            //進校學期成績要取學年
+            StudentSubjectScoreDict.Clear();
+            foreach (string className in ClassStudentDict.Keys)
+            {
+                List<string> studIDList = ClassStudentDict[className];
+                if (studIDList.Count > 0)
+                {
+                    string query = string.Format(@"
+           SELECT
+               ref_student_id AS student_id,
+               school_year,
+               semester,
+               grade_year,
+               score_info
+           FROM
+               sems_subj_score
+           WHERE
+               school_year = {0}               
+               AND ref_student_id IN({1});
+           ", _SchoolYear, string.Join(",", studIDList.ToArray()));
+
+                    DataTable dtSemsScore = qhStudSemsScore.Select(query);
+                    foreach (DataRow dr in dtSemsScore.Rows)
+                    {
+                        string student_id = "" + dr["student_id"];
+
+                        SubjectScoreXML ssx = new SubjectScoreXML();
+                        ssx.StudentID = student_id;
+                        ssx.SchoolYear = dr["school_year"] + "";
+                        ssx.Semester = dr["semester"] + "";
+                        ssx.GradeYear = dr["grade_year"] + "";
+
+                        string key = ssx.SchoolYear + "_" + ssx.Semester;
+
+                        XElement elm = null;
+                        try
+                        {
+                            elm = XElement.Parse(dr["score_info"] + "");
+                            ssx.ScoreXML = elm;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                        if (!StudentSubjectScoreDict.ContainsKey(student_id))
+                            StudentSubjectScoreDict.Add(student_id, new Dictionary<string, SubjectScoreXML>());
+
+                        if (!StudentSubjectScoreDict[student_id].ContainsKey(key))
+                            StudentSubjectScoreDict[student_id].Add(key, ssx);
+
+                    }
+                }
+            }
+
+
 
             foreach (SmartSchool.Customization.Data.StudentRecord rec in StudentRecList)
             {

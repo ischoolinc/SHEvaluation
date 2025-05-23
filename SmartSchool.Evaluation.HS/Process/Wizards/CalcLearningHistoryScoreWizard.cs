@@ -15,7 +15,7 @@ using System.Windows.Forms.VisualStyles;
 
 namespace SmartSchool.Evaluation.Process.Wizards
 {
-    public partial class CalcLearningHistoryScoreWizard  : SmartSchool.Common.BaseForm
+    public partial class CalcLearningHistoryScoreWizard : SmartSchool.Common.BaseForm
     {
         private ErrorViewer _ErrorViewer = new ErrorViewer();
         private WarnViewer _WarnViewer;
@@ -143,7 +143,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
 
                 foreach (string s in warningList)
                 {
-                 //   _WarnViewer.SetMessage("課程:" + s, "科目名稱空白, 故此課程不列入計算");
+                    //   _WarnViewer.SetMessage("課程:" + s, "科目名稱空白, 故此課程不列入計算");
                 }
 
                 if (hasError && !hasWarning) // 有錯誤 沒警告
@@ -170,7 +170,16 @@ namespace SmartSchool.Evaluation.Process.Wizards
                     wizard1.SelectedPage = wizardPage4;
                     labelX5.Text = "學生學期歷程成績產生完成";
                     wizardPage4.FinishButtonEnabled = eWizardButtonState.True;
-                    FISCA.Features.Invoke("StudentLearningHistoryDetailContent");
+
+                    try
+                    {
+                        FISCA.Features.Invoke("StudentLearningHistoryDetailContent");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("StudentLearningHistoryDetailContent 無法呼叫：" + ex.Message);
+                    }
+
                 }
 
             }
@@ -183,9 +192,9 @@ namespace SmartSchool.Evaluation.Process.Wizards
             int schoolyear = (int)((object[])e.Argument)[0];
             int semester = (int)((object[])e.Argument)[1];
             AccessHelper helper = (AccessHelper)((object[])e.Argument)[2];
-            List<StudentRecord> selectedStudents = (List<StudentRecord>)((object[])e.Argument)[3];            
-           
-            _processor.ProcessLearningHistory(helper,selectedStudents, schoolyear, semester, bkw);
+            List<StudentRecord> selectedStudents = (List<StudentRecord>)((object[])e.Argument)[3];
+
+            _processor.ProcessLearningHistory(helper, selectedStudents, schoolyear, semester, bkw);
             e.Result = selectedStudents;
         }
 
@@ -201,7 +210,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
                         foreach (StudentRecord stu in errormessages.Keys)
                         {
                             _ErrorViewer.SetMessage(stu, errormessages[stu]);
-                        }                        
+                        }
                     }
                 }
                 this.progressBarX1.Value = e.ProgressPercentage;

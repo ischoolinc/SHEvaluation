@@ -170,7 +170,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
                     wizard1.SelectedPage = wizardPage4;
                     labelX5.Text = "學生學期歷程成績產生完成";
                     wizardPage4.FinishButtonEnabled = eWizardButtonState.True;
-                   
+                    FISCA.Features.Invoke("StudentLearningHistoryDetailContent");
                 }
 
             }

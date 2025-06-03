@@ -52,18 +52,26 @@ namespace StudentDuplicateSubjectCheck
 
             _scaDuplicateList = scaDuplicateList;
 
-            //計算方式設定 的選項
-            Column8.Items.Add("重修(寫回原學期)");
-            Column8.Items.Add("重讀(擇優採計成績)");
-            Column8.Items.Add("抵免");
-            Column8.Items.Add("視為一般修課");
-            Column8.DropDownStyle = ComboBoxStyle.DropDownList; // 讓使用者不要亂輸入資料
+            ////計算方式設定 的選項
+            //Column8.Items.Add("重修(寫回原學期)");
+            //Column8.Items.Add("重讀(擇優採計成績)");
+            //Column8.Items.Add("抵免");
+            //Column8.Items.Add("視為一般修課");
+            //Column8.DropDownStyle = ComboBoxStyle.DropDownList; // 讓使用者不要亂輸入資料
 
-            //計算方式設定 的選項
-            comboBoxEx1.Items.Add("重修(寫回原學期)");
-            comboBoxEx1.Items.Add("重讀(擇優採計成績)");
-            comboBoxEx1.Items.Add("抵免");
+            comboBoxEx1.Items.Clear();
             comboBoxEx1.Items.Add("視為一般修課");
+            comboBoxEx1.Items.Add("重修成績");
+            comboBoxEx1.Items.Add("再次修習");
+            comboBoxEx1.Items.Add("補修成績");
+
+            Column8.Items.Clear();
+            Column8.Items.Add("視為一般修課");
+            Column8.Items.Add("重修成績");
+            Column8.Items.Add("再次修習");
+            Column8.Items.Add("補修成績");
+            //Column8.DropDownStyle = ComboBoxStyle.DropDownList;  // 為支援舊資料先註解
+
 
             labelX3.Text = school_year + "學年度" + "第" + semster + "學期";
 
@@ -82,12 +90,24 @@ namespace StudentDuplicateSubjectCheck
                 row.Cells[0].Value = record.CourseName;
                 row.Cells[1].Value = record.SubjectName;
                 row.Cells[2].Value = record.SubjectLevel;
-                row.Cells[3].Value = record.GradeYear;  
-                row.Cells[4].Value = record.ClassName;
-                row.Cells[5].Value = record.StudentNumber;
-                row.Cells[6].Value = record.SeatNo;
-                row.Cells[7].Value = record.Name;
+                row.Cells[3].Value = record.ClassName;  
+                row.Cells[4].Value = record.StudentNumber;
+                row.Cells[5].Value = record.SeatNo;                
+                row.Cells[6].Value = record.Name;
+                if (record.ScoreSource.Contains("學期成績"))
+                {
+                    row.Cells[7].Value = "√";
+                }
+                if (record.ScoreSource.Contains("封存成績"))
+                {
+                    row.Cells[8].Value = "√";
+                }
                 
+                // 學生姓名
+                //                row.Cells[7].Value = ... // 成績來源學期成績（欄位未在程式片段中顯示詳細內容）
+                //row.Cells[8].Value = ... // 成績來源封存成績（同上）
+                //row.Cells[9].Value = ... // 成績認定方式
+
                 //row.Cells[8].Value = "視為一般修課"; // 如果有抓到重覆，先通預設為一般修課  ， 2018/5/24取消設定
 
                 string xmlStr = "<root>" + record.Extensions + "</root>";
@@ -102,7 +122,7 @@ namespace StudentDuplicateSubjectCheck
                         {
                             if (ex.Attribute("Name").Value == "DuplicatedLevelSubjectCalRule")
                             {
-                                row.Cells[8].Value = ex.Element("Rule").Value;
+                                row.Cells[9].Value = ex.Element("Rule").Value;
                             }
                         }
                     }
@@ -210,7 +230,7 @@ FROM
 
                         XmlElement element_Rule = doc.CreateElement(string.Empty, "Rule", string.Empty);
 
-                        element_Rule.InnerXml = "" + r.Cells[8].Value; ;
+                        element_Rule.InnerXml = "" + r.Cells[9].Value; ;
 
                         XmlElement element_Extension = doc.CreateElement(string.Empty, "Extension", string.Empty);
 
@@ -247,7 +267,7 @@ FROM
                         {
                             XmlElement element_Rule = doc.CreateElement(string.Empty, "Rule", string.Empty);
 
-                            element_Rule.InnerXml = "" + r.Cells[8].Value; 
+                            element_Rule.InnerXml = "" + r.Cells[9].Value; 
 
                             XmlElement element_Extension = doc.CreateElement(string.Empty, "Extension", string.Empty);
 
@@ -259,7 +279,7 @@ FROM
                         }
                         else // 如果有的話 直接更新
                         {
-                            nodeList[0].InnerXml = "" + r.Cells[8].Value;
+                            nodeList[0].InnerXml = "" + r.Cells[9].Value;
                         }
 
                         Extension = doc.OuterXml;
@@ -279,7 +299,7 @@ FROM
             {
                 if ("" + r.Tag == scattendID)
                 {
-                    Extension_string = ""+ r.Cells[8].Value;
+                    Extension_string = ""+ r.Cells[9].Value;
                 }
             }
             return Extension_string;
@@ -293,7 +313,7 @@ FROM
             {
                 if (r.Selected)
                 {
-                    r.Cells[8].Value = comboBoxEx1.SelectedItem;
+                    r.Cells[9].Value = comboBoxEx1.SelectedItem;
                 }
             }
         }

@@ -2465,17 +2465,20 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             _learningHistoryDataAccess.SaveScores42(SubjectScoreRec108List,_SchoolYear,_Semester);
             bgWorker.ReportProgress(75);
 
-            // 寫入補修成績
-            _learningHistoryDataAccess.SaveScores43(SubjectScoreRec108ReScoreList, _SchoolYear, _Semester);
-            bgWorker.ReportProgress(80);
+            // 補修成績由計算學期科目成績時寫入，在這先註解。
+            //// 寫入補修成績
+            //_learningHistoryDataAccess.SaveScores43(SubjectScoreRec108ReScoreList, _SchoolYear, _Semester);
+            //bgWorker.ReportProgress(80);
 
             // 寫入轉學/轉科成績
             _learningHistoryDataAccess.SaveScores44(SubjectScoreRec108OtherList, _SchoolYear, _Semester);
             bgWorker.ReportProgress(85);
 
-
+            // 重修成績由計算學期科目成績時寫入，在這先註解。
             // 寫入重修成績
-            _learningHistoryDataAccess.SaveScores52(SubjectScoreRec108List1, _SchoolYear, _Semester);
+            //_learningHistoryDataAccess.SaveScores52(SubjectScoreRec108List1, _SchoolYear, _Semester);
+
+
             // 寫入重讀成績
             _learningHistoryDataAccess.SaveScores53(SubjectScoreRec108List2, _SchoolYear, _Semester);
             bgWorker.ReportProgress(90);

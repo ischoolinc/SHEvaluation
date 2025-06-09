@@ -482,6 +482,27 @@ namespace SmartSchool.Evaluation
             return _retValue;
         }
 
+        // 檢查課程代碼是否符合規格
+        public static bool IsValidCourseCode(string courseCode)
+        {
+            // 檢查課程代碼 CodePass
+            bool codePass = true;
 
+            // 幫我寫一個 C# 方法，判斷課程代碼 codePass。若 courseCode 為空白或長度不是 23，codePass = false；否則取第 17 碼（index 16）和第 19 碼（index 18），如果第 17 碼為 "8" 或 "9" 且第 19 碼不是 "D"，codePass 也為 false，其餘為 true。
+            if (string.IsNullOrWhiteSpace(courseCode) || courseCode.Length != 23)
+            {
+                codePass = false;
+            }
+            else
+            {
+                string sub1 = courseCode.Substring(16, 1);
+                string sub2 = courseCode.Substring(18, 1);
+                if ((sub1 == "8" || sub1 == "9") && sub2 != "D")
+                {
+                    codePass = false;
+                }
+            }
+            return codePass;
+        }
     }
 }

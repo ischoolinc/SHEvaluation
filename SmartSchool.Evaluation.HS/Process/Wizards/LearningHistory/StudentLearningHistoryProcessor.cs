@@ -30,9 +30,9 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
 
             List<SubjectScoreRec108> SubjectScoreRec108List = new List<SubjectScoreRec108>();
             List<SubjectScoreRec108> SubjectScoreRec108OtherList = new List<SubjectScoreRec108>();
-            List<SubjectScoreRec108> SubjectScoreRec108ReScoreList = new List<SubjectScoreRec108>();
+            //List<SubjectScoreRec108> SubjectScoreRec108ReScoreList = new List<SubjectScoreRec108>();
 
-            List<SubjectScoreRec108> SubjectScoreRec108List1 = new List<SubjectScoreRec108>();
+            //List<SubjectScoreRec108> SubjectScoreRec108List1 = new List<SubjectScoreRec108>();
             List<SubjectScoreRec108> SubjectScoreRec108List2 = new List<SubjectScoreRec108>();
 
             List<SubjectScoreRec108> SubjectScoreRec108ListN = new List<SubjectScoreRec108>();
@@ -90,79 +90,79 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             Dictionary<string, string> StudentHasUpdateCodeDict = Utility.GetStudentHasUpdateCodeDict(_SchoolYear, _Semester, studentIDList, UpdateCodeMappingDict.Keys.ToList());
 
 
-            // 取得補修資料學生
-            Dictionary<string, Dictionary<string, SubjectScoreXML>> StudentSubjectReScoreDict = new Dictionary<string, Dictionary<string, SubjectScoreXML>>();
+            //// 取得補修資料學生
+            //Dictionary<string, Dictionary<string, SubjectScoreXML>> StudentSubjectReScoreDict = new Dictionary<string, Dictionary<string, SubjectScoreXML>>();
 
-            // 取得畫面上學年度學期補修資料
-            QueryHelper qhStudSemsReScore = new QueryHelper();
-            string queryReScore = string.Format(@"
-            WITH sems_subj_score AS(
-                SELECT
-                    sems_subj_score_ext.ref_student_id AS student_id,
-                    sems_subj_score_ext.grade_year,
-                    sems_subj_score_ext.semester,
-                    sems_subj_score_ext.school_year,
-                    sems_subj_score_ext.score_info,
-                    array_to_string(xpath('//Subject/@是否補修成績', subj_score_ele), '') :: text AS 是否補修成績,
-                    array_to_string(xpath('//Subject/@補修學年度', subj_score_ele), '') :: text AS 補修學年度,
-                    array_to_string(xpath('//Subject/@補修學期', subj_score_ele), '') :: text AS 補修學期,
-                    array_to_string(xpath('//Subject/@修課科目代碼', subj_score_ele), '') :: text AS 課程代碼
-                FROM
-                    (
-                        SELECT
-                            sems_subj_score.*,
-                            unnest(
-                                xpath(
-                                    '//SemesterSubjectScoreInfo/Subject',
-                                    xmlparse(content score_info)
-                                )
-                            ) AS subj_score_ele
-                        FROM
-                            sems_subj_score
-                        WHERE
-                            ref_student_id IN ({0})
-                    ) AS sems_subj_score_ext
-            )
-            SELECT
-                *
-            FROM
-                sems_subj_score
-            WHERE
-                是否補修成績 = '是'
-                AND 補修學年度 = '{1}'
-                AND 補修學期 = '{2}';
-            ", string.Join(",", StudentIDList.ToArray()), _SchoolYear, _Semester);
+            //// 取得畫面上學年度學期補修資料
+            //QueryHelper qhStudSemsReScore = new QueryHelper();
+            //string queryReScore = string.Format(@"
+            //WITH sems_subj_score AS(
+            //    SELECT
+            //        sems_subj_score_ext.ref_student_id AS student_id,
+            //        sems_subj_score_ext.grade_year,
+            //        sems_subj_score_ext.semester,
+            //        sems_subj_score_ext.school_year,
+            //        sems_subj_score_ext.score_info,
+            //        array_to_string(xpath('//Subject/@是否補修成績', subj_score_ele), '') :: text AS 是否補修成績,
+            //        array_to_string(xpath('//Subject/@補修學年度', subj_score_ele), '') :: text AS 補修學年度,
+            //        array_to_string(xpath('//Subject/@補修學期', subj_score_ele), '') :: text AS 補修學期,
+            //        array_to_string(xpath('//Subject/@修課科目代碼', subj_score_ele), '') :: text AS 課程代碼
+            //    FROM
+            //        (
+            //            SELECT
+            //                sems_subj_score.*,
+            //                unnest(
+            //                    xpath(
+            //                        '//SemesterSubjectScoreInfo/Subject',
+            //                        xmlparse(content score_info)
+            //                    )
+            //                ) AS subj_score_ele
+            //            FROM
+            //                sems_subj_score
+            //            WHERE
+            //                ref_student_id IN ({0})
+            //        ) AS sems_subj_score_ext
+            //)
+            //SELECT
+            //    *
+            //FROM
+            //    sems_subj_score
+            //WHERE
+            //    是否補修成績 = '是'
+            //    AND 補修學年度 = '{1}'
+            //    AND 補修學期 = '{2}';
+            //", string.Join(",", StudentIDList.ToArray()), _SchoolYear, _Semester);
 
-            DataTable dtReScore = qhStudSemsReScore.Select(queryReScore);
-            foreach (DataRow dr in dtReScore.Rows)
-            {
-                string student_id = dr["student_id"] + "";
+            //DataTable dtReScore = qhStudSemsReScore.Select(queryReScore);
+            //foreach (DataRow dr in dtReScore.Rows)
+            //{
+            //    string student_id = dr["student_id"] + "";
 
-                SubjectScoreXML ssx = new SubjectScoreXML();
-                ssx.StudentID = student_id;
-                ssx.SchoolYear = dr["school_year"] + "";
-                ssx.Semester = dr["semester"] + "";
-                ssx.GradeYear = dr["grade_year"] + "";
+            //    SubjectScoreXML ssx = new SubjectScoreXML();
+            //    ssx.StudentID = student_id;
+            //    ssx.SchoolYear = dr["school_year"] + "";
+            //    ssx.Semester = dr["semester"] + "";
+            //    ssx.GradeYear = dr["grade_year"] + "";
 
 
-                string key = ssx.SchoolYear + "_" + ssx.Semester;
+            //    string key = ssx.SchoolYear + "_" + ssx.Semester;
 
-                XElement elm = null;
-                try
-                {
-                    elm = XElement.Parse(dr["score_info"] + "");
-                    ssx.ScoreXML = elm;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-                if (!StudentSubjectReScoreDict.ContainsKey(student_id))
-                    StudentSubjectReScoreDict.Add(student_id, new Dictionary<string, SubjectScoreXML>());
+            //    XElement elm = null;
+            //    try
+            //    {
+            //        elm = XElement.Parse(dr["score_info"] + "");
+            //        ssx.ScoreXML = elm;
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Console.WriteLine(ex.Message);
+            //    }
+            //    if (!StudentSubjectReScoreDict.ContainsKey(student_id))
+            //        StudentSubjectReScoreDict.Add(student_id, new Dictionary<string, SubjectScoreXML>());
 
-                if (!StudentSubjectReScoreDict[student_id].ContainsKey(key))
-                    StudentSubjectReScoreDict[student_id].Add(key, ssx);
-            }
+            //    if (!StudentSubjectReScoreDict[student_id].ContainsKey(key))
+            //        StudentSubjectReScoreDict[student_id].Add(key, ssx);
+            //}
 
             // 有符合異動學生非當學年度學期資料
             Dictionary<string, Dictionary<string, SubjectScoreXML>> StudentSubjectScoreOtherDict = new Dictionary<string, Dictionary<string, SubjectScoreXML>>();
@@ -234,7 +234,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             // 因為這寫法在學生人數超過1200人，Client Out off memory,需要用SQL 直接取資料
             //accHelper.StudentHelper.FillSemesterSubjectScore(true, StudentRecList);
             Dictionary<string, Dictionary<string, SubjectScoreXML>> StudentSubjectScoreDict = new Dictionary<string, Dictionary<string, SubjectScoreXML>>();
-            
+
             // 依年級分批取得學生學期科目成績
             QueryHelper qhStudSemsScore = new QueryHelper();
             foreach (string className in ClassStudentDict.Keys)
@@ -539,7 +539,9 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                                 }
                             }
 
-                            SubjectScoreRec108List.Add(ssr);
+                            // 非補修成績才寫入
+                            if (ssr.isScScore == false)
+                                SubjectScoreRec108List.Add(ssr);
                         }
                     }
 
@@ -781,230 +783,230 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                 }
 
 
-                // 補修
-                if (StudentSubjectReScoreDict.ContainsKey(studRec.StudentID))
-                {
-                    #region 補修
-                    foreach (string smsKey in StudentSubjectReScoreDict[studRec.StudentID].Keys)
-                        if (StudentSubjectReScoreDict[studRec.StudentID].ContainsKey(smsKey))
-                        {
-                            XElement elmRoot = StudentSubjectReScoreDict[studRec.StudentID][smsKey].ScoreXML;
+                //// 補修
+                //if (StudentSubjectReScoreDict.ContainsKey(studRec.StudentID))
+                //{
+                //    #region 補修
+                //    foreach (string smsKey in StudentSubjectReScoreDict[studRec.StudentID].Keys)
+                //        if (StudentSubjectReScoreDict[studRec.StudentID].ContainsKey(smsKey))
+                //        {
+                //            XElement elmRoot = StudentSubjectReScoreDict[studRec.StudentID][smsKey].ScoreXML;
 
-                            foreach (XElement elmScore in elmRoot.Elements("Subject"))
-                            {
+                //            foreach (XElement elmScore in elmRoot.Elements("Subject"))
+                //            {
 
-                                SubjectScoreRec108 ssr = new SubjectScoreRec108();
-                                ssr.IDNumber = IDNumber.ToUpper();
-                                ssr.StudentID = studRec.StudentID;
-                                ssr.Birthday = BirthDate;
-                                ssr.GradeYear = StudentSubjectReScoreDict[studRec.StudentID][smsKey].GradeYear;
-                                ssr.SchoolYear = StudentSubjectReScoreDict[studRec.StudentID][smsKey].SchoolYear;
-                                ssr.Semester = StudentSubjectReScoreDict[studRec.StudentID][smsKey].Semester;
-                                ssr.SubjectName = Utility.GetAttribute(elmScore, "科目");
+                //                SubjectScoreRec108 ssr = new SubjectScoreRec108();
+                //                ssr.IDNumber = IDNumber.ToUpper();
+                //                ssr.StudentID = studRec.StudentID;
+                //                ssr.Birthday = BirthDate;
+                //                ssr.GradeYear = StudentSubjectReScoreDict[studRec.StudentID][smsKey].GradeYear;
+                //                ssr.SchoolYear = StudentSubjectReScoreDict[studRec.StudentID][smsKey].SchoolYear;
+                //                ssr.Semester = StudentSubjectReScoreDict[studRec.StudentID][smsKey].Semester;
+                //                ssr.SubjectName = Utility.GetAttribute(elmScore, "科目");
 
-                                ssr.SubjectLevel = Utility.GetAttribute(elmScore, "科目級別");
+                //                ssr.SubjectLevel = Utility.GetAttribute(elmScore, "科目級別");
 
-                                ssr.Name = studRec.StudentName;
-                                ssr.ClassName = studRec.RefClass.ClassName;
-                                ssr.SeatNo = studRec.SeatNo;
-                                ssr.StudentNumber = studRec.StudentNumber;
+                //                ssr.Name = studRec.StudentName;
+                //                ssr.ClassName = studRec.RefClass.ClassName;
+                //                ssr.SeatNo = studRec.SeatNo;
+                //                ssr.StudentNumber = studRec.StudentNumber;
 
-                                foreach (SHSemesterHistoryRecord rec in SemsH)
-                                {
-                                    foreach (K12.Data.SemesterHistoryItem item in rec.SemesterHistoryItems)
-                                    {
-                                        if (item.SchoolYear == _SchoolYear && item.Semester == _Semester)
-                                        {
-                                            if (studRec.StudentID == item.RefStudentID)
-                                            {
-                                                ssr.HisClassName = item.ClassName;
-                                                ssr.HisSeatNo = item.SeatNo;
-                                                ssr.HisStudentNumber = item.StudentNumber;
-                                            }
-                                        }
-                                    }
-                                }
-
-
-
-                                ssr.CourseCode = Utility.GetAttribute(elmScore, "修課科目代碼");
-
-                                //當課程類別為8(團體活動時間)及9(彈性活動時間)，且科目屬性不為D(充實(增廣)、補強性教學 [全學期、授予學分])時，不允許提交成績。
-                                //課程代碼為23碼
-                                ssr.CodePass = true;
-                                int startIndex1 = 16;
-                                int endIndex = 1;
-                                int startIndex2 = 18;
-
-                                if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
-                                {
-                                    if (ssr.CourseCode.Length > 22)
-                                    {
-                                        string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
-                                        string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
-                                        if ((sub1 == "8" || sub1 == "9") && sub2 != "D")
-                                        {
-                                            ssr.CodePass = false;   //不可提交
-                                        }
-                                    }
-                                }
+                //                foreach (SHSemesterHistoryRecord rec in SemsH)
+                //                {
+                //                    foreach (K12.Data.SemesterHistoryItem item in rec.SemesterHistoryItems)
+                //                    {
+                //                        if (item.SchoolYear == _SchoolYear && item.Semester == _Semester)
+                //                        {
+                //                            if (studRec.StudentID == item.RefStudentID)
+                //                            {
+                //                                ssr.HisClassName = item.ClassName;
+                //                                ssr.HisSeatNo = item.SeatNo;
+                //                                ssr.HisStudentNumber = item.StudentNumber;
+                //                            }
+                //                        }
+                //                    }
+                //                }
 
 
-                                ssr.Credit = Utility.GetAttribute(elmScore, "開課學分數");
-                                // 預設值 -1
-                                ssr.Score = ssr.ScScore = ssr.ReScore = ssr.useCredit = ssr.ScoreP = ssr.ScScoreP = ssr.ReAScoreP = ssr.ReScoreP = "-1";
 
-                                string GrStr = "";
-                                if (StudGradYearDict.ContainsKey(studRec.StudentID))
-                                    GrStr = StudGradYearDict[studRec.StudentID] + "_及";
+                //                ssr.CourseCode = Utility.GetAttribute(elmScore, "修課科目代碼");
 
-                                decimal ds, dsre, passScore = 60;
+                //                //當課程類別為8(團體活動時間)及9(彈性活動時間)，且科目屬性不為D(充實(增廣)、補強性教學 [全學期、授予學分])時，不允許提交成績。
+                //                //課程代碼為23碼
+                //                ssr.CodePass = true;
+                //                int startIndex1 = 16;
+                //                int endIndex = 1;
+                //                int startIndex2 = 18;
 
-                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "原始成績"), out ds))
-                                {
-                                    // 四捨五入到整數位 --2021年3月 取消處理四捨五入
-                                    //ds = Math.Round(ds, 0, MidpointRounding.AwayFromZero);
-
-                                    decimal dsp;
-                                    if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dsp))
-                                        passScore = dsp;
-
-                                    // ssr.Score = string.Format("{0:##0}", ds);
-                                    ssr.Score = ds.ToString();
-
-                                    //2021年4月
-
-                                    //if (Utility.GetAttribute(elmScore, "不計學分") == "否" && Utility.GetAttribute(elmScore, "不需評分") == "否")
-                                    // 2023/10/3，因為判斷規則調整，不需評分不需要判斷。
-                                    if (Utility.GetAttribute(elmScore, "不計學分") == "否")
-                                    {
-                                        ssr.useCredit = "1";
-
-                                        if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
-                                        {
-                                            if (ssr.CourseCode.Length > 22)
-                                            {
-                                                string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
-                                                string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
-                                                if (sub1 == "9" && sub2 == "D")
-                                                {
-                                                    ssr.useCredit = "3";
-                                                }
-                                            }
-                                        }
-                                        // 2023/10/6，學校反應當需要計分又不需評分狀態時，是否採計學分需要填入3
-                                        if (Utility.GetAttribute(elmScore, "不需評分") == "是")
-                                            ssr.useCredit = "3";
-                                    }
-                                    else
-                                    {
-                                        if (Utility.GetAttribute(elmScore, "不計學分") == "是")
-                                            ssr.useCredit = "2";
-                                    }
-
-                                    if (ds < passScore)
-                                        ssr.ScoreP = "0";
-                                    else
-                                        ssr.ScoreP = "1";
-                                }
-                                else
-                                {
-
-                                    //if (Utility.GetAttribute(elmScore, "不計學分") == "否" && Utility.GetAttribute(elmScore, "不需評分") == "否")
-                                    // 2023/10/3，因為判斷規則調整，不需評分不需要判斷。
-                                    if (Utility.GetAttribute(elmScore, "不計學分") == "否")
-                                    {
-                                        ssr.useCredit = "1";
-
-                                        if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
-                                        {
-                                            if (ssr.CourseCode.Length > 22)
-                                            {
-                                                string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
-                                                string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
-                                                if (sub1 == "9" && sub2 == "D")
-                                                {
-                                                    ssr.useCredit = "3";
-                                                }
-                                            }
-                                        }
-
-                                        // 2023/10/6，學校反應當需要計分又不需評分狀態時，是否採計學分需要填入3
-                                        if (Utility.GetAttribute(elmScore, "不需評分") == "是")
-                                            ssr.useCredit = "3";
-                                    }
-                                    else
-                                    {
-                                        if (Utility.GetAttribute(elmScore, "不計學分") == "是")
-                                            ssr.useCredit = "2";
-                                    }
-
-                                    //// 判斷是否 不需評分
-                                    //if (Utility.GetAttribute(elmScore, "不需評分") == "是")
-                                    //{
-                                    //    ssr.useCredit = "3";
-                                    //}
-                                }
-
-                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "補考成績"), out dsre))
-                                {
-                                    decimal dsreP;
-
-                                    // 四捨五入到整數位 --2021年3月 取消處理四捨五入
-                                    //dsre = Math.Round(dsre, 0, MidpointRounding.AwayFromZero);
-
-                                    if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dsreP))
-                                    {
-                                        passScore = dsreP;
-                                    }
-
-                                    // ssr.ReScore = string.Format("{0:##0}", dsre);
-                                    ssr.ReScore = dsre.ToString();
-
-                                    if (dsre < passScore)
-                                        ssr.ReScoreP = "0";
-                                    else
-                                        ssr.ReScoreP = "1";
-                                }
-
-                                ssr.isScScore = false;
-                                ssr.ScScoreType = "3";  // 補考方式預設 3，專班辦理。
-
-                                if (Utility.GetAttribute(elmScore, "是否補修成績") != null)
-                                {
-                                    if (Utility.GetAttribute(elmScore, "是否補修成績") == "是")
-                                    {
-                                        ssr.isScScore = true;
-                                    }
-                                }
-
-                                if (ssr.ScoreP == "-1")
-                                {
-                                    if (Utility.GetAttribute(elmScore, "是否取得學分") != null)
-                                    {
-                                        if (Utility.GetAttribute(elmScore, "是否取得學分") == "是")
-                                        {
-                                            ssr.ScoreP = "1";
-                                        }
-                                        else
-                                        {
-                                            ssr.ScoreP = "0";
-                                        }
-                                    }
-                                }
+                //                if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
+                //                {
+                //                    if (ssr.CourseCode.Length > 22)
+                //                    {
+                //                        string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
+                //                        string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
+                //                        if ((sub1 == "8" || sub1 == "9") && sub2 != "D")
+                //                        {
+                //                            ssr.CodePass = false;   //不可提交
+                //                        }
+                //                    }
+                //                }
 
 
-                                // 補修學年度、學期和畫面上選相同相同才會填入
-                                if (Utility.GetAttribute(elmScore, "補修學年度") == _SchoolYear.ToString() && Utility.GetAttribute(elmScore, "補修學期") == _Semester.ToString())
-                                {
-                                    SubjectScoreRec108ReScoreList.Add(ssr);
-                                }
+                //                ssr.Credit = Utility.GetAttribute(elmScore, "開課學分數");
+                //                // 預設值 -1
+                //                ssr.Score = ssr.ScScore = ssr.ReScore = ssr.useCredit = ssr.ScoreP = ssr.ScScoreP = ssr.ReAScoreP = ssr.ReScoreP = "-1";
 
-                            }
-                        }
+                //                string GrStr = "";
+                //                if (StudGradYearDict.ContainsKey(studRec.StudentID))
+                //                    GrStr = StudGradYearDict[studRec.StudentID] + "_及";
 
-                    #endregion
-                }
+                //                decimal ds, dsre, passScore = 60;
+
+                //                if (decimal.TryParse(Utility.GetAttribute(elmScore, "原始成績"), out ds))
+                //                {
+                //                    // 四捨五入到整數位 --2021年3月 取消處理四捨五入
+                //                    //ds = Math.Round(ds, 0, MidpointRounding.AwayFromZero);
+
+                //                    decimal dsp;
+                //                    if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dsp))
+                //                        passScore = dsp;
+
+                //                    // ssr.Score = string.Format("{0:##0}", ds);
+                //                    ssr.Score = ds.ToString();
+
+                //                    //2021年4月
+
+                //                    //if (Utility.GetAttribute(elmScore, "不計學分") == "否" && Utility.GetAttribute(elmScore, "不需評分") == "否")
+                //                    // 2023/10/3，因為判斷規則調整，不需評分不需要判斷。
+                //                    if (Utility.GetAttribute(elmScore, "不計學分") == "否")
+                //                    {
+                //                        ssr.useCredit = "1";
+
+                //                        if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
+                //                        {
+                //                            if (ssr.CourseCode.Length > 22)
+                //                            {
+                //                                string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
+                //                                string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
+                //                                if (sub1 == "9" && sub2 == "D")
+                //                                {
+                //                                    ssr.useCredit = "3";
+                //                                }
+                //                            }
+                //                        }
+                //                        // 2023/10/6，學校反應當需要計分又不需評分狀態時，是否採計學分需要填入3
+                //                        if (Utility.GetAttribute(elmScore, "不需評分") == "是")
+                //                            ssr.useCredit = "3";
+                //                    }
+                //                    else
+                //                    {
+                //                        if (Utility.GetAttribute(elmScore, "不計學分") == "是")
+                //                            ssr.useCredit = "2";
+                //                    }
+
+                //                    if (ds < passScore)
+                //                        ssr.ScoreP = "0";
+                //                    else
+                //                        ssr.ScoreP = "1";
+                //                }
+                //                else
+                //                {
+
+                //                    //if (Utility.GetAttribute(elmScore, "不計學分") == "否" && Utility.GetAttribute(elmScore, "不需評分") == "否")
+                //                    // 2023/10/3，因為判斷規則調整，不需評分不需要判斷。
+                //                    if (Utility.GetAttribute(elmScore, "不計學分") == "否")
+                //                    {
+                //                        ssr.useCredit = "1";
+
+                //                        if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
+                //                        {
+                //                            if (ssr.CourseCode.Length > 22)
+                //                            {
+                //                                string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
+                //                                string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
+                //                                if (sub1 == "9" && sub2 == "D")
+                //                                {
+                //                                    ssr.useCredit = "3";
+                //                                }
+                //                            }
+                //                        }
+
+                //                        // 2023/10/6，學校反應當需要計分又不需評分狀態時，是否採計學分需要填入3
+                //                        if (Utility.GetAttribute(elmScore, "不需評分") == "是")
+                //                            ssr.useCredit = "3";
+                //                    }
+                //                    else
+                //                    {
+                //                        if (Utility.GetAttribute(elmScore, "不計學分") == "是")
+                //                            ssr.useCredit = "2";
+                //                    }
+
+                //                    //// 判斷是否 不需評分
+                //                    //if (Utility.GetAttribute(elmScore, "不需評分") == "是")
+                //                    //{
+                //                    //    ssr.useCredit = "3";
+                //                    //}
+                //                }
+
+                //                if (decimal.TryParse(Utility.GetAttribute(elmScore, "補考成績"), out dsre))
+                //                {
+                //                    decimal dsreP;
+
+                //                    // 四捨五入到整數位 --2021年3月 取消處理四捨五入
+                //                    //dsre = Math.Round(dsre, 0, MidpointRounding.AwayFromZero);
+
+                //                    if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dsreP))
+                //                    {
+                //                        passScore = dsreP;
+                //                    }
+
+                //                    // ssr.ReScore = string.Format("{0:##0}", dsre);
+                //                    ssr.ReScore = dsre.ToString();
+
+                //                    if (dsre < passScore)
+                //                        ssr.ReScoreP = "0";
+                //                    else
+                //                        ssr.ReScoreP = "1";
+                //                }
+
+                //                ssr.isScScore = false;
+                //                ssr.ScScoreType = "3";  // 補考方式預設 3，專班辦理。
+
+                //                if (Utility.GetAttribute(elmScore, "是否補修成績") != null)
+                //                {
+                //                    if (Utility.GetAttribute(elmScore, "是否補修成績") == "是")
+                //                    {
+                //                        ssr.isScScore = true;
+                //                    }
+                //                }
+
+                //                if (ssr.ScoreP == "-1")
+                //                {
+                //                    if (Utility.GetAttribute(elmScore, "是否取得學分") != null)
+                //                    {
+                //                        if (Utility.GetAttribute(elmScore, "是否取得學分") == "是")
+                //                        {
+                //                            ssr.ScoreP = "1";
+                //                        }
+                //                        else
+                //                        {
+                //                            ssr.ScoreP = "0";
+                //                        }
+                //                    }
+                //                }
+
+
+                //                // 補修學年度、學期和畫面上選相同相同才會填入
+                //                if (Utility.GetAttribute(elmScore, "補修學年度") == _SchoolYear.ToString() && Utility.GetAttribute(elmScore, "補修學期") == _Semester.ToString())
+                //                {
+                //                    SubjectScoreRec108ReScoreList.Add(ssr);
+                //                }
+
+                //            }
+                //        }
+
+                //    #endregion
+                //}
 
             }
 
@@ -1024,8 +1026,8 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             // 取得有符合對照學生
             StudentHasUpdateCodeDict = Utility.GetStudentHasUpdateCodeDict(_SchoolYear, _Semester, studentIDList, UpdateCodeMappingDict.Keys.ToList());
 
-            // 重修
-            Dictionary<string, Dictionary<string, SubjectScoreXML>> StudentSubjectScore1Dict = new Dictionary<string, Dictionary<string, SubjectScoreXML>>();
+            //// 重修
+            //Dictionary<string, Dictionary<string, SubjectScoreXML>> StudentSubjectScore1Dict = new Dictionary<string, Dictionary<string, SubjectScoreXML>>();
 
             // 重讀
             Dictionary<string, Dictionary<string, SubjectScoreXML>> StudentSubjectScore2Dict = new Dictionary<string, Dictionary<string, SubjectScoreXML>>();
@@ -1088,57 +1090,57 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                 }
             }
 
-            // 依年級分批取得學生學期科目成績 比對重修
-            foreach (string className in ClassStudentDict.Keys)
-            {
-                List<string> studIDList = ClassStudentDict[className];
-                if (studIDList.Count > 0)
-                {
-                    string query = string.Format(@"
-                    SELECT
-                        ref_student_id AS student_id,
-                        school_year,
-                        semester,
-                        grade_year,
-                        score_info
-                    FROM
-                        sems_subj_score
-                    WHERE
-                        ref_student_id IN({0});
-                    ", string.Join(",", studIDList.ToArray()));
+            //// 依年級分批取得學生學期科目成績 比對重修
+            //foreach (string className in ClassStudentDict.Keys)
+            //{
+            //    List<string> studIDList = ClassStudentDict[className];
+            //    if (studIDList.Count > 0)
+            //    {
+            //        string query = string.Format(@"
+            //        SELECT
+            //            ref_student_id AS student_id,
+            //            school_year,
+            //            semester,
+            //            grade_year,
+            //            score_info
+            //        FROM
+            //            sems_subj_score
+            //        WHERE
+            //            ref_student_id IN({0});
+            //        ", string.Join(",", studIDList.ToArray()));
 
-                    DataTable dtSemsScore = qhStudSemsScore.Select(query);
-                    foreach (DataRow dr in dtSemsScore.Rows)
-                    {
-                        string student_id = dr["student_id"] + "";
+            //        DataTable dtSemsScore = qhStudSemsScore.Select(query);
+            //        foreach (DataRow dr in dtSemsScore.Rows)
+            //        {
+            //            string student_id = dr["student_id"] + "";
 
-                        SubjectScoreXML ssx = new SubjectScoreXML();
-                        ssx.StudentID = student_id;
-                        ssx.SchoolYear = dr["school_year"] + "";
-                        ssx.Semester = dr["semester"] + "";
-                        ssx.GradeYear = dr["grade_year"] + "";
+            //            SubjectScoreXML ssx = new SubjectScoreXML();
+            //            ssx.StudentID = student_id;
+            //            ssx.SchoolYear = dr["school_year"] + "";
+            //            ssx.Semester = dr["semester"] + "";
+            //            ssx.GradeYear = dr["grade_year"] + "";
 
-                        string key = ssx.SchoolYear + "_" + ssx.Semester;
+            //            string key = ssx.SchoolYear + "_" + ssx.Semester;
 
-                        XElement elm = null;
-                        try
-                        {
-                            elm = XElement.Parse(dr["score_info"] + "");
-                            ssx.ScoreXML = elm;
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex.Message);
-                        }
-                        if (!StudentSubjectScore1Dict.ContainsKey(student_id))
-                            StudentSubjectScore1Dict.Add(student_id, new Dictionary<string, SubjectScoreXML>());
+            //            XElement elm = null;
+            //            try
+            //            {
+            //                elm = XElement.Parse(dr["score_info"] + "");
+            //                ssx.ScoreXML = elm;
+            //            }
+            //            catch (Exception ex)
+            //            {
+            //                Console.WriteLine(ex.Message);
+            //            }
+            //            if (!StudentSubjectScore1Dict.ContainsKey(student_id))
+            //                StudentSubjectScore1Dict.Add(student_id, new Dictionary<string, SubjectScoreXML>());
 
-                        if (!StudentSubjectScore1Dict[student_id].ContainsKey(key))
-                            StudentSubjectScore1Dict[student_id][key] = ssx;
+            //            if (!StudentSubjectScore1Dict[student_id].ContainsKey(key))
+            //                StudentSubjectScore1Dict[student_id][key] = ssx;
 
-                    }
-                }
-            }
+            //        }
+            //    }
+            //}
 
 
             foreach (SmartSchool.Customization.Data.StudentRecord studRec in StudentRecList)
@@ -1149,298 +1151,298 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                 if (DateTime.TryParse(studRec.Birthday, out dt))
                     BirthDate = Utility.ConvertChDateString(dt);
 
-                if (StudentSubjectScore1Dict.ContainsKey(studRec.StudentID))
-                {
-                    // string smsKey = _SchoolYear + "_" + _Semester;
+                //if (StudentSubjectScore1Dict.ContainsKey(studRec.StudentID))
+                //{
+                //    // string smsKey = _SchoolYear + "_" + _Semester;
 
-                    #region 重修
+                //    #region 重修
 
-                    foreach (string smsKey in StudentSubjectScore1Dict[studRec.StudentID].Keys)
-                    {
-                        if (StudentSubjectScore1Dict[studRec.StudentID].ContainsKey(smsKey))
-                        {
-                            XElement elmRoot = StudentSubjectScore1Dict[studRec.StudentID][smsKey].ScoreXML;
+                //    foreach (string smsKey in StudentSubjectScore1Dict[studRec.StudentID].Keys)
+                //    {
+                //        if (StudentSubjectScore1Dict[studRec.StudentID].ContainsKey(smsKey))
+                //        {
+                //            XElement elmRoot = StudentSubjectScore1Dict[studRec.StudentID][smsKey].ScoreXML;
 
-                            foreach (XElement elmScore in elmRoot.Elements("Subject"))
-                            {
-                                SubjectScoreRec108 ssr = new SubjectScoreRec108();
-                                ssr.IDNumber = IDNumber;
-                                ssr.StudentID = studRec.StudentID;
-                                ssr.Birthday = BirthDate;
-                                ssr.GradeYear = StudentSubjectScore1Dict[studRec.StudentID][smsKey].GradeYear;
-                                ssr.SchoolYear = StudentSubjectScore1Dict[studRec.StudentID][smsKey].SchoolYear;  //原修課學年度
-                                ssr.Semester = StudentSubjectScore1Dict[studRec.StudentID][smsKey].Semester;  //原修課學期
-                                ssr.SubjectName = Utility.GetAttribute(elmScore, "科目");
-                                ssr.SubjectLevel = Utility.GetAttribute(elmScore, "科目級別");
-                                ssr.Name = studRec.StudentName;
-                                ssr.ClassName = studRec.RefClass.ClassName;
-                                ssr.SeatNo = studRec.SeatNo;
-                                ssr.StudentNumber = studRec.StudentNumber;
-
-
-                                foreach (SHSemesterHistoryRecord rec in SemsH)
-                                {
-                                    foreach (K12.Data.SemesterHistoryItem item in rec.SemesterHistoryItems)
-                                    {
-                                        //if (item.SchoolYear == _SchoolYear && item.Semester == _Semester)
-                                        //{
-                                        //    if (studRec.StudentID == item.RefStudentID)
-                                        //    {
-                                        //        ssr.HisClassName = item.ClassName;
-                                        //        ssr.HisSeatNo = item.SeatNo;
-                                        //        ssr.HisStudentNumber = item.StudentNumber;
-                                        //    }
-                                        //}
-
-                                        if (item.SchoolYear.ToString() == ssr.SchoolYear && item.Semester.ToString() == ssr.Semester)
-                                        {
-                                            if (studRec.StudentID == item.RefStudentID)
-                                            {
-                                                ssr.HisClassName = item.ClassName;
-                                                ssr.HisSeatNo = item.SeatNo;
-                                                ssr.HisStudentNumber = item.StudentNumber;
+                //            foreach (XElement elmScore in elmRoot.Elements("Subject"))
+                //            {
+                //                SubjectScoreRec108 ssr = new SubjectScoreRec108();
+                //                ssr.IDNumber = IDNumber;
+                //                ssr.StudentID = studRec.StudentID;
+                //                ssr.Birthday = BirthDate;
+                //                ssr.GradeYear = StudentSubjectScore1Dict[studRec.StudentID][smsKey].GradeYear;
+                //                ssr.SchoolYear = StudentSubjectScore1Dict[studRec.StudentID][smsKey].SchoolYear;  //原修課學年度
+                //                ssr.Semester = StudentSubjectScore1Dict[studRec.StudentID][smsKey].Semester;  //原修課學期
+                //                ssr.SubjectName = Utility.GetAttribute(elmScore, "科目");
+                //                ssr.SubjectLevel = Utility.GetAttribute(elmScore, "科目級別");
+                //                ssr.Name = studRec.StudentName;
+                //                ssr.ClassName = studRec.RefClass.ClassName;
+                //                ssr.SeatNo = studRec.SeatNo;
+                //                ssr.StudentNumber = studRec.StudentNumber;
 
 
-                                            }
-                                        }
+                //                foreach (SHSemesterHistoryRecord rec in SemsH)
+                //                {
+                //                    foreach (K12.Data.SemesterHistoryItem item in rec.SemesterHistoryItems)
+                //                    {
+                //                        //if (item.SchoolYear == _SchoolYear && item.Semester == _Semester)
+                //                        //{
+                //                        //    if (studRec.StudentID == item.RefStudentID)
+                //                        //    {
+                //                        //        ssr.HisClassName = item.ClassName;
+                //                        //        ssr.HisSeatNo = item.SeatNo;
+                //                        //        ssr.HisStudentNumber = item.StudentNumber;
+                //                        //    }
+                //                        //}
 
-                                        /// 2021-11-05 因國教署系統判斷問題，故呈報重修時，課程代碼要填入原習修學年期在使用的課程代碼
-                                        // 將每個學年期的學期對照表GDCCode存入Dictionary
-                                        string key = item.RefStudentID + "_" + item.SchoolYear.ToString() + "_" + item.Semester.ToString();
-
-                                        if (!StudHistoryGDCCodeDict.ContainsKey(key))
-                                        {
-                                            // 要傳入 StudHistoryGDCCodeDict 的 Dictionary
-                                            Dictionary<string, string> paramForStudHistoryGDCCodeDict = new Dictionary<string, string>();
-                                            if (!paramForStudHistoryGDCCodeDict.ContainsKey(item.RefStudentID))
-                                            {
-                                                paramForStudHistoryGDCCodeDict.Add(item.RefStudentID, item.GDCCode);
-                                            }
-                                            StudHistoryGDCCodeDict.Add(key, paramForStudHistoryGDCCodeDict);
-                                        }
-                                    }
-                                }
-
-                                string dicKey = studRec.StudentID + "_" + ssr.SchoolYear + "_" + ssr.Semester;
-                                string subjectCode = "";
-
-                                if (Utility.GetAttribute(elmScore, "重修學年度") == _SchoolYear.ToString() && Utility.GetAttribute(elmScore, "重修學期") == _Semester.ToString())
-                                {
-                                    /// 2021-11-05 如果有遇到復學/重讀/轉入，會將過去的課程代碼抵免成新的課程代碼，
-                                    if (StudentCreditUpdateCodeDict.ContainsKey(studRec.StudentID))
-                                    {
-                                        // 最後一筆異動學年期
-                                        int intUpdateYear_Sems = int.Parse(StudentCreditUpdateCodeDict[studRec.StudentID]);
-                                        string strtUpdateYear_Sems = StudentCreditUpdateCodeDict[studRec.StudentID];
-                                        //重修 原習修學年期
-                                        int strSsrYear_Sems = int.Parse(ssr.SchoolYear + ssr.Semester);
-
-                                        string updateYear = strtUpdateYear_Sems.Substring(0, 3);
-                                        string updateSems = strtUpdateYear_Sems.Substring(3, 1);
-
-                                        //https://3.basecamp.com/4399967/buckets/15765350/todos/4314350115#__recording_4323437970
-                                        /// 所以 當 原習修學年期 <= 異動學年期，2022/09/21 且 異動學年期<=選擇的學年期，這裡的課程代碼已經抵免了，就填寫異動學年期的課程代碼
-                                        if (strSsrYear_Sems <= intUpdateYear_Sems && intUpdateYear_Sems <= int.Parse(_SchoolYear.ToString() + _Semester.ToString()))
-                                        {
-                                            dicKey = studRec.StudentID + "_" + updateYear + "_" + updateSems;
-                                        }
-                                    }
-                                    ssr.CourseCode = Utility.GetAttribute(elmScore, "修課科目代碼");
+                //                        if (item.SchoolYear.ToString() == ssr.SchoolYear && item.Semester.ToString() == ssr.Semester)
+                //                        {
+                //                            if (studRec.StudentID == item.RefStudentID)
+                //                            {
+                //                                ssr.HisClassName = item.ClassName;
+                //                                ssr.HisSeatNo = item.SeatNo;
+                //                                ssr.HisStudentNumber = item.StudentNumber;
 
 
+                //                            }
+                //                        }
 
-                                }
+                //                        /// 2021-11-05 因國教署系統判斷問題，故呈報重修時，課程代碼要填入原習修學年期在使用的課程代碼
+                //                        // 將每個學年期的學期對照表GDCCode存入Dictionary
+                //                        string key = item.RefStudentID + "_" + item.SchoolYear.ToString() + "_" + item.Semester.ToString();
+
+                //                        if (!StudHistoryGDCCodeDict.ContainsKey(key))
+                //                        {
+                //                            // 要傳入 StudHistoryGDCCodeDict 的 Dictionary
+                //                            Dictionary<string, string> paramForStudHistoryGDCCodeDict = new Dictionary<string, string>();
+                //                            if (!paramForStudHistoryGDCCodeDict.ContainsKey(item.RefStudentID))
+                //                            {
+                //                                paramForStudHistoryGDCCodeDict.Add(item.RefStudentID, item.GDCCode);
+                //                            }
+                //                            StudHistoryGDCCodeDict.Add(key, paramForStudHistoryGDCCodeDict);
+                //                        }
+                //                    }
+                //                }
+
+                //                string dicKey = studRec.StudentID + "_" + ssr.SchoolYear + "_" + ssr.Semester;
+                //                string subjectCode = "";
+
+                //                if (Utility.GetAttribute(elmScore, "重修學年度") == _SchoolYear.ToString() && Utility.GetAttribute(elmScore, "重修學期") == _Semester.ToString())
+                //                {
+                //                    /// 2021-11-05 如果有遇到復學/重讀/轉入，會將過去的課程代碼抵免成新的課程代碼，
+                //                    if (StudentCreditUpdateCodeDict.ContainsKey(studRec.StudentID))
+                //                    {
+                //                        // 最後一筆異動學年期
+                //                        int intUpdateYear_Sems = int.Parse(StudentCreditUpdateCodeDict[studRec.StudentID]);
+                //                        string strtUpdateYear_Sems = StudentCreditUpdateCodeDict[studRec.StudentID];
+                //                        //重修 原習修學年期
+                //                        int strSsrYear_Sems = int.Parse(ssr.SchoolYear + ssr.Semester);
+
+                //                        string updateYear = strtUpdateYear_Sems.Substring(0, 3);
+                //                        string updateSems = strtUpdateYear_Sems.Substring(3, 1);
+
+                //                        //https://3.basecamp.com/4399967/buckets/15765350/todos/4314350115#__recording_4323437970
+                //                        /// 所以 當 原習修學年期 <= 異動學年期，2022/09/21 且 異動學年期<=選擇的學年期，這裡的課程代碼已經抵免了，就填寫異動學年期的課程代碼
+                //                        if (strSsrYear_Sems <= intUpdateYear_Sems && intUpdateYear_Sems <= int.Parse(_SchoolYear.ToString() + _Semester.ToString()))
+                //                        {
+                //                            dicKey = studRec.StudentID + "_" + updateYear + "_" + updateSems;
+                //                        }
+                //                    }
+                //                    ssr.CourseCode = Utility.GetAttribute(elmScore, "修課科目代碼");
 
 
-                                //當課程類別為8(團體活動時間)及9(彈性活動時間)，且科目屬性不為D(充實(增廣)、補強性教學 [全學期、授予學分])時，不允許提交成績。
-                                //課程代碼為23碼
-                                ssr.CodePass = true;
-                                int startIndex1 = 16;
-                                int endIndex = 1;
-                                int startIndex2 = 18;
 
-                                if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
-                                {
-                                    if (ssr.CourseCode.Length > 22)
-                                    {
-                                        string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
-                                        string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
-                                        if ((sub1 == "8" || sub1 == "9") && sub2 != "D")
-                                        {
-                                            ssr.CodePass = false;   //不可提交
-                                        }
-                                    }
-                                }
+                //                }
 
-                                ssr.Credit = Utility.GetAttribute(elmScore, "開課學分數");
-                                // 預設值 -1
-                                ssr.Score = ssr.ScScore = ssr.ReScore = ssr.useCredit = ssr.ScoreP = ssr.ScScoreP = ssr.ReAScoreP = ssr.ReScoreP = "-1";
 
-                                string GrStr = "";
-                                if (StudGradYearDict.ContainsKey(studRec.StudentID))
-                                    GrStr = StudGradYearDict[studRec.StudentID] + "_及";
+                //                //當課程類別為8(團體活動時間)及9(彈性活動時間)，且科目屬性不為D(充實(增廣)、補強性教學 [全學期、授予學分])時，不允許提交成績。
+                //                //課程代碼為23碼
+                //                ssr.CodePass = true;
+                //                int startIndex1 = 16;
+                //                int endIndex = 1;
+                //                int startIndex2 = 18;
 
-                                decimal ds, dsre, passScore = 60;
+                //                if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
+                //                {
+                //                    if (ssr.CourseCode.Length > 22)
+                //                    {
+                //                        string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
+                //                        string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
+                //                        if ((sub1 == "8" || sub1 == "9") && sub2 != "D")
+                //                        {
+                //                            ssr.CodePass = false;   //不可提交
+                //                        }
+                //                    }
+                //                }
 
-                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "重修成績"), out ds))
-                                {
-                                    // 四捨五入到整數位 --2021年3月 取消處理四捨五入
-                                    //ds = Math.Round(ds, 0, MidpointRounding.AwayFromZero);
+                //                ssr.Credit = Utility.GetAttribute(elmScore, "開課學分數");
+                //                // 預設值 -1
+                //                ssr.Score = ssr.ScScore = ssr.ReScore = ssr.useCredit = ssr.ScoreP = ssr.ScScoreP = ssr.ReAScoreP = ssr.ReScoreP = "-1";
 
-                                    decimal dsp;
-                                    if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dsp))
-                                        passScore = dsp;
+                //                string GrStr = "";
+                //                if (StudGradYearDict.ContainsKey(studRec.StudentID))
+                //                    GrStr = StudGradYearDict[studRec.StudentID] + "_及";
 
-                                    //ssr.ReAScore = string.Format("{0:##0}", ds);
-                                    ssr.ReAScore = ds.ToString();
+                //                decimal ds, dsre, passScore = 60;
 
-                                    // if (Utility.GetAttribute(elmScore, "不計學分") == "否" && Utility.GetAttribute(elmScore, "不需評分") == "否")
-                                    // 2023/10/3，因為判斷規則調整，不需評分不需要判斷。
-                                    if (Utility.GetAttribute(elmScore, "不計學分") == "否")
-                                    {
-                                        ssr.useCredit = "1";
+                //                if (decimal.TryParse(Utility.GetAttribute(elmScore, "重修成績"), out ds))
+                //                {
+                //                    // 四捨五入到整數位 --2021年3月 取消處理四捨五入
+                //                    //ds = Math.Round(ds, 0, MidpointRounding.AwayFromZero);
 
-                                        if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
-                                        {
-                                            if (ssr.CourseCode.Length > 22)
-                                            {
-                                                string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
-                                                string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
-                                                if (sub1 == "9" && sub2 == "D")
-                                                {
-                                                    ssr.useCredit = "3";
-                                                }
-                                            }
-                                        }
-                                        // 2023/10/6，學校反應當需要計分又不需評分狀態時，是否採計學分需要填入3
-                                        if (Utility.GetAttribute(elmScore, "不需評分") == "是")
-                                            ssr.useCredit = "3";
-                                    }
-                                    else
-                                    {
-                                        if (Utility.GetAttribute(elmScore, "不計學分") == "是")
-                                            ssr.useCredit = "2";
-                                    }
+                //                    decimal dsp;
+                //                    if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dsp))
+                //                        passScore = dsp;
 
-                                    if (ds < passScore)
-                                        ssr.ReAScoreP = "0";
-                                    else
-                                    {
-                                        ssr.ReAScoreP = "1";
+                //                    //ssr.ReAScore = string.Format("{0:##0}", ds);
+                //                    ssr.ReAScore = ds.ToString();
 
-                                        //2021-11-09 重修成績最高分為及格標準，若沒有設定及格標準則以60分計算。
-                                        ssr.ReAScore = passScore.ToString();
-                                    }
+                //                    // if (Utility.GetAttribute(elmScore, "不計學分") == "否" && Utility.GetAttribute(elmScore, "不需評分") == "否")
+                //                    // 2023/10/3，因為判斷規則調整，不需評分不需要判斷。
+                //                    if (Utility.GetAttribute(elmScore, "不計學分") == "否")
+                //                    {
+                //                        ssr.useCredit = "1";
 
-                                }
-                                else
-                                {
-                                    //if (Utility.GetAttribute(elmScore, "不計學分") == "否" && Utility.GetAttribute(elmScore, "不需評分") == "否")
-                                    // 2023/10/3，因為判斷規則調整，不需評分不需要判斷。
-                                    if (Utility.GetAttribute(elmScore, "不計學分") == "否")
-                                    {
-                                        ssr.useCredit = "1";
+                //                        if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
+                //                        {
+                //                            if (ssr.CourseCode.Length > 22)
+                //                            {
+                //                                string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
+                //                                string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
+                //                                if (sub1 == "9" && sub2 == "D")
+                //                                {
+                //                                    ssr.useCredit = "3";
+                //                                }
+                //                            }
+                //                        }
+                //                        // 2023/10/6，學校反應當需要計分又不需評分狀態時，是否採計學分需要填入3
+                //                        if (Utility.GetAttribute(elmScore, "不需評分") == "是")
+                //                            ssr.useCredit = "3";
+                //                    }
+                //                    else
+                //                    {
+                //                        if (Utility.GetAttribute(elmScore, "不計學分") == "是")
+                //                            ssr.useCredit = "2";
+                //                    }
 
-                                        if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
-                                        {
-                                            if (ssr.CourseCode.Length > 22)
-                                            {
-                                                string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
-                                                string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
-                                                if (sub1 == "9" && sub2 == "D")
-                                                {
-                                                    ssr.useCredit = "3";
-                                                }
-                                            }
-                                        }
-                                        // 2023/10/6，學校反應當需要計分又不需評分狀態時，是否採計學分需要填入3
-                                        if (Utility.GetAttribute(elmScore, "不需評分") == "是")
-                                            ssr.useCredit = "3";
-                                    }
-                                    else
-                                    {
-                                        if (Utility.GetAttribute(elmScore, "不計學分") == "是")
-                                            ssr.useCredit = "2";
-                                    }
+                //                    if (ds < passScore)
+                //                        ssr.ReAScoreP = "0";
+                //                    else
+                //                    {
+                //                        ssr.ReAScoreP = "1";
 
-                                    // 判斷是否 不需評分
-                                    //if (Utility.GetAttribute(elmScore, "不需評分") == "是")
-                                    //{
-                                    //    ssr.useCredit = "3";
-                                    //}
-                                }
+                //                        //2021-11-09 重修成績最高分為及格標準，若沒有設定及格標準則以60分計算。
+                //                        ssr.ReAScore = passScore.ToString();
+                //                    }
 
-                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "補考成績"), out dsre))
-                                {
-                                    // 四捨五入到整數位 --2021年3月 取消處理四捨五入
-                                    //dsre = Math.Round(dsre, 0, MidpointRounding.AwayFromZero);
+                //                }
+                //                else
+                //                {
+                //                    //if (Utility.GetAttribute(elmScore, "不計學分") == "否" && Utility.GetAttribute(elmScore, "不需評分") == "否")
+                //                    // 2023/10/3，因為判斷規則調整，不需評分不需要判斷。
+                //                    if (Utility.GetAttribute(elmScore, "不計學分") == "否")
+                //                    {
+                //                        ssr.useCredit = "1";
 
-                                    decimal dsreP;
+                //                        if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
+                //                        {
+                //                            if (ssr.CourseCode.Length > 22)
+                //                            {
+                //                                string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
+                //                                string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
+                //                                if (sub1 == "9" && sub2 == "D")
+                //                                {
+                //                                    ssr.useCredit = "3";
+                //                                }
+                //                            }
+                //                        }
+                //                        // 2023/10/6，學校反應當需要計分又不需評分狀態時，是否採計學分需要填入3
+                //                        if (Utility.GetAttribute(elmScore, "不需評分") == "是")
+                //                            ssr.useCredit = "3";
+                //                    }
+                //                    else
+                //                    {
+                //                        if (Utility.GetAttribute(elmScore, "不計學分") == "是")
+                //                            ssr.useCredit = "2";
+                //                    }
 
-                                    if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dsreP))
-                                    {
-                                        passScore = dsreP;
-                                    }
+                //                    // 判斷是否 不需評分
+                //                    //if (Utility.GetAttribute(elmScore, "不需評分") == "是")
+                //                    //{
+                //                    //    ssr.useCredit = "3";
+                //                    //}
+                //                }
 
-                                    // ssr.ReScore = string.Format("{0:##0}", dsre);
-                                    ssr.ReScore = dsre.ToString();
+                //                if (decimal.TryParse(Utility.GetAttribute(elmScore, "補考成績"), out dsre))
+                //                {
+                //                    // 四捨五入到整數位 --2021年3月 取消處理四捨五入
+                //                    //dsre = Math.Round(dsre, 0, MidpointRounding.AwayFromZero);
 
-                                    if (dsre < passScore)
-                                        ssr.ReScoreP = "0";
-                                    else
-                                        ssr.ReScoreP = "1";
-                                }
+                //                    decimal dsreP;
 
-                                ssr.isScScore = false;
-                                ssr.ReAScoreType = "3";  // 重修方式預設 3，專班辦理。
+                //                    if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dsreP))
+                //                    {
+                //                        passScore = dsreP;
+                //                    }
 
-                                if (ssr.ScoreP == "-1")
-                                {
-                                    if (Utility.GetAttribute(elmScore, "是否取得學分") != null)
-                                    {
-                                        if (Utility.GetAttribute(elmScore, "是否取得學分") == "是")
-                                        {
-                                            ssr.ScoreP = "1";
-                                        }
-                                        else
-                                        {
-                                            ssr.ScoreP = "0";
-                                        }
-                                    }
-                                }
+                //                    // ssr.ReScore = string.Format("{0:##0}", dsre);
+                //                    ssr.ReScore = dsre.ToString();
 
-                                if (ssr.ReAScoreP == "-1")
-                                {
-                                    if (Utility.GetAttribute(elmScore, "是否取得學分") != null)
-                                    {
-                                        if (Utility.GetAttribute(elmScore, "是否取得學分") == "是")
-                                        {
-                                            ssr.ReAScoreP = "1";
-                                        }
-                                        else
-                                        {
-                                            ssr.ReAScoreP = "0";
-                                        }
-                                    }
-                                }
+                //                    if (dsre < passScore)
+                //                        ssr.ReScoreP = "0";
+                //                    else
+                //                        ssr.ReScoreP = "1";
+                //                }
 
-                                // 有重修
-                                int sy, ss;
-                                if (int.TryParse(Utility.GetAttribute(elmScore, "重修學年度"), out sy) && int.TryParse(Utility.GetAttribute(elmScore, "重修學期"), out ss))
-                                {
-                                    if (sy == _SchoolYear && ss == _Semester)
-                                    {
-                                        SubjectScoreRec108List1.Add(ssr);
-                                    }
-                                }
+                //                ssr.isScScore = false;
+                //                ssr.ReAScoreType = "3";  // 重修方式預設 3，專班辦理。
 
-                            }
+                //                if (ssr.ScoreP == "-1")
+                //                {
+                //                    if (Utility.GetAttribute(elmScore, "是否取得學分") != null)
+                //                    {
+                //                        if (Utility.GetAttribute(elmScore, "是否取得學分") == "是")
+                //                        {
+                //                            ssr.ScoreP = "1";
+                //                        }
+                //                        else
+                //                        {
+                //                            ssr.ScoreP = "0";
+                //                        }
+                //                    }
+                //                }
 
-                        }
-                    }
+                //                if (ssr.ReAScoreP == "-1")
+                //                {
+                //                    if (Utility.GetAttribute(elmScore, "是否取得學分") != null)
+                //                    {
+                //                        if (Utility.GetAttribute(elmScore, "是否取得學分") == "是")
+                //                        {
+                //                            ssr.ReAScoreP = "1";
+                //                        }
+                //                        else
+                //                        {
+                //                            ssr.ReAScoreP = "0";
+                //                        }
+                //                    }
+                //                }
 
-                    #endregion
-                }
+                //                // 有重修
+                //                int sy, ss;
+                //                if (int.TryParse(Utility.GetAttribute(elmScore, "重修學年度"), out sy) && int.TryParse(Utility.GetAttribute(elmScore, "重修學期"), out ss))
+                //                {
+                //                    if (sy == _SchoolYear && ss == _Semester)
+                //                    {
+                //                        SubjectScoreRec108List1.Add(ssr);
+                //                    }
+                //                }
+
+                //            }
+
+                //        }
+                //    }
+
+                //    #endregion
+                //}
 
 
                 if (StudentSubjectScore2Dict.ContainsKey(studRec.StudentID))
@@ -1664,8 +1666,8 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             // 驗證資料
             ValidateScores(SubjectScoreRec108List);
             ValidateScores(SubjectScoreRec108OtherList);
-            ValidateScores(SubjectScoreRec108ReScoreList);
-            ValidateScores(SubjectScoreRec108List1);
+            //ValidateScores(SubjectScoreRec108ReScoreList);
+            //ValidateScores(SubjectScoreRec108List1);
             ValidateScores(SubjectScoreRec108List2);
 
 
@@ -2462,7 +2464,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             }
 
             // 寫入學期成績
-            _learningHistoryDataAccess.SaveScores42(SubjectScoreRec108List,_SchoolYear,_Semester);
+            _learningHistoryDataAccess.SaveScores42(SubjectScoreRec108List, _SchoolYear, _Semester);
             bgWorker.ReportProgress(75);
 
             // 補修成績由計算學期科目成績時寫入，在這先註解。

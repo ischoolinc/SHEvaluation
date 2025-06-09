@@ -91,6 +91,20 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
         /// </summary>
         public string ReAScoreType { get; set; }
 
+        /// <summary>
+        /// 重讀成績（5.3 專用）
+        /// </summary>
+        public string RepeatScore { get; set; }
+
+        /// <summary>
+        /// 重讀成績及格（1/0/-1，5.3 專用）
+        /// </summary>
+        public string RepeatScoreP { get; set; }
+
+        /// <summary>
+        /// 重讀註記（列抵請填1，再次修習請填2。）
+        /// </summary>
+        public string RepeatMemo { get; set; }
 
         /// <summary>
         /// 是否採計學分

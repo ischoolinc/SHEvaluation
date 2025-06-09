@@ -405,6 +405,13 @@ namespace SmartSchool.Evaluation
             // 重修成績使用
             List<SubjectScoreRec108> restudyScoreList = new List<SubjectScoreRec108>();
 
+            // 4.4 轉學轉科名冊
+            List<SubjectScoreRec108> transferScoreList = new List<SubjectScoreRec108>();
+
+            // 5.3 重讀成績名冊
+            List<SubjectScoreRec108> repeatScoreList = new List<SubjectScoreRec108>();
+
+
             foreach (StudentRecord var in students)
             {
                 //成績年級
@@ -717,8 +724,7 @@ namespace SmartSchool.Evaluation
                             }
                         }
 
-                        if (maxScore > dataCompareDict[key])
-                            dataCompareDict[key] = maxScore;
+
 
                         // 目前學年度 currentSubjectScoreList
                         if (scoreinfo.SchoolYear == schoolyear && scoreinfo.Semester == semester)
@@ -727,6 +733,9 @@ namespace SmartSchool.Evaluation
                         }
                         else
                         {
+                            if (maxScore > dataCompareDict[key])
+                                dataCompareDict[key] = maxScore;
+
                             // 重修                            
                             if ((scoreinfo.SchoolYear < schoolyear || (scoreinfo.SchoolYear == schoolyear && scoreinfo.Semester < semester)))
                             {
@@ -919,6 +928,10 @@ namespace SmartSchool.Evaluation
 
                                     decimal? sfinalScore = null;
 
+                                    bool fromPrevSemester = false;
+                                    bool fromArchive = false;
+
+
                                     // 課程成績
                                     if (sacRecord.HasFinalScore)
                                         sfinalScore = GetRoundScore(sacRecord.FinalScore, decimals, mode);
@@ -928,28 +941,32 @@ namespace SmartSchool.Evaluation
                                     // 比對來自學期科目成績，科目名稱+級別相同
                                     if (dataCompareDict.ContainsKey(sfKey))
                                     {
+                                        // 來自之前學期成績
+                                        fromPrevSemester = true;
+
                                         if (sfinalScore.HasValue)
                                             if (dataCompareDict[sfKey] > sfinalScore.Value)
                                                 sfinalScore = dataCompareDict[sfKey];
-                                            else
-                                                sfinalScore = dataCompareDict[sfKey];
                                     }
 
-                                    // 比對來自封存成績，科目名稱+級別相同
-                                    if (dataCompareDict1.ContainsKey(sacRecord.StudentID))
-                                    {
-                                        if (dataCompareDict1[sacRecord.StudentID].ContainsKey(sfKey))
+
+
+                                    // 當沒有來自之前學期科目成績才比對來自封存成績，科目名稱+級別相同
+                                    if (fromPrevSemester == false)
+                                        if (dataCompareDict1.ContainsKey(sacRecord.StudentID))
                                         {
-                                            if (sfinalScore.HasValue)
-                                                if (dataCompareDict1[sacRecord.StudentID][sfKey] > sfinalScore.Value)
-                                                    sfinalScore = dataCompareDict1[sacRecord.StudentID][sfKey];
-                                                else
-                                                    sfinalScore = dataCompareDict1[sacRecord.StudentID][sfKey];
+                                            if (dataCompareDict1[sacRecord.StudentID].ContainsKey(sfKey))
+                                            {
+                                                fromArchive = true; // 來源封存成績                           
+                                                if (sfinalScore.HasValue)
+                                                    if (dataCompareDict1[sacRecord.StudentID][sfKey] > sfinalScore.Value)
+                                                    {
+                                                        sfinalScore = dataCompareDict1[sacRecord.StudentID][sfKey];
+                                                    }
+                                            }
                                         }
-                                    }
 
-
-                                    // 沒有修課成績填空
+                                    // 沒有修課成績填空，一定會有修課，擇優成績來自之前學期成績或封存成績，只能擇一。
                                     if (sfinalScore.HasValue)
                                         updateScoreElement.SetAttribute("原始成績", ("" + sfinalScore.Value));
                                     else
@@ -1065,10 +1082,133 @@ namespace SmartSchool.Evaluation
                                         updateScoreElement.SetAttribute("是否取得學分", maxScore >= passscore ? "是" : "否");
                                     }
 
+                                    updateScoreElement.SetAttribute("註記", "修課成績：" + GetRoundScore(sacRecord.FinalScore, decimals, mode));
+
                                     #endregion
                                     if (!updateSemesterSubjectScoreList.ContainsKey(sy)) updateSemesterSubjectScoreList.Add(sy, new Dictionary<int, Dictionary<string, XmlElement>>());
                                     if (!updateSemesterSubjectScoreList[sy].ContainsKey(se)) updateSemesterSubjectScoreList[sy].Add(se, new Dictionary<string, XmlElement>());
                                     updateSemesterSubjectScoreList[sy][se].Add(key, updateScoreElement);
+
+
+                                    // 取得學期歷程資料
+                                    string HisClassName = "", HisStudentNumber = "";
+                                    int? HisSeatNo = null;
+                                    try
+                                    {
+                                        if (var.Fields.ContainsKey("SemesterHistory"))
+                                        {
+                                            XmlElement xmlElement = var.Fields["SemesterHistory"] as XmlElement;
+                                            XElement elmRoot = XElement.Parse(xmlElement.OuterXml);
+
+                                            var matched = elmRoot.Elements("History")
+                                                .FirstOrDefault(e =>
+                                                    (string)e.Attribute("SchoolYear") == schoolyear.ToString() &&
+                                                    (string)e.Attribute("Semester") == semester.ToString());
+
+                                            if (matched != null)
+                                            {
+                                                HisClassName = (string)matched.Attribute("ClassName") ?? "";
+                                                HisStudentNumber = (string)matched.Attribute("StudentNumber") ?? "";
+                                                int seatNo;
+                                                if (int.TryParse((string)matched.Attribute("SeatNo"), out seatNo))
+                                                    HisSeatNo = seatNo;
+                                            }
+                                        }
+                                    }
+                                    catch { }
+
+                                    // 判斷是否取得學分
+                                    string ScoreP = "";
+                                    if ((sfinalScore.HasValue ? sfinalScore.Value : 0) >= 60) // 這裡 60 可以改成你的及格標準變數
+                                        ScoreP = "1";
+                                    else
+                                        ScoreP = "0";
+
+
+                                    // 課程代碼
+                                    string courseCode = updateScoreElement.GetAttribute("修課科目代碼");
+
+                                    // 是否採計學分，預設"1"
+                                    string useCredit = "1";
+                                    if (sacRecord.NotIncludedInCredit)
+                                        useCredit = "2";
+                                    else if (sacRecord.NotIncludedInCalc)
+                                        useCredit = "3";
+
+                                    // 檢查課程代碼 CodePass
+                                    bool codePass = Utility.IsValidCourseCode(courseCode);
+
+                                    // 只有來自封存成績，填入轉學轉科工作表
+                                    if (fromArchive)
+                                    {
+                                        var transferRec = new SubjectScoreRec108
+                                        {
+                                            StudentID = sacRecord.StudentID,
+                                            IDNumber = sacRecord.IDNumber,
+                                            Birthday = sacRecord.Birthday,
+                                            SchoolYear = schoolyear.ToString(),
+                                            Semester = semester.ToString(),
+                                            CourseCode = courseCode,
+                                            SubjectName = sacRecord.Subject,
+                                            SubjectLevel = sacRecord.SubjectLevel,
+                                            GradeYear = gradeYear.HasValue ? gradeYear.Value.ToString() : "",
+                                            Credit = sacRecord.CreditDec().ToString(),
+                                            Score = sfinalScore.HasValue ? sfinalScore.Value.ToString() : "",
+                                            ScoreP = ScoreP,
+                                            useCredit = useCredit,
+                                            Name = var.StudentName,
+                                            HisClassName = HisClassName,
+                                            HisSeatNo = HisSeatNo,
+                                            HisStudentNumber = HisStudentNumber,
+                                            ClassName = var.RefClass.ClassName,
+                                            SeatNo = sacRecord.SeatNo,
+                                            StudentNumber = sacRecord.StudentNumber,
+                                            isScScore = true,
+                                            checkPass = true,
+                                            CodePass = codePass,
+                                            RepeatMemo = "2",
+                                            RepeatScoreP = ScoreP,
+                                            RepeatScore = updateScoreElement.GetAttribute("原始成績")
+                                        };
+                                        // 加入 4.4 轉學轉科名冊
+                                        transferScoreList.Add(transferRec);
+                                    }
+
+                                    // 來自之前學期成績，填入重修重讀名冊，重讀工作表
+                                    if (fromPrevSemester)
+                                    {
+                                        var repeatRec = new SubjectScoreRec108
+                                        {
+                                            StudentID = sacRecord.StudentID,
+                                            IDNumber = sacRecord.IDNumber,
+                                            Birthday = sacRecord.Birthday,
+                                            SchoolYear = schoolyear.ToString(),
+                                            Semester = semester.ToString(),
+                                            CourseCode = courseCode,
+                                            SubjectName = sacRecord.Subject,
+                                            SubjectLevel = sacRecord.SubjectLevel,
+                                            GradeYear = gradeYear.HasValue ? gradeYear.Value.ToString() : "",
+                                            Credit = sacRecord.CreditDec().ToString(),
+                                            Score = GetRoundScore(sacRecord.FinalScore, decimals, mode).ToString(),
+                                            ScoreP = ScoreP,
+                                            useCredit = useCredit,
+                                            Name = var.StudentName,
+                                            HisClassName = HisClassName,
+                                            HisSeatNo = HisSeatNo,
+                                            HisStudentNumber = HisStudentNumber,
+                                            ClassName = var.RefClass.ClassName,
+                                            SeatNo = sacRecord.SeatNo,
+                                            StudentNumber = sacRecord.StudentNumber,
+                                            isScScore = true,
+                                            checkPass = true,
+                                            CodePass = codePass,
+                                            RepeatMemo = "2",
+                                            RepeatScoreP = ScoreP,
+                                            RepeatScore = updateScoreElement.GetAttribute("原始成績")
+                                        };
+                                        // 加入 5.3 重讀成績名冊
+                                        repeatScoreList.Add(repeatRec);
+                                    }
                                 }
                                 #endregion
                             }
@@ -1105,6 +1245,8 @@ namespace SmartSchool.Evaluation
                                     newScoreInfo.SetAttribute("開課學分數", "" + sacRecord.CreditDec());
 
                                     decimal? sfinalScore = null;
+                                    bool fromPrevSemester = false;
+                                    bool fromArchive = false;
 
                                     // 課程成績
                                     if (sacRecord.HasFinalScore)
@@ -1115,25 +1257,33 @@ namespace SmartSchool.Evaluation
                                     // 比對來自學期科目成績，科目名稱+級別相同
                                     if (dataCompareDict.ContainsKey(sfKey))
                                     {
+                                        // 來自之前學期成績
+                                        fromPrevSemester = true;
+
                                         if (sfinalScore.HasValue)
                                             if (dataCompareDict[sfKey] > sfinalScore.Value)
                                                 sfinalScore = dataCompareDict[sfKey];
-                                            else
-                                                sfinalScore = dataCompareDict[sfKey];
                                     }
 
-                                    // 比對來自封存成績，科目名稱+級別相同
-                                    if (dataCompareDict1.ContainsKey(sacRecord.StudentID))
-                                    {
-                                        if (dataCompareDict1[sacRecord.StudentID].ContainsKey(sfKey))
+
+
+
+                                    // 當沒有之前學期成績，才使用自封存成績來比對，科目名稱+級別相同
+                                    if (fromPrevSemester == false)
+                                        if (dataCompareDict1.ContainsKey(sacRecord.StudentID))
                                         {
-                                            if (sfinalScore.HasValue)
-                                                if (dataCompareDict1[sacRecord.StudentID][sfKey] > sfinalScore.Value)
-                                                    sfinalScore = dataCompareDict1[sacRecord.StudentID][sfKey];
-                                                else
-                                                    sfinalScore = dataCompareDict1[sacRecord.StudentID][sfKey];
+                                            if (dataCompareDict1[sacRecord.StudentID].ContainsKey(sfKey))
+                                            {
+                                                fromArchive = true; // 來源封存成績
+
+                                                if (sfinalScore.HasValue)
+                                                    if (dataCompareDict1[sacRecord.StudentID][sfKey] > sfinalScore.Value)
+                                                    {
+                                                        sfinalScore = dataCompareDict1[sacRecord.StudentID][sfKey];
+
+                                                    }
+                                            }
                                         }
-                                    }
 
 
 
@@ -1150,6 +1300,9 @@ namespace SmartSchool.Evaluation
                                         if (specifySubjectNameDict[sacRecord.StudentID].ContainsKey(sKey))
                                             newScoreInfo.SetAttribute("指定學年科目名稱", specifySubjectNameDict[sacRecord.StudentID][sKey]);
                                     }
+
+                                    // 課程代碼
+                                    string CourseCode = "";
 
                                     // 當有直接指定總成績覆蓋
                                     if (studentFinalScoreDict.ContainsKey(sacRecord.StudentID))
@@ -1207,6 +1360,7 @@ namespace SmartSchool.Evaluation
 
                                             newScoreInfo.SetAttribute("修課備註", remark);
                                             newScoreInfo.SetAttribute("修課科目代碼", subject_code);
+                                            CourseCode = subject_code;
                                         }
                                     }
 
@@ -1262,10 +1416,134 @@ namespace SmartSchool.Evaluation
                                         newScoreInfo.SetAttribute("是否取得學分", maxScore >= passscore ? "是" : "否");
                                     }
 
+                                    newScoreInfo.SetAttribute("註記", "修課成績：" + GetRoundScore(sacRecord.FinalScore, decimals, mode));
+
                                     #endregion
                                     if (!insertSemesterSubjectScoreList.ContainsKey(sy)) insertSemesterSubjectScoreList.Add(sy, new Dictionary<int, Dictionary<string, XmlElement>>());
                                     if (!insertSemesterSubjectScoreList[sy].ContainsKey(se)) insertSemesterSubjectScoreList[sy].Add(se, new Dictionary<string, XmlElement>());
                                     insertSemesterSubjectScoreList[sy][se].Add(key, newScoreInfo);
+
+                                    // --- 寫入學期歷程
+                                    // 取得學期歷程資料
+                                    string HisClassName = "", HisStudentNumber = "";
+                                    int? HisSeatNo = null;
+                                    try
+                                    {
+                                        if (var.Fields.ContainsKey("SemesterHistory"))
+                                        {
+                                            XmlElement xmlElement = var.Fields["SemesterHistory"] as XmlElement;
+                                            XElement elmRoot = XElement.Parse(xmlElement.OuterXml);
+
+                                            var matched = elmRoot.Elements("History")
+                                                .FirstOrDefault(e =>
+                                                    (string)e.Attribute("SchoolYear") == schoolyear.ToString() &&
+                                                    (string)e.Attribute("Semester") == semester.ToString());
+
+                                            if (matched != null)
+                                            {
+                                                HisClassName = (string)matched.Attribute("ClassName") ?? "";
+                                                HisStudentNumber = (string)matched.Attribute("StudentNumber") ?? "";
+                                                int seatNo;
+                                                if (int.TryParse((string)matched.Attribute("SeatNo"), out seatNo))
+                                                    HisSeatNo = seatNo;
+                                            }
+                                        }
+                                    }
+                                    catch { }
+
+                                    // 判斷是否取得學分
+                                    string ScoreP = "";
+                                    if ((sfinalScore.HasValue ? sfinalScore.Value : 0) >= 60) // 這裡 60 可以改成你的及格標準變數
+                                        ScoreP = "1";
+                                    else
+                                        ScoreP = "0";
+
+                                    // 課程代碼
+                                    string courseCode = CourseCode;
+
+                                    // 是否採計學分，預設"1"
+                                    string useCredit = "1";
+                                    if (sacRecord.NotIncludedInCredit)
+                                        useCredit = "2";
+                                    else if (sacRecord.NotIncludedInCalc)
+                                        useCredit = "3";
+
+                                    // 檢查課程代碼 CodePass
+                                    bool codePass = Utility.IsValidCourseCode(courseCode);
+
+                                    // 只有來自封存成績，填入轉學轉科工作表
+                                    if (fromArchive)
+                                    {
+                                        var transferRec = new SubjectScoreRec108
+                                        {
+                                            StudentID = sacRecord.StudentID,
+                                            IDNumber = sacRecord.IDNumber,
+                                            Birthday = sacRecord.Birthday,
+                                            SchoolYear = schoolyear.ToString(),
+                                            Semester = semester.ToString(),
+                                            CourseCode = courseCode,
+                                            SubjectName = sacRecord.Subject,
+                                            SubjectLevel = sacRecord.SubjectLevel,
+                                            GradeYear = gradeYear.HasValue ? gradeYear.Value.ToString() : "",
+                                            Credit = sacRecord.CreditDec().ToString(),
+                                            Score = sfinalScore.HasValue ? sfinalScore.Value.ToString() : "",
+                                            ScoreP = ScoreP,
+                                            useCredit = useCredit,
+                                            Name = var.StudentName,
+                                            HisClassName = HisClassName,
+                                            HisSeatNo = HisSeatNo,
+                                            HisStudentNumber = HisStudentNumber,
+                                            ClassName = var.RefClass.ClassName,
+                                            SeatNo = sacRecord.SeatNo,
+                                            StudentNumber = sacRecord.StudentNumber,
+                                            isScScore = true,
+                                            checkPass = true,
+                                            CodePass = codePass,
+                                            RepeatMemo = "2",
+                                            RepeatScoreP = ScoreP,
+                                            RepeatScore = newScoreInfo.GetAttribute("原始成績")
+                                        };
+                                        // 加入 4.4 轉學轉科名冊
+                                        transferScoreList.Add(transferRec);
+                                    }
+
+                                    // 來自之前學期成績，填入重修重讀名冊，重讀工作表
+                                    if (fromPrevSemester)
+                                    {
+                                        var repeatRec = new SubjectScoreRec108
+                                        {
+                                            StudentID = sacRecord.StudentID,
+                                            IDNumber = sacRecord.IDNumber,
+                                            Birthday = sacRecord.Birthday,
+                                            SchoolYear = schoolyear.ToString(),
+                                            Semester = semester.ToString(),
+                                            CourseCode = courseCode,
+                                            SubjectName = sacRecord.Subject,
+                                            SubjectLevel = sacRecord.SubjectLevel,
+                                            GradeYear = gradeYear.HasValue ? gradeYear.Value.ToString() : "",
+                                            Credit = sacRecord.CreditDec().ToString(),
+                                            Score = GetRoundScore(sacRecord.FinalScore, decimals, mode).ToString(),
+                                            ScoreP = ScoreP,
+                                            useCredit = useCredit,
+                                            Name = var.StudentName,
+                                            HisClassName = HisClassName,
+                                            HisSeatNo = HisSeatNo,
+                                            HisStudentNumber = HisStudentNumber,
+                                            ClassName = var.RefClass.ClassName,
+                                            SeatNo = sacRecord.SeatNo,
+                                            StudentNumber = sacRecord.StudentNumber,
+                                            isScScore = true,
+                                            checkPass = true,
+                                            CodePass = codePass,
+                                            RepeatMemo = "2",
+                                            RepeatScoreP = ScoreP,
+                                            RepeatScore = newScoreInfo.GetAttribute("原始成績")
+                                        };
+
+                                        // 加入 5.3 重讀成績名冊
+                                        repeatScoreList.Add(repeatRec);
+                                    }
+
                                 }
                                 #endregion
                             }
@@ -1366,7 +1644,7 @@ namespace SmartSchool.Evaluation
                                     int? HisSeatNo = null;
                                     try
                                     {
-                                        
+
                                         // 讀取學生學期對照表資料
                                         if (var.Fields.ContainsKey("SemesterHistory"))
                                         {
@@ -1419,7 +1697,7 @@ namespace SmartSchool.Evaluation
                                         if (decimal.TryParse(previousSubjectScoreInfo.Detail.GetAttribute("修課及格標準"), out decimal passingStandard))
                                         {
 
-                                            if (reScoreValue2 >= 0 )
+                                            if (reScoreValue2 >= 0)
                                                 ReAScore = reScoreValue2.ToString();
                                             else
                                                 ReAScore = "-1";
@@ -1490,23 +1768,7 @@ namespace SmartSchool.Evaluation
                                     }
 
                                     // 檢查課程代碼 CodePass
-                                    bool codePass = true;
-
-                                    // 幫我寫一個 C# 方法，判斷課程代碼 codePass。若 courseCode 為空白或長度不是 23，codePass = false；否則取第 17 碼（index 16）和第 19 碼（index 18），如果第 17 碼為 "8" 或 "9" 且第 19 碼不是 "D"，codePass 也為 false，其餘為 true。
-                                    if (string.IsNullOrWhiteSpace(courseCode) || courseCode.Length != 23)
-                                    {
-                                        codePass = false;
-                                    }
-                                    else
-                                    {
-                                        string sub1 = courseCode.Substring(16, 1);
-                                        string sub2 = courseCode.Substring(18, 1);
-                                        if ((sub1 == "8" || sub1 == "9") && sub2 != "D")
-                                        {
-                                            codePass = false;
-                                        }
-                                    }
-
+                                    bool codePass = Utility.IsValidCourseCode(courseCode);
 
                                     var rec = new SubjectScoreRec108
                                     {
@@ -1522,7 +1784,7 @@ namespace SmartSchool.Evaluation
                                         Credit = previousSubjectScoreInfo.CreditDec().ToString(),
                                         Score = previousSubjectScoreInfo.Score.ToString(),
 
-                                        ScoreP = ScoreP,                                        
+                                        ScoreP = ScoreP,
                                         ScScoreType = "3",
                                         useCredit = useCredit,
                                         Text = "",
@@ -1561,7 +1823,7 @@ namespace SmartSchool.Evaluation
                                     makeUpScoreInfo.Detail.SetAttribute("原始成績", roundedScore.ToString());
                                     makeUpScoreInfo.Detail.SetAttribute("補修學年度", schoolyear.ToString());
                                     makeUpScoreInfo.Detail.SetAttribute("補修學期", semester.ToString());
-                                 
+
                                     decimal passscore;
                                     passscore = 100;
                                     if (studentPassScoreDict.ContainsKey(var.StudentID))
@@ -1598,7 +1860,7 @@ namespace SmartSchool.Evaluation
                                     int? HisSeatNo = null;
                                     try
                                     {
-                                       
+
                                         // 讀取學生學期對照表資料
                                         if (var.Fields.ContainsKey("SemesterHistory"))
                                         {
@@ -1721,22 +1983,7 @@ namespace SmartSchool.Evaluation
                                     }
 
                                     // 檢查課程代碼 CodePass
-                                    bool codePass = true;
-
-                                    // 幫我寫一個 C# 方法，判斷課程代碼 codePass。若 courseCode 為空白或長度不是 23，codePass = false；否則取第 17 碼（index 16）和第 19 碼（index 18），如果第 17 碼為 "8" 或 "9" 且第 19 碼不是 "D"，codePass 也為 false，其餘為 true。
-                                    if (string.IsNullOrWhiteSpace(courseCode) || courseCode.Length != 23)
-                                    {
-                                        codePass = false;
-                                    }
-                                    else
-                                    {
-                                        string sub1 = courseCode.Substring(16, 1);
-                                        string sub2 = courseCode.Substring(18, 1);
-                                        if ((sub1 == "8" || sub1 == "9") && sub2 != "D")
-                                        {
-                                            codePass = false;
-                                        }
-                                    }
+                                    bool codePass = Utility.IsValidCourseCode(courseCode);
 
 
                                     var rec = new SubjectScoreRec108
@@ -2264,9 +2511,29 @@ namespace SmartSchool.Evaluation
                 learningHistoryDataAccess.SaveScores52(restudyScoreList, schoolyear, semester);
             }
 
+            // 轉學轉科寫入學期歷程
+            if (transferScoreList.Count > 0)
+            {
+                LearningHistoryDataAccess learningHistoryDataAccess = new LearningHistoryDataAccess();
+                learningHistoryDataAccess.SaveScores44(transferScoreList, schoolyear, semester);
+            }
 
+            // 重讀學期寫入學期歷程
+            if (repeatScoreList.Count > 0)
+            {
+                LearningHistoryDataAccess learningHistoryDataAccess = new LearningHistoryDataAccess();
+                learningHistoryDataAccess.SaveScores53(repeatScoreList, schoolyear, semester);
+            }
 
-
+            try
+            {
+                // 呼叫學期歷程同步
+                FISCA.Features.Invoke("StudentLearningHistoryDetailContent");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("StudentLearningHistoryDetailContent 無法呼叫：" + ex.Message);
+            }
             return _ErrorList;
         }
 

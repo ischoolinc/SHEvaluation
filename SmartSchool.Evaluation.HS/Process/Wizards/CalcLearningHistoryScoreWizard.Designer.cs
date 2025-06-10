@@ -250,7 +250,7 @@
             this.wizardPage2.Name = "wizardPage2";
             this.wizardPage2.NextButtonVisible = DevComponents.DotNetBar.eWizardButtonState.False;
             this.wizardPage2.PageDescription = "< Wizard step description >";
-            this.wizardPage2.PageTitle = "產生學期歷程成績";
+            this.wizardPage2.PageTitle = "產生學習歷程成績";
             this.wizardPage2.Size = new System.Drawing.Size(289, 90);
             // 
             // 
@@ -318,7 +318,7 @@
             this.labelX4.Name = "labelX4";
             this.labelX4.Size = new System.Drawing.Size(137, 21);
             this.labelX4.TabIndex = 0;
-            this.labelX4.Text = "產生學期歷程成績中...";
+            this.labelX4.Text = "產生學習歷程成績中...";
             // 
             // wizardPage4
             // 
@@ -380,7 +380,7 @@
             this.labelX5.Name = "labelX5";
             this.labelX5.Size = new System.Drawing.Size(123, 21);
             this.labelX5.TabIndex = 2;
-            this.labelX5.Text = "產生學期歷程成績...";
+            this.labelX5.Text = "產生學習歷程成績...";
             // 
             // CalcLearningHistoryScoreWizard
             // 
@@ -390,7 +390,7 @@
             this.Controls.Add(this.wizard1);
             this.DoubleBuffered = true;
             this.Name = "CalcLearningHistoryScoreWizard";
-            this.Text = "產生學期歷程成績";
+            this.Text = "產生學習歷程成績";
             this.wizard1.ResumeLayout(false);
             this.wizardPage1.ResumeLayout(false);
             this.wizardPage1.PerformLayout();

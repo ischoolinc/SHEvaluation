@@ -132,7 +132,7 @@
             this.btnCalLHScore.Name = "btnCalLHScore";
             this.btnCalLHScore.Size = new System.Drawing.Size(146, 23);
             this.btnCalLHScore.TabIndex = 3;
-            this.btnCalLHScore.Text = "產生學期歷程成績";
+            this.btnCalLHScore.Text = "產生學習歷程成績";
             this.btnCalLHScore.Click += new System.EventHandler(this.btnCalLHScore_Click);
             // 
             // labelX4
@@ -148,7 +148,7 @@
             this.labelX4.Name = "labelX4";
             this.labelX4.Size = new System.Drawing.Size(489, 21);
             this.labelX4.TabIndex = 4;
-            this.labelX4.Text = "將學生本學期成績歷程記錄在「學期歷程資料項目中」，以供成績名冊產生使用。";
+            this.labelX4.Text = "將學生本學期成績歷程記錄在「學習歷程資料項目中」，以供成績名冊產生使用。";
             // 
             // CalsSemesterScoreWizard
             // 

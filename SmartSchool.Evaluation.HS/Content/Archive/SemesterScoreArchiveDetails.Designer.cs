@@ -32,8 +32,9 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panelEx1 = new DevComponents.DotNetBar.PanelEx();
-            this.textBoxX15 = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.textBoxX2 = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.btnSave = new DevComponents.DotNetBar.ButtonX();
+            this.txtSemester = new DevComponents.DotNetBar.Controls.TextBoxX();
+            this.txtSchoolYear = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.labelX10 = new DevComponents.DotNetBar.LabelX();
             this.btnClose = new DevComponents.DotNetBar.ButtonX();
             this.groupPanel2 = new DevComponents.DotNetBar.Controls.GroupPanel();
@@ -65,12 +66,10 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.labelX3 = new DevComponents.DotNetBar.LabelX();
             this.textBoxX1 = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.groupPanel1 = new DevComponents.DotNetBar.Controls.GroupPanel();
+            this.txtGradeYear = new DevComponents.DotNetBar.Controls.TextBoxX();
             this.labelX19 = new DevComponents.DotNetBar.LabelX();
             this.panel1 = new System.Windows.Forms.Panel();
             this.dataGridView_Archive = new DevComponents.DotNetBar.Controls.DataGridViewX();
-            this.labelX9 = new DevComponents.DotNetBar.LabelX();
-            this.labelX2 = new DevComponents.DotNetBar.LabelX();
-            this.labelX1 = new DevComponents.DotNetBar.LabelX();
             this.colDomain = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column13 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -100,6 +99,9 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.Column15 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Column18 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ColSpecifySubjectName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.labelX9 = new DevComponents.DotNetBar.LabelX();
+            this.labelX2 = new DevComponents.DotNetBar.LabelX();
+            this.labelX1 = new DevComponents.DotNetBar.LabelX();
             this.panelEx1.SuspendLayout();
             this.groupPanel2.SuspendLayout();
             this.groupPanel1.SuspendLayout();
@@ -114,8 +116,9 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelEx1.CanvasColor = System.Drawing.SystemColors.Control;
             this.panelEx1.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
-            this.panelEx1.Controls.Add(this.textBoxX15);
-            this.panelEx1.Controls.Add(this.textBoxX2);
+            this.panelEx1.Controls.Add(this.btnSave);
+            this.panelEx1.Controls.Add(this.txtSemester);
+            this.panelEx1.Controls.Add(this.txtSchoolYear);
             this.panelEx1.Controls.Add(this.labelX10);
             this.panelEx1.Controls.Add(this.btnClose);
             this.panelEx1.Controls.Add(this.groupPanel2);
@@ -134,31 +137,41 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.panelEx1.Style.GradientAngle = 90;
             this.panelEx1.TabIndex = 1;
             // 
-            // textBoxX15
+            // btnSave
+            // 
+            this.btnSave.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSave.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnSave.Location = new System.Drawing.Point(609, 507);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 8;
+            this.btnSave.Text = "儲存";
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // txtSemester
             // 
             // 
             // 
             // 
-            this.textBoxX15.Border.Class = "TextBoxBorder";
-            this.textBoxX15.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX15.Location = new System.Drawing.Point(210, 8);
-            this.textBoxX15.Name = "textBoxX15";
-            this.textBoxX15.ReadOnly = true;
-            this.textBoxX15.Size = new System.Drawing.Size(73, 25);
-            this.textBoxX15.TabIndex = 7;
+            this.txtSemester.Border.Class = "TextBoxBorder";
+            this.txtSemester.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtSemester.Location = new System.Drawing.Point(210, 10);
+            this.txtSemester.Name = "txtSemester";
+            this.txtSemester.Size = new System.Drawing.Size(73, 25);
+            this.txtSemester.TabIndex = 7;
             // 
-            // textBoxX2
-            // 
+            // txtSchoolYear
             // 
             // 
             // 
-            this.textBoxX2.Border.Class = "TextBoxBorder";
-            this.textBoxX2.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX2.Location = new System.Drawing.Point(67, 8);
-            this.textBoxX2.Name = "textBoxX2";
-            this.textBoxX2.ReadOnly = true;
-            this.textBoxX2.Size = new System.Drawing.Size(72, 25);
-            this.textBoxX2.TabIndex = 6;
+            // 
+            this.txtSchoolYear.Border.Class = "TextBoxBorder";
+            this.txtSchoolYear.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtSchoolYear.Location = new System.Drawing.Point(67, 10);
+            this.txtSchoolYear.Name = "txtSchoolYear";
+            this.txtSchoolYear.Size = new System.Drawing.Size(72, 25);
+            this.txtSchoolYear.TabIndex = 6;
             // 
             // labelX10
             // 
@@ -276,10 +289,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX8.Border.Class = "TextBoxBorder";
             this.textBoxX8.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX8.Enabled = false;
             this.textBoxX8.Location = new System.Drawing.Point(352, 70);
             this.textBoxX8.Name = "textBoxX8";
-            this.textBoxX8.ReadOnly = true;
             this.textBoxX8.Size = new System.Drawing.Size(100, 25);
             this.textBoxX8.TabIndex = 3;
             // 
@@ -304,10 +315,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX9.Border.Class = "TextBoxBorder";
             this.textBoxX9.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX9.Enabled = false;
             this.textBoxX9.Location = new System.Drawing.Point(599, 70);
             this.textBoxX9.Name = "textBoxX9";
-            this.textBoxX9.ReadOnly = true;
             this.textBoxX9.Size = new System.Drawing.Size(100, 25);
             this.textBoxX9.TabIndex = 4;
             // 
@@ -332,10 +341,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX10.Border.Class = "TextBoxBorder";
             this.textBoxX10.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX10.Enabled = false;
             this.textBoxX10.Location = new System.Drawing.Point(599, 100);
             this.textBoxX10.Name = "textBoxX10";
-            this.textBoxX10.ReadOnly = true;
             this.textBoxX10.Size = new System.Drawing.Size(100, 25);
             this.textBoxX10.TabIndex = 5;
             // 
@@ -374,10 +381,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX11.Border.Class = "TextBoxBorder";
             this.textBoxX11.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX11.Enabled = false;
             this.textBoxX11.Location = new System.Drawing.Point(352, 100);
             this.textBoxX11.Name = "textBoxX11";
-            this.textBoxX11.ReadOnly = true;
             this.textBoxX11.Size = new System.Drawing.Size(100, 25);
             this.textBoxX11.TabIndex = 6;
             // 
@@ -388,10 +393,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX12.Border.Class = "TextBoxBorder";
             this.textBoxX12.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX12.Enabled = false;
             this.textBoxX12.Location = new System.Drawing.Point(118, 100);
             this.textBoxX12.Name = "textBoxX12";
-            this.textBoxX12.ReadOnly = true;
             this.textBoxX12.Size = new System.Drawing.Size(100, 25);
             this.textBoxX12.TabIndex = 7;
             // 
@@ -416,10 +419,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX13.Border.Class = "TextBoxBorder";
             this.textBoxX13.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX13.Enabled = false;
             this.textBoxX13.Location = new System.Drawing.Point(118, 70);
             this.textBoxX13.Name = "textBoxX13";
-            this.textBoxX13.ReadOnly = true;
             this.textBoxX13.Size = new System.Drawing.Size(100, 25);
             this.textBoxX13.TabIndex = 8;
             // 
@@ -474,10 +475,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX7.Border.Class = "TextBoxBorder";
             this.textBoxX7.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX7.Enabled = false;
             this.textBoxX7.Location = new System.Drawing.Point(352, 10);
             this.textBoxX7.Name = "textBoxX7";
-            this.textBoxX7.ReadOnly = true;
             this.textBoxX7.Size = new System.Drawing.Size(100, 25);
             this.textBoxX7.TabIndex = 0;
             // 
@@ -502,10 +501,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX6.Border.Class = "TextBoxBorder";
             this.textBoxX6.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX6.Enabled = false;
             this.textBoxX6.Location = new System.Drawing.Point(599, 10);
             this.textBoxX6.Name = "textBoxX6";
-            this.textBoxX6.ReadOnly = true;
             this.textBoxX6.Size = new System.Drawing.Size(100, 25);
             this.textBoxX6.TabIndex = 0;
             // 
@@ -530,10 +527,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX4.Border.Class = "TextBoxBorder";
             this.textBoxX4.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX4.Enabled = false;
             this.textBoxX4.Location = new System.Drawing.Point(599, 40);
             this.textBoxX4.Name = "textBoxX4";
-            this.textBoxX4.ReadOnly = true;
             this.textBoxX4.Size = new System.Drawing.Size(100, 25);
             this.textBoxX4.TabIndex = 0;
             // 
@@ -572,10 +567,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX5.Border.Class = "TextBoxBorder";
             this.textBoxX5.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX5.Enabled = false;
             this.textBoxX5.Location = new System.Drawing.Point(352, 40);
             this.textBoxX5.Name = "textBoxX5";
-            this.textBoxX5.ReadOnly = true;
             this.textBoxX5.Size = new System.Drawing.Size(100, 25);
             this.textBoxX5.TabIndex = 0;
             // 
@@ -586,10 +579,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX3.Border.Class = "TextBoxBorder";
             this.textBoxX3.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX3.Enabled = false;
             this.textBoxX3.Location = new System.Drawing.Point(118, 40);
             this.textBoxX3.Name = "textBoxX3";
-            this.textBoxX3.ReadOnly = true;
             this.textBoxX3.Size = new System.Drawing.Size(100, 25);
             this.textBoxX3.TabIndex = 0;
             // 
@@ -614,10 +605,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             this.textBoxX1.Border.Class = "TextBoxBorder";
             this.textBoxX1.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.textBoxX1.Enabled = false;
             this.textBoxX1.Location = new System.Drawing.Point(118, 10);
             this.textBoxX1.Name = "textBoxX1";
-            this.textBoxX1.ReadOnly = true;
             this.textBoxX1.Size = new System.Drawing.Size(100, 25);
             this.textBoxX1.TabIndex = 0;
             // 
@@ -628,6 +617,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupPanel1.CanvasColor = System.Drawing.SystemColors.Control;
             this.groupPanel1.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.Office2007;
+            this.groupPanel1.Controls.Add(this.txtGradeYear);
             this.groupPanel1.Controls.Add(this.labelX19);
             this.groupPanel1.Controls.Add(this.panel1);
             this.groupPanel1.Controls.Add(this.labelX9);
@@ -667,6 +657,18 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.groupPanel1.TabIndex = 3;
             this.groupPanel1.Text = "學期科目成績(封存)";
             // 
+            // txtGradeYear
+            // 
+            // 
+            // 
+            // 
+            this.txtGradeYear.Border.Class = "TextBoxBorder";
+            this.txtGradeYear.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtGradeYear.Location = new System.Drawing.Point(81, 7);
+            this.txtGradeYear.Name = "txtGradeYear";
+            this.txtGradeYear.Size = new System.Drawing.Size(31, 25);
+            this.txtGradeYear.TabIndex = 8;
+            // 
             // labelX19
             // 
             this.labelX19.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -695,8 +697,6 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             // 
             // dataGridView_Archive
             // 
-            this.dataGridView_Archive.AllowUserToAddRows = false;
-            this.dataGridView_Archive.AllowUserToDeleteRows = false;
             this.dataGridView_Archive.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -750,15 +750,289 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridView_Archive.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridView_Archive.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dataGridView_Archive.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
             this.dataGridView_Archive.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
             this.dataGridView_Archive.Location = new System.Drawing.Point(0, 0);
             this.dataGridView_Archive.Name = "dataGridView_Archive";
-            this.dataGridView_Archive.ReadOnly = true;
             this.dataGridView_Archive.RowHeadersWidth = 24;
             this.dataGridView_Archive.RowTemplate.Height = 26;
+            this.dataGridView_Archive.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView_Archive.Size = new System.Drawing.Size(760, 245);
             this.dataGridView_Archive.TabIndex = 2;
+            this.dataGridView_Archive.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridView_Archive_CellValidating);
+            this.dataGridView_Archive.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridView_Archive_KeyDown);
+            // 
+            // colDomain
+            // 
+            this.colDomain.HeaderText = "領域";
+            this.colDomain.MinimumWidth = 75;
+            this.colDomain.Name = "colDomain";
+            this.colDomain.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colDomain.Width = 75;
+            // 
+            // Column13
+            // 
+            this.Column13.AutoComplete = false;
+            this.Column13.DisplayStyleForCurrentCellOnly = true;
+            this.Column13.FillWeight = 80F;
+            this.Column13.HeaderText = "分項類別";
+            this.Column13.Items.AddRange(new object[] {
+            "學業",
+            "體育",
+            "國防通識",
+            "健康與護理",
+            "實習科目",
+            "專業科目"});
+            this.Column13.MinimumWidth = 75;
+            this.Column13.Name = "Column13";
+            this.Column13.Width = 75;
+            // 
+            // Column5
+            // 
+            this.Column5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column5.FillWeight = 145F;
+            this.Column5.HeaderText = "科目";
+            this.Column5.MinimumWidth = 75;
+            this.Column5.Name = "Column5";
+            this.Column5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Column6
+            // 
+            this.Column6.FillWeight = 1F;
+            this.Column6.HeaderText = "級別";
+            this.Column6.MinimumWidth = 22;
+            this.Column6.Name = "Column6";
+            this.Column6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column6.Width = 22;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "學分";
+            this.Column1.MinimumWidth = 22;
+            this.Column1.Name = "Column1";
+            this.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column1.Width = 22;
+            // 
+            // Column3
+            // 
+            this.Column3.AutoComplete = false;
+            this.Column3.DisplayStyleForCurrentCellOnly = true;
+            this.Column3.FillWeight = 1F;
+            this.Column3.HeaderText = " 校訂 部定";
+            this.Column3.Items.AddRange(new object[] {
+            "校訂",
+            "部定"});
+            this.Column3.MinimumWidth = 50;
+            this.Column3.Name = "Column3";
+            this.Column3.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Column3.Width = 50;
+            // 
+            // Column4
+            // 
+            this.Column4.AutoComplete = false;
+            this.Column4.DisplayStyleForCurrentCellOnly = true;
+            this.Column4.FillWeight = 1F;
+            this.Column4.HeaderText = " 必修 選修";
+            this.Column4.Items.AddRange(new object[] {
+            "必修",
+            "選修"});
+            this.Column4.MinimumWidth = 50;
+            this.Column4.Name = "Column4";
+            this.Column4.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Column4.Width = 50;
+            // 
+            // Column2
+            // 
+            this.Column2.FalseValue = "否";
+            this.Column2.FillWeight = 74F;
+            this.Column2.HeaderText = "取得學分";
+            this.Column2.MinimumWidth = 40;
+            this.Column2.Name = "Column2";
+            this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Column2.TrueValue = "是";
+            this.Column2.Width = 40;
+            // 
+            // Column7
+            // 
+            this.Column7.HeaderText = "原始成績";
+            this.Column7.MinimumWidth = 40;
+            this.Column7.Name = "Column7";
+            this.Column7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column7.Width = 40;
+            // 
+            // Column9
+            // 
+            this.Column9.HeaderText = "補考成績";
+            this.Column9.MinimumWidth = 40;
+            this.Column9.Name = "Column9";
+            this.Column9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column9.Width = 40;
+            // 
+            // Column8
+            // 
+            this.Column8.HeaderText = "重修成績";
+            this.Column8.MinimumWidth = 40;
+            this.Column8.Name = "Column8";
+            this.Column8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column8.Width = 40;
+            // 
+            // Column10
+            // 
+            this.Column10.HeaderText = "手動調整成績";
+            this.Column10.MinimumWidth = 55;
+            this.Column10.Name = "Column10";
+            this.Column10.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column10.Width = 55;
+            // 
+            // Column11
+            // 
+            this.Column11.HeaderText = "學年調整成績";
+            this.Column11.MinimumWidth = 55;
+            this.Column11.Name = "Column11";
+            this.Column11.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column11.Width = 55;
+            // 
+            // Column17
+            // 
+            this.Column17.FalseValue = "否";
+            this.Column17.FillWeight = 74F;
+            this.Column17.HeaderText = "不計學分";
+            this.Column17.IndeterminateValue = "";
+            this.Column17.MinimumWidth = 40;
+            this.Column17.Name = "Column17";
+            this.Column17.TrueValue = "是";
+            this.Column17.Width = 40;
+            // 
+            // Column16
+            // 
+            this.Column16.FalseValue = "否";
+            this.Column16.FillWeight = 74F;
+            this.Column16.HeaderText = "不需評分";
+            this.Column16.IndeterminateValue = "";
+            this.Column16.MinimumWidth = 40;
+            this.Column16.Name = "Column16";
+            this.Column16.TrueValue = "是";
+            this.Column16.Width = 40;
+            // 
+            // Column12
+            // 
+            this.Column12.FillWeight = 75F;
+            this.Column12.HeaderText = "註記";
+            this.Column12.MinimumWidth = 40;
+            this.Column12.Name = "Column12";
+            this.Column12.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column12.Width = 40;
+            // 
+            // colPassingStandard
+            // 
+            this.colPassingStandard.HeaderText = "修課及格標準";
+            this.colPassingStandard.MinimumWidth = 55;
+            this.colPassingStandard.Name = "colPassingStandard";
+            this.colPassingStandard.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colPassingStandard.Width = 55;
+            // 
+            // colMakeupStandard
+            // 
+            this.colMakeupStandard.HeaderText = "修課補考標準";
+            this.colMakeupStandard.MinimumWidth = 55;
+            this.colMakeupStandard.Name = "colMakeupStandard";
+            this.colMakeupStandard.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colMakeupStandard.Width = 55;
+            // 
+            // colDesignateFinalScore
+            // 
+            this.colDesignateFinalScore.HeaderText = "修課直接指定總成績";
+            this.colDesignateFinalScore.MinimumWidth = 75;
+            this.colDesignateFinalScore.Name = "colDesignateFinalScore";
+            this.colDesignateFinalScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colDesignateFinalScore.Width = 75;
+            // 
+            // colRemark
+            // 
+            this.colRemark.HeaderText = "修課備註";
+            this.colRemark.MinimumWidth = 55;
+            this.colRemark.Name = "colRemark";
+            this.colRemark.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colRemark.Width = 55;
+            // 
+            // ColCode
+            // 
+            this.ColCode.HeaderText = "修課科目代碼";
+            this.ColCode.MinimumWidth = 55;
+            this.ColCode.Name = "ColCode";
+            this.ColCode.Visible = false;
+            this.ColCode.Width = 55;
+            // 
+            // colIsMakeupScore
+            // 
+            this.colIsMakeupScore.FalseValue = "否";
+            this.colIsMakeupScore.HeaderText = "是否補修成績";
+            this.colIsMakeupScore.IndeterminateValue = "";
+            this.colIsMakeupScore.MinimumWidth = 40;
+            this.colIsMakeupScore.Name = "colIsMakeupScore";
+            this.colIsMakeupScore.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.colIsMakeupScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.colIsMakeupScore.TrueValue = "是";
+            this.colIsMakeupScore.Width = 40;
+            // 
+            // Column19
+            // 
+            this.Column19.HeaderText = "補修學年度";
+            this.Column19.MinimumWidth = 55;
+            this.Column19.Name = "Column19";
+            this.Column19.Width = 55;
+            // 
+            // Column20
+            // 
+            this.Column20.HeaderText = "補修學期";
+            this.Column20.MinimumWidth = 55;
+            this.Column20.Name = "Column20";
+            this.Column20.Width = 55;
+            // 
+            // colRetakeSchoolYear
+            // 
+            this.colRetakeSchoolYear.HeaderText = "重修學年度";
+            this.colRetakeSchoolYear.MinimumWidth = 55;
+            this.colRetakeSchoolYear.Name = "colRetakeSchoolYear";
+            this.colRetakeSchoolYear.Width = 55;
+            // 
+            // colRetakeSemester
+            // 
+            this.colRetakeSemester.HeaderText = "重修學期";
+            this.colRetakeSemester.MinimumWidth = 55;
+            this.colRetakeSemester.Name = "colRetakeSemester";
+            this.colRetakeSemester.Width = 55;
+            // 
+            // Column15
+            // 
+            this.Column15.FalseValue = "否";
+            this.Column15.FillWeight = 74F;
+            this.Column15.HeaderText = "免修";
+            this.Column15.MinimumWidth = 40;
+            this.Column15.Name = "Column15";
+            this.Column15.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Column15.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Column15.TrueValue = "是";
+            this.Column15.Width = 40;
+            // 
+            // Column18
+            // 
+            this.Column18.FalseValue = "否";
+            this.Column18.FillWeight = 74F;
+            this.Column18.HeaderText = "抵免";
+            this.Column18.MinimumWidth = 40;
+            this.Column18.Name = "Column18";
+            this.Column18.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Column18.TrueValue = "是";
+            this.Column18.Width = 40;
+            // 
+            // ColSpecifySubjectName
+            // 
+            this.ColSpecifySubjectName.HeaderText = "指定學年科目名稱";
+            this.ColSpecifySubjectName.MinimumWidth = 75;
+            this.ColSpecifySubjectName.Name = "ColSpecifySubjectName";
+            this.ColSpecifySubjectName.Width = 75;
             // 
             // labelX9
             // 
@@ -770,9 +1044,9 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.labelX9.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX9.Location = new System.Drawing.Point(10, 9);
             this.labelX9.Name = "labelX9";
-            this.labelX9.Size = new System.Drawing.Size(82, 21);
+            this.labelX9.Size = new System.Drawing.Size(74, 21);
             this.labelX9.TabIndex = 0;
-            this.labelX9.Text = "修課年級：1";
+            this.labelX9.Text = "修課年級：";
             // 
             // labelX2
             // 
@@ -801,307 +1075,6 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
             this.labelX1.Size = new System.Drawing.Size(60, 21);
             this.labelX1.TabIndex = 0;
             this.labelX1.Text = "學年度：";
-            // 
-            // colDomain
-            // 
-            this.colDomain.HeaderText = "領域";
-            this.colDomain.MinimumWidth = 75;
-            this.colDomain.Name = "colDomain";
-            this.colDomain.ReadOnly = true;
-            this.colDomain.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colDomain.Width = 75;
-            // 
-            // Column13
-            // 
-            this.Column13.AutoComplete = false;
-            this.Column13.DisplayStyleForCurrentCellOnly = true;
-            this.Column13.FillWeight = 80F;
-            this.Column13.HeaderText = "分項類別";
-            this.Column13.Items.AddRange(new object[] {
-            "學業",
-            "體育",
-            "國防通識",
-            "健康與護理",
-            "實習科目",
-            "專業科目"});
-            this.Column13.MinimumWidth = 75;
-            this.Column13.Name = "Column13";
-            this.Column13.ReadOnly = true;
-            this.Column13.Width = 75;
-            // 
-            // Column5
-            // 
-            this.Column5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column5.FillWeight = 145F;
-            this.Column5.HeaderText = "科目";
-            this.Column5.MinimumWidth = 75;
-            this.Column5.Name = "Column5";
-            this.Column5.ReadOnly = true;
-            this.Column5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column6
-            // 
-            this.Column6.FillWeight = 1F;
-            this.Column6.HeaderText = "級別";
-            this.Column6.MinimumWidth = 22;
-            this.Column6.Name = "Column6";
-            this.Column6.ReadOnly = true;
-            this.Column6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column6.Width = 22;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "學分";
-            this.Column1.MinimumWidth = 22;
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column1.Width = 22;
-            // 
-            // Column3
-            // 
-            this.Column3.AutoComplete = false;
-            this.Column3.DisplayStyleForCurrentCellOnly = true;
-            this.Column3.FillWeight = 1F;
-            this.Column3.HeaderText = " 校訂 部定";
-            this.Column3.Items.AddRange(new object[] {
-            "校訂",
-            "部定"});
-            this.Column3.MinimumWidth = 50;
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            this.Column3.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Column3.Width = 50;
-            // 
-            // Column4
-            // 
-            this.Column4.AutoComplete = false;
-            this.Column4.DisplayStyleForCurrentCellOnly = true;
-            this.Column4.FillWeight = 1F;
-            this.Column4.HeaderText = " 必修 選修";
-            this.Column4.Items.AddRange(new object[] {
-            "必修",
-            "選修"});
-            this.Column4.MinimumWidth = 50;
-            this.Column4.Name = "Column4";
-            this.Column4.ReadOnly = true;
-            this.Column4.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Column4.Width = 50;
-            // 
-            // Column2
-            // 
-            this.Column2.FalseValue = "否";
-            this.Column2.FillWeight = 74F;
-            this.Column2.HeaderText = "取得學分";
-            this.Column2.MinimumWidth = 40;
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Column2.TrueValue = "是";
-            this.Column2.Width = 40;
-            // 
-            // Column7
-            // 
-            this.Column7.HeaderText = "原始成績";
-            this.Column7.MinimumWidth = 40;
-            this.Column7.Name = "Column7";
-            this.Column7.ReadOnly = true;
-            this.Column7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column7.Width = 40;
-            // 
-            // Column9
-            // 
-            this.Column9.HeaderText = "補考成績";
-            this.Column9.MinimumWidth = 40;
-            this.Column9.Name = "Column9";
-            this.Column9.ReadOnly = true;
-            this.Column9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column9.Width = 40;
-            // 
-            // Column8
-            // 
-            this.Column8.HeaderText = "重修成績";
-            this.Column8.MinimumWidth = 40;
-            this.Column8.Name = "Column8";
-            this.Column8.ReadOnly = true;
-            this.Column8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column8.Width = 40;
-            // 
-            // Column10
-            // 
-            this.Column10.HeaderText = "手動調整成績";
-            this.Column10.MinimumWidth = 55;
-            this.Column10.Name = "Column10";
-            this.Column10.ReadOnly = true;
-            this.Column10.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column10.Width = 55;
-            // 
-            // Column11
-            // 
-            this.Column11.HeaderText = "學年調整成績";
-            this.Column11.MinimumWidth = 55;
-            this.Column11.Name = "Column11";
-            this.Column11.ReadOnly = true;
-            this.Column11.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column11.Width = 55;
-            // 
-            // Column17
-            // 
-            this.Column17.FalseValue = "否";
-            this.Column17.FillWeight = 74F;
-            this.Column17.HeaderText = "不計學分";
-            this.Column17.IndeterminateValue = "";
-            this.Column17.MinimumWidth = 40;
-            this.Column17.Name = "Column17";
-            this.Column17.ReadOnly = true;
-            this.Column17.TrueValue = "是";
-            this.Column17.Width = 40;
-            // 
-            // Column16
-            // 
-            this.Column16.FalseValue = "否";
-            this.Column16.FillWeight = 74F;
-            this.Column16.HeaderText = "不需評分";
-            this.Column16.IndeterminateValue = "";
-            this.Column16.MinimumWidth = 40;
-            this.Column16.Name = "Column16";
-            this.Column16.ReadOnly = true;
-            this.Column16.TrueValue = "是";
-            this.Column16.Width = 40;
-            // 
-            // Column12
-            // 
-            this.Column12.FillWeight = 75F;
-            this.Column12.HeaderText = "註記";
-            this.Column12.MinimumWidth = 40;
-            this.Column12.Name = "Column12";
-            this.Column12.ReadOnly = true;
-            this.Column12.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column12.Width = 40;
-            // 
-            // colPassingStandard
-            // 
-            this.colPassingStandard.HeaderText = "修課及格標準";
-            this.colPassingStandard.MinimumWidth = 55;
-            this.colPassingStandard.Name = "colPassingStandard";
-            this.colPassingStandard.ReadOnly = true;
-            this.colPassingStandard.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colPassingStandard.Width = 55;
-            // 
-            // colMakeupStandard
-            // 
-            this.colMakeupStandard.HeaderText = "修課補考標準";
-            this.colMakeupStandard.MinimumWidth = 55;
-            this.colMakeupStandard.Name = "colMakeupStandard";
-            this.colMakeupStandard.ReadOnly = true;
-            this.colMakeupStandard.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colMakeupStandard.Width = 55;
-            // 
-            // colDesignateFinalScore
-            // 
-            this.colDesignateFinalScore.HeaderText = "修課直接指定總成績";
-            this.colDesignateFinalScore.MinimumWidth = 75;
-            this.colDesignateFinalScore.Name = "colDesignateFinalScore";
-            this.colDesignateFinalScore.ReadOnly = true;
-            this.colDesignateFinalScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colDesignateFinalScore.Width = 75;
-            // 
-            // colRemark
-            // 
-            this.colRemark.HeaderText = "修課備註";
-            this.colRemark.MinimumWidth = 55;
-            this.colRemark.Name = "colRemark";
-            this.colRemark.ReadOnly = true;
-            this.colRemark.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colRemark.Width = 55;
-            // 
-            // ColCode
-            // 
-            this.ColCode.HeaderText = "修課科目代碼";
-            this.ColCode.MinimumWidth = 55;
-            this.ColCode.Name = "ColCode";
-            this.ColCode.ReadOnly = true;
-            this.ColCode.Visible = false;
-            this.ColCode.Width = 55;
-            // 
-            // colIsMakeupScore
-            // 
-            this.colIsMakeupScore.FalseValue = "否";
-            this.colIsMakeupScore.HeaderText = "是否補修成績";
-            this.colIsMakeupScore.IndeterminateValue = "";
-            this.colIsMakeupScore.MinimumWidth = 40;
-            this.colIsMakeupScore.Name = "colIsMakeupScore";
-            this.colIsMakeupScore.ReadOnly = true;
-            this.colIsMakeupScore.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.colIsMakeupScore.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.colIsMakeupScore.TrueValue = "是";
-            this.colIsMakeupScore.Width = 40;
-            // 
-            // Column19
-            // 
-            this.Column19.HeaderText = "補修學年度";
-            this.Column19.MinimumWidth = 55;
-            this.Column19.Name = "Column19";
-            this.Column19.ReadOnly = true;
-            this.Column19.Width = 55;
-            // 
-            // Column20
-            // 
-            this.Column20.HeaderText = "補修學期";
-            this.Column20.MinimumWidth = 55;
-            this.Column20.Name = "Column20";
-            this.Column20.ReadOnly = true;
-            this.Column20.Width = 55;
-            // 
-            // colRetakeSchoolYear
-            // 
-            this.colRetakeSchoolYear.HeaderText = "重修學年度";
-            this.colRetakeSchoolYear.MinimumWidth = 55;
-            this.colRetakeSchoolYear.Name = "colRetakeSchoolYear";
-            this.colRetakeSchoolYear.ReadOnly = true;
-            this.colRetakeSchoolYear.Width = 55;
-            // 
-            // colRetakeSemester
-            // 
-            this.colRetakeSemester.HeaderText = "重修學期";
-            this.colRetakeSemester.MinimumWidth = 55;
-            this.colRetakeSemester.Name = "colRetakeSemester";
-            this.colRetakeSemester.ReadOnly = true;
-            this.colRetakeSemester.Width = 55;
-            // 
-            // Column15
-            // 
-            this.Column15.FalseValue = "否";
-            this.Column15.FillWeight = 74F;
-            this.Column15.HeaderText = "免修";
-            this.Column15.MinimumWidth = 40;
-            this.Column15.Name = "Column15";
-            this.Column15.ReadOnly = true;
-            this.Column15.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Column15.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Column15.TrueValue = "是";
-            this.Column15.Width = 40;
-            // 
-            // Column18
-            // 
-            this.Column18.FalseValue = "否";
-            this.Column18.FillWeight = 74F;
-            this.Column18.HeaderText = "抵免";
-            this.Column18.MinimumWidth = 40;
-            this.Column18.Name = "Column18";
-            this.Column18.ReadOnly = true;
-            this.Column18.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Column18.TrueValue = "是";
-            this.Column18.Width = 40;
-            // 
-            // ColSpecifySubjectName
-            // 
-            this.ColSpecifySubjectName.HeaderText = "指定學年科目名稱";
-            this.ColSpecifySubjectName.MinimumWidth = 75;
-            this.ColSpecifySubjectName.Name = "ColSpecifySubjectName";
-            this.ColSpecifySubjectName.ReadOnly = true;
-            this.ColSpecifySubjectName.Width = 75;
             // 
             // SemesterScoreArchiveDetails
             // 
@@ -1165,8 +1138,8 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
         private DevComponents.DotNetBar.LabelX labelX9;
         private DevComponents.DotNetBar.LabelX labelX2;
         private DevComponents.DotNetBar.LabelX labelX1;
-        private DevComponents.DotNetBar.Controls.TextBoxX textBoxX15;
-        private DevComponents.DotNetBar.Controls.TextBoxX textBoxX2;
+        private DevComponents.DotNetBar.Controls.TextBoxX txtSemester;
+        private DevComponents.DotNetBar.Controls.TextBoxX txtSchoolYear;
         private DevComponents.DotNetBar.Controls.DataGridViewX dataGridView_Archive;
         private DevComponents.DotNetBar.LabelX labelX19;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDomain;
@@ -1198,5 +1171,7 @@ namespace SmartSchool.Evaluation.Content.ScoreEditor
         private System.Windows.Forms.DataGridViewCheckBoxColumn Column15;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Column18;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColSpecifySubjectName;
+        private DevComponents.DotNetBar.ButtonX btnSave;
+        private DevComponents.DotNetBar.Controls.TextBoxX txtGradeYear;
     }
 }

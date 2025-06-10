@@ -115,7 +115,7 @@ namespace SmartSchool.Evaluation.Process.Wizards
             }
             linkLabel1.Visible = false;
             linkLabel2.Visible = false;
-            labelX4.Text = "產生學期歷程成績中...";
+            labelX4.Text = "產生學習歷程成績中...";
             runningBackgroundWorker = new BackgroundWorker();
             runningBackgroundWorker.WorkerSupportsCancellation = true;
             runningBackgroundWorker.WorkerReportsProgress = true;

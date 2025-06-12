@@ -412,6 +412,13 @@ namespace SmartSchool.Evaluation
             List<SubjectScoreRec108> repeatScoreList = new List<SubjectScoreRec108>();
 
 
+            // 取得異動與身分別對照
+            Dictionary<string, string> UpdateCodeMappingDict = Utility.GetUpdateCodeMappingDict();
+
+            // 取得有符合對照學生
+            Dictionary<string, string> StudentHasUpdateCodeDict = Utility.GetStudentHasUpdateCodeDict(schoolyear,semester, sidList, UpdateCodeMappingDict.Keys.ToList());
+
+
             foreach (StudentRecord var in students)
             {
                 //成績年級
@@ -704,8 +711,7 @@ namespace SmartSchool.Evaluation
 
                         string studentSubjectKey = var.StudentID + "_" + key;
 
-                        if (!dataCompareDict.ContainsKey(key))
-                            dataCompareDict.Add(key, 0);
+                      
 
                         //最高分
                         decimal maxScore = 0;//                   
@@ -733,6 +739,9 @@ namespace SmartSchool.Evaluation
                         }
                         else
                         {
+                            if (!dataCompareDict.ContainsKey(key))
+                                dataCompareDict.Add(key, 0);
+
                             if (maxScore > dataCompareDict[key])
                                 dataCompareDict[key] = maxScore;
 
@@ -957,7 +966,11 @@ namespace SmartSchool.Evaluation
                                         {
                                             if (dataCompareDict1[sacRecord.StudentID].ContainsKey(sfKey))
                                             {
-                                                fromArchive = true; // 來源封存成績                           
+                                                fromArchive = true; // 來源封存成績
+
+                                                // 因為來自封存成績，同時也需要寫入重讀工作表，所以 true
+                                                fromPrevSemester = true;
+
                                                 if (sfinalScore.HasValue)
                                                     if (dataCompareDict1[sacRecord.StudentID][sfKey] > sfinalScore.Value)
                                                     {
@@ -1138,6 +1151,28 @@ namespace SmartSchool.Evaluation
                                     // 檢查課程代碼 CodePass
                                     bool codePass = Utility.IsValidCourseCode(courseCode);
 
+                                    string StudType = "3";
+                                    // 對應學生身分別
+                                    if (StudentHasUpdateCodeDict.ContainsKey(var.StudentID))
+                                    {
+                                        if (UpdateCodeMappingDict.ContainsKey(StudentHasUpdateCodeDict[var.StudentID]))
+                                        {
+                                            StudType = UpdateCodeMappingDict[StudentHasUpdateCodeDict[var.StudentID]];
+                                        }
+                                    }
+
+                                    if (string.IsNullOrWhiteSpace(HisClassName))
+                                        HisClassName = var.RefClass.ClassName;
+
+                                    if (!HisSeatNo.HasValue || HisSeatNo == 0)
+                                    {
+                                        if (int.TryParse(sacRecord.SeatNo, out int seatNo))
+                                            HisSeatNo = seatNo;
+                                    }
+
+                                    if (string.IsNullOrWhiteSpace(HisStudentNumber))
+                                        HisStudentNumber = sacRecord.StudentNumber;
+
                                     // 只有來自封存成績，填入轉學轉科工作表
                                     if (fromArchive)
                                     {
@@ -1145,7 +1180,7 @@ namespace SmartSchool.Evaluation
                                         {
                                             StudentID = sacRecord.StudentID,
                                             IDNumber = sacRecord.IDNumber,
-                                            Birthday = sacRecord.Birthday,
+                                            Birthday = Utility.ConvertChDateString(sacRecord.Birthday),
                                             SchoolYear = schoolyear.ToString(),
                                             Semester = semester.ToString(),
                                             CourseCode = courseCode,
@@ -1167,6 +1202,7 @@ namespace SmartSchool.Evaluation
                                             checkPass = true,
                                             CodePass = codePass,
                                             RepeatMemo = "2",
+                                            StudType = StudType,
                                             RepeatScoreP = ScoreP,
                                             RepeatScore = updateScoreElement.GetAttribute("原始成績")
                                         };
@@ -1177,11 +1213,51 @@ namespace SmartSchool.Evaluation
                                     // 來自之前學期成績，填入重修重讀名冊，重讀工作表
                                     if (fromPrevSemester)
                                     {
+                                        string reScore = "-1";
+                                        // 幫我寫一段 C# 程式碼，從 makeUpScoreInfo.Detail 取得「補考成績」和「修課及格標準」兩個屬性。如果「補考成績」能轉為數字，且在 0 到「修課及格標準」之間，則 reScore 等於該分數字串，否則 reScore = "-1"。如果「修課及格標準」無法轉數字，預設用 60。
+                                        if (decimal.TryParse(updateScoreElement.GetAttribute("補考成績"), out decimal reScoreValue2))
+                                        {
+                                            if (decimal.TryParse(updateScoreElement.GetAttribute("修課及格標準"), out decimal passingStandard))
+                                            {
+                                                if (reScoreValue2 >= 0 && reScoreValue2 <= passingStandard)
+                                                    reScore = reScoreValue2.ToString();
+                                                else
+                                                    reScore = "-1";
+                                            }
+                                            else
+                                            {
+                                                reScore = "-1"; // 如果無法轉數字，預設為 -1
+                                            }
+                                        }
+
+
+
+                                        // 這段式 ChatGPT 寫如果 reScore 是 "-1" 則 reScoreP 設為 "-1"。否則嘗試把 reScore 轉成數字，並把 makeUpScoreInfo.Detail.GetAttribute("修課及格標準") 轉成數字（預設 60）。如果 reScore 大於等於修課及格標準，reScoreP 設為 "1"，否則設為 "0"。
+                                        string reScoreP = "-1";
+
+                                        // 取得修課及格標準（預設 60）
+                                        string passScoreStr = updateScoreElement.GetAttribute("修課及格標準");
+                                        decimal passScore = 60;
+                                        decimal.TryParse(passScoreStr, out passScore);
+
+                                        if (reScore == "-1")
+                                        {
+                                            reScoreP = "-1";
+                                        }
+                                        else if (decimal.TryParse(reScore, out decimal reScoreDecimal) && reScoreDecimal >= passScore)
+                                        {
+                                            reScoreP = "1";
+                                        }
+                                        else
+                                        {
+                                            reScoreP = "0";
+                                        }
+
                                         var repeatRec = new SubjectScoreRec108
                                         {
                                             StudentID = sacRecord.StudentID,
                                             IDNumber = sacRecord.IDNumber,
-                                            Birthday = sacRecord.Birthday,
+                                            Birthday = Utility.ConvertChDateString(sacRecord.Birthday),
                                             SchoolYear = schoolyear.ToString(),
                                             Semester = semester.ToString(),
                                             CourseCode = courseCode,
@@ -1204,7 +1280,9 @@ namespace SmartSchool.Evaluation
                                             CodePass = codePass,
                                             RepeatMemo = "2",
                                             RepeatScoreP = ScoreP,
-                                            RepeatScore = updateScoreElement.GetAttribute("原始成績")
+                                            RepeatScore = updateScoreElement.GetAttribute("原始成績"),
+                                            ReScore = reScore,
+                                            ReScoreP = reScoreP
                                         };
                                         // 加入 5.3 重讀成績名冊
                                         repeatScoreList.Add(repeatRec);
@@ -1275,7 +1353,7 @@ namespace SmartSchool.Evaluation
                                             if (dataCompareDict1[sacRecord.StudentID].ContainsKey(sfKey))
                                             {
                                                 fromArchive = true; // 來源封存成績
-
+                                                fromPrevSemester = true;
                                                 if (sfinalScore.HasValue)
                                                     if (dataCompareDict1[sacRecord.StudentID][sfKey] > sfinalScore.Value)
                                                     {
@@ -1471,6 +1549,29 @@ namespace SmartSchool.Evaluation
                                     // 檢查課程代碼 CodePass
                                     bool codePass = Utility.IsValidCourseCode(courseCode);
 
+                                    string StudType = "3";
+
+                                    // 對應學生身分別
+                                    if (StudentHasUpdateCodeDict.ContainsKey(var.StudentID))
+                                    {
+                                        if (UpdateCodeMappingDict.ContainsKey(StudentHasUpdateCodeDict[var.StudentID]))
+                                        {
+                                            StudType = UpdateCodeMappingDict[StudentHasUpdateCodeDict[var.StudentID]];
+                                        }
+                                    }
+
+                                    if (string.IsNullOrWhiteSpace(HisClassName))
+                                        HisClassName = var.RefClass.ClassName;
+
+                                    if (!HisSeatNo.HasValue || HisSeatNo == 0)
+                                    {
+                                        if (int.TryParse(sacRecord.SeatNo, out int seatNo))
+                                            HisSeatNo = seatNo;
+                                    }
+
+                                    if (string.IsNullOrWhiteSpace(HisStudentNumber))
+                                        HisStudentNumber = sacRecord.StudentNumber;
+
                                     // 只有來自封存成績，填入轉學轉科工作表
                                     if (fromArchive)
                                     {
@@ -1478,7 +1579,7 @@ namespace SmartSchool.Evaluation
                                         {
                                             StudentID = sacRecord.StudentID,
                                             IDNumber = sacRecord.IDNumber,
-                                            Birthday = sacRecord.Birthday,
+                                            Birthday = Utility.ConvertChDateString(sacRecord.Birthday),
                                             SchoolYear = schoolyear.ToString(),
                                             Semester = semester.ToString(),
                                             CourseCode = courseCode,
@@ -1500,6 +1601,7 @@ namespace SmartSchool.Evaluation
                                             checkPass = true,
                                             CodePass = codePass,
                                             RepeatMemo = "2",
+                                            StudType = StudType,
                                             RepeatScoreP = ScoreP,
                                             RepeatScore = newScoreInfo.GetAttribute("原始成績")
                                         };
@@ -1510,11 +1612,51 @@ namespace SmartSchool.Evaluation
                                     // 來自之前學期成績，填入重修重讀名冊，重讀工作表
                                     if (fromPrevSemester)
                                     {
+                                        string reScore = "-1";
+                                        // 幫我寫一段 C# 程式碼，從 makeUpScoreInfo.Detail 取得「補考成績」和「修課及格標準」兩個屬性。如果「補考成績」能轉為數字，且在 0 到「修課及格標準」之間，則 reScore 等於該分數字串，否則 reScore = "-1"。如果「修課及格標準」無法轉數字，預設用 60。
+                                        if (decimal.TryParse(newScoreInfo.GetAttribute("補考成績"), out decimal reScoreValue2))
+                                        {
+                                            if (decimal.TryParse(newScoreInfo.GetAttribute("修課及格標準"), out decimal passingStandard))
+                                            {
+                                                if (reScoreValue2 >= 0 && reScoreValue2 <= passingStandard)
+                                                    reScore = reScoreValue2.ToString();
+                                                else
+                                                    reScore = "-1";
+                                            }
+                                            else
+                                            {
+                                                reScore = "-1"; // 如果無法轉數字，預設為 -1
+                                            }
+                                        }
+
+
+
+                                        // 這段式 ChatGPT 寫如果 reScore 是 "-1" 則 reScoreP 設為 "-1"。否則嘗試把 reScore 轉成數字，並把 makeUpScoreInfo.Detail.GetAttribute("修課及格標準") 轉成數字（預設 60）。如果 reScore 大於等於修課及格標準，reScoreP 設為 "1"，否則設為 "0"。
+                                        string reScoreP = "-1";
+
+                                        // 取得修課及格標準（預設 60）
+                                        string passScoreStr = newScoreInfo.GetAttribute("修課及格標準");
+                                        decimal passScore = 60;
+                                        decimal.TryParse(passScoreStr, out passScore);
+
+                                        if (reScore == "-1")
+                                        {
+                                            reScoreP = "-1";
+                                        }
+                                        else if (decimal.TryParse(reScore, out decimal reScoreDecimal) && reScoreDecimal >= passScore)
+                                        {
+                                            reScoreP = "1";
+                                        }
+                                        else
+                                        {
+                                            reScoreP = "0";
+                                        }
+
                                         var repeatRec = new SubjectScoreRec108
                                         {
                                             StudentID = sacRecord.StudentID,
                                             IDNumber = sacRecord.IDNumber,
-                                            Birthday = sacRecord.Birthday,
+                                            Birthday = Utility.ConvertChDateString(sacRecord.Birthday),
                                             SchoolYear = schoolyear.ToString(),
                                             Semester = semester.ToString(),
                                             CourseCode = courseCode,
@@ -1537,7 +1679,9 @@ namespace SmartSchool.Evaluation
                                             CodePass = codePass,
                                             RepeatMemo = "2",
                                             RepeatScoreP = ScoreP,
-                                            RepeatScore = newScoreInfo.GetAttribute("原始成績")
+                                            RepeatScore = newScoreInfo.GetAttribute("原始成績"),
+                                            ReScore = reScore,
+                                            ReScoreP = reScoreP
                                         };
 
                                         // 加入 5.3 重讀成績名冊
@@ -1568,17 +1712,41 @@ namespace SmartSchool.Evaluation
                                     XmlElement updateScoreElement = previousSubjectScoreInfo.Detail;
                                     //updateScoreElement.SetAttribute("重修成績", "" + GetRoundScore(sacRecord.FinalScore, decimals, mode));
 
+                                    decimal passscore;
+                                    // 新寫及格標準
+                                    passscore = 100;
+                                    if (studentPassScoreDict.ContainsKey(var.StudentID))
+                                    {
+                                        if (studentPassScoreDict[var.StudentID].ContainsKey(key))
+                                        {
+                                            passscore = studentPassScoreDict[var.StudentID][key];
+                                        }
+                                        else
+                                        {
+                                            if (!applyLimit.ContainsKey(previousSubjectScoreInfo.GradeYear))
+                                                passscore = 60;
+                                            else
+                                                passscore = applyLimit[previousSubjectScoreInfo.GradeYear];
+                                        }
+                                    }
+
+
                                     // C# 寫一段程式，只有當新分數比舊的「重修成績」高時才寫入 SetAttribute("重修成績", ...)；否則不寫入。
                                     decimal previousScore;
                                     if (decimal.TryParse(updateScoreElement.GetAttribute("重修成績"), out previousScore))
                                     {
-                                        if (roundedScore > previousScore)
+                                        if (roundedScore >= previousScore)
                                         {
+                                            if (roundedScore > passscore)
+                                                roundedScore = passscore;
                                             updateScoreElement.SetAttribute("重修成績", "" + roundedScore);
                                         }
                                     }
                                     else
                                     {
+                                        if (roundedScore > passscore)
+                                            roundedScore = passscore;
+
                                         updateScoreElement.SetAttribute("重修成績", "" + roundedScore);
                                     }
 
@@ -1606,25 +1774,7 @@ namespace SmartSchool.Evaluation
                                         }
                                     }
                                     #endregion
-                                    decimal passscore;
 
-
-                                    // 新寫及格標準
-                                    passscore = 100;
-                                    if (studentPassScoreDict.ContainsKey(var.StudentID))
-                                    {
-                                        if (studentPassScoreDict[var.StudentID].ContainsKey(key))
-                                        {
-                                            passscore = studentPassScoreDict[var.StudentID][key];
-                                        }
-                                        else
-                                        {
-                                            if (!applyLimit.ContainsKey(previousSubjectScoreInfo.GradeYear))
-                                                passscore = 60;
-                                            else
-                                                passscore = applyLimit[previousSubjectScoreInfo.GradeYear];
-                                        }
-                                    }
 
                                     // 2024/7/5 會議決議，需要計算學分使用成績判斷是否取得學分
                                     if (updateScoreElement.GetAttribute("不計學分") == "否")
@@ -1770,11 +1920,23 @@ namespace SmartSchool.Evaluation
                                     // 檢查課程代碼 CodePass
                                     bool codePass = Utility.IsValidCourseCode(courseCode);
 
+                                    if (string.IsNullOrWhiteSpace(HisClassName))
+                                        HisClassName = var.RefClass.ClassName;
+
+                                    if (!HisSeatNo.HasValue || HisSeatNo == 0)
+                                    {
+                                        if (int.TryParse(sacRecord.SeatNo, out int seatNo))
+                                            HisSeatNo = seatNo;
+                                    }
+
+                                    if (string.IsNullOrWhiteSpace(HisStudentNumber))
+                                        HisStudentNumber = sacRecord.StudentNumber;
+
                                     var rec = new SubjectScoreRec108
                                     {
                                         StudentID = sacRecord.StudentID,
                                         IDNumber = sacRecord.IDNumber,
-                                        Birthday = sacRecord.Birthday,
+                                        Birthday = Utility.ConvertChDateString(sacRecord.Birthday),
                                         SchoolYear = previousSubjectScoreInfo.SchoolYear.ToString(),
                                         Semester = previousSubjectScoreInfo.Semester.ToString(),
                                         CourseCode = courseCode,
@@ -1985,12 +2147,23 @@ namespace SmartSchool.Evaluation
                                     // 檢查課程代碼 CodePass
                                     bool codePass = Utility.IsValidCourseCode(courseCode);
 
+                                    if (string.IsNullOrWhiteSpace(HisClassName))
+                                        HisClassName = var.RefClass.ClassName;
+
+                                    if (!HisSeatNo.HasValue || HisSeatNo == 0)
+                                    {
+                                        if (int.TryParse(sacRecord.SeatNo, out int seatNo))
+                                            HisSeatNo = seatNo;
+                                    }
+
+                                    if (string.IsNullOrWhiteSpace(HisStudentNumber))
+                                        HisStudentNumber = sacRecord.StudentNumber;
 
                                     var rec = new SubjectScoreRec108
                                     {
                                         StudentID = sacRecord.StudentID,
                                         IDNumber = sacRecord.IDNumber,
-                                        Birthday = sacRecord.Birthday,
+                                        Birthday = Utility.ConvertChDateString(sacRecord.Birthday),
                                         SchoolYear = makeUpScoreInfo.SchoolYear.ToString(),
                                         Semester = makeUpScoreInfo.Semester.ToString(),
                                         CourseCode = courseCode,

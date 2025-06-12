@@ -2,6 +2,7 @@
 using SmartSchool.Common;
 using SmartSchool.StudentRelated;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
@@ -250,6 +251,62 @@ FROM (
             {
                 if (row.IsNewRow) continue; // 跳過新增列
                 // 檢查每一個 cell 的 ErrorText
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    if (!string.IsNullOrEmpty(cell.ErrorText))
+                    {
+                        MsgBox.Show("請修正所有錯誤後再儲存。");
+                        btnSave.Enabled = true;
+                        return;
+                    }
+                }
+            }
+
+            // 檢查科目、級別必填與組合不可重複
+            var subjectLevelSet = new HashSet<string>();
+            foreach (DataGridViewRow row in dataGridView_Archive.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                var subjectCell = row.Cells[2];
+                var levelCell = row.Cells[3];
+                string subject = subjectCell.Value?.ToString().Trim() ?? "";
+                string level = levelCell.Value?.ToString().Trim() ?? "";
+
+                // 先清除舊的錯誤訊息
+                subjectCell.ErrorText = "";
+                levelCell.ErrorText = "";
+
+                // 必填檢查
+                if (string.IsNullOrEmpty(subject))
+                {
+                    subjectCell.ErrorText = "科目必填";
+                }
+                if (string.IsNullOrEmpty(level))
+                {
+                    levelCell.ErrorText = "級別必填";
+                }
+
+                // 組合重複檢查
+                string key = subject + "||" + level;
+                if (!string.IsNullOrEmpty(subject) && !string.IsNullOrEmpty(level))
+                {
+                    if (subjectLevelSet.Contains(key))
+                    {
+                        subjectCell.ErrorText = "科目+級別重複";
+                        levelCell.ErrorText = "科目+級別重複";
+                    }
+                    else
+                    {
+                        subjectLevelSet.Add(key);
+                    }
+                }
+            }
+
+            // 若有任何 ErrorText，阻止儲存
+            foreach (DataGridViewRow row in dataGridView_Archive.Rows)
+            {
+                if (row.IsNewRow) continue;
                 foreach (DataGridViewCell cell in row.Cells)
                 {
                     if (!string.IsNullOrEmpty(cell.ErrorText))

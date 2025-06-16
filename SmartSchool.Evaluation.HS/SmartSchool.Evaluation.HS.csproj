@@ -433,6 +433,7 @@
     <Compile Include="ImportExport\ExportGradScore.cs" />
     <Compile Include="ImportExport\ExportSemesterEntryScore.cs" />
     <Compile Include="ImportExport\ExportSemesterSubjectScore.cs" />
+    <Compile Include="ImportExport\ImportMakeupRetakeScore.cs" />
     <Compile Include="ImportExport\ImportSemesterEntryScore.cs" />
     <Compile Include="ImportExport\ImportSemesterSubjectScore.cs" />
     <Compile Include="ImportExport\ExportSchoolYearEntryScore.cs" />

@@ -581,7 +581,6 @@ namespace SmartSchool.Evaluation
 
             return value;
 
-        }
-
+        }        
     }
 }

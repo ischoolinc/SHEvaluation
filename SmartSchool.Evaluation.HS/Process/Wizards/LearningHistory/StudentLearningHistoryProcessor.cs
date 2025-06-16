@@ -351,9 +351,9 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                             ssr.SubjectLevel = Utility.GetAttribute(elmScore, "科目級別");
 
                             ssr.Name = studRec.StudentName;
-                            ssr.ClassName = studRec.RefClass.ClassName;
-                            ssr.SeatNo = studRec.SeatNo;
-                            ssr.StudentNumber = studRec.StudentNumber;
+                            //ssr.ClassName = studRec.RefClass.ClassName;
+                            //ssr.SeatNo = studRec.SeatNo;
+                            //ssr.StudentNumber = studRec.StudentNumber;
 
                             foreach (SHSemesterHistoryRecord rec in SemsH)
                             {
@@ -569,9 +569,9 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                             ssr.SubjectLevel = Utility.GetAttribute(elmScore, "科目級別");
 
                             ssr.Name = studRec.StudentName;
-                            ssr.ClassName = studRec.RefClass.ClassName;
-                            ssr.SeatNo = studRec.SeatNo;
-                            ssr.StudentNumber = studRec.StudentNumber;
+                            //ssr.ClassName = studRec.RefClass.ClassName;
+                            //ssr.SeatNo = studRec.SeatNo;
+                            //ssr.StudentNumber = studRec.StudentNumber;
 
                             foreach (SHSemesterHistoryRecord rec in SemsH)
                             {
@@ -1854,9 +1854,9 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                             ssr.SubjectName = Utility.GetAttribute(elmScore, "科目");
                             ssr.SubjectLevel = Utility.GetAttribute(elmScore, "科目級別");
                             ssr.Name = studRec.StudentName;
-                            ssr.ClassName = studRec.RefClass.ClassName;
-                            ssr.SeatNo = studRec.SeatNo;
-                            ssr.StudentNumber = studRec.StudentNumber;
+                            //ssr.ClassName = studRec.RefClass.ClassName;
+                            //ssr.SeatNo = studRec.SeatNo;
+                            //ssr.StudentNumber = studRec.StudentNumber;
 
                             foreach (SHSemesterHistoryRecord rec in SemsH)
                             {
@@ -2075,9 +2075,9 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                             ssr.SubjectLevel = Utility.GetAttribute(elmScore, "科目級別");
 
                             ssr.Name = studRec.StudentName;
-                            ssr.ClassName = studRec.RefClass.ClassName;
-                            ssr.SeatNo = studRec.SeatNo;
-                            ssr.StudentNumber = studRec.StudentNumber;
+                            //ssr.ClassName = studRec.RefClass.ClassName;
+                            //ssr.SeatNo = studRec.SeatNo;
+                            //ssr.StudentNumber = studRec.StudentNumber;
 
                             foreach (SHSemesterHistoryRecord rec in SemsH)
                             {

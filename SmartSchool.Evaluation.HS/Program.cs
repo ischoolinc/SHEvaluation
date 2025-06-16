@@ -247,6 +247,17 @@ namespace SmartSchool.Evaluation
                 wizard.ShowDialog();
             };
 
+
+            //rbItemImport["成績相關匯入"]["匯入重補修成績"].Enable = CurrentUser.Acl["00c64573-9060-4c94-ba02-cc6508c84ca8"].Executable;
+            //rbItemImport["成績相關匯入"]["匯入重補修成績"].Click += delegate
+            //{
+            //    Importer importer = new ImportMakeupRetakeScore();
+            //    ImportStudentV2 wizard = new ImportStudentV2(importer.Text, importer.Image);
+            //    importer.InitializeImport(wizard);
+            //    wizard.ShowDialog();
+            //};
+
+
             rbItemImport["成績相關匯入"]["匯入學期分項成績"].Enable = CurrentUser.Acl["Button0230"].Executable;
             rbItemImport["成績相關匯入"]["匯入學期分項成績"].Click += delegate
             {
@@ -314,6 +325,8 @@ namespace SmartSchool.Evaluation
             //權限設定
             Catalog permission = RoleAclSource.Instance["學生"]["功能按鈕"];
             permission.Add(new RibbonFeature(隨堂重修課程表, "隨堂重修課程表"));
+
+            //permission.Add(new RibbonFeature("00c64573-9060-4c94-ba02-cc6508c84ca8", "匯入重補修成績"));
 
             //載入毛毛蟲
             //SmartSchool.Customization.PlugIn.ExtendedContent.ExtendStudentContent.AddItem(new SemesterScorePalmerworm());

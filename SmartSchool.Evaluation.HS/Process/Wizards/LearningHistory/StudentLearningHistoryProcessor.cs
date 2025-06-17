@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -318,6 +319,82 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
 
             bgWorker.ReportProgress(30);
 
+            // 取得修課設定再次修習
+            string query2 = string.Format(@"SELECT sc_attend.id
+,sc_attend.extensions AS extensions
+,student.id AS refStudentID	
+,student.name AS studentName
+,student.student_number AS studentNumber
+,student.seat_no AS seatNo  
+,class.class_name AS className
+,class.grade_year AS gradeYear
+,course.id AS refCourseID
+,course.course_name AS courseName
+,course.subject AS subjectName
+,course.subj_level AS subjectLevel
+, course.specify_subject_name
+, COALESCE(sc_attend.required_by, course.c_required_by)  AS required_by
+, COALESCE(sc_attend.is_required, course.c_is_required)  AS is_required
+, course.score_type
+FROM sc_attend 
+LEFT JOIN student ON sc_attend.ref_student_id =student.id 
+LEFT JOIN class ON student.ref_class_id =class.id  
+LEFT JOIN course ON sc_attend.ref_course_id =course.id  
+WHERE 
+student.status ='1' 
+AND course.school_year = '{0}'
+AND course.semester = '{1}'
+AND student.id IN ({2})
+ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(",", studentIDList.ToArray()));
+
+            QueryHelper qh1 = new QueryHelper();
+
+            DataTable dt_SCAttend = qh1.Select(query2);
+
+            Dictionary<string, string> duplicateSubjectLevelMethodDict = new Dictionary<string, string>();
+
+            foreach (DataRow dr in dt_SCAttend.Rows)
+            {
+                string key = "" + dr["refStudentID"] + "_" + dr["subjectName"] + "_" + dr["subjectLevel"];
+
+                string xmlStr = "<root>" + dr["extensions"] + "</root>";
+                string method = "";
+
+                XElement elmRoot = XElement.Parse(xmlStr);
+
+                if (elmRoot != null)
+                {
+                    if (elmRoot.Element("Extensions") != null)
+                    {
+                        foreach (XElement ex in elmRoot.Element("Extensions").Elements("Extension"))
+                        {
+                            if (ex.Attribute("Name").Value == "DuplicatedLevelSubjectCalRule")
+                            {
+                                method = ex.Element("Rule").Value;
+                            }
+                        }
+                    }
+                }
+                if (!duplicateSubjectLevelMethodDict.ContainsKey(key))
+                {
+                    duplicateSubjectLevelMethodDict.Add("" + dr["refStudentID"] + "_" + dr["subjectName"] + "_" + dr["subjectLevel"], method);
+                }
+            }
+
+            Dictionary<string, string> duplicateSubjectLevelMethodDict_Afterfilter = new Dictionary<string, string>(); // 真正過濾後，有重覆科目級別的項目
+
+            // 過濾取得重覆科目級別的計算處理方式
+            foreach (var kv in duplicateSubjectLevelMethodDict)
+            {
+                if (!string.IsNullOrWhiteSpace(kv.Value) && !duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(kv.Key))
+                {
+                    duplicateSubjectLevelMethodDict_Afterfilter.Add(kv.Key, kv.Value);
+                }
+            }
+
+
+
+
             foreach (SmartSchool.Customization.Data.StudentRecord studRec in StudentRecList)
             {
                 string IDNumber = studRec.IDNumber.ToUpper();
@@ -333,7 +410,9 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                     #region 一般與補修
 
                     if (StudentSubjectScoreDict[studRec.StudentID].ContainsKey(smsKey))
-                    {
+                    {                     
+
+
                         XElement elmRoot = StudentSubjectScoreDict[studRec.StudentID][smsKey].ScoreXML;
 
                         foreach (XElement elmScore in elmRoot.Elements("Subject"))
@@ -354,6 +433,31 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                             //ssr.ClassName = studRec.RefClass.ClassName;
                             //ssr.SeatNo = studRec.SeatNo;
                             //ssr.StudentNumber = studRec.StudentNumber;
+
+                            string subjectKey = ssr.SubjectName.Trim() + "_" + ssr.SubjectLevel.Trim();
+                            string studentSubjectKey = ssr.StudentID + "_" + subjectKey;
+
+                            string rule = duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(studentSubjectKey)
+    ? duplicateSubjectLevelMethodDict_Afterfilter[studentSubjectKey]
+    : "";
+
+                            // 統一分類
+                            string ruleType = "";
+                            if (rule == "重修(寫回原學期)" || rule == "重修成績")
+                                ruleType = "重修成績";
+                            else if (rule == "重讀(擇優採計成績)" || rule == "再次修習")
+                                ruleType = "再次修習";
+                            else if (rule == "補修成績")
+                                ruleType = "補修成績";
+
+                            // 根據處理規則進行分支寫入
+                            if (ruleType == "再次修習")
+                            {
+                                // 再次修習不放入學期成績工作頁
+                                continue;
+                            }
+
+
 
                             foreach (SHSemesterHistoryRecord rec in SemsH)
                             {
@@ -2308,9 +2412,9 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
 
                             bool hasScore1 = false, hasScore2 = false;
                             sysr.Name = studRec.StudentName;
-                            sysr.ClassName = studRec.RefClass.ClassName;
-                            sysr.SeatNo = studRec.SeatNo;
-                            sysr.StudentNumber = studRec.StudentNumber;
+                            //sysr.ClassName = studRec.RefClass.ClassName;
+                            //sysr.SeatNo = studRec.SeatNo;
+                            //sysr.StudentNumber = studRec.StudentNumber;
 
                             foreach (SHSemesterHistoryRecord rec in SemsH)
                             {

@@ -60,7 +60,7 @@ namespace SmartSchool.Evaluation.ImportExport
             wizard.PackageLimit = 3000;
             wizard.ImportableFields.AddRange("領域", "科目", "科目級別", "學年度", "學期", "英文名稱", "學分數", "分項類別", "成績年級", "必選修", "校部訂", "原始成績", "補考成績", "重修成績", "手動調整成績", "學年調整成績", "取得學分", "不計學分", "不需評分", "註記", "是否補修成績", "補修學年度", "補修學期", "重修學年度", "重修學期", "修課及格標準", "修課補考標準", "修課備註", "修課直接指定總成績", "免修", "抵免", "指定學年科目名稱", "課程代碼", "報部科目名稱", "是否重讀");
 
-            wizard.RequiredFields.AddRange("科目", "科目級別", "學年度", "學期", "是否補修成績");
+            wizard.RequiredFields.AddRange("科目", "科目級別", "學年度", "學期", "是否補修成績", "補修學年度", "補修學期", "重修學年度", "重修學期");
             wizard.ValidateStart += delegate (object sender, SmartSchool.API.PlugIn.Import.ValidateStartEventArgs e)
             {
                 #region ValidateStart
@@ -157,17 +157,13 @@ namespace SmartSchool.Evaluation.ImportExport
                         case "修課及格標準":
                         case "修課補考標準":
                         case "修課直接指定總成績":
-                        case "補修學年度":
-                        case "補修學期":
-                        case "重修學年度":
-                        case "重修學期":
                             //case "應修學期":
                             if (value != "" && !decimal.TryParse(value, out d))
                             {
                                 inputFormatPass &= false;
                                 e.ErrorFields.Add(field, "必須填入空白或數值");
                             }
-                            break;
+                            break;                       
                         case "取得學分":
                             if (value != "是" && value != "否" && manulCheckPass.Checked)
                             {
@@ -261,18 +257,11 @@ namespace SmartSchool.Evaluation.ImportExport
                         }
                         if (isNewSubjectInfo)
                         {
-                            if (e.Data["是否補修成績"] != "是")
-                            {
-                                e.ErrorFields.Add("科目", "只有「是否補修成績」為「是」時，才允許新增科目成績，請修正此列資料！");
-                            }
-                            else
-                            {
-                                if (!e.WarningFields.ContainsKey("查無此科目"))
-                                    e.WarningFields.Add("查無此科目", "學生在此學期並無此筆科目成績資訊，將會新增此科目成績");
-                            }
-
                             //if (!e.WarningFields.ContainsKey("查無此科目"))
                             //    e.WarningFields.Add("查無此科目", "學生在此學期並無此筆科目成績資訊，將會新增此科目成績");
+
+                            e.ErrorFields.Add("科目", "本功能僅允許更新成績，不允許新增科目成績，請修正此列資料！");
+
                             foreach (string field in new string[] { "科目", "科目級別", "學年度", "學期", "學分數", "分項類別", "成績年級", "必選修", "校部訂", "取得學分" })
                             {
                                 if (!e.SelectFields.Contains(field))
@@ -404,11 +393,41 @@ namespace SmartSchool.Evaluation.ImportExport
                         // 檢查重修學年度、重修學期
                         if (e.SelectFields.Contains("重修成績") && e.SelectFields.Contains("重修學年度") && e.SelectFields.Contains("重修學期"))
                         {
-                            if (e.Data["重修成績"] != "")
+                            if (!string.IsNullOrWhiteSpace(e.Data["重修成績"]))
                             {
-                                if (e.Data["重修學年度"] == "" || e.Data["重修學期"] == "")
+                                string retakeSchoolYear = e.Data["重修學年度"];
+                                string retakeSemester = e.Data["重修學期"];
+                                bool validRetakeSchoolYear = int.TryParse(retakeSchoolYear, out _);
+                                bool validRetakeSemester = int.TryParse(retakeSemester, out _);
+
+                                if (string.IsNullOrWhiteSpace(retakeSchoolYear) || string.IsNullOrWhiteSpace(retakeSemester))
                                 {
                                     errorMessage += (errorMessage == "" ? "" : "\n") + "重修學年度、重修學期 必填!";
+                                }
+                                else if (!validRetakeSchoolYear || !validRetakeSemester)
+                                {
+                                    errorMessage += (errorMessage == "" ? "" : "\n") + "重修學年度、重修學期 必須是數值!";
+                                }
+                            }
+                        }
+
+                        // 檢查補修，當是否補休成績=是，補修學年度、補修學期
+                        if (e.SelectFields.Contains("是否補修成績") && e.SelectFields.Contains("補修學年度") && e.SelectFields.Contains("補修學期"))
+                        {
+                            if (e.Data["是否補修成績"] == "是")
+                            {
+                                string makeUpSchoolYear = e.Data["補修學年度"];
+                                string makeUpSemester = e.Data["補修學期"];
+                                bool validMakeUpSchoolYear = int.TryParse(makeUpSchoolYear, out _);
+                                bool validMakeUpSemester = int.TryParse(makeUpSemester, out _);
+
+                                if (string.IsNullOrWhiteSpace(makeUpSchoolYear) || string.IsNullOrWhiteSpace(makeUpSemester))
+                                {
+                                    errorMessage += (errorMessage == "" ? "" : "\n") + "補修學年度、補修學期 必填!";
+                                }
+                                else if (!validMakeUpSchoolYear || !validMakeUpSemester)
+                                {
+                                    errorMessage += (errorMessage == "" ? "" : "\n") + "補修學年度、補修學期 必須是數值!";
                                 }
                             }
                         }
@@ -420,10 +439,12 @@ namespace SmartSchool.Evaluation.ImportExport
 
             wizard.ImportPackage += delegate (object sender, SmartSchool.API.PlugIn.Import.ImportPackageEventArgs e)
             {
-                // (1) 宣告名冊 List
-                List<SubjectScoreRec108> makeUpScoreList = new List<SubjectScoreRec108>();
-                List<SubjectScoreRec108> restudyScoreList = new List<SubjectScoreRec108>();
+                // (1) 宣告名冊，匯入可能會有不同學年度學期寫入名冊 學年度、學期、名冊工作表內容
+                // 補修工作表
+                Dictionary<int, Dictionary<int, List<SubjectScoreRec108>>> makeUpScoreDict = new Dictionary<int, Dictionary<int, List<SubjectScoreRec108>>>();
 
+                // 重修工作表
+                Dictionary<int, Dictionary<int, List<SubjectScoreRec108>>> restudyScoreDict = new Dictionary<int, Dictionary<int, List<SubjectScoreRec108>>>();
 
                 #region ImportPackage
                 Dictionary<string, List<RowData>> id_Rows = new Dictionary<string, List<RowData>>();
@@ -482,7 +503,7 @@ namespace SmartSchool.Evaluation.ImportExport
 
                         // 處理寫入名冊需要資料
                         // (3) 同步處理名冊
-                        if (row["是否補修成績"] == "是")
+                        if (row["是否補修成績"] == "是" && row["補修學年度"] != "" && row["補修學期"] != "")
                         {
                             // --- 處理補修成績寫入學期歷程資料 4.3 補修成績
                             string HisClassName = "", HisStudentNumber = "";
@@ -578,11 +599,11 @@ namespace SmartSchool.Evaluation.ImportExport
 
 
                             // 課程代碼
-                            string courseCode = GetRowDataCellValue(row,"課程代碼");
+                            string courseCode = GetRowDataCellValue(row, "課程代碼");
 
                             // 假設 makeUpScoreInfo.Detail 是 XElement 或有 GetAttribute 方法
-                            string notCountCredit = GetRowDataCellValue(row, "不計學分"); 
-                            string notNeedScore = GetRowDataCellValue(row, "不需評分"); 
+                            string notCountCredit = GetRowDataCellValue(row, "不計學分");
+                            string notNeedScore = GetRowDataCellValue(row, "不需評分");
 
                             // 是否採計學分 預設
                             string useCredit = "1";
@@ -659,9 +680,19 @@ namespace SmartSchool.Evaluation.ImportExport
                                 checkPass = true,
                                 CodePass = codePass
                             };
-                            makeUpScoreList.Add(rec);
+
+                            int ssy,sse;
+                            if (int.TryParse(row["補修學年度"], out ssy) && int.TryParse(row["補修學期"], out sse))
+                            {
+                                if (!makeUpScoreDict.ContainsKey(ssy))
+                                    makeUpScoreDict.Add(ssy, new Dictionary<int, List<SubjectScoreRec108>>());
+                                if (!makeUpScoreDict[ssy].ContainsKey(sse))
+                                    makeUpScoreDict[ssy].Add(sse, new List<SubjectScoreRec108>());
+                                makeUpScoreDict[ssy][sse].Add(rec);
+                            }
                         }
-                        else if (row["重修成績"] != "")
+
+                        if (row["重修成績"] != "" && row["重修學年度"] != "" && row["重修學期"] != "")
                         {
                             // 重修成績寫入學期歷程 ---
 
@@ -839,7 +870,16 @@ namespace SmartSchool.Evaluation.ImportExport
                                 ReAScoreP = ReAScoreP
                             };
 
-                            restudyScoreList.Add(rec);
+                            int ssy, sse;
+                            if (int.TryParse(row["重修學年度"], out ssy) && int.TryParse(row["重修學期"], out sse))
+                            {
+                                if (!restudyScoreDict.ContainsKey(ssy))
+                                    restudyScoreDict.Add(ssy, new Dictionary<int, List<SubjectScoreRec108>>());
+                                if (!restudyScoreDict[ssy].ContainsKey(sse))
+                                    restudyScoreDict[ssy].Add(sse, new List<SubjectScoreRec108>());
+                                restudyScoreDict[ssy][sse].Add(rec);
+                            }
+                                
                         }
 
                     }
@@ -851,8 +891,7 @@ namespace SmartSchool.Evaluation.ImportExport
                     Dictionary<int, List<int>> updatedSemester = new Dictionary<int, List<int>>();
                     //在變更學期中新增加的成績資料
                     Dictionary<int, Dictionary<int, List<RowData>>> updatedNewSemesterScore = new Dictionary<int, Dictionary<int, List<RowData>>>();
-                    //要增加成績的學期
-                    Dictionary<int, Dictionary<int, List<RowData>>> insertNewSemesterScore = new Dictionary<int, Dictionary<int, List<RowData>>>();
+
                     //開始處理ImportScore
                     #region 開始處理ImportScore
                     foreach (int sy in semesterImportScoreDictionary.Keys)
@@ -865,11 +904,6 @@ namespace SmartSchool.Evaluation.ImportExport
                                 //如果是本來沒有這筆學期的成績就加到insertNewSemesterScore
                                 if (!semesterScoreDictionary.ContainsKey(sy) || !semesterScoreDictionary[sy].ContainsKey(se))
                                 {
-                                    if (!insertNewSemesterScore.ContainsKey(sy))
-                                        insertNewSemesterScore.Add(sy, new Dictionary<int, List<RowData>>());
-                                    if (!insertNewSemesterScore[sy].ContainsKey(se))
-                                        insertNewSemesterScore[sy].Add(se, new List<RowData>());
-                                    insertNewSemesterScore[sy][se].Add(data);
                                     //加入學期年級
                                     int gy = int.Parse(data["成績年級"]);
                                     if (!semesterGradeYear.ContainsKey(sy))
@@ -972,8 +1006,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                                 case "不計學分":
                                                 case "不需評分":
                                                 case "免修":
-                                                case "抵免":
-                                                case "是否補修成績":
+                                                case "抵免":                                                
                                                 case "是否重讀":
                                                     value = (value == "" ? "否" : value);
                                                     if (score.Detail.GetAttribute(field) != value)
@@ -983,6 +1016,40 @@ namespace SmartSchool.Evaluation.ImportExport
                                                         hasChanged = true;
                                                     }
                                                     break;
+                                                case "是否補修成績":
+                                                    if (value == "是")
+                                                    {
+                                                        // 僅當「是否補修成績」為"是"才更新
+                                                        if (data.ContainsKey("是否補修成績") && data["是否補修成績"] == "是")
+                                                        {
+                                                            hasChanged = false;
+
+                                                            // 只更新原始成績
+                                                            string originalScore = data.ContainsKey("原始成績") ? data["原始成績"] : "";
+                                                            if (score.Detail.GetAttribute("原始成績") != originalScore)
+                                                            {
+                                                                score.Detail.SetAttribute("原始成績", originalScore);
+                                                                hasChanged = true;
+                                                            }
+
+                                                            // 更新補修學年度
+                                                            string makeUpSchoolYear = data.ContainsKey("補修學年度") ? data["補修學年度"] : "";
+                                                            if (score.Detail.GetAttribute("補修學年度") != makeUpSchoolYear)
+                                                            {
+                                                                score.Detail.SetAttribute("補修學年度", makeUpSchoolYear);
+                                                                hasChanged = true;
+                                                            }
+
+                                                            // 更新補修學期
+                                                            string makeUpSemester = data.ContainsKey("補修學期") ? data["補修學期"] : "";
+                                                            if (score.Detail.GetAttribute("補修學期") != makeUpSemester)
+                                                            {
+                                                                score.Detail.SetAttribute("補修學期", makeUpSemester);
+                                                                hasChanged = true;
+                                                            }                                                     
+                                                        }
+                                                    }
+                                                        break;
                                                 case "成績年級":
                                                     int gy = int.Parse(data["成績年級"]);
                                                     if (score.GradeYear != gy)
@@ -1256,150 +1323,7 @@ namespace SmartSchool.Evaluation.ImportExport
                         }
                     }
                     #endregion
-                    //處理新增成績學期
-                    #region 處理新增成績學期
-                    foreach (int sy in insertNewSemesterScore.Keys)
-                    {
-                        foreach (int se in insertNewSemesterScore[sy].Keys)
-                        {
-                            XmlElement subjectScoreInfo = doc.CreateElement("SemesterSubjectScoreInfo");
 
-                            string gradeyear = "" + semesterGradeYear[sy][se];//抓年級
-
-                            string logLine = "學生系統編號：「" + id + "」學生姓名：「" + studentRec.StudentName + "」，新增科目：學年度「" + sy + "」、學期「" + se + "」、成績年級「" + gradeyear + "」";
-                            foreach (RowData row in insertNewSemesterScore[sy][se])
-                            {
-                                XmlElement newScore = doc.CreateElement("Subject");
-                                #region 建立newScore
-                                foreach (string field in new string[] { "領域", "科目", "科目級別", "學分數", "分項類別", "必選修", "校部訂", "原始成績", "補考成績", "重修成績", "手動調整成績", "學年調整成績", "取得學分", "不計學分", "不需評分", "是否補修成績", "重修學年度", "重修學期", "免修", "抵免", "補修學年度", "補修學期", "指定學年科目名稱", "課程代碼", "報部科目名稱", "是否重讀" })
-                                {
-                                    if (e.ImportFields.Contains(field))
-                                    {
-                                        string value = row[field];
-                                        switch (field)
-                                        {
-                                            default: break;
-                                            case "領域":
-                                                newScore.SetAttribute("領域", value);
-                                                if (value != "")
-                                                    logLine += "、" + field + "「" + value + "」";
-                                                break;
-                                            case "科目":
-                                                newScore.SetAttribute("科目", value);
-                                                logLine += "、科目「" + value + "」";
-                                                break;
-                                            case "科目級別":
-                                                int level;
-                                                if (int.TryParse(value, out level))
-                                                    newScore.SetAttribute("科目級別", "" + level);
-                                                else
-                                                    newScore.SetAttribute("科目級別", "");
-                                                logLine += "、科目級別「" + value + "」";
-                                                break;
-                                            case "學分數":
-                                                newScore.SetAttribute("開課學分數", value);
-                                                logLine += "、學分數「" + value + "」";
-                                                break;
-                                            case "分項類別":
-                                                newScore.SetAttribute("開課分項類別", value);
-                                                logLine += "、分項類別「" + value + "」";
-                                                break;
-                                            case "必選修":
-                                                newScore.SetAttribute("修課必選修", value);
-                                                logLine += "、必選修「" + value + "」";
-                                                break;
-                                            case "校部訂":
-                                                newScore.SetAttribute("修課校部訂", value == "部定" ? "部訂" : value);
-                                                logLine += "、校部訂「" + value + "」";
-                                                break;
-                                            case "取得學分":
-                                                newScore.SetAttribute("是否取得學分", value);
-                                                if (value != "")
-                                                    logLine += "、" + field + "「" + value + "」";
-                                                break;
-
-                                            case "手動調整成績":
-                                                newScore.SetAttribute("擇優採計成績", value);
-                                                if (value != "")
-                                                    logLine += "、" + field + "「" + value + "」";
-                                                break;
-                                            case "原始成績":
-                                            case "補考成績":
-                                            case "重修成績":
-                                            case "學年調整成績":
-                                            case "重修學年度":
-                                            case "重修學期":
-                                            case "補修學年度":
-                                            case "補修學期":
-                                                newScore.SetAttribute(field, value);
-                                                if (value != "")
-                                                    logLine += "、" + field + "「" + value + "」";
-                                                break;
-                                            case "不計學分":
-                                            case "不需評分":
-                                            case "免修":
-                                            case "抵免":
-                                            case "是否補修成績":
-                                            case "是否重讀":
-                                                value = (value == "" ? "否" : value);
-                                                newScore.SetAttribute(field, value);
-                                                if (value != "")
-                                                    logLine += "、" + field + "「" + value + "」";
-                                                break;
-                                            case "指定學年科目名稱":
-                                            case "報部科目名稱":
-                                                newScore.SetAttribute(field, value);
-                                                if (value != "")
-                                                    logLine += "、" + field + "「" + value + "」";
-                                                break;
-                                            case "課程代碼":
-                                                newScore.SetAttribute("修課科目代碼", value);
-                                                if (value != "")
-                                                    logLine += "、" + field + "「" + value + "」";
-                                                break;
-                                        }
-                                    }
-                                }
-                                //這兩個是為二有預設值的
-                                foreach (string field in new string[] { "不計學分", "不需評分" })
-                                {
-                                    if (!e.ImportFields.Contains(field))
-                                    {
-                                        newScore.SetAttribute(field, "否");
-                                    }
-                                }
-
-                                if (autoCheckPass.Checked)
-                                {
-                                    int gy = int.Parse(row["成績年級"]);
-                                    #region 做取得學分判斷及填入擇優採計成績
-                                    //最高分
-                                    decimal maxScore = decimal.MinValue;
-                                    #region 抓最高分
-                                    string[] scoreNames = new string[] { "原始成績", "學年調整成績", "擇優採計成績", "補考成績", "重修成績" };
-                                    foreach (string scorename in scoreNames)
-                                    {
-                                        decimal s;
-                                        if (decimal.TryParse(newScore.GetAttribute(scorename), out s))
-                                        {
-                                            if (s > maxScore)
-                                            {
-                                                maxScore = s;
-                                            }
-                                        }
-                                    }
-                                    #endregion
-                                    #endregion
-                                    newScore.SetAttribute("是否取得學分", ((newScore.GetAttribute("不需評分") == "是") || maxScore >= _StudentPassScore[studentRec][gy]) ? "是" : "否");
-                                }
-                                #endregion
-                                subjectScoreInfo.AppendChild(newScore);
-                                insertLogStringBuilder.AppendLine(logLine);
-                            }
-                            insertList.Add(new SmartSchool.Feature.Score.AddScore.InsertInfo(studentRec.StudentID, "" + sy, "" + se, gradeyear, "", subjectScoreInfo));
-                        }
-                    }
-                    #endregion
                 }
                 #endregion
 
@@ -1407,12 +1331,35 @@ namespace SmartSchool.Evaluation.ImportExport
                 int SchoolYear = int.Parse(K12.Data.School.DefaultSchoolYear);
                 int Semester = int.Parse(K12.Data.School.DefaultSemester);
 
-                // (4) 兩層迴圈後，一次性寫入名冊
-                if (makeUpScoreList.Count > 0)
-                    new LearningHistoryDataAccess().SaveScores43(makeUpScoreList, SchoolYear, Semester);
-                if (restudyScoreList.Count > 0)
-                    new LearningHistoryDataAccess().SaveScores52(restudyScoreList, SchoolYear, Semester);
+                // 依不同學年度學期寫入補修成績工作表
+                if (makeUpScoreDict.Count > 0)
+                {
+                    foreach(int sy in makeUpScoreDict.Keys)
+                    {
+                        foreach(int ss in makeUpScoreDict[sy].Keys)
+                        {
+                            if (makeUpScoreDict[sy][ss].Count > 0)
+                            {
+                                new LearningHistoryDataAccess().SaveScores43(makeUpScoreDict[sy][ss], sy, ss);
+                            }
+                        }
+                    }
+                }
 
+                // 依不同學年度學期寫入重修成績工作表
+                if (restudyScoreDict.Count > 0)
+                {
+                    foreach (int sy in restudyScoreDict.Keys)
+                    {
+                        foreach (int ss in restudyScoreDict[sy].Keys)
+                        {
+                            if (restudyScoreDict[sy][ss].Count > 0)
+                            {
+                                new LearningHistoryDataAccess().SaveScores52(restudyScoreDict[sy][ss], sy, ss);
+                            }
+                        }
+                    }
+                }
 
                 if (scoreDetailLogStringBuilder.Length > 0 || updateList.Count > 0 || insertList.Count > 0)
                     FISCA.LogAgent.ApplicationLog.Log("匯入學期科目成績", "匯入", scoreDetailLogStringBuilder.ToString() + updateLogStringBuilder.ToString() + insertLogStringBuilder.ToString());
@@ -1452,42 +1399,8 @@ namespace SmartSchool.Evaluation.ImportExport
                     threadUpdateSemesterSubjectScore2.Join();
                     #endregion
                 }
-                if (insertList.Count > 0)
-                {
-                    //FISCA.LogAgent.ApplicationLog.Log("匯入學期科目成績", "匯入", insertLogStringBuilder.ToString());
-                    #region 分批次兩路上傳
 
-                    List<List<SmartSchool.Feature.Score.AddScore.InsertInfo>> insertPackages = new List<List<SmartSchool.Feature.Score.AddScore.InsertInfo>>();
-                    List<List<SmartSchool.Feature.Score.AddScore.InsertInfo>> insertPackages2 = new List<List<SmartSchool.Feature.Score.AddScore.InsertInfo>>();
-                    {
-                        List<SmartSchool.Feature.Score.AddScore.InsertInfo> package = null;
-                        int count = 0;
-                        foreach (SmartSchool.Feature.Score.AddScore.InsertInfo var in insertList)
-                        {
-                            if (count == 0)
-                            {
-                                package = new List<SmartSchool.Feature.Score.AddScore.InsertInfo>(30);
-                                count = 30;
-                                if ((insertPackages.Count & 1) == 0)
-                                    insertPackages.Add(package);
-                                else
-                                    insertPackages2.Add(package);
-                            }
-                            package.Add(var);
-                            count--;
-                        }
-                    }
-                    Thread threadInsertSemesterSubjectScore = new Thread(new ParameterizedThreadStart(insertSemesterSubjectScore));
-                    threadInsertSemesterSubjectScore.IsBackground = true;
-                    threadInsertSemesterSubjectScore.Start(insertPackages);
-                    Thread threadInsertSemesterSubjectScore2 = new Thread(new ParameterizedThreadStart(insertSemesterSubjectScore));
-                    threadInsertSemesterSubjectScore2.IsBackground = true;
-                    threadInsertSemesterSubjectScore2.Start(insertPackages2);
 
-                    threadInsertSemesterSubjectScore.Join();
-                    threadInsertSemesterSubjectScore2.Join();
-                    #endregion
-                }
                 #endregion
             };
             wizard.ImportComplete += delegate
@@ -1496,7 +1409,7 @@ namespace SmartSchool.Evaluation.ImportExport
             };
         }
 
-        private string GetRowDataCellValue(RowData rowData,string name)
+        private string GetRowDataCellValue(RowData rowData, string name)
         {
             return rowData.ContainsKey(name) ? rowData[name].ToString() : "";
         }

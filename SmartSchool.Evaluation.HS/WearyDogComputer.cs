@@ -2684,12 +2684,12 @@ namespace SmartSchool.Evaluation
                 learningHistoryDataAccess.SaveScores52(restudyScoreList, schoolyear, semester);
             }
 
-            // 轉學轉科寫入學期歷程
-            if (transferScoreList.Count > 0)
-            {
-                LearningHistoryDataAccess learningHistoryDataAccess = new LearningHistoryDataAccess();
-                learningHistoryDataAccess.SaveScores44(transferScoreList, schoolyear, semester);
-            }
+            //// 轉學轉科寫入學期歷程
+            //if (transferScoreList.Count > 0)
+            //{
+            //    LearningHistoryDataAccess learningHistoryDataAccess = new LearningHistoryDataAccess();
+            //    learningHistoryDataAccess.SaveScores44(transferScoreList, schoolyear, semester);
+            //}
 
             // 重讀學期寫入學期歷程
             if (repeatScoreList.Count > 0)
@@ -2698,15 +2698,7 @@ namespace SmartSchool.Evaluation
                 learningHistoryDataAccess.SaveScores53(repeatScoreList, schoolyear, semester);
             }
 
-            try
-            {
-                // 呼叫學期歷程同步
-                FISCA.Features.Invoke("StudentLearningHistoryDetailContent");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("StudentLearningHistoryDetailContent 無法呼叫：" + ex.Message);
-            }
+           
             return _ErrorList;
         }
 

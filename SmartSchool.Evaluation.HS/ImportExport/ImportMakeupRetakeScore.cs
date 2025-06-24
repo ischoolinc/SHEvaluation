@@ -163,7 +163,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                 inputFormatPass &= false;
                                 e.ErrorFields.Add(field, "必須填入空白或數值");
                             }
-                            break;                       
+                            break;
                         case "取得學分":
                             if (value != "是" && value != "否" && manulCheckPass.Checked)
                             {
@@ -517,28 +517,28 @@ namespace SmartSchool.Evaluation.ImportExport
                                     XmlElement xmlElement = studentRec.Fields["SemesterHistory"] as XmlElement;
                                     XElement elmRoot = XElement.Parse(xmlElement.OuterXml);
 
-                                    //// 找到第一個符合 SchoolYear, Semester 的節點
-                                    //var matched = elmRoot.Elements("History")
-                                    //    .FirstOrDefault(e =>
-                                    //        (string)e.Attribute("SchoolYear") == sy.ToString() &&
-                                    //        (string)e.Attribute("Semester") == se.ToString());
+                                    // 找到第一個符合 SchoolYear, Semester 的節點
+                                    var matched = elmRoot.Elements("History")
+                                       .FirstOrDefault(eh =>
+                                           (string)eh.Attribute("SchoolYear") == sy.ToString() &&
+                                           (string)eh.Attribute("Semester") == se.ToString());
 
-                                    //if (matched != null)
-                                    //{
-                                    //    HisClassName = (string)matched.Attribute("ClassName") ?? "";
-                                    //    HisStudentNumber = (string)matched.Attribute("StudentNumber") ?? "";
+                                    if (matched != null)
+                                    {
+                                        HisClassName = (string)matched.Attribute("ClassName") ?? "";
+                                        HisStudentNumber = (string)matched.Attribute("StudentNumber") ?? "";
 
-                                    //    // SeatNo 轉型
-                                    //    int seatNo;
-                                    //    if (int.TryParse((string)matched.Attribute("SeatNo"), out seatNo))
-                                    //        HisSeatNo = seatNo;
-                                    //    else
-                                    //        HisSeatNo = null;
-                                    //}
-                                    //else
-                                    //{
+                                        // SeatNo 轉型
+                                        int seatNo;
+                                        if (int.TryParse((string)matched.Attribute("SeatNo"), out seatNo))
+                                            HisSeatNo = seatNo;
+                                        else
+                                            HisSeatNo = null;
+                                    }
+                                    else
+                                    {
 
-                                    //}
+                                    }
                                 }
                             }
                             catch (Exception ex)
@@ -673,15 +673,12 @@ namespace SmartSchool.Evaluation.ImportExport
                                 HisClassName = HisClassName,
                                 HisSeatNo = HisSeatNo,
                                 HisStudentNumber = HisStudentNumber,
-                                ClassName = studentRec.RefClass.ClassName,
-                                SeatNo = studentRec.SeatNo,
-                                StudentNumber = studentRec.StudentNumber,
                                 isScScore = true,
                                 checkPass = true,
                                 CodePass = codePass
                             };
 
-                            int ssy,sse;
+                            int ssy, sse;
                             if (int.TryParse(row["補修學年度"], out ssy) && int.TryParse(row["補修學期"], out sse))
                             {
                                 if (!makeUpScoreDict.ContainsKey(ssy))
@@ -706,28 +703,28 @@ namespace SmartSchool.Evaluation.ImportExport
                                     XmlElement xmlElement = studentRec.Fields["SemesterHistory"] as XmlElement;
                                     XElement elmRoot = XElement.Parse(xmlElement.OuterXml);
 
-                                    //// 找到第一個符合 SchoolYear, Semester 的節點
-                                    //var matched = elmRoot.Elements("History")
-                                    //    .FirstOrDefault(e =>
-                                    //        (string)e.Attribute("SchoolYear") == sy.ToString() &&
-                                    //        (string)e.Attribute("Semester") == se.ToString());
+                                    // 找到第一個符合 SchoolYear, Semester 的節點
+                                    var matched = elmRoot.Elements("History")
+                                        .FirstOrDefault(eh =>
+                                            (string)eh.Attribute("SchoolYear") == sy.ToString() &&
+                                            (string)eh.Attribute("Semester") == se.ToString());
 
-                                    //if (matched != null)
-                                    //{
-                                    //    HisClassName = (string)matched.Attribute("ClassName") ?? "";
-                                    //    HisStudentNumber = (string)matched.Attribute("StudentNumber") ?? "";
+                                    if (matched != null)
+                                    {
+                                        HisClassName = (string)matched.Attribute("ClassName") ?? "";
+                                        HisStudentNumber = (string)matched.Attribute("StudentNumber") ?? "";
 
-                                    //    // SeatNo 轉型
-                                    //    int seatNo;
-                                    //    if (int.TryParse((string)matched.Attribute("SeatNo"), out seatNo))
-                                    //        HisSeatNo = seatNo;
-                                    //    else
-                                    //        HisSeatNo = null;
-                                    //}
-                                    //else
-                                    //{
+                                        // SeatNo 轉型
+                                        int seatNo;
+                                        if (int.TryParse((string)matched.Attribute("SeatNo"), out seatNo))
+                                            HisSeatNo = seatNo;
+                                        else
+                                            HisSeatNo = null;
+                                    }
+                                    else
+                                    {
 
-                                    //}
+                                    }
                                 }
                             }
                             catch (Exception ex)
@@ -747,20 +744,25 @@ namespace SmartSchool.Evaluation.ImportExport
 
                             string ReAScore = "-1";
                             // 幫我寫一段 C# 程式碼，從 makeUpScoreInfo.Detail 取得「補考成績」和「修課及格標準」兩個屬性。如果「補考成績」能轉為數字，且在 0 到「修課及格標準」之間，則 reScore 等於該分數字串，否則 reScore = "-1"。如果「修課及格標準」無法轉數字，預設用 60。
+                            decimal passingStandard;
                             if (decimal.TryParse(GetRowDataCellValue(row, "重修成績"), out decimal reScoreValue2))
                             {
-                                if (decimal.TryParse(GetRowDataCellValue(row, "修課及格標準"), out decimal passingStandard))
-                                {
+                                decimal.TryParse(GetRowDataCellValue(row, "修課及格標準"), out passingStandard);
 
-                                    if (reScoreValue2 >= 0)
-                                        ReAScore = reScoreValue2.ToString();
-                                    else
-                                        ReAScore = "-1";
+                                if (passingStandard == 0)
+                                    passingStandard = 60; // 預設修課及格標準為 60
+
+                                if (reScoreValue2 >= 0)
+                                {
+                                    // 新增這段：如果重修成績超過及格標準，就以及格標準記錄
+                                    if (reScoreValue2 > passingStandard)
+                                        reScoreValue2 = passingStandard;
+
+                                    ReAScore = reScoreValue2.ToString();
                                 }
                                 else
-                                {
-                                    ReAScore = "-1"; // 如果無法轉數字，預設為 -1
-                                }
+                                    ReAScore = "-1";
+
                             }
 
 
@@ -859,9 +861,6 @@ namespace SmartSchool.Evaluation.ImportExport
                                 HisClassName = HisClassName,
                                 HisSeatNo = HisSeatNo,
                                 HisStudentNumber = HisStudentNumber,
-                                ClassName = studentRec.RefClass.ClassName,
-                                SeatNo = studentRec.SeatNo,
-                                StudentNumber = studentRec.StudentNumber,
                                 isScScore = true,
                                 checkPass = true,
                                 CodePass = codePass,
@@ -879,7 +878,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                     restudyScoreDict[ssy].Add(sse, new List<SubjectScoreRec108>());
                                 restudyScoreDict[ssy][sse].Add(rec);
                             }
-                                
+
                         }
 
                     }
@@ -994,7 +993,6 @@ namespace SmartSchool.Evaluation.ImportExport
                                                     break;
                                                 case "原始成績":
                                                 case "補考成績":
-                                                case "重修成績":
                                                 case "學年調整成績":
                                                     if (score.Detail.GetAttribute(field) != value)
                                                     {
@@ -1003,10 +1001,46 @@ namespace SmartSchool.Evaluation.ImportExport
                                                         hasChanged = true;
                                                     }
                                                     break;
+                                                case "重修成績":
+                                                    string oldRetakeScoreStr = score.Detail.GetAttribute("重修成績");
+                                                    string newRetakeScoreStr = value;
+
+                                                    decimal oldRetakeScore, newRetakeScore;
+                                                    bool hasOldScore = decimal.TryParse(oldRetakeScoreStr, out oldRetakeScore);
+                                                    bool hasNewScore = decimal.TryParse(newRetakeScoreStr, out newRetakeScore);
+
+                                                    // 取得修課及格標準
+                                                    decimal passingStandard = 60;
+                                                    string passStr = score.Detail.GetAttribute("修課及格標準");
+                                                    if (!decimal.TryParse(passStr, out passingStandard) || passingStandard <= 0)
+                                                        passingStandard = 60;
+
+                                                    // 擇優邏輯
+                                                    decimal? finalScore = null;
+                                                    if (hasOldScore && hasNewScore)
+                                                        finalScore = Math.Max(oldRetakeScore, newRetakeScore);
+                                                    else if (hasOldScore)
+                                                        finalScore = oldRetakeScore;
+                                                    else if (hasNewScore)
+                                                        finalScore = newRetakeScore;
+
+                                                    // 上限判斷
+                                                    if (finalScore.HasValue && finalScore.Value > passingStandard)
+                                                        finalScore = passingStandard;
+
+                                                    // 寫回
+                                                    string finalScoreStr = finalScore.HasValue ? finalScore.Value.ToString() : "";
+                                                    if (score.Detail.GetAttribute("重修成績") != finalScoreStr)
+                                                    {
+                                                        logLine += "、重修成績由「" + score.Detail.GetAttribute("重修成績") + "」變更為「" + finalScoreStr + "」";
+                                                        score.Detail.SetAttribute("重修成績", finalScoreStr);
+                                                        hasChanged = true;
+                                                    }
+                                                    break;
                                                 case "不計學分":
                                                 case "不需評分":
                                                 case "免修":
-                                                case "抵免":                                                
+                                                case "抵免":
                                                 case "是否重讀":
                                                     value = (value == "" ? "否" : value);
                                                     if (score.Detail.GetAttribute(field) != value)
@@ -1046,10 +1080,10 @@ namespace SmartSchool.Evaluation.ImportExport
                                                             {
                                                                 score.Detail.SetAttribute("補修學期", makeUpSemester);
                                                                 hasChanged = true;
-                                                            }                                                     
+                                                            }
                                                         }
                                                     }
-                                                        break;
+                                                    break;
                                                 case "成績年級":
                                                     int gy = int.Parse(data["成績年級"]);
                                                     if (score.GradeYear != gy)
@@ -1334,9 +1368,9 @@ namespace SmartSchool.Evaluation.ImportExport
                 // 依不同學年度學期寫入補修成績工作表
                 if (makeUpScoreDict.Count > 0)
                 {
-                    foreach(int sy in makeUpScoreDict.Keys)
+                    foreach (int sy in makeUpScoreDict.Keys)
                     {
-                        foreach(int ss in makeUpScoreDict[sy].Keys)
+                        foreach (int ss in makeUpScoreDict[sy].Keys)
                         {
                             if (makeUpScoreDict[sy][ss].Count > 0)
                             {
@@ -1406,6 +1440,16 @@ namespace SmartSchool.Evaluation.ImportExport
             wizard.ImportComplete += delegate
             {
                 EventHub.Instance.InvokScoreChanged(new List<string>(_StudentCollection.Keys).ToArray());
+
+                try
+                {
+                    // 呼叫學期歷程同步
+                    FISCA.Features.Invoke("StudentLearningHistoryDetailContent");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("StudentLearningHistoryDetailContent 無法呼叫：" + ex.Message);
+                }
             };
         }
 

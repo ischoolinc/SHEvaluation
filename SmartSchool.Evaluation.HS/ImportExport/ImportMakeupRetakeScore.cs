@@ -1374,6 +1374,9 @@ namespace SmartSchool.Evaluation.ImportExport
                         {
                             if (makeUpScoreDict[sy][ss].Count > 0)
                             {
+                                // 新增補修 log
+                                string logMsg = $"補修成績：學年度={sy}，學期={ss}，更新筆數={makeUpScoreDict[sy][ss].Count}";
+                                FISCA.LogAgent.ApplicationLog.Log("匯入重補修成績", "補修成績寫入", logMsg);
                                 new LearningHistoryDataAccess().SaveScores43(makeUpScoreDict[sy][ss], sy, ss);
                             }
                         }
@@ -1389,17 +1392,20 @@ namespace SmartSchool.Evaluation.ImportExport
                         {
                             if (restudyScoreDict[sy][ss].Count > 0)
                             {
+                                // 新增重修 log
+                                string logMsg = $"重修成績：學年度={sy}，學期={ss}，更新筆數={restudyScoreDict[sy][ss].Count}";
+                                FISCA.LogAgent.ApplicationLog.Log("匯入重補修成績", "重修成績寫入", logMsg);
                                 new LearningHistoryDataAccess().SaveScores52(restudyScoreDict[sy][ss], sy, ss);
                             }
                         }
                     }
                 }
 
-                if (scoreDetailLogStringBuilder.Length > 0 || updateList.Count > 0 || insertList.Count > 0)
-                    FISCA.LogAgent.ApplicationLog.Log("匯入學期科目成績", "匯入", scoreDetailLogStringBuilder.ToString() + updateLogStringBuilder.ToString() + insertLogStringBuilder.ToString());
+                //if (scoreDetailLogStringBuilder.Length > 0 || updateList.Count > 0 || insertList.Count > 0)
+                //    FISCA.LogAgent.ApplicationLog.Log("匯入重補修成績", "匯入", scoreDetailLogStringBuilder.ToString() + updateLogStringBuilder.ToString() + insertLogStringBuilder.ToString());
                 if (updateList.Count > 0)
                 {
-                    //FISCA.LogAgent.ApplicationLog.Log("匯入學期科目成績", "匯入", updateLogStringBuilder.ToString());
+                    FISCA.LogAgent.ApplicationLog.Log("匯入重補修成績", "匯入", scoreDetailLogStringBuilder.ToString() + updateLogStringBuilder.ToString());
 
                     #region 分批次兩路上傳
                     List<List<SmartSchool.Feature.Score.EditScore.UpdateInfo>> updatePackages = new List<List<SmartSchool.Feature.Score.EditScore.UpdateInfo>>();

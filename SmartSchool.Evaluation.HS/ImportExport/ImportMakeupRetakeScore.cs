@@ -1375,7 +1375,7 @@ namespace SmartSchool.Evaluation.ImportExport
                             if (makeUpScoreDict[sy][ss].Count > 0)
                             {
                                 // 新增補修 log
-                                string logMsg = $"補修成績：學年度={sy}，學期={ss}，更新筆數={makeUpScoreDict[sy][ss].Count}";
+                                string logMsg = $"成績名冊：補修成績(4.3)工作頁：學年度={sy}，學期={ss}，更新筆數={makeUpScoreDict[sy][ss].Count}";
                                 FISCA.LogAgent.ApplicationLog.Log("匯入重補修成績", "補修成績寫入", logMsg);
                                 new LearningHistoryDataAccess().SaveScores43(makeUpScoreDict[sy][ss], sy, ss);
                             }
@@ -1393,7 +1393,7 @@ namespace SmartSchool.Evaluation.ImportExport
                             if (restudyScoreDict[sy][ss].Count > 0)
                             {
                                 // 新增重修 log
-                                string logMsg = $"重修成績：學年度={sy}，學期={ss}，更新筆數={restudyScoreDict[sy][ss].Count}";
+                                string logMsg = $"重修重讀名冊：重修成績(5.2)工作頁：學年度={sy}，學期={ss}，更新筆數={restudyScoreDict[sy][ss].Count}";
                                 FISCA.LogAgent.ApplicationLog.Log("匯入重補修成績", "重修成績寫入", logMsg);
                                 new LearningHistoryDataAccess().SaveScores52(restudyScoreDict[sy][ss], sy, ss);
                             }

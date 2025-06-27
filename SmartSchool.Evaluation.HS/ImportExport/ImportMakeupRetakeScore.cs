@@ -1158,7 +1158,16 @@ namespace SmartSchool.Evaluation.ImportExport
                                             }
                                             #endregion
                                             #endregion
-                                            score.Detail.SetAttribute("是否取得學分", ((score.Detail.GetAttribute("不需評分") == "是") || maxScore >= _StudentPassScore[studentRec][gy]) ? "是" : "否");
+                                            string oldPassValue = score.Detail.GetAttribute("是否取得學分");
+                                            string newPassValue = ((score.Detail.GetAttribute("不需評分") == "是") || maxScore >= _StudentPassScore[studentRec][gy]) ? "是" : "否";
+                                            score.Detail.SetAttribute("是否取得學分", newPassValue);
+                                            
+                                            // 檢查是否有變更並記錄到 logLine
+                                            if (oldPassValue != newPassValue)
+                                            {
+                                                logLine += "、取得學分由「" + oldPassValue + "」變更為「" + newPassValue + "」";
+                                                hasChanged = true;
+                                            }
                                         }
                                         if (hasChanged)
                                             scoreDetailLogStringBuilder.AppendLine(logLine);
@@ -1345,7 +1354,15 @@ namespace SmartSchool.Evaluation.ImportExport
                                         }
                                         #endregion
                                         #endregion
-                                        newScore.SetAttribute("是否取得學分", ((newScore.GetAttribute("不需評分") == "是") || maxScore >= _StudentPassScore[studentRec][gy]) ? "是" : "否");
+                                        string oldPassValue = newScore.GetAttribute("是否取得學分");
+                                        string newPassValue = ((newScore.GetAttribute("不需評分") == "是") || maxScore >= _StudentPassScore[studentRec][gy]) ? "是" : "否";
+                                        newScore.SetAttribute("是否取得學分", newPassValue);
+                                        
+                                        // 檢查是否有變更並記錄到 logLine
+                                        if (oldPassValue != newPassValue)
+                                        {
+                                            logLine += "、取得學分由「" + oldPassValue + "」變更為「" + newPassValue + "」";
+                                        }
                                     }
                                     #endregion
                                     subjectScoreInfo.AppendChild(newScore);

@@ -127,7 +127,6 @@
             this.wizardPage1.Location = new System.Drawing.Point(7, 42);
             this.wizardPage1.Name = "wizardPage1";
             this.wizardPage1.PageDescription = "< Wizard step description >";
-            this.wizardPage1.PageTitle = "";
             this.wizardPage1.Size = new System.Drawing.Size(289, 90);
             // 
             // 
@@ -229,9 +228,8 @@
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.labelX1.Location = new System.Drawing.Point(6, -1);
             this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(101, 21);
+            this.labelX1.Size = new System.Drawing.Size(0, 0);
             this.labelX1.TabIndex = 5;
-            this.labelX1.Text = "";
             // 
             // wizardPage2
             // 

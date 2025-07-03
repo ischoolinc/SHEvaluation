@@ -25,7 +25,6 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
 
         public void ProcessLearningHistory(SmartSchool.Customization.Data.AccessHelper accHelper, List<SmartSchool.Customization.Data.StudentRecord> StudentRecList, int schoolYear, int semester, BackgroundWorker bgWorker)
         {
-            bgWorker.ReportProgress(1);
             _SchoolYear = schoolYear;
             _Semester = semester;
 
@@ -316,8 +315,6 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                     }
                 }
             }
-
-            bgWorker.ReportProgress(30);
 
             // 取得修課設定再次修習
             string query2 = string.Format(@"SELECT sc_attend.id
@@ -1715,7 +1712,7 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                 //                    passScore = dsreP;
                 //                }
 
-                //                //ssr.ReScore = string.Format("{0:##0}", dsre);
+                //                // ssr.ReScore = string.Format("{0:##0}", dsre);
                 //                ssr.ReScore = dsre.ToString();
 
                 //                if (dsre < passScore)
@@ -1774,8 +1771,6 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
             //ValidateScores(SubjectScoreRec108List1);
             //ValidateScores(SubjectScoreRec108List2);
 
-
-            bgWorker.ReportProgress(50);
 
             // 學生學年補考成績
             Dictionary<string, Dictionary<string, decimal>> StudentYearReScoreDict = new Dictionary<string, Dictionary<string, decimal>>();
@@ -2260,6 +2255,7 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                             }
                                         }
                                     }
+
                                     // 2023/10/6，學校反應當需要計分又不需評分狀態時，是否採計學分需要填入3
                                     if (Utility.GetAttribute(elmScore, "不需評分") == "是")
                                         ssr.useCredit = "3";
@@ -2298,6 +2294,7 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                     // 2023/10/6，學校反應當需要計分又不需評分狀態時，是否採計學分需要填入3
                                     if (Utility.GetAttribute(elmScore, "不需評分") == "是")
                                         ssr.useCredit = "3";
+
                                 }
                                 else
                                 {
@@ -2542,8 +2539,6 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
 
             }
 
-            bgWorker.ReportProgress(70);
-
             // 判斷資料身分證與課程代碼都有填寫
             foreach (SubjectScoreRec108 ssr in SubjectScoreRec108ListN)
             {
@@ -2569,7 +2564,6 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
 
             // 寫入學期成績
             _learningHistoryDataAccess.SaveScores42(SubjectScoreRec108List, _SchoolYear, _Semester);
-            bgWorker.ReportProgress(75);
 
             // 補修成績由計算學期科目成績時寫入，在這先註解。
             //// 寫入補修成績
@@ -2578,7 +2572,6 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
 
             // 寫入轉學/轉科成績
             _learningHistoryDataAccess.SaveScores44(SubjectScoreRec108OtherList, _SchoolYear, _Semester);
-            bgWorker.ReportProgress(85);
 
             // 重修成績由計算學期科目成績時寫入，在這先註解。
             // 寫入重修成績
@@ -2592,7 +2585,6 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
             _learningHistoryDataAccess.SaveScores62(SubjectScoreRec108ListN, _SchoolYear, _Semester);
             _learningHistoryDataAccess.SaveScores63(SubjectReScoreRec108ListN, _SchoolYear, _Semester);
             _learningHistoryDataAccess.SaveScores64(SubjectScoreRec108OtherListN, _SchoolYear, _Semester);
-            bgWorker.ReportProgress(100);
         }
 
         private void ValidateScores(List<SubjectScoreRec108> scores)

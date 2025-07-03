@@ -89,6 +89,13 @@ namespace SmartSchool.Evaluation.Process.Wizards
         // 產生歷程成績
         private void wizardPage2_AfterPageDisplayed(object sender, WizardPageChangeEventArgs e)
         {
+            Console.WriteLine("wizardPage2_AfterPageDisplayed called");
+            // 防呆：避免重複啟動 BackgroundWorker
+            if (runningBackgroundWorker != null && runningBackgroundWorker.IsBusy)
+            {
+                Console.WriteLine("BackgroundWorker is already running, skip.");
+                return;
+            }
             AccessHelper helper = new AccessHelper();
             List<StudentRecord> selectedStudents;
             int schooyYear;
@@ -123,11 +130,15 @@ namespace SmartSchool.Evaluation.Process.Wizards
             runningBackgroundWorker.DoWork += RunningBackgroundWorker_DoWork;
             runningBackgroundWorker.RunWorkerCompleted += RunningBackgroundWorker_RunWorkerCompleted;
 
+            // 設定 progressBarX1 為 0（移除 Style 設定，ProgressBarX 不支援 WinForms ProgressBarStyle）
+            this.progressBarX1.Value = 0;
+
             runningBackgroundWorker.RunWorkerAsync(new object[] { schooyYear, semester, helper, selectedStudents });
         }
 
         private void RunningBackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            Console.WriteLine("RunWorkerCompleted called");
             if (!((BackgroundWorker)sender).CancellationPending)
             {
                 if (e.Result == null)
@@ -182,11 +193,14 @@ namespace SmartSchool.Evaluation.Process.Wizards
 
                 }
 
+                // 處理完畢後，progressBarX1 設為 100
+                this.progressBarX1.Value = 100;
             }
         }
 
         private void RunningBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+            Console.WriteLine("DoWork called");
             warningList.Clear();// 將警告名單清空
             BackgroundWorker bkw = ((BackgroundWorker)sender);
             int schoolyear = (int)((object[])e.Argument)[0];
@@ -194,12 +208,36 @@ namespace SmartSchool.Evaluation.Process.Wizards
             AccessHelper helper = (AccessHelper)((object[])e.Argument)[2];
             List<StudentRecord> selectedStudents = (List<StudentRecord>)((object[])e.Argument)[3];
 
-            _processor.ProcessLearningHistory(helper, selectedStudents, schoolyear, semester, bkw);
+            // 分批處理，每批最多 150 人
+            const int MaxPackageSize = 150;
+            List<List<StudentRecord>> packages = new List<List<StudentRecord>>();
+            for (int i = 0; i < selectedStudents.Count; i += MaxPackageSize)
+            {
+                int count = Math.Min(MaxPackageSize, selectedStudents.Count - i);
+                packages.Add(selectedStudents.GetRange(i, count));
+            }
+
+            double maxStudents = selectedStudents.Count;
+            if (maxStudents == 0) maxStudents = 1;
+            double computedStudents = 0;
+
+            for (int idx = 0; idx < packages.Count; idx++)
+            {
+                var batch = packages[idx];
+                _processor.ProcessLearningHistory(helper, batch, schoolyear, semester, bkw);
+                computedStudents += batch.Count;
+                // 平滑遞增進度條，與 CalcSemesterSubjectScoreWizard.cs 一致
+                int percent = (int)((computedStudents * 100.0) / maxStudents);
+                if (percent > 100) percent = 100;
+                bkw.ReportProgress(percent, null);
+                if (bkw.CancellationPending) break;
+            }
             e.Result = selectedStudents;
         }
 
         private void RunningBackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+            Console.WriteLine("ProgressChanged called: " + e.ProgressPercentage);
             if (!((BackgroundWorker)sender).CancellationPending)
             {
                 if (e.UserState != null)
@@ -213,7 +251,9 @@ namespace SmartSchool.Evaluation.Process.Wizards
                         }
                     }
                 }
-                this.progressBarX1.Value = e.ProgressPercentage;
+                // 只根據 ProgressPercentage 更新 Value，不重設
+                if (e.ProgressPercentage >= 0 && e.ProgressPercentage <= 100)
+                    this.progressBarX1.Value = e.ProgressPercentage;
             }
         }
 

@@ -70,8 +70,8 @@ namespace SmartSchool.Evaluation.Process.Wizards
                     labelX3.Top += 10;
                     numericUpDown1.Top += 10;
                     numericUpDown2.Top += 10;
-                    this.numericUpDown1.Enabled = false;
-                    this.numericUpDown2.Enabled = false;
+                    this.numericUpDown1.Enabled = true;
+                    this.numericUpDown2.Enabled = true;
                     break;
                 case SelectType.GradeYearStudent:
                     this.Text = "產生" + SmartSchool.Customization.Data.SystemInformation.SchoolYear + "學年度第" + SmartSchool.Customization.Data.SystemInformation.Semester + "學期歷程成績";

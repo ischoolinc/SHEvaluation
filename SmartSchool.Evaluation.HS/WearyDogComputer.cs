@@ -1031,7 +1031,7 @@ namespace SmartSchool.Evaluation
                                                 updateScoreElement.SetAttribute("修課直接指定總成績", ("" + GetRoundScore(designate_final_score_score, decimals, mode)));
 
                                                 // 註解是因經過2024/4/26討論，修課直接指定總成績不應該覆蓋原始成績，需要保留原始成績。                                              
-                                                updateScoreElement.SetAttribute("原始成績", ("" + GetRoundScore(designate_final_score_score, decimals, mode)));
+                                                //updateScoreElement.SetAttribute("原始成績", ("" + GetRoundScore(designate_final_score_score, decimals, mode)));
 
 
                                                 //updateScoreElement.SetAttribute("原始成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(designate_final_score_score, decimals, mode)));
@@ -1054,7 +1054,7 @@ namespace SmartSchool.Evaluation
                                     //最高分
                                     decimal maxScore = 0;// sacRecord.FinalScore;
                                     #region 抓最高分
-                                    string[] scoreNames = new string[] { "原始成績", "學年調整成績", "擇優採計成績", "補考成績", "重修成績" };
+                                    string[] scoreNames = new string[] { "原始成績", "學年調整成績", "擇優採計成績", "補考成績", "重修成績", "修課直接指定總成績" };
                                     foreach (string scorename in scoreNames)
                                     {
                                         decimal s;

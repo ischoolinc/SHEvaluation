@@ -20,7 +20,7 @@ namespace SmartSchool.Evaluation.Reports
 
         public RetakeListByStudent()
         {
-            RetakeSelectSemesterForm form = new RetakeSelectSemesterForm("重修名單-依學生");
+            RetakeSelectSemesterForm form = new RetakeSelectSemesterForm("建議重補修名單-依學生");
             if (form.ShowDialog() != DialogResult.OK)
                 return;
 
@@ -309,13 +309,18 @@ namespace SmartSchool.Evaluation.Reports
                         report.Worksheets[0].Cells[index, 2].PutValue(studentKey.StudentNumber);//學號
                         report.Worksheets[0].Cells[index, 3].PutValue(studentKey.Name);//姓名
                         report.Worksheets[0].Cells[index, 4].PutValue(subjectElement.GetAttribute("修課必選修"));//修課必選修
-                        report.Worksheets[0].Cells[index, 5].PutValue(subjectElement.GetAttribute("修課校部訂"));//修課校部訂
+
+                        string reqBy = subjectElement.GetAttribute("修課校部訂");
+                        if (reqBy == "部訂")
+                            reqBy = "部定";
+                        
+                        report.Worksheets[0].Cells[index, 5].PutValue(reqBy);//修課校部訂
                         report.Worksheets[0].Cells[index, 6].PutValue(subjectElement.GetAttribute("學年度"));//學年度
                         report.Worksheets[0].Cells[index, 7].PutValue(subjectElement.GetAttribute("學期"));//學期
                         report.Worksheets[0].Cells[index, 8].PutValue(doc.DocumentElement.GetAttribute("領域"));//重修科目所屬領域
                         report.Worksheets[0].Cells[index, 9].PutValue(doc.DocumentElement.GetAttribute("科目") + (level == 0 ? "" : " " + GetNumber(level)));//科目
                         report.Worksheets[0].Cells[index, 10].PutValue(doc.DocumentElement.GetAttribute("學分數"));//學分數
-
+                        
 
                         #region 取得最高分數
                         decimal maxScore = 0;
@@ -332,7 +337,18 @@ namespace SmartSchool.Evaluation.Reports
                             maxScore = tryParseDecimal;
                         #endregion
 
-                        report.Worksheets[0].Cells[index, 11].PutValue("" + maxScore);//學期成績
+                        report.Worksheets[0].Cells[index, 12].PutValue("" + maxScore);//學期成績
+
+
+                        report.Worksheets[0].Cells[index, 11].PutValue("重修");
+                        // 補修判斷：原始成績空白，是否補修成績 = 是
+                        if (subjectElement.GetAttribute("原始成績") == "" && subjectElement.GetAttribute("是否補修成績") == "是")
+                        {
+                            report.Worksheets[0].Cells[index, 11].PutValue("補修");//補修
+
+                            report.Worksheets[0].Cells[index, 12].PutValue("");//學期成績
+                        }
+
 
                         //int gradeyear;
                         //if (ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(studentKey.ID) != null && int.TryParse(subjectElement.GetAttribute("年級"), out gradeyear))
@@ -342,11 +358,11 @@ namespace SmartSchool.Evaluation.Reports
 
                         if (subjectElement.GetAttribute("修課及格標準") != "")
                         {
-                            report.Worksheets[0].Cells[index, 12].PutValue(subjectElement.GetAttribute("修課及格標準"));
+                            report.Worksheets[0].Cells[index, 13].PutValue(subjectElement.GetAttribute("修課及格標準"));
                         }
                         else
                         {
-                            report.Worksheets[0].Cells[index, 12].PutValue("--");//及格基分
+                            report.Worksheets[0].Cells[index, 13].PutValue("--");//及格基分
                         }
 
                         index++;

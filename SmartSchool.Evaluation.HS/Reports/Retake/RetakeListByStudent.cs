@@ -174,7 +174,7 @@ namespace SmartSchool.Evaluation.Reports
 
         private void bkwNotPassComputerByStudent_DoWork(object sender, DoWorkEventArgs e)
         {
-            string reportName = "學生重修科目名單";
+            string reportName = "學生重補修科目名單";
 
             //科目不及格學生清單(keyFormat:;<subject 科目='' 科目級別='' 學分數='' />)
             Dictionary<BriefStudentData, Dictionary<string, XmlElement>> notPassList = new Dictionary<BriefStudentData, Dictionary<string, XmlElement>>();
@@ -268,7 +268,7 @@ namespace SmartSchool.Evaluation.Reports
             Workbook template = new Workbook();
             #region 建立樣板
             template.Open(new MemoryStream(Properties.Resources.學生重修科目清單), FileFormatType.Excel2003);
-            template.Worksheets[0].Cells[0, 0].PutValue(SmartSchool.CurrentUser.Instance.SchoolChineseName + "  學生重修科目名單");
+            template.Worksheets[0].Cells[0, 0].PutValue(SmartSchool.CurrentUser.Instance.SchoolChineseName + "  學生重補修科目名單");
             #endregion
 
             Workbook report = new Workbook();

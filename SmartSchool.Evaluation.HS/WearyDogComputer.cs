@@ -416,7 +416,7 @@ namespace SmartSchool.Evaluation
             Dictionary<string, string> UpdateCodeMappingDict = Utility.GetUpdateCodeMappingDict();
 
             // 取得有符合對照學生
-            Dictionary<string, string> StudentHasUpdateCodeDict = Utility.GetStudentHasUpdateCodeDict(schoolyear,semester, sidList, UpdateCodeMappingDict.Keys.ToList());
+            Dictionary<string, string> StudentHasUpdateCodeDict = Utility.GetStudentHasUpdateCodeDict(schoolyear, semester, sidList, UpdateCodeMappingDict.Keys.ToList());
 
 
             foreach (StudentRecord var in students)
@@ -711,7 +711,7 @@ namespace SmartSchool.Evaluation
 
                         string studentSubjectKey = var.StudentID + "_" + key;
 
-                      
+
 
                         //最高分
                         decimal maxScore = 0;//                   
@@ -1143,13 +1143,24 @@ namespace SmartSchool.Evaluation
 
                                     // 是否採計學分，預設"1"
                                     string useCredit = "1";
-                                    if (sacRecord.NotIncludedInCredit)
+                                    if (updateScoreElement.GetAttribute("抵免") == "是")
                                         useCredit = "2";
-                                    else if (sacRecord.NotIncludedInCalc)
-                                        useCredit = "3";
 
                                     // 檢查課程代碼 CodePass
                                     bool codePass = Utility.IsValidCourseCode(courseCode);
+
+                                    bool setTo3 = false;
+                                    if (!string.IsNullOrWhiteSpace(courseCode) && courseCode.Length > 22)
+                                    {
+                                        string sub1 = courseCode.Substring(16, 1);
+                                        string sub2 = courseCode.Substring(18, 1);
+                                        if (sub1 == "9" && sub2 == "D")
+                                            setTo3 = true;
+                                    }
+
+                                    if (setTo3)
+                                        useCredit = "3";
+
 
                                     string StudType = "3";
                                     // 對應學生身分別
@@ -1284,8 +1295,9 @@ namespace SmartSchool.Evaluation
                                             ReScore = reScore,
                                             ReScoreP = reScoreP
                                         };
-                                        // 加入 5.3 重讀成績名冊
-                                        repeatScoreList.Add(repeatRec);
+                                        // 加入 5.3 重讀成績名冊，不計學分 = 是，不列入名冊
+                                        if (updateScoreElement.GetAttribute("不計學分") == "否")
+                                            repeatScoreList.Add(repeatRec);
                                     }
                                 }
                                 #endregion
@@ -1541,10 +1553,21 @@ namespace SmartSchool.Evaluation
 
                                     // 是否採計學分，預設"1"
                                     string useCredit = "1";
-                                    if (sacRecord.NotIncludedInCredit)
+                                    if (newScoreInfo.GetAttribute("抵免") == "是")
                                         useCredit = "2";
-                                    else if (sacRecord.NotIncludedInCalc)
+
+                                    bool setTo3 = false;
+                                    if (!string.IsNullOrWhiteSpace(courseCode) && courseCode.Length > 22)
+                                    {
+                                        string sub1 = courseCode.Substring(16, 1);
+                                        string sub2 = courseCode.Substring(18, 1);
+                                        if (sub1 == "9" && sub2 == "D")
+                                            setTo3 = true;
+                                    }
+
+                                    if (setTo3)
                                         useCredit = "3";
+
 
                                     // 檢查課程代碼 CodePass
                                     bool codePass = Utility.IsValidCourseCode(courseCode);
@@ -1684,8 +1707,9 @@ namespace SmartSchool.Evaluation
                                             ReScoreP = reScoreP
                                         };
 
-                                        // 加入 5.3 重讀成績名冊
-                                        repeatScoreList.Add(repeatRec);
+                                        // 加入 5.3 重讀成績名冊，不計學分=是，不列入
+                                        if (newScoreInfo.GetAttribute("不計學分") == "否")
+                                            repeatScoreList.Add(repeatRec);
                                     }
 
                                 }
@@ -1892,8 +1916,8 @@ namespace SmartSchool.Evaluation
                                     // 是否採計學分 預設
                                     string useCredit = "1";
 
-                                    // 不計學分為"是"
-                                    if (notCountCredit == "是")
+                                    // 使用抵免來判斷
+                                    if (previousSubjectScoreInfo.Detail.GetAttribute("抵免") == "是")
                                     {
                                         useCredit = "2";
                                     }
@@ -1902,8 +1926,8 @@ namespace SmartSchool.Evaluation
                                         // 預設為"1"，但如果不需評分為"是"或課程代碼特殊則為"3"
                                         bool setTo3 = false;
 
-                                        if (notNeedScore == "是")
-                                            setTo3 = true;
+                                        //if (notNeedScore == "是")
+                                        //    setTo3 = true;
 
                                         if (!string.IsNullOrWhiteSpace(courseCode) && courseCode.Length > 22)
                                         {
@@ -1964,6 +1988,7 @@ namespace SmartSchool.Evaluation
                                         ReAScore = ReAScore,
                                         ReAScoreP = ReAScoreP
                                     };
+
                                     restudyScoreList.Add(rec);
 
                                 }
@@ -2119,8 +2144,8 @@ namespace SmartSchool.Evaluation
                                     // 是否採計學分 預設
                                     string useCredit = "1";
 
-                                    // 不計學分為"是"
-                                    if (notCountCredit == "是")
+                                    // 抵免
+                                    if (makeUpScoreInfo.Detail.GetAttribute("抵免") == "是")
                                     {
                                         useCredit = "2";
                                     }
@@ -2129,8 +2154,8 @@ namespace SmartSchool.Evaluation
                                         // 預設為"1"，但如果不需評分為"是"或課程代碼特殊則為"3"
                                         bool setTo3 = false;
 
-                                        if (notNeedScore == "是")
-                                            setTo3 = true;
+                                        //if (notNeedScore == "是")
+                                        //    setTo3 = true;
 
                                         if (!string.IsNullOrWhiteSpace(courseCode) && courseCode.Length > 22)
                                         {
@@ -2190,7 +2215,9 @@ namespace SmartSchool.Evaluation
                                         checkPass = true,
                                         CodePass = codePass
                                     };
-                                    makeUpScoreList.Add(rec);
+                                    // 不計學分 = 是，不列入
+                                    if (makeUpScoreInfo.Detail.GetAttribute("不計學分") == "否")
+                                        makeUpScoreList.Add(rec);
                                 }
 
                             }
@@ -2698,7 +2725,7 @@ namespace SmartSchool.Evaluation
                 learningHistoryDataAccess.SaveScores53(repeatScoreList, schoolyear, semester);
             }
 
-           
+
             return _ErrorList;
         }
 

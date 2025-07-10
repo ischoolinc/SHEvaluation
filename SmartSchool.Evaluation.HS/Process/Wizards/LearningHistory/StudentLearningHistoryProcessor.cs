@@ -407,7 +407,7 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                     #region 一般與補修
 
                     if (StudentSubjectScoreDict[studRec.StudentID].ContainsKey(smsKey))
-                    {                     
+                    {
 
 
                         XElement elmRoot = StudentSubjectScoreDict[studRec.StudentID][smsKey].ScoreXML;
@@ -454,6 +454,9 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                 continue;
                             }
 
+                            // 不計學分=是，不列入學習成績
+                            if (Utility.GetAttribute(elmScore, "不計學分") == "是")
+                                continue;
 
 
                             foreach (SHSemesterHistoryRecord rec in SemsH)
@@ -517,81 +520,32 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                     passScore = dsp;
 
                                 // ssr.Score = string.Format("{0:##0}", ds);
-                                ssr.Score = ds.ToString();
-
-                                //2021年4月
-
-                                //if (Utility.GetAttribute(elmScore, "不計學分") == "否" && Utility.GetAttribute(elmScore, "不需評分") == "否")
-                                // 2023/10/3，因為判斷規則調整，不需評分不需要判斷。
-                                if (Utility.GetAttribute(elmScore, "不計學分") == "否")
-                                {
-                                    ssr.useCredit = "1";
-
-                                    if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
-                                    {
-                                        if (ssr.CourseCode.Length > 22)
-                                        {
-                                            string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
-                                            string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
-                                            if (sub1 == "9" && sub2 == "D")
-                                            {
-                                                ssr.useCredit = "3";
-                                            }
-                                        }
-                                    }
-                                    // 2023/10/6，學校反應當需要計分又不需評分狀態時，是否採計學分需要填入3
-                                    if (Utility.GetAttribute(elmScore, "不需評分") == "是")
-                                        ssr.useCredit = "3";
-                                }
-                                else
-                                {
-                                    if (Utility.GetAttribute(elmScore, "不計學分") == "是")
-                                        ssr.useCredit = "2";
-                                }
-
+                                ssr.Score = ds.ToString();                                
+                                
                                 if (ds < passScore)
                                     ssr.ScoreP = "0";
                                 else
                                     ssr.ScoreP = "1";
                             }
-                            else
+                            
+                            ssr.useCredit = "1";
+
+                            if (Utility.GetAttribute(elmScore, "抵免") == "是")
+                                ssr.useCredit = "2";
+
+                            if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
                             {
-
-                                // if (Utility.GetAttribute(elmScore, "不計學分") == "否" && Utility.GetAttribute(elmScore, "不需評分") == "否")
-                                // 2023/10/3，因為判斷規則調整，不需評分不需要判斷。
-                                if (Utility.GetAttribute(elmScore, "不計學分") == "否")
+                                if (ssr.CourseCode.Length > 22)
                                 {
-                                    ssr.useCredit = "1";
-
-                                    if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
+                                    string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
+                                    string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
+                                    if (sub1 == "9" && sub2 == "D")
                                     {
-                                        if (ssr.CourseCode.Length > 22)
-                                        {
-                                            string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
-                                            string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
-                                            if (sub1 == "9" && sub2 == "D")
-                                            {
-                                                ssr.useCredit = "3";
-                                            }
-                                        }
-                                    }
-
-                                    // 2023/10/6，學校反應當需要計分又不需評分狀態時，是否採計學分需要填入3
-                                    if (Utility.GetAttribute(elmScore, "不需評分") == "是")
                                         ssr.useCredit = "3";
+                                    }
                                 }
-                                else
-                                {
-                                    if (Utility.GetAttribute(elmScore, "不計學分") == "是")
-                                        ssr.useCredit = "2";
-                                }
-
-                                //// 判斷是否 不需評分
-                                //if (Utility.GetAttribute(elmScore, "不需評分") == "是")
-                                //{
-                                //    ssr.useCredit = "3";
-                                //}
                             }
+
 
                             if (decimal.TryParse(Utility.GetAttribute(elmScore, "補考成績"), out dsre))
                             {
@@ -734,77 +688,30 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                 //ssr.Score = string.Format("{0:##0}", ds);
                                 ssr.Score = ds.ToString();
 
-                                //if (Utility.GetAttribute(elmScore, "不計學分") == "否" && Utility.GetAttribute(elmScore, "不需評分") == "否")
-                                // 2023/10/3，因為判斷規則調整，不需評分不需要判斷。
-                                if (Utility.GetAttribute(elmScore, "不計學分") == "否")
-                                {
-                                    ssr.useCredit = "1";
-
-                                    if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
-                                    {
-                                        if (ssr.CourseCode.Length > 22)
-                                        {
-                                            string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
-                                            string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
-                                            if (sub1 == "9" && sub2 == "D")
-                                            {
-                                                ssr.useCredit = "3";
-                                            }
-                                        }
-                                    }
-
-                                    // 2023/10/6，學校反應當需要計分又不需評分狀態時，是否採計學分需要填入3
-                                    if (Utility.GetAttribute(elmScore, "不需評分") == "是")
-                                        ssr.useCredit = "3";
-                                }
-                                else
-                                {
-                                    if (Utility.GetAttribute(elmScore, "不計學分") == "是")
-                                        ssr.useCredit = "2";
-                                }
-
                                 if (ds < passScore)
                                     ssr.ScoreP = "0";
                                 else
                                     ssr.ScoreP = "1";
                             }
-                            else
+
+                            ssr.useCredit = "1";
+                            if (Utility.GetAttribute(elmScore, "抵免") == "否")
+                                ssr.useCredit = "2";
+
+                            if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
                             {
-                                // if (Utility.GetAttribute(elmScore, "不計學分") == "否" && Utility.GetAttribute(elmScore, "不需評分") == "否")
-                                // 2023/10/3，因為判斷規則調整，不需評分不需要判斷。
-                                if (Utility.GetAttribute(elmScore, "不計學分") == "否")
+                                if (ssr.CourseCode.Length > 22)
                                 {
-                                    ssr.useCredit = "1";
-
-                                    if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
+                                    string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
+                                    string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
+                                    if (sub1 == "9" && sub2 == "D")
                                     {
-                                        if (ssr.CourseCode.Length > 22)
-                                        {
-                                            string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
-                                            string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
-                                            if (sub1 == "9" && sub2 == "D")
-                                            {
-                                                ssr.useCredit = "3";
-                                            }
-                                        }
-                                    }
-
-                                    // 2023/10/6，學校反應當需要計分又不需評分狀態時，是否採計學分需要填入3
-                                    if (Utility.GetAttribute(elmScore, "不需評分") == "是")
                                         ssr.useCredit = "3";
+                                    }
                                 }
-                                else
-                                {
-                                    if (Utility.GetAttribute(elmScore, "不計學分") == "是")
-                                        ssr.useCredit = "2";
-                                }
-
-                                //// 判斷是否 不需評分
-                                //if (Utility.GetAttribute(elmScore, "不需評分") == "是")
-                                //{
-                                //    ssr.useCredit = "3";
-                                //}
                             }
+
+
 
                             if (decimal.TryParse(Utility.GetAttribute(elmScore, "補考成績"), out dsre))
                             {
@@ -861,6 +768,10 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                     }
                                 }
                             }
+
+                            // 不計學分 = 是，不列入學習成績
+                            if (Utility.GetAttribute(elmScore, "不計學分") == "是")
+                                continue;
 
                             // 如果有勾是否補修成績，那補修學年度、學期和畫面上「不同」才會填入，相同的話會在補修成績工作頁 
                             // 2021-11 
@@ -2019,34 +1930,6 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                 //ssr.Score = string.Format("{0:##0}", ds);
                                 ssr.Score = ds.ToString();
 
-                                //if (Utility.GetAttribute(elmScore, "不計學分") == "否" && Utility.GetAttribute(elmScore, "不需評分") == "否")
-                                // 2023/10/3，因為判斷規則調整，不需評分不需要判斷。
-                                if (Utility.GetAttribute(elmScore, "不計學分") == "否")
-                                {
-                                    ssr.useCredit = "1";
-
-                                    if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
-                                    {
-                                        if (ssr.CourseCode.Length > 22)
-                                        {
-                                            string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
-                                            string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
-                                            if (sub1 == "9" && sub2 == "D")
-                                            {
-                                                ssr.useCredit = "3";
-                                            }
-                                        }
-                                    }
-                                    // 2023/10/6，學校反應當需要計分又不需評分狀態時，是否採計學分需要填入3
-                                    if (Utility.GetAttribute(elmScore, "不需評分") == "是")
-                                        ssr.useCredit = "3";
-
-                                }
-                                else
-                                {
-                                    if (Utility.GetAttribute(elmScore, "不計學分") == "是")
-                                        ssr.useCredit = "2";
-                                }
 
                                 ssr.ScoreP = "-1";
 
@@ -2054,45 +1937,23 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                     ssr.ScoreP = "0";
                                 else
                                     ssr.ScoreP = "1";
-
-
                             }
-                            else
+
+                            ssr.useCredit = "1";
+                            if (Utility.GetAttribute(elmScore, "抵免") == "否")
+                                ssr.useCredit = "2";
+
+                            if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
                             {
-                                //if (Utility.GetAttribute(elmScore, "不計學分") == "否" && Utility.GetAttribute(elmScore, "不需評分") == "否")
-                                // 2023/10/3，因為判斷規則調整，不需評分不需要判斷。
-                                if (Utility.GetAttribute(elmScore, "不計學分") == "否")
+                                if (ssr.CourseCode.Length > 22)
                                 {
-                                    ssr.useCredit = "1";
-
-                                    if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
+                                    string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
+                                    string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
+                                    if (sub1 == "9" && sub2 == "D")
                                     {
-                                        if (ssr.CourseCode.Length > 22)
-                                        {
-                                            string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
-                                            string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
-                                            if (sub1 == "9" && sub2 == "D")
-                                            {
-                                                ssr.useCredit = "3";
-                                            }
-                                        }
-                                    }
-                                    // 2023/10/6，學校反應當需要計分又不需評分狀態時，是否採計學分需要填入3
-                                    if (Utility.GetAttribute(elmScore, "不需評分") == "是")
                                         ssr.useCredit = "3";
-
+                                    }
                                 }
-                                else
-                                {
-                                    if (Utility.GetAttribute(elmScore, "不計學分") == "是")
-                                        ssr.useCredit = "2";
-                                }
-
-                                // 判斷是否 不需評分
-                                //if (Utility.GetAttribute(elmScore, "不需評分") == "是")
-                                //{
-                                //    ssr.useCredit = "3";
-                                //}
                             }
 
                             // 比對學年成績
@@ -2146,6 +2007,9 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                     }
                                 }
                             }
+                            // 不計學分 = 是，不列入學習成績
+                            if (Utility.GetAttribute(elmScore, "不計學分") == "是")
+                                continue;
 
                             SubjectScoreRec108ListN.Add(ssr);
                         }
@@ -2237,76 +2101,28 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                 //ssr.Score = string.Format("{0:##0}", ds);
                                 ssr.Score = ds.ToString();
 
-                                // if (Utility.GetAttribute(elmScore, "不計學分") == "否" && Utility.GetAttribute(elmScore, "不需評分") == "否")
-                                // 2023/10/3，因為判斷規則調整，不需評分不需要判斷。
-                                if (Utility.GetAttribute(elmScore, "不計學分") == "否")
-                                {
-                                    ssr.useCredit = "1";
-
-                                    if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
-                                    {
-                                        if (ssr.CourseCode.Length > 22)
-                                        {
-                                            string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
-                                            string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
-                                            if (sub1 == "9" && sub2 == "D")
-                                            {
-                                                ssr.useCredit = "3";
-                                            }
-                                        }
-                                    }
-
-                                    // 2023/10/6，學校反應當需要計分又不需評分狀態時，是否採計學分需要填入3
-                                    if (Utility.GetAttribute(elmScore, "不需評分") == "是")
-                                        ssr.useCredit = "3";
-                                }
-                                else
-                                {
-                                    if (Utility.GetAttribute(elmScore, "不計學分") == "是")
-                                        ssr.useCredit = "2";
-                                }
 
                                 if (ds < passScore)
                                     ssr.ScoreP = "0";
                                 else
                                     ssr.ScoreP = "1";
                             }
-                            else
+
+                            ssr.useCredit = "1";
+                            if (Utility.GetAttribute(elmScore, "抵免") == "否")
+                                ssr.useCredit = "2";
+
+                            if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
                             {
-                                // if (Utility.GetAttribute(elmScore, "不計學分") == "否" && Utility.GetAttribute(elmScore, "不需評分") == "否")
-                                // 2023/10/3，因為判斷規則調整，不需評分不需要判斷。
-                                if (Utility.GetAttribute(elmScore, "不計學分") == "否")
+                                if (ssr.CourseCode.Length > 22)
                                 {
-                                    ssr.useCredit = "1";
-
-                                    if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
+                                    string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
+                                    string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
+                                    if (sub1 == "9" && sub2 == "D")
                                     {
-                                        if (ssr.CourseCode.Length > 22)
-                                        {
-                                            string sub1 = ssr.CourseCode.Substring(startIndex1, endIndex);
-                                            string sub2 = ssr.CourseCode.Substring(startIndex2, endIndex);
-                                            if (sub1 == "9" && sub2 == "D")
-                                            {
-                                                ssr.useCredit = "3";
-                                            }
-                                        }
-                                    }
-                                    // 2023/10/6，學校反應當需要計分又不需評分狀態時，是否採計學分需要填入3
-                                    if (Utility.GetAttribute(elmScore, "不需評分") == "是")
                                         ssr.useCredit = "3";
-
+                                    }
                                 }
-                                else
-                                {
-                                    if (Utility.GetAttribute(elmScore, "不計學分") == "是")
-                                        ssr.useCredit = "2";
-                                }
-
-                                // 判斷是否 不需評分
-                                //if (Utility.GetAttribute(elmScore, "不需評分") == "是")
-                                //{
-                                //    ssr.useCredit = "3";
-                                //}
                             }
 
                             if (decimal.TryParse(Utility.GetAttribute(elmScore, "補考成績"), out dsre))
@@ -2364,6 +2180,10 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                     }
                                 }
                             }
+
+                            // 不計學分 = 是，不列入學習成績
+                            if (Utility.GetAttribute(elmScore, "不計學分") == "是")
+                                continue;
 
                             // 如果有勾是否補修成績，那補修學年度、學期和畫面上「不同」才會填入，相同的話會在補修成績工作頁 
                             // 2021-11 
@@ -2462,6 +2282,9 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                         sysr.Credit1 = Utility.GetAttribute(elmScore, "開課學分數") == "" ? "-1" : Utility.GetAttribute(elmScore, "開課學分數");
                                         sysr.Pass1 = Utility.GetAttribute(elmScore, "是否取得學分");
                                         hasScore1 = true;
+                                        // 不計學分 = 是，不列入學習成績
+                                        if (Utility.GetAttribute(elmScore, "不計學分") == "是")
+                                            continue;
                                     }
                                 }
                             }
@@ -2496,6 +2319,10 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                         sysr.Credit2 = Utility.GetAttribute(elmScore, "開課學分數") == "" ? "-1" : Utility.GetAttribute(elmScore, "開課學分數");
                                         sysr.Pass2 = Utility.GetAttribute(elmScore, "是否取得學分");
                                         hasScore2 = true;
+
+                                        // 不計學分 = 是，不列入學習成績
+                                        if (Utility.GetAttribute(elmScore, "不計學分") == "是")
+                                            continue;
                                     }
                                 }
                             }
@@ -2522,6 +2349,7 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                     sysr.ScoreP = "1";
                                 }
                             }
+
                             SubjectReScoreRec108ListN.Add(sysr);
                         }
                     }

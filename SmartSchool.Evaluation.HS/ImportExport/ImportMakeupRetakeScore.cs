@@ -503,7 +503,13 @@ namespace SmartSchool.Evaluation.ImportExport
 
                         // 處理寫入名冊需要資料
                         // (3) 同步處理名冊
-                        if (row["是否補修成績"] == "是" && row["補修學年度"] != "" && row["補修學期"] != "")
+                        string isMakeupScore = GetRowDataCellValue(row, "是否補修成績");
+                        string makeupSchoolYear = GetRowDataCellValue(row, "補修學年度");
+                        string makeupSemester = GetRowDataCellValue(row, "補修學期");
+
+                        if (isMakeupScore == "是" && 
+                            !string.IsNullOrWhiteSpace(makeupSchoolYear) && 
+                            !string.IsNullOrWhiteSpace(makeupSemester))
                         {
                             // --- 處理補修成績寫入學期歷程資料 4.3 補修成績
                             string HisClassName = "", HisStudentNumber = "";
@@ -598,40 +604,43 @@ namespace SmartSchool.Evaluation.ImportExport
                             }
 
 
-                            // 課程代碼
-                            string courseCode = GetRowDataCellValue(row, "課程代碼");
-
-                            // 假設 makeUpScoreInfo.Detail 是 XElement 或有 GetAttribute 方法
-                            string notCountCredit = GetRowDataCellValue(row, "不計學分");
-                            string notNeedScore = GetRowDataCellValue(row, "不需評分");
+                            // 課程代碼 - 從現有成績資料讀取
+                            string courseCode = "";
+                            string notCountCredit = "";
+                            string notNeedScore = "";
+                            string chkUseCredit2 = "";
+                            if (semesterScoreDictionary[sy][se].ContainsKey(key))
+                            {
+                                SemesterSubjectScoreInfo score = semesterScoreDictionary[sy][se][key];
+                                courseCode = score.Detail.GetAttribute("修課科目代碼");
+                                notCountCredit = score.Detail.GetAttribute("不計學分");
+                                notNeedScore = score.Detail.GetAttribute("不需評分");
+                                chkUseCredit2 = score.Detail.GetAttribute("抵免");
+                            }
 
                             // 是否採計學分 預設
                             string useCredit = "1";
 
-                            // 不計學分為"是"
-                            if (notCountCredit == "是")
+                            // 抵免
+                            if (chkUseCredit2 == "是")
                             {
                                 useCredit = "2";
                             }
-                            else
+
+                            // 預設為"1"，但如果不需評分為"是"或課程代碼特殊則為"3"
+                            bool setTo3 = false;
+
+                            if (!string.IsNullOrWhiteSpace(courseCode) && courseCode.Length > 22)
                             {
-                                // 預設為"1"，但如果不需評分為"是"或課程代碼特殊則為"3"
-                                bool setTo3 = false;
-
-                                if (notNeedScore == "是")
+                                string sub1 = courseCode.Substring(16, 1);
+                                string sub2 = courseCode.Substring(18, 1);
+                                if (sub1 == "9" && sub2 == "D")
                                     setTo3 = true;
-
-                                if (!string.IsNullOrWhiteSpace(courseCode) && courseCode.Length > 22)
-                                {
-                                    string sub1 = courseCode.Substring(16, 1);
-                                    string sub2 = courseCode.Substring(18, 1);
-                                    if (sub1 == "9" && sub2 == "D")
-                                        setTo3 = true;
-                                }
-
-                                if (setTo3)
-                                    useCredit = "3";
                             }
+
+                            if (setTo3)
+                                useCredit = "3";
+
 
                             // 檢查課程代碼 CodePass
                             bool codePass = Utility.IsValidCourseCode(courseCode);
@@ -657,7 +666,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                 Birthday = Utility.ConvertChDateString(studentRec.Birthday),
                                 SchoolYear = schoolYear,
                                 Semester = semester,
-                                CourseCode = GetRowDataCellValue(row, "課程代碼"),
+                                CourseCode = courseCode,
                                 SubjectName = GetRowDataCellValue(row, "科目"),
                                 SubjectLevel = GetRowDataCellValue(row, "科目級別"),
                                 GradeYear = GetRowDataCellValue(row, "成績年級"),
@@ -689,7 +698,13 @@ namespace SmartSchool.Evaluation.ImportExport
                             }
                         }
 
-                        if (row["重修成績"] != "" && row["重修學年度"] != "" && row["重修學期"] != "")
+                        string retakeScore = GetRowDataCellValue(row, "重修成績");
+                        string retakeSchoolYear = GetRowDataCellValue(row, "重修學年度");
+                        string retakeSemester = GetRowDataCellValue(row, "重修學期");
+
+                        if (!string.IsNullOrWhiteSpace(retakeScore) && 
+                            !string.IsNullOrWhiteSpace(retakeSchoolYear) && 
+                            !string.IsNullOrWhiteSpace(retakeSemester))
                         {
                             // 重修成績寫入學期歷程 ---
 
@@ -789,40 +804,43 @@ namespace SmartSchool.Evaluation.ImportExport
                             }
 
 
-                            // 課程代碼
-                            string courseCode = GetRowDataCellValue(row, "課程代碼");
-
-                            // 假設 makeUpScoreInfo.Detail 是 XElement 或有 GetAttribute 方法
-                            string notCountCredit = GetRowDataCellValue(row, "不計學分");
-                            string notNeedScore = GetRowDataCellValue(row, "不需評分");
+                            // 課程代碼 - 從現有成績資料讀取
+                            string courseCode = "";
+                            string notCountCredit = "";
+                            string notNeedScore = "";
+                            string chkUseCredit2 = "";
+                            if (semesterScoreDictionary[sy][se].ContainsKey(key))
+                            {
+                                SemesterSubjectScoreInfo score = semesterScoreDictionary[sy][se][key];
+                                courseCode = score.Detail.GetAttribute("修課科目代碼");
+                                notCountCredit = score.Detail.GetAttribute("不計學分");
+                                notNeedScore = score.Detail.GetAttribute("不需評分");
+                                chkUseCredit2 = score.Detail.GetAttribute("抵免");
+                            }
 
                             // 是否採計學分 預設
                             string useCredit = "1";
 
                             // 不計學分為"是"
-                            if (notCountCredit == "是")
+                            if (chkUseCredit2 == "是")
                             {
                                 useCredit = "2";
                             }
-                            else
+
+                            // 預設為"1"，但如果不需評分為"是"或課程代碼特殊則為"3"
+                            bool setTo3 = false;
+
+                            if (!string.IsNullOrWhiteSpace(courseCode) && courseCode.Length > 22)
                             {
-                                // 預設為"1"，但如果不需評分為"是"或課程代碼特殊則為"3"
-                                bool setTo3 = false;
-
-                                if (notNeedScore == "是")
+                                string sub1 = courseCode.Substring(16, 1);
+                                string sub2 = courseCode.Substring(18, 1);
+                                if (sub1 == "9" && sub2 == "D")
                                     setTo3 = true;
-
-                                if (!string.IsNullOrWhiteSpace(courseCode) && courseCode.Length > 22)
-                                {
-                                    string sub1 = courseCode.Substring(16, 1);
-                                    string sub2 = courseCode.Substring(18, 1);
-                                    if (sub1 == "9" && sub2 == "D")
-                                        setTo3 = true;
-                                }
-
-                                if (setTo3)
-                                    useCredit = "3";
                             }
+
+                            if (setTo3)
+                                useCredit = "3";
+
 
                             // 檢查課程代碼 CodePass
                             bool codePass = Utility.IsValidCourseCode(courseCode);
@@ -846,7 +864,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                 Birthday = Utility.ConvertChDateString(studentRec.Birthday),
                                 SchoolYear = schoolYear,
                                 Semester = semester,
-                                CourseCode = GetRowDataCellValue(row, "課程代碼"),
+                                CourseCode = courseCode,
                                 SubjectName = GetRowDataCellValue(row, "科目"),
                                 SubjectLevel = GetRowDataCellValue(row, "科目級別"),
                                 GradeYear = GetRowDataCellValue(row, "成績年級"),
@@ -1161,7 +1179,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                             string oldPassValue = score.Detail.GetAttribute("是否取得學分");
                                             string newPassValue = ((score.Detail.GetAttribute("不需評分") == "是") || maxScore >= _StudentPassScore[studentRec][gy]) ? "是" : "否";
                                             score.Detail.SetAttribute("是否取得學分", newPassValue);
-                                            
+
                                             // 檢查是否有變更並記錄到 logLine
                                             if (oldPassValue != newPassValue)
                                             {
@@ -1357,7 +1375,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                         string oldPassValue = newScore.GetAttribute("是否取得學分");
                                         string newPassValue = ((newScore.GetAttribute("不需評分") == "是") || maxScore >= _StudentPassScore[studentRec][gy]) ? "是" : "否";
                                         newScore.SetAttribute("是否取得學分", newPassValue);
-                                        
+
                                         // 檢查是否有變更並記錄到 logLine
                                         if (oldPassValue != newPassValue)
                                         {

@@ -554,12 +554,25 @@ namespace SmartSchool.Evaluation.ImportExport
 
                             string ScoreP = "";
 
-                            // 根據 makeUpScoreInfo.Detail.GetAttribute("是否取得學分") 的值，如果是 "是" 就設定 ssr.ScoreP 為 1，否則為 0。
-                            // Please use if-else syntax.
-                            if (GetRowDataCellValue(row, "取得學分") == "是")
-                                ScoreP = "1";
+                            // 重修成績及格判斷：根據重修成績與及格標準比較
+                            decimal retakeScoreValue;
+                            decimal passingStandardForScoreP = 60;
+                            decimal.TryParse(GetRowDataCellValue(row, "修課及格標準"), out passingStandardForScoreP);
+                            if (passingStandardForScoreP == 0)
+                                passingStandardForScoreP = 60;
+
+                            if (decimal.TryParse(GetRowDataCellValue(row, "重修成績"), out retakeScoreValue))
+                            {
+                                // 重修成績必須大於及格標準才算及格
+                                if (retakeScoreValue > passingStandardForScoreP)
+                                    ScoreP = "1";
+                                else
+                                    ScoreP = "0";
+                            }
                             else
-                                ScoreP = "0";
+                            {
+                                ScoreP = "0"; // 無法解析重修成績時，預設為不及格
+                            }
 
 
                             string reScore = "-1";
@@ -687,6 +700,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                 CodePass = codePass
                             };
 
+
                             int ssy, sse;
                             if (int.TryParse(row["補修學年度"], out ssy) && int.TryParse(row["補修學期"], out sse))
                             {
@@ -749,12 +763,25 @@ namespace SmartSchool.Evaluation.ImportExport
 
                             string ScoreP = "";
 
-                            // 根據 makeUpScoreInfo.Detail.GetAttribute("是否取得學分") 的值，如果是 "是" 就設定 ssr.ScoreP 為 1，否則為 0。
-                            // Please use if-else syntax.
-                            if (GetRowDataCellValue(row, "取得學分") == "是")
-                                ScoreP = "1";
+                            // 重修成績及格判斷：根據重修成績與及格標準比較
+                            decimal retakeScoreValue;
+                            decimal passingStandardForScoreP = 60;
+                            decimal.TryParse(GetRowDataCellValue(row, "修課及格標準"), out passingStandardForScoreP);
+                            if (passingStandardForScoreP == 0)
+                                passingStandardForScoreP = 60;
+
+                            if (decimal.TryParse(GetRowDataCellValue(row, "重修成績"), out retakeScoreValue))
+                            {
+                                // 重修成績必須大於及格標準才算及格
+                                if (retakeScoreValue > passingStandardForScoreP)
+                                    ScoreP = "1";
+                                else
+                                    ScoreP = "0";
+                            }
                             else
-                                ScoreP = "0";
+                            {
+                                ScoreP = "0"; // 無法解析重修成績時，預設為不及格
+                            }
 
 
                             string ReAScore = "-1";
@@ -794,9 +821,9 @@ namespace SmartSchool.Evaluation.ImportExport
                             {
                                 ReAScoreP = "-1";
                             }
-                            else if (decimal.TryParse(ReAScore, out decimal reScoreDecimal) && reScoreDecimal >= passScore)
+                            else if (decimal.TryParse(ReAScore, out decimal reScoreDecimal) && reScoreDecimal > passScore)
                             {
-                                ReAScoreP = "1";
+                                ReAScoreP = "1"; // 重修成績必須大於及格標準才算及格
                             }
                             else
                             {
@@ -1177,7 +1204,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                             #endregion
                                             #endregion
                                             string oldPassValue = score.Detail.GetAttribute("是否取得學分");
-                                            string newPassValue = ((score.Detail.GetAttribute("不需評分") == "是") || maxScore >= _StudentPassScore[studentRec][gy]) ? "是" : "否";
+                                            string newPassValue = ((score.Detail.GetAttribute("不需評分") == "是") || maxScore > _StudentPassScore[studentRec][gy]) ? "是" : "否";
                                             score.Detail.SetAttribute("是否取得學分", newPassValue);
 
                                             // 檢查是否有變更並記錄到 logLine
@@ -1373,7 +1400,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                         #endregion
                                         #endregion
                                         string oldPassValue = newScore.GetAttribute("是否取得學分");
-                                        string newPassValue = ((newScore.GetAttribute("不需評分") == "是") || maxScore >= _StudentPassScore[studentRec][gy]) ? "是" : "否";
+                                        string newPassValue = ((newScore.GetAttribute("不需評分") == "是") || maxScore > _StudentPassScore[studentRec][gy]) ? "是" : "否";
                                         newScore.SetAttribute("是否取得學分", newPassValue);
 
                                         // 檢查是否有變更並記錄到 logLine

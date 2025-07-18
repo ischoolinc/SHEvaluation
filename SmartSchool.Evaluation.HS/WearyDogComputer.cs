@@ -3819,21 +3819,29 @@ namespace SmartSchool.Evaluation
                                 if (score.Detail.GetAttribute("指定學年科目名稱") != "")
                                     semesterSubject = score.Detail.GetAttribute("指定學年科目名稱");
 
-                                if (schoolYearSubjectScore.SchoolYear == schoolyear && schoolYearSubjectScore.Subject == semesterSubject
-                                    && schoolYearSubjectScore.Score >= applylimit)
-                                {
-                                    //subjectCalcScores.Add(schoolYearSubjectScore.Subject, schoolYearSubjectScore.Score);//[score.Subject]
-                                    decimal tryParseDecimal, topScore = decimal.MinValue;
-                                    string tip = score.Detail.GetAttribute("註記");
-                                    foreach (string field in new string[] { "結算成績", "補考成績", "重修成績" })
-                                    {
-                                        tip = tip.Replace("學年" + field + "及格。", "");
-                                        if (decimal.TryParse(schoolYearSubjectScore.Detail.GetAttribute(field), out tryParseDecimal) && tryParseDecimal >= applylimit && tryParseDecimal > topScore)
-                                        {
-                                            tip += "學年" + field + "及格。";
-                                            topScore = tryParseDecimal;
-                                        }
-                                    }
+                                                // 優先使用修課及格標準，如果沒有設定則使用原本的及格標準
+                decimal currentApplyLimit = applylimit;
+                decimal coursePassLimit;
+                if (decimal.TryParse(score.Detail.GetAttribute("修課及格標準"), out coursePassLimit))
+                {
+                    currentApplyLimit = coursePassLimit;
+                }
+
+                if (schoolYearSubjectScore.SchoolYear == schoolyear && schoolYearSubjectScore.Subject == semesterSubject
+                    && schoolYearSubjectScore.Score >= currentApplyLimit)
+                {
+                    //subjectCalcScores.Add(schoolYearSubjectScore.Subject, schoolYearSubjectScore.Score);//[score.Subject]
+                    decimal tryParseDecimal, topScore = decimal.MinValue;
+                    string tip = score.Detail.GetAttribute("註記");
+                    foreach (string field in new string[] { "結算成績", "補考成績", "重修成績" })
+                    {
+                        tip = tip.Replace("學年" + field + "及格。", "");
+                        if (decimal.TryParse(schoolYearSubjectScore.Detail.GetAttribute(field), out tryParseDecimal) && tryParseDecimal >= currentApplyLimit && tryParseDecimal > topScore)
+                        {
+                            tip += "學年" + field + "及格。";
+                            topScore = tryParseDecimal;
+                        }
+                    }
                                     if (regWay != 3)//不使用學年調整成績
                                     {
                                         switch (regWay)

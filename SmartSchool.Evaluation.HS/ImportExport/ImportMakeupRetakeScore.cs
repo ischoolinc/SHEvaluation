@@ -554,7 +554,7 @@ namespace SmartSchool.Evaluation.ImportExport
 
                             string ScoreP = "";
 
-                            // 重修成績及格判斷：根據重修成績與及格標準比較
+                            // 補修成績及格判斷：根據原始成績與及格標準比較
                             decimal retakeScoreValue;
                             decimal passingStandardForScoreP = 60;
                             if (semesterScoreDictionary[sy][se].ContainsKey(key))
@@ -569,9 +569,9 @@ namespace SmartSchool.Evaluation.ImportExport
                                 passingStandardForScoreP = 60; // 如果沒有現有成績資料，使用預設值
                             }
 
-                            if (decimal.TryParse(GetRowDataCellValue(row, "重修成績"), out retakeScoreValue))
+                            if (decimal.TryParse(GetRowDataCellValue(row, "原始成績"), out retakeScoreValue))
                             {
-                                // 重修成績必須大於及格標準才算及格
+                                // 補修成績及格判斷：原始成績必須大於等於及格標準才算及格
                                 if (retakeScoreValue >= passingStandardForScoreP)
                                     ScoreP = "1";
                                 else
@@ -579,7 +579,7 @@ namespace SmartSchool.Evaluation.ImportExport
                             }
                             else
                             {
-                                ScoreP = "0"; // 無法解析重修成績時，預設為不及格
+                                ScoreP = "0"; // 無法解析原始成績時，預設為不及格
                             }
 
 

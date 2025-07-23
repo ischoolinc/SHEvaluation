@@ -1132,7 +1132,12 @@ namespace SmartSchool.Evaluation
 
                                     // 判斷是否取得學分
                                     string ScoreP = "";
-                                    if ((sfinalScore.HasValue ? sfinalScore.Value : 0) >= 60) // 這裡 60 可以改成你的及格標準變數
+                                    decimal passScore = 60; // 預設及格標準
+                                    if (decimal.TryParse(updateScoreElement.GetAttribute("修課及格標準"), out decimal passingStandard1))
+                                    {
+                                        passScore = passingStandard1;
+                                    }
+                                    if (sacRecord.HasFinalScore && sacRecord.FinalScore >= passScore)
                                         ScoreP = "1";
                                     else
                                         ScoreP = "0";
@@ -1187,6 +1192,21 @@ namespace SmartSchool.Evaluation
                                     // 只有來自封存成績，填入轉學轉科工作表
                                     if (fromArchive)
                                     {
+                                        // 判斷重讀成績及格
+                                        string repeatScoreP1 = "0";
+                                        if (decimal.TryParse(updateScoreElement.GetAttribute("原始成績"), out decimal originalScore1))
+                                        {
+                                            decimal passScoreForRepeat1 = 60; // 預設及格標準
+                                            if (decimal.TryParse(updateScoreElement.GetAttribute("修課及格標準"), out decimal passingStandardForRepeat1))
+                                            {
+                                                passScoreForRepeat1 = passingStandardForRepeat1;
+                                            }
+                                            if (originalScore1 >= passScoreForRepeat1)
+                                                repeatScoreP1 = "1";
+                                            else
+                                                repeatScoreP1 = "0";
+                                        }
+
                                         var transferRec = new SubjectScoreRec108
                                         {
                                             StudentID = sacRecord.StudentID,
@@ -1214,7 +1234,7 @@ namespace SmartSchool.Evaluation
                                             CodePass = codePass,
                                             RepeatMemo = "2",
                                             StudType = StudType,
-                                            RepeatScoreP = ScoreP,
+                                            RepeatScoreP = repeatScoreP1,
                                             RepeatScore = updateScoreElement.GetAttribute("原始成績")
                                         };
                                         // 加入 4.4 轉學轉科名冊
@@ -1228,10 +1248,16 @@ namespace SmartSchool.Evaluation
                                         // 幫我寫一段 C# 程式碼，從 makeUpScoreInfo.Detail 取得「補考成績」和「修課及格標準」兩個屬性。如果「補考成績」能轉為數字，且在 0 到「修課及格標準」之間，則 reScore 等於該分數字串，否則 reScore = "-1"。如果「修課及格標準」無法轉數字，預設用 60。
                                         if (decimal.TryParse(updateScoreElement.GetAttribute("補考成績"), out decimal reScoreValue2))
                                         {
-                                            if (decimal.TryParse(updateScoreElement.GetAttribute("修課及格標準"), out decimal passingStandard))
+                                            if (decimal.TryParse(updateScoreElement.GetAttribute("修課及格標準"), out decimal passingStandard2))
                                             {
-                                                if (reScoreValue2 >= 0 && reScoreValue2 <= passingStandard)
-                                                    reScore = reScoreValue2.ToString();
+                                                if (reScoreValue2 >= 0)
+                                                {
+                                                    // 有成績，最高以修課及格標準紀錄成績
+                                                    if (reScoreValue2 > passingStandard2)
+                                                        reScore = passingStandard2.ToString();
+                                                    else
+                                                        reScore = reScoreValue2.ToString();
+                                                }
                                                 else
                                                     reScore = "-1";
                                             }
@@ -1248,20 +1274,35 @@ namespace SmartSchool.Evaluation
 
                                         // 取得修課及格標準（預設 60）
                                         string passScoreStr = updateScoreElement.GetAttribute("修課及格標準");
-                                        decimal passScore = 60;
-                                        decimal.TryParse(passScoreStr, out passScore);
+                                        decimal passScore2 = 60;
+                                        decimal.TryParse(passScoreStr, out passScore2);
 
                                         if (reScore == "-1")
                                         {
                                             reScoreP = "-1";
                                         }
-                                        else if (decimal.TryParse(reScore, out decimal reScoreDecimal) && reScoreDecimal >= passScore)
+                                        else if (decimal.TryParse(reScore, out decimal reScoreDecimal) && reScoreDecimal >= passScore2)
                                         {
                                             reScoreP = "1";
                                         }
                                         else
                                         {
                                             reScoreP = "0";
+                                        }
+
+                                        // 判斷重讀成績及格
+                                        string repeatScoreP2 = "0";
+                                        if (decimal.TryParse(updateScoreElement.GetAttribute("原始成績"), out decimal originalScore2))
+                                        {
+                                            decimal passScoreForRepeat2 = 60; // 預設及格標準
+                                            if (decimal.TryParse(updateScoreElement.GetAttribute("修課及格標準"), out decimal passingStandardForRepeat2))
+                                            {
+                                                passScoreForRepeat2 = passingStandardForRepeat2;
+                                            }
+                                            if (originalScore2 >= passScoreForRepeat2)
+                                                repeatScoreP2 = "1";
+                                            else
+                                                repeatScoreP2 = "0";
                                         }
 
                                         var repeatRec = new SubjectScoreRec108
@@ -1290,7 +1331,7 @@ namespace SmartSchool.Evaluation
                                             checkPass = true,
                                             CodePass = codePass,
                                             RepeatMemo = "2",
-                                            RepeatScoreP = ScoreP,
+                                            RepeatScoreP = repeatScoreP2,
                                             RepeatScore = updateScoreElement.GetAttribute("原始成績"),
                                             ReScore = reScore,
                                             ReScoreP = reScoreP
@@ -1543,7 +1584,12 @@ namespace SmartSchool.Evaluation
 
                                     // 判斷是否取得學分
                                     string ScoreP = "";
-                                    if ((sfinalScore.HasValue ? sfinalScore.Value : 0) >= 60) // 這裡 60 可以改成你的及格標準變數
+                                    decimal passScore4 = 60; // 預設及格標準
+                                    if (decimal.TryParse(newScoreInfo.GetAttribute("修課及格標準"), out decimal passingStandard3))
+                                    {
+                                        passScore4 = passingStandard3;
+                                    }
+                                    if (sacRecord.HasFinalScore && sacRecord.FinalScore >= passScore4)
                                         ScoreP = "1";
                                     else
                                         ScoreP = "0";
@@ -1598,6 +1644,21 @@ namespace SmartSchool.Evaluation
                                     // 只有來自封存成績，填入轉學轉科工作表
                                     if (fromArchive)
                                     {
+                                        // 判斷重讀成績及格
+                                        string repeatScoreP3 = "0";
+                                        if (decimal.TryParse(newScoreInfo.GetAttribute("原始成績"), out decimal originalScore3))
+                                        {
+                                            decimal passScoreForRepeat3 = 60; // 預設及格標準
+                                            if (decimal.TryParse(newScoreInfo.GetAttribute("修課及格標準"), out decimal passingStandardForRepeat3))
+                                            {
+                                                passScoreForRepeat3 = passingStandardForRepeat3;
+                                            }
+                                            if (originalScore3 >= passScoreForRepeat3)
+                                                repeatScoreP3 = "1";
+                                            else
+                                                repeatScoreP3 = "0";
+                                        }
+
                                         var transferRec = new SubjectScoreRec108
                                         {
                                             StudentID = sacRecord.StudentID,
@@ -1625,7 +1686,7 @@ namespace SmartSchool.Evaluation
                                             CodePass = codePass,
                                             RepeatMemo = "2",
                                             StudType = StudType,
-                                            RepeatScoreP = ScoreP,
+                                            RepeatScoreP = repeatScoreP3,
                                             RepeatScore = newScoreInfo.GetAttribute("原始成績")
                                         };
                                         // 加入 4.4 轉學轉科名冊
@@ -1639,10 +1700,16 @@ namespace SmartSchool.Evaluation
                                         // 幫我寫一段 C# 程式碼，從 makeUpScoreInfo.Detail 取得「補考成績」和「修課及格標準」兩個屬性。如果「補考成績」能轉為數字，且在 0 到「修課及格標準」之間，則 reScore 等於該分數字串，否則 reScore = "-1"。如果「修課及格標準」無法轉數字，預設用 60。
                                         if (decimal.TryParse(newScoreInfo.GetAttribute("補考成績"), out decimal reScoreValue2))
                                         {
-                                            if (decimal.TryParse(newScoreInfo.GetAttribute("修課及格標準"), out decimal passingStandard))
+                                            if (decimal.TryParse(newScoreInfo.GetAttribute("修課及格標準"), out decimal passingStandard4))
                                             {
-                                                if (reScoreValue2 >= 0 && reScoreValue2 <= passingStandard)
-                                                    reScore = reScoreValue2.ToString();
+                                                if (reScoreValue2 >= 0)
+                                                {
+                                                    // 有成績，最高以修課及格標準紀錄成績
+                                                    if (reScoreValue2 > passingStandard4)
+                                                        reScore = passingStandard4.ToString();
+                                                    else
+                                                        reScore = reScoreValue2.ToString();
+                                                }
                                                 else
                                                     reScore = "-1";
                                             }
@@ -1659,20 +1726,35 @@ namespace SmartSchool.Evaluation
 
                                         // 取得修課及格標準（預設 60）
                                         string passScoreStr = newScoreInfo.GetAttribute("修課及格標準");
-                                        decimal passScore = 60;
-                                        decimal.TryParse(passScoreStr, out passScore);
+                                        decimal passScore3 = 60;
+                                        decimal.TryParse(passScoreStr, out passScore3);
 
                                         if (reScore == "-1")
                                         {
                                             reScoreP = "-1";
                                         }
-                                        else if (decimal.TryParse(reScore, out decimal reScoreDecimal) && reScoreDecimal >= passScore)
+                                        else if (decimal.TryParse(reScore, out decimal reScoreDecimal) && reScoreDecimal >= passScore3)
                                         {
                                             reScoreP = "1";
                                         }
                                         else
                                         {
                                             reScoreP = "0";
+                                        }
+
+                                        // 判斷重讀成績及格
+                                        string repeatScoreP4 = "0";
+                                        if (decimal.TryParse(newScoreInfo.GetAttribute("原始成績"), out decimal originalScore4))
+                                        {
+                                            decimal passScoreForRepeat4 = 60; // 預設及格標準
+                                            if (decimal.TryParse(newScoreInfo.GetAttribute("修課及格標準"), out decimal passingStandardForRepeat4))
+                                            {
+                                                passScoreForRepeat4 = passingStandardForRepeat4;
+                                            }
+                                            if (originalScore4 >= passScoreForRepeat4)
+                                                repeatScoreP4 = "1";
+                                            else
+                                                repeatScoreP4 = "0";
                                         }
 
                                         var repeatRec = new SubjectScoreRec108
@@ -1701,7 +1783,7 @@ namespace SmartSchool.Evaluation
                                             checkPass = true,
                                             CodePass = codePass,
                                             RepeatMemo = "2",
-                                            RepeatScoreP = ScoreP,
+                                            RepeatScoreP = repeatScoreP4,
                                             RepeatScore = newScoreInfo.GetAttribute("原始成績"),
                                             ReScore = reScore,
                                             ReScoreP = reScoreP
@@ -1854,11 +1936,14 @@ namespace SmartSchool.Evaluation
                                         Console.WriteLine(ex.Message);
                                     }
 
+                                    // 判斷是否取得學分
                                     string ScoreP = "";
-
-                                    // 根據 makeUpScoreInfo.Detail.GetAttribute("是否取得學分") 的值，如果是 "是" 就設定 ssr.ScoreP 為 1，否則為 0。
-                                    // Please use if-else syntax.
-                                    if (previousSubjectScoreInfo.Detail.GetAttribute("是否取得學分") == "是")
+                                    decimal passScore5 = 60; // 預設及格標準
+                                    if (decimal.TryParse(previousSubjectScoreInfo.Detail.GetAttribute("修課及格標準"), out decimal passingStandard5_1))
+                                    {
+                                        passScore5 = passingStandard5_1;
+                                    }
+                                    if (sacRecord.HasFinalScore && sacRecord.FinalScore >= passScore5)
                                         ScoreP = "1";
                                     else
                                         ScoreP = "0";
@@ -1868,7 +1953,7 @@ namespace SmartSchool.Evaluation
                                     // 幫我寫一段 C# 程式碼，從 makeUpScoreInfo.Detail 取得「補考成績」和「修課及格標準」兩個屬性。如果「補考成績」能轉為數字，且在 0 到「修課及格標準」之間，則 reScore 等於該分數字串，否則 reScore = "-1"。如果「修課及格標準」無法轉數字，預設用 60。
                                     if (decimal.TryParse(previousSubjectScoreInfo.Detail.GetAttribute("重修成績"), out decimal reScoreValue2))
                                     {
-                                        if (decimal.TryParse(previousSubjectScoreInfo.Detail.GetAttribute("修課及格標準"), out decimal passingStandard))
+                                        if (decimal.TryParse(previousSubjectScoreInfo.Detail.GetAttribute("修課及格標準"), out decimal passingStandard5))
                                         {
 
                                             if (reScoreValue2 >= 0)
@@ -1889,14 +1974,14 @@ namespace SmartSchool.Evaluation
 
                                     // 取得修課及格標準（預設 60）
                                     string passScoreStr = previousSubjectScoreInfo.Detail.GetAttribute("修課及格標準");
-                                    decimal passScore = 60;
-                                    decimal.TryParse(passScoreStr, out passScore);
+                                    decimal passScore5_2 = 60;
+                                    decimal.TryParse(passScoreStr, out passScore5_2);
 
                                     if (ReAScore == "-1")
                                     {
                                         ReAScoreP = "-1";
                                     }
-                                    else if (decimal.TryParse(ReAScore, out decimal reScoreDecimal) && reScoreDecimal >= passScore)
+                                    else if (decimal.TryParse(ReAScore, out decimal reScoreDecimal) && reScoreDecimal >= passScore5_2)
                                     {
                                         ReAScoreP = "1";
                                     }
@@ -2083,11 +2168,14 @@ namespace SmartSchool.Evaluation
                                         Console.WriteLine(ex.Message);
                                     }
 
+                                    // 判斷是否取得學分
                                     string ScoreP = "";
-
-                                    // 根據 makeUpScoreInfo.Detail.GetAttribute("是否取得學分") 的值，如果是 "是" 就設定 ssr.ScoreP 為 1，否則為 0。
-                                    // Please use if-else syntax.
-                                    if (makeUpScoreInfo.Detail.GetAttribute("是否取得學分") == "是")
+                                    decimal passScore6 = 60; // 預設及格標準
+                                    if (decimal.TryParse(makeUpScoreInfo.Detail.GetAttribute("修課及格標準"), out decimal passingStandard6_1))
+                                    {
+                                        passScore6 = passingStandard6_1;
+                                    }
+                                    if (sacRecord.HasFinalScore && sacRecord.FinalScore >= passScore6)
                                         ScoreP = "1";
                                     else
                                         ScoreP = "0";
@@ -2097,10 +2185,16 @@ namespace SmartSchool.Evaluation
                                     // 幫我寫一段 C# 程式碼，從 makeUpScoreInfo.Detail 取得「補考成績」和「修課及格標準」兩個屬性。如果「補考成績」能轉為數字，且在 0 到「修課及格標準」之間，則 reScore 等於該分數字串，否則 reScore = "-1"。如果「修課及格標準」無法轉數字，預設用 60。
                                     if (decimal.TryParse(makeUpScoreInfo.Detail.GetAttribute("補考成績"), out decimal reScoreValue2))
                                     {
-                                        if (decimal.TryParse(makeUpScoreInfo.Detail.GetAttribute("修課及格標準"), out decimal passingStandard))
+                                        if (decimal.TryParse(makeUpScoreInfo.Detail.GetAttribute("修課及格標準"), out decimal passingStandard6_2))
                                         {
-                                            if (reScoreValue2 >= 0 && reScoreValue2 <= passingStandard)
-                                                reScore = reScoreValue2.ToString();
+                                            if (reScoreValue2 >= 0)
+                                            {
+                                                // 有成績，最高以修課及格標準紀錄成績
+                                                if (reScoreValue2 > passingStandard6_2)
+                                                    reScore = passingStandard6_2.ToString();
+                                                else
+                                                    reScore = reScoreValue2.ToString();
+                                            }
                                             else
                                                 reScore = "-1";
                                         }
@@ -2117,14 +2211,14 @@ namespace SmartSchool.Evaluation
 
                                     // 取得修課及格標準（預設 60）
                                     string passScoreStr = makeUpScoreInfo.Detail.GetAttribute("修課及格標準");
-                                    decimal passScore = 60;
-                                    decimal.TryParse(passScoreStr, out passScore);
+                                    decimal passScore6_2 = 60;
+                                    decimal.TryParse(passScoreStr, out passScore6_2);
 
                                     if (reScore == "-1")
                                     {
                                         reScoreP = "-1";
                                     }
-                                    else if (decimal.TryParse(reScore, out decimal reScoreDecimal) && reScoreDecimal >= passScore)
+                                    else if (decimal.TryParse(reScore, out decimal reScoreDecimal) && reScoreDecimal >= passScore6_2)
                                     {
                                         reScoreP = "1";
                                     }

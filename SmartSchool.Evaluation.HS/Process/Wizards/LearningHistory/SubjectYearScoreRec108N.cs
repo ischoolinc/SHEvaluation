@@ -62,6 +62,16 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
         /// </summary>
         public string ScoreP { get; set; }
 
+        /// <summary>
+        /// 第一學期原始成績
+        /// </summary>
+        public string Score1 { get; set; }
+
+        /// <summary>
+        /// 第二學期原始成績
+        /// </summary>
+        public string Score2 { get; set; }
+
         public bool checkPass { get; set; }
 
         /// <summary>
@@ -109,6 +119,16 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
         /// 現在學號
         /// </summary>
         public string StudentNumber { get; set; }
+
+        /// <summary>
+        /// 第一學期修課及格標準
+        /// </summary>
+        public string PassStandard1 { get; set; }
+
+        /// <summary>
+        /// 第二學期修課及格標準
+        /// </summary>
+        public string PassStandard2 { get; set; }
 
         // 學年度
         public string SchoolYear { get; set; }

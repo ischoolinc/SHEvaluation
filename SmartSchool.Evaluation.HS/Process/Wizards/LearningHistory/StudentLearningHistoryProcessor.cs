@@ -643,21 +643,15 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                             if (StudGradYearDict.ContainsKey(studRec.StudentID))
                                 GrStr = StudGradYearDict[studRec.StudentID] + "_及";
 
-                            decimal ds, dsre, passScore = 60;
+                            decimal dsA, dsreA, passScoreA = 60;
 
-                            if (decimal.TryParse(Utility.GetAttribute(elmScore, "原始成績"), out ds))
+                            if (decimal.TryParse(Utility.GetAttribute(elmScore, "原始成績"), out dsA))
                             {
-                                // 四捨五入到整數位 --2021年3月 取消處理四捨五入
-                                //ds = Math.Round(ds, 0, MidpointRounding.AwayFromZero);
-
-                                decimal dsp;
-                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dsp))
-                                    passScore = dsp;
-
-                                // ssr.Score = string.Format("{0:##0}", ds);
-                                ssr.Score = ds.ToString();                                
-                                
-                                if (ds < passScore)
+                                decimal dspA;
+                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dspA))
+                                    passScoreA = dspA;
+                                ssr.Score = dsA.ToString();
+                                if (dsA < passScoreA)
                                     ssr.ScoreP = "0";
                                 else
                                     ssr.ScoreP = "1";
@@ -682,22 +676,18 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                             }
 
 
-                            if (decimal.TryParse(Utility.GetAttribute(elmScore, "補考成績"), out dsre))
+                            if (decimal.TryParse(Utility.GetAttribute(elmScore, "補考成績"), out dsreA))
                             {
-                                decimal dsreP;
+                                decimal dsrePA;
 
-                                // 四捨五入到整數位 --2021年3月 取消處理四捨五入
-                                //dsre = Math.Round(dsre, 0, MidpointRounding.AwayFromZero);
-
-                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dsreP))
+                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dsrePA))
                                 {
-                                    passScore = dsreP;
+                                    passScoreA = dsrePA;
                                 }
 
-                                // ssr.ReScore = string.Format("{0:##0}", dsre);
-                                ssr.ReScore = dsre.ToString();
+                                ssr.ReScore = dsreA.ToString();
 
-                                if (dsre < passScore)
+                                if (dsreA < passScoreA)
                                     ssr.ReScoreP = "0";
                                 else
                                     ssr.ReScoreP = "1";
@@ -716,16 +706,17 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
 
                             if (ssr.ScoreP == "-1")
                             {
-                                if (Utility.GetAttribute(elmScore, "是否取得學分") != null)
+                                decimal dsB, passScoreB = 60;
+                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "原始成績"), out dsB))
                                 {
-                                    if (Utility.GetAttribute(elmScore, "是否取得學分") == "是")
+                                    if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out passScoreB))
                                     {
+                                        // 已取得 passScore
+                                    }
+                                    if (dsB >= passScoreB)
                                         ssr.ScoreP = "1";
-                                    }
                                     else
-                                    {
                                         ssr.ScoreP = "0";
-                                    }
                                 }
                             }
 
@@ -809,21 +800,15 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                             if (StudGradYearDict.ContainsKey(studRec.StudentID))
                                 GrStr = StudGradYearDict[studRec.StudentID] + "_及";
 
-                            decimal ds, dsre, passScore = 60;
+                            decimal dsA, dsreA, passScoreA = 60;
 
-                            if (decimal.TryParse(Utility.GetAttribute(elmScore, "原始成績"), out ds))
+                            if (decimal.TryParse(Utility.GetAttribute(elmScore, "原始成績"), out dsA))
                             {
-                                // 四捨五入到整數位 --2021年3月 取消處理四捨五入
-                                //ds = Math.Round(ds, 0, MidpointRounding.AwayFromZero);
-
-                                decimal dsp;
-                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dsp))
-                                    passScore = dsp;
-
-                                //ssr.Score = string.Format("{0:##0}", ds);
-                                ssr.Score = ds.ToString();
-
-                                if (ds < passScore)
+                                decimal dspA;
+                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dspA))
+                                    passScoreA = dspA;
+                                ssr.Score = dsA.ToString();
+                                if (dsA < passScoreA)
                                     ssr.ScoreP = "0";
                                 else
                                     ssr.ScoreP = "1";
@@ -848,22 +833,22 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
 
 
 
-                            if (decimal.TryParse(Utility.GetAttribute(elmScore, "補考成績"), out dsre))
+                            if (decimal.TryParse(Utility.GetAttribute(elmScore, "補考成績"), out dsreA))
                             {
                                 // 四捨五入到整數位--2021年3月 取消處理四捨五入
                                 //dsre = Math.Round(dsre, 0, MidpointRounding.AwayFromZero);
 
-                                decimal dsreP;
+                                decimal dsrePA;
 
-                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dsreP))
+                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dsrePA))
                                 {
-                                    passScore = dsreP;
+                                    passScoreA = dsrePA;
                                 }
 
                                 // ssr.ReScore = string.Format("{0:##0}", dsre);
-                                ssr.ReScore = dsre.ToString();
+                                ssr.ReScore = dsreA.ToString();
 
-                                if (dsre < passScore)
+                                if (dsreA < passScoreA)
                                     ssr.ReScoreP = "0";
                                 else
                                     ssr.ReScoreP = "1";
@@ -891,16 +876,17 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
 
                             if (ssr.ScoreP == "-1")
                             {
-                                if (Utility.GetAttribute(elmScore, "是否取得學分") != null)
+                                decimal dsB, passScoreB = 60;
+                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "原始成績"), out dsB))
                                 {
-                                    if (Utility.GetAttribute(elmScore, "是否取得學分") == "是")
+                                    if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out passScoreB))
                                     {
+                                        // 已取得 passScore
+                                    }
+                                    if (dsB >= passScoreB)
                                         ssr.ScoreP = "1";
-                                    }
                                     else
-                                    {
                                         ssr.ScoreP = "0";
-                                    }
                                 }
                             }
 
@@ -1521,10 +1507,10 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
 
                 //                if (decimal.TryParse(Utility.GetAttribute(elmScore, "補考成績"), out dsre))
                 //                {
+                //                    decimal dsreP;
+
                 //                    // 四捨五入到整數位 --2021年3月 取消處理四捨五入
                 //                    //dsre = Math.Round(dsre, 0, MidpointRounding.AwayFromZero);
-
-                //                    decimal dsreP;
 
                 //                    if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dsreP))
                 //                    {
@@ -1558,29 +1544,11 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                 //                    }
                 //                }
 
-                //                if (ssr.ReAScoreP == "-1")
-                //                {
-                //                    if (Utility.GetAttribute(elmScore, "是否取得學分") != null)
-                //                    {
-                //                        if (Utility.GetAttribute(elmScore, "是否取得學分") == "是")
-                //                        {
-                //                            ssr.ReAScoreP = "1";
-                //                        }
-                //                        else
-                //                        {
-                //                            ssr.ReAScoreP = "0";
-                //                        }
-                //                    }
-                //                }
 
-                //                // 有重修
-                //                int sy, ss;
-                //                if (int.TryParse(Utility.GetAttribute(elmScore, "重修學年度"), out sy) && int.TryParse(Utility.GetAttribute(elmScore, "重修學期"), out ss))
+                //                // 補修學年度、學期和畫面上選相同相同才會填入
+                //                if (Utility.GetAttribute(elmScore, "補修學年度") == _SchoolYear.ToString() && Utility.GetAttribute(elmScore, "補修學期") == _Semester.ToString())
                 //                {
-                //                    if (sy == _SchoolYear && ss == _Semester)
-                //                    {
-                //                        SubjectScoreRec108List1.Add(ssr);
-                //                    }
+                //                    SubjectScoreRec108ReScoreList.Add(ssr);
                 //                }
 
                 //            }
@@ -2051,24 +2019,15 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                             if (StudGradYearDict.ContainsKey(studRec.StudentID))
                                 GrStr = StudGradYearDict[studRec.StudentID] + "_及";
 
-                            decimal ds, dsre, passScore = 60;
+                            decimal dsA, dsreA, passScoreA = 60;
 
-                            if (decimal.TryParse(Utility.GetAttribute(elmScore, "原始成績"), out ds))
+                            if (decimal.TryParse(Utility.GetAttribute(elmScore, "原始成績"), out dsA))
                             {
-                                // 四捨五入到整數位 --2021年3月 取消處理四捨五入
-                                //ds = Math.Round(ds, 0, MidpointRounding.AwayFromZero);
-
-                                decimal dsp;
-                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dsp))
-                                    passScore = dsp;
-
-                                //ssr.Score = string.Format("{0:##0}", ds);
-                                ssr.Score = ds.ToString();
-
-
-                                ssr.ScoreP = "-1";
-
-                                if (ds < passScore)
+                                decimal dspA;
+                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dspA))
+                                    passScoreA = dspA;
+                                ssr.Score = dsA.ToString();
+                                if (dsA < passScoreA)
                                     ssr.ScoreP = "0";
                                 else
                                     ssr.ScoreP = "1";
@@ -2099,30 +2058,30 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                 {
                                     decimal ys = StudentYearScoreDict[studRec.StudentID][ssr.SubjectName];
                                     ssr.YearScore = string.Format("{0:##0.0}", ys);
-                                    if (ys < passScore)
+                                    if (ys < passScoreA)
                                         ssr.YearScoreP = "0";
                                     else
                                         ssr.YearScoreP = "1";
                                 }
                             }
 
-                            if (decimal.TryParse(Utility.GetAttribute(elmScore, "補考成績"), out dsre))
+                            if (decimal.TryParse(Utility.GetAttribute(elmScore, "補考成績"), out dsreA))
                             {
                                 // 四捨五入到整數位--2021年3月 取消處理四捨五入
                                 //dsre = Math.Round(dsre, 0, MidpointRounding.AwayFromZero);
 
-                                decimal dsreP;
+                                decimal dsrePA;
 
-                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dsreP))
+                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dsrePA))
                                 {
-                                    passScore = dsreP;
+                                    passScoreA = dsrePA;
                                 }
 
                                 //ssr.ReScore = string.Format("{0:##0}", dsre);
-                                ssr.ReScore = dsre.ToString();
+                                ssr.ReScore = dsreA.ToString();
 
                                 ssr.ReScoreP = "-1";
-                                if (dsre < passScore)
+                                if (dsreA < passScoreA)
                                     ssr.ReScoreP = "0";
                                 else
                                     ssr.ReScoreP = "1";
@@ -2130,16 +2089,17 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
 
                             if (ssr.ScoreP == "-1")
                             {
-                                if (Utility.GetAttribute(elmScore, "是否取得學分") != null)
+                                decimal dsB, passScoreB = 60;
+                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "原始成績"), out dsB))
                                 {
-                                    if (Utility.GetAttribute(elmScore, "是否取得學分") == "是")
+                                    if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out passScoreB))
                                     {
+                                        // 已取得 passScore
+                                    }
+                                    if (dsB >= passScoreB)
                                         ssr.ScoreP = "1";
-                                    }
                                     else
-                                    {
                                         ssr.ScoreP = "0";
-                                    }
                                 }
                             }
                             // 不計學分 = 是，不列入學習成績
@@ -2222,22 +2182,15 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                             if (StudGradYearDict.ContainsKey(studRec.StudentID))
                                 GrStr = StudGradYearDict[studRec.StudentID] + "_及";
 
-                            decimal ds, dsre, passScore = 60;
+                            decimal dsA, dsreA, passScoreA = 60;
 
-                            if (decimal.TryParse(Utility.GetAttribute(elmScore, "原始成績"), out ds))
+                            if (decimal.TryParse(Utility.GetAttribute(elmScore, "原始成績"), out dsA))
                             {
-                                // 四捨五入到整數位 --2021年3月 取消處理四捨五入
-                                //ds = Math.Round(ds, 0, MidpointRounding.AwayFromZero);
-
-                                decimal dsp;
-                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dsp))
-                                    passScore = dsp;
-
-                                //ssr.Score = string.Format("{0:##0}", ds);
-                                ssr.Score = ds.ToString();
-
-
-                                if (ds < passScore)
+                                decimal dspA;
+                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dspA))
+                                    passScoreA = dspA;
+                                ssr.Score = dsA.ToString();
+                                if (dsA < passScoreA)
                                     ssr.ScoreP = "0";
                                 else
                                     ssr.ScoreP = "1";
@@ -2260,22 +2213,22 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                 }
                             }
 
-                            if (decimal.TryParse(Utility.GetAttribute(elmScore, "補考成績"), out dsre))
+                            if (decimal.TryParse(Utility.GetAttribute(elmScore, "補考成績"), out dsreA))
                             {
                                 // 四捨五入到整數位 --2021年3月 取消處理四捨五入
                                 //dsre = Math.Round(dsre, 0, MidpointRounding.AwayFromZero);
 
-                                decimal dsreP;
+                                decimal dsrePA;
 
-                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dsreP))
+                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out dsrePA))
                                 {
-                                    passScore = dsreP;
+                                    passScoreA = dsrePA;
                                 }
 
-                                //ssr.ReScore = string.Format("{0:##0}", dsre);
-                                ssr.ReScore = dsre.ToString();
+                                // ssr.ReScore = string.Format("{0:##0}", dsre);
+                                ssr.ReScore = dsreA.ToString();
 
-                                if (dsre < passScore)
+                                if (dsreA < passScoreA)
                                     ssr.ReScoreP = "0";
                                 else
                                     ssr.ReScoreP = "1";
@@ -2303,16 +2256,17 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
 
                             if (ssr.ScoreP == "-1")
                             {
-                                if (Utility.GetAttribute(elmScore, "是否取得學分") != null)
+                                decimal dsB, passScoreB = 60;
+                                if (decimal.TryParse(Utility.GetAttribute(elmScore, "原始成績"), out dsB))
                                 {
-                                    if (Utility.GetAttribute(elmScore, "是否取得學分") == "是")
+                                    if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out passScoreB))
                                     {
+                                        // 已取得 passScore
+                                    }
+                                    if (dsB >= passScoreB)
                                         ssr.ScoreP = "1";
-                                    }
                                     else
-                                    {
                                         ssr.ScoreP = "0";
-                                    }
                                 }
                             }
 
@@ -2415,7 +2369,26 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                             }
                                         }
                                         sysr.Credit1 = Utility.GetAttribute(elmScore, "開課學分數") == "" ? "-1" : Utility.GetAttribute(elmScore, "開課學分數");
-                                        sysr.Pass1 = Utility.GetAttribute(elmScore, "是否取得學分");
+                                        decimal score1, ps1 = 60;
+                                        if (decimal.TryParse(Utility.GetAttribute(elmScore, "原始成績"), out score1))
+                                        {
+                                            sysr.Score1 = Utility.GetAttribute(elmScore, "原始成績");
+                                            if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out ps1))
+                                            {
+                                                sysr.PassStandard1 = Utility.GetAttribute(elmScore, "修課及格標準");
+                                            }
+                                            else
+                                            {
+                                                sysr.PassStandard1 = "60";
+                                            }
+                                            sysr.Pass1 = score1 >= ps1 ? "1" : "0";
+                                        }
+                                        else
+                                        {
+                                            sysr.Pass1 = "-1";
+                                            sysr.PassStandard1 = "";
+                                            sysr.Score1 = "";
+                                        }
                                         hasScore1 = true;
                                         // 不計學分 = 是，不列入學習成績
                                         if (Utility.GetAttribute(elmScore, "不計學分") == "是")
@@ -2452,7 +2425,26 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                             }
                                         }
                                         sysr.Credit2 = Utility.GetAttribute(elmScore, "開課學分數") == "" ? "-1" : Utility.GetAttribute(elmScore, "開課學分數");
-                                        sysr.Pass2 = Utility.GetAttribute(elmScore, "是否取得學分");
+                                        decimal score2, ps2 = 60;
+                                        if (decimal.TryParse(Utility.GetAttribute(elmScore, "原始成績"), out score2))
+                                        {
+                                            sysr.Score2 = Utility.GetAttribute(elmScore, "原始成績");
+                                            if (decimal.TryParse(Utility.GetAttribute(elmScore, "修課及格標準"), out ps2))
+                                            {
+                                                sysr.PassStandard2 = Utility.GetAttribute(elmScore, "修課及格標準");
+                                            }
+                                            else
+                                            {
+                                                sysr.PassStandard2 = "60";
+                                            }
+                                            sysr.Pass2 = score2 >= ps2 ? "1" : "0";
+                                        }
+                                        else
+                                        {
+                                            sysr.Pass2 = "-1";
+                                            sysr.PassStandard2 = "";
+                                            sysr.Score2 = "";
+                                        }
                                         hasScore2 = true;
 
                                         // 不計學分 = 是，不列入學習成績
@@ -2462,28 +2454,18 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                 }
                             }
 
-                            sysr.ScoreP = "0";
-                            if (hasScore1 == true && hasScore2 == true)
-                            {
-                                if (sysr.Pass1 == "是" && sysr.Pass2 == "是")
-                                {
-                                    sysr.ScoreP = "1";
-                                }
-                            }
-                            else if (hasScore1 == true && hasScore2 == false)
-                            {
-                                if (sysr.Pass1 == "是")
-                                {
-                                    sysr.ScoreP = "1";
-                                }
-                            }
-                            if (hasScore1 == false && hasScore2 == true)
-                            {
-                                if (sysr.Pass2 == "是")
-                                {
-                                    sysr.ScoreP = "1";
-                                }
-                            }
+                            sysr.ScoreP = "-1";
+                            decimal reScore, passScore1, passScore2, minPassScore = 60;
+                            bool hasPass1 = decimal.TryParse(sysr.PassStandard1, out passScore1);
+                            bool hasPass2 = decimal.TryParse(sysr.PassStandard2, out passScore2);
+                            if (hasPass1 && hasPass2)
+                                minPassScore = Math.Min(passScore1, passScore2);
+                            else if (hasPass1)
+                                minPassScore = passScore1;
+                            else if (hasPass2)
+                                minPassScore = passScore2;
+                            if (decimal.TryParse(sysr.ReScore, out reScore))
+                                sysr.ScoreP = reScore >= minPassScore ? "1" : "0";
 
                             SubjectReScoreRec108ListN.Add(sysr);
                         }

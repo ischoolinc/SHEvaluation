@@ -2127,7 +2127,7 @@ namespace SmartSchool.Evaluation
                                         updateSemesterSubjectScoreList[sy].Add(se, new Dictionary<string, XmlElement>());
                                     updateSemesterSubjectScoreList[sy][se][key1] = makeUpScoreInfo.Detail;
 
-                                    // --- 處理補修成績寫入學期歷程資料 4.3 補修成績
+                                    // --- 處理補修成   績寫入學期歷程資料 4.3 補修成績
                                     string HisClassName = "", HisStudentNumber = "";
                                     int? HisSeatNo = null;
                                     try
@@ -2290,7 +2290,7 @@ namespace SmartSchool.Evaluation
                                         SubjectLevel = makeUpScoreInfo.Level.Trim(),
                                         GradeYear = makeUpScoreInfo.GradeYear.ToString(),
                                         Credit = makeUpScoreInfo.CreditDec().ToString(),
-                                        Score = makeUpScoreInfo.Score.ToString(),
+                                        Score = roundedScore.ToString(),
 
                                         ScoreP = ScoreP,
                                         ReScore = reScore,

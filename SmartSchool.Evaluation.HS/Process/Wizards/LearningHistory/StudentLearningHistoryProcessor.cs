@@ -293,8 +293,8 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             // 讀取補修資料
             Dictionary<string, List<SubjectScoreRec108>> dataValue43 = GetLearningHistoryReScoreDataAsDictionary43(_SchoolYear, _Semester, studentIDList);
 
-            // 取得有補修資料的學期成績
-            Dictionary<string, List<SubjectScoreRec108>> semsScore43 = GetStudentScoreDataAsDictionary(dataValue43.Keys.ToList());
+            // 取得有補修資料的學期成績（改用補修專用方法）
+            Dictionary<string, List<SubjectScoreRec108>> semsScore43 = GetStudentScoreDataAsDictionary43(dataValue43.Keys.ToList());
 
             // 比對並填入補考成績資料
             foreach (var studentData in dataValue43)
@@ -310,11 +310,13 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                     // 比對每個補修記錄
                     foreach (var dataValueRecord in dataValueList)
                     {
-                        // 在學期成績中尋找對應的記錄
-                        var matchingSemsScore = semsScoreList.FirstOrDefault(s => 
+                        // 在學期成績中尋找對應的記錄（加上學年度、學期條件）
+                        var matchingSemsScore = semsScoreList.FirstOrDefault(s =>
                             s.StudentID == dataValueRecord.StudentID &&
                             s.SubjectName == dataValueRecord.SubjectName &&
-                            s.SubjectLevel == dataValueRecord.SubjectLevel);
+                            s.SubjectLevel == dataValueRecord.SubjectLevel &&
+                            s.SchoolYear == _SchoolYear.ToString() &&
+                            s.Semester == _Semester.ToString());
 
                         if (matchingSemsScore != null)
                         {
@@ -322,21 +324,18 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                             dataValueRecord.ReScore = matchingSemsScore.ReScore;
 
                             // 比較補考成績與及格標準
-                            if (!string.IsNullOrWhiteSpace(matchingSemsScore.ReScore) && 
-                                !string.IsNullOrWhiteSpace(matchingSemsScore.ScoreP))
+                            if (!string.IsNullOrWhiteSpace(matchingSemsScore.ReScore))
                             {
-                                // 嘗試轉換為數值進行比較
-                                if (decimal.TryParse(matchingSemsScore.ReScore, out decimal reScore) &&
-                                    decimal.TryParse(matchingSemsScore.ScoreP, out decimal scoreP))
+                                decimal scoreP = 60; // 預設及格標準
+                                if (!string.IsNullOrWhiteSpace(matchingSemsScore.ScoreP))
+                                    decimal.TryParse(matchingSemsScore.ScoreP, out scoreP);
+
+                                if (decimal.TryParse(matchingSemsScore.ReScore, out decimal reScore))
                                 {
                                     if (reScore >= scoreP)
-                                    {
                                         dataValueRecord.ReScoreP = "1"; // 及格
-                                    }
                                     else
-                                    {
                                         dataValueRecord.ReScoreP = "0"; // 不及格
-                                    }
                                 }
                                 else
                                 {
@@ -382,7 +381,9 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                         var matchingSemsScore = semsScoreList.FirstOrDefault(s =>
                             s.StudentID == dataValueRecord.StudentID &&
                             s.SubjectName == dataValueRecord.SubjectName &&
-                            s.SubjectLevel == dataValueRecord.SubjectLevel);
+                            s.SubjectLevel == dataValueRecord.SubjectLevel &&
+                            s.SchoolYear == _SchoolYear.ToString() &&
+                            s.Semester == _Semester.ToString());
 
                         if (matchingSemsScore != null)
                         {
@@ -390,12 +391,13 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                             dataValueRecord.ReScore = matchingSemsScore.ReScore;
 
                             // 比較補考成績與及格標準
-                            if (!string.IsNullOrWhiteSpace(matchingSemsScore.ReScore) &&
-                                !string.IsNullOrWhiteSpace(matchingSemsScore.ScoreP))
+                            if (!string.IsNullOrWhiteSpace(matchingSemsScore.ReScore))
                             {
-                                // 嘗試轉換為數值進行比較
-                                if (decimal.TryParse(matchingSemsScore.ReScore, out decimal reScore) &&
-                                    decimal.TryParse(matchingSemsScore.ScoreP, out decimal scoreP))
+                                decimal scoreP = 60; // 預設及格標準
+                                if (!string.IsNullOrWhiteSpace(matchingSemsScore.ScoreP))
+                                    decimal.TryParse(matchingSemsScore.ScoreP, out scoreP);
+
+                                if (decimal.TryParse(matchingSemsScore.ReScore, out decimal reScore))
                                 {
                                     if (reScore >= scoreP)
                                     {
@@ -3003,12 +3005,10 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                     rec.CourseCode = dr["課程代碼"] + "";
                     rec.GradeYear = dr["開課年級"] + "";
                     rec.Credit = dr["修課學分"] + "";
-                    rec.ReAScore = dr["再次修習成績"] + "";
-                    rec.ReAScoreP = dr["再次修習成績及格"] + "";
+                    rec.Score = dr["再次修習成績"] + "";
+                    rec.ScoreP = dr["再次修習成績及格"] + "";
                     rec.ReScore = dr["補考成績"] + "";
                     rec.ReScoreP = dr["補考及格"] + "";
-                    rec.Score = dr["重讀成績"] + "";
-                    rec.ScoreP = dr["成績及格"] + "";
                     rec.ReStudMark = dr["重讀註記"] + "";
                     rec.useCredit = dr["是否採計學分"] + "";
                     rec.Text = dr["質性文字描述"] + "";
@@ -3029,6 +3029,88 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                     if (!result.ContainsKey(student_id))
                         result[student_id] = new List<SubjectScoreRec108>();
                     result[student_id].Add(rec);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return result;
+        }
+
+        // 新增：專供補修成績(4.3)比對補考成績的學期成績查詢
+        public Dictionary<string, List<SubjectScoreRec108>> GetStudentScoreDataAsDictionary43(List<string> studentIDList)
+        {
+            Dictionary<string, List<SubjectScoreRec108>> result = new Dictionary<string, List<SubjectScoreRec108>>();
+            try
+            {
+                QueryHelper qh = new QueryHelper();
+                string query = string.Format(@"
+                SELECT
+                    sems_subj_score_ext.ref_student_id,
+                    sems_subj_score_ext.grade_year,
+                    array_to_string(xpath('//Subject/@補修學年度', subj_score_ele), '')::text AS 補修學年度,
+                    array_to_string(xpath('//Subject/@補修學期', subj_score_ele), '')::text AS 補修學期,
+                    array_to_string(xpath('//Subject/@科目', subj_score_ele), '')::text AS 科目,
+                    array_to_string(xpath('//Subject/@科目級別', subj_score_ele), '')::text AS 科目級別,
+                    array_to_string(xpath('//Subject/@原始成績', subj_score_ele), '')::text AS 原始成績,
+                    array_to_string(xpath('//Subject/@補考成績', subj_score_ele), '')::text AS 補考成績,
+                    array_to_string(xpath('//Subject/@修課及格標準', subj_score_ele), '')::text AS 修課及格標準
+                FROM (
+                    SELECT 
+                        sems_subj_score.*,
+                        unnest(xpath('//SemesterSubjectScoreInfo/Subject', xmlparse(content score_info))) as subj_score_ele
+                    FROM 
+                        sems_subj_score 
+                    WHERE ref_student_id IN ({0})
+                ) as sems_subj_score_ext
+                WHERE array_to_string(xpath('//Subject/@補考成績', subj_score_ele), '')::text IS NOT NULL 
+                    AND array_to_string(xpath('//Subject/@補考成績', subj_score_ele), '')::text != ''
+                ORDER BY grade_year desc, 補修學期 desc, 補修學年度 desc", 
+                    string.Join(",", studentIDList));
+
+                DataTable dt = qh.Select(query);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string student_id = dr["ref_student_id"] + "";
+                    if (!result.ContainsKey(student_id))
+                        result[student_id] = new List<SubjectScoreRec108>();
+
+                    SubjectScoreRec108 scoreRecord = new SubjectScoreRec108();
+                    scoreRecord.StudentID = student_id;
+                    scoreRecord.GradeYear = dr["grade_year"] + "";
+                    scoreRecord.SchoolYear = dr["補修學年度"] + "";
+                    scoreRecord.Semester = dr["補修學期"] + "";
+                    scoreRecord.SubjectName = dr["科目"] + "";
+                    scoreRecord.SubjectLevel = dr["科目級別"] + "";
+                    scoreRecord.Score = dr["原始成績"] + "";
+                    scoreRecord.ReScore = dr["補考成績"] + "";
+                    scoreRecord.ScoreP = dr["修課及格標準"] + "";
+                    // 其餘欄位同原方法
+                    scoreRecord.IDNumber = "";
+                    scoreRecord.Birthday = "";
+                    scoreRecord.CourseCode = "";
+                    scoreRecord.Credit = "";
+                    scoreRecord.ReScoreP = "";
+                    scoreRecord.useCredit = "";
+                    scoreRecord.Text = "";
+                    scoreRecord.Name = "";
+                    scoreRecord.HisClassName = "";
+                    scoreRecord.HisSeatNo = 0;
+                    scoreRecord.HisStudentNumber = "";
+                    scoreRecord.ClassName = "";
+                    scoreRecord.SeatNo = "";
+                    scoreRecord.StudentNumber = "";
+                    scoreRecord.isScScore = false;
+                    scoreRecord.checkPass = false;
+                    scoreRecord.CodePass = true;
+                    if (!string.IsNullOrWhiteSpace(scoreRecord.StudentID) &&
+                        !string.IsNullOrWhiteSpace(scoreRecord.SubjectName) &&
+                        !string.IsNullOrWhiteSpace(scoreRecord.ReScore))
+                    {
+                        scoreRecord.checkPass = true;
+                        result[student_id].Add(scoreRecord);
+                    }
                 }
             }
             catch (Exception ex)

@@ -68,6 +68,7 @@ namespace StudentDuplicateSubjectCheck
         /// </summary>
         public string Extensions { get; set; }
 
-
+        // 成績來源
+        public List<string> ScoreSource = new List<string>();
     }
 }

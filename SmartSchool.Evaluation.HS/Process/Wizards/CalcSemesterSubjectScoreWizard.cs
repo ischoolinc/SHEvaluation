@@ -469,6 +469,15 @@ namespace SmartSchool.Evaluation.Process.Wizards
                     upLoad((List<StudentRecord>)e.Result);
                 }
 
+                try
+                {
+                    // 呼叫學期歷程同步
+                    FISCA.Features.Invoke("StudentLearningHistoryDetailContent");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("StudentLearningHistoryDetailContent 無法呼叫：" + ex.Message);
+                }
             }
         }
 

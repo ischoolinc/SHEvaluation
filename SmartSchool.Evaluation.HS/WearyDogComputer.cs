@@ -3,7 +3,9 @@ using FISCA.Data;
 using FISCA.DSAUtil;
 using SmartSchool.Customization.Data;
 using SmartSchool.Customization.Data.StudentExtension;
+using SmartSchool.Evaluation.Process.Wizards.LearningHistory;
 using SmartSchool.Evaluation.WearyDogComputerHelper;
+using SmartSchool.StudentRelated.RibbonBars.Export.RequestHandler.Formater;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -296,6 +298,126 @@ namespace SmartSchool.Evaluation
                 #endregion
             }
 
+            // 透過學生系統編號，取得封存成績
+            Dictionary<string, Dictionary<string, decimal>> dataCompareDict1 = new Dictionary<string, Dictionary<string, decimal>>();
+
+            string query1 = string.Format(@"
+            SELECT
+                ext.ref_student_id,
+                ext.grade_year,
+                ext.semester,
+                ext.school_year,
+                array_to_string(xpath('//Subject/@科目', subj_score_ele), '')::text AS 科目,
+                array_to_string(xpath('//Subject/@科目級別', subj_score_ele), '')::text AS 科目級別,
+                array_to_string(xpath('//Subject/@不計學分', subj_score_ele), '')::text AS 不計學分,
+                array_to_string(xpath('//Subject/@不需評分', subj_score_ele), '')::text AS 不需評分,
+                array_to_string(xpath('//Subject/@原始成績', subj_score_ele), '')::text AS 原始成績,
+                array_to_string(xpath('//Subject/@學年調整成績', subj_score_ele), '')::text AS 學年調整成績,
+                array_to_string(xpath('//Subject/@擇優採計成績', subj_score_ele), '')::text AS 擇優採計成績,
+                array_to_string(xpath('//Subject/@補考成績', subj_score_ele), '')::text AS 補考成績,
+                array_to_string(xpath('//Subject/@重修成績', subj_score_ele), '')::text AS 重修成績
+            FROM (
+                SELECT 
+                    archive.*,
+                    unnest(xpath('//SemesterSubjectScoreInfo/Subject', xmlparse(content score_info))) as subj_score_ele
+                FROM $semester_subject_score_archive archive
+                WHERE archive.uid IN (
+                    SELECT uid FROM (
+                        SELECT
+                            uid,
+                            ref_student_id,
+                            school_year,
+                            semester,
+                            ROW_NUMBER() OVER (
+                                PARTITION BY ref_student_id, school_year, semester
+                                ORDER BY last_update DESC
+                            ) AS rn
+                        FROM $semester_subject_score_archive
+                        WHERE ref_student_id IN ({0})
+                    ) t
+                    WHERE t.rn = 1
+                )
+            ) ext
+            ORDER BY ext.ref_student_id, ext.school_year DESC, ext.semester DESC, ext.grade_year DESC
+
+            ", sid);
+
+            try
+            {
+                QueryHelper qhd1 = new QueryHelper();
+                DataTable dtd1 = qhd1.Select(query1);
+                foreach (DataRow dr in dtd1.Rows)
+                {
+                    string studentID = dr["ref_student_id"].ToString();
+                    string subject = dr["科目"].ToString();
+                    string level = dr["科目級別"].ToString();
+                    string s1 = dr["不計學分"].ToString();
+                    string s2 = dr["不需評分"].ToString();
+
+                    if (s2 == "是")
+                    {
+                        // 不需評分的科目，跳過
+                        continue;
+                    }
+
+                    //最高分
+                    decimal maxScore = 0;// = sacRecord.FinalScore;
+
+
+                    string[] scoreNames = new string[] { "原始成績", "學年調整成績", "擇優採計成績", "補考成績", "重修成績" };
+
+                    foreach (string scorename in scoreNames)
+                    {
+                        decimal s;
+                        if (dr[scorename] != null)
+                            if (decimal.TryParse(dr[scorename].ToString(), out s))
+                            {
+                                if (s > maxScore)
+                                {
+                                    maxScore = s;
+                                }
+                            }
+                    }
+
+
+                    string key = subject + "_" + level;
+                    // 只要有成績的就加入
+                    if (!dataCompareDict1.ContainsKey(studentID))
+                    {
+                        dataCompareDict1.Add(studentID, new Dictionary<string, decimal>());
+                    }
+
+                    if (!dataCompareDict1[studentID].ContainsKey(key))
+                    {
+                        dataCompareDict1[studentID].Add(key, maxScore);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                FISCA.LogAgent.ApplicationLog.Log("成績計算", "取得封存成績異常", ex.Message);
+            }
+
+            // 補修成績使用
+            List<SubjectScoreRec108> makeUpScoreList = new List<SubjectScoreRec108>();
+
+            // 重修成績使用
+            List<SubjectScoreRec108> restudyScoreList = new List<SubjectScoreRec108>();
+
+            // 4.4 轉學轉科名冊
+            List<SubjectScoreRec108> transferScoreList = new List<SubjectScoreRec108>();
+
+            // 5.3 重讀成績名冊
+            List<SubjectScoreRec108> repeatScoreList = new List<SubjectScoreRec108>();
+
+
+            // 取得異動與身分別對照
+            Dictionary<string, string> UpdateCodeMappingDict = Utility.GetUpdateCodeMappingDict();
+
+            // 取得有符合對照學生
+            Dictionary<string, string> StudentHasUpdateCodeDict = Utility.GetStudentHasUpdateCodeDict(schoolyear, semester, sidList, UpdateCodeMappingDict.Keys.ToList());
+
 
             foreach (StudentRecord var in students)
             {
@@ -567,49 +689,108 @@ namespace SmartSchool.Evaluation
                     Dictionary<int, Dictionary<int, Dictionary<string, SemesterSubjectScoreInfo>>> semesterSubjectScoreList = new Dictionary<int, Dictionary<int, Dictionary<string, SemesterSubjectScoreInfo>>>();
                     //當學年度已紀錄之成績
                     Dictionary<SemesterSubjectScoreInfo, string> currentSubjectScoreList = new Dictionary<SemesterSubjectScoreInfo, string>();
-                    //重讀成績
-                    Dictionary<SemesterSubjectScoreInfo, string> repeatSubjectScoreList = new Dictionary<SemesterSubjectScoreInfo, string>();
-                    //重修成績
-                    Dictionary<SemesterSubjectScoreInfo, string> restudySubjectScoreList = new Dictionary<SemesterSubjectScoreInfo, string>();
+                    ////重讀成績
+                    //Dictionary<SemesterSubjectScoreInfo, string> repeatSubjectScoreList = new Dictionary<SemesterSubjectScoreInfo, string>();
+                    ////重修成績
+                    //Dictionary<SemesterSubjectScoreInfo, string> restudySubjectScoreList = new Dictionary<SemesterSubjectScoreInfo, string>();
+
+                    // 重修成績
+                    Dictionary<string, List<SemesterSubjectScoreInfo>> previousSubjectScoreMap = new Dictionary<string, List<SemesterSubjectScoreInfo>>();
+
+                    // 補修成績
+                    Dictionary<string, List<SemesterSubjectScoreInfo>> makeupSubjectScoreMap = new Dictionary<string, List<SemesterSubjectScoreInfo>>();
+
+                    // 科目名稱+級別最高
+                    Dictionary<string, decimal> dataCompareDict = new Dictionary<string, decimal>();
+
+
                     #region 先掃一遍把學生成績分類
                     foreach (SemesterSubjectScoreInfo scoreinfo in var.SemesterSubjectScoreList)
                     {
                         string key = scoreinfo.Subject.Trim() + "_" + scoreinfo.Level.Trim();
 
-                        if (scoreinfo.SchoolYear == schoolyear)
+                        string studentSubjectKey = var.StudentID + "_" + key;
+
+
+
+                        //最高分
+                        decimal maxScore = 0;//                   
+
+                        string[] scoreNames = new string[] { "原始成績", "學年調整成績", "擇優採計成績", "補考成績", "重修成績" };
+
+                        foreach (string scorename in scoreNames)
                         {
-                            if (scoreinfo.Semester == semester)
-                                currentSubjectScoreList.Add(scoreinfo, key);
-                            else if (scoreinfo.SchoolYear >= 108 && scoreinfo.Semester < semester)
+                            decimal s;
+                            if (decimal.TryParse(scoreinfo.Detail.GetAttribute(scorename), out s))
                             {
-                                // 因為108課綱開始跨課綱，學生會重讀某科目，會使用科目名稱+級別+重讀判斷文字
-                                repeatSubjectScoreList.Add(scoreinfo, key);
+                                if (s > maxScore)
+                                {
+                                    maxScore = s;
+                                }
                             }
-                            else if (scoreinfo.Semester < semester)
-                            {
-                                if (scoreinfo.GradeYear == (int)gradeYear)
-                                    repeatSubjectScoreList.Add(scoreinfo, key);
-                                else
-                                    restudySubjectScoreList.Add(scoreinfo, key);
-                            }
-                        }
-                        else if (scoreinfo.SchoolYear >= 108 && scoreinfo.SchoolYear < schoolyear)
-                        {
-                            // 因為108課綱開始跨課綱，學生會重讀某科目，會使用科目名稱+級別+重讀判斷文字
-                            repeatSubjectScoreList.Add(scoreinfo, key);
-                        }
-                        else if (scoreinfo.SchoolYear < schoolyear)
-                        {
-                            if (scoreinfo.GradeYear == (int)gradeYear)
-                                repeatSubjectScoreList.Add(scoreinfo, key);
-                            else
-                                restudySubjectScoreList.Add(scoreinfo, key);
                         }
 
-                        if (duplicateSubjectLevelMethodDict.ContainsKey(var.StudentID + "_" + key) && !duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(var.StudentID + "_" + key) && !currentSubjectScoreList.ContainsValue(key)) //假如有key 又非本學期的成績(可能本學期末已經先算過一次了) 則加入重覆計算的規則
+
+
+                        // 目前學年度 currentSubjectScoreList
+                        if (scoreinfo.SchoolYear == schoolyear && scoreinfo.Semester == semester)
                         {
-                            duplicateSubjectLevelMethodDict_Afterfilter.Add(var.StudentID + "_" + key, duplicateSubjectLevelMethodDict[var.StudentID + "_" + key]);
+                            currentSubjectScoreList.Add(scoreinfo, key);
                         }
+                        else
+                        {
+                            if (!dataCompareDict.ContainsKey(key))
+                                dataCompareDict.Add(key, 0);
+
+                            if (maxScore > dataCompareDict[key])
+                                dataCompareDict[key] = maxScore;
+
+                            // 重修                            
+                            if ((scoreinfo.SchoolYear < schoolyear || (scoreinfo.SchoolYear == schoolyear && scoreinfo.Semester < semester)))
+                            {
+
+                                // 重修成績
+                                if (previousSubjectScoreMap.ContainsKey(studentSubjectKey))
+                                {
+                                    previousSubjectScoreMap[studentSubjectKey].Add(scoreinfo);
+                                }
+                                else
+                                {
+                                    previousSubjectScoreMap.Add(studentSubjectKey, new List<SemesterSubjectScoreInfo> { scoreinfo });
+                                }
+
+                                // 補修成績挖洞
+                                if (scoreinfo.Detail.GetAttribute("是否補修成績") == "是")
+                                {
+                                    if (makeupSubjectScoreMap.ContainsKey(studentSubjectKey))
+                                    {
+                                        makeupSubjectScoreMap[studentSubjectKey].Add(scoreinfo);
+                                    }
+                                    else
+                                    {
+                                        List<SemesterSubjectScoreInfo> scoreinfoList = new List<SemesterSubjectScoreInfo> { scoreinfo };
+                                        makeupSubjectScoreMap.Add(studentSubjectKey, scoreinfoList);
+                                    }
+                                }
+                            }
+                        }
+
+                        //if (duplicateSubjectLevelMethodDict.ContainsKey(var.StudentID + "_" + key) && !duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(var.StudentID + "_" + key) && !currentSubjectScoreList.ContainsValue(key)) //假如有key 又非本學期的成績(可能本學期末已經先算過一次了) 則加入重覆計算的規則
+                        //{
+                        //    duplicateSubjectLevelMethodDict_Afterfilter.Add(var.StudentID + "_" + key, duplicateSubjectLevelMethodDict[var.StudentID + "_" + key]);
+                        //}
+
+                        // 只要 duplicateSubjectLevelMethodDict 有值且 value 非空白，且 Afterfilter 還沒有，就加入
+                        //string dictKey = var.StudentID + "_" + key;
+                        //if (duplicateSubjectLevelMethodDict.ContainsKey(dictKey)
+                        //    && !duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(dictKey)
+                        //    && !string.IsNullOrWhiteSpace(duplicateSubjectLevelMethodDict[dictKey]))
+                        //{
+                        //    duplicateSubjectLevelMethodDict_Afterfilter.Add(dictKey, duplicateSubjectLevelMethodDict[dictKey]);
+                        //}
+
+
+
 
                         if (!semesterSubjectScoreList.ContainsKey(scoreinfo.SchoolYear))
                             semesterSubjectScoreList.Add(scoreinfo.SchoolYear, new Dictionary<int, Dictionary<string, SemesterSubjectScoreInfo>>());
@@ -621,11 +802,22 @@ namespace SmartSchool.Evaluation
                             semesterSubjectScoreList[scoreinfo.SchoolYear][scoreinfo.Semester][key] = scoreinfo;
                     }
                     #endregion
+
+                    // 過濾取得重覆科目級別的計算處理方式
+                    foreach (var kv in duplicateSubjectLevelMethodDict)
+                    {
+                        if (!string.IsNullOrWhiteSpace(kv.Value) && !duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(kv.Key))
+                        {
+                            duplicateSubjectLevelMethodDict_Afterfilter.Add(kv.Key, kv.Value);
+                        }
+                    }
+
+
                     #region 移除重讀跟重修成績重複年級的學期成績
                     // 因為整個過濾會產生只重讀某學年度學期資料會被過濾
                     //CleanUpRepeat(repeatSubjectScoreList);
 
-                    CleanUpRepeat(restudySubjectScoreList);
+                    //CleanUpRepeat(restudySubjectScoreList);
                     #endregion
                     //新增的學期成績資料
                     Dictionary<int, Dictionary<int, Dictionary<string, XmlElement>>> insertSemesterSubjectScoreList = new Dictionary<int, Dictionary<int, Dictionary<string, XmlElement>>>();
@@ -655,58 +847,1019 @@ namespace SmartSchool.Evaluation
                             }
                         }
 
-                        if (duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(var.StudentID + "_" + key) ? duplicateSubjectLevelMethodDict_Afterfilter[var.StudentID + "_" + key] == "" : false) // 如果使用者 沒有設定，要擋下，逼他們設定完畢才可以計算完畢
+                        //// 這判斷不確定作法先註解
+                        //if (duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(var.StudentID + "_" + key) ? duplicateSubjectLevelMethodDict_Afterfilter[var.StudentID + "_" + key] == "" : false) // 如果使用者 沒有設定，要擋下，逼他們設定完畢才可以計算完畢
+                        //{
+                        //    int sy = 0, se = 0;
+                        //    #region 找到最近一次修課紀錄
+                        //    foreach (SemesterSubjectScoreInfo si in restudySubjectScoreList.Keys)
+                        //    {
+                        //        if (restudySubjectScoreList[si] == key)
+                        //        {
+                        //            if (si.SchoolYear > sy || (si.SchoolYear == sy && si.Semester > se))
+                        //            {
+                        //                sy = si.SchoolYear;
+                        //                se = si.Semester;
+                        //            }
+                        //        }
+                        //    }
+                        //    #endregion
+
+                        //    if (!_ErrorList.ContainsKey(var))
+                        //        _ErrorList.Add(var, new List<string>());
+                        //    _ErrorList[var].Add("課程名稱 :" + sacRecord.CourseName + "， 已於" + sy + "學年度 第" + se + "學期修習過，請至 教務作業/成績作業 重覆修課採計方式 設定。");
+                        //    continue;
+                        //}
+
+                        // 取得該學生的處理規則
+                        string subjectKey = sacRecord.Subject.Trim() + "_" + sacRecord.SubjectLevel.Trim();
+                        string studentSubjectKey = var.StudentID + "_" + subjectKey;
+                        string rule = duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(studentSubjectKey)
+    ? duplicateSubjectLevelMethodDict_Afterfilter[studentSubjectKey]
+    : "";
+
+                        // 統一分類
+                        string ruleType = "";
+                        if (rule == "重修(寫回原學期)" || rule == "重修成績")
+                            ruleType = "重修成績";
+                        else if (rule == "重讀(擇優採計成績)" || rule == "再次修習")
+                            ruleType = "再次修習";
+                        else if (rule == "補修成績")
+                            ruleType = "補修成績";
+
+                        // 根據處理規則進行分支寫入
+                        if (ruleType == "再次修習")
                         {
                             int sy = 0, se = 0;
-                            #region 找到最近一次修課紀錄
-                            foreach (SemesterSubjectScoreInfo si in restudySubjectScoreList.Keys)
+
+                            //填入本學期科目成績
+                            if (currentSubjectScoreList.ContainsValue(key))
                             {
-                                if (restudySubjectScoreList[si] == key)
+                                #region 修改此學期已存在之成績
+                                SemesterSubjectScoreInfo updateScoreInfo = null;
+                                foreach (SemesterSubjectScoreInfo s in currentSubjectScoreList.Keys)
                                 {
-                                    if (si.SchoolYear > sy || (si.SchoolYear == sy && si.Semester > se))
+                                    if (currentSubjectScoreList[s] == key)
                                     {
-                                        sy = si.SchoolYear;
-                                        se = si.Semester;
+                                        updateScoreInfo = s;
+                                        break;
                                     }
                                 }
-                            }
-                            #endregion
-
-                            if (!_ErrorList.ContainsKey(var))
-                                _ErrorList.Add(var, new List<string>());
-                            _ErrorList[var].Add("課程名稱 :" + sacRecord.CourseName + "， 已於" + sy + "學年度 第" + se + "學期修習過，請至 教務作業/成績作業 重覆修課採計方式 設定。");
-                            continue;
-                        }
-
-                        //發現為重修科目
-                        //if (writeToFirstSemester && restudySubjectScoreList.ContainsValue(key))
-                        if (duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(var.StudentID + "_" + key) ? duplicateSubjectLevelMethodDict_Afterfilter[var.StudentID + "_" + key] == "重修(寫回原學期)" : false)// 因應[H成績][04] 計算學期科目成績調整
-                        {
-                            #region 寫入重修成績回原學期
-                            int sy = 0, se = 0;
-                            SemesterSubjectScoreInfo updateScoreInfo = null;
-                            #region 找到最近一次修課紀錄
-                            foreach (SemesterSubjectScoreInfo si in restudySubjectScoreList.Keys)
-                            {
-                                if (restudySubjectScoreList[si] == key)
-                                {
-                                    if (si.SchoolYear > sy || (si.SchoolYear == sy && si.Semester > se))
-                                    {
-                                        sy = si.SchoolYear;
-                                        se = si.Semester;
-                                        updateScoreInfo = si;
-                                    }
-                                }
-                            }
-                            #endregion
-
-                            if (updateScoreInfo != null)
-                            {
+                                sy = schoolyear;
+                                se = semester;
                                 if (!updateSemesterSubjectScoreList.ContainsKey(sy) || !updateSemesterSubjectScoreList[sy].ContainsKey(se) || !updateSemesterSubjectScoreList[sy][se].ContainsKey(key))
                                 {
-                                    //寫入重修紀錄
+                                    //修改成績
                                     XmlElement updateScoreElement = updateScoreInfo.Detail;
-                                    updateScoreElement.SetAttribute("重修成績", "" + GetRoundScore(sacRecord.FinalScore, decimals, mode));
+                                    #region 重新填入課程資料
+
+
+                                    updateScoreElement.SetAttribute("不計學分", sacRecord.NotIncludedInCredit ? "是" : "否");
+                                    updateScoreElement.SetAttribute("不需評分", sacRecord.NotIncludedInCalc ? "是" : "否");
+                                    updateScoreElement.SetAttribute("修課必選修", sacRecord.Required ? "必修" : "選修");
+                                    updateScoreElement.SetAttribute("修課校部訂", (sacRecord.RequiredBy == "部訂" ? sacRecord.RequiredBy : "校訂"));
+                                    updateScoreElement.SetAttribute("領域", sacRecord.Domain);
+                                    updateScoreElement.SetAttribute("科目", sacRecord.Subject);
+                                    updateScoreElement.SetAttribute("科目級別", sacRecord.SubjectLevel);
+                                    updateScoreElement.SetAttribute("開課分項類別", sacRecord.Entry);
+
+                                    updateScoreElement.SetAttribute("開課學分數", "" + sacRecord.CreditDec());
+
+                                    if (specifySubjectNameDict.ContainsKey(sacRecord.StudentID))
+                                    {
+                                        string sKey = sacRecord.Subject + "_" + sacRecord.SubjectLevel;
+                                        if (specifySubjectNameDict[sacRecord.StudentID].ContainsKey(sKey))
+                                            updateScoreElement.SetAttribute("指定學年科目名稱", specifySubjectNameDict[sacRecord.StudentID][sKey]);
+                                    }
+
+
+                                    #endregion
+
+                                    decimal? sfinalScore = null;
+
+                                    bool fromPrevSemester = false;
+                                    bool fromArchive = false;
+
+
+                                    // 課程成績
+                                    if (sacRecord.HasFinalScore)
+                                        sfinalScore = GetRoundScore(sacRecord.FinalScore, decimals, mode);
+
+                                    string sfKey = sacRecord.Subject + "_" + sacRecord.SubjectLevel;
+
+                                    // 比對來自學期科目成績，科目名稱+級別相同
+                                    if (dataCompareDict.ContainsKey(sfKey))
+                                    {
+                                        // 來自之前學期成績
+                                        fromPrevSemester = true;
+
+                                        if (sfinalScore.HasValue)
+                                            if (dataCompareDict[sfKey] > sfinalScore.Value)
+                                                sfinalScore = dataCompareDict[sfKey];
+                                    }
+
+
+
+                                    // 當沒有來自之前學期科目成績才比對來自封存成績，科目名稱+級別相同
+                                    if (fromPrevSemester == false)
+                                        if (dataCompareDict1.ContainsKey(sacRecord.StudentID))
+                                        {
+                                            if (dataCompareDict1[sacRecord.StudentID].ContainsKey(sfKey))
+                                            {
+                                                fromArchive = true; // 來源封存成績
+
+                                                // 因為來自封存成績，同時也需要寫入重讀工作表，所以 true
+                                                fromPrevSemester = true;
+
+                                                if (sfinalScore.HasValue)
+                                                    if (dataCompareDict1[sacRecord.StudentID][sfKey] > sfinalScore.Value)
+                                                    {
+                                                        sfinalScore = dataCompareDict1[sacRecord.StudentID][sfKey];
+                                                    }
+                                            }
+                                        }
+
+                                    // 沒有修課成績填空，一定會有修課，擇優成績來自之前學期成績或封存成績，只能擇一。
+                                    if (sfinalScore.HasValue)
+                                        updateScoreElement.SetAttribute("原始成績", ("" + sfinalScore.Value));
+                                    else
+                                        updateScoreElement.SetAttribute("原始成績", "");
+
+
+                                    // 當有直接指定總成績覆蓋
+                                    if (studentFinalScoreDict.ContainsKey(sacRecord.StudentID))
+                                    {
+                                        string sKey = sacRecord.Subject + "_" + sacRecord.SubjectLevel;
+
+                                        if (studentFinalScoreDict[sacRecord.StudentID].ContainsKey(sKey))
+                                        {
+                                            DataRow dr = studentFinalScoreDict[sacRecord.StudentID][sKey];
+
+                                            string passing_standard = "", makeup_standard = "", remark = "", designate_final_score = "", subject_code = "";
+
+                                            decimal passing_standard_score, makeup_standard_score, designate_final_score_score;
+
+                                            if (dr["passing_standard"] != null)
+                                                passing_standard = dr["passing_standard"].ToString();
+
+                                            if (dr["makeup_standard"] != null)
+                                                makeup_standard = dr["makeup_standard"].ToString();
+
+                                            if (dr["remark"] != null)
+                                                remark = dr["remark"].ToString();
+
+                                            if (dr["subject_code"] != null)
+                                                subject_code = dr["subject_code"].ToString();
+
+                                            if (dr["designate_final_score"] != null)
+                                                designate_final_score = dr["designate_final_score"].ToString();
+
+                                            if (decimal.TryParse(passing_standard, out passing_standard_score))
+                                                updateScoreElement.SetAttribute("修課及格標準", ("" + GetRoundScore(passing_standard_score, decimals, mode)));
+                                            else
+                                                updateScoreElement.SetAttribute("修課及格標準", "");
+
+                                            if (decimal.TryParse(makeup_standard, out makeup_standard_score))
+                                                updateScoreElement.SetAttribute("修課補考標準", ("" + GetRoundScore(makeup_standard_score, decimals, mode)));
+                                            else
+                                                updateScoreElement.SetAttribute("修課補考標準", "");
+
+                                            updateScoreElement.SetAttribute("註記", "");
+
+                                            if (decimal.TryParse(designate_final_score, out designate_final_score_score))
+                                            {
+                                                updateScoreElement.SetAttribute("修課直接指定總成績", ("" + GetRoundScore(designate_final_score_score, decimals, mode)));
+
+                                                // 註解是因經過2024/4/26討論，修課直接指定總成績不應該覆蓋原始成績，需要保留原始成績。                                              
+                                                //updateScoreElement.SetAttribute("原始成績", ("" + GetRoundScore(designate_final_score_score, decimals, mode)));
+
+
+                                                //updateScoreElement.SetAttribute("原始成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(designate_final_score_score, decimals, mode)));
+
+
+                                                updateScoreElement.SetAttribute("註記", "修課成績：" + ("" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
+                                            }
+                                            else
+                                            {
+                                                updateScoreElement.SetAttribute("修課直接指定總成績", "");
+                                            }
+
+                                            updateScoreElement.SetAttribute("修課備註", remark);
+                                            updateScoreElement.SetAttribute("修課科目代碼", subject_code);
+                                        }
+                                    }
+
+                                    //做取得學分判斷
+                                    #region 做取得學分判斷及填入擇優採計成績
+                                    //最高分
+                                    decimal maxScore = 0;// sacRecord.FinalScore;
+                                    #region 抓最高分
+                                    string[] scoreNames = new string[] { "原始成績", "學年調整成績", "擇優採計成績", "補考成績", "重修成績", "修課直接指定總成績" };
+                                    foreach (string scorename in scoreNames)
+                                    {
+                                        decimal s;
+                                        if (decimal.TryParse(updateScoreElement.GetAttribute(scorename), out s))
+                                        {
+                                            if (s > maxScore)
+                                            {
+                                                maxScore = s;
+                                            }
+                                        }
+                                    }
+                                    #endregion
+
+
+                                    decimal passscore;
+
+                                    // 新寫及格標準
+                                    passscore = 100;
+                                    if (studentPassScoreDict.ContainsKey(var.StudentID))
+                                    {
+                                        if (studentPassScoreDict[var.StudentID].ContainsKey(key))
+                                        {
+                                            passscore = studentPassScoreDict[var.StudentID][key];
+                                        }
+                                        else
+                                        {
+                                            if (!applyLimit.ContainsKey(updateScoreInfo.GradeYear))
+                                                passscore = 60;
+                                            else
+                                                passscore = applyLimit[updateScoreInfo.GradeYear];
+                                        }
+                                    }
+
+
+                                    // 2024/7/5 會議決議，需要計算學分使用成績判斷是否取得學分
+                                    if (sacRecord.NotIncludedInCredit == false)
+                                    {
+                                        updateScoreElement.SetAttribute("是否取得學分", maxScore >= passscore ? "是" : "否");
+                                    }
+
+                                    updateScoreElement.SetAttribute("註記", "修課成績：" + GetRoundScore(sacRecord.FinalScore, decimals, mode));
+
+                                    #endregion
+                                    if (!updateSemesterSubjectScoreList.ContainsKey(sy)) updateSemesterSubjectScoreList.Add(sy, new Dictionary<int, Dictionary<string, XmlElement>>());
+                                    if (!updateSemesterSubjectScoreList[sy].ContainsKey(se)) updateSemesterSubjectScoreList[sy].Add(se, new Dictionary<string, XmlElement>());
+                                    updateSemesterSubjectScoreList[sy][se].Add(key, updateScoreElement);
+
+
+                                    // 取得學期歷程資料
+                                    string HisClassName = "", HisStudentNumber = "";
+                                    int? HisSeatNo = null;
+                                    try
+                                    {
+                                        if (var.Fields.ContainsKey("SemesterHistory"))
+                                        {
+                                            XmlElement xmlElement = var.Fields["SemesterHistory"] as XmlElement;
+                                            XElement elmRoot = XElement.Parse(xmlElement.OuterXml);
+
+                                            var matched = elmRoot.Elements("History")
+                                                .FirstOrDefault(e =>
+                                                    (string)e.Attribute("SchoolYear") == schoolyear.ToString() &&
+                                                    (string)e.Attribute("Semester") == semester.ToString());
+
+                                            if (matched != null)
+                                            {
+                                                HisClassName = (string)matched.Attribute("ClassName") ?? "";
+                                                HisStudentNumber = (string)matched.Attribute("StudentNumber") ?? "";
+                                                int seatNo;
+                                                if (int.TryParse((string)matched.Attribute("SeatNo"), out seatNo))
+                                                    HisSeatNo = seatNo;
+                                            }
+                                        }
+                                    }
+                                    catch { }
+
+                                    // 判斷是否取得學分
+                                    string ScoreP = "";
+                                    decimal passScore = 60; // 預設及格標準
+                                    if (decimal.TryParse(updateScoreElement.GetAttribute("修課及格標準"), out decimal passingStandard1))
+                                    {
+                                        passScore = passingStandard1;
+                                    }
+                                    if (sacRecord.HasFinalScore && sacRecord.FinalScore >= passScore)
+                                        ScoreP = "1";
+                                    else
+                                        ScoreP = "0";
+
+
+                                    // 課程代碼
+                                    string courseCode = updateScoreElement.GetAttribute("修課科目代碼");
+
+                                    // 是否採計學分，預設"1"
+                                    string useCredit = "1";
+                                    if (updateScoreElement.GetAttribute("抵免") == "是")
+                                        useCredit = "2";
+
+                                    // 檢查課程代碼 CodePass
+                                    bool codePass = Utility.IsValidCourseCode(courseCode);
+
+                                    bool setTo3 = false;
+                                    if (!string.IsNullOrWhiteSpace(courseCode) && courseCode.Length > 22)
+                                    {
+                                        string sub1 = courseCode.Substring(16, 1);
+                                        string sub2 = courseCode.Substring(18, 1);
+                                        if (sub1 == "9" && sub2 == "D")
+                                            setTo3 = true;
+                                    }
+
+                                    if (setTo3)
+                                        useCredit = "3";
+
+
+                                    string StudType = "3";
+                                    // 對應學生身分別
+                                    if (StudentHasUpdateCodeDict.ContainsKey(var.StudentID))
+                                    {
+                                        if (UpdateCodeMappingDict.ContainsKey(StudentHasUpdateCodeDict[var.StudentID]))
+                                        {
+                                            StudType = UpdateCodeMappingDict[StudentHasUpdateCodeDict[var.StudentID]];
+                                        }
+                                    }
+
+                                    if (string.IsNullOrWhiteSpace(HisClassName))
+                                        HisClassName = var.RefClass.ClassName;
+
+                                    if (!HisSeatNo.HasValue || HisSeatNo == 0)
+                                    {
+                                        if (int.TryParse(sacRecord.SeatNo, out int seatNo))
+                                            HisSeatNo = seatNo;
+                                    }
+
+                                    if (string.IsNullOrWhiteSpace(HisStudentNumber))
+                                        HisStudentNumber = sacRecord.StudentNumber;
+
+                                    // 只有來自封存成績，填入轉學轉科工作表
+                                    if (fromArchive)
+                                    {
+                                        // 判斷重讀成績及格
+                                        string repeatScoreP1 = "0";
+                                        if (decimal.TryParse(updateScoreElement.GetAttribute("原始成績"), out decimal originalScore1))
+                                        {
+                                            decimal passScoreForRepeat1 = 60; // 預設及格標準
+                                            if (decimal.TryParse(updateScoreElement.GetAttribute("修課及格標準"), out decimal passingStandardForRepeat1))
+                                            {
+                                                passScoreForRepeat1 = passingStandardForRepeat1;
+                                            }
+                                            if (originalScore1 >= passScoreForRepeat1)
+                                                repeatScoreP1 = "1";
+                                            else
+                                                repeatScoreP1 = "0";
+                                        }
+
+                                        var transferRec = new SubjectScoreRec108
+                                        {
+                                            StudentID = sacRecord.StudentID,
+                                            IDNumber = sacRecord.IDNumber,
+                                            Birthday = Utility.ConvertChDateString(sacRecord.Birthday),
+                                            SchoolYear = schoolyear.ToString(),
+                                            Semester = semester.ToString(),
+                                            CourseCode = courseCode,
+                                            SubjectName = sacRecord.Subject,
+                                            SubjectLevel = sacRecord.SubjectLevel,
+                                            GradeYear = gradeYear.HasValue ? gradeYear.Value.ToString() : "",
+                                            Credit = sacRecord.CreditDec().ToString(),
+                                            Score = sfinalScore.HasValue ? sfinalScore.Value.ToString() : "",
+                                            ScoreP = ScoreP,
+                                            useCredit = useCredit,
+                                            Name = var.StudentName,
+                                            HisClassName = HisClassName,
+                                            HisSeatNo = HisSeatNo,
+                                            HisStudentNumber = HisStudentNumber,
+                                            //ClassName = var.RefClass.ClassName,
+                                            //SeatNo = sacRecord.SeatNo,
+                                            //StudentNumber = sacRecord.StudentNumber,
+                                            isScScore = true,
+                                            checkPass = true,
+                                            CodePass = codePass,
+                                            RepeatMemo = "2",
+                                            StudType = StudType,
+                                            RepeatScoreP = repeatScoreP1,
+                                            RepeatScore = updateScoreElement.GetAttribute("原始成績")
+                                        };
+                                        // 加入 4.4 轉學轉科名冊
+                                        transferScoreList.Add(transferRec);
+                                    }
+
+                                    // 來自之前學期成績，填入重修重讀名冊，重讀工作表
+                                    if (fromPrevSemester)
+                                    {
+                                        string reScore = "-1";
+                                        // 幫我寫一段 C# 程式碼，從 makeUpScoreInfo.Detail 取得「補考成績」和「修課及格標準」兩個屬性。如果「補考成績」能轉為數字，且在 0 到「修課及格標準」之間，則 reScore 等於該分數字串，否則 reScore = "-1"。如果「修課及格標準」無法轉數字，預設用 60。
+                                        if (decimal.TryParse(updateScoreElement.GetAttribute("補考成績"), out decimal reScoreValue2))
+                                        {
+                                            if (decimal.TryParse(updateScoreElement.GetAttribute("修課及格標準"), out decimal passingStandard2))
+                                            {
+                                                if (reScoreValue2 >= 0)
+                                                {
+                                                    // 有成績，最高以修課及格標準紀錄成績
+                                                    if (reScoreValue2 > passingStandard2)
+                                                        reScore = passingStandard2.ToString();
+                                                    else
+                                                        reScore = reScoreValue2.ToString();
+                                                }
+                                                else
+                                                    reScore = "-1";
+                                            }
+                                            else
+                                            {
+                                                reScore = "-1"; // 如果無法轉數字，預設為 -1
+                                            }
+                                        }
+
+
+
+                                        // 這段式 ChatGPT 寫如果 reScore 是 "-1" 則 reScoreP 設為 "-1"。否則嘗試把 reScore 轉成數字，並把 makeUpScoreInfo.Detail.GetAttribute("修課及格標準") 轉成數字（預設 60）。如果 reScore 大於等於修課及格標準，reScoreP 設為 "1"，否則設為 "0"。
+                                        string reScoreP = "-1";
+
+                                        // 取得修課及格標準（預設 60）
+                                        string passScoreStr = updateScoreElement.GetAttribute("修課及格標準");
+                                        decimal passScore2 = 60;
+                                        decimal.TryParse(passScoreStr, out passScore2);
+
+                                        if (reScore == "-1")
+                                        {
+                                            reScoreP = "-1";
+                                        }
+                                        else if (decimal.TryParse(reScore, out decimal reScoreDecimal) && reScoreDecimal >= passScore2)
+                                        {
+                                            reScoreP = "1";
+                                        }
+                                        else
+                                        {
+                                            reScoreP = "0";
+                                        }
+
+                                        // 判斷重讀成績及格
+                                        string repeatScoreP2 = "0";
+                                        if (decimal.TryParse(updateScoreElement.GetAttribute("原始成績"), out decimal originalScore2))
+                                        {
+                                            decimal passScoreForRepeat2 = 60; // 預設及格標準
+                                            if (decimal.TryParse(updateScoreElement.GetAttribute("修課及格標準"), out decimal passingStandardForRepeat2))
+                                            {
+                                                passScoreForRepeat2 = passingStandardForRepeat2;
+                                            }
+                                            if (originalScore2 >= passScoreForRepeat2)
+                                                repeatScoreP2 = "1";
+                                            else
+                                                repeatScoreP2 = "0";
+                                        }
+
+                                        var repeatRec = new SubjectScoreRec108
+                                        {
+                                            StudentID = sacRecord.StudentID,
+                                            IDNumber = sacRecord.IDNumber,
+                                            Birthday = Utility.ConvertChDateString(sacRecord.Birthday),
+                                            SchoolYear = schoolyear.ToString(),
+                                            Semester = semester.ToString(),
+                                            CourseCode = courseCode,
+                                            SubjectName = sacRecord.Subject,
+                                            SubjectLevel = sacRecord.SubjectLevel,
+                                            GradeYear = gradeYear.HasValue ? gradeYear.Value.ToString() : "",
+                                            Credit = sacRecord.CreditDec().ToString(),
+                                            Score = GetRoundScore(sacRecord.FinalScore, decimals, mode).ToString(),
+                                            ScoreP = ScoreP,
+                                            useCredit = useCredit,
+                                            Name = var.StudentName,
+                                            HisClassName = HisClassName,
+                                            HisSeatNo = HisSeatNo,
+                                            HisStudentNumber = HisStudentNumber,
+                                            //ClassName = var.RefClass.ClassName,
+                                            //SeatNo = sacRecord.SeatNo,
+                                            //StudentNumber = sacRecord.StudentNumber,
+                                            isScScore = true,
+                                            checkPass = true,
+                                            CodePass = codePass,
+                                            RepeatMemo = "2",
+                                            RepeatScoreP = repeatScoreP2,
+                                            RepeatScore = updateScoreElement.GetAttribute("原始成績"),
+                                            ReScore = reScore,
+                                            ReScoreP = reScoreP
+                                        };
+                                        // 加入 5.3 重讀成績名冊，不計學分 = 是，不列入名冊
+                                        if (updateScoreElement.GetAttribute("不計學分") == "否")
+                                            repeatScoreList.Add(repeatRec);
+                                    }
+                                }
+                                #endregion
+                            }
+                            else
+                            {
+                                #region 新增一筆成績
+                                sy = schoolyear; se = semester;
+                                if (!insertSemesterSubjectScoreList.ContainsKey(sy) || !insertSemesterSubjectScoreList[sy].ContainsKey(se) || !insertSemesterSubjectScoreList[sy][se].ContainsKey(key))
+                                {
+                                    //科目名稱空白有錯誤時執行，2024/5/23討論，當課程的科目空白不計算
+                                    if (string.IsNullOrEmpty(sacRecord.Subject) || string.IsNullOrWhiteSpace(sacRecord.Subject))
+                                    {
+                                        //_WarningList為空就先建立
+                                        if (_WarningList == null) _WarningList = new List<string>();
+                                        //_WarningList不存在此課程名稱才加入
+                                        if (!_WarningList.Contains(sacRecord.CourseName))
+                                        {
+                                            _WarningList.Add(sacRecord.CourseName);
+                                        }
+                                        continue;
+                                    }
+
+
+                                    #region 加入新的資料
+                                    XmlElement newScoreInfo = doc.CreateElement("Subject");
+                                    newScoreInfo.SetAttribute("不計學分", sacRecord.NotIncludedInCredit ? "是" : "否");
+                                    newScoreInfo.SetAttribute("不需評分", sacRecord.NotIncludedInCalc ? "是" : "否");
+                                    newScoreInfo.SetAttribute("修課必選修", sacRecord.Required ? "必修" : "選修");
+                                    newScoreInfo.SetAttribute("修課校部訂", (sacRecord.RequiredBy == "部訂" ? sacRecord.RequiredBy : "校訂"));
+                                    newScoreInfo.SetAttribute("領域", sacRecord.Domain);
+                                    newScoreInfo.SetAttribute("科目", sacRecord.Subject);
+                                    newScoreInfo.SetAttribute("科目級別", sacRecord.SubjectLevel);
+                                    newScoreInfo.SetAttribute("開課分項類別", sacRecord.Entry);
+                                    newScoreInfo.SetAttribute("開課學分數", "" + sacRecord.CreditDec());
+
+                                    decimal? sfinalScore = null;
+                                    bool fromPrevSemester = false;
+                                    bool fromArchive = false;
+
+                                    // 課程成績
+                                    if (sacRecord.HasFinalScore)
+                                        sfinalScore = GetRoundScore(sacRecord.FinalScore, decimals, mode);
+
+                                    string sfKey = sacRecord.Subject + "_" + sacRecord.SubjectLevel;
+
+                                    // 比對來自學期科目成績，科目名稱+級別相同
+                                    if (dataCompareDict.ContainsKey(sfKey))
+                                    {
+                                        // 來自之前學期成績
+                                        fromPrevSemester = true;
+
+                                        if (sfinalScore.HasValue)
+                                            if (dataCompareDict[sfKey] > sfinalScore.Value)
+                                                sfinalScore = dataCompareDict[sfKey];
+                                    }
+
+
+
+
+                                    // 當沒有之前學期成績，才使用自封存成績來比對，科目名稱+級別相同
+                                    if (fromPrevSemester == false)
+                                        if (dataCompareDict1.ContainsKey(sacRecord.StudentID))
+                                        {
+                                            if (dataCompareDict1[sacRecord.StudentID].ContainsKey(sfKey))
+                                            {
+                                                fromArchive = true; // 來源封存成績
+                                                fromPrevSemester = true;
+                                                if (sfinalScore.HasValue)
+                                                    if (dataCompareDict1[sacRecord.StudentID][sfKey] > sfinalScore.Value)
+                                                    {
+                                                        sfinalScore = dataCompareDict1[sacRecord.StudentID][sfKey];
+
+                                                    }
+                                            }
+                                        }
+
+
+
+                                    // 沒有修課成績填空
+                                    if (sfinalScore.HasValue)
+                                        newScoreInfo.SetAttribute("原始成績", ("" + sfinalScore.Value));
+                                    else
+                                        newScoreInfo.SetAttribute("原始成績", "");
+
+
+                                    if (specifySubjectNameDict.ContainsKey(sacRecord.StudentID))
+                                    {
+                                        string sKey = sacRecord.Subject + "_" + sacRecord.SubjectLevel;
+                                        if (specifySubjectNameDict[sacRecord.StudentID].ContainsKey(sKey))
+                                            newScoreInfo.SetAttribute("指定學年科目名稱", specifySubjectNameDict[sacRecord.StudentID][sKey]);
+                                    }
+
+                                    // 課程代碼
+                                    string CourseCode = "";
+
+                                    // 當有直接指定總成績覆蓋
+                                    if (studentFinalScoreDict.ContainsKey(sacRecord.StudentID))
+                                    {
+                                        string sKey = sacRecord.Subject + "_" + sacRecord.SubjectLevel;
+
+                                        if (studentFinalScoreDict[sacRecord.StudentID].ContainsKey(sKey))
+                                        {
+                                            DataRow dr = studentFinalScoreDict[sacRecord.StudentID][sKey];
+
+                                            string passing_standard = "", makeup_standard = "", remark = "", designate_final_score = "", subject_code = "";
+
+                                            decimal passing_standard_score, makeup_standard_score, designate_final_score_score;
+
+                                            if (dr["passing_standard"] != null)
+                                                passing_standard = dr["passing_standard"].ToString();
+
+                                            if (dr["makeup_standard"] != null)
+                                                makeup_standard = dr["makeup_standard"].ToString();
+
+                                            if (dr["remark"] != null)
+                                                remark = dr["remark"].ToString();
+
+                                            if (dr["subject_code"] != null)
+                                                subject_code = dr["subject_code"].ToString();
+
+                                            if (dr["designate_final_score"] != null)
+                                                designate_final_score = dr["designate_final_score"].ToString();
+
+                                            if (decimal.TryParse(passing_standard, out passing_standard_score))
+                                                newScoreInfo.SetAttribute("修課及格標準", ("" + GetRoundScore(passing_standard_score, decimals, mode)));
+                                            else
+                                                newScoreInfo.SetAttribute("修課及格標準", "");
+
+                                            if (decimal.TryParse(makeup_standard, out makeup_standard_score))
+                                                newScoreInfo.SetAttribute("修課補考標準", ("" + GetRoundScore(makeup_standard_score, decimals, mode)));
+                                            else
+                                                newScoreInfo.SetAttribute("修課補考標準", "");
+
+                                            if (decimal.TryParse(designate_final_score, out designate_final_score_score))
+                                            {
+                                                newScoreInfo.SetAttribute("修課直接指定總成績", ("" + GetRoundScore(designate_final_score_score, decimals, mode)));
+
+                                                // 註解是因經過2024/4/26討論，修課直接指定總成績不應該覆蓋原始成績，需要保留原始成績。
+
+                                                newScoreInfo.SetAttribute("原始成績", ("" + GetRoundScore(designate_final_score_score, decimals, mode)));
+
+
+                                                newScoreInfo.SetAttribute("註記", "修課成績：" + ("" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
+                                            }
+                                            else
+                                            {
+                                                newScoreInfo.SetAttribute("修課直接指定總成績", "");
+                                            }
+
+                                            newScoreInfo.SetAttribute("修課備註", remark);
+                                            newScoreInfo.SetAttribute("修課科目代碼", subject_code);
+                                            CourseCode = subject_code;
+                                        }
+                                    }
+
+                                    newScoreInfo.SetAttribute("重修成績", "");
+                                    newScoreInfo.SetAttribute("學年調整成績", "");
+                                    newScoreInfo.SetAttribute("擇優採計成績", "");
+                                    newScoreInfo.SetAttribute("補考成績", "");
+                                    //做取得學分判斷
+                                    #region 做取得學分判斷及填入擇優採計成績
+                                    //最高分
+                                    decimal maxScore = 0;// = sacRecord.FinalScore;
+                                    #region 抓最高分
+                                    string[] scoreNames = new string[] { "原始成績", "學年調整成績", "擇優採計成績", "補考成績", "重修成績" };
+                                    foreach (string scorename in scoreNames)
+                                    {
+                                        decimal s;
+                                        if (decimal.TryParse(newScoreInfo.GetAttribute(scorename), out s))
+                                        {
+                                            if (s > maxScore)
+                                            {
+                                                maxScore = s;
+                                            }
+                                        }
+                                    }
+                                    #endregion
+
+
+                                    decimal passscore;
+
+                                    // 新寫及格標準
+                                    passscore = 100;
+                                    if (studentPassScoreDict.ContainsKey(var.StudentID))
+                                    {
+                                        if (studentPassScoreDict[var.StudentID].ContainsKey(key))
+                                        {
+                                            passscore = studentPassScoreDict[var.StudentID][key];
+                                        }
+                                        else
+                                        {
+                                            if (!applyLimit.ContainsKey((int)gradeYear))
+                                                passscore = 60;
+                                            else
+                                                passscore = applyLimit[(int)gradeYear];
+                                        }
+                                    }
+
+                                    #endregion
+
+
+                                    // 2024/7/5 會議決議，需要計算學分使用成績判斷是否取得學分
+                                    if (sacRecord.NotIncludedInCredit == false)
+                                    {
+                                        newScoreInfo.SetAttribute("是否取得學分", maxScore >= passscore ? "是" : "否");
+                                    }
+
+                                    newScoreInfo.SetAttribute("註記", "修課成績：" + GetRoundScore(sacRecord.FinalScore, decimals, mode));
+
+                                    #endregion
+                                    if (!insertSemesterSubjectScoreList.ContainsKey(sy)) insertSemesterSubjectScoreList.Add(sy, new Dictionary<int, Dictionary<string, XmlElement>>());
+                                    if (!insertSemesterSubjectScoreList[sy].ContainsKey(se)) insertSemesterSubjectScoreList[sy].Add(se, new Dictionary<string, XmlElement>());
+                                    insertSemesterSubjectScoreList[sy][se].Add(key, newScoreInfo);
+
+                                    // --- 寫入學期歷程
+                                    // 取得學期歷程資料
+                                    string HisClassName = "", HisStudentNumber = "";
+                                    int? HisSeatNo = null;
+                                    try
+                                    {
+                                        if (var.Fields.ContainsKey("SemesterHistory"))
+                                        {
+                                            XmlElement xmlElement = var.Fields["SemesterHistory"] as XmlElement;
+                                            XElement elmRoot = XElement.Parse(xmlElement.OuterXml);
+
+                                            var matched = elmRoot.Elements("History")
+                                                .FirstOrDefault(e =>
+                                                    (string)e.Attribute("SchoolYear") == schoolyear.ToString() &&
+                                                    (string)e.Attribute("Semester") == semester.ToString());
+
+                                            if (matched != null)
+                                            {
+                                                HisClassName = (string)matched.Attribute("ClassName") ?? "";
+                                                HisStudentNumber = (string)matched.Attribute("StudentNumber") ?? "";
+                                                int seatNo;
+                                                if (int.TryParse((string)matched.Attribute("SeatNo"), out seatNo))
+                                                    HisSeatNo = seatNo;
+                                            }
+                                        }
+                                    }
+                                    catch { }
+
+                                    // 判斷是否取得學分
+                                    string ScoreP = "";
+                                    decimal passScore4 = 60; // 預設及格標準
+                                    if (decimal.TryParse(newScoreInfo.GetAttribute("修課及格標準"), out decimal passingStandard3))
+                                    {
+                                        passScore4 = passingStandard3;
+                                    }
+                                    if (sacRecord.HasFinalScore && sacRecord.FinalScore >= passScore4)
+                                        ScoreP = "1";
+                                    else
+                                        ScoreP = "0";
+
+                                    // 課程代碼
+                                    string courseCode = CourseCode;
+
+                                    // 是否採計學分，預設"1"
+                                    string useCredit = "1";
+                                    if (newScoreInfo.GetAttribute("抵免") == "是")
+                                        useCredit = "2";
+
+                                    bool setTo3 = false;
+                                    if (!string.IsNullOrWhiteSpace(courseCode) && courseCode.Length > 22)
+                                    {
+                                        string sub1 = courseCode.Substring(16, 1);
+                                        string sub2 = courseCode.Substring(18, 1);
+                                        if (sub1 == "9" && sub2 == "D")
+                                            setTo3 = true;
+                                    }
+
+                                    if (setTo3)
+                                        useCredit = "3";
+
+
+                                    // 檢查課程代碼 CodePass
+                                    bool codePass = Utility.IsValidCourseCode(courseCode);
+
+                                    string StudType = "3";
+
+                                    // 對應學生身分別
+                                    if (StudentHasUpdateCodeDict.ContainsKey(var.StudentID))
+                                    {
+                                        if (UpdateCodeMappingDict.ContainsKey(StudentHasUpdateCodeDict[var.StudentID]))
+                                        {
+                                            StudType = UpdateCodeMappingDict[StudentHasUpdateCodeDict[var.StudentID]];
+                                        }
+                                    }
+
+                                    if (string.IsNullOrWhiteSpace(HisClassName))
+                                        HisClassName = var.RefClass.ClassName;
+
+                                    if (!HisSeatNo.HasValue || HisSeatNo == 0)
+                                    {
+                                        if (int.TryParse(sacRecord.SeatNo, out int seatNo))
+                                            HisSeatNo = seatNo;
+                                    }
+
+                                    if (string.IsNullOrWhiteSpace(HisStudentNumber))
+                                        HisStudentNumber = sacRecord.StudentNumber;
+
+                                    // 只有來自封存成績，填入轉學轉科工作表
+                                    if (fromArchive)
+                                    {
+                                        // 判斷重讀成績及格
+                                        string repeatScoreP3 = "0";
+                                        if (decimal.TryParse(newScoreInfo.GetAttribute("原始成績"), out decimal originalScore3))
+                                        {
+                                            decimal passScoreForRepeat3 = 60; // 預設及格標準
+                                            if (decimal.TryParse(newScoreInfo.GetAttribute("修課及格標準"), out decimal passingStandardForRepeat3))
+                                            {
+                                                passScoreForRepeat3 = passingStandardForRepeat3;
+                                            }
+                                            if (originalScore3 >= passScoreForRepeat3)
+                                                repeatScoreP3 = "1";
+                                            else
+                                                repeatScoreP3 = "0";
+                                        }
+
+                                        var transferRec = new SubjectScoreRec108
+                                        {
+                                            StudentID = sacRecord.StudentID,
+                                            IDNumber = sacRecord.IDNumber,
+                                            Birthday = Utility.ConvertChDateString(sacRecord.Birthday),
+                                            SchoolYear = schoolyear.ToString(),
+                                            Semester = semester.ToString(),
+                                            CourseCode = courseCode,
+                                            SubjectName = sacRecord.Subject,
+                                            SubjectLevel = sacRecord.SubjectLevel,
+                                            GradeYear = gradeYear.HasValue ? gradeYear.Value.ToString() : "",
+                                            Credit = sacRecord.CreditDec().ToString(),
+                                            Score = sfinalScore.HasValue ? sfinalScore.Value.ToString() : "",
+                                            ScoreP = ScoreP,
+                                            useCredit = useCredit,
+                                            Name = var.StudentName,
+                                            HisClassName = HisClassName,
+                                            HisSeatNo = HisSeatNo,
+                                            HisStudentNumber = HisStudentNumber,
+                                            //ClassName = var.RefClass.ClassName,
+                                            //SeatNo = sacRecord.SeatNo,
+                                            //StudentNumber = sacRecord.StudentNumber,
+                                            isScScore = true,
+                                            checkPass = true,
+                                            CodePass = codePass,
+                                            RepeatMemo = "2",
+                                            StudType = StudType,
+                                            RepeatScoreP = repeatScoreP3,
+                                            RepeatScore = newScoreInfo.GetAttribute("原始成績")
+                                        };
+                                        // 加入 4.4 轉學轉科名冊
+                                        transferScoreList.Add(transferRec);
+                                    }
+
+                                    // 來自之前學期成績，填入重修重讀名冊，重讀工作表
+                                    if (fromPrevSemester)
+                                    {
+                                        string reScore = "-1";
+                                        // 幫我寫一段 C# 程式碼，從 makeUpScoreInfo.Detail 取得「補考成績」和「修課及格標準」兩個屬性。如果「補考成績」能轉為數字，且在 0 到「修課及格標準」之間，則 reScore 等於該分數字串，否則 reScore = "-1"。如果「修課及格標準」無法轉數字，預設用 60。
+                                        if (decimal.TryParse(newScoreInfo.GetAttribute("補考成績"), out decimal reScoreValue2))
+                                        {
+                                            if (decimal.TryParse(newScoreInfo.GetAttribute("修課及格標準"), out decimal passingStandard4))
+                                            {
+                                                if (reScoreValue2 >= 0)
+                                                {
+                                                    // 有成績，最高以修課及格標準紀錄成績
+                                                    if (reScoreValue2 > passingStandard4)
+                                                        reScore = passingStandard4.ToString();
+                                                    else
+                                                        reScore = reScoreValue2.ToString();
+                                                }
+                                                else
+                                                    reScore = "-1";
+                                            }
+                                            else
+                                            {
+                                                reScore = "-1"; // 如果無法轉數字，預設為 -1
+                                            }
+                                        }
+
+
+
+                                        // 這段式 ChatGPT 寫如果 reScore 是 "-1" 則 reScoreP 設為 "-1"。否則嘗試把 reScore 轉成數字，並把 makeUpScoreInfo.Detail.GetAttribute("修課及格標準") 轉成數字（預設 60）。如果 reScore 大於等於修課及格標準，reScoreP 設為 "1"，否則設為 "0"。
+                                        string reScoreP = "-1";
+
+                                        // 取得修課及格標準（預設 60）
+                                        string passScoreStr = newScoreInfo.GetAttribute("修課及格標準");
+                                        decimal passScore3 = 60;
+                                        decimal.TryParse(passScoreStr, out passScore3);
+
+                                        if (reScore == "-1")
+                                        {
+                                            reScoreP = "-1";
+                                        }
+                                        else if (decimal.TryParse(reScore, out decimal reScoreDecimal) && reScoreDecimal >= passScore3)
+                                        {
+                                            reScoreP = "1";
+                                        }
+                                        else
+                                        {
+                                            reScoreP = "0";
+                                        }
+
+                                        // 判斷重讀成績及格
+                                        string repeatScoreP4 = "0";
+                                        if (decimal.TryParse(newScoreInfo.GetAttribute("原始成績"), out decimal originalScore4))
+                                        {
+                                            decimal passScoreForRepeat4 = 60; // 預設及格標準
+                                            if (decimal.TryParse(newScoreInfo.GetAttribute("修課及格標準"), out decimal passingStandardForRepeat4))
+                                            {
+                                                passScoreForRepeat4 = passingStandardForRepeat4;
+                                            }
+                                            if (originalScore4 >= passScoreForRepeat4)
+                                                repeatScoreP4 = "1";
+                                            else
+                                                repeatScoreP4 = "0";
+                                        }
+
+                                        var repeatRec = new SubjectScoreRec108
+                                        {
+                                            StudentID = sacRecord.StudentID,
+                                            IDNumber = sacRecord.IDNumber,
+                                            Birthday = Utility.ConvertChDateString(sacRecord.Birthday),
+                                            SchoolYear = schoolyear.ToString(),
+                                            Semester = semester.ToString(),
+                                            CourseCode = courseCode,
+                                            SubjectName = sacRecord.Subject,
+                                            SubjectLevel = sacRecord.SubjectLevel,
+                                            GradeYear = gradeYear.HasValue ? gradeYear.Value.ToString() : "",
+                                            Credit = sacRecord.CreditDec().ToString(),
+                                            Score = GetRoundScore(sacRecord.FinalScore, decimals, mode).ToString(),
+                                            ScoreP = ScoreP,
+                                            useCredit = useCredit,
+                                            Name = var.StudentName,
+                                            HisClassName = HisClassName,
+                                            HisSeatNo = HisSeatNo,
+                                            HisStudentNumber = HisStudentNumber,
+                                            //ClassName = var.RefClass.ClassName,
+                                            //SeatNo = sacRecord.SeatNo,
+                                            //StudentNumber = sacRecord.StudentNumber,
+                                            isScScore = true,
+                                            checkPass = true,
+                                            CodePass = codePass,
+                                            RepeatMemo = "2",
+                                            RepeatScoreP = repeatScoreP4,
+                                            RepeatScore = newScoreInfo.GetAttribute("原始成績"),
+                                            ReScore = reScore,
+                                            ReScoreP = reScoreP
+                                        };
+
+                                        // 加入 5.3 重讀成績名冊，不計學分=是，不列入
+                                        if (newScoreInfo.GetAttribute("不計學分") == "否")
+                                            repeatScoreList.Add(repeatRec);
+                                    }
+
+                                }
+                                #endregion
+                            }
+                        }
+                        else if (ruleType == "重修成績")
+                        {
+                            if (previousSubjectScoreMap.ContainsKey(studentSubjectKey))
+                            {
+                                #region 寫入重修成績回原學期
+                                int sy = 0, se = 0;
+
+                                foreach (SemesterSubjectScoreInfo previousSubjectScoreInfo in previousSubjectScoreMap[studentSubjectKey])
+                                {
+                                    sy = previousSubjectScoreInfo.SchoolYear;
+                                    se = previousSubjectScoreInfo.Semester;
+                                    string key1 = previousSubjectScoreInfo.Subject.Trim() + "_" + previousSubjectScoreInfo.Level.Trim();
+
+                                    // 假設 sacRecord.FinalScore 為本次重修課程成績
+                                    decimal roundedScore = GetRoundScore(sacRecord.FinalScore, decimals, mode);
+
+                                    //寫入重修紀錄
+                                    XmlElement updateScoreElement = previousSubjectScoreInfo.Detail;
+                                    //updateScoreElement.SetAttribute("重修成績", "" + GetRoundScore(sacRecord.FinalScore, decimals, mode));
+
+                                    decimal passscore;
+                                    // 新寫及格標準
+                                    passscore = 100;
+                                    if (studentPassScoreDict.ContainsKey(var.StudentID))
+                                    {
+                                        if (studentPassScoreDict[var.StudentID].ContainsKey(key))
+                                        {
+                                            passscore = studentPassScoreDict[var.StudentID][key];
+                                        }
+                                        else
+                                        {
+                                            if (!applyLimit.ContainsKey(previousSubjectScoreInfo.GradeYear))
+                                                passscore = 60;
+                                            else
+                                                passscore = applyLimit[previousSubjectScoreInfo.GradeYear];
+                                        }
+                                    }
+
+
+                                    // C# 寫一段程式，只有當新分數比舊的「重修成績」高時才寫入 SetAttribute("重修成績", ...)；否則不寫入。
+                                    decimal previousScore;
+                                    if (decimal.TryParse(updateScoreElement.GetAttribute("重修成績"), out previousScore))
+                                    {
+                                        if (roundedScore >= previousScore)
+                                        {
+                                            if (roundedScore > passscore)
+                                                roundedScore = passscore;
+                                            updateScoreElement.SetAttribute("重修成績", "" + roundedScore);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (roundedScore > passscore)
+                                            roundedScore = passscore;
+
+                                        updateScoreElement.SetAttribute("重修成績", "" + roundedScore);
+                                    }
+
+                                    previousSubjectScoreInfo.Detail.SetAttribute("重修學年度", schoolyear.ToString());
+                                    previousSubjectScoreInfo.Detail.SetAttribute("重修學期", semester.ToString());
+
+
                                     //做取得學分判斷
                                     #region 做取得學分判斷
                                     //最高分
@@ -727,32 +1880,7 @@ namespace SmartSchool.Evaluation
                                         }
                                     }
                                     #endregion
-                                    decimal passscore;
 
-                                    // 原本及格標準
-                                    //if (!applyLimit.ContainsKey(updateScoreInfo.GradeYear))
-                                    //    passscore = 60;
-                                    //else
-                                    //    passscore = applyLimit[updateScoreInfo.GradeYear];
-
-                                    // 新寫及格標準
-                                    passscore = 100;
-                                    if (studentPassScoreDict.ContainsKey(var.StudentID))
-                                    {
-                                        if (studentPassScoreDict[var.StudentID].ContainsKey(key))
-                                        {
-                                            passscore = studentPassScoreDict[var.StudentID][key];
-                                        }
-                                        else
-                                        {
-                                            if (!applyLimit.ContainsKey(updateScoreInfo.GradeYear))
-                                                passscore = 60;
-                                            else
-                                                passscore = applyLimit[updateScoreInfo.GradeYear];
-                                        }
-                                    }
-
-                                    updateScoreElement.SetAttribute("是否取得學分", (updateScoreElement.GetAttribute("不需評分") == "是" || maxScore >= passscore) ? "是" : "否");
 
                                     // 2024/7/5 會議決議，需要計算學分使用成績判斷是否取得學分
                                     if (updateScoreElement.GetAttribute("不計學分") == "否")
@@ -765,13 +1893,441 @@ namespace SmartSchool.Evaluation
                                     if (!updateSemesterSubjectScoreList.ContainsKey(sy)) updateSemesterSubjectScoreList.Add(sy, new Dictionary<int, Dictionary<string, XmlElement>>());
                                     if (!updateSemesterSubjectScoreList[sy].ContainsKey(se)) updateSemesterSubjectScoreList[sy].Add(se, new Dictionary<string, XmlElement>());
                                     updateSemesterSubjectScoreList[sy][se].Add(key, updateScoreElement);
+
+                                    // 重修成績寫入學期歷程 ---
+
+                                    string HisClassName = "", HisStudentNumber = "";
+                                    int? HisSeatNo = null;
+                                    try
+                                    {
+
+                                        // 讀取學生學期對照表資料
+                                        if (var.Fields.ContainsKey("SemesterHistory"))
+                                        {
+                                            XmlElement xmlElement = var.Fields["SemesterHistory"] as XmlElement;
+                                            XElement elmRoot = XElement.Parse(xmlElement.OuterXml);
+
+                                            // 找到第一個符合 SchoolYear, Semester 的節點
+                                            var matched = elmRoot.Elements("History")
+                                                .FirstOrDefault(e =>
+                                                    (string)e.Attribute("SchoolYear") == sy.ToString() &&
+                                                    (string)e.Attribute("Semester") == se.ToString());
+
+                                            if (matched != null)
+                                            {
+                                                HisClassName = (string)matched.Attribute("ClassName") ?? "";
+                                                HisStudentNumber = (string)matched.Attribute("StudentNumber") ?? "";
+
+                                                // SeatNo 轉型
+                                                int seatNo;
+                                                if (int.TryParse((string)matched.Attribute("SeatNo"), out seatNo))
+                                                    HisSeatNo = seatNo;
+                                                else
+                                                    HisSeatNo = null;
+                                            }
+                                            else
+                                            {
+
+                                            }
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine(ex.Message);
+                                    }
+
+                                    // 判斷是否取得學分
+                                    string ScoreP = "";
+                                    decimal passScore5 = 60; // 預設及格標準
+                                    if (decimal.TryParse(previousSubjectScoreInfo.Detail.GetAttribute("修課及格標準"), out decimal passingStandard5_1))
+                                    {
+                                        passScore5 = passingStandard5_1;
+                                    }
+                                    if (sacRecord.HasFinalScore && sacRecord.FinalScore >= passScore5)
+                                        ScoreP = "1";
+                                    else
+                                        ScoreP = "0";
+
+
+                                    string ReAScore = "-1";
+                                    // 幫我寫一段 C# 程式碼，從 makeUpScoreInfo.Detail 取得「補考成績」和「修課及格標準」兩個屬性。如果「補考成績」能轉為數字，且在 0 到「修課及格標準」之間，則 reScore 等於該分數字串，否則 reScore = "-1"。如果「修課及格標準」無法轉數字，預設用 60。
+                                    if (decimal.TryParse(previousSubjectScoreInfo.Detail.GetAttribute("重修成績"), out decimal reScoreValue2))
+                                    {
+                                        if (decimal.TryParse(previousSubjectScoreInfo.Detail.GetAttribute("修課及格標準"), out decimal passingStandard5))
+                                        {
+
+                                            if (reScoreValue2 >= 0)
+                                                ReAScore = reScoreValue2.ToString();
+                                            else
+                                                ReAScore = "-1";
+                                        }
+                                        else
+                                        {
+                                            ReAScore = "-1"; // 如果無法轉數字，預設為 -1
+                                        }
+                                    }
+
+
+
+                                    // 這段式 ChatGPT 寫如果 reScore 是 "-1" 則 ReAScoreP 設為 "-1"。否則嘗試把 reScore 轉成數字，並把 makeUpScoreInfo.Detail.GetAttribute("修課及格標準") 轉成數字（預設 60）。如果 reScore 大於等於修課及格標準，ReAScoreP 設為 "1"，否則設為 "0"。
+                                    string ReAScoreP = "-1";
+
+                                    // 取得修課及格標準（預設 60）
+                                    string passScoreStr = previousSubjectScoreInfo.Detail.GetAttribute("修課及格標準");
+                                    decimal passScore5_2 = 60;
+                                    decimal.TryParse(passScoreStr, out passScore5_2);
+
+                                    if (ReAScore == "-1")
+                                    {
+                                        ReAScoreP = "-1";
+                                    }
+                                    else if (decimal.TryParse(ReAScore, out decimal reScoreDecimal) && reScoreDecimal >= passScore5_2)
+                                    {
+                                        ReAScoreP = "1";
+                                    }
+                                    else
+                                    {
+                                        ReAScoreP = "0";
+                                    }
+
+
+                                    // 課程代碼
+                                    string courseCode = previousSubjectScoreInfo.Detail.GetAttribute("修課科目代碼").Trim();
+
+                                    // 假設 makeUpScoreInfo.Detail 是 XElement 或有 GetAttribute 方法
+                                    string notCountCredit = previousSubjectScoreInfo.Detail.GetAttribute("不計學分");
+                                    string notNeedScore = previousSubjectScoreInfo.Detail.GetAttribute("不需評分");
+
+                                    // 是否採計學分 預設
+                                    string useCredit = "1";
+
+                                    // 使用抵免來判斷
+                                    if (previousSubjectScoreInfo.Detail.GetAttribute("抵免") == "是")
+                                    {
+                                        useCredit = "2";
+                                    }
+                                    else
+                                    {
+                                        // 預設為"1"，但如果不需評分為"是"或課程代碼特殊則為"3"
+                                        bool setTo3 = false;
+
+                                        //if (notNeedScore == "是")
+                                        //    setTo3 = true;
+
+                                        if (!string.IsNullOrWhiteSpace(courseCode) && courseCode.Length > 22)
+                                        {
+                                            string sub1 = courseCode.Substring(16, 1);
+                                            string sub2 = courseCode.Substring(18, 1);
+                                            if (sub1 == "9" && sub2 == "D")
+                                                setTo3 = true;
+                                        }
+
+                                        if (setTo3)
+                                            useCredit = "3";
+                                    }
+
+                                    // 檢查課程代碼 CodePass
+                                    bool codePass = Utility.IsValidCourseCode(courseCode);
+
+                                    if (string.IsNullOrWhiteSpace(HisClassName))
+                                        HisClassName = var.RefClass.ClassName;
+
+                                    if (!HisSeatNo.HasValue || HisSeatNo == 0)
+                                    {
+                                        if (int.TryParse(sacRecord.SeatNo, out int seatNo))
+                                            HisSeatNo = seatNo;
+                                    }
+
+                                    if (string.IsNullOrWhiteSpace(HisStudentNumber))
+                                        HisStudentNumber = sacRecord.StudentNumber;
+
+                                    var rec = new SubjectScoreRec108
+                                    {
+                                        StudentID = sacRecord.StudentID,
+                                        IDNumber = sacRecord.IDNumber,
+                                        Birthday = Utility.ConvertChDateString(sacRecord.Birthday),
+                                        SchoolYear = previousSubjectScoreInfo.SchoolYear.ToString(),
+                                        Semester = previousSubjectScoreInfo.Semester.ToString(),
+                                        CourseCode = courseCode,
+                                        SubjectName = previousSubjectScoreInfo.Subject.Trim(),
+                                        SubjectLevel = previousSubjectScoreInfo.Level.Trim(),
+                                        GradeYear = previousSubjectScoreInfo.GradeYear.ToString(),
+                                        Credit = previousSubjectScoreInfo.CreditDec().ToString(),
+                                        Score = previousSubjectScoreInfo.Score.ToString(),
+
+                                        ScoreP = ScoreP,
+                                        ScScoreType = "3",
+                                        useCredit = useCredit,
+                                        Text = "",
+                                        Name = var.StudentName,
+                                        HisClassName = HisClassName,
+                                        HisSeatNo = HisSeatNo,
+                                        HisStudentNumber = HisStudentNumber,
+                                        //ClassName = var.RefClass.ClassName,
+                                        //SeatNo = sacRecord.SeatNo,
+                                        //StudentNumber = sacRecord.StudentNumber,
+                                        isScScore = true,
+                                        checkPass = true,
+                                        CodePass = codePass,
+                                        ReAScoreType = "3",
+                                        ReAScore = ReAScore,
+                                        ReAScoreP = ReAScoreP
+                                    };
+
+                                    restudyScoreList.Add(rec);
+
                                 }
+                                #endregion
+                            }
+                        }
+                        else if (ruleType == "補修成績")
+                        {
+                            if (makeupSubjectScoreMap.ContainsKey(studentSubjectKey))
+                            {
+                                foreach (SemesterSubjectScoreInfo makeUpScoreInfo in makeupSubjectScoreMap[studentSubjectKey])
+                                {
+                                    int sy = makeUpScoreInfo.SchoolYear;
+                                    int se = makeUpScoreInfo.Semester;
+                                    string key1 = makeUpScoreInfo.Subject.Trim() + "_" + makeUpScoreInfo.Level.Trim();
+
+                                    // 假設 sacRecord.FinalScore 為本次補修課程成績
+                                    decimal roundedScore = GetRoundScore(sacRecord.FinalScore, decimals, mode);
+                                    makeUpScoreInfo.Detail.SetAttribute("原始成績", roundedScore.ToString());
+                                    makeUpScoreInfo.Detail.SetAttribute("補修學年度", schoolyear.ToString());
+                                    makeUpScoreInfo.Detail.SetAttribute("補修學期", semester.ToString());
+
+                                    decimal passscore;
+                                    passscore = 100;
+                                    if (studentPassScoreDict.ContainsKey(var.StudentID))
+                                    {
+                                        if (studentPassScoreDict[var.StudentID].ContainsKey(key))
+                                        {
+                                            passscore = studentPassScoreDict[var.StudentID][key];
+                                        }
+                                        else
+                                        {
+                                            if (!applyLimit.ContainsKey(makeUpScoreInfo.GradeYear))
+                                                passscore = 60;
+                                            else
+                                                passscore = applyLimit[makeUpScoreInfo.GradeYear];
+                                        }
+                                    }
+
+
+                                    // 2024/7/5 會議決議，需要計算學分使用成績判斷是否取得學分
+                                    if (sacRecord.NotIncludedInCredit == false)
+                                    {
+                                        makeUpScoreInfo.Detail.SetAttribute("是否取得學分", roundedScore >= passscore ? "是" : "否");
+                                    }
+
+
+                                    if (!updateSemesterSubjectScoreList.ContainsKey(sy))
+                                        updateSemesterSubjectScoreList.Add(sy, new Dictionary<int, Dictionary<string, XmlElement>>());
+                                    if (!updateSemesterSubjectScoreList[sy].ContainsKey(se))
+                                        updateSemesterSubjectScoreList[sy].Add(se, new Dictionary<string, XmlElement>());
+                                    updateSemesterSubjectScoreList[sy][se][key1] = makeUpScoreInfo.Detail;
+
+                                    // --- 處理補修成   績寫入學期歷程資料 4.3 補修成績
+                                    string HisClassName = "", HisStudentNumber = "";
+                                    int? HisSeatNo = null;
+                                    try
+                                    {
+
+                                        // 讀取學生學期對照表資料
+                                        if (var.Fields.ContainsKey("SemesterHistory"))
+                                        {
+                                            XmlElement xmlElement = var.Fields["SemesterHistory"] as XmlElement;
+                                            XElement elmRoot = XElement.Parse(xmlElement.OuterXml);
+
+                                            // 找到第一個符合 SchoolYear, Semester 的節點
+                                            var matched = elmRoot.Elements("History")
+                                                .FirstOrDefault(e =>
+                                                    (string)e.Attribute("SchoolYear") == sy.ToString() &&
+                                                    (string)e.Attribute("Semester") == se.ToString());
+
+                                            if (matched != null)
+                                            {
+                                                HisClassName = (string)matched.Attribute("ClassName") ?? "";
+                                                HisStudentNumber = (string)matched.Attribute("StudentNumber") ?? "";
+
+                                                // SeatNo 轉型
+                                                int seatNo;
+                                                if (int.TryParse((string)matched.Attribute("SeatNo"), out seatNo))
+                                                    HisSeatNo = seatNo;
+                                                else
+                                                    HisSeatNo = null;
+                                            }
+                                            else
+                                            {
+
+                                            }
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine(ex.Message);
+                                    }
+
+                                    // 判斷是否取得學分
+                                    string ScoreP = "";
+                                    decimal passScore6 = 60; // 預設及格標準
+                                    if (decimal.TryParse(makeUpScoreInfo.Detail.GetAttribute("修課及格標準"), out decimal passingStandard6_1))
+                                    {
+                                        passScore6 = passingStandard6_1;
+                                    }
+                                    if (sacRecord.HasFinalScore && sacRecord.FinalScore >= passScore6)
+                                        ScoreP = "1";
+                                    else
+                                        ScoreP = "0";
+
+
+                                    string reScore = "-1";
+                                    // 幫我寫一段 C# 程式碼，從 makeUpScoreInfo.Detail 取得「補考成績」和「修課及格標準」兩個屬性。如果「補考成績」能轉為數字，且在 0 到「修課及格標準」之間，則 reScore 等於該分數字串，否則 reScore = "-1"。如果「修課及格標準」無法轉數字，預設用 60。
+                                    if (decimal.TryParse(makeUpScoreInfo.Detail.GetAttribute("補考成績"), out decimal reScoreValue2))
+                                    {
+                                        if (decimal.TryParse(makeUpScoreInfo.Detail.GetAttribute("修課及格標準"), out decimal passingStandard6_2))
+                                        {
+                                            if (reScoreValue2 >= 0)
+                                            {
+                                                // 有成績，最高以修課及格標準紀錄成績
+                                                if (reScoreValue2 > passingStandard6_2)
+                                                    reScore = passingStandard6_2.ToString();
+                                                else
+                                                    reScore = reScoreValue2.ToString();
+                                            }
+                                            else
+                                                reScore = "-1";
+                                        }
+                                        else
+                                        {
+                                            reScore = "-1"; // 如果無法轉數字，預設為 -1
+                                        }
+                                    }
+
+
+
+                                    // 這段式 ChatGPT 寫如果 reScore 是 "-1" 則 reScoreP 設為 "-1"。否則嘗試把 reScore 轉成數字，並把 makeUpScoreInfo.Detail.GetAttribute("修課及格標準") 轉成數字（預設 60）。如果 reScore 大於等於修課及格標準，reScoreP 設為 "1"，否則設為 "0"。
+                                    string reScoreP = "-1";
+
+                                    // 取得修課及格標準（預設 60）
+                                    string passScoreStr = makeUpScoreInfo.Detail.GetAttribute("修課及格標準");
+                                    decimal passScore6_2 = 60;
+                                    decimal.TryParse(passScoreStr, out passScore6_2);
+
+                                    if (reScore == "-1")
+                                    {
+                                        reScoreP = "-1";
+                                    }
+                                    else if (decimal.TryParse(reScore, out decimal reScoreDecimal) && reScoreDecimal >= passScore6_2)
+                                    {
+                                        reScoreP = "1";
+                                    }
+                                    else
+                                    {
+                                        reScoreP = "0";
+                                    }
+
+
+                                    // 課程代碼
+                                    string courseCode = makeUpScoreInfo.Detail.GetAttribute("修課科目代碼").Trim();
+
+                                    // 假設 makeUpScoreInfo.Detail 是 XElement 或有 GetAttribute 方法
+                                    string notCountCredit = makeUpScoreInfo.Detail.GetAttribute("不計學分");
+                                    string notNeedScore = makeUpScoreInfo.Detail.GetAttribute("不需評分");
+
+                                    // 是否採計學分 預設
+                                    string useCredit = "1";
+
+                                    // 抵免
+                                    if (makeUpScoreInfo.Detail.GetAttribute("抵免") == "是")
+                                    {
+                                        useCredit = "2";
+                                    }
+                                    else
+                                    {
+                                        // 預設為"1"，但如果不需評分為"是"或課程代碼特殊則為"3"
+                                        bool setTo3 = false;
+
+                                        //if (notNeedScore == "是")
+                                        //    setTo3 = true;
+
+                                        if (!string.IsNullOrWhiteSpace(courseCode) && courseCode.Length > 22)
+                                        {
+                                            string sub1 = courseCode.Substring(16, 1);
+                                            string sub2 = courseCode.Substring(18, 1);
+                                            if (sub1 == "9" && sub2 == "D")
+                                                setTo3 = true;
+                                        }
+
+                                        if (setTo3)
+                                            useCredit = "3";
+                                    }
+
+                                    // 檢查課程代碼 CodePass
+                                    bool codePass = Utility.IsValidCourseCode(courseCode);
+
+                                    if (string.IsNullOrWhiteSpace(HisClassName))
+                                        HisClassName = var.RefClass.ClassName;
+
+                                    if (!HisSeatNo.HasValue || HisSeatNo == 0)
+                                    {
+                                        if (int.TryParse(sacRecord.SeatNo, out int seatNo))
+                                            HisSeatNo = seatNo;
+                                    }
+
+                                    if (string.IsNullOrWhiteSpace(HisStudentNumber))
+                                        HisStudentNumber = sacRecord.StudentNumber;
+
+                                    var rec = new SubjectScoreRec108
+                                    {
+                                        StudentID = sacRecord.StudentID,
+                                        IDNumber = sacRecord.IDNumber,
+                                        Birthday = Utility.ConvertChDateString(sacRecord.Birthday),
+                                        SchoolYear = makeUpScoreInfo.SchoolYear.ToString(),
+                                        Semester = makeUpScoreInfo.Semester.ToString(),
+                                        CourseCode = courseCode,
+                                        SubjectName = makeUpScoreInfo.Subject.Trim(),
+                                        SubjectLevel = makeUpScoreInfo.Level.Trim(),
+                                        GradeYear = makeUpScoreInfo.GradeYear.ToString(),
+                                        Credit = makeUpScoreInfo.CreditDec().ToString(),
+                                        Score = roundedScore.ToString(),
+
+                                        ScoreP = ScoreP,
+                                        ReScore = reScore,
+                                        ReScoreP = reScoreP,
+                                        ScScoreType = "3",
+                                        useCredit = useCredit,
+                                        Text = "",
+                                        Name = var.StudentName,
+                                        HisClassName = HisClassName,
+                                        HisSeatNo = HisSeatNo,
+                                        HisStudentNumber = HisStudentNumber,
+                                        //ClassName = var.RefClass.ClassName,
+                                        //SeatNo = sacRecord.SeatNo,
+                                        //StudentNumber = sacRecord.StudentNumber,
+                                        isScScore = true,
+                                        checkPass = true,
+                                        CodePass = codePass
+                                    };
+                                    // 不計學分 = 是，不列入
+                                    if (makeUpScoreInfo.Detail.GetAttribute("不計學分") == "否")
+                                        makeUpScoreList.Add(rec);
+                                }
+
+                            }
+                        }
+                        else // 一般修課或空白
+                        {
+                            int sy = schoolyear, se = semester;
+
+                            // 1. 檢查這一筆科目是否已被補修成績處理（避免重複）
+                            if (updateSemesterSubjectScoreList.ContainsKey(sy) &&
+                                updateSemesterSubjectScoreList[sy].ContainsKey(se) &&
+                                updateSemesterSubjectScoreList[sy][se].ContainsKey(key))
+                            {
+                                continue; // 已補修，略過本次處理
                             }
 
-                            #endregion
-                        }
-                        else
-                        {
                             //填入本學期科目成績
                             if (currentSubjectScoreList.ContainsValue(key))
                             {
@@ -785,7 +2341,8 @@ namespace SmartSchool.Evaluation
                                         break;
                                     }
                                 }
-                                int sy = schoolyear, se = semester;
+                                sy = schoolyear;
+                                se = semester;
                                 if (!updateSemesterSubjectScoreList.ContainsKey(sy) || !updateSemesterSubjectScoreList[sy].ContainsKey(se) || !updateSemesterSubjectScoreList[sy][se].ContainsKey(key))
                                 {
                                     //修改成績
@@ -902,20 +2459,21 @@ namespace SmartSchool.Evaluation
                                         }
                                     }
                                     #endregion
+
                                     //如果有擇優採計成績且重讀學期有修過課
                                     if (duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(var.StudentID + "_" + key) ? duplicateSubjectLevelMethodDict_Afterfilter[var.StudentID + "_" + key] == "重讀(擇優採計成績)" : false)
                                     {
                                         #region 填入擇優採計成績
-                                        foreach (SemesterSubjectScoreInfo s in repeatSubjectScoreList.Keys)
-                                        {
-                                            //之前的成績比現在的成績好
-                                            if (repeatSubjectScoreList[s] == key && s.Score > maxScore)
-                                            {
-                                                updateScoreElement.SetAttribute("原始成績", "" + GetRoundScore(s.Score, decimals, mode));
-                                                updateScoreElement.SetAttribute("註記", "修課成績：" + sacRecord.FinalScore);
-                                                maxScore = s.Score;
-                                            }
-                                        }
+                                        //foreach (SemesterSubjectScoreInfo s in repeatSubjectScoreList.Keys)
+                                        //{
+                                        //    //之前的成績比現在的成績好
+                                        //    if (repeatSubjectScoreList[s] == key && s.Score > maxScore)
+                                        //    {
+                                        //        updateScoreElement.SetAttribute("原始成績", "" + GetRoundScore(s.Score, decimals, mode));
+                                        //        updateScoreElement.SetAttribute("註記", "修課成績：" + sacRecord.FinalScore);
+                                        //        maxScore = s.Score;
+                                        //    }
+                                        //}
                                         #endregion
                                     }
                                     decimal passscore;
@@ -958,7 +2516,7 @@ namespace SmartSchool.Evaluation
                             else
                             {
                                 #region 新增一筆成績
-                                int sy = schoolyear, se = semester;
+                                sy = schoolyear; se = semester;
                                 if (!insertSemesterSubjectScoreList.ContainsKey(sy) || !insertSemesterSubjectScoreList[sy].ContainsKey(se) || !insertSemesterSubjectScoreList[sy][se].ContainsKey(key))
                                 {
                                     //科目名稱空白有錯誤時執行，2024/5/23討論，當課程的科目空白不計算
@@ -1087,17 +2645,17 @@ namespace SmartSchool.Evaluation
                                     if (duplicateSubjectLevelMethodDict_Afterfilter.ContainsKey(var.StudentID + "_" + key) ? duplicateSubjectLevelMethodDict_Afterfilter[var.StudentID + "_" + key] == "重讀(擇優採計成績)" : false)
                                     {
                                         #region 填入擇優採計成績
-                                        foreach (SemesterSubjectScoreInfo s in repeatSubjectScoreList.Keys)
-                                        {
-                                            //之前的成績比現在的成績好
-                                            if (repeatSubjectScoreList[s] == key && s.Score > maxScore)
-                                            {
-                                                //newScoreInfo.SetAttribute("擇優採計成績", "" + GetRoundScore(s.Score, decimals, mode));
-                                                newScoreInfo.SetAttribute("原始成績", "" + GetRoundScore(s.Score, decimals, mode));
-                                                newScoreInfo.SetAttribute("註記", "修課成績：" + sacRecord.FinalScore);
-                                                maxScore = s.Score;
-                                            }
-                                        }
+                                        //foreach (SemesterSubjectScoreInfo s in repeatSubjectScoreList.Keys)
+                                        //{
+                                        //    //之前的成績比現在的成績好
+                                        //    if (repeatSubjectScoreList[s] == key && s.Score > maxScore)
+                                        //    {
+                                        //        //newScoreInfo.SetAttribute("擇優採計成績", "" + GetRoundScore(s.Score, decimals, mode));
+                                        //        newScoreInfo.SetAttribute("原始成績", "" + GetRoundScore(s.Score, decimals, mode));
+                                        //        newScoreInfo.SetAttribute("註記", "修課成績：" + sacRecord.FinalScore);
+                                        //        maxScore = s.Score;
+                                        //    }
+                                        //}
                                         #endregion
                                     }
                                     decimal passscore;
@@ -1140,7 +2698,10 @@ namespace SmartSchool.Evaluation
                                 #endregion
                             }
                         }
+
+
                     }
+
                     #endregion
                     #region 從新增跟修改清單中產生變動資料
                     //抓取暗藏的學生學期成績編號資料
@@ -1226,269 +2787,38 @@ namespace SmartSchool.Evaluation
                     }
                     #endregion
 
-                    #region OldWay
-                    //List<SemesterSubjectScoreInfo> aforeSemesterScoreList = new List<SemesterSubjectScoreInfo>();
-                    //List<SemesterSubjectScoreInfo> currentSemesterScoreList = new List<SemesterSubjectScoreInfo>();
-                    //#region 先掃一遍把學生成績分類
-                    //foreach (SemesterSubjectScoreInfo scoreinfo in var.SemesterSubjectScoreList)
-                    //{
-                    //    if (scoreinfo.SchoolYear == schoolyear)
-                    //    {
-                    //        if (scoreinfo.Semester == semester)
-                    //            currentSemesterScoreList.Add(scoreinfo);
-                    //        else if (scoreinfo.Semester < semester)
-                    //            aforeSemesterScoreList.Add(scoreinfo);
-                    //    }
-                    //    else if (scoreinfo.SchoolYear < schoolyear)
-                    //        aforeSemesterScoreList.Add(scoreinfo);
-                    //}
-                    //#endregion
-                    //#region 針對之前學期的成績做重讀判斷
-                    //Dictionary<int, Dictionary<int, int>> ApplySemesterSchoolYear = new Dictionary<int, Dictionary<int, int>>();
-                    ////先掃一遍抓出每個年級最高的學年度
-                    //foreach (SemesterSubjectScoreInfo scoreInfo in aforeSemesterScoreList)
-                    //{
-                    //    if (!ApplySemesterSchoolYear.ContainsKey(scoreInfo.GradeYear))
-                    //        ApplySemesterSchoolYear.Add(scoreInfo.GradeYear, new Dictionary<int, int>());
-                    //    if (!ApplySemesterSchoolYear[scoreInfo.GradeYear].ContainsKey(scoreInfo.Semester))
-                    //        ApplySemesterSchoolYear[scoreInfo.GradeYear].Add(scoreInfo.Semester, scoreInfo.SchoolYear);
-                    //    if (scoreInfo.SchoolYear > ApplySemesterSchoolYear[scoreInfo.GradeYear][scoreInfo.Semester])
-                    //        ApplySemesterSchoolYear[scoreInfo.GradeYear][scoreInfo.Semester] = scoreInfo.SchoolYear;
-                    //}
-                    ////如果成績資料的年級學年度不在清單中就移掉
-                    //List<SemesterSubjectScoreInfo> removeList = new List<SemesterSubjectScoreInfo>();
-                    //foreach (SemesterSubjectScoreInfo scoreInfo in aforeSemesterScoreList)
-                    //{
-                    //    if (ApplySemesterSchoolYear[scoreInfo.GradeYear][scoreInfo.Semester] != scoreInfo.SchoolYear)
-                    //        removeList.Add(scoreInfo);
-                    //}
-                    //foreach (SemesterSubjectScoreInfo scoreInfo in removeList)
-                    //{
-                    //    aforeSemesterScoreList.Remove(scoreInfo);
-                    //}
-                    //#endregion
-
-                    //Dictionary<string, List<SemesterSubjectScoreInfo>> currentSLScoreDictionary = new Dictionary<string, List<SemesterSubjectScoreInfo>>();
-                    //Dictionary<string, List<SemesterSubjectScoreInfo>> aforeSLScoreDictionary = new Dictionary<string, List<SemesterSubjectScoreInfo>>();
-                    //#region 將有用的成績依科目級別填入
-                    //foreach (SemesterSubjectScoreInfo scoreinfo in currentSemesterScoreList)
-                    //{
-                    //    string key = scoreinfo.Subject.Trim() + "_" + scoreinfo.Level.Trim();
-                    //    if (!currentSLScoreDictionary.ContainsKey(key))
-                    //        currentSLScoreDictionary.Add(key, new List<SemesterSubjectScoreInfo>());
-                    //    currentSLScoreDictionary[key].Add(scoreinfo);
-                    //}
-                    //foreach (SemesterSubjectScoreInfo scoreinfo in aforeSemesterScoreList)
-                    //{
-                    //    string key = scoreinfo.Subject + "_" + scoreinfo.Level;
-                    //    if (!aforeSLScoreDictionary.ContainsKey(key))
-                    //        aforeSLScoreDictionary.Add(key, new List<SemesterSubjectScoreInfo>());
-                    //    aforeSLScoreDictionary[key].Add(scoreinfo);
-                    //}
-                    //#endregion
-
-                    //List<SemesterSubjectScoreCalcInfo> semesterSubjectScoreCalcInfoList = new List<SemesterSubjectScoreCalcInfo>();
-                    //#region 建立修改清單
-                    //foreach (StudentAttendCourseRecord sacRecord in var.AttendCourseList)
-                    //{
-                    //    if (!sacRecord.HasFinalScore && !sacRecord.NotIncludedInCalc)
-                    //    {
-                    //        LogError(var, _ErrorList, "" + sacRecord.CourseName + "沒有修課總成績，無法計算。");
-                    //        continue;
-                    //    }
-                    //    string key = sacRecord.Subject.Trim() + "_" + sacRecord.SubjectLevel.Trim();
-                    //    SemesterSubjectScoreCalcInfo info = new SemesterSubjectScoreCalcInfo();
-                    //    info.SACRecord = sacRecord;
-                    //    if (currentSLScoreDictionary.ContainsKey(key))
-                    //    {
-                    //        //當學期已有紀錄直接寫入當學期
-                    //        #region 直接寫入當學期
-                    //        info.UpdateSemesterSubjectScoreInfo = currentSLScoreDictionary[key][0];
-                    //        //要評分才處理成績
-                    //        if (!sacRecord.NotIncludedInCalc)
-                    //        {
-                    //            info.原始成績 = sacRecord.FinalScore;
-                    //            //如果擇優採計重修成績
-                    //            if (choseBetter && aforeSLScoreDictionary.ContainsKey(key))
-                    //            {
-                    //                decimal max = 0;
-                    //                foreach (SemesterSubjectScoreInfo semeScore in aforeSLScoreDictionary[key])
-                    //                {
-                    //                    if (semeScore.Score > max)
-                    //                        max = semeScore.Score;
-                    //                }
-                    //                if (max > info.原始成績)
-                    //                    info.擇優採計成績 = max;
-                    //            }
-                    //        }
-                    //        #endregion
-                    //    }
-                    //    else if (writeToFirstSemester && aforeSLScoreDictionary.ContainsKey(key))
-                    //    {
-                    //        //當重修成績寫回原學期且之前有修課紀錄時寫回最後一筆紀錄中
-                    //        #region 寫回最後一筆紀錄中
-                    //        SemesterSubjectScoreInfo lastSLScoreRecord = null;
-                    //        foreach (SemesterSubjectScoreInfo semeScore in aforeSLScoreDictionary[key])
-                    //        {
-                    //            if (lastSLScoreRecord == null)
-                    //                lastSLScoreRecord = semeScore;
-                    //            else
-                    //                if (lastSLScoreRecord.SchoolYear == semeScore.SchoolYear && lastSLScoreRecord.Semester < semeScore.Semester)
-                    //                    lastSLScoreRecord = semeScore;
-                    //                else
-                    //                    if (lastSLScoreRecord.SchoolYear < semeScore.SchoolYear)
-                    //                        lastSLScoreRecord = semeScore;
-                    //        }
-                    //        info.UpdateSemesterSubjectScoreInfo = lastSLScoreRecord;
-                    //        info.重修成績 = sacRecord.FinalScore;
-                    //        #endregion
-                    //    }
-                    //    else
-                    //    {
-                    //        //新增一筆紀錄至當學期
-                    //        #region 新增一筆紀錄
-                    //        //要評分才處理成績
-                    //        if (!sacRecord.NotIncludedInCalc)
-                    //        {
-                    //            info.原始成績 = sacRecord.FinalScore;
-                    //            //如果擇優採計重修成績
-                    //            if (choseBetter && aforeSLScoreDictionary.ContainsKey(key))
-                    //            {
-                    //                decimal max = 0;
-                    //                foreach (SemesterSubjectScoreInfo semeScore in aforeSLScoreDictionary[key])
-                    //                {
-                    //                    if (semeScore.Score > max)
-                    //                        max = semeScore.Score;
-                    //                }
-                    //                if (max > info.原始成績)
-                    //                    info.擇優採計成績 = max;
-                    //            }
-                    //        }
-                    //        #endregion
-                    //    }
-                    //    semesterSubjectScoreCalcInfoList.Add(info);
-                    //}
-                    //#endregion
-                    //#region 建立semesterSubjectCalcScoreElement
-                    //Dictionary<int, Dictionary<int, List<SemesterSubjectScoreCalcInfo>>> semesterCalcInfo = new Dictionary<int, Dictionary<int, List<SemesterSubjectScoreCalcInfo>>>();
-                    //#region 照學年度學期分開
-                    //foreach (SemesterSubjectScoreCalcInfo calcInfo in semesterSubjectScoreCalcInfoList)
-                    //{
-                    //    int year, sems;
-                    //    if (calcInfo.UpdateSemesterSubjectScoreInfo == null)
-                    //    {
-                    //        year = schoolyear;
-                    //        sems = semester;
-                    //    }
-                    //    else
-                    //    {
-                    //        year = calcInfo.UpdateSemesterSubjectScoreInfo.SchoolYear;
-                    //        sems = calcInfo.UpdateSemesterSubjectScoreInfo.Semester;
-                    //    }
-                    //    if (!semesterCalcInfo.ContainsKey(year))
-                    //        semesterCalcInfo.Add(year, new Dictionary<int, List<SemesterSubjectScoreCalcInfo>>());
-                    //    if (!semesterCalcInfo[year].ContainsKey(sems))
-                    //        semesterCalcInfo[year].Add(sems, new List<SemesterSubjectScoreCalcInfo>());
-                    //    semesterCalcInfo[year][sems].Add(calcInfo);
-                    //}
-                    //#endregion
-                    //Dictionary<int, Dictionary<int, string>> semeScoreID = (Dictionary<int, Dictionary<int, string>>)var.Fields["SemesterSubjectScoreID"];
-                    //foreach (int year in semesterCalcInfo.Keys)
-                    //{
-                    //    foreach (int sems in semesterCalcInfo[year].Keys)
-                    //    {
-                    //        XmlElement parentNode;
-                    //        #region 建立parentNode，判斷是新增或修改，修改會有ID，新增會有年級
-                    //        if (semeScoreID.ContainsKey(year) && semeScoreID[year].ContainsKey(sems))
-                    //        {
-                    //            parentNode = doc.CreateElement("UpdateSemesterScore");
-                    //            parentNode.SetAttribute("ID", semeScoreID[year][sems]);
-                    //        }
-                    //        else
-                    //        {
-                    //            parentNode = doc.CreateElement("InsertSemesterScore");
-                    //            parentNode.SetAttribute("GradeYear", "" + gradeYear);
-                    //        }
-                    //        #endregion
-                    //        semesterSubjectCalcScoreElement.AppendChild(parentNode);
-                    //        Dictionary<string, XmlElement> thisSemesterScores = new Dictionary<string, XmlElement>();
-                    //        #region 找尋此學期成績中以存在的成績資料
-                    //        if (year == schoolyear && sems == semester)
-                    //        {
-                    //            foreach (SemesterSubjectScoreInfo s in currentSemesterScoreList)
-                    //            {
-                    //                string key = s.Subject.Trim() + "_" + s.Level.Trim();
-                    //                thisSemesterScores.Add(key, s.Detail);
-                    //            }
-                    //        }
-                    //        else
-                    //        {
-                    //            foreach (SemesterSubjectScoreInfo s in aforeSemesterScoreList)
-                    //            {
-                    //                if (s.SchoolYear == year && s.Semester == sems)
-                    //                {
-                    //                    string key = s.Subject.Trim() + "_" + s.Level.Trim();
-                    //                    thisSemesterScores.Add(key, s.Detail);
-                    //                }
-                    //            }
-                    //        }
-                    //        #endregion
-                    //        #region 新增或修改此學期的成績資料
-                    //        foreach (SemesterSubjectScoreCalcInfo calcInfo in semesterCalcInfo[year][sems])
-                    //        {
-                    //            string key = calcInfo.SACRecord.Subject.Trim() + "_" + calcInfo.SACRecord.SubjectLevel.Trim();
-                    //            if (thisSemesterScores.ContainsKey(key))
-                    //            {
-                    //                #region 修改已存在的資料
-                    //                if (calcInfo.重修成績 != null)
-                    //                    thisSemesterScores[key].SetAttribute("重修成績", "" + calcInfo.重修成績);
-                    //                if (calcInfo.原始成績 != null)
-                    //                    thisSemesterScores[key].SetAttribute("原始成績", "" + calcInfo.原始成績);
-                    //                if (calcInfo.擇優採計成績 != null)
-                    //                    thisSemesterScores[key].SetAttribute("擇優採計成績", "" + calcInfo.擇優採計成績);
-                    //                if (calcInfo.SACRecord.NotIncludedInCalc || (calcInfo.原始成績 != null && calcInfo.原始成績 >= applyLimit) || (calcInfo.重修成績 != null && calcInfo.重修成績 >= applyLimit) || (calcInfo.擇優採計成績 != null && calcInfo.擇優採計成績 >= applyLimit))
-                    //                    thisSemesterScores[key].SetAttribute("是否取得學分", "是");
-                    //                #endregion
-                    //            }
-                    //            else
-                    //            {
-                    //                #region 加入新的資料
-                    //                XmlElement newScoreInfo = doc.CreateElement("Subject");
-                    //                newScoreInfo.SetAttribute("不計學分", calcInfo.SACRecord.NotIncludedInCredit ? "是" : "否");
-                    //                newScoreInfo.SetAttribute("不需評分", calcInfo.SACRecord.NotIncludedInCalc ? "是" : "否");
-                    //                newScoreInfo.SetAttribute("修課必選修", calcInfo.SACRecord.Required ? "必" : "選");
-                    //                newScoreInfo.SetAttribute("修課校部訂", (calcInfo.SACRecord.RequiredBy == "部訂" ? calcInfo.SACRecord.RequiredBy : "校訂"));
-                    //                newScoreInfo.SetAttribute("原始成績", "" + calcInfo.原始成績);
-                    //                newScoreInfo.SetAttribute("學年調整成績", "");
-                    //                newScoreInfo.SetAttribute("擇優採計成績", "" + calcInfo.擇優採計成績);
-                    //                //不需評分或分數達及格標準
-                    //                if (calcInfo.SACRecord.NotIncludedInCalc || (calcInfo.原始成績 != null && calcInfo.原始成績 >= applyLimit) || (calcInfo.重修成績 != null && calcInfo.重修成績 >= applyLimit) || (calcInfo.擇優採計成績 != null && calcInfo.擇優採計成績 >= applyLimit))
-                    //                    newScoreInfo.SetAttribute("是否取得學分", "是");
-                    //                else
-                    //                    newScoreInfo.SetAttribute("是否取得學分", "否");
-                    //                newScoreInfo.SetAttribute("科目", calcInfo.SACRecord.Subject);
-                    //                newScoreInfo.SetAttribute("科目級別", calcInfo.SACRecord.SubjectLevel);
-                    //                newScoreInfo.SetAttribute("補考成績", "");
-                    //                newScoreInfo.SetAttribute("重修成績", "" + calcInfo.重修成績);
-                    //                newScoreInfo.SetAttribute("開課分項類別", calcInfo.SACRecord.Entry);
-                    //                newScoreInfo.SetAttribute("開課學分數", "" + calcInfo.SACRecord.Credit);
-                    //                thisSemesterScores.Add(key, newScoreInfo);
-                    //                #endregion
-                    //            }
-                    //        }
-                    //        #endregion
-                    //        foreach (XmlElement element in thisSemesterScores.Values)
-                    //        {
-                    //            parentNode.AppendChild(doc.ImportNode(element, true));
-                    //        }
-                    //        semesterSubjectCalcScoreElement.AppendChild(parentNode);
-                    //    }
-                    //}
-                    //#endregion 
-                    #endregion
                 }
                 var.Fields.Add("SemesterSubjectCalcScore", semesterSubjectCalcScoreElement);
             }
+
+            // 補修成績寫入學期歷程
+            if (makeUpScoreList.Count > 0)
+            {
+                LearningHistoryDataAccess learningHistoryDataAccess = new LearningHistoryDataAccess();
+                learningHistoryDataAccess.SaveScores43(makeUpScoreList, schoolyear, semester);
+            }
+
+            // 重修學期寫入學期歷程
+            if (restudyScoreList.Count > 0)
+            {
+                LearningHistoryDataAccess learningHistoryDataAccess = new LearningHistoryDataAccess();
+                learningHistoryDataAccess.SaveScores52(restudyScoreList, schoolyear, semester);
+            }
+
+            //// 轉學轉科寫入學期歷程
+            //if (transferScoreList.Count > 0)
+            //{
+            //    LearningHistoryDataAccess learningHistoryDataAccess = new LearningHistoryDataAccess();
+            //    learningHistoryDataAccess.SaveScores44(transferScoreList, schoolyear, semester);
+            //}
+
+            // 重讀學期寫入學期歷程
+            if (repeatScoreList.Count > 0)
+            {
+                LearningHistoryDataAccess learningHistoryDataAccess = new LearningHistoryDataAccess();
+                learningHistoryDataAccess.SaveScores53(repeatScoreList, schoolyear, semester);
+            }
+
 
             return _ErrorList;
         }
@@ -2583,21 +3913,29 @@ namespace SmartSchool.Evaluation
                                 if (score.Detail.GetAttribute("指定學年科目名稱") != "")
                                     semesterSubject = score.Detail.GetAttribute("指定學年科目名稱");
 
-                                if (schoolYearSubjectScore.SchoolYear == schoolyear && schoolYearSubjectScore.Subject == semesterSubject
-                                    && schoolYearSubjectScore.Score >= applylimit)
-                                {
-                                    //subjectCalcScores.Add(schoolYearSubjectScore.Subject, schoolYearSubjectScore.Score);//[score.Subject]
-                                    decimal tryParseDecimal, topScore = decimal.MinValue;
-                                    string tip = score.Detail.GetAttribute("註記");
-                                    foreach (string field in new string[] { "結算成績", "補考成績", "重修成績" })
-                                    {
-                                        tip = tip.Replace("學年" + field + "及格。", "");
-                                        if (decimal.TryParse(schoolYearSubjectScore.Detail.GetAttribute(field), out tryParseDecimal) && tryParseDecimal >= applylimit && tryParseDecimal > topScore)
-                                        {
-                                            tip += "學年" + field + "及格。";
-                                            topScore = tryParseDecimal;
-                                        }
-                                    }
+                                                // 優先使用修課及格標準，如果沒有設定則使用原本的及格標準
+                decimal currentApplyLimit = applylimit;
+                decimal coursePassLimit;
+                if (decimal.TryParse(score.Detail.GetAttribute("修課及格標準"), out coursePassLimit))
+                {
+                    currentApplyLimit = coursePassLimit;
+                }
+
+                if (schoolYearSubjectScore.SchoolYear == schoolyear && schoolYearSubjectScore.Subject == semesterSubject
+                    && schoolYearSubjectScore.Score >= currentApplyLimit)
+                {
+                    //subjectCalcScores.Add(schoolYearSubjectScore.Subject, schoolYearSubjectScore.Score);//[score.Subject]
+                    decimal tryParseDecimal, topScore = decimal.MinValue;
+                    string tip = score.Detail.GetAttribute("註記");
+                    foreach (string field in new string[] { "結算成績", "補考成績", "重修成績" })
+                    {
+                        tip = tip.Replace("學年" + field + "及格。", "");
+                        if (decimal.TryParse(schoolYearSubjectScore.Detail.GetAttribute(field), out tryParseDecimal) && tryParseDecimal >= currentApplyLimit && tryParseDecimal > topScore)
+                        {
+                            tip += "學年" + field + "及格。";
+                            topScore = tryParseDecimal;
+                        }
+                    }
                                     if (regWay != 3)//不使用學年調整成績
                                     {
                                         switch (regWay)

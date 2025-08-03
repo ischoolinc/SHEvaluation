@@ -126,7 +126,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                     }
 
                     //檢查是否需要課程規劃表
-                    bool needGraduationPlan = useGPlan || 
+                    bool needGraduationPlan = useGPlan ||
                                             (rule.SelectSingleNode("修滿所有必修課程") != null && rule.SelectSingleNode("修滿所有必修課程").InnerText.Trim() == "True") ||
                                             (rule.SelectSingleNode("修滿所有部定必修課程") != null && rule.SelectSingleNode("修滿所有部定必修課程").InnerText.Trim() == "True") ||
                                             HasPercentageInGraduationCredits(rule);
@@ -664,7 +664,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                     #endregion
 
 
-                    
+
                     CourseDomainCodeSpecList.Clear();
                     foreach (XmlNode var in rule.SelectNodes("特殊需求領域排除領域代碼/領域代碼"))
                     {
@@ -1422,7 +1422,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
         {
             string[] creditPaths = {
                 "畢業學分數/應修總學分數",
-                "畢業學分數/學科累計總學分數", 
+                "畢業學分數/學科累計總學分數",
                 "畢業學分數/應修專業及實習總學分數",
                 "畢業學分數/專業及實習總學分數",
                 "畢業學分數/必修學分數",
@@ -1431,7 +1431,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                 "畢業學分數/選修學分數",
                 "畢業學分數/校訂必修學分數"
             };
-            
+
             foreach (string path in creditPaths)
             {
                 XmlNode node = rule.SelectSingleNode(path);

@@ -151,6 +151,63 @@ namespace SmartSchool.Evaluation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        ///&lt;StudTypeMapping&gt;
+        ///  &lt;Item 異動代碼=&quot;111&quot; 原因及事項=&quot;公告招收&quot; 分類=&quot;轉入異動&quot; 身分=&quot;轉學生&quot; 身分別=&quot;1&quot; /&gt;
+        ///  &lt;Item 異動代碼=&quot;112&quot; 原因及事項=&quot;公告招收(轉科)&quot; 分類=&quot;轉入異動&quot; 身分=&quot;轉學生&quot; 身分別=&quot;1&quot; /&gt;
+        ///  &lt;Item 異動代碼=&quot;113&quot; 原因及事項=&quot;公告招收(降級)&quot; 分類=&quot;轉入異動&quot; 身分=&quot;轉學生&quot; 身分別=&quot;1&quot; /&gt;
+        ///  &lt;Item 異動代碼=&quot;114&quot; 原因及事項=&quot;公告招收(降級轉科)&quot; 分類=&quot;轉入異動&quot; 身分=&quot;轉學生&quot; 身分別=&quot;1&quot; /&gt;
+        ///  &lt;Item 異動代碼=&quot;115&quot; 原因及事項=&quot;教育部分發&quot; 分類=&quot;轉入異動&quot; 身分=&quot;轉學生&quot; 身分別=&quot;1&quot; /&gt;
+        ///  &lt;Item 異動代碼=&quot;121&quot; 原因及事項=&quot;學生申請&quot; 分類=&quot;轉入異動&quot; 身分=&quot;轉學生&quot; 身分別=&quot;1&quot; /&gt;
+        ///  &lt;Item 異動代碼=&quot;122&quot; 原因及事項=&quot;學生申請(轉科)&quot; 分類=&quot;轉入異動&quot; 身分=&quot;轉學生&quot; 身分別=&quot; [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string StudTypeMapping1 {
+            get {
+                return ResourceManager.GetString("StudTypeMapping1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        ///&lt;StudTypeMapping&gt;
+        ///  &lt;Item 異動代碼=&quot;231&quot; 原因及事項=&quot;重讀(一)&quot; 分類=&quot;學籍異動&quot; /&gt;
+        ///  &lt;Item 異動代碼=&quot;232&quot; 原因及事項=&quot;重讀(一)轉科&quot; 分類=&quot;學籍異動&quot; /&gt;
+        ///  &lt;Item 異動代碼=&quot;233&quot; 原因及事項=&quot;重讀(二)&quot; 分類=&quot;學籍異動&quot; /&gt;
+        ///  &lt;Item 異動代碼=&quot;234&quot; 原因及事項=&quot;重讀(二)轉科&quot; 分類=&quot;學籍異動&quot; /&gt;
+        ///  &lt;Item 異動代碼=&quot;237&quot; 原因及事項=&quot;復學(一)重讀&quot; 分類=&quot;學籍異動&quot; /&gt;
+        ///  &lt;Item 異動代碼=&quot;238&quot; 原因及事項=&quot;復學(一)重讀轉科&quot; 分類=&quot;學籍異動&quot; /&gt;
+        ///  &lt;Item 異動代碼=&quot;239&quot; 原因及事項=&quot;復學(二)重讀&quot; 分類=&quot;學籍異動&quot; /&gt;
+        ///  &lt;Item 異動代碼=&quot;240&quot; 原因及事項=&quot;復學(二)重讀轉科&quot; 分類=&quot;學籍異動&quot; /&gt;
+        ///  &lt;Item 異動代碼=&quot;241&quot; 原因及事項=&quot;重讀(降級轉科)&quot; 分類=&quot;學籍異動&quot; /&gt;
+        ///  &lt;Item 異動代 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string StudTypeMapping2 {
+            get {
+                return ResourceManager.GetString("StudTypeMapping2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        ///&lt;StudTypeMapping&gt;
+        ///	&lt;Item 異動代碼=&quot;231&quot; 原因及事項=&quot;重讀(一)&quot; 分類=&quot;學籍異動&quot; /&gt;
+        ///	&lt;Item 異動代碼=&quot;232&quot; 原因及事項=&quot;重讀(一)轉科&quot; 分類=&quot;學籍異動&quot; /&gt;
+        ///	&lt;Item 異動代碼=&quot;233&quot; 原因及事項=&quot;重讀(二)&quot; 分類=&quot;學籍異動&quot; /&gt;
+        ///	&lt;Item 異動代碼=&quot;234&quot; 原因及事項=&quot;重讀(二)轉科&quot; 分類=&quot;學籍異動&quot; /&gt;
+        ///	&lt;Item 異動代碼=&quot;237&quot; 原因及事項=&quot;復學(一)重讀&quot; 分類=&quot;學籍異動&quot; /&gt;
+        ///	&lt;Item 異動代碼=&quot;238&quot; 原因及事項=&quot;復學(一)重讀轉科&quot; 分類=&quot;學籍異動&quot; /&gt;
+        ///	&lt;Item 異動代碼=&quot;239&quot; 原因及事項=&quot;復學(二)重讀&quot; 分類=&quot;學籍異動&quot; /&gt;
+        ///	&lt;Item 異動代碼=&quot;240&quot; 原因及事項=&quot;復學(二)重讀轉科&quot; 分類=&quot;學籍異動&quot; /&gt;
+        ///	&lt;Item 異動代碼=&quot;241&quot; 原因及事項=&quot;重讀(降級轉科)&quot; 分類=&quot;學籍異動&quot; /&gt;
+        ///	&lt;Item 異動代碼=&quot;242&quot; 原因 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string StudTypeMapping3 {
+            get {
+                return ResourceManager.GetString("StudTypeMapping3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap subject_64 {

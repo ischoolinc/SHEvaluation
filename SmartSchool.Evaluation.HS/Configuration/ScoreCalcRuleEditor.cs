@@ -623,7 +623,7 @@ namespace SmartSchool.Evaluation.Configuration
 
                 if (element.InnerText == "學年分項成績平均")
                     radioButton25.Checked = true;
-                
+
                 //學年學業成績及格(new)
                 if (element.GetAttribute("學年學業成績及格") == "true")
                     checkBoxX7.Checked = true;

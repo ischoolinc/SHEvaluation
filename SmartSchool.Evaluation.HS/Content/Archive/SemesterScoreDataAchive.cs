@@ -154,7 +154,10 @@ namespace SmartSchool.Evaluation.Content
         {
             StudentSemsSocreArchive sssa = listView1.SelectedItems[0].Tag as StudentSemsSocreArchive;
             ScoreEditor.SemesterScoreArchiveDetails viewer = new ScoreEditor.SemesterScoreArchiveDetails(this.PrimaryKey, sssa.Uid, sssa.RefEntryUid);
-            viewer.ShowDialog();
+            if (viewer.ShowDialog() == DialogResult.OK)
+            {
+                Changed();
+            }
 
         }
 
@@ -216,12 +219,21 @@ WHERE a.ref_student_id={0}";
             MsgBox.Show("\r\n" +
                 "1. 需要有「學期成績(封存)」的編輯權限才能使用。\r\n\r\n" +
                 "2. 此功能運用在「校內轉科」，用來保留學生當時的學期科目成績及課程代碼。\r\n\r\n" +
-                "3. 封存的成績不可修改。\r\n\r\n" +
+                "3. 封存的成績修改儲存會產生新的封存資料。\r\n\r\n" +
                 "4. 德行成績已過時，故不在封存範圍。\r\n\r\n" +
                 "5. 流程：\r\n" +
                 "　　(1) 請先封存學生當前所有的學期成績至「學期成績(封存)」。\r\n" +
                 "　　(2) 進行轉科異動作業。\r\n" +
                 "　　(3) 將不可抵免的科目自學期成績中刪除。", "學期成績(封存)說明", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            ScoreEditor.SemesterScoreArchiveDetails Add = new ScoreEditor.SemesterScoreArchiveDetails(this.PrimaryKey, "", "");
+            if (Add.ShowDialog() == DialogResult.OK)
+            {
+                Changed();
+            }
         }
     }
 }

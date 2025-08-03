@@ -52,6 +52,9 @@ namespace StudentDuplicateSubjectCheck
         bool checkStandSocrePass = false;
         Dictionary<string, List<string>> dataCompareDict = new Dictionary<string, List<string>>(); // <sid,<科目名稱 + _ + 級別>>
 
+        // 來自封存成績
+        Dictionary<string, List<string>> dataCompareDict1 = new Dictionary<string, List<string>>(); // <sid,<科目名稱 + _ + 級別>>
+
         public SelectGradeYear()
         {
             InitializeComponent();
@@ -107,6 +110,23 @@ namespace StudentDuplicateSubjectCheck
             }
             else
             {
+                if (errorMessage != "")
+                {
+                    if (dtErrorTable.Rows.Count > 0)
+                    {
+                        ErrorMessageForm emf = new ErrorMessageForm();
+                        emf.SetDataTable(dtErrorTable);
+                        emf.SetMessage(errorMessage);
+                        emf.ShowDialog();
+                    }
+                    else
+                    {
+                        MsgBox.Show(errorMessage, "檢查發生錯誤", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                    }
+
+                    FISCA.Presentation.MotherForm.SetStatusBarMessage("檢查發生錯誤。");
+                }
+
                 if (e.Error != null)
                 {
                     MessageBox.Show("Error:" + e.Error.Message);
@@ -738,6 +758,83 @@ namespace StudentDuplicateSubjectCheck
                 return;
             }
 
+            // 透過學生系統編號，取得學生學期成績封存資料，studentIDList
+            try
+            {
+                QueryHelper qhSemsScore = new QueryHelper();
+                string qrySemsScore = string.Format(@"
+            SELECT
+	            sems_subj_score_ext.ref_student_id
+	            , sems_subj_score_ext.grade_year
+	            , sems_subj_score_ext.semester
+	            , sems_subj_score_ext.school_year
+	            , array_to_string(xpath('//Subject/@科目', subj_score_ele), '')::text AS 科目
+	            , array_to_string(xpath('//Subject/@科目級別', subj_score_ele), '')::text AS 科目級別
+	            , array_to_string(xpath('//Subject/@不計學分', subj_score_ele), '')::text AS 不計學分
+	            , array_to_string(xpath('//Subject/@不需評分', subj_score_ele), '')::text AS 不需評分	            
+            FROM (
+		            SELECT 
+			            $semester_subject_score_archive.*
+			            , 	unnest(xpath('//SemesterSubjectScoreInfo/Subject', xmlparse(content score_info))) as subj_score_ele
+		            FROM 
+			            $semester_subject_score_archive 
+		            WHERE uid IN(
+		            SELECT uid
+            FROM (
+                SELECT
+                    uid,
+                ref_student_id,
+                school_year,
+                semester,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY ref_student_id,school_year, semester
+                        ORDER BY last_update DESC
+                    ) AS rn
+                FROM
+                    $semester_subject_score_archive
+                WHERE
+                    ref_student_id  IN({0})
+            ) AS t
+            WHERE t.rn = 1
+		            )
+	            ) as sems_subj_score_ext
+            ORDER BY ref_student_id,grade_year desc, semester desc, school_year desc
+
+", string.Join(",", studentIDList.ToArray()));
+
+                DataTable dtSemsScore = qhSemsScore.Select(qrySemsScore);
+                foreach (DataRow dr in dtSemsScore.Rows)
+                {
+                    string studentID = dr["ref_student_id"].ToString();
+                    string subject = dr["科目"].ToString();
+                    string level = dr["科目級別"].ToString();
+                    string s1 = dr["不計學分"].ToString();
+                    string s2 = dr["不需評分"].ToString();
+
+                    if (s2 == "是")
+                    {
+                        // 不需評分的科目，跳過
+                        continue;
+                    }
+
+                    // 只要有成績的就加入
+                    if (!dataCompareDict1.ContainsKey(studentID))
+                    {
+                        dataCompareDict1.Add(studentID, new List<string>());
+                    }
+                    if (!dataCompareDict1[studentID].Contains(subject + "_" + level))
+                    {
+                        dataCompareDict1[studentID].Add(subject + "_" + level);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMessage = "取得學生學期成績封存資料發生錯誤：" + ex.Message;
+            }
+
+
+
             // 取得學生當學期修課
             QueryHelper qhScAttend = new QueryHelper();
             string qryScAttend = string.Format(@"
@@ -956,8 +1053,6 @@ namespace StudentDuplicateSubjectCheck
                         this.dtErrorTable.Rows.Add(dr);
                     }
                 }
-                e.Cancel = true;
-                return;
             }
 
             // 分類有哪些課程規劃ID並取得資料
@@ -1088,6 +1183,10 @@ namespace StudentDuplicateSubjectCheck
                 if (studentGraduationPlanDict.ContainsKey(sid))
                 {
                     string gpid = studentGraduationPlanDict[sid];
+
+                    // 沒有課程規劃表跳過
+                    if (string.IsNullOrWhiteSpace(gpid)) continue;
+
                     if (gpDataDict.ContainsKey(gpid))
                     {
                         foreach (XElement elm in gpDataDict[gpid].Elements("Subject"))
@@ -1237,11 +1336,15 @@ namespace StudentDuplicateSubjectCheck
 
             _backgroundWorker.ReportProgress(90);
 
+            Dictionary<string, Dictionary<string, SCAttendRecord>> scaDuplicateDict = new Dictionary<string, Dictionary<string, SCAttendRecord>>();
+
             foreach (DataRow dr in dt_SCAttend.Rows)
             {
-                if (dataCompareDict.ContainsKey("" + dr["refStudentID"]))
+                string key1 = "" + dr["refStudentID"];
+                if (dataCompareDict.ContainsKey(key1))
                 {
-                    if (dataCompareDict["" + dr["refStudentID"]].Contains(dr["subjectName"] + "_" + dr["subjectLevel"]))
+                    string key2 = dr["subjectName"] + "_" + dr["subjectLevel"];
+                    if (dataCompareDict[key1].Contains(key2))
                     {
                         SCAttendRecord scar = new SCAttendRecord();
 
@@ -1258,11 +1361,80 @@ namespace StudentDuplicateSubjectCheck
                         scar.CourseName = "" + dr["courseName"];
                         scar.SubjectName = "" + dr["subjectName"];
                         scar.SubjectLevel = "" + dr["subjectLevel"];
+                        scar.ScoreSource.Add("學期成績");
 
-                        scaDuplicateList.Add(scar); // 假如有找到重覆的科目級別資料，將 本學期修課紀錄加入List 處理
+                        if (!scaDuplicateDict.ContainsKey(key1))
+                        {
+                            scaDuplicateDict.Add(key1, new Dictionary<string, SCAttendRecord>());
+                        }
+                        if (!scaDuplicateDict[key1].ContainsKey(key2))
+                        {
+                            scaDuplicateDict[key1].Add(key2, scar);
+                        }
+                        else
+                        {
+                            // 如果有重覆的科目級別資料，將 本學期修課紀錄加入List 處理
+                            scaDuplicateDict[key1][key2] = scar;
+                        }
+
+                        //scaDuplicateList.Add(scar); // 假如有找到重覆的科目級別資料，將 本學期修課紀錄加入List 處理
                     }
                 }
             }
+
+            foreach (DataRow dr in dt_SCAttend.Rows)
+            {
+                string key1 = "" + dr["refStudentID"];
+                if (dataCompareDict1.ContainsKey(key1))
+                {
+                    string key2 = dr["subjectName"] + "_" + dr["subjectLevel"];
+                    if (dataCompareDict1[key1].Contains(key2))
+                    {
+                        SCAttendRecord scar = new SCAttendRecord();
+
+                        scar.ID = "" + dr["id"];
+                        scar.Extensions = "" + dr["extensions"];
+                        scar.RefStudentID = "" + dr["refStudentID"];
+                        scar.Name = "" + dr["studentName"];
+                        scar.StudentNumber = "" + dr["studentNumber"];
+                        scar.SeatNo = "" + dr["seatNo"];
+                        scar.RefCourseID = "" + dr["refStudentID"];
+                        scar.ClassName = "" + dr["className"];
+                        scar.GradeYear = "" + dr["gradeYear"];
+                        scar.RefCourseID = "" + dr["refCourseID"];
+                        scar.CourseName = "" + dr["courseName"];
+                        scar.SubjectName = "" + dr["subjectName"];
+                        scar.SubjectLevel = "" + dr["subjectLevel"];
+                        scar.ScoreSource.Add("封存成績");
+
+                        if (!scaDuplicateDict.ContainsKey(key1))
+                        {
+                            scaDuplicateDict.Add(key1, new Dictionary<string, SCAttendRecord>());
+                        }
+                        if (!scaDuplicateDict[key1].ContainsKey(key2))
+                        {
+                            scaDuplicateDict[key1].Add(key2, scar);
+                        }
+                        else
+                        {
+                            // 如果有重覆的科目級別資料，將 本學期修課紀錄加入List 處理
+                            scaDuplicateDict[key1][key2].ScoreSource.Add("封存成績");
+                        }
+
+                        //scaDuplicateList.Add(scar); // 假如有找到重覆的科目級別資料，將 本學期修課紀錄加入List 處理
+                    }
+                }
+            }
+
+            foreach (string sid in scaDuplicateDict.Keys)
+            {
+                foreach (string key in scaDuplicateDict[sid].Keys)
+                {
+                    SCAttendRecord scar = scaDuplicateDict[sid][key];             
+                        scaDuplicateList.Add(scar);                    
+                }
+            }
+
             _backgroundWorker.ReportProgress(100);
         }
 

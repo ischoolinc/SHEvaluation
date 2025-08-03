@@ -43,6 +43,7 @@ namespace SmartSchool.Evaluation.Content
             this.col學業成績 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.btnAdd = new DevComponents.DotNetBar.ButtonX();
             ((System.ComponentModel.ISupportInitialize)(this.picWaiting)).BeginInit();
             this.SuspendLayout();
             // 
@@ -52,7 +53,7 @@ namespace SmartSchool.Evaluation.Content
             this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnDelete.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnDelete.Enabled = false;
-            this.btnDelete.Location = new System.Drawing.Point(98, 195);
+            this.btnDelete.Location = new System.Drawing.Point(183, 194);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(75, 23);
             this.btnDelete.TabIndex = 6;
@@ -65,11 +66,11 @@ namespace SmartSchool.Evaluation.Content
             this.btnView.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnView.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnView.Enabled = false;
-            this.btnView.Location = new System.Drawing.Point(17, 195);
+            this.btnView.Location = new System.Drawing.Point(102, 194);
             this.btnView.Name = "btnView";
             this.btnView.Size = new System.Drawing.Size(75, 23);
             this.btnView.TabIndex = 7;
-            this.btnView.Text = "檢視";
+            this.btnView.Text = "修改";
             this.btnView.Click += new System.EventHandler(this.btnView_Click);
             // 
             // picWaiting
@@ -156,10 +157,23 @@ namespace SmartSchool.Evaluation.Content
             this.linkLabel1.Text = "說明";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
+            // btnAdd
+            // 
+            this.btnAdd.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnAdd.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnAdd.Location = new System.Drawing.Point(19, 194);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(75, 23);
+            this.btnAdd.TabIndex = 11;
+            this.btnAdd.Text = "新增";
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            // 
             // SemesterScoreDataAchive
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.picWaiting);
             this.Controls.Add(this.btnDelete);
@@ -186,5 +200,6 @@ namespace SmartSchool.Evaluation.Content
         private System.Windows.Forms.ColumnHeader col學業成績;
         private System.Windows.Forms.ColumnHeader columnTime;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private DevComponents.DotNetBar.ButtonX btnAdd;
     }
 }

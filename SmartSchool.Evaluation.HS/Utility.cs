@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace SmartSchool.Evaluation
@@ -482,6 +483,104 @@ namespace SmartSchool.Evaluation
             return _retValue;
         }
 
+        // 檢查課程代碼是否符合規格
+        public static bool IsValidCourseCode(string courseCode)
+        {
+            // 檢查課程代碼 CodePass
+            bool codePass = true;
 
+            // 幫我寫一個 C# 方法，判斷課程代碼 codePass。若 courseCode 為空白或長度不是 23，codePass = false；否則取第 17 碼（index 16）和第 19 碼（index 18），如果第 17 碼為 "8" 或 "9" 且第 19 碼不是 "D"，codePass 也為 false，其餘為 true。
+            if (string.IsNullOrWhiteSpace(courseCode) || courseCode.Length != 23)
+            {
+                codePass = false;
+            }
+            else
+            {
+                string sub1 = courseCode.Substring(16, 1);
+                string sub2 = courseCode.Substring(18, 1);
+                if ((sub1 == "8" || sub1 == "9") && sub2 != "D")
+                {
+                    codePass = false;
+                }
+            }
+            return codePass;
+        }
+
+        // 西元日期轉換民國日期
+        public static string ConvertChDateString(string strDate)
+        {
+            string value = "";
+            DateTime dt;
+            if (DateTime.TryParse(strDate, out dt))
+            {
+                value = string.Format("{0:000}", (dt.Year - 1911)) + string.Format("{0:00}", dt.Month) + string.Format("{0:00}", dt.Day);
+            }
+
+            return value;
+        }
+
+        public static Dictionary<string, string> GetStudentHasUpdateCodeDict(int SchoolYear, int Semester, List<string> StudentIDList, List<string> UpdateCodeList)
+        {
+            Dictionary<string, string> value = new Dictionary<string, string>();
+            string sql = "SELECT " +
+                "ref_student_id AS student_id" +
+                ",update_code FROM " +
+                "update_record " +
+                "WHERE school_year = " + SchoolYear + " AND semester =" + Semester + " " +
+                "AND ref_student_id IN(" + string.Join(",", StudentIDList.ToArray()) + ") " +
+                "AND update_code IN('" + string.Join("','", UpdateCodeList.ToArray()) + "') ORDER BY ref_student_id,update_code;";
+            QueryHelper qh = new QueryHelper();
+            DataTable dt = qh.Select(sql);
+            if (dt != null)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string sid = dr["student_id"] + "";
+                    string code = dr["update_code"] + "";
+                    if (!value.ContainsKey(sid))
+                        value.Add(sid, code);
+                }
+            }
+
+
+            return value;
+        }
+
+        /// <summary>
+        /// 取得異動與身分對照
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string, string> GetUpdateCodeMappingDict()
+        {
+            Dictionary<string, string> value = new Dictionary<string, string>();
+
+            try
+            {
+                XElement elmRoot = XElement.Parse(Properties.Resources.StudTypeMapping1);
+                if (elmRoot != null)
+                {
+                    foreach (XElement elm in elmRoot.Elements("Item"))
+                    {
+                        string code = "";
+                        string val = "";
+                        if (elm.Attribute("異動代碼") != null)
+                            code = elm.Attribute("異動代碼").Value;
+
+                        if (elm.Attribute("身分別") != null)
+                            val = elm.Attribute("身分別").Value;
+
+                        if (!value.ContainsKey(code))
+                            value.Add(code, val);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            return value;
+
+        }        
     }
 }

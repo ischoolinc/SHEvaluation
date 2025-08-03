@@ -18,7 +18,7 @@ namespace SmartSchool.Evaluation.Reports
 
         public RetakeScoreImport()
         {
-            RetakeSelectSemesterForm form = new RetakeSelectSemesterForm("重修成績匯入表");
+            RetakeSelectSemesterForm form = new RetakeSelectSemesterForm("重補修成績匯入表");
             if (form.ShowDialog() != System.Windows.Forms.DialogResult.OK)
             {
                 return;
@@ -87,13 +87,13 @@ namespace SmartSchool.Evaluation.Reports
 
         private void _BWRepeatScoreImport_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            MotherForm.SetStatusBarMessage("重修成績匯入表產生中", e.ProgressPercentage);
+            MotherForm.SetStatusBarMessage("重補修成績匯入表產生中", e.ProgressPercentage);
         }
 
         private void _BWRepeatScoreImport_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             MotherForm.SetStatusBarMessage("重修成績匯入表產生完成");
-            Completed("重修成績匯入表", (Workbook)e.Result);
+            Completed("重補修成績匯入表", (Workbook)e.Result);
         }
 
         private void _BWRepeatScoreImport_DoWork(object sender, DoWorkEventArgs e)
@@ -358,9 +358,16 @@ namespace SmartSchool.Evaluation.Reports
                 aInfo.Add("學年度", info.SchoolYear.ToString());
                 aInfo.Add("學期", info.Semester.ToString());
                 aInfo.Add("學分數", info.CreditDec().ToString());
+                aInfo.Add("分項類別", info.Detail.GetAttribute("開課分項類別"));
                 aInfo.Add("成績年級", info.GradeYear.ToString());
                 aInfo.Add("必選修", info.Require ? "必修" : "選修");
-                aInfo.Add("校部訂", info.Detail.HasAttribute("修課校部訂") ? info.Detail.GetAttribute("修課校部訂") : "");
+
+                string reqBy = info.Detail.HasAttribute("修課校部訂") ? info.Detail.GetAttribute("修課校部訂") : "";
+                if (reqBy == "部訂")
+                    reqBy = "部定";
+
+                aInfo.Add("校部訂", reqBy);
+
                 aInfo.Add("原始成績", info.Detail.HasAttribute("原始成績") ? info.Detail.GetAttribute("原始成績") : "");
                 //aInfo.Add("及格標準", info.Detail.HasAttribute("及格標準") ? info.Detail.GetAttribute("及格標準") : "");
 
@@ -376,6 +383,12 @@ namespace SmartSchool.Evaluation.Reports
 
                 aInfo.Add("重修學年度", info.Detail.HasAttribute("重修學年度") ? info.Detail.GetAttribute("重修學年度") : "");
                 aInfo.Add("重修學期", info.Detail.HasAttribute("重修學期") ? info.Detail.GetAttribute("重修學期") : "");
+
+                // 新增補修欄位
+                aInfo.Add("是否補修成績", info.Detail.HasAttribute("是否補修成績") ? info.Detail.GetAttribute("是否補修成績") : "");
+                aInfo.Add("補修學年度", info.Detail.HasAttribute("補修學年度") ? info.Detail.GetAttribute("補修學年度") : "");
+                aInfo.Add("補修學期", info.Detail.HasAttribute("補修學期") ? info.Detail.GetAttribute("補修學期") : "");
+
                 subjectInfo.Add(aInfo);
 
                 if (!subjectCheckList.Contains(student.StudentNumber + ":" + student.StudentName + ":" + info.Subject + ":" + info.Level))

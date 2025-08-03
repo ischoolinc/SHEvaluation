@@ -19,7 +19,7 @@ namespace SmartSchool.Evaluation.Reports
 
         public RetakeListBySubject()
         {
-            RetakeSelectSemesterForm form = new RetakeSelectSemesterForm("重修名單-依科目");
+            RetakeSelectSemesterForm form = new RetakeSelectSemesterForm("建議重補修名單-依科目");
             if (form.ShowDialog() != DialogResult.OK)
                 return;
 
@@ -155,7 +155,7 @@ namespace SmartSchool.Evaluation.Reports
 
         private void bkwNotPassComputer_DoWork(object sender, DoWorkEventArgs e)
         {
-            string reportName = "科目不及格名單";
+            string reportName = "科目重補修學生清單";
             //科目不及格學生清單(keyFormat:;<subject 科目='' 科目級別='' 學分數='' />)
             Dictionary<string, Dictionary<BriefStudentData, XmlElement>> notPassList = new Dictionary<string, Dictionary<BriefStudentData, XmlElement>>();
             #region 整理資料
@@ -244,7 +244,9 @@ namespace SmartSchool.Evaluation.Reports
             Workbook template = new Workbook();
             #region 建立樣板
             template.Open(new MemoryStream(Properties.Resources.科目重修學生清單), FileFormatType.Excel2003);
-            template.Worksheets[0].Cells[0, 0].PutValue(SmartSchool.CurrentUser.Instance.SchoolChineseName + "  科目重修學生清單");
+
+            template.Worksheets[0].Cells[0, 0].PutValue(SmartSchool.CurrentUser.Instance.SchoolChineseName + "  科目重補修學生清單");
+            //template.Worksheets[0].Cells[0, 0].PutValue("科目重補修學生清單");
             #endregion
 
             Workbook report = new Workbook();
@@ -271,7 +273,7 @@ namespace SmartSchool.Evaluation.Reports
                     int.TryParse(doc.DocumentElement.GetAttribute("科目級別"), out level);
                     report.Worksheets[0].Cells[index + 1, 2].PutValue(doc.DocumentElement.GetAttribute("領域"));
                     report.Worksheets[0].Cells[index + 1, 6].PutValue(doc.DocumentElement.GetAttribute("科目") + (level == 0 ? "" : " " + GetNumber(level)));
-                    report.Worksheets[0].Cells[index + 1, 10].PutValue(doc.DocumentElement.GetAttribute("學分數"));
+                    report.Worksheets[0].Cells[index + 1, 11].PutValue(doc.DocumentElement.GetAttribute("學分數"));
                     index += 4;
                     foreach (BriefStudentData student in notPassList[subjectKey].Keys)
                     {
@@ -283,9 +285,16 @@ namespace SmartSchool.Evaluation.Reports
                         report.Worksheets[0].Cells[index, 3].PutValue(student.Name);//姓名
                         report.Worksheets[0].Cells[index, 4].PutValue(student.StudentNumber);//學號
                         report.Worksheets[0].Cells[index, 5].PutValue(subjectElement.GetAttribute("修課必選修"));//必/選修
-                        report.Worksheets[0].Cells[index, 6].PutValue(subjectElement.GetAttribute("修課校部訂"));//校/部訂
+
+                        string reqBy = subjectElement.GetAttribute("修課校部訂");
+                        if (reqBy == "部訂")
+                            reqBy = "部定";                        
+
+                        report.Worksheets[0].Cells[index, 6].PutValue(reqBy);//校/部訂
                         report.Worksheets[0].Cells[index, 7].PutValue(subjectElement.GetAttribute("學年度"));//學年度
                         report.Worksheets[0].Cells[index, 8].PutValue(subjectElement.GetAttribute("學期"));//學期
+
+                        
 
                         //int gradeyear;
                         //if (ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(student.ID) != null && int.TryParse(subjectElement.GetAttribute("年級"), out gradeyear))
@@ -295,11 +304,11 @@ namespace SmartSchool.Evaluation.Reports
 
                         if (subjectElement.GetAttribute("修課及格標準") != "")
                         {
-                            report.Worksheets[0].Cells[index, 9].PutValue(subjectElement.GetAttribute("修課及格標準"));
+                            report.Worksheets[0].Cells[index, 10].PutValue(subjectElement.GetAttribute("修課及格標準"));
                         }
                         else
                         {
-                            report.Worksheets[0].Cells[index, 9].PutValue("--");//及格基分         
+                            report.Worksheets[0].Cells[index, 10].PutValue("--");//及格基分         
                         }
 
                         #region 取得最高分數
@@ -317,7 +326,16 @@ namespace SmartSchool.Evaluation.Reports
                             maxScore = tryParseDecimal;
                         #endregion
 
-                        report.Worksheets[0].Cells[index, 10].PutValue("" + maxScore);//學期成績
+                        report.Worksheets[0].Cells[index, 11].PutValue("" + maxScore);//學期成績
+
+
+                        report.Worksheets[0].Cells[index, 9].PutValue("重修");//重修
+                        // 補修判斷：原始成績空白，是否補修成績="是"
+                        if (subjectElement.GetAttribute("原始成績") == "" && subjectElement.GetAttribute("是否補修成績") == "是")
+                        {
+                            report.Worksheets[0].Cells[index, 9].PutValue("補修");//補修
+                            report.Worksheets[0].Cells[index, 11].PutValue("");//學期成績
+                        }
 
                         index++;
                     }

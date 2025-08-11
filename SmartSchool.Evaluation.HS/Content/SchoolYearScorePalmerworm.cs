@@ -102,7 +102,17 @@ namespace SmartSchool.Evaluation.Content
                 foreach (XmlNode cnode in var.SelectNodes("ScoreInfo/SemesterSubjectScoreInfo/Subject"))
                 {
                     decimal credit = decimal.Parse(cnode.SelectSingleNode("@開課學分數").InnerText);
-                    bool getCredit = cnode.SelectSingleNode("@是否取得學分").InnerText == "是";
+                    
+                    // 檢查是否取得學分屬性是否存在
+                    XmlNode creditNode = cnode.SelectSingleNode("@是否取得學分");
+                    if (creditNode == null)
+                    {
+                        // 如果@是否取得學分屬性不存在，跳過此科目
+                        continue;
+                    }
+                    
+                    bool getCredit = creditNode.InnerText == "是";
+                    
                     if (cnode.SelectSingleNode("@不計學分") != null)
                     {
                         bool notIncludedInCredit = cnode.SelectSingleNode("@不計學分").InnerText == "是";
@@ -110,7 +120,6 @@ namespace SmartSchool.Evaluation.Content
                         {
                             creditCount += credit;
                         }
-
                     }
                 }
                 if (Credit.ContainsKey(schoolyear + "_" + gradeyear))

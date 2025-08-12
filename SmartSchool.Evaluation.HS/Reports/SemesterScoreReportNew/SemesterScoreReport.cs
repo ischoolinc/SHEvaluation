@@ -22,7 +22,7 @@ namespace SmartSchool.Evaluation.Reports
             SemesterScoreReportNew semsScoreReport = new SemesterScoreReportNew();
 
             string reportName = "學期成績單(新制)";
-            string path = "成績相關報表";
+            string path = "成績相關報表/即將下架報表";
 
             semsScoreReport.button = new SecureButtonAdapter("Report0055");
             semsScoreReport.button.Text = reportName;

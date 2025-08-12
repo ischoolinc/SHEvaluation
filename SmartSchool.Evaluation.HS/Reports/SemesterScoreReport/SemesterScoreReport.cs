@@ -29,7 +29,7 @@ namespace SmartSchool.Evaluation.Reports
         public SemesterScoreReport()
         {
             string reportName = "學期成績單";
-            string path = "成績相關報表";
+            string path = "成績相關報表/即將下架報表";
 
             _ErrorMessage = new StringBuilder();
 

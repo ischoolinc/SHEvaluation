@@ -14,6 +14,8 @@ using SmartSchool.Customization.PlugIn.Report;
 using FISCA.Permission;
 using FISCA.Presentation;
 
+namespace SchoolYearScoreReport
+{
 class SchoolYearScoreReportNew
 {
     // Fields
@@ -24,7 +26,7 @@ class SchoolYearScoreReportNew
     public SchoolYearScoreReportNew()
     {
         string reportName = "學年成績單(新制)";
-        string reportPath = "成績相關報表";
+        string reportPath = "成績相關報表/即將下架報表";
         this.buttonStudent = new ButtonAdapter();
         this.buttonStudent.Text = reportName;
         this.buttonStudent.Path = reportPath;
@@ -786,5 +788,6 @@ class SchoolYearScoreReportNew
         }
         return filled;
     }
+}
 }
 

@@ -26,14 +26,13 @@ class SchoolYearScoreReportNew
     public SchoolYearScoreReportNew()
     {
         string reportName = "學年成績單(新制)";
-        string reportPath = "成績相關報表/即將下架報表";
         this.buttonStudent = new ButtonAdapter();
         this.buttonStudent.Text = reportName;
-        this.buttonStudent.Path = reportPath;
+        this.buttonStudent.Path = "成績相關報表/即將下架報表";
         this.buttonStudent.OnClick += new EventHandler(this.buttonStudent_OnClick);
         this.buttonClass = new ButtonAdapter();
         this.buttonClass.Text = reportName;
-        this.buttonClass.Path = reportPath;
+        this.buttonClass.Path = "成績相關報表/即將下架報表";
         this.buttonClass.OnClick += new EventHandler(this.buttonClass_OnClick);
         StudentReport.AddReport(this.buttonStudent);
         ClassReport.AddReport(this.buttonClass);
@@ -41,9 +40,9 @@ class SchoolYearScoreReportNew
         string Student = "SHEvaluation.SchoolYearScoreReportNew.Student";
         string Class = "SHEvaluation.SchoolYearScoreReportNew.Class";
         RibbonBarItem item1 = FISCA.Presentation.MotherForm.RibbonBarItems["學生", "資料統計"];
-        item1["報表"][reportPath][reportName].Enable = FISCA.Permission.UserAcl.Current[Student].Executable;
+        item1["成績相關報表"]["即將下架報表"][reportName].Enable = FISCA.Permission.UserAcl.Current[Student].Executable;
         RibbonBarItem item2 = FISCA.Presentation.MotherForm.RibbonBarItems["班級", "資料統計"];
-        item2["報表"][reportPath][reportName].Enable = FISCA.Permission.UserAcl.Current[Class].Executable;
+        item2["成績相關報表"]["即將下架報表"][reportName].Enable = FISCA.Permission.UserAcl.Current[Class].Executable;
 
         //權限設定
         Catalog permission1 = RoleAclSource.Instance["學生"]["報表"];

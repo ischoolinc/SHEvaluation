@@ -19,7 +19,7 @@ namespace 班級定期評量成績單
         [FISCA.MainMethod]
         public static void Main()
         {
-            var btn = K12.Presentation.NLDPanels.Class.RibbonBarItems["資料統計"]["報表"]["成績相關報表"]["班級定期評量成績單(測試版)"];
+            var btn = K12.Presentation.NLDPanels.Class.RibbonBarItems["資料統計"]["報表"]["成績相關報表"]["即將下架報表"]["班級定期評量成績單(測試版)"];
             
             // 2018.09.27 [ischoolKingdom] Vicky依據 [H成績][H學務][06] 功能沒有設定權限管理 項目，將各功能按鈕註冊時Enable設定與系統權限綁定，權限Code使用GUID。
             RoleAclSource.Instance["班級"]["功能按鈕"].Add(new RibbonFeature("0837256D-3C8B-49E6-8A71-F5E0D1182A46", "班級定期評量成績單(測試版)"));

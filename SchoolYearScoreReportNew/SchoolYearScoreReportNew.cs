@@ -40,9 +40,9 @@ class SchoolYearScoreReportNew
         string Student = "SHEvaluation.SchoolYearScoreReportNew.Student";
         string Class = "SHEvaluation.SchoolYearScoreReportNew.Class";
         RibbonBarItem item1 = FISCA.Presentation.MotherForm.RibbonBarItems["學生", "資料統計"];
-        item1["成績相關報表"]["即將下架報表"][reportName].Enable = FISCA.Permission.UserAcl.Current[Student].Executable;
+        item1["報表"]["成績相關報表"]["即將下架報表"][reportName].Enable = FISCA.Permission.UserAcl.Current[Student].Executable;
         RibbonBarItem item2 = FISCA.Presentation.MotherForm.RibbonBarItems["班級", "資料統計"];
-        item2["成績相關報表"]["即將下架報表"][reportName].Enable = FISCA.Permission.UserAcl.Current[Class].Executable;
+        item2["報表"]["成績相關報表"]["即將下架報表"][reportName].Enable = FISCA.Permission.UserAcl.Current[Class].Executable;
 
         //權限設定
         Catalog permission1 = RoleAclSource.Instance["學生"]["報表"];

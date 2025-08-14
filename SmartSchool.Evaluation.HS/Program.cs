@@ -302,8 +302,6 @@ namespace SmartSchool.Evaluation
 
 
             //鍵至順便載入報表按鈕
-            new SemesterMoralScoreCalc();
-            new SemesterMoralScoreTotal();
             new SemesterScoreReport();
             SemesterScoreReportNew.RegistryFeature();
             new ClassSemesterScore();

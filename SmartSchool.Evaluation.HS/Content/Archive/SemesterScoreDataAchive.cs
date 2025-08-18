@@ -46,7 +46,14 @@ namespace SmartSchool.Evaluation.Content
         void EventHub_ArchiveChanged(object sender, EventArgs e)  //Cyn
         {
             _ReloadArchiveData = true;
+            
+            // 如果當前有選中的學生，直接觸發資料重新整理
+            if (!string.IsNullOrEmpty(this.PrimaryKey))
+            {
+                Changed();
+            }
         }
+        
         private void BGW_DoWork(object sender, DoWorkEventArgs e)
         {
             List<SemesterEntryScoreArchive> semesterEntryScoreArchives = accessHelper.Select<SemesterEntryScoreArchive>("ref_student_id=" + this.PrimaryKey);
@@ -84,6 +91,16 @@ namespace SmartSchool.Evaluation.Content
             if (this.PrimaryKey != "")
             {
                 this.Loading = true;
+                
+                // 檢查是否需要重新載入封存資料
+                if (_ReloadArchiveData)
+                {
+                    _ReloadArchiveData = false;
+                    listView1.Items.Clear();
+                    BGW.RunWorkerAsync();
+                    return;
+                }
+                
                 if (BGW.IsBusy)
                 {
                     BkWBool = true;

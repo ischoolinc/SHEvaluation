@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      修訂編號
 //
 
-[assembly: AssemblyVersion("1.0.7.125")]
-[assembly: AssemblyFileVersion("1.0.7.125")]
+[assembly: AssemblyVersion("1.0.7.126")]
+[assembly: AssemblyFileVersion("1.0.7.126")]

@@ -416,5 +416,51 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
             return value;
         }
 
+        /// <summary>
+        /// 更新學期分項成績的學年度
+        /// </summary>
+        /// <param name="SourceSchoolYear">來源學年度</param>
+        /// <param name="SourceSemester">來源學期</param>
+        /// <param name="StudentID">學生ID</param>
+        /// <param name="ChangeSchoolYear">新的學年度</param>
+        /// <returns>更新後的記錄ID，失敗時回傳-1</returns>
+        public int UpdateSemesterEntryScoreSchoolYear(string SourceSchoolYear, string SourceSemester, string StudentID, string ChangeSchoolYear)
+        {
+            int value = -1;
+            try
+            {
+                if (string.IsNullOrEmpty(SourceSchoolYear) || string.IsNullOrEmpty(SourceSemester) || 
+                    string.IsNullOrEmpty(StudentID) || string.IsNullOrEmpty(ChangeSchoolYear))
+                    return -1;
+
+                string updateQuery = string.Format(@"
+                    UPDATE
+                        sems_entry_score
+                    SET
+                        school_year = {3} 
+                    WHERE
+                        ref_student_id = {2}
+                        AND school_year = {0}
+                        AND semester = {1}
+                    RETURNING id;
+                ", SourceSchoolYear, SourceSemester, StudentID, ChangeSchoolYear);
+
+                QueryHelper qh = new QueryHelper();
+                DataTable dt = qh.Select(updateQuery);
+
+                // 檢查更新結果
+                if (dt.Rows.Count > 0)
+                {
+                    int.TryParse(dt.Rows[0]["id"].ToString(), out value);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("UpdateSemesterEntryScoreSchoolYear: " + ex.Message);
+                value = -1;
+            }
+            return value;
+        }
+
     }
 }

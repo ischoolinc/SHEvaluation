@@ -212,16 +212,16 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
 
                                 }
 
-                                CurrentUser.Instance.AppLog.Write(EntityType.Student, EntityAction.Update, semsSourceData.StudentID, updateDesc.ToString(), "學期成績", "");
+                                CurrentUser.Instance.AppLog.Write(EntityType.Student, EntityAction.Update, semsChangeData.StudentID, updateDesc.ToString(), "學期成績", "");
 
                                 // 刪除原本來源
                                 int resultDel = semsTransfer.DeleteSemesScoreBySemsID(semsSourceData.ID);
 
                                 // 新增：刪除學期分項成績
                                 int resultDelEntryScore = semsTransfer.DeleteSemesterEntryScoreByStudentIDSchoolYearSemester(
-                                    semsSourceData.StudentID,
-                                    semsSourceData.SchoolYear,
-                                    semsSourceData.Semester
+                                    semsChangeData.StudentID,
+                                    semsChangeData.SchoolYear,
+                                    semsChangeData.Semester
                                 );
 
                                 // 記錄刪除學期分項成績的日誌
@@ -229,11 +229,27 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
                                 {
                                     StringBuilder entryScoreDeleteDesc = new StringBuilder("");
                                     entryScoreDeleteDesc.AppendLine("學號：" + studentInfo.StudentNumber + ",班級：" + studentInfo.ClassName + ",座號：" + studentInfo.SeatNo + ",姓名：" + studentInfo.StudentName);
-                                    entryScoreDeleteDesc.AppendLine("刪除學期分項成績，學年度：" + semsSourceData.SchoolYear + "，學期：" + semsSourceData.Semester);
+                                    entryScoreDeleteDesc.AppendLine("刪除學期分項成績，學年度：" + semsChangeData.SchoolYear + "，學期：" + semsChangeData.Semester);
                                     entryScoreDeleteDesc.AppendLine("刪除學期分項成績ID：" + resultDelEntryScore);
 
-                                    CurrentUser.Instance.AppLog.Write(EntityType.Student, EntityAction.Delete, semsSourceData.StudentID, entryScoreDeleteDesc.ToString(), "學期分項成績", "");
+                                    CurrentUser.Instance.AppLog.Write(EntityType.Student, EntityAction.Delete, semsChangeData.StudentID, entryScoreDeleteDesc.ToString(), "學期分項成績", "");
                                 }
+
+
+                                // 新增：更新學期分項成績學年度
+                                int resultUpdateEntryScore = semsTransfer.UpdateSemesterEntryScoreSchoolYear(semsSourceData.SchoolYear, semsSourceData.Semester, semsSourceData.StudentID, ChangeSchoolYear);
+
+                                // 記錄更新學期分項成績的日誌
+                                if (resultUpdateEntryScore > 0)
+                                {
+                                    StringBuilder entryScoreUpdateDesc = new StringBuilder("");
+                                    entryScoreUpdateDesc.AppendLine("學號：" + studentInfo.StudentNumber + ",班級：" + studentInfo.ClassName + ",座號：" + studentInfo.SeatNo + ",姓名：" + studentInfo.StudentName);
+                                    entryScoreUpdateDesc.AppendLine("更新學期分項成績學年度，學年度：" + semsChangeData.SchoolYear + "，學期：" + semsChangeData.Semester);
+                                    entryScoreUpdateDesc.AppendLine("更新學期分項成績ID：" + resultUpdateEntryScore);
+
+                                    CurrentUser.Instance.AppLog.Write(EntityType.Student, EntityAction.Update, semsChangeData.StudentID, entryScoreUpdateDesc.ToString(), "學期分項成績", "");
+                                }
+
 
                                 EventHub.Instance.InvokScoreChanged(semsChangeData.StudentID);
 

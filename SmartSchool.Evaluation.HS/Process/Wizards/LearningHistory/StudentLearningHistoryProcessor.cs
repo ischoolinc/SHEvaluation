@@ -87,7 +87,11 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             Dictionary<string, string> UpdateCodeMappingDict = Utility.GetUpdateCodeMappingDict();
 
             // 取得有符合對照學生
-            Dictionary<string, string> StudentHasUpdateCodeDict = Utility.GetStudentHasUpdateCodeDict(_SchoolYear, _Semester, studentIDList, UpdateCodeMappingDict.Keys.ToList());
+            Dictionary<string, string> StudentHasUpdateCodeDict = new Dictionary<string, string>();
+            if (UpdateCodeMappingDict.Count > 0)
+            {
+                StudentHasUpdateCodeDict = Utility.GetStudentHasUpdateCodeDict(_SchoolYear, _Semester, studentIDList, UpdateCodeMappingDict.Keys.ToList());
+            }
 
 
             //// 取得補修資料學生
@@ -294,7 +298,11 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             Dictionary<string, List<SubjectScoreRec108>> dataValue43 = GetLearningHistoryReScoreDataAsDictionary43(_SchoolYear, _Semester, studentIDList);
 
             // 取得有補修資料的學期成績（改用補修專用方法）
-            Dictionary<string, List<SubjectScoreRec108>> semsScore43 = GetStudentScoreDataAsDictionary43(dataValue43.Keys.ToList());
+            Dictionary<string, List<SubjectScoreRec108>> semsScore43 = new Dictionary<string, List<SubjectScoreRec108>>();
+            if (dataValue43.Count > 0)
+            {
+                semsScore43 = GetStudentScoreDataAsDictionary43(dataValue43.Keys.ToList());
+            }
 
             // 比對並填入補考成績資料
             foreach (var studentData in dataValue43)
@@ -361,7 +369,11 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             Dictionary<string, List<SubjectScoreRec108>> dataValue53 = GetLearningHistoryRetakeDataAsDictionary53(_SchoolYear, _Semester, studentIDList);
 
             // 取得有重讀資料的學期成績
-            Dictionary<string, List<SubjectScoreRec108>> semsScore53 = GetStudentScoreDataAsDictionary(dataValue53.Keys.ToList());
+            Dictionary<string, List<SubjectScoreRec108>> semsScore53 = new Dictionary<string, List<SubjectScoreRec108>>();
+            if (dataValue53.Count > 0)
+            {
+                semsScore53 = GetStudentScoreDataAsDictionary(dataValue53.Keys.ToList());
+            }
 
             // 比對並填入補考成績資料
             foreach (var studentData in dataValue53)
@@ -706,6 +718,26 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                 }
                             }
 
+                            // 新增：補修成績原始成績必填驗證
+                            if (ssr.isScScore)
+                            {
+                                string originalScore = Utility.GetAttribute(elmScore, "原始成績");
+                                if (string.IsNullOrWhiteSpace(originalScore))
+                                {
+                                    // 補修成績必須有原始成績
+                                    ssr.checkPass = false;
+                                    continue; // 跳過後續處理
+                                }
+                                
+                                // 驗證原始成績格式
+                                if (!decimal.TryParse(originalScore, out decimal parsedScore))
+                                {
+                                    // 原始成績格式錯誤
+                                    ssr.checkPass = false;
+                                    continue; // 跳過後續處理
+                                }
+                            }
+
                             if (ssr.ScoreP == "-1")
                             {
                                 decimal dsB, passScoreB = 60;
@@ -868,11 +900,32 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                             }
 
                             // 對應學生身分別
+                            ssr.StudType = "";
                             if (StudentHasUpdateCodeDict.ContainsKey(studRec.StudentID))
                             {
                                 if (UpdateCodeMappingDict.ContainsKey(StudentHasUpdateCodeDict[studRec.StudentID]))
                                 {
                                     ssr.StudType = UpdateCodeMappingDict[StudentHasUpdateCodeDict[studRec.StudentID]];
+                                }
+                            }
+                            
+                            // 新增：補修成績原始成績必填驗證
+                            if (ssr.isScScore)
+                            {
+                                string originalScore = Utility.GetAttribute(elmScore, "原始成績");
+                                if (string.IsNullOrWhiteSpace(originalScore))
+                                {
+                                    // 補修成績必須有原始成績
+                                    ssr.checkPass = false;
+                                    continue; // 跳過後續處理
+                                }
+                                
+                                // 驗證原始成績格式
+                                if (!decimal.TryParse(originalScore, out decimal parsedScore))
+                                {
+                                    // 原始成績格式錯誤
+                                    ssr.checkPass = false;
+                                    continue; // 跳過後續處理
                                 }
                             }
 
@@ -1153,13 +1206,20 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
             // 2021-11-04 尋找需要抵免的異動 (復學/轉科/重讀)
             Dictionary<string, string> CreditUpdateCodeMappingDict = Utility.GetUpdateCodeMappingDict3();
             //找最後一個學年度學期 (Dictionary student/1091) 
-            Dictionary<string, string> StudentCreditUpdateCodeDict = Utility.GetStudentHasUpdateCodeDict(studentIDList, CreditUpdateCodeMappingDict.Keys.ToList());
+            Dictionary<string, string> StudentCreditUpdateCodeDict = new Dictionary<string, string>();
+            if (CreditUpdateCodeMappingDict.Count > 0)
+            {
+                StudentCreditUpdateCodeDict = Utility.GetStudentHasUpdateCodeDict(studentIDList, CreditUpdateCodeMappingDict.Keys.ToList());
+            }
 
             // 取得異動與身分別對照
             UpdateCodeMappingDict = Utility.GetUpdateCodeMappingDict2();
 
             // 取得有符合對照學生
-            StudentHasUpdateCodeDict = Utility.GetStudentHasUpdateCodeDict(_SchoolYear, _Semester, studentIDList, UpdateCodeMappingDict.Keys.ToList());
+            if (UpdateCodeMappingDict.Count > 0)
+            {
+                StudentHasUpdateCodeDict = Utility.GetStudentHasUpdateCodeDict(_SchoolYear, _Semester, studentIDList, UpdateCodeMappingDict.Keys.ToList());
+            }
 
             //// 重修
             //Dictionary<string, Dictionary<string, SubjectScoreXML>> StudentSubjectScore1Dict = new Dictionary<string, Dictionary<string, SubjectScoreXML>>();
@@ -2253,6 +2313,26 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                 if (UpdateCodeMappingDict.ContainsKey(StudentHasUpdateCodeDict[studRec.StudentID]))
                                 {
                                     ssr.StudType = UpdateCodeMappingDict[StudentHasUpdateCodeDict[studRec.StudentID]];
+                                }
+                            }
+
+                            // 新增：補修成績原始成績必填驗證
+                            if (ssr.isScScore)
+                            {
+                                string originalScore = Utility.GetAttribute(elmScore, "原始成績");
+                                if (string.IsNullOrWhiteSpace(originalScore))
+                                {
+                                    // 補修成績必須有原始成績
+                                    ssr.checkPass = false;
+                                    continue; // 跳過後續處理
+                                }
+                                
+                                // 驗證原始成績格式
+                                if (!decimal.TryParse(originalScore, out decimal parsedScore))
+                                {
+                                    // 原始成績格式錯誤
+                                    ssr.checkPass = false;
+                                    continue; // 跳過後續處理
                                 }
                             }
 

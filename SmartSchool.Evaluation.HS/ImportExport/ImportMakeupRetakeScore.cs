@@ -691,7 +691,10 @@ namespace SmartSchool.Evaluation.ImportExport
                             codePass = true;
 
                             if (string.IsNullOrWhiteSpace(HisClassName))
-                                HisClassName = studentRec.RefClass.ClassName;
+                            {
+                                if (studentRec.RefClass != null)
+                                    HisClassName = studentRec.RefClass.ClassName;
+                            }
 
                             if (!HisSeatNo.HasValue || HisSeatNo == 0)
                             {
@@ -932,7 +935,10 @@ namespace SmartSchool.Evaluation.ImportExport
                             bool codePass = Utility.IsValidCourseCode(courseCode);
                             codePass = true;
                             if (string.IsNullOrWhiteSpace(HisClassName))
-                                HisClassName = studentRec.RefClass.ClassName;
+                            {
+                                if (studentRec.RefClass != null)
+                                    HisClassName = studentRec.RefClass.ClassName;
+                            }
 
                             if (!HisSeatNo.HasValue || HisSeatNo == 0)
                             {

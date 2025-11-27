@@ -17,7 +17,7 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
         //private readonly bool _DefinedSubjectInfoByGPlan;
 
         /// <summary>
-        /// ¦¨ÁZ­pºâ³W«h
+        /// æˆç¸¾è¨ˆç®—è¦å‰‡
         /// </summary>
         /// <param name="scrElement"></param>
         internal ScoreCalcRuleInfo(XmlElement scrElement)
@@ -34,7 +34,7 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
                 _TrimName = _Name.Substring(_SchoolYear.Length);
             }
             //_DefinedSubjectInfoByGPlan = false;
-            //if (_ScoreCalcRuleElement.SelectSingleNode("¾Ç¤À¤Î­×½Ò¸ê°T±Ä­p¤è¦¡") == null || ((XmlElement)_ScoreCalcRuleElement.SelectSingleNode("¾Ç¤À¤Î­×½Ò¸ê°T±Ä­p¤è¦¡")).GetAttribute("¥Ñ½Òµ{³W¹ºªí¨ú±o") == "True")
+            //if (_ScoreCalcRuleElement.SelectSingleNode("å­¸åˆ†åŠä¿®èª²è³‡è¨Šæ¡è¨ˆæ–¹å¼") == null || ((XmlElement)_ScoreCalcRuleElement.SelectSingleNode("å­¸åˆ†åŠä¿®èª²è³‡è¨Šæ¡è¨ˆæ–¹å¼")).GetAttribute("ç”±èª²ç¨‹è¦åŠƒè¡¨å–å¾—") == "True")
             //    _DefinedSubjectInfoByGPlan = true;
         }
 
@@ -60,15 +60,15 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
             Dictionary<string, bool> calcInStudy = new Dictionary<string, bool>();
             List<string> takeScore = new List<string>();
             bool takeRepairScore = false;
-            //ºë·Ç¦ì¼Æ
+            //ç²¾æº–ä½æ•¸
             int decimals = 2;
-            //¶i¦ì¼Ò¦¡
-            WearyDogComputer.RoundMode mode = WearyDogComputer.RoundMode.¥|±Ë¤­¤J;
-            //¦¨ÁZ¦~¯Å¤Î­pºâ³W«h¬Ò¦s¦b¡A¤¹³\­pºâ¦¨ÁZ
+            //é€²ä½æ¨¡å¼
+            WearyDogComputer.RoundMode mode = WearyDogComputer.RoundMode.å››æ¨äº”å…¥;
+            //æˆç¸¾å¹´ç´šåŠè¨ˆç®—è¦å‰‡çš†å­˜åœ¨ï¼Œå…è¨±è¨ˆç®—æˆç¸¾
             bool canCalc = true;
-            #region ¨ú±o¦¨ÁZ¦~¯Å¸ò­pºâ³W«h
+            #region å–å¾—æˆç¸¾å¹´ç´šè·Ÿè¨ˆç®—è¦å‰‡
 
-            #region ³B²z­pºâ³W«h
+            #region è™•ç†è¨ˆç®—è¦å‰‡
             XmlElement scoreCalcRule = (XmlElement)_ScoreCalcRuleElement;//ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var.StudentID) == null ? null : ScoreCalcRule.ScoreCalcRule.Instance.GetStudentScoreCalcRuleInfo(var.StudentID).ScoreCalcRuleElement;
 
             DSXmlHelper helper = new DSXmlHelper(scoreCalcRule);
@@ -76,42 +76,42 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
             int tryParseint;
             decimal tryParseDecimal;
 
-            #region ºë·Ç¦ì¼Æ
-            if (scoreCalcRule.SelectSingleNode("¦U¶µ¦¨ÁZ­pºâ¦ì¼Æ/¾Ç´Á¤À¶µ¦¨ÁZ­pºâ¦ì¼Æ") != null)
+            #region ç²¾æº–ä½æ•¸
+            if (scoreCalcRule.SelectSingleNode("å„é …æˆç¸¾è¨ˆç®—ä½æ•¸/å­¸æœŸåˆ†é …æˆç¸¾è¨ˆç®—ä½æ•¸") != null)
             {
-                if (int.TryParse(helper.GetText("¦U¶µ¦¨ÁZ­pºâ¦ì¼Æ/¾Ç´Á¤À¶µ¦¨ÁZ­pºâ¦ì¼Æ/@¦ì¼Æ"), out tryParseint))
+                if (int.TryParse(helper.GetText("å„é …æˆç¸¾è¨ˆç®—ä½æ•¸/å­¸æœŸåˆ†é …æˆç¸¾è¨ˆç®—ä½æ•¸/@ä½æ•¸"), out tryParseint))
                     decimals = tryParseint;
-                if (bool.TryParse(helper.GetText("¦U¶µ¦¨ÁZ­pºâ¦ì¼Æ/¾Ç´Á¤À¶µ¦¨ÁZ­pºâ¦ì¼Æ/@¥|±Ë¤­¤J"), out tryParsebool) && tryParsebool)
-                    mode = WearyDogComputer.RoundMode.¥|±Ë¤­¤J;
-                if (bool.TryParse(helper.GetText("¦U¶µ¦¨ÁZ­pºâ¦ì¼Æ/¾Ç´Á¤À¶µ¦¨ÁZ­pºâ¦ì¼Æ/@µL±ø¥ó±Ë¥h"), out tryParsebool) && tryParsebool)
-                    mode = WearyDogComputer.RoundMode.µL±ø¥ó±Ë¥h;
-                if (bool.TryParse(helper.GetText("¦U¶µ¦¨ÁZ­pºâ¦ì¼Æ/¾Ç´Á¤À¶µ¦¨ÁZ­pºâ¦ì¼Æ/@µL±ø¥ó¶i¦ì"), out tryParsebool) && tryParsebool)
-                    mode = WearyDogComputer.RoundMode.µL±ø¥ó¶i¦ì;
+                if (bool.TryParse(helper.GetText("å„é …æˆç¸¾è¨ˆç®—ä½æ•¸/å­¸æœŸåˆ†é …æˆç¸¾è¨ˆç®—ä½æ•¸/@å››æ¨äº”å…¥"), out tryParsebool) && tryParsebool)
+                    mode = WearyDogComputer.RoundMode.å››æ¨äº”å…¥;
+                if (bool.TryParse(helper.GetText("å„é …æˆç¸¾è¨ˆç®—ä½æ•¸/å­¸æœŸåˆ†é …æˆç¸¾è¨ˆç®—ä½æ•¸/@ç„¡æ¢ä»¶æ¨å»"), out tryParsebool) && tryParsebool)
+                    mode = WearyDogComputer.RoundMode.ç„¡æ¢ä»¶æ¨å»;
+                if (bool.TryParse(helper.GetText("å„é …æˆç¸¾è¨ˆç®—ä½æ•¸/å­¸æœŸåˆ†é …æˆç¸¾è¨ˆç®—ä½æ•¸/@ç„¡æ¢ä»¶é€²ä½"), out tryParsebool) && tryParsebool)
+                    mode = WearyDogComputer.RoundMode.ç„¡æ¢ä»¶é€²ä½;
             }
             #endregion
-            #region ­pºâÃş§O
-            foreach (string entry in new string[] { "Åé¨|", "¾Ç·~", "°ê¨¾³qÃÑ", "°·±d»PÅ@²z", "¹ê²ß¬ì¥Ø", "±M·~¬ì¥Ø" })
+            #region è¨ˆç®—é¡åˆ¥
+            foreach (string entry in new string[] { "é«”è‚²", "å­¸æ¥­", "åœ‹é˜²é€šè­˜", "å¥åº·èˆ‡è­·ç†", "å¯¦ç¿’ç§‘ç›®", "å°ˆæ¥­ç§‘ç›®" })
             {
-                if (scoreCalcRule.SelectSingleNode("¤À¶µ¦¨ÁZ­pºâ¶µ¥Ø") == null || scoreCalcRule.SelectSingleNode("¤À¶µ¦¨ÁZ­pºâ¶µ¥Ø/" + entry) == null || ((XmlElement)scoreCalcRule.SelectSingleNode("¤À¶µ¦¨ÁZ­pºâ¶µ¥Ø/" + entry)).GetAttribute("­pºâ¦¨ÁZ") == "True")
+                if (scoreCalcRule.SelectSingleNode("åˆ†é …æˆç¸¾è¨ˆç®—é …ç›®") == null || scoreCalcRule.SelectSingleNode("åˆ†é …æˆç¸¾è¨ˆç®—é …ç›®/" + entry) == null || ((XmlElement)scoreCalcRule.SelectSingleNode("åˆ†é …æˆç¸¾è¨ˆç®—é …ç›®/" + entry)).GetAttribute("è¨ˆç®—æˆç¸¾") == "True")
                     calcEntry.Add(entry, true);
                 else
                     calcEntry.Add(entry, false);
 
-                // 2014/3/20¡A­×§ï·í¨S¦³¤Ä¿ï ¹w³]¨Ö¤J¾Ç´Á¾Ç·~¦¨ÁZ ChenCT
-                if (scoreCalcRule.SelectSingleNode("¤À¶µ¦¨ÁZ­pºâ¶µ¥Ø") == null || scoreCalcRule.SelectSingleNode("¤À¶µ¦¨ÁZ­pºâ¶µ¥Ø/" + entry) == null || ((XmlElement)scoreCalcRule.SelectSingleNode("¤À¶µ¦¨ÁZ­pºâ¶µ¥Ø/" + entry)).GetAttribute("¨Ö¤J¾Ç´Á¾Ç·~¦¨ÁZ") == "True")
+                // 2014/3/20ï¼Œä¿®æ”¹ç•¶æ²’æœ‰å‹¾é¸ é è¨­ä½µå…¥å­¸æœŸå­¸æ¥­æˆç¸¾ ChenCT
+                if (scoreCalcRule.SelectSingleNode("åˆ†é …æˆç¸¾è¨ˆç®—é …ç›®") == null || scoreCalcRule.SelectSingleNode("åˆ†é …æˆç¸¾è¨ˆç®—é …ç›®/" + entry) == null || ((XmlElement)scoreCalcRule.SelectSingleNode("åˆ†é …æˆç¸¾è¨ˆç®—é …ç›®/" + entry)).GetAttribute("ä½µå…¥å­¸æœŸå­¸æ¥­æˆç¸¾") == "True")
                     calcInStudy.Add(entry, true);
                 else
                     calcInStudy.Add(entry, false);
             }
             #endregion
-            #region ±Ä­p¦¨ÁZÄæ¦ì
-            // ³B²z¸É­×¦¨ÁZ
-            bool.TryParse(helper.GetText("¤À¶µ¦¨ÁZ­pºâ±Ä­p¦¨ÁZÄæ¦ì/@¸É­×¦¨ÁZ"), out takeRepairScore);
+            #region æ¡è¨ˆæˆç¸¾æ¬„ä½
+            // è™•ç†è£œä¿®æˆç¸¾
+            bool.TryParse(helper.GetText("åˆ†é …æˆç¸¾è¨ˆç®—æ¡è¨ˆæˆç¸¾æ¬„ä½/@è£œä¿®æˆç¸¾"), out takeRepairScore);
 
-            foreach (string item in new string[] { "­ì©l¦¨ÁZ", "¸É¦Ò¦¨ÁZ", "­«­×¦¨ÁZ", "¾ÜÀu±Ä­p¦¨ÁZ", "¾Ç¦~½Õ¾ã¦¨ÁZ" })
+            foreach (string item in new string[] { "åŸå§‹æˆç¸¾", "è£œè€ƒæˆç¸¾", "é‡ä¿®æˆç¸¾", "æ“‡å„ªæ¡è¨ˆæˆç¸¾", "å­¸å¹´èª¿æ•´æˆç¸¾" })
             {
-                if (!bool.TryParse(helper.GetText("¤À¶µ¦¨ÁZ­pºâ±Ä­p¦¨ÁZÄæ¦ì/@" + item), out tryParsebool) || tryParsebool)
-                {//¨S¦³³]©w³o¶µ¦¨ÁZ³]©w³W«h(¹w³]true)©ÎªÌ³]©w­È¬Otrue
+                if (!bool.TryParse(helper.GetText("åˆ†é …æˆç¸¾è¨ˆç®—æ¡è¨ˆæˆç¸¾æ¬„ä½/@" + item), out tryParsebool) || tryParsebool)
+                {//æ²’æœ‰è¨­å®šé€™é …æˆç¸¾è¨­å®šè¦å‰‡(é è¨­true)æˆ–è€…è¨­å®šå€¼æ˜¯true
                     takeScore.Add(item);
                 }
             }
@@ -122,37 +122,37 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
             #endregion
             Dictionary<string, decimal> entryScores = new Dictionary<string, decimal>();
 
-            #region ±N¦¨ÁZ¤À¨ì¦U¤À¶µÃş§O¤¤
+            #region å°‡æˆç¸¾åˆ†åˆ°å„åˆ†é …é¡åˆ¥ä¸­
             foreach (XmlNode subjectNode in semesterSubjectScore.SelectNodes("Subject"))
             {
                 XmlElement subjectElement = (XmlElement)subjectNode;
-                //¤£­p¾Ç¤À©Î¤£»İµû¤À¤£¥Îºâ
-                if (subjectElement.GetAttribute("¤£»İµû¤À") == "¬O" || subjectElement.GetAttribute("¤£­p¾Ç¤À") == "¬O")
+                //ä¸è¨ˆå­¸åˆ†æˆ–ä¸éœ€è©•åˆ†ä¸ç”¨ç®—
+                if (subjectElement.GetAttribute("ä¸éœ€è©•åˆ†") == "æ˜¯" || subjectElement.GetAttribute("ä¸è¨ˆå­¸åˆ†") == "æ˜¯")
                     continue;
 
-                // ­Y¬°¸É­×¦¨ÁZ¥B¸É­×¦¨ÁZ¤£±Ä­p¡A«h¤£­pºâ
+                // è‹¥ç‚ºè£œä¿®æˆç¸¾ä¸”è£œä¿®æˆç¸¾ä¸æ¡è¨ˆï¼Œå‰‡ä¸è¨ˆç®—
                 if (takeRepairScore == false)
                 {
-                    if (subjectElement.GetAttribute("¬O§_¸É­×¦¨ÁZ") == "¬O")
+                    if (subjectElement.GetAttribute("æ˜¯å¦è£œä¿®æˆç¸¾") == "æ˜¯")
                         continue;
                 }
 
-                string subjectCode = subjectElement.GetAttribute("­×½Ò¬ì¥Ø¥N½X");
-                if (subjectCode.Length >= 23) //¦@23½X
-                {
-                    if (subjectCode[16].ToString() + subjectCode[18].ToString() == "9D" || subjectCode[16].ToString() + subjectCode[18].ToString() == "9d")
-                        continue;
-                }
-                #region ¤À¶µÃş§O¸ò¾Ç¤À¼Æ
-                string entry = subjectElement.GetAttribute("¶}½Ò¤À¶µÃş§O");
+                //string subjectCode = subjectElement.GetAttribute("ä¿®èª²ç§‘ç›®ä»£ç¢¼");
+                //if (subjectCode.Length >= 23) //å…±23ç¢¼
+                //{
+                //    if (subjectCode[16].ToString() + subjectCode[18].ToString() == "9D" || subjectCode[16].ToString() + subjectCode[18].ToString() == "9d")
+                //        continue;
+                //}
+                #region åˆ†é …é¡åˆ¥è·Ÿå­¸åˆ†æ•¸
+                string entry = subjectElement.GetAttribute("é–‹èª²åˆ†é …é¡åˆ¥");
                 decimal credit = 0;
-                decimal.TryParse(subjectElement.GetAttribute("¶}½Ò¾Ç¤À¼Æ"), out credit);
+                decimal.TryParse(subjectElement.GetAttribute("é–‹èª²å­¸åˆ†æ•¸"), out credit);
                 #endregion
                 decimal maxScore = 0;
                 decimal original = 0;
-                if (decimal.TryParse(subjectElement.GetAttribute("­ì©l¦¨ÁZ"), out tryParseDecimal))
+                if (decimal.TryParse(subjectElement.GetAttribute("åŸå§‹æˆç¸¾"), out tryParseDecimal))
                     original = tryParseDecimal;
-                #region ¨ú±o³Ì°ª¤À¼Æ
+                #region å–å¾—æœ€é«˜åˆ†æ•¸
                 foreach (var item in takeScore)
                 {
                     if (decimal.TryParse(subjectElement.GetAttribute(item), out tryParseDecimal) && maxScore < tryParseDecimal)
@@ -161,112 +161,112 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
                 #endregion
                 switch (entry)
                 {
-                    case "Åé¨|":
-                    case "°ê¨¾³qÃÑ":
-                    case "°·±d»PÅ@²z":
-                    case "¹ê²ß¬ì¥Ø":
-                    case "±M·~¬ì¥Ø":
-                        //­pºâ¤À¶µ¦¨ÁZ
+                    case "é«”è‚²":
+                    case "åœ‹é˜²é€šè­˜":
+                    case "å¥åº·èˆ‡è­·ç†":
+                    case "å¯¦ç¿’ç§‘ç›®":
+                    case "å°ˆæ¥­ç§‘ç›®":
+                        //è¨ˆç®—åˆ†é …æˆç¸¾
                         if (calcEntry[entry])
                         {
                             #region original
-                            //¥[Á`¾Ç¤À¼Æ
-                            if (!entryCreditCount.ContainsKey(entry + "(­ì©l)"))
-                                entryCreditCount.Add(entry + "(­ì©l)", credit);
+                            //åŠ ç¸½å­¸åˆ†æ•¸
+                            if (!entryCreditCount.ContainsKey(entry + "(åŸå§‹)"))
+                                entryCreditCount.Add(entry + "(åŸå§‹)", credit);
                             else
-                                entryCreditCount[entry + "(­ì©l)"] += credit;
-                            //¥[¤J±N¦¨ÁZ¸ê®Æ¤À¶µ
-                            if (!entrySubjectScores.ContainsKey(entry + "(­ì©l)")) entrySubjectScores.Add(entry + "(­ì©l)", new List<decimal>());
-                            entrySubjectScores[entry + "(­ì©l)"].Add(original);
-                            //¥[ÅvÁ`­p
-                            if (!entryDividend.ContainsKey(entry + "(­ì©l)"))
-                                entryDividend.Add(entry + "(­ì©l)", original * credit);
+                                entryCreditCount[entry + "(åŸå§‹)"] += credit;
+                            //åŠ å…¥å°‡æˆç¸¾è³‡æ–™åˆ†é …
+                            if (!entrySubjectScores.ContainsKey(entry + "(åŸå§‹)")) entrySubjectScores.Add(entry + "(åŸå§‹)", new List<decimal>());
+                            entrySubjectScores[entry + "(åŸå§‹)"].Add(original);
+                            //åŠ æ¬Šç¸½è¨ˆ
+                            if (!entryDividend.ContainsKey(entry + "(åŸå§‹)"))
+                                entryDividend.Add(entry + "(åŸå§‹)", original * credit);
                             else
-                                entryDividend[entry + "(­ì©l)"] += (original * credit);
+                                entryDividend[entry + "(åŸå§‹)"] += (original * credit);
                             #endregion
                             #region maxScore
-                            //¥[Á`¾Ç¤À¼Æ
+                            //åŠ ç¸½å­¸åˆ†æ•¸
                             if (!entryCreditCount.ContainsKey(entry))
                                 entryCreditCount.Add(entry, credit);
                             else
                                 entryCreditCount[entry] += credit;
-                            //¥[¤J±N¦¨ÁZ¸ê®Æ¤À¶µ
+                            //åŠ å…¥å°‡æˆç¸¾è³‡æ–™åˆ†é …
                             if (!entrySubjectScores.ContainsKey(entry)) entrySubjectScores.Add(entry, new List<decimal>());
                             entrySubjectScores[entry].Add(maxScore);
-                            //¥[ÅvÁ`­p
+                            //åŠ æ¬Šç¸½è¨ˆ
                             if (!entryDividend.ContainsKey(entry))
                                 entryDividend.Add(entry, maxScore * credit);
                             else
                                 entryDividend[entry] += (maxScore * credit);
                             #endregion
                         }
-                        //±N¬ì¥Ø¦¨ÁZ»P¾Ç·~¦¨ÁZ¤@¨Ö­pºâ
+                        //å°‡ç§‘ç›®æˆç¸¾èˆ‡å­¸æ¥­æˆç¸¾ä¸€ä½µè¨ˆç®—
                         if (calcInStudy[entry])
                         {
                             #region original
-                            //¥[Á`¾Ç¤À¼Æ
-                            if (!entryCreditCount.ContainsKey("¾Ç·~" + "(­ì©l)"))
-                                entryCreditCount.Add("¾Ç·~" + "(­ì©l)", credit);
+                            //åŠ ç¸½å­¸åˆ†æ•¸
+                            if (!entryCreditCount.ContainsKey("å­¸æ¥­" + "(åŸå§‹)"))
+                                entryCreditCount.Add("å­¸æ¥­" + "(åŸå§‹)", credit);
                             else
-                                entryCreditCount["¾Ç·~" + "(­ì©l)"] += credit;
-                            //¥[¤J±N¦¨ÁZ¸ê®Æ¤À¶µ
-                            if (!entrySubjectScores.ContainsKey("¾Ç·~" + "(­ì©l)")) entrySubjectScores.Add("¾Ç·~" + "(­ì©l)", new List<decimal>());
-                            entrySubjectScores["¾Ç·~" + "(­ì©l)"].Add(original);
-                            //¥[ÅvÁ`­p
-                            if (!entryDividend.ContainsKey("¾Ç·~" + "(­ì©l)"))
-                                entryDividend.Add("¾Ç·~" + "(­ì©l)", original * credit);
+                                entryCreditCount["å­¸æ¥­" + "(åŸå§‹)"] += credit;
+                            //åŠ å…¥å°‡æˆç¸¾è³‡æ–™åˆ†é …
+                            if (!entrySubjectScores.ContainsKey("å­¸æ¥­" + "(åŸå§‹)")) entrySubjectScores.Add("å­¸æ¥­" + "(åŸå§‹)", new List<decimal>());
+                            entrySubjectScores["å­¸æ¥­" + "(åŸå§‹)"].Add(original);
+                            //åŠ æ¬Šç¸½è¨ˆ
+                            if (!entryDividend.ContainsKey("å­¸æ¥­" + "(åŸå§‹)"))
+                                entryDividend.Add("å­¸æ¥­" + "(åŸå§‹)", original * credit);
                             else
-                                entryDividend["¾Ç·~" + "(­ì©l)"] += (original * credit);
+                                entryDividend["å­¸æ¥­" + "(åŸå§‹)"] += (original * credit);
                             #endregion
                             #region maxScore
-                            //¥[Á`¾Ç¤À¼Æ
-                            if (!entryCreditCount.ContainsKey("¾Ç·~"))
-                                entryCreditCount.Add("¾Ç·~", credit);
+                            //åŠ ç¸½å­¸åˆ†æ•¸
+                            if (!entryCreditCount.ContainsKey("å­¸æ¥­"))
+                                entryCreditCount.Add("å­¸æ¥­", credit);
                             else
-                                entryCreditCount["¾Ç·~"] += credit;
-                            //¥[¤J±N¦¨ÁZ¸ê®Æ¤À¶µ
-                            if (!entrySubjectScores.ContainsKey("¾Ç·~")) entrySubjectScores.Add("¾Ç·~", new List<decimal>());
-                            entrySubjectScores["¾Ç·~"].Add(maxScore);
-                            //¥[ÅvÁ`­p
-                            if (!entryDividend.ContainsKey("¾Ç·~"))
-                                entryDividend.Add("¾Ç·~", maxScore * credit);
+                                entryCreditCount["å­¸æ¥­"] += credit;
+                            //åŠ å…¥å°‡æˆç¸¾è³‡æ–™åˆ†é …
+                            if (!entrySubjectScores.ContainsKey("å­¸æ¥­")) entrySubjectScores.Add("å­¸æ¥­", new List<decimal>());
+                            entrySubjectScores["å­¸æ¥­"].Add(maxScore);
+                            //åŠ æ¬Šç¸½è¨ˆ
+                            if (!entryDividend.ContainsKey("å­¸æ¥­"))
+                                entryDividend.Add("å­¸æ¥­", maxScore * credit);
                             else
-                                entryDividend["¾Ç·~"] += (maxScore * credit);
+                                entryDividend["å­¸æ¥­"] += (maxScore * credit);
                             #endregion
                         }
                         break;
 
-                    case "¾Ç·~":
+                    case "å­¸æ¥­":
                     default:
                         #region original
-                        //¥[Á`¾Ç¤À¼Æ
-                        if (!entryCreditCount.ContainsKey("¾Ç·~" + "(­ì©l)"))
-                            entryCreditCount.Add("¾Ç·~" + "(­ì©l)", credit);
+                        //åŠ ç¸½å­¸åˆ†æ•¸
+                        if (!entryCreditCount.ContainsKey("å­¸æ¥­" + "(åŸå§‹)"))
+                            entryCreditCount.Add("å­¸æ¥­" + "(åŸå§‹)", credit);
                         else
-                            entryCreditCount["¾Ç·~" + "(­ì©l)"] += credit;
-                        //¥[¤J±N¦¨ÁZ¸ê®Æ¤À¶µ
-                        if (!entrySubjectScores.ContainsKey("¾Ç·~" + "(­ì©l)")) entrySubjectScores.Add("¾Ç·~" + "(­ì©l)", new List<decimal>());
-                        entrySubjectScores["¾Ç·~" + "(­ì©l)"].Add(original);
-                        //¥[ÅvÁ`­p
-                        if (!entryDividend.ContainsKey("¾Ç·~" + "(­ì©l)"))
-                            entryDividend.Add("¾Ç·~" + "(­ì©l)", original * credit);
+                            entryCreditCount["å­¸æ¥­" + "(åŸå§‹)"] += credit;
+                        //åŠ å…¥å°‡æˆç¸¾è³‡æ–™åˆ†é …
+                        if (!entrySubjectScores.ContainsKey("å­¸æ¥­" + "(åŸå§‹)")) entrySubjectScores.Add("å­¸æ¥­" + "(åŸå§‹)", new List<decimal>());
+                        entrySubjectScores["å­¸æ¥­" + "(åŸå§‹)"].Add(original);
+                        //åŠ æ¬Šç¸½è¨ˆ
+                        if (!entryDividend.ContainsKey("å­¸æ¥­" + "(åŸå§‹)"))
+                            entryDividend.Add("å­¸æ¥­" + "(åŸå§‹)", original * credit);
                         else
-                            entryDividend["¾Ç·~" + "(­ì©l)"] += (original * credit);
+                            entryDividend["å­¸æ¥­" + "(åŸå§‹)"] += (original * credit);
                         #endregion
                         #region maxScore
-                        //¥[Á`¾Ç¤À¼Æ
-                        if (!entryCreditCount.ContainsKey("¾Ç·~"))
-                            entryCreditCount.Add("¾Ç·~", credit);
+                        //åŠ ç¸½å­¸åˆ†æ•¸
+                        if (!entryCreditCount.ContainsKey("å­¸æ¥­"))
+                            entryCreditCount.Add("å­¸æ¥­", credit);
                         else
-                            entryCreditCount["¾Ç·~"] += credit;
-                        //¥[¤J±N¦¨ÁZ¸ê®Æ¤À¶µ
-                        if (!entrySubjectScores.ContainsKey("¾Ç·~")) entrySubjectScores.Add("¾Ç·~", new List<decimal>());
-                        entrySubjectScores["¾Ç·~"].Add(maxScore);
-                        //¥[ÅvÁ`­p
-                        if (!entryDividend.ContainsKey("¾Ç·~"))
-                            entryDividend.Add("¾Ç·~", maxScore * credit);
+                            entryCreditCount["å­¸æ¥­"] += credit;
+                        //åŠ å…¥å°‡æˆç¸¾è³‡æ–™åˆ†é …
+                        if (!entrySubjectScores.ContainsKey("å­¸æ¥­")) entrySubjectScores.Add("å­¸æ¥­", new List<decimal>());
+                        entrySubjectScores["å­¸æ¥­"].Add(maxScore);
+                        //åŠ æ¬Šç¸½è¨ˆ
+                        if (!entryDividend.ContainsKey("å­¸æ¥­"))
+                            entryDividend.Add("å­¸æ¥­", maxScore * credit);
                         else
-                            entryDividend["¾Ç·~"] += (maxScore * credit);
+                            entryDividend["å­¸æ¥­"] += (maxScore * credit);
                         #endregion
                         break;
                 }
@@ -275,11 +275,11 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
 
             XmlDocument doc = new XmlDocument();
             XmlElement entryScoreRoot = doc.CreateElement("SemesterEntryScore");
-            #region ³B²z­pºâ¦U¤À¶µÃş§Oªº¦¨ÁZ
+            #region è™•ç†è¨ˆç®—å„åˆ†é …é¡åˆ¥çš„æˆç¸¾
             foreach (string entry in entryCreditCount.Keys)
             {
                 decimal entryScore = 0;
-                #region ­pºâentryScore
+                #region è¨ˆç®—entryScore
                 if (entryCreditCount[entry] == 0)
                 {
                     foreach (decimal score in entrySubjectScores[entry])
@@ -290,16 +290,16 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
                 }
                 else
                 {
-                    //¥Î¥[ÅvÁ`¤À°£¾Ç¤À¼Æ
+                    //ç”¨åŠ æ¬Šç¸½åˆ†é™¤å­¸åˆ†æ•¸
                     entryScore = (entryDividend[entry] / entryCreditCount[entry]);
                 }
                 #endregion
-                //ºë·Ç¦ì¼Æ³B²z
+                //ç²¾æº–ä½æ•¸è™•ç†
                 entryScore = WearyDogComputer.GetRoundScore(entryScore, decimals, mode);
-                #region ¶ñ¤JXml
+                #region å¡«å…¥Xml
                 XmlElement entryElement = doc.CreateElement("Entry");
-                entryElement.SetAttribute("¤À¶µ", entry);
-                entryElement.SetAttribute("¦¨ÁZ", entryScore.ToString());
+                entryElement.SetAttribute("åˆ†é …", entry);
+                entryElement.SetAttribute("æˆç¸¾", entryScore.ToString());
                 entryScoreRoot.AppendChild(entryElement);
                 #endregion
             }
@@ -312,18 +312,18 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
             string childElement;
             switch (gradeYear)
             {
-                case 1: childElement = "¤@¦~¯Å¤Î®æ¼Ğ·Ç"; break;
-                case 2: childElement = "¤G¦~¯Å¤Î®æ¼Ğ·Ç"; break;
-                case 3: childElement = "¤T¦~¯Å¤Î®æ¼Ğ·Ç"; break;
-                case 4: childElement = "¥|¦~¯Å¤Î®æ¼Ğ·Ç"; break;
-                default: childElement = "¶W¹L¤F°Õ"; break;
+                case 1: childElement = "ä¸€å¹´ç´šåŠæ ¼æ¨™æº–"; break;
+                case 2: childElement = "äºŒå¹´ç´šåŠæ ¼æ¨™æº–"; break;
+                case 3: childElement = "ä¸‰å¹´ç´šåŠæ ¼æ¨™æº–"; break;
+                case 4: childElement = "å››å¹´ç´šåŠæ ¼æ¨™æº–"; break;
+                default: childElement = "è¶…éäº†å•¦"; break;
             }
             decimal passScore = decimal.MaxValue, tryPraseScore;
             DSXmlHelper helper = new DSXmlHelper(_ScoreCalcRuleElement);
-            foreach (XmlElement element in helper.GetElements("¤Î®æ¼Ğ·Ç/¾Ç¥ÍÃş§O"))
+            foreach (XmlElement element in helper.GetElements("åŠæ ¼æ¨™æº–/å­¸ç”Ÿé¡åˆ¥"))
             {
-                string tagName = element.GetAttribute("Ãş§O");
-                if (tagName == "¹w³]" && decimal.TryParse(element.GetAttribute(childElement), out tryPraseScore))
+                string tagName = element.GetAttribute("é¡åˆ¥");
+                if (tagName == "é è¨­" && decimal.TryParse(element.GetAttribute(childElement), out tryPraseScore))
                 {
                     if (tryPraseScore < passScore)
                         passScore = tryPraseScore;
@@ -346,7 +346,7 @@ namespace SmartSchool.Evaluation.ScoreCalcRule
             return passScore;
         }
 
-        private enum RoundMode { ¥|±Ë¤­¤J, µL±ø¥ó¶i¦ì, µL±ø¥ó±Ë¥h }
+        private enum RoundMode { å››æ¨äº”å…¥, ç„¡æ¢ä»¶é€²ä½, ç„¡æ¢ä»¶æ¨å» }
         private decimal GetRoundScore(decimal entryScore, int decimals, SmartSchool.Evaluation.WearyDogComputer.RoundMode mode)
         {
             return WearyDogComputer.GetRoundScore(entryScore, decimals, mode);

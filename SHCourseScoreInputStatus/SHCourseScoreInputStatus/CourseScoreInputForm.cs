@@ -44,6 +44,10 @@ namespace SHCourseScoreInputStatus
 
             lvwColumnSorter = new ListViewColumnSorter();
             this.lvData.ListViewItemSorter = lvwColumnSorter;
+
+            // 設定「含不評分課程」checkbox 預設值與事件
+            chkNotIncludedInCalc.Checked = false;
+            chkNotIncludedInCalc.CheckedChanged += chkNotIncludedInCalc_CheckedChanged;
         }
 
         void _bgWork_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -60,6 +64,10 @@ namespace SHCourseScoreInputStatus
             lvData.Items.Clear();
             foreach (CourseScoreBase csb in _CourseScoreBaseList)
             {
+                // 預設不含不評分課程：只顯示 not_included_in_calc == "0"（NotIncludedInCalc == false）
+                if (!chkNotIncludedInCalc.Checked && csb.NotIncludedInCalc)
+                    continue;
+
                 ListViewItem lvi = new ListViewItem();
                 //System.Windows.Forms.ListViewItem.ListViewSubItem subitem1 = lvi.SubItems.Add("");
                 lvi.Tag = csb;
@@ -181,6 +189,11 @@ namespace SHCourseScoreInputStatus
         private void chkNotHasScore_CheckedChanged(object sender, EventArgs e)
         {
             //if (lvData.Items.Count > 0)
+            BindDataToListView();
+        }
+
+        private void chkNotIncludedInCalc_CheckedChanged(object sender, EventArgs e)
+        {
             BindDataToListView();
         }
 

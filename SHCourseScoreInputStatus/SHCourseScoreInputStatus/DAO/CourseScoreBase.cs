@@ -40,5 +40,18 @@ namespace SHCourseScoreInputStatus.DAO
         /// </summary>
         public string ScoreSource { get; set; }
 
+        /// <summary>
+        /// 是否不列入成績計算（不評分課程）
+        /// true = 不列入計算
+        /// false = 列入計算
+        /// 規則：只有 not_included_in_calc == "0" 才為 false，其餘皆為 true
+        /// </summary>
+        public bool NotIncludedInCalc { get; set; }
+
+        /// <summary>
+        /// DB 原始 not_included_in_calc 值（除錯用）
+        /// </summary>
+        public string NotIncludedInCalcRaw { get; set; }
+
     }
 }

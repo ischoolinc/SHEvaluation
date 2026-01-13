@@ -86,6 +86,21 @@ namespace SH_SemesterScoreReportFixed
             return levelNumber;
         }
 
+        /// <summary>
+        /// 初始化缺曠欄位預設值為 0
+        /// </summary>
+        /// <param name="row">資料列</param>
+        /// <param name="absenceColumnNames">缺曠欄位名稱清單</param>
+        private static void InitAbsenceDefault(DataRow row, List<string> absenceColumnNames)
+        {
+            foreach (var colName in absenceColumnNames)
+            {
+                // 防呆：欄位存在才設值，避免未來欄位調整造成例外
+                if (row.Table.Columns.Contains(colName))
+                    row[colName] = "0";
+            }
+        }
+
         static Dictionary<string, decimal> _studPassSumCreditDict1 = new Dictionary<string, decimal>();
         static Dictionary<string, decimal> _studPassSumCreditDictAll = new Dictionary<string, decimal>();
 
@@ -151,6 +166,8 @@ namespace SH_SemesterScoreReportFixed
 
                 // 缺曠對照表key值(ex : 本學期一般_曠課、上學期集會_事假
                 List<string> AttendanceMappingKeyList = new List<string>();
+                // 缺曠欄位名稱清單（用於預設值初始化）
+                List<string> absenceColumnNames = new List<string>();
 
                 //建立合併欄位總表
                 DataTable table = new DataTable();
@@ -558,9 +575,18 @@ namespace SH_SemesterScoreReportFixed
                 // 動態新增缺曠統計，使用模式一般_曠課、一般_事假..
                 foreach (string name in Utility.GetATMappingKey())
                 {
-                    table.Columns.Add("前學期" + name);
-                    table.Columns.Add("本學期" + name);
-                    table.Columns.Add("學年" + name);
+                    string colName1 = "前學期" + name;
+                    string colName2 = "本學期" + name;
+                    string colName3 = "學年" + name;
+                    
+                    table.Columns.Add(colName1);
+                    table.Columns.Add(colName2);
+                    table.Columns.Add(colName3);
+                    
+                    // 加入缺曠欄位清單
+                    absenceColumnNames.Add(colName1);
+                    absenceColumnNames.Add(colName2);
+                    absenceColumnNames.Add(colName3);
 
                     AttendanceMappingKeyList.Add(name);
                 }
@@ -934,6 +960,8 @@ namespace SH_SemesterScoreReportFixed
                                 if (!table.Columns.Contains(attendanceKey))
                                 {
                                     table.Columns.Add(attendanceKey);
+                                    // 加入缺曠欄位清單
+                                    absenceColumnNames.Add(attendanceKey);
                                 }
                             }
                         }
@@ -1302,6 +1330,10 @@ namespace SH_SemesterScoreReportFixed
                             string studentID = stuRec.StudentID;
                             string gradeYear = (stuRec.RefClass == null ? "" : "" + stuRec.RefClass.GradeYear);
                             DataRow row = table.NewRow();
+                            
+                            // ✅ 最早期：先把缺曠欄位全設為 0
+                            InitAbsenceDefault(row, absenceColumnNames);
+                            
                             #region 基本資料
 
                             // 服務學習時數
@@ -1336,56 +1368,38 @@ namespace SH_SemesterScoreReportFixed
                             }
 
                             // 處理缺曠
-                            if (AttendanceCountDict.ContainsKey(studentID))
+                            if (AttendanceCountDict.TryGetValue(studentID, out var attenceCount))
                             {
-                                Dictionary<string, int> attenceCount = AttendanceCountDict[studentID];
-
                                 foreach (string attendMappingKey in AttendanceMappingKeyList)
                                 {
                                     string keyS = "學年" + attendMappingKey;
-                                    if (attenceCount.Keys.Contains(attendMappingKey))
+                                    if (attenceCount.TryGetValue(attendMappingKey, out int count))
                                     {
-                                        row[keyS] = attenceCount[attendMappingKey] == 0 ? 0 : attenceCount[attendMappingKey];
-                                    }
-                                    else
-                                    {
-                                        row[keyS] = "0";
+                                        row[keyS] = count; // 覆寫
                                     }
                                 }
                             }
 
-                            if (AttendanceCountDict1.ContainsKey(studentID))
+                            if (AttendanceCountDict1.TryGetValue(studentID, out var attenceCount1))
                             {
-                                Dictionary<string, int> attenceCount = AttendanceCountDict1[studentID];
-
                                 foreach (string attendMappingKey in AttendanceMappingKeyList)
                                 {
                                     string keyS = "前學期" + attendMappingKey;
-                                    if (attenceCount.Keys.Contains(attendMappingKey))
+                                    if (attenceCount1.TryGetValue(attendMappingKey, out int count))
                                     {
-                                        row[keyS] = attenceCount[attendMappingKey] == 0 ? 0 : attenceCount[attendMappingKey];
-                                    }
-                                    else
-                                    {
-                                        row[keyS] = "0";
+                                        row[keyS] = count; // 覆寫
                                     }
                                 }
                             }
 
-                            if (AttendanceCountDict2.ContainsKey(studentID))
+                            if (AttendanceCountDict2.TryGetValue(studentID, out var attenceCount2))
                             {
-                                Dictionary<string, int> attenceCount = AttendanceCountDict2[studentID];
-
                                 foreach (string attendMappingKey in AttendanceMappingKeyList)
                                 {
                                     string keyS = "本學期" + attendMappingKey;
-                                    if (attenceCount.Keys.Contains(attendMappingKey))
+                                    if (attenceCount2.TryGetValue(attendMappingKey, out int count))
                                     {
-                                        row[keyS] = attenceCount[attendMappingKey] == 0 ? 0 : attenceCount[attendMappingKey];
-                                    }
-                                    else
-                                    {
-                                        row[keyS] = "0";
+                                        row[keyS] = count; // 覆寫
                                     }
                                 }
                             }

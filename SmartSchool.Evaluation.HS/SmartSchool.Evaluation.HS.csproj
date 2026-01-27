@@ -547,6 +547,12 @@
     <Compile Include="Process\SelectSemesterForm.Designer.cs">
       <DependentUpon>SelectSemesterForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Process\Wizards\CalcLearningHistoryPrvScoreWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Process\Wizards\CalcLearningHistoryPrvScoreWizard.Designer.cs">
+      <DependentUpon>CalcLearningHistoryPrvScoreWizard.cs</DependentUpon>
+    </Compile>
     <Compile Include="Process\Wizards\CalcLearningHistoryScoreWizard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1037,6 +1043,9 @@
     <EmbeddedResource Include="Process\SelectSemesterForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>SelectSemesterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Process\Wizards\CalcLearningHistoryPrvScoreWizard.resx">
+      <DependentUpon>CalcLearningHistoryPrvScoreWizard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Process\Wizards\CalcLearningHistoryScoreWizard.resx">
       <DependentUpon>CalcLearningHistoryScoreWizard.cs</DependentUpon>

@@ -2,9 +2,11 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static SmartSchool.Security.ConfirmMsgBox;
 
 namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
 {
@@ -108,6 +110,49 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             }
             SaveToDatabase(GetSemesterScoreSqlTemplate42(jSubjectInfoList));
         }
+
+        public void SaveScores41_2(List<SubjectScoreRec108> scores, int SchoolYear, int Semester)
+        {
+            var jSubjectInfoList = new List<JSubjectInfo>();
+            foreach (var ssr in scores)
+            {
+                if (ssr.checkPass)
+                {
+                    // 預檢資料：不因 CodePass=false 而略過寫入
+                    // 但跳過補修（與 4.2 一致）
+                    if (ssr.isScScore)
+                        continue;
+
+                    var jInfo = CreateJSubjectInfo(ssr, "41.2", "學期成績(預檢)", SchoolYear, Semester);
+                    jInfo.detail = new List<JSubjectDetail>
+                {
+                 CreateJSubjectDetail("4.2.1", "身分證號", ssr.IDNumber),
+                 CreateJSubjectDetail("4.2.2", "出生日期", ssr.Birthday),
+                 CreateJSubjectDetail("4.2.3", "課程代碼", ssr.CourseCode),
+                 CreateJSubjectDetail("4.2.4", "科目名稱", ssr.SubjectName),
+                 CreateJSubjectDetail("4.2.5", "開課年級", ssr.GradeYear),
+                 CreateJSubjectDetail("4.2.6", "修課學分", ssr.Credit),
+                 CreateJSubjectDetail("4.2.7", "學期學業成績", ssr.Score),
+                 CreateJSubjectDetail("4.2.8", "成績及格", ssr.ScoreP),
+                 CreateJSubjectDetail("4.2.9", "補考成績", ssr.ReScore),
+                 CreateJSubjectDetail("4.2.10", "補考及格", ssr.ReScoreP),
+                 CreateJSubjectDetail("4.2.11", "是否採計學分", ssr.useCredit),
+                 CreateJSubjectDetail("4.2.12", "質性文字描述", ssr.Text),
+                 CreateJSubjectDetail("4.2.13", "DataKey", ""),
+                 CreateJSubjectDetail("4.2.14", "備註(學生姓名)", ssr.Name),
+                 CreateJSubjectDetail("4.2.15", "備註(資料當學期班級)", ssr.HisClassName),
+                 CreateJSubjectDetail("4.2.16", "備註(資料當學期座號)", ssr.HisSeatNo + ""),
+                 CreateJSubjectDetail("4.2.17", "備註(資料當學期學號)", ssr.HisStudentNumber),
+                 CreateJSubjectDetail("4.2.18", "備註(資料次學期班級)", ssr.ClassName),
+                 CreateJSubjectDetail("4.2.19", "備註(資料次學期座號)", ssr.SeatNo),
+                 CreateJSubjectDetail("4.2.20", "備註(資料次學期學號)", ssr.StudentNumber)
+                };
+                    jSubjectInfoList.Add(jInfo);
+                }
+            }
+            SaveToDatabase(GetSemesterScoreSqlTemplate41_2(jSubjectInfoList));
+        }
+
         public void SaveScores43(List<SubjectScoreRec108> scores, int SchoolYear, int Semester)
         {
             var jSubjectInfoList = new List<JSubjectInfo>();
@@ -323,6 +368,47 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             }
             SaveToDatabase(GetSemesterScoreSqlTemplate62(jSubjectInfoList));
         }
+
+        public void SaveScores42_2(List<SubjectScoreRec108> scores, int SchoolYear, int Semester)
+        {
+            var jSubjectInfoList = new List<JSubjectInfo>();
+            foreach (var ssr in scores)
+            {
+                if (ssr.checkPass)
+                {
+                    // 預檢資料：不因 CodePass=false 而略過寫入
+                    // 但跳過補修（與 6.2 一致）                  
+
+                    var jInfo = CreateJSubjectInfo(ssr, "42.2", "學期成績(預檢)", SchoolYear, Semester);
+                    jInfo.detail = new List<JSubjectDetail>
+                              {
+                    CreateJSubjectDetail("6.2.1", "身分證號", ssr.IDNumber),
+                     CreateJSubjectDetail("6.2.2", "出生日期", ssr.Birthday),
+                     CreateJSubjectDetail("6.2.3", "課程代碼", ssr.CourseCode),
+                     CreateJSubjectDetail("6.2.4", "科目名稱", ssr.SubjectName),
+                     CreateJSubjectDetail("6.2.5", "開課年級", ssr.GradeYear),
+                     CreateJSubjectDetail("6.2.6", "修課節數", ssr.Credit),
+                     CreateJSubjectDetail("6.2.7", "學期學業成績", ssr.Score),
+                     CreateJSubjectDetail("6.2.8", "成績及格", ssr.ScoreP),
+                     CreateJSubjectDetail("6.2.9", "學年學業成績", ssr.YearScore),
+                     CreateJSubjectDetail("6.2.10", "學年及格", ssr.YearScoreP),
+                     CreateJSubjectDetail("6.2.11", "是否採計學時", ssr.useCredit),
+                     CreateJSubjectDetail("6.2.12", "質性文字描述", ssr.Text),
+                     CreateJSubjectDetail("6.2.13", "DataKey", ""),
+                     CreateJSubjectDetail("6.2.14", "備註(學生姓名)", ssr.Name),
+                     CreateJSubjectDetail("6.2.15", "備註(資料當學期班級)", ssr.HisClassName),
+                     CreateJSubjectDetail("6.2.16", "備註(資料當學期座號)", ssr.HisSeatNo + ""),
+                     CreateJSubjectDetail("6.2.17", "備註(資料當學期學號)", ssr.HisStudentNumber),
+                     CreateJSubjectDetail("6.2.18", "備註(資料次學期班級)", ssr.ClassName),
+                     CreateJSubjectDetail("6.2.19", "備註(資料次學期座號)", ssr.SeatNo),
+                     CreateJSubjectDetail("6.2.20", "備註(資料次學期學號)", ssr.StudentNumber)
+                              };
+                    jSubjectInfoList.Add(jInfo);
+                }
+            }
+            SaveToDatabase(GetSemesterScoreSqlTemplate42_2(jSubjectInfoList));
+        }
+
         public void SaveScores63(List<SubjectYearScoreRec108N> scores, int SchoolYear, int Semester)
         {
             var jSubjectInfoList = new List<JSubjectInfo>();
@@ -906,6 +992,211 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             ('6.4.21', '備註(資料次學期學號)', '')    
 ";
             return GetSemesterScoreSqlTemplate(jSubjectInfoList, value);
+        }
+
+        string GetSemesterScoreSqlTemplate41_2(List<JSubjectInfo> jSubjectInfoList)
+        {
+            string value = @"
+               ('4.2.1', '身分證號', ''),
+                ('4.2.2', '出生日期', ''),
+                ('4.2.3', '課程代碼', ''),
+                ('4.2.4', '科目名稱', ''),
+                ('4.2.5', '開課年級', ''),
+                ('4.2.6', '修課學分', ''),
+                ('4.2.7', '學期學業成績', ''),
+                ('4.2.8', '成績及格', ''),
+                ('4.2.9', '補考成績', ''),
+                ('4.2.10', '補考及格', ''),
+                ('4.2.11', '是否採計學分', ''),
+                ('4.2.12', '質性文字描述', ''),
+                ('4.2.13', 'DataKey', ''),
+                ('4.2.14', '備註(學生姓名)', ''),
+                ('4.2.15', '備註(資料當學期班級)', ''),
+                ('4.2.16', '備註(資料當學期座號)', ''),
+                ('4.2.17', '備註(資料當學期學號)', ''),
+                ('4.2.18', '備註(資料次學期班級)', ''),
+                ('4.2.19', '備註(資料次學期座號)', ''),
+                ('4.2.20', '備註(資料次學期學號)', '')
+";
+            return GetSemesterScoreSqlTemplate(jSubjectInfoList, value);
+        }
+
+        string GetSemesterScoreSqlTemplate42_2(List<JSubjectInfo> jSubjectInfoList)
+        {
+            string value = @"
+            ('6.2.1', '身分證號', ''),
+            ('6.2.2', '出生日期', ''),
+            ('6.2.3', '課程代碼', ''),
+            ('6.2.4', '科目名稱', ''),
+            ('6.2.5', '開課年級', ''),
+            ('6.2.6', '修課節數', ''),
+            ('6.2.7', '學期學業成績', ''),
+            ('6.2.8', '成績及格', ''),
+            ('6.2.9', '學年學業成績', ''),
+            ('6.2.10', '學年及格', ''),
+            ('6.2.11', '是否採計學時', ''),
+            ('6.2.12', '質性文字描述', ''),
+            ('6.2.13', 'DataKey', ''),
+            ('6.2.14', '備註(學生姓名)', ''),
+            ('6.2.15', '備註(資料當學期班級)', ''),
+            ('6.2.16', '備註(資料當學期座號)', ''),
+            ('6.2.17', '備註(資料當學期學號)', ''),
+            ('6.2.18', '備註(資料次學期班級)', ''),
+            ('6.2.19', '備註(資料次學期座號)', ''),
+            ('6.2.20', '備註(資料次學期學號)', '')
+";
+            return GetSemesterScoreSqlTemplate(jSubjectInfoList, value);
+        }
+
+        /// <summary>
+        /// 取得修課學生資料（從 sc_attend）
+        /// </summary>
+        public DataTable GetSCAttendCourseRows(int schoolYear, int semester, List<string> studentIds)
+        {
+            DataTable result = new DataTable();
+            if (studentIds == null || studentIds.Count == 0)
+            {
+                return new DataTable();
+            }
+
+            try
+            {
+                QueryHelper qh = new QueryHelper();
+
+                // 建立參數化查詢（使用 string.Format，需注意 SQL 注入風險）
+                string studentIdList = string.Join(",", studentIds.Select(id => id.ToString()));
+
+                string query = string.Format(@"
+                WITH crs_stud AS (
+                    SELECT
+                        student.id AS student_id,
+                        student.name AS student_name,
+                        student.student_number AS student_number,
+                        student.seat_no AS seat_no,
+                        student.id_number AS id_number,
+                        student.birthdate AS birthdate,
+                        class.class_name AS class_name,
+                        class.grade_year AS grade_year,
+                        course.id AS course_id,
+                        course.course_name AS course_name,
+                        course.subject AS subject,
+                        course.subj_level AS subj_level,
+                        course.ref_class_id AS c_ref_class_id,
+                        course.credit AS credit,
+                        course.period AS period,
+                        course.score_type AS score_type,
+                        course.school_year AS school_year,
+                        course.semester AS semester,
+
+                        -- 部定/校訂（以 sc_attend 為優先，否則 course）
+                        (CASE COALESCE(sc_attend.required_by, course.c_required_by)
+                            WHEN '1' THEN '部定'
+                            WHEN '2' THEN '校訂'
+                            ELSE ''
+                         END) AS required_by_text,
+
+                        -- 必修/選修（以 sc_attend 為優先，否則 course）
+                        (CASE
+                            WHEN COALESCE(sc_attend.is_required, course.c_is_required) = B'1' THEN '必修'
+                            WHEN COALESCE(sc_attend.is_required, course.c_is_required) = B'0' THEN '選修'
+                            ELSE ''
+                         END) AS required_text,
+
+                        -- graduation_plan_id（以 student 為優先，否則 class）
+                        COALESCE(student.ref_graduation_plan_id, class.ref_graduation_plan_id) AS graduation_plan_id
+                    FROM course
+                    INNER JOIN sc_attend
+                        ON course.id = sc_attend.ref_course_id
+                    INNER JOIN student
+                        ON sc_attend.ref_student_id = student.id
+                    LEFT JOIN class
+                        ON student.ref_class_id = class.id
+                    WHERE
+                        student.status IN (1, 2)
+                        AND course.school_year = {0}
+                        AND course.semester = {1}
+                        AND student.id IN ({2})
+                ),
+                gp_id_list AS (
+                    -- 只展開會用到的 graduation_plan，避免全表 xpath 展開（效能好很多）
+                    SELECT DISTINCT graduation_plan_id
+                    FROM crs_stud
+                    WHERE graduation_plan_id IS NOT NULL
+                ),
+                graduation_plan_expand_raw AS (
+                    SELECT
+                        gp.id AS graduation_plan_id,
+                        unnest(xpath('//GraduationPlan/Subject', xmlparse(content gp.content))) AS subject_ele
+                    FROM graduation_plan gp
+                    INNER JOIN gp_id_list ids
+                        ON ids.graduation_plan_id = gp.id
+                ),
+                graduation_plan_expand AS (
+                    SELECT
+                        graduation_plan_id,
+                        array_to_string(xpath('//Subject/@SubjectName', subject_ele), '')::TEXT AS subject_name,
+                        array_to_string(xpath('//Subject/@Level', subject_ele), '')::TEXT AS subject_level,
+                        array_to_string(xpath('//Subject/@CourseAttr', subject_ele), '')::TEXT AS course_attr,
+                        array_to_string(xpath('//Subject/@課程代碼', subject_ele), '')::TEXT AS course_code
+                    FROM graduation_plan_expand_raw
+                ),
+                graduation_plan_expand_dedup AS (
+                    -- 若同一 graduation_plan_id + subject_name + subject_level 出現多筆，避免 join 後爆成多列
+                    SELECT DISTINCT ON (graduation_plan_id, subject_name, subject_level)
+                        graduation_plan_id,
+                        subject_name,
+                        subject_level,
+                        course_code
+                    FROM graduation_plan_expand
+                    ORDER BY graduation_plan_id, subject_name, subject_level
+                )
+                SELECT
+                    cs.student_id,
+                    cs.student_name,
+                    cs.student_number,
+                    cs.seat_no,
+                    cs.id_number,
+                    cs.birthdate,
+                    cs.class_name,
+                    cs.grade_year,
+                    cs.course_id,
+                    cs.course_name,
+                    cs.subject,
+                    cs.subj_level,
+                    cs.c_ref_class_id,
+                    cs.credit,
+                    cs.period,
+                    cs.score_type,
+                    cs.school_year,
+                    cs.semester,
+                    cs.required_by_text,
+                    cs.required_text,
+                    cs.graduation_plan_id,
+                    gpd.course_code AS course_code
+                FROM crs_stud cs
+                LEFT JOIN graduation_plan_expand_dedup gpd
+                    ON gpd.graduation_plan_id = cs.graduation_plan_id
+                   AND gpd.subject_name = cs.subject
+                   AND gpd.subject_level = COALESCE(cs.subj_level::TEXT, '')
+
+                ORDER BY
+                    cs.grade_year DESC,
+                    cs.class_name,
+                    cs.seat_no,
+                    cs.school_year,
+                    cs.semester,
+                    cs.course_name;                    
+            ", schoolYear, semester, studentIdList);
+
+                return result = qh.Select(query);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("GetSCAttendCourseRows," + ex.Message);
+            }
+
+            return result;
         }
 
     }

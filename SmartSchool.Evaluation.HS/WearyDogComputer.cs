@@ -1026,23 +1026,79 @@ namespace SmartSchool.Evaluation
 
                                             updateScoreElement.SetAttribute("註記", "");
 
+                                            //if (decimal.TryParse(designate_final_score, out designate_final_score_score))
+                                            //{
+                                            //    updateScoreElement.SetAttribute("修課直接指定總成績", ("" + GetRoundScore(designate_final_score_score, decimals, mode)));
+
+                                            //    // 註解是因經過2024/4/26討論，修課直接指定總成績不應該覆蓋原始成績，需要保留原始成績。                                              
+                                            //    updateScoreElement.SetAttribute("原始成績", ("" + GetRoundScore(designate_final_score_score, decimals, mode)));
+
+
+                                            //    //updateScoreElement.SetAttribute("原始成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(designate_final_score_score, decimals, mode)));
+
+
+                                            //    updateScoreElement.SetAttribute("註記", "修課成績：" + ("" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
+                                            //}
+                                            //else
+                                            //{
+                                            //    updateScoreElement.SetAttribute("修課直接指定總成績", "");
+                                            //}
+
                                             if (decimal.TryParse(designate_final_score, out designate_final_score_score))
                                             {
-                                                updateScoreElement.SetAttribute("修課直接指定總成績", ("" + GetRoundScore(designate_final_score_score, decimals, mode)));
+                                                var dScore = GetRoundScore(designate_final_score_score, decimals, mode);
+                                                updateScoreElement.SetAttribute("修課直接指定總成績", dScore.ToString());
 
-                                                // 註解是因經過2024/4/26討論，修課直接指定總成績不應該覆蓋原始成績，需要保留原始成績。                                              
-                                                //updateScoreElement.SetAttribute("原始成績", ("" + GetRoundScore(designate_final_score_score, decimals, mode)));
+                                                // ★ 方案2：指定 0 分 => 原始成績改回前學期/封存成績
+                                                if (dScore >= 0)
+                                                {
+                                                    bool hasPrev = false;
+                                                    decimal prevScore = dScore;
 
+                                                    // 優先：前學期學期科目成績
+                                                    if (dataCompareDict.ContainsKey(sfKey))
+                                                    {
+                                                        hasPrev = true;
+                                                        prevScore = dataCompareDict[sfKey];
+                                                        fromPrevSemester = true;
+                                                        fromArchive = false;
+                                                    }
+                                                    // 次要：封存成績
+                                                    else if (dataCompareDict1.ContainsKey(sacRecord.StudentID) &&
+                                                             dataCompareDict1[sacRecord.StudentID].ContainsKey(sfKey))
+                                                    {
+                                                        hasPrev = true;
+                                                        prevScore = dataCompareDict1[sacRecord.StudentID][sfKey];
+                                                        fromPrevSemester = true;  // 你原本用這個控制名冊/工作表
+                                                        fromArchive = true;
+                                                    }
 
-                                                //updateScoreElement.SetAttribute("原始成績", (sacRecord.NotIncludedInCalc ? "" : "" + GetRoundScore(designate_final_score_score, decimals, mode)));
+                                                    if (hasPrev)
+                                                    {
+                                                        var prevRounded = GetRoundScore(prevScore, decimals, mode);
+                                                        updateScoreElement.SetAttribute("原始成績", prevRounded.ToString());
+                                                    }
+                                                    else
+                                                    {
+                                                        // 沒有前次成績可回退：建議保留原本算出的 sfinalScore(通常是本次修課成績擇優後)
+                                                        // 你若想強制空白或 0，可以在這裡改
+                                                        // updateScoreElement.SetAttribute("原始成績", "");
+                                                    }
 
-
-                                                updateScoreElement.SetAttribute("註記", "修課成績：" + ("" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
+                                                    updateScoreElement.SetAttribute("註記", "修課成績：" + GetRoundScore(sacRecord.FinalScore, decimals, mode));
+                                                }
+                                                else
+                                                {
+                                                    // 指定非 0：維持你目前行為（覆蓋原始成績）
+                                                    updateScoreElement.SetAttribute("原始成績", dScore.ToString());
+                                                    updateScoreElement.SetAttribute("註記", "修課成績：" + GetRoundScore(sacRecord.FinalScore, decimals, mode));
+                                                }
                                             }
                                             else
                                             {
                                                 updateScoreElement.SetAttribute("修課直接指定總成績", "");
                                             }
+
 
                                             updateScoreElement.SetAttribute("修課備註", remark);
                                             updateScoreElement.SetAttribute("修課科目代碼", subject_code);

@@ -3343,11 +3343,11 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                 }
             }
 
-            // 回報錯誤
-            if (errorDict.Count > 0 && bkw != null)
-            {
-                bkw.ReportProgress(0, errorDict);
-            }
+            //// 回報錯誤
+            //if (errorDict.Count > 0 && bkw != null)
+            //{
+            //    bkw.ReportProgress(0, errorDict);
+            //}
 
             // 寫入資料庫
             if (scoreList.Count > 0)

@@ -231,18 +231,9 @@ namespace SmartSchool.Evaluation.Process.Wizards
             for (int idx = 0; idx < packages.Count; idx++)
             {
                 var batch = packages[idx];
-                
-                // 根據選項決定使用哪個處理方法
-                if (generatePreviewData)
-                {
-                    // 產生預檢資料（從 sc_attend）
-                    _processor.ProcessLearningHistory_FromSCAttend(helper, batch, schoolyear, semester,  bkw);
-                }
-                else
-                {
-                    // 原本的學習歷程流程
-                    _processor.ProcessLearningHistory(helper, batch, schoolyear, semester, bkw);
-                }
+
+                // 產生預檢資料（從 sc_attend）
+                _processor.ProcessLearningHistory_FromSCAttend(helper, batch, schoolyear, semester, bkw);                
                 
                 computedStudents += batch.Count;
                 // 平滑遞增進度條，與 CalcSemesterSubjectScoreWizard.cs 一致

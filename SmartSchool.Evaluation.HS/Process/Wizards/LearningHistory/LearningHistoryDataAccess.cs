@@ -132,20 +132,21 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                  CreateJSubjectDetail("4.2.4", "科目名稱", ssr.SubjectName),
                  CreateJSubjectDetail("4.2.5", "開課年級", ssr.GradeYear),
                  CreateJSubjectDetail("4.2.6", "修課學分", ssr.Credit),
-                 CreateJSubjectDetail("4.2.7", "學期學業成績", ssr.Score),
-                 CreateJSubjectDetail("4.2.8", "成績及格", ssr.ScoreP),
-                 CreateJSubjectDetail("4.2.9", "補考成績", ssr.ReScore),
-                 CreateJSubjectDetail("4.2.10", "補考及格", ssr.ReScoreP),
-                 CreateJSubjectDetail("4.2.11", "是否採計學分", ssr.useCredit),
-                 CreateJSubjectDetail("4.2.12", "質性文字描述", ssr.Text),
-                 CreateJSubjectDetail("4.2.13", "DataKey", ""),
-                 CreateJSubjectDetail("4.2.14", "備註(學生姓名)", ssr.Name),
-                 CreateJSubjectDetail("4.2.15", "備註(資料當學期班級)", ssr.HisClassName),
-                 CreateJSubjectDetail("4.2.16", "備註(資料當學期座號)", ssr.HisSeatNo + ""),
-                 CreateJSubjectDetail("4.2.17", "備註(資料當學期學號)", ssr.HisStudentNumber),
-                 CreateJSubjectDetail("4.2.18", "備註(資料次學期班級)", ssr.ClassName),
-                 CreateJSubjectDetail("4.2.19", "備註(資料次學期座號)", ssr.SeatNo),
-                 CreateJSubjectDetail("4.2.20", "備註(資料次學期學號)", ssr.StudentNumber)
+                 CreateJSubjectDetail("4.2.7",  "學期學業成績", ""),
+                CreateJSubjectDetail("4.2.8",  "成績及格", ""),
+                CreateJSubjectDetail("4.2.9",  "補考成績", ""),
+                CreateJSubjectDetail("4.2.10", "補考及格", ""),
+                CreateJSubjectDetail("4.2.11", "是否採計學分", ""),
+                CreateJSubjectDetail("4.2.12", "質性文字描述", ""),
+                CreateJSubjectDetail("4.2.13", "DataKey", ""),
+                CreateJSubjectDetail("4.2.14", "備註(學生姓名)", ""),
+                CreateJSubjectDetail("4.2.15", "備註(資料當學期班級)", ""),
+                CreateJSubjectDetail("4.2.16", "備註(資料當學期座號)", ""),
+                CreateJSubjectDetail("4.2.17", "備註(資料當學期學號)", ""),
+                CreateJSubjectDetail("4.2.18", "備註(資料次學期班級)", ""),
+                CreateJSubjectDetail("4.2.19", "備註(資料次學期座號)", ""),
+                CreateJSubjectDetail("4.2.20", "備註(資料次學期學號)", "")
+
                 };
                     jSubjectInfoList.Add(jInfo);
                 }
@@ -388,20 +389,21 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                      CreateJSubjectDetail("6.2.4", "科目名稱", ssr.SubjectName),
                      CreateJSubjectDetail("6.2.5", "開課年級", ssr.GradeYear),
                      CreateJSubjectDetail("6.2.6", "修課節數", ssr.Credit),
-                     CreateJSubjectDetail("6.2.7", "學期學業成績", ssr.Score),
-                     CreateJSubjectDetail("6.2.8", "成績及格", ssr.ScoreP),
-                     CreateJSubjectDetail("6.2.9", "學年學業成績", ssr.YearScore),
-                     CreateJSubjectDetail("6.2.10", "學年及格", ssr.YearScoreP),
-                     CreateJSubjectDetail("6.2.11", "是否採計學時", ssr.useCredit),
-                     CreateJSubjectDetail("6.2.12", "質性文字描述", ssr.Text),
-                     CreateJSubjectDetail("6.2.13", "DataKey", ""),
-                     CreateJSubjectDetail("6.2.14", "備註(學生姓名)", ssr.Name),
-                     CreateJSubjectDetail("6.2.15", "備註(資料當學期班級)", ssr.HisClassName),
-                     CreateJSubjectDetail("6.2.16", "備註(資料當學期座號)", ssr.HisSeatNo + ""),
-                     CreateJSubjectDetail("6.2.17", "備註(資料當學期學號)", ssr.HisStudentNumber),
-                     CreateJSubjectDetail("6.2.18", "備註(資料次學期班級)", ssr.ClassName),
-                     CreateJSubjectDetail("6.2.19", "備註(資料次學期座號)", ssr.SeatNo),
-                     CreateJSubjectDetail("6.2.20", "備註(資料次學期學號)", ssr.StudentNumber)
+                    CreateJSubjectDetail("6.2.7",  "學期學業成績", ""),
+                    CreateJSubjectDetail("6.2.8",  "成績及格", ""),
+                    CreateJSubjectDetail("6.2.9",  "學年學業成績", ""),
+                    CreateJSubjectDetail("6.2.10", "學年及格", ""),
+                    CreateJSubjectDetail("6.2.11", "是否採計學時", ""),
+                    CreateJSubjectDetail("6.2.12", "質性文字描述", ""),
+                    CreateJSubjectDetail("6.2.13", "DataKey", ""),
+                    CreateJSubjectDetail("6.2.14", "備註(學生姓名)", ""),
+                    CreateJSubjectDetail("6.2.15", "備註(資料當學期班級)", ""),
+                    CreateJSubjectDetail("6.2.16", "備註(資料當學期座號)", ""),
+                    CreateJSubjectDetail("6.2.17", "備註(資料當學期學號)", ""),
+                    CreateJSubjectDetail("6.2.18", "備註(資料次學期班級)", ""),
+                    CreateJSubjectDetail("6.2.19", "備註(資料次學期座號)", ""),
+                    CreateJSubjectDetail("6.2.20", "備註(資料次學期學號)", "")
+
                               };
                     jSubjectInfoList.Add(jInfo);
                 }
@@ -1066,7 +1068,12 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                 // 建立參數化查詢（使用 string.Format，需注意 SQL 注入風險）
                 string studentIdList = string.Join(",", studentIds.Select(id => id.ToString()));
 
-                string query = string.Format(@"
+                string query = "";
+
+                // 學年度學期與預設學年期相同
+                if (K12.Data.School.DefaultSchoolYear == schoolYear.ToString() && K12.Data.School.DefaultSemester == semester.ToString())
+                {
+                    query = string.Format(@"
                 WITH crs_stud AS (
                     SELECT
                         student.id AS student_id,
@@ -1187,6 +1194,195 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                     cs.semester,
                     cs.course_name;                    
             ", schoolYear, semester, studentIdList);
+                }
+                else
+                {
+                    query = string.Format(@"
+                WITH row AS (
+                    SELECT
+                        {0}::INTEGER AS school_year,
+                        {1}::INTEGER AS semester
+                ),
+
+                target_course AS (
+                    SELECT c.*
+                    FROM course c
+                    INNER JOIN row r
+                        ON c.school_year = r.school_year
+                       AND c.semester   = r.semester
+                ),
+
+                /* 依 sql_api04 的作法：由 student.sems_history 展開出該學年期的 gdc_code */
+                stud_sems_history AS (
+                    SELECT
+                        id,
+                        MAX(school_year) OVER (PARTITION BY id, grade_year, semester) AS school_year,
+                        grade_year,
+                        semester,
+                        seat_no,
+                        class_name,
+                        teacher_name,
+                        gdc_code,
+                        id_number
+                    FROM (
+                        SELECT
+                            ssh.id,
+                            ssh.id_number,
+                            ('0' || array_to_string(xpath('//History/@SchoolYear', history_xml), '')::TEXT)::INTEGER  AS school_year,
+                            ('0' || array_to_string(xpath('//History/@GradeYear', history_xml), '')::TEXT)::INTEGER  AS grade_year,
+                            ('0' || array_to_string(xpath('//History/@Semester', history_xml), '')::TEXT)::INTEGER   AS semester,
+                            ('0' || array_to_string(xpath('//History/@SeatNo', history_xml), '')::TEXT)::INTEGER     AS seat_no,
+                            array_to_string(xpath('//History/@ClassName', history_xml), '')::TEXT  AS class_name,
+                            array_to_string(xpath('//History/@Teacher', history_xml), '')::TEXT    AS teacher_name,
+                            array_to_string(xpath('//History/@GDCCode', history_xml), '')::TEXT    AS gdc_code
+                        FROM (
+                            SELECT
+                                s.id,
+                                s.id_number,
+                                unnest(
+                                    xpath(
+                                        '//root/History',
+                                        xmlparse(content '<root>' || s.sems_history || '</root>')
+                                    )
+                                ) AS history_xml
+                            FROM student s
+                            WHERE s.id IN ({2})
+                        ) ssh
+                    ) x
+                ),
+
+                /* 主要回傳欄位維持 sql_01：只把 join graduation_plan 的 key 改成 gdc_code */
+                crs_stud AS (
+                    SELECT
+                        student.id AS student_id,
+                        student.name AS student_name,
+                        student.student_number AS student_number,
+                        ssh.seat_no AS seat_no,
+                        student.id_number AS id_number,
+                        student.birthdate AS birthdate,
+                        ssh.class_name AS class_name,
+                        ssh.grade_year AS grade_year,
+
+                        course.id AS course_id,
+                        course.course_name AS course_name,
+                        course.subject AS subject,
+                        course.subj_level AS subj_level,
+                        course.ref_class_id AS c_ref_class_id,
+                        course.credit AS credit,
+                        course.period AS period,
+                        course.score_type AS score_type,
+                        course.school_year AS school_year,
+                        course.semester AS semester,
+
+                        -- 部定/校訂（以 sc_attend 為優先，否則 course）
+                        (CASE COALESCE(sc_attend.required_by, course.c_required_by)
+                            WHEN '1' THEN '部定'
+                            WHEN '2' THEN '校訂'
+                            ELSE ''
+                         END) AS required_by_text,
+
+                        -- 必修/選修（以 sc_attend 為優先，否則 course）
+                        (CASE
+                            WHEN COALESCE(sc_attend.is_required, course.c_is_required) = B'1' THEN '必修'
+                            WHEN COALESCE(sc_attend.is_required, course.c_is_required) = B'0' THEN '選修'
+                            ELSE ''
+                         END) AS required_text,
+
+                        -- 仍保留 sql_01 欄位（但後續 join 不再用它）
+                        COALESCE(student.ref_graduation_plan_id, class.ref_graduation_plan_id) AS graduation_plan_id,
+
+                        -- 新增：用來關聯 graduation_plan.moe_group_code
+                        ssh.gdc_code AS gdc_code
+                    FROM target_course course
+                    INNER JOIN sc_attend
+                        ON course.id = sc_attend.ref_course_id
+                    INNER JOIN student
+                        ON sc_attend.ref_student_id = student.id
+                    LEFT JOIN class
+                        ON student.ref_class_id = class.id
+                    LEFT JOIN stud_sems_history ssh
+                        ON ssh.id = student.id
+                       AND ssh.school_year = course.school_year
+                       AND ssh.semester = course.semester
+                    WHERE
+                        student.status IN (1, 2)
+                        AND student.id IN ({2})
+                ),
+
+                gdc_code_list AS (
+                    SELECT DISTINCT gdc_code
+                    FROM crs_stud
+                    WHERE gdc_code IS NOT NULL AND gdc_code <> ''
+                ),
+
+                graduation_plan_expand_raw AS (
+                    SELECT
+                        gp.moe_group_code AS gdc_code,
+                        unnest(xpath('//GraduationPlan/Subject', xmlparse(content gp.content))) AS subject_ele
+                    FROM graduation_plan gp
+                    INNER JOIN gdc_code_list t
+                        ON t.gdc_code = gp.moe_group_code
+                ),
+
+                graduation_plan_expand AS (
+                    SELECT
+                        gdc_code,
+                        array_to_string(xpath('//Subject/@SubjectName', subject_ele), '')::TEXT AS subject_name,
+                        array_to_string(xpath('//Subject/@Level', subject_ele), '')::TEXT AS subject_level,
+                        array_to_string(xpath('//Subject/@CourseAttr', subject_ele), '')::TEXT AS course_attr,
+                        array_to_string(xpath('//Subject/@課程代碼', subject_ele), '')::TEXT AS course_code
+                    FROM graduation_plan_expand_raw
+                ),
+
+                graduation_plan_expand_dedup AS (
+                    -- 若同一 gdc_code + subject_name + subject_level 出現多筆，避免 join 後爆列
+                    SELECT DISTINCT ON (gdc_code, subject_name, subject_level)
+                        gdc_code,
+                        subject_name,
+                        subject_level,
+                        course_code
+                    FROM graduation_plan_expand
+                    ORDER BY gdc_code, subject_name, subject_level
+                )
+
+                SELECT
+                    cs.student_id,
+                    cs.student_name,
+                    cs.student_number,
+                    cs.seat_no,
+                    cs.id_number,
+                    cs.birthdate,
+                    cs.class_name,
+                    cs.grade_year,
+                    cs.course_id,
+                    cs.course_name,
+                    cs.subject,
+                    cs.subj_level,
+                    cs.c_ref_class_id,
+                    cs.credit,
+                    cs.period,
+                    cs.score_type,
+                    cs.school_year,
+                    cs.semester,
+                    cs.required_by_text,
+                    cs.required_text,
+                    cs.graduation_plan_id,
+                    gpd.course_code AS course_code
+                FROM crs_stud cs
+                LEFT JOIN graduation_plan_expand_dedup gpd
+                    ON gpd.gdc_code = cs.gdc_code
+                   AND gpd.subject_name = cs.subject
+                   AND gpd.subject_level = COALESCE(cs.subj_level::TEXT, '')
+                ORDER BY
+                    cs.grade_year DESC,
+                    cs.class_name,
+                    cs.seat_no,
+                    cs.school_year,
+                    cs.semester,
+                    cs.course_name;
+
+                ", schoolYear, semester, studentIdList);
+                }
 
                 return result = qh.Select(query);
 

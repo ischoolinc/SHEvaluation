@@ -40,7 +40,7 @@ namespace SmartSchool.Evaluation.Process
             buttonItem103["計算學期分項成績"].Click += new System.EventHandler(this.buttonItem5_Click);
 
             buttonItem103["產生學習歷程成績"].Click += Calculation_Click41;
-            //buttonItem103["產生學習歷程預檢資料"].Click += Calculation_Click42;
+            buttonItem103["產生學習歷程預檢資料"].Click += Calculation_Click42;
 
 
             //var buttonItem7 = buttonItem103["計算學年成績"];

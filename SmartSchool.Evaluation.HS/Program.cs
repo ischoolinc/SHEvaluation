@@ -100,21 +100,21 @@ namespace SmartSchool.Evaluation
             }
             #endregion
 
-            //#region 產生學習歷程預檢資料
-            //{
-            //    string aclCode = "6E3BEC40-F6F2-405D-8D2A-417EBBC02E0E";
-            //    RibbonBarButton buttonPrv = MotherForm.RibbonBarItems["教務作業", "批次作業/檢視"]["成績作業"];
-            //    FISCA.Permission.RoleAclSource.Instance["教務作業"]["功能按鈕"].Add(new FISCA.Permission.RibbonFeature(aclCode, "產生學習歷程預檢資料"));
+            #region 產生學習歷程預檢資料
+            {
+                string aclCode = "6E3BEC40-F6F2-405D-8D2A-417EBBC02E0E";
+                RibbonBarButton buttonPrv = MotherForm.RibbonBarItems["教務作業", "批次作業/檢視"]["成績作業"];
+                FISCA.Permission.RoleAclSource.Instance["教務作業"]["功能按鈕"].Add(new FISCA.Permission.RibbonFeature(aclCode, "產生學習歷程預檢資料"));
 
-            //    buttonPrv.Enable = CurrentUser.Acl[aclCode].Executable;
-            //    buttonPrv["產生學習歷程預檢資料"].Click += delegate
-            //    {
-            //        new CalcLearningHistoryPrvScoreWizard(SelectType.GradeYearStudent).ShowDialog();
-            //    };
+                buttonPrv.Enable = CurrentUser.Acl[aclCode].Executable;
+                buttonPrv["產生學習歷程預檢資料"].Click += delegate
+                {
+                    new CalcLearningHistoryPrvScoreWizard(SelectType.GradeYearStudent).ShowDialog();
+                };
 
 
-            //}
-            //#endregion
+            }
+            #endregion
 
             RibbonBarButton button = MotherForm.RibbonBarItems["教務作業", "基本設定"]["設定"];
             button.Enable = CurrentUser.Acl["Button0830"].Executable;

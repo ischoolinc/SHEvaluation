@@ -3245,7 +3245,12 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                 // 驗證必要欄位
                 string idNumber = (dr["id_number"] + "").Trim().ToUpper();
                 string subject = (dr["subject"] + "").Trim();
-                string courseCode = (dr["course_code"] + "").Trim();
+
+                // 討論後使用學生修課課程代碼	 
+                string courseCode = (dr["subject_code"] + "");
+
+                // 學生課規課程代碼
+                //string courseCode = (dr["course_code"] + "").Trim();
                 string subjLevel = (dr["subj_level"] + "").Trim();
 
                 // 驗證身分證號
@@ -3328,13 +3333,18 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                 ssr.StudentNumber = student.StudentNumber;
 
                 // 學期歷程資料（與現在班級相同，因為是預檢）
-                ssr.HisClassName = ssr.ClassName;
-                ssr.HisSeatNo = int.TryParse(ssr.SeatNo, out int seatNo) ? (int?)seatNo : null;
-                ssr.HisStudentNumber = ssr.StudentNumber;
+                //ssr.HisClassName = ssr.ClassName;
+                //ssr.HisSeatNo = int.TryParse(ssr.SeatNo, out int seatNo) ? (int?)seatNo : null;
+                //ssr.HisStudentNumber = ssr.StudentNumber;
 
                 // 設定檢查通過標記
-                ssr.checkPass = !string.IsNullOrEmpty(idNumber) && !string.IsNullOrEmpty(subject) && !string.IsNullOrEmpty(courseCode) && subjLevelValid;
+                //ssr.checkPass = !string.IsNullOrEmpty(idNumber) && !string.IsNullOrEmpty(subject) && !string.IsNullOrEmpty(courseCode) && subjLevelValid;
+
+                // 預檢資料，來自學生修課紀錄，產生只要有身分證+科目名稱+課程代碼
+                ssr.checkPass = !string.IsNullOrEmpty(idNumber) && !string.IsNullOrEmpty(subject) && !string.IsNullOrEmpty(courseCode);
+
                 ssr.CodePass = true; // 預檢資料不因 CodePass 而略過
+
                 ssr.isScScore = false;
 
                 if (ssr.checkPass)

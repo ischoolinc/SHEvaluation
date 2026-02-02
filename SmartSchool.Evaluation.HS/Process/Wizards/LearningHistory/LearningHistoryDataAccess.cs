@@ -1094,7 +1094,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                         course.score_type AS score_type,
                         course.school_year AS school_year,
                         course.semester AS semester,
-
+                        sc_attend.subject_code,
                         -- 部定/校訂（以 sc_attend 為優先，否則 course）
                         (CASE COALESCE(sc_attend.required_by, course.c_required_by)
                             WHEN '1' THEN '部定'
@@ -1179,6 +1179,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                     cs.required_by_text,
                     cs.required_text,
                     cs.graduation_plan_id,
+                    cs.subject_code,
                     gpd.course_code AS course_code
                 FROM crs_stud cs
                 LEFT JOIN graduation_plan_expand_dedup gpd
@@ -1273,7 +1274,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                         course.score_type AS score_type,
                         course.school_year AS school_year,
                         course.semester AS semester,
-
+                        sc_attend.subject_code,
                         -- 部定/校訂（以 sc_attend 為優先，否則 course）
                         (CASE COALESCE(sc_attend.required_by, course.c_required_by)
                             WHEN '1' THEN '部定'
@@ -1367,6 +1368,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                     cs.required_by_text,
                     cs.required_text,
                     cs.graduation_plan_id,
+                    cs.subject_code,
                     gpd.course_code AS course_code
                 FROM crs_stud cs
                 LEFT JOIN graduation_plan_expand_dedup gpd

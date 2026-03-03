@@ -137,13 +137,14 @@ namespace SmartSchool.Evaluation
                 new ConfigurationForm(new CommonPlanConfiguration()).ShowDialog();
             };
 
-            // button["檢視班級課程規劃表(99課綱適用)"].Click += delegate
-            button.Enable = CurrentUser.Acl["Button0860"].Executable;
-            button["班級課程規劃表(99課綱適用)"].Click += delegate
-            {
-                //new ConfigurationForm(new GraduationPlanConfiguration()).ShowDialog();
-                (new FrmGraduationPlanConfiguration()).ShowDialog();
-            };
+            //2026 / 2 / 24，校務工程會議討論後，這功能已過時不需要使用，先註解
+            //// button["檢視班級課程規劃表(99課綱適用)"].Click += delegate
+            //button.Enable = CurrentUser.Acl["Button0860"].Executable;
+            //button["班級課程規劃表(99課綱適用)"].Click += delegate
+            //{
+            //    //new ConfigurationForm(new GraduationPlanConfiguration()).ShowDialog();
+            //    (new FrmGraduationPlanConfiguration()).ShowDialog();
+            //};
 
             button.Enable = CurrentUser.Acl["Button0850"].Executable;
             button["學程科目表"].BeginGroup = true;

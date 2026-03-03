@@ -1212,8 +1212,8 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                 StudentCreditUpdateCodeDict = Utility.GetStudentHasUpdateCodeDict(studentIDList, CreditUpdateCodeMappingDict.Keys.ToList());
             }
 
-            // 取得異動與身分別對照
-            UpdateCodeMappingDict = Utility.GetUpdateCodeMappingDict2();
+            //// 取得異動與身分別對照
+            //UpdateCodeMappingDict = Utility.GetUpdateCodeMappingDict2();
 
             // 取得有符合對照學生
             if (UpdateCodeMappingDict.Count > 0)
@@ -2306,7 +2306,7 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                                     ssr.isScScore = true;
                                 }
                             }
-
+                            ssr.StudType = "";
                             // 對應學生身分別
                             if (StudentHasUpdateCodeDict.ContainsKey(studRec.StudentID))
                             {

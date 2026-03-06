@@ -1,4 +1,4 @@
-﻿using Aspose.Words;
+using Aspose.Words;
 using FISCA.Data;
 using FISCA.DSAUtil;
 using SmartSchool.Customization.Data;
@@ -1867,12 +1867,26 @@ namespace SmartSchool.Evaluation
                                     se = previousSubjectScoreInfo.Semester;
                                     string key1 = previousSubjectScoreInfo.Subject.Trim() + "_" + previousSubjectScoreInfo.Level.Trim();
 
-                                    // 假設 sacRecord.FinalScore 為本次重修課程成績
-                                    decimal roundedScore = GetRoundScore(sacRecord.FinalScore, decimals, mode);
+                                    // 重修成績來源：優先修課直接指定總成績，否則使用課程成績
+                                    decimal sourceScore = 0m;
+                                    bool useDesignate = false;
+                                    if (studentFinalScoreDict.ContainsKey(var.StudentID) &&
+                                        studentFinalScoreDict[var.StudentID].ContainsKey(key))
+                                    {
+                                        DataRow dr = studentFinalScoreDict[var.StudentID][key];
+                                        decimal designateScore;
+                                        if (dr["designate_final_score"] != null &&
+                                            decimal.TryParse(dr["designate_final_score"].ToString(), out designateScore))
+                                        {
+                                            sourceScore = GetRoundScore(designateScore, decimals, mode);
+                                            useDesignate = true;
+                                        }
+                                    }
+                                    if (!useDesignate)
+                                        sourceScore = GetRoundScore(sacRecord.FinalScore, decimals, mode);
 
                                     //寫入重修紀錄
                                     XmlElement updateScoreElement = previousSubjectScoreInfo.Detail;
-                                    //updateScoreElement.SetAttribute("重修成績", "" + GetRoundScore(sacRecord.FinalScore, decimals, mode));
 
                                     decimal passscore;
                                     // 新寫及格標準
@@ -1892,8 +1906,8 @@ namespace SmartSchool.Evaluation
                                         }
                                     }
 
-
-                                    // C# 寫一段程式，只有當新分數比舊的「重修成績」高時才寫入 SetAttribute("重修成績", ...)；否則不寫入。
+                                    // 只有當新分數 >= 舊重修成績時才寫入；寫入前套用及格標準上限
+                                    decimal roundedScore = sourceScore;
                                     decimal previousScore;
                                     if (decimal.TryParse(updateScoreElement.GetAttribute("重修成績"), out previousScore))
                                     {
@@ -1908,7 +1922,6 @@ namespace SmartSchool.Evaluation
                                     {
                                         if (roundedScore > passscore)
                                             roundedScore = passscore;
-
                                         updateScoreElement.SetAttribute("重修成績", "" + roundedScore);
                                     }
 

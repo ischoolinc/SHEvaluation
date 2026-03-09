@@ -1123,8 +1123,15 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                         AND course.school_year = {0}
                         AND course.semester = {1}
                         AND student.id IN ({2})
-                        AND COALESCE(course.not_included_in_calc, '0') <> '1'
-                        AND COALESCE(course.not_included_in_credit, '0') <> '1'
+                        AND char_length(COALESCE(sc_attend.subject_code, '')) = 23
+                        AND COALESCE(course.not_included_in_credit, '0') = '0'
+                        AND (
+                               COALESCE(course.not_included_in_calc, '0') = '0'
+                            OR (
+                                   COALESCE(course.not_included_in_calc, '0') = '1'
+                                   AND upper(substring(sc_attend.subject_code from 17 for 2)) = '9D'
+                               )
+                        )
                 ),
                 gp_id_list AS (
                     -- 只展開會用到的 graduation_plan，避免全表 xpath 展開（效能好很多）
@@ -1310,8 +1317,15 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                     WHERE
                         student.status IN (1, 2)
                         AND student.id IN ({2})
-                        AND COALESCE(course.not_included_in_calc, '0') <> '1'
-                        AND COALESCE(course.not_included_in_credit, '0') <> '1'
+                        AND char_length(COALESCE(sc_attend.subject_code, '')) = 23
+                        AND COALESCE(course.not_included_in_credit, '0') = '0'
+                        AND (
+                               COALESCE(course.not_included_in_calc, '0') = '0'
+                            OR (
+                                   COALESCE(course.not_included_in_calc, '0') = '1'
+                                   AND upper(substring(sc_attend.subject_code from 17 for 2)) = '9D'
+                               )
+                        )
                 ),
 
                 gdc_code_list AS (

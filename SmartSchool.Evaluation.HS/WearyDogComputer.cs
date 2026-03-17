@@ -68,6 +68,114 @@ namespace SmartSchool.Evaluation
         }
 
         /// <summary>
+        /// 取得有效及格標準：sc_attend.passing_standard 優先，否則 applyLimit[gradeYear]，否則 60。
+        /// </summary>
+        private decimal GetEffectivePassingStandard(
+            string studentId,
+            string key,
+            int gradeYear,
+            Dictionary<string, Dictionary<string, decimal>> studentPassScoreDict,
+            Dictionary<int, decimal> applyLimit)
+        {
+            decimal passscore = 60;
+
+            if (studentPassScoreDict != null &&
+                studentPassScoreDict.ContainsKey(studentId) &&
+                studentPassScoreDict[studentId].ContainsKey(key))
+            {
+                decimal value = studentPassScoreDict[studentId][key];
+                if (value != -1)
+                    return value;
+            }
+
+            if (applyLimit != null && applyLimit.ContainsKey(gradeYear))
+                return applyLimit[gradeYear];
+
+            return passscore;
+        }
+
+        /// <summary>
+        /// 取得有效補考標準：有值回傳，沒值回傳 null（XML 留空）。
+        /// </summary>
+        private decimal? GetEffectiveMakeupStandard(
+            string studentId,
+            string key,
+            Dictionary<string, Dictionary<string, decimal?>> studentMakeupScoreDict)
+        {
+            if (studentMakeupScoreDict != null &&
+                studentMakeupScoreDict.ContainsKey(studentId) &&
+                studentMakeupScoreDict[studentId].ContainsKey(key))
+            {
+                return studentMakeupScoreDict[studentId][key];
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 統一寫入修課及格標準屬性。
+        /// </summary>
+        private void SetPassingStandardAttribute(
+            XmlElement scoreElement,
+            decimal passscore,
+            int decimals,
+            RoundMode mode)
+        {
+            if (scoreElement == null)
+                return;
+
+            scoreElement.SetAttribute("修課及格標準", GetRoundScore(passscore, decimals, mode).ToString());
+        }
+
+        /// <summary>
+        /// 統一寫入修課補考標準屬性；無值時清空，不殘留舊值。
+        /// </summary>
+        private void SetMakeupStandardAttribute(
+            XmlElement scoreElement,
+            decimal? makeupscore,
+            int decimals,
+            RoundMode mode)
+        {
+            if (scoreElement == null)
+                return;
+
+            if (makeupscore.HasValue)
+                scoreElement.SetAttribute("修課補考標準", GetRoundScore(makeupscore.Value, decimals, mode).ToString());
+            else
+                scoreElement.SetAttribute("修課補考標準", "");
+        }
+
+        /// <summary>
+        /// 統一寫入修課及格標準與修課補考標準（先寫入再做後續判斷，避免用舊 XML 值）。
+        /// </summary>
+        private void ApplyCourseStandards(
+            XmlElement scoreElement,
+            string studentId,
+            string key,
+            int gradeYear,
+            Dictionary<string, Dictionary<string, decimal>> studentPassScoreDict,
+            Dictionary<string, Dictionary<string, decimal?>> studentMakeupScoreDict,
+            Dictionary<int, decimal> applyLimit,
+            int decimals,
+            RoundMode mode)
+        {
+            decimal effectivePassscore = GetEffectivePassingStandard(
+                studentId,
+                key,
+                gradeYear,
+                studentPassScoreDict,
+                applyLimit);
+
+            decimal? effectiveMakeupscore = GetEffectiveMakeupStandard(
+                studentId,
+                key,
+                studentMakeupScoreDict);
+
+            SetPassingStandardAttribute(scoreElement, effectivePassscore, decimals, mode);
+            SetMakeupStandardAttribute(scoreElement, effectiveMakeupscore, decimals, mode);
+        }
+
+        /// <summary>
         /// 計算學期科目成績
         /// </summary>
         /// <param name="schoolyear">學年度</param>
@@ -92,16 +200,14 @@ namespace SmartSchool.Evaluation
             Dictionary<string, string> duplicateSubjectLevelMethodDict_Afterfilter = new Dictionary<string, string>(); // 真正過濾後，有重覆科目級別的項目
 
 
-            // 整理所欲計算學期科目學生的ID
-            List<string> sidList = new List<string>();
-
+            // 整理所欲計算學期科目學生的ID（用 HashSet 避免重複且 Contains 為 O(1)）
+            HashSet<string> sidSet = new HashSet<string>();
             foreach (StudentRecord sr in students)
             {
-                if (!sidList.Contains(sr.StudentID))
-                {
-                    sidList.Add(sr.StudentID);
-                }
+                if (!string.IsNullOrWhiteSpace(sr.StudentID))
+                    sidSet.Add(sr.StudentID);
             }
+            List<string> sidList = sidSet.ToList();
 
             string sid = string.Join(",", sidList);
 
@@ -147,6 +253,9 @@ namespace SmartSchool.Evaluation
 
             // 各科及格標準
             Dictionary<string, Dictionary<string, decimal>> studentPassScoreDict = new Dictionary<string, Dictionary<string, decimal>>();
+
+            // 各科補考標準 (有值存 decimal，沒設定存 null)
+            Dictionary<string, Dictionary<string, decimal?>> studentMakeupScoreDict = new Dictionary<string, Dictionary<string, decimal?>>();
 
             // 學生有指定總成績
             Dictionary<string, Dictionary<string, decimal>> studentHasFinalScoreDict = new Dictionary<string, Dictionary<string, decimal>>();
@@ -214,6 +323,18 @@ namespace SmartSchool.Evaluation
                     {
                         studentPassScoreDict[student_id][key] = passScore;
                     }
+                }
+
+                // 補考標準
+                if (!studentMakeupScoreDict.ContainsKey(student_id))
+                    studentMakeupScoreDict.Add(student_id, new Dictionary<string, decimal?>());
+                if (!studentMakeupScoreDict[student_id].ContainsKey(key))
+                    studentMakeupScoreDict[student_id].Add(key, null);
+                decimal makeupScore;
+                if (dr["makeup_standard"] != null)
+                {
+                    if (decimal.TryParse(dr["makeup_standard"].ToString(), out makeupScore))
+                        studentMakeupScoreDict[student_id][key] = makeupScore;
                 }
 
                 if (dr["designate_final_score"] != null)
@@ -935,6 +1056,18 @@ namespace SmartSchool.Evaluation
 
                                     #endregion
 
+                                    // 一律先寫入修課及格標準、修課補考標準，再做後續判斷
+                                    ApplyCourseStandards(
+                                        updateScoreElement,
+                                        var.StudentID,
+                                        key,
+                                        updateScoreInfo.GradeYear,
+                                        studentPassScoreDict,
+                                        studentMakeupScoreDict,
+                                        applyLimit,
+                                        decimals,
+                                        mode);
+
                                     decimal? sfinalScore = null;
 
                                     bool fromPrevSemester = false;
@@ -1014,15 +1147,7 @@ namespace SmartSchool.Evaluation
                                             if (dr["designate_final_score"] != null)
                                                 designate_final_score = dr["designate_final_score"].ToString();
 
-                                            if (decimal.TryParse(passing_standard, out passing_standard_score))
-                                                updateScoreElement.SetAttribute("修課及格標準", ("" + GetRoundScore(passing_standard_score, decimals, mode)));
-                                            else
-                                                updateScoreElement.SetAttribute("修課及格標準", "");
-
-                                            if (decimal.TryParse(makeup_standard, out makeup_standard_score))
-                                                updateScoreElement.SetAttribute("修課補考標準", ("" + GetRoundScore(makeup_standard_score, decimals, mode)));
-                                            else
-                                                updateScoreElement.SetAttribute("修課補考標準", "");
+                                            // 修課及格標準/修課補考標準已於課程資料後統一寫入，此處不再重複設定
 
                                             updateScoreElement.SetAttribute("註記", "");
 
@@ -1124,26 +1249,12 @@ namespace SmartSchool.Evaluation
                                     }
                                     #endregion
 
-
-                                    decimal passscore;
-
-                                    // 新寫及格標準
-                                    passscore = 100;
-                                    if (studentPassScoreDict.ContainsKey(var.StudentID))
-                                    {
-                                        if (studentPassScoreDict[var.StudentID].ContainsKey(key))
-                                        {
-                                            passscore = studentPassScoreDict[var.StudentID][key];
-                                        }
-                                        else
-                                        {
-                                            if (!applyLimit.ContainsKey(updateScoreInfo.GradeYear))
-                                                passscore = 60;
-                                            else
-                                                passscore = applyLimit[updateScoreInfo.GradeYear];
-                                        }
-                                    }
-
+                                    decimal passscore = GetEffectivePassingStandard(
+                                        var.StudentID,
+                                        key,
+                                        updateScoreInfo.GradeYear,
+                                        studentPassScoreDict,
+                                        applyLimit);
 
                                     // 2024/7/5 會議決議，需要計算學分使用成績判斷是否取得學分
                                     if (sacRecord.NotIncludedInCredit == false)
@@ -1488,6 +1599,18 @@ namespace SmartSchool.Evaluation
                                             newScoreInfo.SetAttribute("指定學年科目名稱", specifySubjectNameDict[sacRecord.StudentID][sKey]);
                                     }
 
+                                    // 一律先寫入修課及格標準、修課補考標準，再做後續判斷
+                                    ApplyCourseStandards(
+                                        newScoreInfo,
+                                        var.StudentID,
+                                        key,
+                                        gradeYear.HasValue ? gradeYear.Value : 0,
+                                        studentPassScoreDict,
+                                        studentMakeupScoreDict,
+                                        applyLimit,
+                                        decimals,
+                                        mode);
+
                                     // 課程代碼
                                     string CourseCode = "";
 
@@ -1519,15 +1642,7 @@ namespace SmartSchool.Evaluation
                                             if (dr["designate_final_score"] != null)
                                                 designate_final_score = dr["designate_final_score"].ToString();
 
-                                            if (decimal.TryParse(passing_standard, out passing_standard_score))
-                                                newScoreInfo.SetAttribute("修課及格標準", ("" + GetRoundScore(passing_standard_score, decimals, mode)));
-                                            else
-                                                newScoreInfo.SetAttribute("修課及格標準", "");
-
-                                            if (decimal.TryParse(makeup_standard, out makeup_standard_score))
-                                                newScoreInfo.SetAttribute("修課補考標準", ("" + GetRoundScore(makeup_standard_score, decimals, mode)));
-                                            else
-                                                newScoreInfo.SetAttribute("修課補考標準", "");
+                                            // 修課及格標準/修課補考標準已於上方統一寫入，此處不再重複設定
 
                                             if (decimal.TryParse(designate_final_score, out designate_final_score_score))
                                             {
@@ -1574,28 +1689,14 @@ namespace SmartSchool.Evaluation
                                     }
                                     #endregion
 
-
-                                    decimal passscore;
-
-                                    // 新寫及格標準
-                                    passscore = 100;
-                                    if (studentPassScoreDict.ContainsKey(var.StudentID))
-                                    {
-                                        if (studentPassScoreDict[var.StudentID].ContainsKey(key))
-                                        {
-                                            passscore = studentPassScoreDict[var.StudentID][key];
-                                        }
-                                        else
-                                        {
-                                            if (!applyLimit.ContainsKey((int)gradeYear))
-                                                passscore = 60;
-                                            else
-                                                passscore = applyLimit[(int)gradeYear];
-                                        }
-                                    }
+                                    decimal passscore = GetEffectivePassingStandard(
+                                        var.StudentID,
+                                        key,
+                                        gradeYear.HasValue ? gradeYear.Value : 0,
+                                        studentPassScoreDict,
+                                        applyLimit);
 
                                     #endregion
-
 
                                     // 2024/7/5 會議決議，需要計算學分使用成績判斷是否取得學分
                                     if (sacRecord.NotIncludedInCredit == false)
@@ -1888,23 +1989,17 @@ namespace SmartSchool.Evaluation
                                     //寫入重修紀錄
                                     XmlElement updateScoreElement = previousSubjectScoreInfo.Detail;
 
-                                    decimal passscore;
-                                    // 新寫及格標準
-                                    passscore = 100;
-                                    if (studentPassScoreDict.ContainsKey(var.StudentID))
+                                    if (useDesignate)
                                     {
-                                        if (studentPassScoreDict[var.StudentID].ContainsKey(key))
-                                        {
-                                            passscore = studentPassScoreDict[var.StudentID][key];
-                                        }
-                                        else
-                                        {
-                                            if (!applyLimit.ContainsKey(previousSubjectScoreInfo.GradeYear))
-                                                passscore = 60;
-                                            else
-                                                passscore = applyLimit[previousSubjectScoreInfo.GradeYear];
-                                        }
+                                        updateScoreElement.SetAttribute("修課直接指定總成績", sourceScore.ToString());
                                     }
+
+                                    decimal passscore = GetEffectivePassingStandard(
+                                        var.StudentID,
+                                        key,
+                                        previousSubjectScoreInfo.GradeYear,
+                                        studentPassScoreDict,
+                                        applyLimit);
 
                                     // 只有當新分數 >= 舊重修成績時才寫入；寫入前套用及格標準上限
                                     decimal roundedScore = sourceScore;
@@ -1928,6 +2023,17 @@ namespace SmartSchool.Evaluation
                                     previousSubjectScoreInfo.Detail.SetAttribute("重修學年度", schoolyear.ToString());
                                     previousSubjectScoreInfo.Detail.SetAttribute("重修學期", semester.ToString());
 
+                                    // 寫回原學期時一併更新修課及格標準、修課補考標準
+                                    ApplyCourseStandards(
+                                        updateScoreElement,
+                                        var.StudentID,
+                                        key,
+                                        previousSubjectScoreInfo.GradeYear,
+                                        studentPassScoreDict,
+                                        studentMakeupScoreDict,
+                                        applyLimit,
+                                        decimals,
+                                        mode);
 
                                     //做取得學分判斷
                                     #region 做取得學分判斷
@@ -1935,7 +2041,15 @@ namespace SmartSchool.Evaluation
                                     decimal maxScore = 0;// = sacRecord.FinalScore;
                                     #region 抓最高分
 
-                                    string[] scoreNames = new string[] { "原始成績", "學年調整成績", "擇優採計成績", "補考成績", "重修成績" };
+                                    string[] scoreNames = new string[]
+                                    {
+                                        "原始成績",
+                                        "學年調整成績",
+                                        "擇優採計成績",
+                                        "補考成績",
+                                        "重修成績",
+                                        "修課直接指定總成績"
+                                    };
 
                                     foreach (string scorename in scoreNames)
                                     {
@@ -2165,23 +2279,24 @@ namespace SmartSchool.Evaluation
                                     makeUpScoreInfo.Detail.SetAttribute("補修學年度", schoolyear.ToString());
                                     makeUpScoreInfo.Detail.SetAttribute("補修學期", semester.ToString());
 
-                                    decimal passscore;
-                                    passscore = 100;
-                                    if (studentPassScoreDict.ContainsKey(var.StudentID))
-                                    {
-                                        if (studentPassScoreDict[var.StudentID].ContainsKey(key))
-                                        {
-                                            passscore = studentPassScoreDict[var.StudentID][key];
-                                        }
-                                        else
-                                        {
-                                            if (!applyLimit.ContainsKey(makeUpScoreInfo.GradeYear))
-                                                passscore = 60;
-                                            else
-                                                passscore = applyLimit[makeUpScoreInfo.GradeYear];
-                                        }
-                                    }
+                                    // 先寫入修課及格標準、修課補考標準，再做是否取得學分等判斷
+                                    ApplyCourseStandards(
+                                        makeUpScoreInfo.Detail,
+                                        var.StudentID,
+                                        key,
+                                        makeUpScoreInfo.GradeYear,
+                                        studentPassScoreDict,
+                                        studentMakeupScoreDict,
+                                        applyLimit,
+                                        decimals,
+                                        mode);
 
+                                    decimal passscore = GetEffectivePassingStandard(
+                                        var.StudentID,
+                                        key,
+                                        makeUpScoreInfo.GradeYear,
+                                        studentPassScoreDict,
+                                        applyLimit);
 
                                     // 2024/7/5 會議決議，需要計算學分使用成績判斷是否取得學分
                                     if (sacRecord.NotIncludedInCredit == false)
@@ -2440,6 +2555,18 @@ namespace SmartSchool.Evaluation
 
                                     #endregion
 
+                                    // 一律先寫入修課及格標準、修課補考標準，再做後續判斷
+                                    ApplyCourseStandards(
+                                        updateScoreElement,
+                                        var.StudentID,
+                                        key,
+                                        updateScoreInfo.GradeYear,
+                                        studentPassScoreDict,
+                                        studentMakeupScoreDict,
+                                        applyLimit,
+                                        decimals,
+                                        mode);
+
                                     // 沒有修課成績填空
                                     if (sacRecord.HasFinalScore)
                                         updateScoreElement.SetAttribute("原始成績", ("" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
@@ -2475,15 +2602,7 @@ namespace SmartSchool.Evaluation
                                             if (dr["designate_final_score"] != null)
                                                 designate_final_score = dr["designate_final_score"].ToString();
 
-                                            if (decimal.TryParse(passing_standard, out passing_standard_score))
-                                                updateScoreElement.SetAttribute("修課及格標準", ("" + GetRoundScore(passing_standard_score, decimals, mode)));
-                                            else
-                                                updateScoreElement.SetAttribute("修課及格標準", "");
-
-                                            if (decimal.TryParse(makeup_standard, out makeup_standard_score))
-                                                updateScoreElement.SetAttribute("修課補考標準", ("" + GetRoundScore(makeup_standard_score, decimals, mode)));
-                                            else
-                                                updateScoreElement.SetAttribute("修課補考標準", "");
+                                            // 修課及格標準/修課補考標準已於上方統一寫入，此處不再重複設定
 
                                             updateScoreElement.SetAttribute("註記", "");
 
@@ -2545,27 +2664,12 @@ namespace SmartSchool.Evaluation
                                         //}
                                         #endregion
                                     }
-                                    decimal passscore;
-                                    //if (!applyLimit.ContainsKey(updateScoreInfo.GradeYear))
-                                    //    passscore = 60;
-                                    //else
-                                    //    passscore = applyLimit[updateScoreInfo.GradeYear];
-                                    // 新寫及格標準
-                                    passscore = 100;
-                                    if (studentPassScoreDict.ContainsKey(var.StudentID))
-                                    {
-                                        if (studentPassScoreDict[var.StudentID].ContainsKey(key))
-                                        {
-                                            passscore = studentPassScoreDict[var.StudentID][key];
-                                        }
-                                        else
-                                        {
-                                            if (!applyLimit.ContainsKey(updateScoreInfo.GradeYear))
-                                                passscore = 60;
-                                            else
-                                                passscore = applyLimit[updateScoreInfo.GradeYear];
-                                        }
-                                    }
+                                    decimal passscore = GetEffectivePassingStandard(
+                                        var.StudentID,
+                                        key,
+                                        updateScoreInfo.GradeYear,
+                                        studentPassScoreDict,
+                                        applyLimit);
 
                                     updateScoreElement.SetAttribute("是否取得學分", (sacRecord.NotIncludedInCalc || maxScore >= passscore) ? "是" : "否");
 
@@ -2628,6 +2732,18 @@ namespace SmartSchool.Evaluation
                                             newScoreInfo.SetAttribute("指定學年科目名稱", specifySubjectNameDict[sacRecord.StudentID][sKey]);
                                     }
 
+                                    // 一律先寫入修課及格標準、修課補考標準，再做後續判斷
+                                    ApplyCourseStandards(
+                                        newScoreInfo,
+                                        var.StudentID,
+                                        key,
+                                        gradeYear.HasValue ? gradeYear.Value : 0,
+                                        studentPassScoreDict,
+                                        studentMakeupScoreDict,
+                                        applyLimit,
+                                        decimals,
+                                        mode);
+
                                     // 當有直接指定總成績覆蓋
                                     if (studentFinalScoreDict.ContainsKey(sacRecord.StudentID))
                                     {
@@ -2656,15 +2772,7 @@ namespace SmartSchool.Evaluation
                                             if (dr["designate_final_score"] != null)
                                                 designate_final_score = dr["designate_final_score"].ToString();
 
-                                            if (decimal.TryParse(passing_standard, out passing_standard_score))
-                                                newScoreInfo.SetAttribute("修課及格標準", ("" + GetRoundScore(passing_standard_score, decimals, mode)));
-                                            else
-                                                newScoreInfo.SetAttribute("修課及格標準", "");
-
-                                            if (decimal.TryParse(makeup_standard, out makeup_standard_score))
-                                                newScoreInfo.SetAttribute("修課補考標準", ("" + GetRoundScore(makeup_standard_score, decimals, mode)));
-                                            else
-                                                newScoreInfo.SetAttribute("修課補考標準", "");
+                                            // 修課及格標準/修課補考標準已於上方統一寫入，此處不再重複設定
 
                                             if (decimal.TryParse(designate_final_score, out designate_final_score_score))
                                             {
@@ -2727,28 +2835,12 @@ namespace SmartSchool.Evaluation
                                         //}
                                         #endregion
                                     }
-                                    decimal passscore;
-                                    //if (!applyLimit.ContainsKey((int)gradeYear))
-                                    //    passscore = 60;
-                                    //else
-                                    //    passscore = applyLimit[(int)gradeYear];
-                                    // 新寫及格標準
-                                    passscore = 100;
-                                    if (studentPassScoreDict.ContainsKey(var.StudentID))
-                                    {
-                                        if (studentPassScoreDict[var.StudentID].ContainsKey(key))
-                                        {
-                                            passscore = studentPassScoreDict[var.StudentID][key];
-                                        }
-                                        else
-                                        {
-                                            if (!applyLimit.ContainsKey((int)gradeYear))
-                                                passscore = 60;
-                                            else
-                                                passscore = applyLimit[(int)gradeYear];
-                                        }
-                                    }
-
+                                    decimal passscore = GetEffectivePassingStandard(
+                                        var.StudentID,
+                                        key,
+                                        gradeYear.HasValue ? gradeYear.Value : 0,
+                                        studentPassScoreDict,
+                                        applyLimit);
 
                                     #endregion
                                     newScoreInfo.SetAttribute("是否取得學分", (sacRecord.NotIncludedInCalc || maxScore >= passscore) ? "是" : "否");

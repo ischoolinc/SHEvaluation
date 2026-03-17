@@ -385,6 +385,16 @@ namespace SmartSchool.Evaluation
             SmartSchool.Customization.Data.SystemInformation.GettingField += new EventHandler<GetFieldEventArgs>(SystemInformation_GettingField);
             //SmartSchool.API.Provider.SystemProvider.GetField += new EventHandler<SmartSchool.API.Provider.GetSystemFieldEventArgs>(SystemProvider_GetField);
 
+            // 檢查學期成績(封存)資料表是否存在
+            try
+            {
+                SemesterScorePalmerworm.CreateUDTTable();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("檢查學期成績(封存)資料表是否存在,發生錯誤：" + ex.ToString());
+            }
+
             #region 學期成績(封存)
             Catalog ribbon = RoleAclSource.Instance["學生"]["資料項目"];
             ribbon.Add(new DetailItemFeature(Permissions.學期成績封存, "學期成績(封存)"));

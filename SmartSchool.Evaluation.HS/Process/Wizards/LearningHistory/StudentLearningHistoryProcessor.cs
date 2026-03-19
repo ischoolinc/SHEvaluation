@@ -1,4 +1,4 @@
-﻿using FISCA.Data;
+using FISCA.Data;
 using SHSchool.Data;
 using System;
 using System.Collections.Generic;
@@ -429,6 +429,53 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
                             {
                                 dataValueRecord.ReScoreP = "-1"; // 預設值
                             }
+
+                            // ===== 新增：重讀成績 / 成績及格 判斷 =====
+                            // 收集三種成績來源
+                            List<decimal> scoreCandidates = new List<decimal>();
+                            decimal tmpScore;
+
+                            // 再次修習成績（5.3 原資料）
+                            if (decimal.TryParse(dataValueRecord.Score, out tmpScore))
+                            {
+                                scoreCandidates.Add(tmpScore);
+                            }
+
+                            // 補考成績（學期成績）
+                            if (decimal.TryParse(matchingSemsScore.ReScore, out tmpScore))
+                            {
+                                scoreCandidates.Add(tmpScore);
+                            }
+
+                            // 原始成績（學期成績）
+                            if (decimal.TryParse(matchingSemsScore.Score, out tmpScore))
+                            {
+                                scoreCandidates.Add(tmpScore);
+                            }
+
+                            // 取最大值
+                            if (scoreCandidates.Count > 0)
+                            {
+                                decimal maxScore = scoreCandidates.Max();
+
+                                // 回寫重讀成績
+                                dataValueRecord.RepeatScore = maxScore.ToString();
+
+                                // 取得及格標準（預設 60）
+                                decimal passStandard = 60;
+                                if (!string.IsNullOrWhiteSpace(matchingSemsScore.ScoreP))
+                                {
+                                    decimal.TryParse(matchingSemsScore.ScoreP, out passStandard);
+                                }
+
+                                // 判斷成績及格
+                                dataValueRecord.RepeatScoreP = maxScore >= passStandard ? "1" : "0";
+                            }
+                            else
+                            {
+                                dataValueRecord.RepeatScore = "";
+                                dataValueRecord.RepeatScoreP = "-1";
+                            }
                         }
                         else
                         {
@@ -487,9 +534,9 @@ LEFT JOIN student ON sc_attend.ref_student_id =student.id
 LEFT JOIN class ON student.ref_class_id =class.id  
 LEFT JOIN course ON sc_attend.ref_course_id =course.id  
 WHERE 
-student.status ='1' 
-AND course.school_year = '{0}'
-AND course.semester = '{1}'
+student.status <> 256  
+AND course.school_year = {0} 
+AND course.semester = {1} 
 AND student.id IN ({2})
 ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(",", studentIDList.ToArray()));
 
@@ -538,8 +585,28 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                 }
             }
 
+            // 讀取 5.3 資料，供 4.2 排除使用
+            Dictionary<string, List<SubjectScoreRec108>> dataValue53For42 =
+                GetLearningHistoryRetakeDataAsDictionary53(_SchoolYear, _Semester, studentIDList);
 
+            HashSet<string> exist53KeySet = new HashSet<string>();
 
+            foreach (var kv in dataValue53For42)
+            {
+                if (kv.Value == null)
+                    continue;
+
+                foreach (var rec in kv.Value)
+                {
+                    string key53 =
+                        (rec.StudentID ?? "").Trim() + "_" +
+                        (rec.SubjectName ?? "").Trim() + "_" +
+                        (rec.SubjectLevel ?? "").Trim();
+
+                    if (!exist53KeySet.Contains(key53))
+                        exist53KeySet.Add(key53);
+                }
+            }
 
             foreach (SmartSchool.Customization.Data.StudentRecord studRec in StudentRecList)
             {
@@ -756,7 +823,18 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
 
                             // 非補修成績才寫入
                             if (ssr.isScScore == false)
+                            {
+                                string key42 =
+                                    (ssr.StudentID ?? "").Trim() + "_" +
+                                    (ssr.SubjectName ?? "").Trim() + "_" +
+                                    (ssr.SubjectLevel ?? "").Trim();
+
+                                // 若 5.3 已存在相同學生系統編號 + 科目名稱 + 級別，則不加入 4.2
+                                if (exist53KeySet.Contains(key42))
+                                    continue;
+
                                 SubjectScoreRec108List.Add(ssr);
+                            }
                         }
                     }
 

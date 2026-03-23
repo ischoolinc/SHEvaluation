@@ -927,7 +927,7 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                             }
 
                             ssr.useCredit = "1";
-                            if (Utility.GetAttribute(elmScore, "抵免") == "否")
+                            if (Utility.GetAttribute(elmScore, "抵免") == "是")
                                 ssr.useCredit = "2";
 
                             if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
@@ -2174,7 +2174,7 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                             }
 
                             ssr.useCredit = "1";
-                            if (Utility.GetAttribute(elmScore, "抵免") == "否")
+                            if (Utility.GetAttribute(elmScore, "抵免") == "是")
                                 ssr.useCredit = "2";
 
                             if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
@@ -2337,7 +2337,7 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                             }
 
                             ssr.useCredit = "1";
-                            if (Utility.GetAttribute(elmScore, "抵免") == "否")
+                            if (Utility.GetAttribute(elmScore, "抵免") == "是")
                                 ssr.useCredit = "2";
 
                             if (!string.IsNullOrWhiteSpace(ssr.CourseCode))

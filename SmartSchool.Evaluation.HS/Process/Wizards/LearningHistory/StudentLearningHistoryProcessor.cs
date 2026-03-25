@@ -740,7 +740,7 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
 
                             ssr.useCredit = "1";
 
-                            if (Utility.GetAttribute(elmScore, "抵免") == "是")
+                            if (Utility.GetAttribute(elmScore, "不需評分") == "是")
                                 ssr.useCredit = "2";
 
                             if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
@@ -927,10 +927,10 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                             }
 
                             ssr.useCredit = "1";
-                            // if (Utility.GetAttribute(elmScore, "抵免") == "是")
-                            //     ssr.useCredit = "2";
+                            if (Utility.GetAttribute(elmScore, "不需評分") == "是")
+                                     ssr.useCredit = "2";
 
-                            if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
+                                if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
                             {
                                 if (ssr.CourseCode.Length > 22)
                                 {
@@ -2337,8 +2337,8 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
                             }
 
                             ssr.useCredit = "1";
-                            // if (Utility.GetAttribute(elmScore, "抵免") == "是")
-                            //     ssr.useCredit = "2";
+                            if (Utility.GetAttribute(elmScore, "不需評分") == "是")
+                                ssr.useCredit = "2";
 
                             if (!string.IsNullOrWhiteSpace(ssr.CourseCode))
                             {

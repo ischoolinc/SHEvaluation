@@ -215,8 +215,8 @@ namespace SmartSchool.Evaluation.Process.Wizards
             bool generatePreviewData = ((object[])e.Argument).Length > 4 ? (bool)((object[])e.Argument)[4] : false;
             bool isNightSchool = ((object[])e.Argument).Length > 5 ? (bool)((object[])e.Argument)[5] : false;
 
-            // 分批處理，每批最多 150 人
-            const int MaxPackageSize = 150;
+            // 分批處理，每批最多 100 人
+            const int MaxPackageSize = 100;
             List<List<StudentRecord>> packages = new List<List<StudentRecord>>();
             for (int i = 0; i < selectedStudents.Count; i += MaxPackageSize)
             {

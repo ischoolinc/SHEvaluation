@@ -208,8 +208,8 @@ namespace SmartSchool.Evaluation.Process.Wizards
             AccessHelper helper = (AccessHelper)((object[])e.Argument)[2];
             List<StudentRecord> selectedStudents = (List<StudentRecord>)((object[])e.Argument)[3];
 
-            // 分批處理，每批最多 150 人
-            const int MaxPackageSize = 150;
+            // 分批處理，每批最多 100 人
+            const int MaxPackageSize = 100;
             List<List<StudentRecord>> packages = new List<List<StudentRecord>>();
             for (int i = 0; i < selectedStudents.Count; i += MaxPackageSize)
             {

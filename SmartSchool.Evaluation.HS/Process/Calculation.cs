@@ -66,17 +66,19 @@ namespace SmartSchool.Evaluation.Process
             //buttonItem103["取得學程判斷"].BeginGroup = true;
             
             buttonItem103.Enable = true;
-            buttonItem103["計算學期科目成績"].Enable = CurrentUser.Acl["Button0040"].Executable && K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0;
-            buttonItem103["計算學期分項成績"].Enable = CurrentUser.Acl["Button0040"].Executable && K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0;
-            buttonItem103["產生學習歷程成績"].Enable = CurrentUser.Acl["Button0040"].Executable && K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0;
-            buttonItem103["產生學習歷程預檢資料"].Enable = CurrentUser.Acl["Button0040"].Executable && K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0;
-            buttonItem103["計算學年科目成績"].Enable = CurrentUser.Acl["Button0040"].Executable && K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0;
-            buttonItem103["計算學年調整成績"].Enable = CurrentUser.Acl["Button0040"].Executable && K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0;
-            buttonItem103["計算學年分項成績(依學期分項成績，日校適用)"].Enable = CurrentUser.Acl["Button0040"].Executable && K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0;
-            buttonItem103["計算學年分項成績(依學年科目成績，進校適用)"].Enable = CurrentUser.Acl["Button0040"].Executable && K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0;
-            buttonItem103["計算畢業成績"].Enable = CurrentUser.Acl["Button0040"].Executable && K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0;
-            buttonItem103["檢查畢業資格"].Enable = CurrentUser.Acl["Button0040"].Executable && K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0;
-            buttonItem103["取得學程判斷"].Enable = CurrentUser.Acl["Button0040"].Executable && K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0;
+            buttonItem103["計算學期科目成績"].Enable = CurrentUser.Acl["Button0040"].Executable;
+            buttonItem103["計算學期分項成績"].Enable = CurrentUser.Acl["Button0040"].Executable;
+            buttonItem103["產生學習歷程成績"].Enable = CurrentUser.Acl["Button0040"].Executable ;
+
+            buttonItem103["產生學習歷程預檢資料"].Enable = CurrentUser.Acl["6E3BEC40-F6F2-405D-8D2A-417EBBC02E0E"].Executable;
+
+            buttonItem103["計算學年科目成績"].Enable = CurrentUser.Acl["Button0040"].Executable;
+            buttonItem103["計算學年調整成績"].Enable = CurrentUser.Acl["Button0040"].Executable;
+            buttonItem103["計算學年分項成績(依學期分項成績，日校適用)"].Enable = CurrentUser.Acl["Button0040"].Executable;
+            buttonItem103["計算學年分項成績(依學年科目成績，進校適用)"].Enable = CurrentUser.Acl["Button0040"].Executable;
+            buttonItem103["計算畢業成績"].Enable = CurrentUser.Acl["Button0040"].Executable;
+            buttonItem103["檢查畢業資格"].Enable = CurrentUser.Acl["Button0040"].Executable;
+            buttonItem103["取得學程判斷"].Enable = CurrentUser.Acl["Button0040"].Executable;
             //buttonItem103.Enable = CurrentUser.Acl["Button0040"].Executable && K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0;
 
             var buttonItem9 = K12.Presentation.NLDPanels.Student.RibbonBarItems["學務"]["德行成績(舊制)"];

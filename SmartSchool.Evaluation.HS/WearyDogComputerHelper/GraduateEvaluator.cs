@@ -1012,7 +1012,8 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                     {
                                         bool isUnMakeupScore =
                                             subjectScore.Detail.GetAttribute("是否補修成績") == "是"
-                                            && subjectScore.Detail.GetAttribute("原始成績").Trim() == "";
+                                            && subjectScore.Detail.GetAttribute("原始成績").Trim() == ""
+                                            && !subjectScore.Pass;
 
                                         switch (check.Type)
                                         {

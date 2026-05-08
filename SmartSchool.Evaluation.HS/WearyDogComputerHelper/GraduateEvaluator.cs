@@ -1010,6 +1010,10 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
 
                                     if (subjectElement != null)
                                     {
+                                        bool isUnMakeupScore =
+                                            subjectScore.Detail.GetAttribute("是否補修成績") == "是"
+                                            && subjectScore.Detail.GetAttribute("原始成績").Trim() == "";
+
                                         switch (check.Type)
                                         {
                                             case "修課學分數統計":
@@ -1030,7 +1034,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                                         subjectElement.SetAttribute("修課學年度", "" + subjectScore.SchoolYear);
                                                         subjectElement.SetAttribute("修課年級", "" + subjectScore.GradeYear);
                                                         subjectElement.SetAttribute("修課學期", "" + subjectScore.Semester);
-                                                        if (subjectScore.Detail.GetAttribute("是否補修成績") == "是" && subjectScore.Detail.GetAttribute("補修學年度") == "" && subjectScore.Detail.GetAttribute("補修學期") == "")
+                                                        if (isUnMakeupScore)
                                                         {
                                                             subjectElement.SetAttribute("狀態", "尚未補修");
                                                             check.MakeupCount += credit;
@@ -1088,7 +1092,7 @@ namespace SmartSchool.Evaluation.WearyDogComputerHelper
                                                             subjectElement.SetAttribute("修課學年度", "" + subjectScore.SchoolYear);
                                                             subjectElement.SetAttribute("修課年級", "" + subjectScore.GradeYear);
                                                             subjectElement.SetAttribute("修課學期", "" + subjectScore.Semester);
-                                                            if (subjectScore.Detail.GetAttribute("是否補修成績") == "是" && subjectScore.Detail.GetAttribute("補修學年度") == "" && subjectScore.Detail.GetAttribute("補修學期") == "")
+                                                            if (isUnMakeupScore)
                                                             {
                                                                 subjectElement.SetAttribute("狀態", "尚未補修");
                                                                 check.MakeupCount += credit;

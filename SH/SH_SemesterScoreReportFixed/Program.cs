@@ -101,6 +101,62 @@ namespace SH_SemesterScoreReportFixed
             }
         }
 
+        /// <summary>
+        /// 判斷成績欄位是否有有效成績值。
+        /// 0 是有效成績；空白、null、DBNull、未輸入視為無成績。
+        /// </summary>
+        private static bool HasScoreValue(object score)
+        {
+            if (score == null || score == DBNull.Value)
+                return false;
+
+            string value = Convert.ToString(score).Trim();
+
+            if (string.IsNullOrEmpty(value))
+                return false;
+
+            if (value == "未輸入")
+                return false;
+
+            return true;
+        }
+
+        private static object GetRowValue(DataRow row, string columnName)
+        {
+            if (row == null || row.Table == null)
+                return null;
+
+            if (!row.Table.Columns.Contains(columnName))
+                return null;
+
+            return row[columnName];
+        }
+
+        /// <summary>
+        /// 報表輸出用：如果科目沒有成績，則清空該科目的學分數顯示值。
+        /// 注意：只調整 DataRow 合併欄位，不可影響原本學分計算邏輯。
+        /// 學分數N 只依本學期成績欄位判斷，不受上學期或學年成績影響。
+        /// </summary>
+        private static void ClearCreditIfNoSubjectScore(DataRow row, int subjectIndex)
+        {
+            if (row == null)
+                return;
+
+            bool hasCurrentSemesterScore =
+                HasScoreValue(GetRowValue(row, "科目成績" + subjectIndex)) ||
+                HasScoreValue(GetRowValue(row, "學期科目成績" + subjectIndex)) ||
+                HasScoreValue(GetRowValue(row, "學期科目原始成績" + subjectIndex)) ||
+                HasScoreValue(GetRowValue(row, "學期科目補考成績" + subjectIndex)) ||
+                HasScoreValue(GetRowValue(row, "學期科目重修成績" + subjectIndex)) ||
+                HasScoreValue(GetRowValue(row, "學期科目手動調整成績" + subjectIndex)) ||
+                HasScoreValue(GetRowValue(row, "學期科目學年調整成績" + subjectIndex));
+
+            if (!hasCurrentSemesterScore && row.Table.Columns.Contains("學分數" + subjectIndex))
+            {
+                row["學分數" + subjectIndex] = "";
+            }
+        }
+
         static Dictionary<string, decimal> _studPassSumCreditDict1 = new Dictionary<string, decimal>();
         static Dictionary<string, decimal> _studPassSumCreditDictAll = new Dictionary<string, decimal>();
 
@@ -164,6 +220,15 @@ namespace SH_SemesterScoreReportFixed
                 // 取得學期成績排名、五標、分數區間
                 Dictionary<string, Dictionary<string, DataRow>> SemsScoreRankMatrixDataDict = Utility.GetSemsScoreRankMatrixData(conf.SchoolYear, conf.Semester, selectedStudents);
 
+                Dictionary<string, Dictionary<string, DataRow>> PrevSemsScoreRankMatrixDataDict =
+                    new Dictionary<string, Dictionary<string, DataRow>>();
+
+                if (conf.Semester == "2")
+                {
+                    PrevSemsScoreRankMatrixDataDict =
+                        Utility.GetSemsScoreRankMatrixData(conf.SchoolYear, "1", selectedStudents);
+                }
+
                 // 缺曠對照表key值(ex : 本學期一般_曠課、上學期集會_事假
                 List<string> AttendanceMappingKeyList = new List<string>();
                 // 缺曠欄位名稱清單（用於預設值初始化）
@@ -214,6 +279,10 @@ namespace SH_SemesterScoreReportFixed
                 table.Columns.Add("定期評量");
                 table.Columns.Add("本學期取得學分數");
                 table.Columns.Add("累計取得學分數");
+                table.Columns.Add("上學期實得學分數");
+                table.Columns.Add("上學期累計取得學分數");
+                table.Columns.Add("學年實得學分數");
+                table.Columns.Add("學年累計取得學分數");
                 table.Columns.Add("累計取得必修學分");
                 table.Columns.Add("累計取得選修學分");
                 table.Columns.Add("系統學年度");
@@ -398,6 +467,7 @@ namespace SH_SemesterScoreReportFixed
                     table.Columns.Add("上學期科目手動調整成績" + subjectIndex);
                     table.Columns.Add("上學期科目學年調整成績" + subjectIndex);
                     table.Columns.Add("上學期科目成績" + subjectIndex);
+                    table.Columns.Add("上學期學分數" + subjectIndex);
                     table.Columns.Add("上學期科目原始成績註記" + subjectIndex);
                     table.Columns.Add("上學期科目補考成績註記" + subjectIndex);
                     table.Columns.Add("上學期科目重修成績註記" + subjectIndex);
@@ -537,6 +607,24 @@ namespace SH_SemesterScoreReportFixed
                 table.Columns.Add("上學期警告統計");
                 table.Columns.Add("上學期留校察看");
 
+                // 學年獎懲統計：同一學年度上下學期加總
+                table.Columns.Add("學年大功統計");
+                table.Columns.Add("學年小功統計");
+                table.Columns.Add("學年嘉獎統計");
+                table.Columns.Add("學年大過統計");
+                table.Columns.Add("學年小過統計");
+                table.Columns.Add("學年警告統計");
+                table.Columns.Add("學年留校察看");
+
+                // 累計獎懲統計：所有學年度學期加總
+                table.Columns.Add("累計大功統計");
+                table.Columns.Add("累計小功統計");
+                table.Columns.Add("累計嘉獎統計");
+                table.Columns.Add("累計大過統計");
+                table.Columns.Add("累計小過統計");
+                table.Columns.Add("累計警告統計");
+                table.Columns.Add("累計留校察看");
+
                 // 上學期分項成績 --
                 table.Columns.Add("上學期學業成績");
                 table.Columns.Add("上學期體育成績");
@@ -635,6 +723,43 @@ namespace SH_SemesterScoreReportFixed
                         table.Columns.Add("學期" + name + "(原始)成績類別1排名" + "_" + item2);
                         table.Columns.Add("學期" + name + "(原始)成績類別2排名" + "_" + item2);
                     }
+                }
+
+                // 上學期學業成績排名（僅第2學期時填值）
+                table.Columns.Add("上學期學業成績班排名");
+                table.Columns.Add("上學期學業成績科排名");
+                table.Columns.Add("上學期學業成績全校排名");
+                table.Columns.Add("上學期學業成績類別1排名");
+                table.Columns.Add("上學期學業成績類別2排名");
+                table.Columns.Add("上學期學業成績班排名母數");
+                table.Columns.Add("上學期學業成績科排名母數");
+                table.Columns.Add("上學期學業成績全校排名母數");
+                table.Columns.Add("上學期學業成績類別1排名母數");
+                table.Columns.Add("上學期學業成績類別2排名母數");
+                table.Columns.Add("上學期學業(原始)成績班排名");
+                table.Columns.Add("上學期學業(原始)成績科排名");
+                table.Columns.Add("上學期學業(原始)成績全校排名");
+                table.Columns.Add("上學期學業(原始)成績類別1排名");
+                table.Columns.Add("上學期學業(原始)成績類別2排名");
+                table.Columns.Add("上學期學業(原始)成績班排名母數");
+                table.Columns.Add("上學期學業(原始)成績科排名母數");
+                table.Columns.Add("上學期學業(原始)成績全校排名母數");
+                table.Columns.Add("上學期學業(原始)成績類別1排名母數");
+                table.Columns.Add("上學期學業(原始)成績類別2排名母數");
+                table.Columns.Add("上學期類別排名1");
+                table.Columns.Add("上學期類別排名2");
+                foreach (string item2 in r2List)
+                {
+                    table.Columns.Add("上學期學業成績班排名_" + item2);
+                    table.Columns.Add("上學期學業成績科排名_" + item2);
+                    table.Columns.Add("上學期學業成績全校排名_" + item2);
+                    table.Columns.Add("上學期學業成績類別1排名_" + item2);
+                    table.Columns.Add("上學期學業成績類別2排名_" + item2);
+                    table.Columns.Add("上學期學業(原始)成績班排名_" + item2);
+                    table.Columns.Add("上學期學業(原始)成績科排名_" + item2);
+                    table.Columns.Add("上學期學業(原始)成績全校排名_" + item2);
+                    table.Columns.Add("上學期學業(原始)成績類別1排名_" + item2);
+                    table.Columns.Add("上學期學業(原始)成績類別2排名_" + item2);
                 }
 
                 // 新增人數統計
@@ -1330,6 +1455,11 @@ namespace SH_SemesterScoreReportFixed
                             string studentID = stuRec.StudentID;
                             string gradeYear = (stuRec.RefClass == null ? "" : "" + stuRec.RefClass.GradeYear);
                             DataRow row = table.NewRow();
+
+                            decimal prevSemesterPassCredits = 0;
+                            decimal prevSemesterTotalPassCredits = 0;
+                            decimal schoolYearPassCredits = 0;
+                            decimal schoolYearTotalPassCredits = 0;
                             
                             // ✅ 最早期：先把缺曠欄位全設為 0
                             InitAbsenceDefault(row, absenceColumnNames);
@@ -1694,6 +1824,9 @@ namespace SH_SemesterScoreReportFixed
                             {
                                 if (semesterSubjectScore.Detail.GetAttribute("不計學分") != "是")
                                 {
+                                    int scoreSchoolYear = semesterSubjectScore.SchoolYear;
+                                    int scoreSemester = semesterSubjectScore.Semester;
+
                                     // 本學期已修
                                     if (semesterSubjectScore.SchoolYear.ToString() == conf.SchoolYear && semesterSubjectScore.Semester.ToString() == conf.Semester)
                                     {
@@ -1732,11 +1865,72 @@ namespace SH_SemesterScoreReportFixed
                                             StudentAllPassSelSumCreditsDict[stuRec.StudentID] += semesterSubjectScore.CreditDec();
                                         }
                                     }
+
+                                    if (conf.Semester == "2" &&
+                                        semesterSubjectScore.Pass &&
+                                        scoreSchoolYear == SchoolYear &&
+                                        scoreSemester == 1)
+                                    {
+                                        prevSemesterPassCredits += semesterSubjectScore.CreditDec();
+                                    }
+
+                                    if (conf.Semester == "2" &&
+                                        semesterSubjectScore.Pass &&
+                                        (
+                                            scoreSchoolYear < SchoolYear ||
+                                            (scoreSchoolYear == SchoolYear && scoreSemester <= 1)
+                                        ))
+                                    {
+                                        prevSemesterTotalPassCredits += semesterSubjectScore.CreditDec();
+                                    }
+
+                                    if (semesterSubjectScore.Pass &&
+                                        scoreSchoolYear == SchoolYear &&
+                                        (scoreSemester == 1 || scoreSemester == 2))
+                                    {
+                                        schoolYearPassCredits += semesterSubjectScore.CreditDec();
+                                    }
+
+                                    if (semesterSubjectScore.Pass &&
+                                        (
+                                            scoreSchoolYear < SchoolYear ||
+                                            (
+                                                scoreSchoolYear == SchoolYear &&
+                                                (scoreSemester == 1 || scoreSemester == 2)
+                                            )
+                                        ))
+                                    {
+                                        schoolYearTotalPassCredits += semesterSubjectScore.CreditDec();
+                                    }
                                 }
                             }
 
                             row["本學期取得學分數"] = _studPassSumCreditDict1[stuRec.StudentID];
                             row["累計取得學分數"] = _studPassSumCreditDictAll[stuRec.StudentID];
+
+                            if (conf.Semester == "2" &&
+                                PrevSemsScoreRankMatrixDataDict.ContainsKey(stuRec.StudentID))
+                            {
+                                FillPrevSemesterAcademicRankFields(
+                                    row,
+                                    PrevSemsScoreRankMatrixDataDict[stuRec.StudentID],
+                                    r2List,
+                                    r2ParseList);
+                            }
+
+                            if (conf.Semester == "2")
+                            {
+                                row["上學期實得學分數"] = prevSemesterPassCredits;
+                                row["上學期累計取得學分數"] = prevSemesterTotalPassCredits;
+                            }
+                            else
+                            {
+                                row["上學期實得學分數"] = "";
+                                row["上學期累計取得學分數"] = "";
+                            }
+
+                            row["學年實得學分數"] = schoolYearPassCredits;
+                            row["學年累計取得學分數"] = schoolYearTotalPassCredits;
                             row["累計取得必修學分"] = _studPassSumCreditDictC1[stuRec.StudentID];
                             row["累計取得選修學分"] = _studPassSumCreditDictC2[stuRec.StudentID];
 
@@ -2628,6 +2822,23 @@ namespace SH_SemesterScoreReportFixed
                                                     row["上學期科目學年調整成績" + subjectIndex] = semesterSubjectScore.Detail.GetAttribute("學年調整成績");
                                                     row["上學期科目成績" + subjectIndex] = semesterSubjectScore.Score;
 
+                                                    bool hasPrevSemesterScore =
+                                                        HasScoreValue(GetRowValue(row, "上學期科目成績" + subjectIndex)) ||
+                                                        HasScoreValue(GetRowValue(row, "上學期科目原始成績" + subjectIndex)) ||
+                                                        HasScoreValue(GetRowValue(row, "上學期科目補考成績" + subjectIndex)) ||
+                                                        HasScoreValue(GetRowValue(row, "上學期科目重修成績" + subjectIndex)) ||
+                                                        HasScoreValue(GetRowValue(row, "上學期科目手動調整成績" + subjectIndex)) ||
+                                                        HasScoreValue(GetRowValue(row, "上學期科目學年調整成績" + subjectIndex));
+
+                                                    if (hasPrevSemesterScore)
+                                                    {
+                                                        row["上學期學分數" + subjectIndex] = semesterSubjectScore.CreditDec();
+                                                    }
+                                                    else
+                                                    {
+                                                        row["上學期學分數" + subjectIndex] = "";
+                                                    }
+
                                                     if ("" + semesterSubjectScore.Detail.GetAttribute("是否補修成績") == "是")
                                                     {
                                                         row["上學期科目補修成績標示" + subjectIndex] = conf.RepairScoreMark;
@@ -2726,6 +2937,8 @@ namespace SH_SemesterScoreReportFixed
                                         }
                                     }
                                     #endregion
+                                    ClearCreditIfNoSubjectScore(row, subjectIndex);
+
                                     subjectIndex++;
                                 }
                                 else
@@ -3884,6 +4097,25 @@ namespace SH_SemesterScoreReportFixed
                             int previous小過 = 0;
                             int previous警告 = 0;
                             bool previous留校察看 = false;
+
+                            // 學年獎懲統計：同一學年度上下學期加總
+                            int 學年大功 = 0;
+                            int 學年小功 = 0;
+                            int 學年嘉獎 = 0;
+                            int 學年大過 = 0;
+                            int 學年小過 = 0;
+                            int 學年警告 = 0;
+                            bool 學年留校察看 = false;
+
+                            // 累計獎懲統計：所有學年度學期加總
+                            int 累計大功 = 0;
+                            int 累計小功 = 0;
+                            int 累計嘉獎 = 0;
+                            int 累計大過 = 0;
+                            int 累計小過 = 0;
+                            int 累計警告 = 0;
+                            bool 累計留校察看 = false;
+
                             foreach (RewardInfo info in stuRec.RewardList)
                             {
                                 if (("" + info.Semester) == conf.Semester && ("" + info.SchoolYear) == conf.SchoolYear)
@@ -3920,6 +4152,40 @@ namespace SH_SemesterScoreReportFixed
                                     }
                                 }
 
+                                // 學年獎懲統計：同一學年度上下學期加總
+                                if (("" + info.SchoolYear) == conf.SchoolYear &&
+                                    (("" + info.Semester) == "1" || ("" + info.Semester) == "2"))
+                                {
+                                    學年大功 += info.AwardA;
+                                    學年小功 += info.AwardB;
+                                    學年嘉獎 += info.AwardC;
+
+                                    if (!info.Cleared)
+                                    {
+                                        學年大過 += info.FaultA;
+                                        學年小過 += info.FaultB;
+                                        學年警告 += info.FaultC;
+                                    }
+
+                                    if (info.UltimateAdmonition)
+                                        學年留校察看 = true;
+                                }
+
+                                // 累計獎懲統計：所有學年度學期加總
+                                累計大功 += info.AwardA;
+                                累計小功 += info.AwardB;
+                                累計嘉獎 += info.AwardC;
+
+                                if (!info.Cleared)
+                                {
+                                    累計大過 += info.FaultA;
+                                    累計小過 += info.FaultB;
+                                    累計警告 += info.FaultC;
+                                }
+
+                                if (info.UltimateAdmonition)
+                                    累計留校察看 = true;
+
                             }
                             // 本學期
                             row["大功統計"] = 大功 == 0 ? "0" : ("" + 大功);
@@ -3938,6 +4204,24 @@ namespace SH_SemesterScoreReportFixed
                             row["上學期小過統計"] = previous小過 == 0 ? "0" : ("" + previous小過);
                             row["上學期警告統計"] = previous警告 == 0 ? "0" : ("" + previous警告);
                             row["上學期留校察看"] = previous留校察看 ? "是" : "否";
+
+                            // 學年獎懲統計
+                            row["學年大功統計"] = 學年大功 == 0 ? "0" : ("" + 學年大功);
+                            row["學年小功統計"] = 學年小功 == 0 ? "0" : ("" + 學年小功);
+                            row["學年嘉獎統計"] = 學年嘉獎 == 0 ? "0" : ("" + 學年嘉獎);
+                            row["學年大過統計"] = 學年大過 == 0 ? "0" : ("" + 學年大過);
+                            row["學年小過統計"] = 學年小過 == 0 ? "0" : ("" + 學年小過);
+                            row["學年警告統計"] = 學年警告 == 0 ? "0" : ("" + 學年警告);
+                            row["學年留校察看"] = 學年留校察看 ? "是" : "否";
+
+                            // 累計獎懲統計
+                            row["累計大功統計"] = 累計大功 == 0 ? "0" : ("" + 累計大功);
+                            row["累計小功統計"] = 累計小功 == 0 ? "0" : ("" + 累計小功);
+                            row["累計嘉獎統計"] = 累計嘉獎 == 0 ? "0" : ("" + 累計嘉獎);
+                            row["累計大過統計"] = 累計大過 == 0 ? "0" : ("" + 累計大過);
+                            row["累計小過統計"] = 累計小過 == 0 ? "0" : ("" + 累計小過);
+                            row["累計警告統計"] = 累計警告 == 0 ? "0" : ("" + 累計警告);
+                            row["累計留校察看"] = 累計留校察看 ? "是" : "否";
                             #endregion
 
                             #region 缺曠統計
@@ -4028,6 +4312,143 @@ namespace SH_SemesterScoreReportFixed
                 };
                 bkw.RunWorkerAsync();
             }
+        }
+
+        private static void FillRankField(
+            DataRow row,
+            Dictionary<string, DataRow> rankData,
+            string rankKey,
+            string outputFieldName,
+            List<string> r2List,
+            List<string> r2ParseList)
+        {
+            if (row == null || rankData == null)
+                return;
+
+            if (!rankData.ContainsKey(rankKey))
+                return;
+
+            DataRow rankRow = rankData[rankKey];
+
+            if (rankRow == null)
+                return;
+
+            if (row.Table.Columns.Contains(outputFieldName) &&
+                rankRow.Table.Columns.Contains("rank") &&
+                rankRow["rank"] != null)
+            {
+                row[outputFieldName] = rankRow["rank"].ToString();
+            }
+
+            if (row.Table.Columns.Contains(outputFieldName + "母數") &&
+                rankRow.Table.Columns.Contains("matrix_count") &&
+                rankRow["matrix_count"] != null)
+            {
+                row[outputFieldName + "母數"] = rankRow["matrix_count"].ToString();
+            }
+
+            if (rankRow.Table.Columns.Contains("rank_name") && rankRow["rank_name"] != null)
+            {
+                if (!outputFieldName.Contains("(原始)") && outputFieldName.Contains("類別1") &&
+                    row.Table.Columns.Contains("上學期類別排名1"))
+                {
+                    row["上學期類別排名1"] = rankRow["rank_name"].ToString();
+                }
+
+                if (!outputFieldName.Contains("(原始)") && outputFieldName.Contains("類別2") &&
+                    row.Table.Columns.Contains("上學期類別排名2"))
+                {
+                    row["上學期類別排名2"] = rankRow["rank_name"].ToString();
+                }
+            }
+
+            if (r2List != null)
+            {
+                foreach (string item2 in r2List)
+                {
+                    string output2 = outputFieldName + "_" + item2;
+
+                    if (row.Table.Columns.Contains(output2) &&
+                        rankRow.Table.Columns.Contains(item2) &&
+                        rankRow[item2] != null)
+                    {
+                        if (r2ParseList != null && r2ParseList.Contains(item2))
+                            row[output2] = ParseScore(rankRow[item2].ToString());
+                        else
+                            row[output2] = rankRow[item2].ToString();
+                    }
+                }
+            }
+        }
+
+        private static void FillPrevSemesterAcademicRankFields(
+            DataRow row,
+            Dictionary<string, DataRow> rankData,
+            List<string> r2List,
+            List<string> r2ParseList)
+        {
+            if (row == null || rankData == null)
+                return;
+
+            FillRankField(row, rankData,
+                "學期/分項成績_學業_班排名",
+                "上學期學業成績班排名",
+                r2List,
+                r2ParseList);
+
+            FillRankField(row, rankData,
+                "學期/分項成績_學業_科排名",
+                "上學期學業成績科排名",
+                r2List,
+                r2ParseList);
+
+            FillRankField(row, rankData,
+                "學期/分項成績_學業_年排名",
+                "上學期學業成績全校排名",
+                r2List,
+                r2ParseList);
+
+            FillRankField(row, rankData,
+                "學期/分項成績_學業_類別1排名",
+                "上學期學業成績類別1排名",
+                r2List,
+                r2ParseList);
+
+            FillRankField(row, rankData,
+                "學期/分項成績_學業_類別2排名",
+                "上學期學業成績類別2排名",
+                r2List,
+                r2ParseList);
+
+            FillRankField(row, rankData,
+                "學期/分項成績(原始)_學業_班排名",
+                "上學期學業(原始)成績班排名",
+                r2List,
+                r2ParseList);
+
+            FillRankField(row, rankData,
+                "學期/分項成績(原始)_學業_科排名",
+                "上學期學業(原始)成績科排名",
+                r2List,
+                r2ParseList);
+
+            FillRankField(row, rankData,
+                "學期/分項成績(原始)_學業_年排名",
+                "上學期學業(原始)成績全校排名",
+                r2List,
+                r2ParseList);
+
+            FillRankField(row, rankData,
+                "學期/分項成績(原始)_學業_類別1排名",
+                "上學期學業(原始)成績類別1排名",
+                r2List,
+                r2ParseList);
+
+            FillRankField(row, rankData,
+                "學期/分項成績(原始)_學業_類別2排名",
+                "上學期學業(原始)成績類別2排名",
+                r2List,
+                r2ParseList);
         }
 
         /// <summary>

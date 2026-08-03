@@ -4013,7 +4013,7 @@ namespace SH_SemesterScoreReportFixed
                             List<string> faceList = new List<string>();
                             foreach (SemesterMoralScoreInfo info in stuRec.SemesterMoralScoreList)
                             {
-                                // 處理上學期文字評量
+                                // 處理上學期文字評量（僅寫入上學期專用欄位，不可覆寫本學期「綜合表現：Face」）
                                 if (conf.Semester == "2" && ("" + info.SchoolYear) == conf.SchoolYear && info.Semester == 1)
                                 {
                                     faceList.Clear();
@@ -4027,26 +4027,24 @@ namespace SH_SemesterScoreReportFixed
                                         if ((SmartSchool.Customization.Data.SystemInformation.Fields["文字評量對照表"] as System.Xml.XmlElement).SelectSingleNode("Content/Morality[@Face='" + face + "']") != null)
                                         {
                                             string comment = each.InnerText;
-                                            row["綜合表現：" + face] = each.InnerText;
 
                                             // 2021-12-28 Cynthia 避免舊的變數不能使用，增加新版文字評量變數，舊版綜合表現OOO不移除
                                             commentList.Add(comment);
                                             faceList.Add(face);
-                                            for (int i = 1; i <= faceList.Count; i++)
+                                            for (int i = 1; i <= faceList.Count && i <= 10; i++)
                                             {
-                                                if (faceList.Count <= 10)
-                                                    row["上學期文字評量名稱" + i] = faceList[i - 1];
+                                                row["上學期文字評量名稱" + i] = faceList[i - 1];
                                             }
-                                            for (int i = 1; i <= commentList.Count; i++)
+                                            for (int i = 1; i <= commentList.Count && i <= 10; i++)
                                             {
-                                                if (commentList.Count <= 10)
-                                                    row["上學期文字評量" + i] = commentList[i - 1];
+                                                row["上學期文字評量" + i] = commentList[i - 1];
                                             }
                                         }
                                     }
 
                                 }
 
+                                // 僅由使用者選擇的學期寫入「綜合表現：Face」及本學期文字評量欄位
                                 if (("" + info.Semester) == conf.Semester && ("" + info.SchoolYear) == conf.SchoolYear)
                                 {
                                     faceList.Clear();
@@ -4060,20 +4058,22 @@ namespace SH_SemesterScoreReportFixed
                                         if ((SmartSchool.Customization.Data.SystemInformation.Fields["文字評量對照表"] as System.Xml.XmlElement).SelectSingleNode("Content/Morality[@Face='" + face + "']") != null)
                                         {
                                             string comment = each.InnerText;
-                                            row["綜合表現：" + face] = each.InnerText;
+                                            string columnName = "綜合表現：" + face;
+                                            if (row.Table.Columns.Contains(columnName))
+                                            {
+                                                row[columnName] = each.InnerText;
+                                            }
 
                                             // 2021-12-28 Cynthia 避免舊的變數不能使用，增加新版文字評量變數，舊版綜合表現OOO不移除
                                             commentList.Add(comment);
                                             faceList.Add(face);
-                                            for (int i = 1; i <= faceList.Count; i++)
+                                            for (int i = 1; i <= faceList.Count && i <= 10; i++)
                                             {
-                                                if (faceList.Count <= 10)
-                                                    row["文字評量名稱" + i] = faceList[i - 1];
+                                                row["文字評量名稱" + i] = faceList[i - 1];
                                             }
-                                            for (int i = 1; i <= commentList.Count; i++)
+                                            for (int i = 1; i <= commentList.Count && i <= 10; i++)
                                             {
-                                                if (commentList.Count <= 10)
-                                                    row["文字評量" + i] = commentList[i - 1];
+                                                row["文字評量" + i] = commentList[i - 1];
                                             }
                                         }
                                     }
@@ -4295,8 +4295,8 @@ namespace SH_SemesterScoreReportFixed
                             progressCount++;
                             bkw.ReportProgress(70 + progressCount * 20 / selectedStudents.Count);
 
-                            table.TableName = "test";
-                           // table.WriteXml(Application.StartupPath + "\\debug.xml");
+                            //table.TableName = "test";
+                            //table.WriteXml(Application.StartupPath + "\\debug.xml");
                         }
                         bkw.ReportProgress(90);
                         document = conf.Template;

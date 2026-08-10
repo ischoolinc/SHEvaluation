@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="format.xsl" ?>
+<ValidateRule Name="匯入學年分項排名">
+	<DuplicateDetection>
+		<Detector Name="PrimaryKey1">
+			<Field Name="學號" />
+			<Field Name="學年度" />
+		</Detector>
+	</DuplicateDetection>
+	<FieldList>
+		<Field Required="True" Name="學號">
+			<Validate AutoCorrect="False" Description="「學號」不允許空白。" ErrorType="Error" Validator="不可空白" When="" />
+		</Field>
+		<Field Required="False" Name="班級"></Field>
+		<Field Required="False" Name="座號">
+			<Validate AutoCorrect="False" Description="「座號」必須是整數。" ErrorType="Error" Validator="IntegerSeatNo" When="" />
+		</Field>
+		<Field Required="False" Name="科別"></Field>
+		<Field Required="True" Name="姓名">
+			<Validate AutoCorrect="False" Description="「姓名」不允許空白。" ErrorType="Error" Validator="不可空白" When="" />
+		</Field>
+		<Field Required="True" Name="學年度">
+			<Validate AutoCorrect="False" Description="「學年度」不允許空白。" ErrorType="Error" Validator="不可空白" When="" />
+			<Validate AutoCorrect="False" Description="「學年度」必須為 1～3000 的整數。" ErrorType="Error" Validator="IntegerSchoolYear" When="" />
+		</Field>
+		<Field Required="True" Name="年級">
+			<Validate AutoCorrect="False" Description="「年級」不允許空白。" ErrorType="Error" Validator="不可空白" When="" />
+			<Validate AutoCorrect="False" Description="「年級」必須為 1～12 的整數。" ErrorType="Error" Validator="IntegerGradeYear" When="" />
+		</Field>
+		<Field Required="True" Name="學年學業排名">
+			<Validate AutoCorrect="False" Description="「學年學業排名」不允許空白。" ErrorType="Error" Validator="不可空白" When="" />
+			<Validate AutoCorrect="False" Description="「學年學業排名」必須為大於 0 的整數。" ErrorType="Error" Validator="IntegerRank" When="" />
+		</Field>
+	</FieldList>
+	<ValidatorList>
+		<FieldValidator Name="不可空白" Type="STRINGLENGTH">
+			<MinLength>1</MinLength>
+		</FieldValidator>
+		<FieldValidator Name="IntegerSchoolYear" Type="Integer">
+			<MinValue>1</MinValue>
+			<MaxValue>3000</MaxValue>
+		</FieldValidator>
+		<FieldValidator Name="IntegerGradeYear" Type="Integer">
+			<MinValue>1</MinValue>
+			<MaxValue>12</MaxValue>
+		</FieldValidator>
+		<FieldValidator Name="IntegerRank" Type="Integer">
+			<MinValue>1</MinValue>
+			<MaxValue>999999</MaxValue>
+		</FieldValidator>
+		<FieldValidator Name="IntegerSeatNo" Type="Integer">
+			<MinValue>1</MinValue>
+			<MaxValue>9999</MaxValue>
+		</FieldValidator>
+		<RowValidator Name="學號姓名是否有效" Type="SHIMPORTEXPORTSCORERANKCHECKSTUDENT" />
+	</ValidatorList>
+	<RowValidate>
+		<Validate AutoCorrect="False" Description="「學號」不存在、同一學號對應多位學生，或「姓名」與系統學生姓名不符。" ErrorType="Error" Validator="學號姓名是否有效" When="" />
+	</RowValidate>
+	<ConditionList />
+</ValidateRule>

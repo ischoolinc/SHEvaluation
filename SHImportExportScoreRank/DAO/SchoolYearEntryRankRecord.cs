@@ -9,6 +9,12 @@ namespace SHImportExportScoreRank.DAO
         public string RankName { get; set; }
         public int? Rank { get; set; }
 
+        public string ScoreType { get; set; }
+        public string ScoreItem { get; set; }
+        public string RankType { get; set; }
+        public string CreateTime { get; set; }
+        public string CreateMethod { get; set; }
+
         public string StudentNumber { get; set; }
         public string SeatNo { get; set; }
         public string DepartmentName { get; set; }

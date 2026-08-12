@@ -145,6 +145,159 @@ HAVING COUNT(*) > 1;",
             return studentID + "_" + schoolYear + "_" + gradeYear;
         }
 
+        public StudentRankDetailData GetStudentRankDetail(
+            StudentRankDetailContext context)
+        {
+            StudentRankDetailData result = new StudentRankDetailData
+            {
+                Items = new List<StudentRankDetailItem>()
+            };
+
+            if (context == null)
+                return result;
+
+            if (string.IsNullOrWhiteSpace(context.StudentId) ||
+                !context.SchoolYear.HasValue)
+            {
+                ApplyDetailHeaderFromContext(result, context);
+                return result;
+            }
+
+            long studentId;
+            if (!long.TryParse(context.StudentId.Trim(), out studentId) ||
+                studentId <= 0)
+            {
+                ApplyDetailHeaderFromContext(result, context);
+                return result;
+            }
+
+            string scoreType = NullToEmpty(context.ScoreType);
+            string scoreItem = NullToEmpty(context.ScoreItem);
+
+            string sql = string.Format(@"
+SELECT
+    ro.id,
+    ro.item_name,
+    ro.rank_name,
+    ro.rank,
+    ro.rank_type,
+    ro.matrix_count,
+    ro.school_year,
+    ext->>'成績類型' AS score_type,
+    ext->>'成績項目' AS score_item,
+    ext->>'create_time' AS create_time,
+    ext->>'建立方式' AS create_method
+FROM rank_override ro
+CROSS JOIN LATERAL
+    jsonb_array_elements(
+        COALESCE(ro.extension, '[]'::jsonb)
+    ) AS ext
+WHERE ro.ref_student_id = {0}
+  AND ro.school_year = {1}
+  AND ro.semester = {2}
+  AND ro.item_type = '{3}'
+  AND ro.ref_exam_id = -1
+  AND ext->>'extension_name' = '排名資料'
+  AND COALESCE(ext->>'成績類型', '') = '{4}'
+  AND COALESCE(ext->>'成績項目', '') = '{5}'
+ORDER BY
+    ro.rank_type,
+    ro.rank_name,
+    ro.id;",
+                studentId,
+                context.SchoolYear.Value,
+                RankOverrideConstants.SchoolYearSemester,
+                SqlLiteralHelper.Escape(RankOverrideConstants.ItemType),
+                SqlLiteralHelper.Escape(scoreType),
+                SqlLiteralHelper.Escape(scoreItem));
+
+            try
+            {
+                QueryHelper queryHelper = new QueryHelper();
+                DataTable table = queryHelper.Select(sql);
+
+                foreach (DataRow row in table.Rows)
+                {
+                    if (result.Items.Count == 0)
+                        ApplyDetailHeaderFromRow(result, row, context);
+
+                    result.Items.Add(MapDetailItem(row));
+                }
+
+                if (result.Items.Count == 0)
+                    ApplyDetailHeaderFromContext(result, context);
+            }
+            catch
+            {
+                ApplyDetailHeaderFromContext(result, context);
+                throw;
+            }
+
+            return result;
+        }
+
+        private static void ApplyDetailHeaderFromRow(
+            StudentRankDetailData data,
+            DataRow row,
+            StudentRankDetailContext context)
+        {
+            data.SchoolYear = ToNullableInt(row["school_year"]) ?? context.SchoolYear;
+            data.ScoreType = FirstNonEmpty(
+                NullToEmpty(row["score_type"]),
+                context.ScoreType);
+            data.ScoreItem = FirstNonEmpty(
+                NullToEmpty(row["score_item"]),
+                context.ScoreItem);
+            data.CreateType = FirstNonEmpty(
+                NullToEmpty(row["create_method"]),
+                context.CreateMethod);
+            data.CreateTime = FormatCreateTime(
+                FirstNonEmpty(
+                    NullToEmpty(row["create_time"]),
+                    context.CreateTime));
+            data.BatchName = string.Empty;
+        }
+
+        private static void ApplyDetailHeaderFromContext(
+            StudentRankDetailData data,
+            StudentRankDetailContext context)
+        {
+            if (context == null)
+                return;
+
+            data.SchoolYear = context.SchoolYear;
+            data.ScoreType = context.ScoreType ?? string.Empty;
+            data.ScoreItem = context.ScoreItem ?? string.Empty;
+            data.CreateType = context.CreateMethod ?? string.Empty;
+            data.CreateTime = FormatCreateTime(context.CreateTime);
+            data.BatchName = string.Empty;
+        }
+
+        private static StudentRankDetailItem MapDetailItem(DataRow row)
+        {
+            return new StudentRankDetailItem
+            {
+                RankOverrideId = Convert.ToInt64(row["id"]),
+                ScoreCategory = NullToEmpty(row["item_name"]),
+                RankMethod = string.Empty,
+                Score = string.Empty,
+                RankType = NullToEmpty(row["rank_type"]),
+                RankName = NullToEmpty(row["rank_name"]),
+                Rank = ToNullableInt(row["rank"]),
+                MatrixCount = ToNullableInt(row["matrix_count"]),
+                PR = string.Empty,
+                Percentage = string.Empty
+            };
+        }
+
+        private static string FirstNonEmpty(string primary, string fallback)
+        {
+            if (!string.IsNullOrWhiteSpace(primary))
+                return primary;
+
+            return fallback ?? string.Empty;
+        }
+
         public List<SchoolYearEntryRankRecord> GetSchoolYearEntryRanksByStudentID(
             string studentID)
         {
@@ -166,14 +319,24 @@ SELECT
     ro.school_year,
     ro.grade_year,
     ro.rank_name,
-    ro.rank
+    ro.rank,
+    ro.rank_type,
+    ext->>'成績類型' AS score_type,
+    ext->>'成績項目' AS score_item,
+    ext->>'create_time' AS create_time,
+    ext->>'建立方式' AS create_method
 FROM rank_override ro
+CROSS JOIN LATERAL
+    jsonb_array_elements(
+        COALESCE(ro.extension, '[]'::jsonb)
+    ) AS ext
 WHERE ro.ref_student_id = {0}
   AND ro.semester = {1}
   AND ro.item_type = '{2}'
   AND ro.item_name = '{3}'
   AND ro.rank_type = '{4}'
-  AND ro.ref_exam_id IS NULL
+  AND ro.ref_exam_id = -1
+  AND ext->>'extension_name' = '排名資料'
 ORDER BY
     ro.school_year DESC,
     ro.grade_year DESC,
@@ -270,6 +433,21 @@ ORDER BY
                 Rank = ToNullableInt(row["rank"])
             };
 
+            if (row.Table.Columns.Contains("score_type"))
+                record.ScoreType = NullToEmpty(row["score_type"]);
+
+            if (row.Table.Columns.Contains("score_item"))
+                record.ScoreItem = NullToEmpty(row["score_item"]);
+
+            if (row.Table.Columns.Contains("rank_type"))
+                record.RankType = NullToEmpty(row["rank_type"]);
+
+            if (row.Table.Columns.Contains("create_time"))
+                record.CreateTime = FormatCreateTime(NullToEmpty(row["create_time"]));
+
+            if (row.Table.Columns.Contains("create_method"))
+                record.CreateMethod = NullToEmpty(row["create_method"]);
+
             if (includeStudentFields)
             {
                 record.StudentNumber = NullToEmpty(row["student_number"]);
@@ -281,12 +459,33 @@ ORDER BY
             return record;
         }
 
+        private static string FormatCreateTime(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return string.Empty;
+
+            DateTimeOffset dto;
+            if (DateTimeOffset.TryParse(value, out dto))
+                return dto.ToString("yyyy/M/d HH:mm");
+
+            return value;
+        }
+
         private static int? ToNullableInt(object value)
         {
             if (value == null || value == DBNull.Value)
                 return null;
 
-            return Convert.ToInt32(value);
+            string text = Convert.ToString(value);
+
+            if (string.IsNullOrWhiteSpace(text))
+                return null;
+
+            int result;
+            if (int.TryParse(text.Trim(), out result))
+                return result;
+
+            return null;
         }
 
         private static string NullToEmpty(object value)

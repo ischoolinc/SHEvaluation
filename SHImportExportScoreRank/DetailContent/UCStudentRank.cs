@@ -7,6 +7,7 @@ using FISCA.Authentication;
 using FISCA.Presentation.Controls;
 using SHImportExportScoreRank.DAO;
 using SHImportExportScoreRank.Permissions;
+using SHImportExportScoreRank.UIForm;
 
 namespace SHImportExportScoreRank.DetailContent
 {
@@ -27,6 +28,14 @@ namespace SHImportExportScoreRank.DetailContent
 
             this.Group = "排名資料";
 
+            // 先暫時只能檢視，無法新增及刪除。
+            btnAdd.Enabled = btnDelete.Enabled = false;
+            btnEdit.Enabled = false;
+
+            lvData.SelectedIndexChanged += lvData_SelectedIndexChanged;
+            lvData.MouseDoubleClick += lvData_MouseDoubleClick;
+            btnEdit.Click += btnEdit_Click;
+
             FISCA.Features.TryRegister(
                 "RankDetailContent",
                 x =>
@@ -45,9 +54,11 @@ namespace SHImportExportScoreRank.DetailContent
         {
             lvData.Columns.Clear();
             AddColumn("學年度", 80);
-            AddColumn("年級", 70);
-            AddColumn("班級", 140);
-            AddColumn("學年學業排名", 120);
+            AddColumn("成績類型", 90);
+            AddColumn("成績項目", 90);
+            AddColumn("排名範圍", 110);
+            AddColumn("建立時間", 140);
+            AddColumn("建立方式", 90);
         }
 
         private void AddColumn(string text, int width)
@@ -153,15 +164,11 @@ namespace SHImportExportScoreRank.DetailContent
                             ? record.SchoolYear.Value.ToString()
                             : string.Empty);
 
-                    item.SubItems.Add(
-                        record.GradeYear.HasValue
-                            ? record.GradeYear.Value.ToString()
-                            : string.Empty);
-                    item.SubItems.Add(record.RankName ?? string.Empty);
-                    item.SubItems.Add(
-                        record.Rank.HasValue
-                            ? record.Rank.Value.ToString()
-                            : string.Empty);
+                    item.SubItems.Add(record.ScoreType ?? string.Empty);
+                    item.SubItems.Add(record.ScoreItem ?? string.Empty);
+                    item.SubItems.Add(record.RankType ?? string.Empty);
+                    item.SubItems.Add(record.CreateTime ?? string.Empty);
+                    item.SubItems.Add(record.CreateMethod ?? string.Empty);
                     item.Tag = record;
                     lvData.Items.Add(item);
                 }
@@ -169,6 +176,49 @@ namespace SHImportExportScoreRank.DetailContent
             finally
             {
                 lvData.EndUpdate();
+            }
+        }
+
+        private void lvData_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnEdit.Enabled = lvData.SelectedItems.Count == 1;
+        }
+
+        private void lvData_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            OpenDetailForm();
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            OpenDetailForm();
+        }
+
+        private void OpenDetailForm()
+        {
+            if (lvData.SelectedItems.Count != 1)
+                return;
+
+            SchoolYearEntryRankRecord record =
+                lvData.SelectedItems[0].Tag as SchoolYearEntryRankRecord;
+
+            if (record == null)
+                return;
+
+            StudentRankDetailContext context = new StudentRankDetailContext
+            {
+                StudentId = this.PrimaryKey,
+                SchoolYear = record.SchoolYear,
+                ScoreType = record.ScoreType,
+                ScoreItem = record.ScoreItem,
+                CreateTime = record.CreateTime,
+                CreateMethod = record.CreateMethod
+            };
+
+            using (frmStudentRankDetail form = new frmStudentRankDetail(context))
+            {
+                if (form.ShowDialog() == DialogResult.OK)
+                    ReloadData();
             }
         }
 

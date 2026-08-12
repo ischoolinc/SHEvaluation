@@ -187,6 +187,8 @@
     <Compile Include="DAO\RankOverrideDataAccess.cs" />
     <Compile Include="DAO\SchoolYearEntryRankImportRecord.cs" />
     <Compile Include="DAO\SchoolYearEntryRankRecord.cs" />
+    <Compile Include="DAO\StudentRankDetailContext.cs" />
+    <Compile Include="DAO\StudentRankDetailData.cs" />
     <Compile Include="DAO\SqlLiteralHelper.cs" />
     <Compile Include="DAO\StudentLookupRecord.cs" />
     <Compile Include="DetailContent\UCStudentRank.cs">
@@ -206,6 +208,12 @@
     <Compile Include="Permissions\FeatureCode.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UIForm\frmStudentRankDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIForm\frmStudentRankDetail.Designer.cs">
+      <DependentUpon>frmStudentRankDetail.cs</DependentUpon>
+    </Compile>
     <Compile Include="ValidationRule\RowValidator\CheckSchoolYearEntryRankStudentValidator.cs" />
     <Compile Include="ValidationRule\SchoolYearEntryRankRowValidatorFactory.cs" />
   </ItemGroup>
@@ -217,6 +225,9 @@
       <DependentUpon>ExportStudentV2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ImportExport\ImportSchoolYearEntryRank.xml" />
+    <EmbeddedResource Include="UIForm\frmStudentRankDetail.resx">
+      <DependentUpon>frmStudentRankDetail.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Library\Aspose.Cells_201402.dll" />
@@ -268,5 +279,6 @@
     <Content Include="Library\SmartSchool.Customization.PlugIn.xml" />
     <Content Include="Library\SmartSchool.Evaluation.HS.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -13,6 +13,7 @@ using SmartSchool.Customization.PlugIn.ExtendedContent;
 using SmartSchool.Evaluation.Configuration;
 using SmartSchool.Evaluation.Content;
 using SmartSchool.Evaluation.ImportExport;
+using SmartSchool.Evaluation.Process.Wizards;
 using SmartSchool.Evaluation.Reports;
 using SmartSchool.Evaluation.Reports.MultiSemesterScore;
 using SmartSchool.ExceptionHandler;
@@ -99,6 +100,28 @@ namespace SmartSchool.Evaluation
             }
             #endregion
 
+            
+            #region 產生學習歷程預檢資料
+            {
+                string aclCode = "6E3BEC40-F6F2-405D-8D2A-417EBBC02E0E";
+                
+                MotherForm.RibbonBarItems["教務作業", "批次作業/檢視"]["成績作業"].Enable = true;
+                var buttonPrv = MotherForm.RibbonBarItems["教務作業", "批次作業/檢視"]["成績作業"]["產生學習歷程預檢資料"];
+                FISCA.Permission.RoleAclSource.Instance["教務作業"]["功能按鈕"].Add(new FISCA.Permission.RibbonFeature(aclCode, "產生學習歷程預檢資料"));
+
+                //buttonPrv.Enable = CurrentUser.Acl[aclCode].Executable;
+
+                //buttonPrv.Enable = true;
+               // buttonPrv["產生學習歷程預檢資料"].Enable = CurrentUser.Acl[aclCode].Executable;
+               buttonPrv.Enable= FISCA.Permission.UserAcl.Current[aclCode].Executable;
+                //buttonPrv["產生學習歷程預檢資料"].Click += delegate
+                buttonPrv.Click += delegate
+                {
+                    new CalcLearningHistoryPrvScoreWizard(SelectType.GradeYearStudent).ShowDialog();
+                };                                
+            }
+            #endregion
+
             RibbonBarButton button = MotherForm.RibbonBarItems["教務作業", "基本設定"]["設定"];
             button.Enable = CurrentUser.Acl["Button0830"].Executable;
             button["成績計算規則"].Click += delegate
@@ -120,13 +143,14 @@ namespace SmartSchool.Evaluation
                 new ConfigurationForm(new CommonPlanConfiguration()).ShowDialog();
             };
 
-            // button["檢視班級課程規劃表(99課綱適用)"].Click += delegate
-            button.Enable = CurrentUser.Acl["Button0860"].Executable;
-            button["班級課程規劃表(99課綱適用)"].Click += delegate
-            {
-                //new ConfigurationForm(new GraduationPlanConfiguration()).ShowDialog();
-                (new FrmGraduationPlanConfiguration()).ShowDialog();
-            };
+            //2026 / 2 / 24，校務工程會議討論後，這功能已過時不需要使用，先註解
+            //// button["檢視班級課程規劃表(99課綱適用)"].Click += delegate
+            //button.Enable = CurrentUser.Acl["Button0860"].Executable;
+            //button["班級課程規劃表(99課綱適用)"].Click += delegate
+            //{
+            //    //new ConfigurationForm(new GraduationPlanConfiguration()).ShowDialog();
+            //    (new FrmGraduationPlanConfiguration()).ShowDialog();
+            //};
 
             button.Enable = CurrentUser.Acl["Button0850"].Executable;
             button["學程科目表"].BeginGroup = true;
@@ -302,8 +326,6 @@ namespace SmartSchool.Evaluation
 
 
             //鍵至順便載入報表按鈕
-            new SemesterMoralScoreCalc();
-            new SemesterMoralScoreTotal();
             new SemesterScoreReport();
             SemesterScoreReportNew.RegistryFeature();
             new ClassSemesterScore();
@@ -368,6 +390,16 @@ namespace SmartSchool.Evaluation
             //處理取得系統相關資訊
             SmartSchool.Customization.Data.SystemInformation.GettingField += new EventHandler<GetFieldEventArgs>(SystemInformation_GettingField);
             //SmartSchool.API.Provider.SystemProvider.GetField += new EventHandler<SmartSchool.API.Provider.GetSystemFieldEventArgs>(SystemProvider_GetField);
+
+            // 檢查學期成績(封存)資料表是否存在
+            try
+            {
+                SemesterScorePalmerworm.CreateUDTTable();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("檢查學期成績(封存)資料表是否存在,發生錯誤：" + ex.ToString());
+            }
 
             #region 學期成績(封存)
             Catalog ribbon = RoleAclSource.Instance["學生"]["資料項目"];

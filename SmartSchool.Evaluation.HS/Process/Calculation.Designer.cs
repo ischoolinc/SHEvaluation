@@ -3,14 +3,14 @@
 //    partial class Calculation
 //    {
 //        /// <summary>
-//        /// ³]­p¤u¨ã©Ò»İªºÅÜ¼Æ¡C
+//        /// è¨­è¨ˆå·¥å…·æ‰€éœ€çš„è®Šæ•¸ã€‚
 //        /// </summary>
 //        private System.ComponentModel.IContainer components = null;
 
 //        /// <summary>
-//        /// ²M°£¥ô¦ó¨Ï¥Î¤¤ªº¸ê·½¡C
+//        /// æ¸…é™¤ä»»ä½•ä½¿ç”¨ä¸­çš„è³‡æºã€‚
 //        /// </summary>
-//        /// <param name="disposing">¦pªGÀ³¸Ó¤½¶} Managed ¸ê·½«h¬° true¡A§_«h¬° false¡C</param>
+//        /// <param name="disposing">å¦‚æœæ‡‰è©²å…¬é–‹ Managed è³‡æºå‰‡ç‚º trueï¼Œå¦å‰‡ç‚º falseã€‚</param>
 //        protected override void Dispose(bool disposing)
 //        {
 //            if (disposing && (components != null))
@@ -20,10 +20,10 @@
 //            base.Dispose(disposing);
 //        }
 
-//        #region Windows Form ³]­p¤u¨ã²£¥Íªºµ{¦¡½X
+//        #region Windows Form è¨­è¨ˆå·¥å…·ç”¢ç”Ÿçš„ç¨‹å¼ç¢¼
 
 //        /// <summary>
-//        /// ¦¹¬°³]­p¤u¨ã¤ä´©©Ò»İªº¤èªk - ½Ğ¤Å¨Ï¥Îµ{¦¡½X½s¿è¾¹­×§ï³o­Ó¤èªkªº¤º®e¡C
+//        /// æ­¤ç‚ºè¨­è¨ˆå·¥å…·æ”¯æ´æ‰€éœ€çš„æ–¹æ³• - è«‹å‹¿ä½¿ç”¨ç¨‹å¼ç¢¼ç·¨è¼¯å™¨ä¿®æ”¹é€™å€‹æ–¹æ³•çš„å…§å®¹ã€‚
 //        ///
 //        /// </summary>
 //        private void InitializeComponent()
@@ -59,7 +59,7 @@
 //            this.MainRibbonBar.Location = new System.Drawing.Point(4, 4);
 //            this.MainRibbonBar.Margin = new System.Windows.Forms.Padding(4);
 //            this.MainRibbonBar.Size = new System.Drawing.Size(321, 121);
-//            this.MainRibbonBar.Text = "¦¨ÁZ³B²z";
+//            this.MainRibbonBar.Text = "æˆç¸¾è™•ç†";
 //            // 
 //            // buttonItem103
 //            // 
@@ -81,7 +81,7 @@
 //            this.buttonItem8,
 //            this.buttonItem10});
 //            this.buttonItem103.SubItemsExpandWidth = 14;
-//            this.buttonItem103.Text = "­pºâ¦¨ÁZ";
+//            this.buttonItem103.Text = "è¨ˆç®—æˆç¸¾";
 //            // 
 //            // labelItem2
 //            // 
@@ -94,7 +94,7 @@
 //            this.labelItem2.PaddingLeft = 10;
 //            this.labelItem2.PaddingTop = 1;
 //            this.labelItem2.SingleLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(197)))), ((int)(((byte)(197)))));
-//            this.labelItem2.Text = "¾Ç·~¦¨ÁZ³B²z";
+//            this.labelItem2.Text = "å­¸æ¥­æˆç¸¾è™•ç†";
 //            // 
 //            // buttonItem1
 //            // 
@@ -109,20 +109,20 @@
 //            this.buttonItem1.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
 //            this.buttonItem4,
 //            this.buttonItem5});
-//            this.buttonItem1.Text = "­pºâ¾Ç´Á¦¨ÁZ";
+//            this.buttonItem1.Text = "è¨ˆç®—å­¸æœŸæˆç¸¾";
 //            // 
 //            // buttonItem4
 //            // 
 //            this.buttonItem4.ImagePaddingHorizontal = 8;
 //            this.buttonItem4.Name = "buttonItem4";
-//            this.buttonItem4.Text = "­pºâ¾Ç´Á¬ì¥Ø¦¨ÁZ";
+//            this.buttonItem4.Text = "è¨ˆç®—å­¸æœŸç§‘ç›®æˆç¸¾";
 //            this.buttonItem4.Click += new System.EventHandler(this.buttonItem4_Click);
 //            // 
 //            // buttonItem5
 //            // 
 //            this.buttonItem5.ImagePaddingHorizontal = 8;
 //            this.buttonItem5.Name = "buttonItem5";
-//            this.buttonItem5.Text = "­pºâ¾Ç´Á¤À¶µ¦¨ÁZ";
+//            this.buttonItem5.Text = "è¨ˆç®—å­¸æœŸåˆ†é …æˆç¸¾";
 //            this.buttonItem5.Click += new System.EventHandler(this.buttonItem5_Click);
 //            // 
 //            // buttonItem7
@@ -132,20 +132,20 @@
 //            this.buttonItem7.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
 //            this.buttonItem2,
 //            this.buttonItem3});
-//            this.buttonItem7.Text = "­pºâ¾Ç¦~¦¨ÁZ";
+//            this.buttonItem7.Text = "è¨ˆç®—å­¸å¹´æˆç¸¾";
 //            // 
 //            // buttonItem2
 //            // 
 //            this.buttonItem2.ImagePaddingHorizontal = 8;
 //            this.buttonItem2.Name = "buttonItem2";
-//            this.buttonItem2.Text = "­pºâ¾Ç¦~¬ì¥Ø¦¨ÁZ";
+//            this.buttonItem2.Text = "è¨ˆç®—å­¸å¹´ç§‘ç›®æˆç¸¾";
 //            this.buttonItem2.Click += new System.EventHandler(this.buttonItem2_Click);
 //            // 
 //            // buttonItem3
 //            // 
 //            this.buttonItem3.ImagePaddingHorizontal = 8;
 //            this.buttonItem3.Name = "buttonItem3";
-//            this.buttonItem3.Text = "­pºâ¾Ç¦~¤À¶µ¦¨ÁZ";
+//            this.buttonItem3.Text = "è¨ˆç®—å­¸å¹´åˆ†é …æˆç¸¾";
 //            this.buttonItem3.Click += new System.EventHandler(this.buttonItem3_Click);
 //            // 
 //            // labelItem1
@@ -159,27 +159,27 @@
 //            this.labelItem1.PaddingLeft = 10;
 //            this.labelItem1.PaddingTop = 1;
 //            this.labelItem1.SingleLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(197)))), ((int)(((byte)(197)))));
-//            this.labelItem1.Text = "²¦·~¦¨ÁZ³B²z";
+//            this.labelItem1.Text = "ç•¢æ¥­æˆç¸¾è™•ç†";
 //            // 
 //            // buttonItem6
 //            // 
 //            this.buttonItem6.ImagePaddingHorizontal = 8;
 //            this.buttonItem6.Name = "buttonItem6";
-//            this.buttonItem6.Text = "­pºâ²¦·~¦¨ÁZ";
+//            this.buttonItem6.Text = "è¨ˆç®—ç•¢æ¥­æˆç¸¾";
 //            this.buttonItem6.Click += new System.EventHandler(this.buttonItem6_Click_1);
 //            // 
 //            // buttonItem8
 //            // 
 //            this.buttonItem8.ImagePaddingHorizontal = 8;
 //            this.buttonItem8.Name = "buttonItem8";
-//            this.buttonItem8.Text = "ÀË¬d²¦·~¸ê®æ";
+//            this.buttonItem8.Text = "æª¢æŸ¥ç•¢æ¥­è³‡æ ¼";
 //            this.buttonItem8.Click += new System.EventHandler(this.buttonItem8_Click_1);
 //            // 
 //            // buttonItem10
 //            // 
 //            this.buttonItem10.ImagePaddingHorizontal = 8;
 //            this.buttonItem10.Name = "buttonItem10";
-//            this.buttonItem10.Text = "¨ú±o¾Çµ{§PÂ_";
+//            this.buttonItem10.Text = "å–å¾—å­¸ç¨‹åˆ¤æ–·";
 //            this.buttonItem10.Click += new System.EventHandler(this.buttonItem10_Click);
 //            // 
 //            // buttonItem9
@@ -198,7 +198,7 @@
 //            this.buttonItem16,
 //            this.buttonItem17});
 //            this.buttonItem9.SubItemsExpandWidth = 14;
-//            this.buttonItem9.Text = "¼w¦æ¦¨ÁZ";
+//            this.buttonItem9.Text = "å¾·è¡Œæˆç¸¾";
 //            // 
 //            // labelItem4
 //            // 
@@ -211,45 +211,45 @@
 //            this.labelItem4.PaddingLeft = 10;
 //            this.labelItem4.PaddingTop = 1;
 //            this.labelItem4.SingleLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(197)))), ((int)(((byte)(197)))));
-//            this.labelItem4.Text = "¼w¦æ¦¨ÁZ³B²z";
+//            this.labelItem4.Text = "å¾·è¡Œæˆç¸¾è™•ç†";
 //            // 
 //            // buttonItem16
 //            // 
 //            this.buttonItem16.ImagePaddingHorizontal = 8;
 //            this.buttonItem16.Name = "buttonItem16";
-//            this.buttonItem16.Text = "­pºâ¼w¦æ¾Ç´Á¦¨ÁZ";
+//            this.buttonItem16.Text = "è¨ˆç®—å¾·è¡Œå­¸æœŸæˆç¸¾";
 //            this.buttonItem16.Click += new System.EventHandler(this.buttonItem6_Click);
 //            // 
 //            // buttonItem17
 //            // 
 //            this.buttonItem17.ImagePaddingHorizontal = 8;
 //            this.buttonItem17.Name = "buttonItem17";
-//            this.buttonItem17.Text = "­pºâ¼w¦æ¾Ç¦~¦¨ÁZ";
+//            this.buttonItem17.Text = "è¨ˆç®—å¾·è¡Œå­¸å¹´æˆç¸¾";
 //            this.buttonItem17.Click += new System.EventHandler(this.buttonItem8_Click);
 //            // 
 //            // buttonItem11
 //            // 
 //            this.buttonItem11.ImagePaddingHorizontal = 8;
 //            this.buttonItem11.Name = "buttonItem11";
-//            this.buttonItem11.Text = "­pºâ¾Ç´Á¬ì¥Ø¦¨ÁZ";
+//            this.buttonItem11.Text = "è¨ˆç®—å­¸æœŸç§‘ç›®æˆç¸¾";
 //            // 
 //            // buttonItem12
 //            // 
 //            this.buttonItem12.ImagePaddingHorizontal = 8;
 //            this.buttonItem12.Name = "buttonItem12";
-//            this.buttonItem12.Text = "­pºâ¾Ç´Á¤À¶µ¦¨ÁZ";
+//            this.buttonItem12.Text = "è¨ˆç®—å­¸æœŸåˆ†é …æˆç¸¾";
 //            // 
 //            // buttonItem14
 //            // 
 //            this.buttonItem14.ImagePaddingHorizontal = 8;
 //            this.buttonItem14.Name = "buttonItem14";
-//            this.buttonItem14.Text = "­pºâ¾Ç¦~¬ì¥Ø¦¨ÁZ";
+//            this.buttonItem14.Text = "è¨ˆç®—å­¸å¹´ç§‘ç›®æˆç¸¾";
 //            // 
 //            // buttonItem15
 //            // 
 //            this.buttonItem15.ImagePaddingHorizontal = 8;
 //            this.buttonItem15.Name = "buttonItem15";
-//            this.buttonItem15.Text = "­pºâ¾Ç¦~¤À¶µ¦¨ÁZ";
+//            this.buttonItem15.Text = "è¨ˆç®—å­¸å¹´åˆ†é …æˆç¸¾";
 //            // 
 //            // Calculation
 //            // 

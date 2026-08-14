@@ -19,7 +19,7 @@ namespace SmartSchool.Evaluation.Process
             //InitializeComponent();
 
             ////SmartSchool.StudentRelated.Student.Instance.SelectionChanged += new EventHandler(Instance_SelectionChanged);
-            //SmartSchool.Broadcaster.Events.Items["¾Ç¥Í/¿ï¨úÅÜ§ó"].Handler += delegate
+            //SmartSchool.Broadcaster.Events.Items["å­¸ç”Ÿ/é¸å–è®Šæ›´"].Handler += delegate
             //{
             //    buttonItem103.Enabled = buttonItem9.Enabled = new AccessHelper().StudentHelper.GetSelectedStudent().Count > 0;
 
@@ -30,25 +30,26 @@ namespace SmartSchool.Evaluation.Process
             //};
             //this.Level = 8.5;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Calculation));
-            var buttonItem103 = K12.Presentation.NLDPanels.Student.RibbonBarItems["±Ğ°È"]["¦¨ÁZ§@·~"];
+            var buttonItem103 = K12.Presentation.NLDPanels.Student.RibbonBarItems["æ•™å‹™"]["æˆç¸¾ä½œæ¥­"];
             //buttonItem103.Image = ( (System.Drawing.Image)( resources.GetObject("buttonItem103.Image") ) );
 
-            //var buttonItem1 = buttonItem103["­pºâ¾Ç´Á¦¨ÁZ"];
+            //var buttonItem1 = buttonItem103["è¨ˆç®—å­¸æœŸæˆç¸¾"];
             buttonItem103.Image = Properties.Resources.calc_save_64;
             buttonItem103.Size = FISCA.Presentation.RibbonBarButton.MenuButtonSize.Large;
-            buttonItem103["­pºâ¾Ç´Á¬ì¥Ø¦¨ÁZ"].Click += new System.EventHandler(this.buttonItem4_Click);
-            buttonItem103["­pºâ¾Ç´Á¤À¶µ¦¨ÁZ"].Click += new System.EventHandler(this.buttonItem5_Click);
+            buttonItem103["è¨ˆç®—å­¸æœŸç§‘ç›®æˆç¸¾"].Click += new System.EventHandler(this.buttonItem4_Click);
+            buttonItem103["è¨ˆç®—å­¸æœŸåˆ†é …æˆç¸¾"].Click += new System.EventHandler(this.buttonItem5_Click);
 
-            buttonItem103["²£¥Í¾Ç²ß¾úµ{¦¨ÁZ"].Click += Calculation_Click41;
-            
+            buttonItem103["ç”¢ç”Ÿå­¸ç¿’æ­·ç¨‹æˆç¸¾"].Click += Calculation_Click41;
+            buttonItem103["ç”¢ç”Ÿå­¸ç¿’æ­·ç¨‹é æª¢è³‡æ–™"].Click += Calculation_Click42;
 
-            //var buttonItem7 = buttonItem103["­pºâ¾Ç¦~¦¨ÁZ"];
+
+            //var buttonItem7 = buttonItem103["è¨ˆç®—å­¸å¹´æˆç¸¾"];
             //buttonItem103.BeginGroup = true;
-            buttonItem103["­pºâ¾Ç¦~¬ì¥Ø¦¨ÁZ"].BeginGroup = true;
-            buttonItem103["­pºâ¾Ç¦~¬ì¥Ø¦¨ÁZ"].Click += new System.EventHandler(this.buttonItem2_Click);
-            buttonItem103["­pºâ¾Ç¦~½Õ¾ã¦¨ÁZ"].Click += new System.EventHandler(this.buttonItem2_1_Click);
-            buttonItem103["­pºâ¾Ç¦~¤À¶µ¦¨ÁZ(¨Ì¾Ç´Á¤À¶µ¦¨ÁZ¡A¤é®Õ¾A¥Î)"].Click += (sender, e) => new CalcSchoolYearEntryScoreWizard(SelectType.Student).ShowDialog();
-            buttonItem103["­pºâ¾Ç¦~¤À¶µ¦¨ÁZ(¨Ì¾Ç¦~¬ì¥Ø¦¨ÁZ¡A¶i®Õ¾A¥Î)"].Click += (sender, e) => new CalcSchoolYearEntryScoreWizard(SelectType.Student, SchoolYearScoreCalcType.SchoolYearSubject).ShowDialog();
+            buttonItem103["è¨ˆç®—å­¸å¹´ç§‘ç›®æˆç¸¾"].BeginGroup = true;
+            buttonItem103["è¨ˆç®—å­¸å¹´ç§‘ç›®æˆç¸¾"].Click += new System.EventHandler(this.buttonItem2_Click);
+            buttonItem103["è¨ˆç®—å­¸å¹´èª¿æ•´æˆç¸¾"].Click += new System.EventHandler(this.buttonItem2_1_Click);
+            buttonItem103["è¨ˆç®—å­¸å¹´åˆ†é …æˆç¸¾(ä¾å­¸æœŸåˆ†é …æˆç¸¾ï¼Œæ—¥æ ¡é©ç”¨)"].Click += (sender, e) => new CalcSchoolYearEntryScoreWizard(SelectType.Student).ShowDialog();
+            buttonItem103["è¨ˆç®—å­¸å¹´åˆ†é …æˆç¸¾(ä¾å­¸å¹´ç§‘ç›®æˆç¸¾ï¼Œé€²æ ¡é©ç”¨)"].Click += (sender, e) => new CalcSchoolYearEntryScoreWizard(SelectType.Student, SchoolYearScoreCalcType.SchoolYearSubject).ShowDialog();
 
             //new System.EventHandler(this.buttonItem3_Click);
 
@@ -57,29 +58,43 @@ namespace SmartSchool.Evaluation.Process
             //    new CalcSchoolYearEntryScoreWizard(SelectType.Student).ShowDialog();
             //}
 
-            buttonItem103["­pºâ²¦·~¦¨ÁZ"].BeginGroup = true;
-            buttonItem103["­pºâ²¦·~¦¨ÁZ"].Click += new System.EventHandler(this.buttonItem6_Click_1);
-            //buttonItem103["­pºâ²¦·~¦¨ÁZ"].BeginGroup = true;
-            buttonItem103["ÀË¬d²¦·~¸ê®æ"].Click += new System.EventHandler(this.buttonItem8_Click_1);
-            buttonItem103["¨ú±o¾Çµ{§PÂ_"].Click += new System.EventHandler(this.buttonItem10_Click);
-            //buttonItem103["¨ú±o¾Çµ{§PÂ_"].BeginGroup = true;
+            buttonItem103["è¨ˆç®—ç•¢æ¥­æˆç¸¾"].BeginGroup = true;
+            buttonItem103["è¨ˆç®—ç•¢æ¥­æˆç¸¾"].Click += new System.EventHandler(this.buttonItem6_Click_1);
+            //buttonItem103["è¨ˆç®—ç•¢æ¥­æˆç¸¾"].BeginGroup = true;
+            buttonItem103["æª¢æŸ¥ç•¢æ¥­è³‡æ ¼"].Click += new System.EventHandler(this.buttonItem8_Click_1);
+            buttonItem103["å–å¾—å­¸ç¨‹åˆ¤æ–·"].Click += new System.EventHandler(this.buttonItem10_Click);
+            //buttonItem103["å–å¾—å­¸ç¨‹åˆ¤æ–·"].BeginGroup = true;
+            
+            buttonItem103.Enable = true;
+            buttonItem103["è¨ˆç®—å­¸æœŸç§‘ç›®æˆç¸¾"].Enable = CurrentUser.Acl["Button0040"].Executable;
+            buttonItem103["è¨ˆç®—å­¸æœŸåˆ†é …æˆç¸¾"].Enable = CurrentUser.Acl["Button0040"].Executable;
+            buttonItem103["ç”¢ç”Ÿå­¸ç¿’æ­·ç¨‹æˆç¸¾"].Enable = CurrentUser.Acl["Button0040"].Executable ;
 
-            buttonItem103.Enable = CurrentUser.Acl["Button0040"].Executable && K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0;
+            buttonItem103["ç”¢ç”Ÿå­¸ç¿’æ­·ç¨‹é æª¢è³‡æ–™"].Enable = CurrentUser.Acl["6E3BEC40-F6F2-405D-8D2A-417EBBC02E0E"].Executable;
 
-            var buttonItem9 = K12.Presentation.NLDPanels.Student.RibbonBarItems["¾Ç°È"]["¼w¦æ¦¨ÁZ(ÂÂ¨î)"];
+            buttonItem103["è¨ˆç®—å­¸å¹´ç§‘ç›®æˆç¸¾"].Enable = CurrentUser.Acl["Button0040"].Executable;
+            buttonItem103["è¨ˆç®—å­¸å¹´èª¿æ•´æˆç¸¾"].Enable = CurrentUser.Acl["Button0040"].Executable;
+            buttonItem103["è¨ˆç®—å­¸å¹´åˆ†é …æˆç¸¾(ä¾å­¸æœŸåˆ†é …æˆç¸¾ï¼Œæ—¥æ ¡é©ç”¨)"].Enable = CurrentUser.Acl["Button0040"].Executable;
+            buttonItem103["è¨ˆç®—å­¸å¹´åˆ†é …æˆç¸¾(ä¾å­¸å¹´ç§‘ç›®æˆç¸¾ï¼Œé€²æ ¡é©ç”¨)"].Enable = CurrentUser.Acl["Button0040"].Executable;
+            buttonItem103["è¨ˆç®—ç•¢æ¥­æˆç¸¾"].Enable = CurrentUser.Acl["Button0040"].Executable;
+            buttonItem103["æª¢æŸ¥ç•¢æ¥­è³‡æ ¼"].Enable = CurrentUser.Acl["Button0040"].Executable;
+            buttonItem103["å–å¾—å­¸ç¨‹åˆ¤æ–·"].Enable = CurrentUser.Acl["Button0040"].Executable;
+            //buttonItem103.Enable = CurrentUser.Acl["Button0040"].Executable && K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0;
+
+            var buttonItem9 = K12.Presentation.NLDPanels.Student.RibbonBarItems["å­¸å‹™"]["å¾·è¡Œæˆç¸¾(èˆŠåˆ¶)"];
             buttonItem9.Image = ((System.Drawing.Image)(resources.GetObject("buttonItem9.Image")));
-            buttonItem9["­pºâ¼w¦æ¾Ç´Á¦¨ÁZ(ÂÂ¨î)"].Click += new System.EventHandler(this.buttonItem6_Click);
-            buttonItem9["­pºâ¼w¦æ¾Ç¦~¦¨ÁZ(ÂÂ¨î)"].Click += new System.EventHandler(this.buttonItem8_Click);
+            buttonItem9["è¨ˆç®—å¾·è¡Œå­¸æœŸæˆç¸¾(èˆŠåˆ¶)"].Click += new System.EventHandler(this.buttonItem6_Click);
+            buttonItem9["è¨ˆç®—å¾·è¡Œå­¸å¹´æˆç¸¾(èˆŠåˆ¶)"].Click += new System.EventHandler(this.buttonItem8_Click);
 
             buttonItem9.Enable = CurrentUser.Acl["Button0085"].Executable && K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0;
             K12.Presentation.NLDPanels.Student.SelectedSourceChanged += delegate
             {
-                buttonItem103.Enable = CurrentUser.Acl["Button0040"].Executable && K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0;
+                //buttonItem103.Enable = CurrentUser.Acl["Button0040"].Executable && K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0;
                 buttonItem9.Enable = CurrentUser.Acl["Button0085"].Executable && K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0;
             };
         }
 
-        // ²£¥Í¾Ç²ß¾úµ{¦¨ÁZ
+        // ç”¢ç”Ÿå­¸ç¿’æ­·ç¨‹æˆç¸¾
         private void Calculation_Click41(object sender, EventArgs e)
         {
             ISubjectCalcPostProcess obj = FISCA.InteractionService.DiscoverAPI<ISubjectCalcPostProcess>();
@@ -89,6 +104,18 @@ namespace SmartSchool.Evaluation.Process
             }
 
             new CalcLearningHistoryScoreWizard(SelectType.Student).ShowDialog();
+        }
+
+        // ç”¢ç”Ÿå­¸ç¿’æ­·ç¨‹é æª¢è³‡æ–™
+        private void Calculation_Click42(object sender, EventArgs e)
+        {
+            ISubjectCalcPostProcess obj = FISCA.InteractionService.DiscoverAPI<ISubjectCalcPostProcess>();
+            if (obj != null)
+            {
+                obj.ShowConfigForm();
+            }
+
+            new CalcLearningHistoryPrvScoreWizard(SelectType.Student).ShowDialog();
         }
 
         //private void Instance_SelectionChanged(object sender, EventArgs e)
@@ -106,11 +133,11 @@ namespace SmartSchool.Evaluation.Process
         {
             get
             {
-                return "¾Ç¥Í";
+                return "å­¸ç”Ÿ";
             }
         }
         /// <summary>
-        /// ­pºâ¾Ç´Á¤À¶µ¦¨ÁZ
+        /// è¨ˆç®—å­¸æœŸåˆ†é …æˆç¸¾
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -120,7 +147,7 @@ namespace SmartSchool.Evaluation.Process
 
         }
         /// <summary>
-        /// ­pºâ¾Ç¦~¬ì¥Ø¦¨ÁZ
+        /// è¨ˆç®—å­¸å¹´ç§‘ç›®æˆç¸¾
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -164,7 +191,7 @@ namespace SmartSchool.Evaluation.Process
             AccessHelper helper = new AccessHelper();
             List<StudentRecord> selectedStudents = helper.StudentHelper.GetSelectedStudent();
 
-            SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("¾Ç¥Í²¦·~¦¨ÁZ­pºâ¤¤...");
+            SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("å­¸ç”Ÿç•¢æ¥­æˆç¸¾è¨ˆç®—ä¸­...");
             BackgroundWorker runningBackgroundWorker = new BackgroundWorker();
             runningBackgroundWorker.WorkerSupportsCancellation = true;
             runningBackgroundWorker.WorkerReportsProgress = true;
@@ -174,7 +201,7 @@ namespace SmartSchool.Evaluation.Process
             runningBackgroundWorker.RunWorkerAsync(new object[] { helper, selectedStudents });
         }
 
-        #region ­pºâ²¦·~¦¨ÁZ
+        #region è¨ˆç®—ç•¢æ¥­æˆç¸¾
 
         void runningBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -187,7 +214,7 @@ namespace SmartSchool.Evaluation.Process
             List<StudentRecord> package = null;
             List<List<StudentRecord>> packages = new List<List<StudentRecord>>();
             bkw.ReportProgress(1, null);
-            #region ¤Ápackage
+            #region åˆ‡package
             foreach (StudentRecord s in selectedStudents)
             {
                 if (packageCount == 0)
@@ -246,11 +273,11 @@ namespace SmartSchool.Evaluation.Process
             {
                 if (e.Result == null)
                 {
-                    SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("²¦·~¦¨ÁZ­pºâ¥¢±Ñ¡A½ĞÀË¬d¿ù»~°T®§¡C");
+                    SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("ç•¢æ¥­æˆç¸¾è¨ˆç®—å¤±æ•—ï¼Œè«‹æª¢æŸ¥éŒ¯èª¤è¨Šæ¯ã€‚");
                 }
                 else
                 {
-                    SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("²¦·~¦¨ÁZ­pºâ§¹¦¨¡C", 100);
+                    SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("ç•¢æ¥­æˆç¸¾è¨ˆç®—å®Œæˆã€‚", 100);
                     upLoad(e.Result);
                 }
             }
@@ -272,7 +299,7 @@ namespace SmartSchool.Evaluation.Process
                         _ErrorViewer.Show();
                     }
                 }
-                SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("²¦·~¦¨ÁZ­pºâ¤¤...", e.ProgressPercentage);
+                SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("ç•¢æ¥­æˆç¸¾è¨ˆç®—ä¸­...", e.ProgressPercentage);
             }
         }
 
@@ -315,7 +342,7 @@ namespace SmartSchool.Evaluation.Process
 
         void _uploadingWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("²¦·~¦¨ÁZ¤W¶Ç¤¤...", e.ProgressPercentage);
+            SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("ç•¢æ¥­æˆç¸¾ä¸Šå‚³ä¸­...", e.ProgressPercentage);
         }
 
         void _uploadingWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -327,7 +354,7 @@ namespace SmartSchool.Evaluation.Process
                 idList.Add(var.StudentID);
             }
             EventHub.Instance.InvokScoreChanged(idList.ToArray());
-            SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("²¦·~¦¨ÁZ¤W¶Ç§¹¦¨¡C", 100);
+            SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("ç•¢æ¥­æˆç¸¾ä¸Šå‚³å®Œæˆã€‚", 100);
         }
         #endregion
 
@@ -336,7 +363,7 @@ namespace SmartSchool.Evaluation.Process
             AccessHelper helper = new AccessHelper();
             List<StudentRecord> selectedStudents = helper.StudentHelper.GetSelectedStudent();
 
-            SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("¾Ç¥Í²¦·~¦¨ÁZ­pºâ¤¤...");
+            SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("å­¸ç”Ÿç•¢æ¥­æˆç¸¾è¨ˆç®—ä¸­...");
             BackgroundWorker runningBackgroundWorker2 = new BackgroundWorker();
             runningBackgroundWorker2.WorkerSupportsCancellation = true;
             runningBackgroundWorker2.WorkerReportsProgress = true;
@@ -346,7 +373,7 @@ namespace SmartSchool.Evaluation.Process
             runningBackgroundWorker2.RunWorkerAsync(new object[] { helper, selectedStudents });
         }
 
-        #region ¼f¬d²¦·~¸ê®æ
+        #region å¯©æŸ¥ç•¢æ¥­è³‡æ ¼
         void runningBackgroundWorker2_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker bkw = ((BackgroundWorker)sender);
@@ -358,7 +385,7 @@ namespace SmartSchool.Evaluation.Process
             List<StudentRecord> package = null;
             List<List<StudentRecord>> packages = new List<List<StudentRecord>>();
             bkw.ReportProgress(1, null);
-            #region ¤Ápackage
+            #region åˆ‡package
             foreach (StudentRecord s in selectedStudents)
             {
                 if (packageCount == 0)
@@ -379,7 +406,7 @@ namespace SmartSchool.Evaluation.Process
             Dictionary<int, List<int>> removeTags = new Dictionary<int, List<int>>();
             Dictionary<string, int> usefulTags = new Dictionary<string, int>();
             int unPassStudentCount = 0;
-            #region §ì²{¦³ ¥¼¹F²¦·~¼Ğ·Ç ÃşªºÃş§O
+            #region æŠ“ç¾æœ‰ æœªé”ç•¢æ¥­æ¨™æº– é¡çš„é¡åˆ¥
             foreach (XmlElement tagElement in SmartSchool.Feature.Tag.QueryTag.GetDetailList(SmartSchool.Feature.Tag.TagCategory.Student).SelectNodes("Tag"))
             {
                 int id = int.Parse(tagElement.GetAttribute("ID"));
@@ -389,7 +416,7 @@ namespace SmartSchool.Evaluation.Process
                     prefix = tagElement.SelectSingleNode("Prefix").InnerText;
                 if (tagElement.SelectSingleNode("Name") != null)
                     name = tagElement.SelectSingleNode("Name").InnerText;
-                if (prefix == "¥¼¹F²¦·~¼Ğ·Ç")
+                if (prefix == "æœªé”ç•¢æ¥­æ¨™æº–")
                 {
                     if (!usefulTags.ContainsKey(name))
                         usefulTags.Add(name, id);
@@ -407,7 +434,7 @@ namespace SmartSchool.Evaluation.Process
             {
                 if (var.Count == 0) continue;
                 Dictionary<StudentRecord, List<string>> errormessages = computer.FillStudentGradCheck(helper, var);
-                #region §â¾Ç¥Í"¥¼¹F²¦·~¼Ğ·Ç"Ãşªº¼ĞÅÒ³£¥[¤J²¾°£²M³æ
+                #region æŠŠå­¸ç”Ÿ"æœªé”ç•¢æ¥­æ¨™æº–"é¡çš„æ¨™ç±¤éƒ½åŠ å…¥ç§»é™¤æ¸…å–®
                 List<int> idList = new List<int>();
                 foreach (StudentRecord stu in var)
                 {
@@ -423,7 +450,7 @@ namespace SmartSchool.Evaluation.Process
                         prefix = tag.SelectSingleNode("Prefix").InnerText;
                     if (tag.SelectSingleNode("StudentID") != null)
                         refStudentID = int.Parse(tag.SelectSingleNode("StudentID").InnerText);
-                    if (prefix == "¥¼¹F²¦·~¼Ğ·Ç")
+                    if (prefix == "æœªé”ç•¢æ¥­æ¨™æº–")
                     {
                         if (!removeTags.ContainsKey(id))
                             removeTags.Add(id, new List<int>());
@@ -432,19 +459,19 @@ namespace SmartSchool.Evaluation.Process
                 }
                 #endregion
 
-                // ¦b²¦·~¤ÎÂ÷®Õ¸ê°TªºÂ÷®ÕÃş§O¥[¤JÀË¬d¥i¤w²¦·~                
+                // åœ¨ç•¢æ¥­åŠé›¢æ ¡è³‡è¨Šçš„é›¢æ ¡é¡åˆ¥åŠ å…¥æª¢æŸ¥å¯å·²ç•¢æ¥­                
                 List<string> studIDList = new List<string>();
 
                 foreach (StudentRecord student in var)
                 {
-                    #region ¾ã²z¨C­Ó¾Ç¥Í¥¼¹F²¦·~¼Ğ·Ç­ì¦]
+                    #region æ•´ç†æ¯å€‹å­¸ç”Ÿæœªé”ç•¢æ¥­æ¨™æº–åŸå› 
                     XmlElement gradCheckElement = (XmlElement)student.Fields["GradCheck"];
                     int studentID = int.Parse(student.StudentID);
-                    //²Ö­p¥¼¹F¼Ğ·Ç¤H¼Æ
+                    //ç´¯è¨ˆæœªé”æ¨™æº–äººæ•¸
                     if (gradCheckElement.SelectNodes("UnPassReson").Count > 0)
                         unPassStudentCount++;
                     else
-                        studIDList.Add(student.StudentID); // ¥i²¦·~
+                        studIDList.Add(student.StudentID); // å¯ç•¢æ¥­
 
                     foreach (XmlElement unPassElement in gradCheckElement.SelectNodes("UnPassReson"))
                     {
@@ -452,18 +479,18 @@ namespace SmartSchool.Evaluation.Process
                         int tagID;
                         if (!usefulTags.ContainsKey(reson))
                         {
-                            //·s¥[¤Jªº¥¼¹F¼Ğ·Ç­ì¦]
-                            tagID = SmartSchool.Feature.Tag.EditTag.Insert("¥¼¹F²¦·~¼Ğ·Ç", reson, Color.Tomato.ToArgb(), SmartSchool.Feature.Tag.TagCategory.Student);
+                            //æ–°åŠ å…¥çš„æœªé”æ¨™æº–åŸå› 
+                            tagID = SmartSchool.Feature.Tag.EditTag.Insert("æœªé”ç•¢æ¥­æ¨™æº–", reson, Color.Tomato.ToArgb(), SmartSchool.Feature.Tag.TagCategory.Student);
                             usefulTags.Add(reson, tagID);
                         }
                         else
                             tagID = usefulTags[reson];
-                        //¦¹¾Ç¥Í¥»¨Ó¦³³o­ÓTAG´N¤£§R°£
+                        //æ­¤å­¸ç”Ÿæœ¬ä¾†æœ‰é€™å€‹TAGå°±ä¸åˆªé™¤
                         if (removeTags.ContainsKey(tagID) && removeTags[tagID].Contains(studentID))
                             removeTags[tagID].Remove(studentID);
                         else
                         {
-                            //¾Ç¥Í­ì¥»¨S¦³³o­ÓTAG´N¥[¤J·s¼W²M³æ
+                            //å­¸ç”ŸåŸæœ¬æ²’æœ‰é€™å€‹TAGå°±åŠ å…¥æ–°å¢æ¸…å–®
                             if (!insertTags.ContainsKey(tagID))
                                 insertTags.Add(tagID, new List<int>());
                             insertTags[tagID].Add(studentID);
@@ -473,7 +500,7 @@ namespace SmartSchool.Evaluation.Process
                 }
                 computedStudents += var.Count;
 
-                // ­×§ï²¦·~¤ÎÂ÷®Õ¸ê°TªºÂ÷®ÕÃş§O
+                // ä¿®æ”¹ç•¢æ¥­åŠé›¢æ ¡è³‡è¨Šçš„é›¢æ ¡é¡åˆ¥
                 if (studIDList.Count > 0 && errormessages.Count == 0)
                 {
                     //List<K12.Data.LeaveInfoRecord> LeaveInfoRecordList = K12.Data.LeaveInfo.SelectByStudentIDs(studIDList);
@@ -481,12 +508,12 @@ namespace SmartSchool.Evaluation.Process
 
                     //foreach (K12.Data.LeaveInfoRecord rec in LeaveInfoRecordList)
                     foreach (SHSchool.Data.SHLeaveInfoRecord rec in LeaveInfoRecordList)
-                        rec.Reason = "²¦·~";
+                        rec.Reason = "ç•¢æ¥­";
 
-                    // §ó·s
+                    // æ›´æ–°
                     //K12.Data.LeaveInfo.Update(LeaveInfoRecordList);
                     SHSchool.Data.SHLeaveInfo.Update(LeaveInfoRecordList);
-                    // ¦P¨B¸ê®Æ
+                    // åŒæ­¥è³‡æ–™
                     Student.Instance.SyncAllBackground();
                 }
 
@@ -519,7 +546,7 @@ namespace SmartSchool.Evaluation.Process
                         _ErrorViewer.Show();
                     }
                 }
-                SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("²¦·~¸ê®æÀË¬d¤¤...", e.ProgressPercentage);
+                SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("ç•¢æ¥­è³‡æ ¼æª¢æŸ¥ä¸­...", e.ProgressPercentage);
             }
         }
 
@@ -529,11 +556,11 @@ namespace SmartSchool.Evaluation.Process
             {
                 if (e.Result == null)
                 {
-                    SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("²¦·~¸ê®æÀË¬d¥¢±Ñ¡A½ĞÀË¬d¿ù»~°T®§¡C");
+                    SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("ç•¢æ¥­è³‡æ ¼æª¢æŸ¥å¤±æ•—ï¼Œè«‹æª¢æŸ¥éŒ¯èª¤è¨Šæ¯ã€‚");
                 }
                 else
                 {
-                    SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("²¦·~¸ê®æÀË¬d§¹¦¨¡C", 100);
+                    SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("ç•¢æ¥­è³‡æ ¼æª¢æŸ¥å®Œæˆã€‚", 100);
                     upLoad2(e.Result);
                 }
             }
@@ -604,18 +631,18 @@ namespace SmartSchool.Evaluation.Process
 
             SmartSchool.StudentRelated.Student.Instance.TagManager.Refresh();
             //SmartSchool.StudentRelated.Student.Instance.InvokBriefDataChanged(idList.ToArray());
-            SmartSchool.Broadcaster.Events.Items["¾Ç¥Í/¸ê®ÆÅÜ§ó"].Invoke(idList.ToArray());
-            SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("ÀË¬dµ²ªG¼Ğµù§¹¦¨¡C", 100);
+            SmartSchool.Broadcaster.Events.Items["å­¸ç”Ÿ/è³‡æ–™è®Šæ›´"].Invoke(idList.ToArray());
+            SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("æª¢æŸ¥çµæœæ¨™è¨»å®Œæˆã€‚", 100);
 
             if (unPassCount > 0)
-                MsgBox.Show("ÀË¬dµ²ªG¼Ğµù§¹¦¨¡A\nµo²{" + unPassCount + "¦W¾Ç¥Í¥¼¹F¼Ğ·Ç¡A\n\n³o¨Ç¾Ç¥Í¤w³Q¼Ğ¤W\"¥¼¹F²¦·~¼Ğ·Ç\"Ãş§O¡A\n\n±z¥i¤Á´«¦Ü\"¨Ì¾Ç¥Í¤ÀÃşÀËµø\"¼Ò¦¡ÀËµø³o¨Ç¾Ç¥Í");
+                MsgBox.Show("æª¢æŸ¥çµæœæ¨™è¨»å®Œæˆï¼Œ\nç™¼ç¾" + unPassCount + "åå­¸ç”Ÿæœªé”æ¨™æº–ï¼Œ\n\né€™äº›å­¸ç”Ÿå·²è¢«æ¨™ä¸Š\"æœªé”ç•¢æ¥­æ¨™æº–\"é¡åˆ¥ï¼Œ\n\næ‚¨å¯åˆ‡æ›è‡³\"ä¾å­¸ç”Ÿåˆ†é¡æª¢è¦–\"æ¨¡å¼æª¢è¦–é€™äº›å­¸ç”Ÿ");
             else
-                MsgBox.Show("ÀË¬dµ²ªG¼Ğµù§¹¦¨¡A¿ï¨úªº¾Ç¥Í¬Ò¹F²¦·~¼Ğ·Ç¡C");
+                MsgBox.Show("æª¢æŸ¥çµæœæ¨™è¨»å®Œæˆï¼Œé¸å–çš„å­¸ç”Ÿçš†é”ç•¢æ¥­æ¨™æº–ã€‚");
         }
 
         void _uploadingWorker2_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("ÀË¬dµ²ªG¼Ğµù¤¤...", e.ProgressPercentage);
+            SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("æª¢æŸ¥çµæœæ¨™è¨»ä¸­...", e.ProgressPercentage);
         }
         #endregion
 
@@ -624,7 +651,7 @@ namespace SmartSchool.Evaluation.Process
             AccessHelper helper = new AccessHelper();
             List<StudentRecord> selectedStudents = helper.StudentHelper.GetSelectedStudent();
 
-            SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("¾Ç¥Í¨ú±o¾Çµ{§PÂ_¤¤...");
+            SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("å­¸ç”Ÿå–å¾—å­¸ç¨‹åˆ¤æ–·ä¸­...");
             BackgroundWorker runningBackgroundWorker3 = new BackgroundWorker();
             runningBackgroundWorker3.WorkerSupportsCancellation = true;
             runningBackgroundWorker3.WorkerReportsProgress = true;
@@ -645,7 +672,7 @@ namespace SmartSchool.Evaluation.Process
             List<StudentRecord> package = null;
             List<List<StudentRecord>> packages = new List<List<StudentRecord>>();
             bkw.ReportProgress(1, null);
-            #region ¤Ápackage
+            #region åˆ‡package
             foreach (StudentRecord s in selectedStudents)
             {
                 if (packageCount == 0)
@@ -667,7 +694,7 @@ namespace SmartSchool.Evaluation.Process
             Dictionary<string, int> usefulTags = new Dictionary<string, int>();
 
             List<DSRequest> updateList = new List<DSRequest>();
-            #region §ì²{¦³ "¨ú±o¦h¾Çµ{"©Î"¥¼¨ú±o¹w³]¾Çµ{"ªºÃş§O
+            #region æŠ“ç¾æœ‰ "å–å¾—å¤šå­¸ç¨‹"æˆ–"æœªå–å¾—é è¨­å­¸ç¨‹"çš„é¡åˆ¥
             foreach (XmlElement tagElement in SmartSchool.Feature.Tag.QueryTag.GetDetailList(SmartSchool.Feature.Tag.TagCategory.Student).SelectNodes("Tag"))
             {
                 int id = int.Parse(tagElement.GetAttribute("ID"));
@@ -677,7 +704,7 @@ namespace SmartSchool.Evaluation.Process
                     prefix = tagElement.SelectSingleNode("Prefix").InnerText;
                 if (tagElement.SelectSingleNode("Name") != null)
                     name = tagElement.SelectSingleNode("Name").InnerText;
-                if (prefix == "" && (name == "¨ú±o¦h¾Çµ{" || name == "¥¼¨ú±o¹w³]¾Çµ{"))
+                if (prefix == "" && (name == "å–å¾—å¤šå­¸ç¨‹" || name == "æœªå–å¾—é è¨­å­¸ç¨‹"))
                 {
                     if (!usefulTags.ContainsKey(name))
                         usefulTags.Add(name, id);
@@ -694,12 +721,12 @@ namespace SmartSchool.Evaluation.Process
             foreach (List<StudentRecord> var in packages)
             {
                 if (var.Count == 0) continue;
-                //§PÂ_¨ú±o¾Çµ{
+                //åˆ¤æ–·å–å¾—å­¸ç¨‹
                 Dictionary<StudentRecord, List<string>> errormessages = computer.FillStudentFulfilledProgram(helper, var);
-                //¨ú±o¾Ç¥Í²¦·~¸ê°T
+                //å–å¾—å­¸ç”Ÿç•¢æ¥­è³‡è¨Š
                 helper.StudentHelper.FillField("DiplomaNumber", var);
 
-                #region §â¾Ç¥Í"¨ú±o¦h¾Çµ{"©Î"¥¼¨ú±o¹w³]¾Çµ{"ªº¼ĞÅÒ³£¥[¤J²¾°£²M³æ
+                #region æŠŠå­¸ç”Ÿ"å–å¾—å¤šå­¸ç¨‹"æˆ–"æœªå–å¾—é è¨­å­¸ç¨‹"çš„æ¨™ç±¤éƒ½åŠ å…¥ç§»é™¤æ¸…å–®
                 List<int> idList = new List<int>();
                 foreach (StudentRecord stu in var)
                 {
@@ -718,7 +745,7 @@ namespace SmartSchool.Evaluation.Process
                         refStudentID = int.Parse(tag.SelectSingleNode("StudentID").InnerText);
                     if (tag.SelectSingleNode("Name") != null)
                         name = tag.SelectSingleNode("Name").InnerText;
-                    if (prefix == "" && (name == "¨ú±o¦h¾Çµ{" || name == "¥¼¨ú±o¹w³]¾Çµ{"))
+                    if (prefix == "" && (name == "å–å¾—å¤šå­¸ç¨‹" || name == "æœªå–å¾—é è¨­å­¸ç¨‹"))
                     {
                         if (!removeTags.ContainsKey(id))
                             removeTags.Add(id, new List<int>());
@@ -733,11 +760,11 @@ namespace SmartSchool.Evaluation.Process
                     bool diplomaChanged = false;
                     XmlElement diplomaElement;
                     List<string> programList = new List<string>();
-                    #region ¾ã²z¨C­Ó¾Ç¥Í¨ú±o¾Çµ{¸ê°T
+                    #region æ•´ç†æ¯å€‹å­¸ç”Ÿå–å¾—å­¸ç¨‹è³‡è¨Š
                     if (student.Fields.ContainsKey("DiplomaNumber") && student.Fields["DiplomaNumber"] != null)
                     {
                         diplomaElement = student.Fields["DiplomaNumber"] as XmlElement;
-                        foreach (XmlElement program in diplomaElement.SelectNodes("Message[@Type='¨ú±o¾Çµ{']"))
+                        foreach (XmlElement program in diplomaElement.SelectNodes("Message[@Type='å–å¾—å­¸ç¨‹']"))
                             if (!programList.Contains(program.GetAttribute("Value")))
                                 programList.Add(program.GetAttribute("Value"));
                     }
@@ -750,11 +777,11 @@ namespace SmartSchool.Evaluation.Process
 
                     foreach (XmlElement programElement in fulfilledProgramElement.SelectNodes("Program"))
                     {
-                        if (!programList.Contains(programElement.InnerText))//¨ú±o·s¾Çµ{
+                        if (!programList.Contains(programElement.InnerText))//å–å¾—æ–°å­¸ç¨‹
                         {
                             diplomaChanged = true;
                             XmlElement msg = (XmlElement)diplomaElement.AppendChild(diplomaElement.OwnerDocument.CreateElement("Message"));
-                            msg.SetAttribute("Type", "¨ú±o¾Çµ{");
+                            msg.SetAttribute("Type", "å–å¾—å­¸ç¨‹");
                             msg.SetAttribute("Value", programElement.InnerText);
                             programList.Add(programElement.InnerText);
                         }
@@ -762,7 +789,7 @@ namespace SmartSchool.Evaluation.Process
                     #endregion
                     if (diplomaChanged)
                     {
-                        #region ¦³¨ú±o·s¾Çµ{ªº´N¥[¤J§ó·s²M³æ
+                        #region æœ‰å–å¾—æ–°å­¸ç¨‹çš„å°±åŠ å…¥æ›´æ–°æ¸…å–®
                         DSXmlHelper helper2 = new DSXmlHelper("UpdateStudentList");
                         helper2.AddElement("Student");
                         helper2.AddElement("Student", "Field");
@@ -772,33 +799,33 @@ namespace SmartSchool.Evaluation.Process
                         updateList.Add(new DSRequest(helper2));
                         #endregion
                     }
-                    #region ¾ã²z¾Ç¥Í¨ú±oÃş§O
+                    #region æ•´ç†å­¸ç”Ÿå–å¾—é¡åˆ¥
                     List<string> getTags = new List<string>();
                     if (programList.Count > 1)
-                        getTags.Add("¨ú±o¦h¾Çµ{");
-                    if (student.Fields.ContainsKey("SubDepartment") &&//¬ì§O¦³¤l¶µ
-                        SubjectTable.Items["¾Çµ{¬ì¥Øªí"].Contains("" + student.Fields["SubDepartment"]) &&//¤l¶µ¬O¤@­Ó¾Çµ{¦WºÙ
-                        !programList.Contains("" + student.Fields["SubDepartment"])//¨ú±oªº¾Çµ{¤¤¨S¦³¤l¶µªº³o­Ó¾Çµ{
+                        getTags.Add("å–å¾—å¤šå­¸ç¨‹");
+                    if (student.Fields.ContainsKey("SubDepartment") &&//ç§‘åˆ¥æœ‰å­é …
+                        SubjectTable.Items["å­¸ç¨‹ç§‘ç›®è¡¨"].Contains("" + student.Fields["SubDepartment"]) &&//å­é …æ˜¯ä¸€å€‹å­¸ç¨‹åç¨±
+                        !programList.Contains("" + student.Fields["SubDepartment"])//å–å¾—çš„å­¸ç¨‹ä¸­æ²’æœ‰å­é …çš„é€™å€‹å­¸ç¨‹
                         )
-                        getTags.Add("¥¼¨ú±o¹w³]¾Çµ{");
+                        getTags.Add("æœªå–å¾—é è¨­å­¸ç¨‹");
 
                     foreach (string getTag in getTags)
                     {
                         int tagID;
                         if (!usefulTags.ContainsKey(getTag))
                         {
-                            //·s¥[¤Jªº¥¼¹F¼Ğ·Ç­ì¦]
+                            //æ–°åŠ å…¥çš„æœªé”æ¨™æº–åŸå› 
                             tagID = SmartSchool.Feature.Tag.EditTag.Insert("", getTag, Color.CornflowerBlue.ToArgb(), SmartSchool.Feature.Tag.TagCategory.Student);
                             usefulTags.Add(getTag, tagID);
                         }
                         else
                             tagID = usefulTags[getTag];
-                        //¦¹¾Ç¥Í¥»¨Ó¦³³o­ÓTAG´N¤£§R°£
+                        //æ­¤å­¸ç”Ÿæœ¬ä¾†æœ‰é€™å€‹TAGå°±ä¸åˆªé™¤
                         if (removeTags.ContainsKey(tagID) && removeTags[tagID].Contains(studentID))
                             removeTags[tagID].Remove(studentID);
                         else
                         {
-                            //¾Ç¥Í­ì¥»¨S¦³³o­ÓTAG´N¥[¤J·s¼W²M³æ
+                            //å­¸ç”ŸåŸæœ¬æ²’æœ‰é€™å€‹TAGå°±åŠ å…¥æ–°å¢æ¸…å–®
                             if (!insertTags.ContainsKey(tagID))
                                 insertTags.Add(tagID, new List<int>());
                             insertTags[tagID].Add(studentID);
@@ -836,7 +863,7 @@ namespace SmartSchool.Evaluation.Process
                         _ErrorViewer.Show();
                     }
                 }
-                SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("¾Ç¥Í¨ú±o¾Çµ{§PÂ_¤¤...", e.ProgressPercentage);
+                SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("å­¸ç”Ÿå–å¾—å­¸ç¨‹åˆ¤æ–·ä¸­...", e.ProgressPercentage);
             }
         }
 
@@ -846,11 +873,11 @@ namespace SmartSchool.Evaluation.Process
             {
                 if (e.Result == null)
                 {
-                    SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("¨ú±o¾Çµ{§PÂ_¥¢±Ñ¡A½ĞÀË¬d¿ù»~°T®§¡C");
+                    SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("å–å¾—å­¸ç¨‹åˆ¤æ–·å¤±æ•—ï¼Œè«‹æª¢æŸ¥éŒ¯èª¤è¨Šæ¯ã€‚");
                 }
                 else
                 {
-                    SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("¨ú±o¾Çµ{§PÂ_§¹¦¨¡C", 100);
+                    SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("å–å¾—å­¸ç¨‹åˆ¤æ–·å®Œæˆã€‚", 100);
                     upLoad3(e.Result);
                 }
             }
@@ -935,7 +962,7 @@ namespace SmartSchool.Evaluation.Process
 
         void _uploadingWorker4_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("¾Ç¥Í¨ú±o¾Çµ{¼Ğµù¤¤...", e.ProgressPercentage);
+            SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("å­¸ç”Ÿå–å¾—å­¸ç¨‹æ¨™è¨»ä¸­...", e.ProgressPercentage);
         }
 
         void _uploadingWorker4_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -944,8 +971,8 @@ namespace SmartSchool.Evaluation.Process
 
             SmartSchool.StudentRelated.Student.Instance.TagManager.Refresh();
             //SmartSchool.StudentRelated.Student.Instance.InvokBriefDataChanged(idList.ToArray());
-            SmartSchool.Broadcaster.Events.Items["¾Ç¥Í/¸ê®ÆÅÜ§ó"].Invoke(idList.ToArray());
-            SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("¾Ç¥Í¨ú±o¾Çµ{¼Ğµù§¹¦¨¡C", 100);
+            SmartSchool.Broadcaster.Events.Items["å­¸ç”Ÿ/è³‡æ–™è®Šæ›´"].Invoke(idList.ToArray());
+            SmartSchool.Customization.PlugIn.Global.SetStatusBarMessage("å­¸ç”Ÿå–å¾—å­¸ç¨‹æ¨™è¨»å®Œæˆã€‚", 100);
         }
     }
 }

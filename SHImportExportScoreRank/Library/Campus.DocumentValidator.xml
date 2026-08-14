@@ -1,0 +1,256 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Campus.DocumentValidator</name>
+    </assembly>
+    <members>
+        <member name="M:Campus.DocumentValidator.ConditionCollection.GetEnumerator">
+            <summary>
+            列舉 Condition 物件。
+            </summary>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="T:Campus.DocumentValidator.FieldDescription">
+            <summary>
+            欄位描述
+            </summary>
+        </member>
+        <member name="F:Campus.DocumentValidator.FieldDescription.mValidateStatements">
+            <summary>
+            欄位驗證規則
+            </summary>
+        </member>
+        <member name="P:Campus.DocumentValidator.FieldDescription.Name">
+            <summary>
+            欄位名稱
+            </summary>
+        </member>
+        <member name="P:Campus.DocumentValidator.FieldDescription.EmptyAlsoValidate">
+            <summary>
+            取得當欄位沒有資料時，是否還需要執行資料驗證。
+            </summary>
+        </member>
+        <member name="P:Campus.DocumentValidator.FieldDescription.Required">
+            <summary>
+            欄位是否為必填
+            </summary>
+        </member>
+        <member name="T:Campus.DocumentValidator.DocumentValidate">
+            <summary>
+            資料驗證主要類別
+            </summary>
+        </member>
+        <member name="M:Campus.DocumentValidator.DocumentValidate.#ctor">
+            <summary>
+            空白建構式
+            </summary>
+        </member>
+        <member name="M:Campus.DocumentValidator.DocumentValidate.ValidateField(Campus.DocumentValidator.IRowStream)">
+            <summary>
+            驗證欄位
+            </summary>
+            <param name="RowSource"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Campus.DocumentValidator.DocumentValidate.Validate(Campus.DocumentValidator.IRowStream)">
+            <summary>
+            驗證資料
+            </summary>
+            <param name="RowSource"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Campus.DocumentValidator.DocumentValidate.BeginDetecteDuplicate">
+            <summary>
+            開始主鍵驗證
+            </summary>
+        </member>
+        <member name="M:Campus.DocumentValidator.DocumentValidate.EndDetecteDuplicate">
+            <summary>
+            結束主鍵驗證
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Campus.DocumentValidator.DocumentValidate.LoadRule(System.Xml.XmlElement)">
+            <summary>
+            載入驗證規則
+            </summary>
+            <param name="XmlNode"></param>
+        </member>
+        <member name="E:Campus.DocumentValidator.DocumentValidate.ErrorCaptured">
+            <summary>
+            當一個驗證出錯誤資料時。
+            </summary>
+        </member>
+        <member name="E:Campus.DocumentValidator.DocumentValidate.AutoCorrect">
+            <summary>
+            當需要執行修正時。
+            </summary>
+        </member>
+        <member name="P:Campus.DocumentValidator.NotCondition.Expression">
+            <summary>
+            儲存所有 Sub Condition 的集合
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:Campus.DocumentValidator.FieldValidatedDescription">
+            <summary>
+            驗證過後的欄位定義描述
+            </summary>
+        </member>
+        <member name="M:Campus.DocumentValidator.FieldValidatedDescription.#ctor(Campus.DocumentValidator.FieldDescription)">
+            <summary>
+            建構式，傳入資料驗證欄位定義，若傳入null則會將相關屬設為空白或是false。
+            </summary>
+            <param name="Field"></param>
+        </member>
+        <member name="P:Campus.DocumentValidator.FieldValidatedDescription.InSource">
+            <summary>
+            欄位是否在來源中
+            </summary>
+        </member>
+        <member name="P:Campus.DocumentValidator.FieldValidatedDescription.InDefinition">
+            <summary>
+            欄位是否在資料驗證描述中
+            </summary>
+        </member>
+        <member name="E:Campus.DocumentValidator.FieldValidate.ErrorCaptured">
+            <summary>
+            當一個驗證出錯誤資料時。
+            </summary>
+        </member>
+        <member name="E:Campus.DocumentValidator.FieldValidate.AutoCorrect">
+            <summary>
+            當需要執行修正時。
+            </summary>
+        </member>
+        <member name="P:Campus.DocumentValidator.XorCondition.Expressions">
+            <summary>
+            儲存所有 Sub Condition 的集合
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:Campus.DocumentValidator.AndCondition.Expressions">
+            <summary>
+            儲存所有 Sub Condition 的集合
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="E:Campus.DocumentValidator.RowValidate.ErrorCaptured">
+            <summary>
+            當一個驗證出錯誤資料時。
+            </summary>
+        </member>
+        <member name="E:Campus.DocumentValidator.RowValidate.AutoCorrect">
+            <summary>
+            當需要執行修正時。
+            </summary>
+        </member>
+        <member name="M:Campus.DocumentValidator.IRowStream.GetValue(System.String)">
+            <summary>
+            取得欄位資料。
+            </summary>
+            <param name="fieldName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Campus.DocumentValidator.IRowStream.Contains(System.String)">
+            <summary>
+            判斷是否包含某個欄位。
+            </summary>
+            <param name="fieldName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Campus.DocumentValidator.IRowStream.Position">
+            <summary>
+            目前 Row 的位置。
+            </summary>
+        </member>
+        <member name="T:Campus.DocumentValidator.DuplicateDetection">
+            <summary>
+            欄位值重覆組合偵測
+            </summary>
+        </member>
+        <member name="M:Campus.DocumentValidator.DuplicateDetection.BeginDetecte">
+            <summary>
+            開始偵測重覆
+            </summary>
+        </member>
+        <member name="M:Campus.DocumentValidator.DuplicateDetection.EndDetecte">
+            <summary>
+            結束偵測重覆
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Campus.DocumentValidator.DataKey">
+            <summary>
+            代表某一筆資料的識別。
+            </summary>
+        </member>
+        <member name="T:Campus.DocumentValidator.DuplicateData">
+            <summary>
+            重覆資料組合
+            </summary>
+        </member>
+        <member name="M:Campus.DocumentValidator.DuplicateData.#ctor(System.String,Campus.DocumentValidator.ErrorType,System.Collections.Generic.List{System.String},System.Collections.Generic.IList{Campus.DocumentValidator.DuplicateRecord})">
+            <summary>
+            建構式，傳入鍵值名稱、錯誤型態、欄位組合及重覆資料記錄
+            </summary>
+            <param name="name"></param>
+            <param name="errorType"></param>
+            <param name="fields"></param>
+            <param name="records"></param>
+        </member>
+        <member name="P:Campus.DocumentValidator.DuplicateData.Name">
+            <summary>
+            在驗證規則中的欄位組合描述名稱
+            </summary>
+        </member>
+        <member name="P:Campus.DocumentValidator.DuplicateData.ErrorType">
+            <summary>
+            錯誤型態
+            </summary>
+        </member>
+        <member name="P:Campus.DocumentValidator.DuplicateData.Fields">
+            <summary>
+            欄位組合
+            </summary>
+        </member>
+        <member name="P:Campus.DocumentValidator.DuplicateData.FieldsDispaly">
+            <summary>
+            欄位組合顯示字串
+            </summary>
+        </member>
+        <member name="P:Campus.DocumentValidator.DuplicateData.Records">
+            <summary>
+            實際重覆的資料
+            </summary>
+        </member>
+        <member name="P:Campus.DocumentValidator.DuplicateData.Count">
+            <summary>
+            重覆的鍵值組合數目
+            </summary>
+        </member>
+        <member name="T:Campus.DocumentValidator.DuplicateRecord">
+            <summary>
+            實際資料組合重覆的資料列
+            </summary>
+        </member>
+        <member name="M:Campus.DocumentValidator.DuplicateRecord.#ctor(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Int32})">
+            <summary>
+            建構式，傳入欄位值組合，以及這些值重覆的位置
+            </summary>
+            <param name="values"></param>
+            <param name="positions"></param>
+        </member>
+        <member name="P:Campus.DocumentValidator.DuplicateRecord.Values">
+            <summary>
+            識別 Row 的相關資料。
+            </summary>
+        </member>
+        <member name="P:Campus.DocumentValidator.DuplicateRecord.Positions">
+            <summary>
+            重覆的 Row 資訊。
+            </summary>
+        </member>
+    </members>
+</doc>

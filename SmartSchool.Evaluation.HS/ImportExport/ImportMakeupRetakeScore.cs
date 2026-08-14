@@ -40,8 +40,11 @@ namespace SmartSchool.Evaluation.ImportExport
             {
                 if (autoCheckPass.Checked)
                 {
+                    // 成績年級本來就在 RequiredFields.AddRange 中設定為必填
+                    // 為了保險，仍然檢查一次，若被移除則補回
                     if (!wizard.RequiredFields.Contains("成績年級"))
                         wizard.RequiredFields.Add("成績年級");
+
                     if (!wizard.RequiredFields.Contains("取得學分"))
                         wizard.RequiredFields.Add("取得學分");
                 }
@@ -50,8 +53,11 @@ namespace SmartSchool.Evaluation.ImportExport
             {
                 if (manulCheckPass.Checked)
                 {
-                    if (wizard.RequiredFields.Contains("成績年級"))
-                        wizard.RequiredFields.Remove("成績年級");
+                    // 「成績年級」現在設計為無論自動或手動都必填，因此不可移除
+                    // if (wizard.RequiredFields.Contains("成績年級"))
+                    //     wizard.RequiredFields.Remove("成績年級");
+
+                    // 手動判斷時，只移除「取得學分」的必填限制
                     if (wizard.RequiredFields.Contains("取得學分"))
                         wizard.RequiredFields.Remove("取得學分");
                 }
@@ -60,7 +66,7 @@ namespace SmartSchool.Evaluation.ImportExport
             wizard.PackageLimit = 3000;
             wizard.ImportableFields.AddRange("領域", "科目", "科目級別", "學年度", "學期", "英文名稱", "學分數", "分項類別", "成績年級", "必選修", "校部訂", "原始成績", "補考成績", "重修成績", "手動調整成績", "學年調整成績", "取得學分", "不計學分", "不需評分", "註記", "是否補修成績", "補修學年度", "補修學期", "重修學年度", "重修學期", "修課及格標準", "修課補考標準", "修課備註", "修課直接指定總成績", "免修", "抵免", "指定學年科目名稱", "課程代碼", "報部科目名稱", "是否重讀");
 
-            wizard.RequiredFields.AddRange("科目", "科目級別", "學年度", "學期", "是否補修成績", "補修學年度", "補修學期", "重修學年度", "重修學期");
+            wizard.RequiredFields.AddRange("科目", "科目級別", "學年度", "學期", "成績年級", "是否補修成績", "補修學年度", "補修學期", "重修學年度", "重修學期");
             wizard.ValidateStart += delegate (object sender, SmartSchool.API.PlugIn.Import.ValidateStartEventArgs e)
             {
                 #region ValidateStart
@@ -691,7 +697,10 @@ namespace SmartSchool.Evaluation.ImportExport
                             codePass = true;
 
                             if (string.IsNullOrWhiteSpace(HisClassName))
-                                HisClassName = studentRec.RefClass.ClassName;
+                            {
+                                if (studentRec.RefClass != null)
+                                    HisClassName = studentRec.RefClass.ClassName;
+                            }
 
                             if (!HisSeatNo.HasValue || HisSeatNo == 0)
                             {
@@ -932,7 +941,10 @@ namespace SmartSchool.Evaluation.ImportExport
                             bool codePass = Utility.IsValidCourseCode(courseCode);
                             codePass = true;
                             if (string.IsNullOrWhiteSpace(HisClassName))
-                                HisClassName = studentRec.RefClass.ClassName;
+                            {
+                                if (studentRec.RefClass != null)
+                                    HisClassName = studentRec.RefClass.ClassName;
+                            }
 
                             if (!HisSeatNo.HasValue || HisSeatNo == 0)
                             {

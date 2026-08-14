@@ -209,14 +209,27 @@ namespace SmartSchool.Evaluation.Process.Wizards
                         {
                             QueryHelper qh = new QueryHelper();
                             // 取得學生群組代碼
-                            string qry = "SELECT " +
-                                "student.id AS student_id" +
-                                ",COALESCE(student.gdc_code,class.gdc_code) AS gdc_code " +
-                                "FROM student " +
-                                "LEFT OUTER JOIN " +
-                                "class " +
-                                " ON student.ref_class_id = class.id " +
-                                " WHERE student.id IN(" + string.Join(",", studIDList.ToArray()) + ");";
+                            string qry = @"
+WITH stud_gp_id AS(
+    SELECT
+        student.id,
+        COALESCE(
+            student.ref_graduation_plan_id,
+            class.ref_graduation_plan_id
+        ) AS graduation_plan_id
+    FROM
+        student
+        LEFT JOIN class ON student.ref_class_id = class.id
+)
+SELECT
+    stud_gp_id.id AS student_id,
+    graduation_plan.moe_group_code AS gdc_code
+FROM
+    stud_gp_id
+    INNER JOIN graduation_plan 
+        ON stud_gp_id.graduation_plan_id = graduation_plan.id
+WHERE
+    stud_gp_id.id IN(" + string.Join(",", studIDList.ToArray()) + @");";
 
 
                             DataTable dt = qh.Select(qry);

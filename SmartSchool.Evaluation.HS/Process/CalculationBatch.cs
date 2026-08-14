@@ -13,31 +13,31 @@ namespace SmartSchool.Evaluation.Process
         public CalculationBatch()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CalculationBatch));
-            var buttonItem103 = MotherForm.RibbonBarItems["±Ğ°È§@·~", "§å¦¸§@·~/ÀËµø"]["¦¨ÁZ§@·~"];
-            buttonItem103.Enable = CurrentUser.Acl["Button0670"].Executable;
+            var buttonItem103 = MotherForm.RibbonBarItems["æ•™å‹™ä½œæ¥­", "æ‰¹æ¬¡ä½œæ¥­/æª¢è¦–"]["æˆç¸¾ä½œæ¥­"];
+            buttonItem103.Enable = true; //= CurrentUser.Acl["Button0670"].Executable;
             //buttonItem103.Image = ( (System.Drawing.Image)( resources.GetObject("buttonItem103.Image") ) );
-            buttonItem103["¾Ç´Á¦¨ÁZ³B²z"].BeginGroup = true;
-            buttonItem103["¾Ç´Á¦¨ÁZ³B²z"].Enable = CurrentUser.Acl["Button0670"].Executable;
-            buttonItem103["¾Ç¦~¦¨ÁZ³B²z"].Enable = CurrentUser.Acl["Button0670"].Executable;
+            buttonItem103["å­¸æœŸæˆç¸¾è™•ç†"].BeginGroup = true;
+            buttonItem103["å­¸æœŸæˆç¸¾è™•ç†"].Enable = CurrentUser.Acl["Button0670"].Executable;
+            buttonItem103["å­¸å¹´æˆç¸¾è™•ç†"].Enable = CurrentUser.Acl["Button0670"].Executable;
 
-            buttonItem103["¾Ç´Á¦¨ÁZ³B²z"].Click += new System.EventHandler(this.buttonItem6_Click_1);
-            buttonItem103["¾Ç¦~¦¨ÁZ³B²z"].Click += new System.EventHandler(this.buttonItem8_Click_1);
+            buttonItem103["å­¸æœŸæˆç¸¾è™•ç†"].Click += new System.EventHandler(this.buttonItem6_Click_1);
+            buttonItem103["å­¸å¹´æˆç¸¾è™•ç†"].Click += new System.EventHandler(this.buttonItem8_Click_1);
 
-            var buttonItem9 = MotherForm.RibbonBarItems["¾Ç°È§@·~", "¦¨ÁZ§@·~"]["¼w¦æ¦¨ÁZ(ÂÂ¨î)"];
+            var buttonItem9 = MotherForm.RibbonBarItems["å­¸å‹™ä½œæ¥­", "æˆç¸¾ä½œæ¥­"]["å¾·è¡Œæˆç¸¾(èˆŠåˆ¶)"];
             buttonItem9.Image = ((System.Drawing.Image)(resources.GetObject("buttonItem9.Image")));
             buttonItem9.Enable = CurrentUser.Acl["Button0705"].Executable;
-            buttonItem9["­pºâ¼w¦æ¾Ç´Á¦¨ÁZ(ÂÂ¨î)"].Click += new System.EventHandler(this.buttonItem6_Click);
-            buttonItem9["­pºâ¼w¦æ¾Ç¦~¦¨ÁZ(ÂÂ¨î)"].Click += new System.EventHandler(this.buttonItem8_Click);
+            buttonItem9["è¨ˆç®—å¾·è¡Œå­¸æœŸæˆç¸¾(èˆŠåˆ¶)"].Click += new System.EventHandler(this.buttonItem6_Click);
+            buttonItem9["è¨ˆç®—å¾·è¡Œå­¸å¹´æˆç¸¾(èˆŠåˆ¶)"].Click += new System.EventHandler(this.buttonItem8_Click);
         }
         public override string ProcessTabName
         {
             get
             {
-                return "¦¨ÁZ³B²z";
+                return "æˆç¸¾è™•ç†";
             }
         }
         /// <summary>
-        /// ­pºâ¾Ç´Á¤À¶µ¦¨ÁZ
+        /// è¨ˆç®—å­¸æœŸåˆ†é …æˆç¸¾
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -47,7 +47,7 @@ namespace SmartSchool.Evaluation.Process
 
         }
         /// <summary>
-        /// ­pºâ¾Ç¦~¬ì¥Ø¦¨ÁZ
+        /// è¨ˆç®—å­¸å¹´ç§‘ç›®æˆç¸¾
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

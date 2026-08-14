@@ -35,37 +35,73 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
 
                 QueryHelper qh = new QueryHelper();
                 DataTable dt = qh.Select(query1);
-                // 沒有資料，搬過去
-                if (dt.Rows.Count == 0)
+                
+                // 取得原來分項id來更新
+                string querySource = string.Format(@"
+                SELECT
+                    id
+                FROM
+                    sems_entry_score
+                WHERE
+                    ref_student_id = {0}
+                    AND school_year = {1}
+                    AND semester = {2}                        
+            ", sourceData.StudentID, sourceData.SchoolYear, sourceData.Semester);
+
+                DataTable dtSemsEnrty = qh.Select(querySource);
+
+                // 調整資料，回傳id
+                if (dtSemsEnrty.Rows.Count > 0)
                 {
-                    // 取得原來分項id來更新
-                    string querySource = string.Format(@"
-                    SELECT
-                        id
-                    FROM
-                        sems_entry_score
-                    WHERE
-                        ref_student_id = {0}
-                        AND school_year = {1}
-                        AND semester = {2}                        
-                ", sourceData.StudentID, sourceData.SchoolYear, sourceData.Semester);
-
-                    DataTable dtSemsEnrty = qh.Select(querySource);
-
-                    // 調整資料，回傳id
-                    if (dtSemsEnrty.Rows.Count > 0)
+                    int SemsEntryID;
+                    if (int.TryParse(dtSemsEnrty.Rows[0]["id"].ToString(), out SemsEntryID) && !string.IsNullOrEmpty(ChangeSchoolYear))
                     {
-                        int SemsEntryID;
-                        if (int.TryParse(dtSemsEnrty.Rows[0]["id"].ToString(), out SemsEntryID) && !string.IsNullOrEmpty(ChangeSchoolYear))
+                        // 檢查目標學年度是否已有資料
+                        if (dt.Rows.Count > 0)
                         {
+                            // 當 dt 有資料時，先刪除該筆 sems_entry_score 資料
+                            int targetEntryID;
+                            if (int.TryParse(dt.Rows[0]["id"].ToString(), out targetEntryID))
+                            {
+                                string deleteQuery = string.Format(@"
+                                    DELETE FROM sems_entry_score 
+                                    WHERE id = {0} RETURNING id;
+                                ", targetEntryID);
+                                
+                                DataTable dtDelete = qh.Select(deleteQuery);
+                                if (dtDelete.Rows.Count > 0)
+                                {
+                                    // 刪除成功，現在可以將來源資料搬過去
+                                    string updateQuery = string.Format(@"
+                                        UPDATE
+                                            sems_entry_score
+                                        SET
+                                            school_year = {1} 
+                                        WHERE
+                                            id = {0} RETURNING id;
+                                    ", SemsEntryID, ChangeSchoolYear);
+
+                                    DataTable dtUpdate = qh.Select(updateQuery);
+
+                                    // 調整資料，回傳id
+                                    if (dtUpdate.Rows.Count > 0)
+                                    {
+                                        int.TryParse(dtUpdate.Rows[0]["id"].ToString(), out value);
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // 沒有資料，直接搬過去（原本的邏輯）
                             string updateQuery = string.Format(@"
-                        UPDATE
-                            sems_entry_score
-                        SET
-                            school_year = {1} 
-                        WHERE
-                            id = {0} RETURNING id;
-                        ", SemsEntryID, ChangeSchoolYear);
+                                UPDATE
+                                    sems_entry_score
+                                SET
+                                    school_year = {1} 
+                                WHERE
+                                    id = {0} RETURNING id;
+                            ", SemsEntryID, ChangeSchoolYear);
 
                             DataTable dtUpdate = qh.Select(updateQuery);
 
@@ -237,6 +273,36 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
             return value;
         }
 
+        // 新增：透過學生ID、學年度、學期刪除學期分項成績
+        public int DeleteSemesterEntryScoreByStudentIDSchoolYearSemester(string studentID, string schoolYear, string semester)
+        {
+            int value = -1;
+            try
+            {
+                string query = string.Format(@"
+                    DELETE FROM sems_entry_score 
+                    WHERE ref_student_id = {0} 
+                    AND school_year = {1} 
+                    AND semester = {2} 
+                    RETURNING id;
+                ", studentID, schoolYear, semester);
+                
+                QueryHelper qh = new QueryHelper();
+                DataTable dt = qh.Select(query);
+                
+                if (dt.Rows.Count > 0)
+                {
+                    int.TryParse(dt.Rows[0][0].ToString(), out value);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
+            return value;
+        }
+
         // 比對學期科目名稱與級別是否有相同
         public List<SubjectScoreInfo> CheckHasSubjectNameLevel(string sourceScoreInfo, string changeScoreInfo)
         {
@@ -347,6 +413,52 @@ namespace SmartSchool.Evaluation.Content.ChangeSchoolYear
                 Console.WriteLine("GetStudentHasSemsScoreSchoolYearSemesterByID," + ex.Message);
             }
 
+            return value;
+        }
+
+        /// <summary>
+        /// 更新學期分項成績的學年度
+        /// </summary>
+        /// <param name="SourceSchoolYear">來源學年度</param>
+        /// <param name="SourceSemester">來源學期</param>
+        /// <param name="StudentID">學生ID</param>
+        /// <param name="ChangeSchoolYear">新的學年度</param>
+        /// <returns>更新後的記錄ID，失敗時回傳-1</returns>
+        public int UpdateSemesterEntryScoreSchoolYear(string SourceSchoolYear, string SourceSemester, string StudentID, string ChangeSchoolYear)
+        {
+            int value = -1;
+            try
+            {
+                if (string.IsNullOrEmpty(SourceSchoolYear) || string.IsNullOrEmpty(SourceSemester) || 
+                    string.IsNullOrEmpty(StudentID) || string.IsNullOrEmpty(ChangeSchoolYear))
+                    return -1;
+
+                string updateQuery = string.Format(@"
+                    UPDATE
+                        sems_entry_score
+                    SET
+                        school_year = {3} 
+                    WHERE
+                        ref_student_id = {2}
+                        AND school_year = {0}
+                        AND semester = {1}
+                    RETURNING id;
+                ", SourceSchoolYear, SourceSemester, StudentID, ChangeSchoolYear);
+
+                QueryHelper qh = new QueryHelper();
+                DataTable dt = qh.Select(updateQuery);
+
+                // 檢查更新結果
+                if (dt.Rows.Count > 0)
+                {
+                    int.TryParse(dt.Rows[0]["id"].ToString(), out value);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("UpdateSemesterEntryScoreSchoolYear: " + ex.Message);
+                value = -1;
+            }
             return value;
         }
 

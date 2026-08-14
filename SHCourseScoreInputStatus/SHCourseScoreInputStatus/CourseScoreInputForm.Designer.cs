@@ -43,6 +43,7 @@
             this.btnReload = new DevComponents.DotNetBar.ButtonX();
             this.btnExit = new DevComponents.DotNetBar.ButtonX();
             this.lblMsg = new DevComponents.DotNetBar.LabelX();
+            this.chkNotIncludedInCalc = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.SuspendLayout();
             // 
             // labelX1
@@ -54,7 +55,7 @@
             // 
             this.labelX1.BackgroundStyle.Class = "";
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX1.Location = new System.Drawing.Point(13, 15);
+            this.labelX1.Location = new System.Drawing.Point(13, 25);
             this.labelX1.Name = "labelX1";
             this.labelX1.Size = new System.Drawing.Size(47, 21);
             this.labelX1.TabIndex = 0;
@@ -66,7 +67,7 @@
             this.cbxSchoolYear.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cbxSchoolYear.FormattingEnabled = true;
             this.cbxSchoolYear.ItemHeight = 19;
-            this.cbxSchoolYear.Location = new System.Drawing.Point(62, 13);
+            this.cbxSchoolYear.Location = new System.Drawing.Point(62, 23);
             this.cbxSchoolYear.Name = "cbxSchoolYear";
             this.cbxSchoolYear.Size = new System.Drawing.Size(71, 25);
             this.cbxSchoolYear.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -79,7 +80,7 @@
             this.cbxSemester.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cbxSemester.FormattingEnabled = true;
             this.cbxSemester.ItemHeight = 19;
-            this.cbxSemester.Location = new System.Drawing.Point(184, 13);
+            this.cbxSemester.Location = new System.Drawing.Point(184, 23);
             this.cbxSemester.Name = "cbxSemester";
             this.cbxSemester.Size = new System.Drawing.Size(57, 25);
             this.cbxSemester.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -95,7 +96,7 @@
             // 
             this.labelX2.BackgroundStyle.Class = "";
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(148, 15);
+            this.labelX2.Location = new System.Drawing.Point(148, 25);
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(34, 21);
             this.labelX2.TabIndex = 2;
@@ -111,7 +112,7 @@
             // 
             this.chkNotHasScore.BackgroundStyle.Class = "";
             this.chkNotHasScore.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.chkNotHasScore.Location = new System.Drawing.Point(365, 15);
+            this.chkNotHasScore.Location = new System.Drawing.Point(456, 40);
             this.chkNotHasScore.Name = "chkNotHasScore";
             this.chkNotHasScore.Size = new System.Drawing.Size(174, 21);
             this.chkNotHasScore.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -136,9 +137,9 @@
             this.colScoreSource});
             this.lvData.FullRowSelect = true;
             this.lvData.HideSelection = false;
-            this.lvData.Location = new System.Drawing.Point(13, 54);
+            this.lvData.Location = new System.Drawing.Point(13, 67);
             this.lvData.Name = "lvData";
-            this.lvData.Size = new System.Drawing.Size(526, 263);
+            this.lvData.Size = new System.Drawing.Size(617, 509);
             this.lvData.TabIndex = 4;
             this.lvData.UseCompatibleStateImageBehavior = false;
             this.lvData.View = System.Windows.Forms.View.Details;
@@ -175,7 +176,7 @@
             this.btnExport.AutoSize = true;
             this.btnExport.BackColor = System.Drawing.Color.Transparent;
             this.btnExport.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExport.Location = new System.Drawing.Point(14, 331);
+            this.btnExport.Location = new System.Drawing.Point(14, 590);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(75, 25);
             this.btnExport.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -191,7 +192,7 @@
             this.btnAddTemp.BackColor = System.Drawing.Color.Transparent;
             this.btnAddTemp.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnAddTemp.Enabled = false;
-            this.btnAddTemp.Location = new System.Drawing.Point(95, 331);
+            this.btnAddTemp.Location = new System.Drawing.Point(95, 590);
             this.btnAddTemp.Name = "btnAddTemp";
             this.btnAddTemp.Size = new System.Drawing.Size(78, 25);
             this.btnAddTemp.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -205,7 +206,7 @@
             this.btnReload.AutoSize = true;
             this.btnReload.BackColor = System.Drawing.Color.Transparent;
             this.btnReload.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnReload.Location = new System.Drawing.Point(254, 13);
+            this.btnReload.Location = new System.Drawing.Point(254, 23);
             this.btnReload.Name = "btnReload";
             this.btnReload.Size = new System.Drawing.Size(78, 25);
             this.btnReload.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -220,7 +221,7 @@
             this.btnExit.AutoSize = true;
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExit.Location = new System.Drawing.Point(461, 331);
+            this.btnExit.Location = new System.Drawing.Point(552, 590);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(78, 25);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -239,16 +240,34 @@
             this.lblMsg.BackgroundStyle.Class = "";
             this.lblMsg.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.lblMsg.ForeColor = System.Drawing.Color.Black;
-            this.lblMsg.Location = new System.Drawing.Point(180, 329);
+            this.lblMsg.Location = new System.Drawing.Point(180, 588);
             this.lblMsg.Name = "lblMsg";
             this.lblMsg.Size = new System.Drawing.Size(0, 0);
             this.lblMsg.TabIndex = 10;
+            // 
+            // chkNotIncludedInCalc
+            // 
+            this.chkNotIncludedInCalc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkNotIncludedInCalc.AutoSize = true;
+            this.chkNotIncludedInCalc.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.chkNotIncludedInCalc.BackgroundStyle.Class = "";
+            this.chkNotIncludedInCalc.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.chkNotIncludedInCalc.Location = new System.Drawing.Point(456, 12);
+            this.chkNotIncludedInCalc.Name = "chkNotIncludedInCalc";
+            this.chkNotIncludedInCalc.Size = new System.Drawing.Size(107, 21);
+            this.chkNotIncludedInCalc.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.chkNotIncludedInCalc.TabIndex = 11;
+            this.chkNotIncludedInCalc.Text = "含不評分課程";
             // 
             // CourseScoreInputForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(553, 369);
+            this.ClientSize = new System.Drawing.Size(644, 628);
+            this.Controls.Add(this.chkNotIncludedInCalc);
             this.Controls.Add(this.lblMsg);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnReload);
@@ -287,5 +306,6 @@
         private DevComponents.DotNetBar.ButtonX btnExit;
         private DevComponents.DotNetBar.LabelX lblMsg;
         private System.Windows.Forms.ColumnHeader colScoreSource;
+        private DevComponents.DotNetBar.Controls.CheckBoxX chkNotIncludedInCalc;
     }
 }

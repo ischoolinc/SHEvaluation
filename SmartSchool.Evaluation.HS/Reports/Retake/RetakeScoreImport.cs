@@ -385,7 +385,11 @@ namespace SmartSchool.Evaluation.Reports
                 aInfo.Add("重修學期", info.Detail.HasAttribute("重修學期") ? info.Detail.GetAttribute("重修學期") : "");
 
                 // 新增補修欄位
-                aInfo.Add("是否補修成績", info.Detail.HasAttribute("是否補修成績") ? info.Detail.GetAttribute("是否補修成績") : "");
+                aInfo.Add("是否補修成績",
+                    info.Detail.HasAttribute("是否補修成績") &&
+                    info.Detail.GetAttribute("是否補修成績") == "是"
+                        ? "是"
+                        : "否");
                 aInfo.Add("補修學年度", info.Detail.HasAttribute("補修學年度") ? info.Detail.GetAttribute("補修學年度") : "");
                 aInfo.Add("補修學期", info.Detail.HasAttribute("補修學期") ? info.Detail.GetAttribute("補修學期") : "");
 

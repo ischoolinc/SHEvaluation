@@ -3,14 +3,14 @@ namespace SmartSchool.Evaluation.Process
     partial class CalculationBatch
     {
         /// <summary>
-        /// ³]­p¤u¨ã©Ò»İªºÅÜ¼Æ¡C
+        /// è¨­è¨ˆå·¥å…·æ‰€éœ€çš„è®Šæ•¸ã€‚
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
-        /// ²M°£¥ô¦ó¨Ï¥Î¤¤ªº¸ê·½¡C
+        /// æ¸…é™¤ä»»ä½•ä½¿ç”¨ä¸­çš„è³‡æºã€‚
         /// </summary>
-        /// <param name="disposing">¦pªGÀ³¸Ó¤½¶} Managed ¸ê·½«h¬° true¡A§_«h¬° false¡C</param>
+        /// <param name="disposing">å¦‚æœæ‡‰è©²å…¬é–‹ Managed è³‡æºå‰‡ç‚º trueï¼Œå¦å‰‡ç‚º falseã€‚</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,10 +20,10 @@ namespace SmartSchool.Evaluation.Process
             base.Dispose(disposing);
         }
 
-        #region Windows Form ³]­p¤u¨ã²£¥Íªºµ{¦¡½X
+        #region Windows Form è¨­è¨ˆå·¥å…·ç”¢ç”Ÿçš„ç¨‹å¼ç¢¼
 
         /// <summary>
-        /// ¦¹¬°³]­p¤u¨ã¤ä´©©Ò»İªº¤èªk - ½Ğ¤Å¨Ï¥Îµ{¦¡½X½s¿è¾¹­×§ï³o­Ó¤èªkªº¤º®e¡C
+        /// æ­¤ç‚ºè¨­è¨ˆå·¥å…·æ”¯æ´æ‰€éœ€çš„æ–¹æ³• - è«‹å‹¿ä½¿ç”¨ç¨‹å¼ç¢¼ç·¨è¼¯å™¨ä¿®æ”¹é€™å€‹æ–¹æ³•çš„å…§å®¹ã€‚
         ///
         /// </summary>
         private void InitializeComponent()
@@ -60,31 +60,31 @@ namespace SmartSchool.Evaluation.Process
             this.MainRibbonBar.Location = new System.Drawing.Point(4, 4);
             this.MainRibbonBar.Margin = new System.Windows.Forms.Padding(4);
             this.MainRibbonBar.Size = new System.Drawing.Size(287, 121);
-            this.MainRibbonBar.Text = "¦¨ÁZ³B²z";
+            this.MainRibbonBar.Text = "æˆç¸¾è™•ç†";
             // 
             // buttonItem11
             // 
             this.buttonItem11.ImagePaddingHorizontal = 8;
             this.buttonItem11.Name = "buttonItem11";
-            this.buttonItem11.Text = "­pºâ¾Ç´Á¬ì¥Ø¦¨ÁZ";
+            this.buttonItem11.Text = "è¨ˆç®—å­¸æœŸç§‘ç›®æˆç¸¾";
             // 
             // buttonItem12
             // 
             this.buttonItem12.ImagePaddingHorizontal = 8;
             this.buttonItem12.Name = "buttonItem12";
-            this.buttonItem12.Text = "­pºâ¾Ç´Á¤À¶µ¦¨ÁZ";
+            this.buttonItem12.Text = "è¨ˆç®—å­¸æœŸåˆ†é …æˆç¸¾";
             // 
             // buttonItem14
             // 
             this.buttonItem14.ImagePaddingHorizontal = 8;
             this.buttonItem14.Name = "buttonItem14";
-            this.buttonItem14.Text = "­pºâ¾Ç¦~¬ì¥Ø¦¨ÁZ";
+            this.buttonItem14.Text = "è¨ˆç®—å­¸å¹´ç§‘ç›®æˆç¸¾";
             // 
             // buttonItem15
             // 
             this.buttonItem15.ImagePaddingHorizontal = 8;
             this.buttonItem15.Name = "buttonItem15";
-            this.buttonItem15.Text = "­pºâ¾Ç¦~¤À¶µ¦¨ÁZ";
+            this.buttonItem15.Text = "è¨ˆç®—å­¸å¹´åˆ†é …æˆç¸¾";
             // 
             // buttonItem103
             // 
@@ -106,13 +106,13 @@ namespace SmartSchool.Evaluation.Process
             this.btnSemesterRank,
             this.btnSchoolYearRank});
             this.buttonItem103.SubItemsExpandWidth = 14;
-            this.buttonItem103.Text = "­pºâ¦¨ÁZ";
+            this.buttonItem103.Text = "è¨ˆç®—æˆç¸¾";
             // 
             // buttonItem6
             // 
             this.buttonItem6.ImagePaddingHorizontal = 8;
             this.buttonItem6.Name = "buttonItem6";
-            this.buttonItem6.Text = "¾Ç´Á¦¨ÁZ³B²z";
+            this.buttonItem6.Text = "å­¸æœŸæˆç¸¾è™•ç†";
             this.buttonItem6.Click += new System.EventHandler(this.buttonItem6_Click_1);
             // 
             // labelItem2
@@ -126,7 +126,7 @@ namespace SmartSchool.Evaluation.Process
             this.labelItem2.PaddingLeft = 10;
             this.labelItem2.PaddingTop = 1;
             this.labelItem2.SingleLineColor = System.Drawing.Color.FromArgb(( (int)( ( (byte)( 197 ) ) ) ), ( (int)( ( (byte)( 197 ) ) ) ), ( (int)( ( (byte)( 197 ) ) ) ));
-            this.labelItem2.Text = "¾Ç·~¦¨ÁZ³B²z";
+            this.labelItem2.Text = "å­¸æ¥­æˆç¸¾è™•ç†";
             this.labelItem2.Visible = false;
             // 
             // buttonItem1
@@ -142,21 +142,21 @@ namespace SmartSchool.Evaluation.Process
             this.buttonItem1.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.buttonItem4,
             this.buttonItem5});
-            this.buttonItem1.Text = "­pºâ¾Ç´Á¦¨ÁZ";
+            this.buttonItem1.Text = "è¨ˆç®—å­¸æœŸæˆç¸¾";
             this.buttonItem1.Visible = false;
             // 
             // buttonItem4
             // 
             this.buttonItem4.ImagePaddingHorizontal = 8;
             this.buttonItem4.Name = "buttonItem4";
-            this.buttonItem4.Text = "­pºâ¾Ç´Á¬ì¥Ø¦¨ÁZ";
+            this.buttonItem4.Text = "è¨ˆç®—å­¸æœŸç§‘ç›®æˆç¸¾";
             this.buttonItem4.Click += new System.EventHandler(this.buttonItem4_Click);
             // 
             // buttonItem5
             // 
             this.buttonItem5.ImagePaddingHorizontal = 8;
             this.buttonItem5.Name = "buttonItem5";
-            this.buttonItem5.Text = "­pºâ¾Ç´Á¤À¶µ¦¨ÁZ";
+            this.buttonItem5.Text = "è¨ˆç®—å­¸æœŸåˆ†é …æˆç¸¾";
             this.buttonItem5.Click += new System.EventHandler(this.buttonItem5_Click);
             // 
             // buttonItem7
@@ -166,21 +166,21 @@ namespace SmartSchool.Evaluation.Process
             this.buttonItem7.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.buttonItem2,
             this.buttonItem3});
-            this.buttonItem7.Text = "­pºâ¾Ç¦~¦¨ÁZ";
+            this.buttonItem7.Text = "è¨ˆç®—å­¸å¹´æˆç¸¾";
             this.buttonItem7.Visible = false;
             // 
             // buttonItem2
             // 
             this.buttonItem2.ImagePaddingHorizontal = 8;
             this.buttonItem2.Name = "buttonItem2";
-            this.buttonItem2.Text = "­pºâ¾Ç¦~¬ì¥Ø¦¨ÁZ";
+            this.buttonItem2.Text = "è¨ˆç®—å­¸å¹´ç§‘ç›®æˆç¸¾";
             this.buttonItem2.Click += new System.EventHandler(this.buttonItem2_Click);
             // 
             // buttonItem3
             // 
             this.buttonItem3.ImagePaddingHorizontal = 8;
             this.buttonItem3.Name = "buttonItem3";
-            this.buttonItem3.Text = "­pºâ¾Ç¦~¤À¶µ¦¨ÁZ";
+            this.buttonItem3.Text = "è¨ˆç®—å­¸å¹´åˆ†é …æˆç¸¾";
             this.buttonItem3.Click += new System.EventHandler(this.buttonItem3_Click);
             // 
             // lblCalcRank
@@ -194,14 +194,14 @@ namespace SmartSchool.Evaluation.Process
             this.lblCalcRank.PaddingLeft = 10;
             this.lblCalcRank.PaddingTop = 1;
             this.lblCalcRank.SingleLineColor = System.Drawing.Color.FromArgb(( (int)( ( (byte)( 197 ) ) ) ), ( (int)( ( (byte)( 197 ) ) ) ), ( (int)( ( (byte)( 197 ) ) ) ));
-            this.lblCalcRank.Text = "­pºâ±Æ¦W";
+            this.lblCalcRank.Text = "è¨ˆç®—æ’å";
             this.lblCalcRank.Visible = false;
             // 
             // btnSemesterRank
             // 
             this.btnSemesterRank.ImagePaddingHorizontal = 8;
             this.btnSemesterRank.Name = "btnSemesterRank";
-            this.btnSemesterRank.Text = "¾Ç´Á¦¨ÁZ±Æ¦W";
+            this.btnSemesterRank.Text = "å­¸æœŸæˆç¸¾æ’å";
             this.btnSemesterRank.Visible = false;
             this.btnSemesterRank.Click += new System.EventHandler(this.btnSemesterRank_Click);
             // 
@@ -209,7 +209,7 @@ namespace SmartSchool.Evaluation.Process
             // 
             this.btnSchoolYearRank.ImagePaddingHorizontal = 8;
             this.btnSchoolYearRank.Name = "btnSchoolYearRank";
-            this.btnSchoolYearRank.Text = "¾Ç¦~¦¨ÁZ±Æ¦W";
+            this.btnSchoolYearRank.Text = "å­¸å¹´æˆç¸¾æ’å";
             this.btnSchoolYearRank.Visible = false;
             this.btnSchoolYearRank.Click += new System.EventHandler(this.btnSchoolYearRank_Click);
             // 
@@ -228,7 +228,7 @@ namespace SmartSchool.Evaluation.Process
             this.buttonItem16,
             this.buttonItem17});
             this.buttonItem9.SubItemsExpandWidth = 14;
-            this.buttonItem9.Text = "¼w¦æ¦¨ÁZ";
+            this.buttonItem9.Text = "å¾·è¡Œæˆç¸¾";
             // 
             // labelItem4
             // 
@@ -241,27 +241,27 @@ namespace SmartSchool.Evaluation.Process
             this.labelItem4.PaddingLeft = 10;
             this.labelItem4.PaddingTop = 1;
             this.labelItem4.SingleLineColor = System.Drawing.Color.FromArgb(( (int)( ( (byte)( 197 ) ) ) ), ( (int)( ( (byte)( 197 ) ) ) ), ( (int)( ( (byte)( 197 ) ) ) ));
-            this.labelItem4.Text = "¼w¦æ¦¨ÁZ³B²z";
+            this.labelItem4.Text = "å¾·è¡Œæˆç¸¾è™•ç†";
             // 
             // buttonItem16
             // 
             this.buttonItem16.ImagePaddingHorizontal = 8;
             this.buttonItem16.Name = "buttonItem16";
-            this.buttonItem16.Text = "­pºâ¼w¦æ¾Ç´Á¦¨ÁZ";
+            this.buttonItem16.Text = "è¨ˆç®—å¾·è¡Œå­¸æœŸæˆç¸¾";
             this.buttonItem16.Click += new System.EventHandler(this.buttonItem6_Click);
             // 
             // buttonItem17
             // 
             this.buttonItem17.ImagePaddingHorizontal = 8;
             this.buttonItem17.Name = "buttonItem17";
-            this.buttonItem17.Text = "­pºâ¼w¦æ¾Ç¦~¦¨ÁZ";
+            this.buttonItem17.Text = "è¨ˆç®—å¾·è¡Œå­¸å¹´æˆç¸¾";
             this.buttonItem17.Click += new System.EventHandler(this.buttonItem8_Click);
             // 
             // buttonItem8
             // 
             this.buttonItem8.ImagePaddingHorizontal = 8;
             this.buttonItem8.Name = "buttonItem8";
-            this.buttonItem8.Text = "¾Ç¦~¦¨ÁZ³B²z";
+            this.buttonItem8.Text = "å­¸å¹´æˆç¸¾è™•ç†";
             this.buttonItem8.Click += new System.EventHandler(this.buttonItem8_Click_1);
             // 
             // CalculationBatch

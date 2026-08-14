@@ -18,16 +18,23 @@ namespace SHCourseScoreInputStatus.DAO
         public static List<CourseScoreBase> GetCourseScoreBaseByCourseSchoolYearSemester(int SchoolYear,int Semester)
         {            
             List<CourseScoreBase> retVal = new List<CourseScoreBase>();
-            // 取得課程資料，只需要評分才顯示
+            // 取得課程資料，帶出 not_included_in_calc 欄位，不在 SQL 過濾
             QueryHelper qh = new QueryHelper();
-            //string query = "select course.id,course.course_name from course  where course.school_year=" + SchoolYear + " and course.semester=" + Semester + " and not_included_in_calc='0' AND  ref_exam_template_id IN (SELECT id FROM exam_template WHERE   allow_upload ='1') order by course.course_name,course.id;";
-            string query = "select course.id,course.course_name from course  where course.school_year=" + SchoolYear + " and course.semester=" + Semester + " and not_included_in_calc='0' order by course.course_name,course.id;";
+            string query = "select course.id,course.course_name,course.not_included_in_calc from course  where course.school_year=" + SchoolYear + " and course.semester=" + Semester + " order by course.course_name,course.id;";
             DataTable dt = qh.Select(query);
             foreach (DataRow dr in dt.Rows)
             {
                 CourseScoreBase csb = new CourseScoreBase();
                 csb.CourseID = dr[0].ToString();
                 csb.CourseName = dr[1].ToString();
+                
+                // 處理 not_included_in_calc 欄位
+                string raw = dr[2] == DBNull.Value ? null : dr[2].ToString();
+                csb.NotIncludedInCalcRaw = raw;
+                
+                // 定案規則：只有 "0" 才是 false，其他一律 true
+                csb.NotIncludedInCalc = raw != "0";
+                
                 retVal.Add(csb);            
             }
 
@@ -93,7 +100,28 @@ namespace SHCourseScoreInputStatus.DAO
         {
             Dictionary<string, int> retVal = new Dictionary<string, int>();
             QueryHelper qh = new QueryHelper();
-            string query = "select course.id,count(sc_attend.ref_student_id) from course inner join sc_attend on course.id =sc_attend.ref_course_id inner join student on sc_attend.ref_student_id=student.id where student.status=1 and course.school_year="+SchoolYear+" and course.semester="+Semester+" and score is not null group by course.id order by id;";
+            string query = string.Format(@"
+            SELECT
+                course.id,
+                count(sc_attend.ref_student_id)
+            FROM
+                course
+                INNER JOIN sc_attend ON course.id = sc_attend.ref_course_id
+                INNER JOIN student ON sc_attend.ref_student_id = student.id
+            WHERE
+                student.status = 1
+                AND course.school_year = {0} 
+                AND course.semester = {1} 
+                AND (
+                    score IS NOT NULL
+                    OR designate_final_score IS NOT NULL
+                )
+            GROUP BY
+                course.id
+            ORDER BY
+                course.id;
+            ", SchoolYear, Semester);                
+                
             DataTable dt = qh.Select(query);
             foreach (DataRow dr in dt.Rows)
             {
@@ -140,7 +168,7 @@ WHEN '0' THEN '由學校計算'
 ELSE '' END AS source
 FROM course  
 INNER JOIN exam_template ON course.ref_exam_template_id = exam_template.id 
-AND course.school_year=" + SchoolYear + " AND course.semester=" + Semester + " AND not_included_in_calc='0'";
+WHERE course.school_year=" + SchoolYear + " AND course.semester=" + Semester;
 
             
             DataTable dt = qh.Select(query);

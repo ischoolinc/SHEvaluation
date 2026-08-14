@@ -23,7 +23,7 @@ namespace 定期評量成績單
         [FISCA.MainMethod]
         public static void Main()
         {
-            var btn = K12.Presentation.NLDPanels.Student.RibbonBarItems["資料統計"]["報表"]["成績相關報表"]["定期評量成績單(測試版)"];
+            var btn = K12.Presentation.NLDPanels.Student.RibbonBarItems["資料統計"]["報表"]["成績相關報表"]["即將下架報表"]["定期評量成績單(測試版)"];
             btn.Enable = false;
             K12.Presentation.NLDPanels.Student.SelectedSourceChanged += delegate
             {

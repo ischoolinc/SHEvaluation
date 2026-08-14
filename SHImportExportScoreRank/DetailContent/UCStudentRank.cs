@@ -40,7 +40,21 @@ namespace SHImportExportScoreRank.DetailContent
                 "RankDetailContent",
                 x =>
                 {
-                    ReloadData();
+                    if (this.IsDisposed)
+                        return;
+
+                    if (this.InvokeRequired)
+                    {
+                        this.BeginInvoke(new Action(() =>
+                        {
+                            if (!this.IsDisposed)
+                                ReloadData();
+                        }));
+                    }
+                    else
+                    {
+                        ReloadData();
+                    }
                 });
 
             SetupColumns();
@@ -53,7 +67,9 @@ namespace SHImportExportScoreRank.DetailContent
         private void SetupColumns()
         {
             lvData.Columns.Clear();
+
             AddColumn("學年度", 80);
+            AddColumn("成績年級", 80);
             AddColumn("成績類型", 90);
             AddColumn("成績項目", 90);
             AddColumn("排名範圍", 110);
@@ -164,6 +180,11 @@ namespace SHImportExportScoreRank.DetailContent
                             ? record.SchoolYear.Value.ToString()
                             : string.Empty);
 
+                    item.SubItems.Add(
+                        record.GradeYear.HasValue
+                            ? record.GradeYear.Value.ToString()
+                            : string.Empty);
+
                     item.SubItems.Add(record.ScoreType ?? string.Empty);
                     item.SubItems.Add(record.ScoreItem ?? string.Empty);
                     item.SubItems.Add(record.RankType ?? string.Empty);
@@ -209,6 +230,7 @@ namespace SHImportExportScoreRank.DetailContent
             {
                 StudentId = this.PrimaryKey,
                 SchoolYear = record.SchoolYear,
+                GradeYear = record.GradeYear,
                 ScoreType = record.ScoreType,
                 ScoreItem = record.ScoreItem,
                 CreateTime = record.CreateTime,

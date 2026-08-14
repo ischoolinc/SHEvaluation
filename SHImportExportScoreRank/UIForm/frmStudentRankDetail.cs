@@ -101,6 +101,7 @@ namespace SHImportExportScoreRank.UIForm
                 return;
 
             data.SchoolYear = _context.SchoolYear;
+            data.GradeYear = _context.GradeYear;
             data.ScoreType = _context.ScoreType ?? string.Empty;
             data.ScoreItem = _context.ScoreItem ?? string.Empty;
             data.CreateType = _context.CreateMethod ?? string.Empty;
@@ -116,6 +117,9 @@ namespace SHImportExportScoreRank.UIForm
 
             lblSchoolYearValue.Text = _detailData.SchoolYear.HasValue
                 ? _detailData.SchoolYear.Value.ToString()
+                : string.Empty;
+            lblGradeYearValue.Text = _detailData.GradeYear.HasValue
+                ? _detailData.GradeYear.Value.ToString()
                 : string.Empty;
             lblScoreTypeValue.Text = _detailData.ScoreType ?? string.Empty;
             lblScoreItemValue.Text = _detailData.ScoreItem ?? string.Empty;

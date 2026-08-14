@@ -23,12 +23,14 @@
             this.lblCreateTypeValue = new System.Windows.Forms.Label();
             this.lblScoreItemValue = new System.Windows.Forms.Label();
             this.lblScoreTypeValue = new System.Windows.Forms.Label();
+            this.lblGradeYearValue = new System.Windows.Forms.Label();
             this.lblSchoolYearValue = new System.Windows.Forms.Label();
             this.lblBatchName = new System.Windows.Forms.Label();
             this.lblCreateTime = new System.Windows.Forms.Label();
             this.lblCreateType = new System.Windows.Forms.Label();
             this.lblScoreItem = new System.Windows.Forms.Label();
             this.lblScoreType = new System.Windows.Forms.Label();
+            this.lblGradeYear = new System.Windows.Forms.Label();
             this.lblSchoolYear = new System.Windows.Forms.Label();
             this.dgvRankDetail = new System.Windows.Forms.DataGridView();
             this.btnSave = new DevComponents.DotNetBar.ButtonX();
@@ -47,16 +49,18 @@
             this.grpHeader.Controls.Add(this.lblCreateTypeValue);
             this.grpHeader.Controls.Add(this.lblScoreItemValue);
             this.grpHeader.Controls.Add(this.lblScoreTypeValue);
+            this.grpHeader.Controls.Add(this.lblGradeYearValue);
             this.grpHeader.Controls.Add(this.lblSchoolYearValue);
             this.grpHeader.Controls.Add(this.lblBatchName);
             this.grpHeader.Controls.Add(this.lblCreateTime);
             this.grpHeader.Controls.Add(this.lblCreateType);
             this.grpHeader.Controls.Add(this.lblScoreItem);
             this.grpHeader.Controls.Add(this.lblScoreType);
+            this.grpHeader.Controls.Add(this.lblGradeYear);
             this.grpHeader.Controls.Add(this.lblSchoolYear);
             this.grpHeader.Location = new System.Drawing.Point(12, 12);
             this.grpHeader.Name = "grpHeader";
-            this.grpHeader.Size = new System.Drawing.Size(860, 96);
+            this.grpHeader.Size = new System.Drawing.Size(860, 120);
             this.grpHeader.TabIndex = 0;
             this.grpHeader.TabStop = false;
             // 
@@ -87,7 +91,7 @@
             // lblScoreItemValue
             // 
             this.lblScoreItemValue.AutoSize = true;
-            this.lblScoreItemValue.Location = new System.Drawing.Point(308, 66);
+            this.lblScoreItemValue.Location = new System.Drawing.Point(308, 90);
             this.lblScoreItemValue.Name = "lblScoreItemValue";
             this.lblScoreItemValue.Size = new System.Drawing.Size(0, 17);
             this.lblScoreItemValue.TabIndex = 8;
@@ -95,10 +99,18 @@
             // lblScoreTypeValue
             // 
             this.lblScoreTypeValue.AutoSize = true;
-            this.lblScoreTypeValue.Location = new System.Drawing.Point(308, 42);
+            this.lblScoreTypeValue.Location = new System.Drawing.Point(308, 66);
             this.lblScoreTypeValue.Name = "lblScoreTypeValue";
             this.lblScoreTypeValue.Size = new System.Drawing.Size(0, 17);
             this.lblScoreTypeValue.TabIndex = 7;
+            // 
+            // lblGradeYearValue
+            // 
+            this.lblGradeYearValue.AutoSize = true;
+            this.lblGradeYearValue.Location = new System.Drawing.Point(308, 42);
+            this.lblGradeYearValue.Name = "lblGradeYearValue";
+            this.lblGradeYearValue.Size = new System.Drawing.Size(0, 17);
+            this.lblGradeYearValue.TabIndex = 12;
             // 
             // lblSchoolYearValue
             // 
@@ -138,7 +150,7 @@
             // lblScoreItem
             // 
             this.lblScoreItem.AutoSize = true;
-            this.lblScoreItem.Location = new System.Drawing.Point(232, 66);
+            this.lblScoreItem.Location = new System.Drawing.Point(232, 90);
             this.lblScoreItem.Name = "lblScoreItem";
             this.lblScoreItem.Size = new System.Drawing.Size(60, 17);
             this.lblScoreItem.TabIndex = 2;
@@ -147,11 +159,20 @@
             // lblScoreType
             // 
             this.lblScoreType.AutoSize = true;
-            this.lblScoreType.Location = new System.Drawing.Point(232, 42);
+            this.lblScoreType.Location = new System.Drawing.Point(232, 66);
             this.lblScoreType.Name = "lblScoreType";
             this.lblScoreType.Size = new System.Drawing.Size(60, 17);
             this.lblScoreType.TabIndex = 1;
             this.lblScoreType.Text = "成績類型";
+            // 
+            // lblGradeYear
+            // 
+            this.lblGradeYear.AutoSize = true;
+            this.lblGradeYear.Location = new System.Drawing.Point(232, 42);
+            this.lblGradeYear.Name = "lblGradeYear";
+            this.lblGradeYear.Size = new System.Drawing.Size(60, 17);
+            this.lblGradeYear.TabIndex = 13;
+            this.lblGradeYear.Text = "成績年級";
             // 
             // lblSchoolYear
             // 
@@ -172,14 +193,14 @@
             this.dgvRankDetail.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvRankDetail.BackgroundColor = System.Drawing.Color.White;
             this.dgvRankDetail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvRankDetail.Location = new System.Drawing.Point(12, 114);
+            this.dgvRankDetail.Location = new System.Drawing.Point(12, 138);
             this.dgvRankDetail.MultiSelect = false;
             this.dgvRankDetail.Name = "dgvRankDetail";
             this.dgvRankDetail.ReadOnly = true;
             this.dgvRankDetail.RowHeadersVisible = false;
             this.dgvRankDetail.RowTemplate.Height = 24;
             this.dgvRankDetail.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvRankDetail.Size = new System.Drawing.Size(860, 302);
+            this.dgvRankDetail.Size = new System.Drawing.Size(860, 278);
             this.dgvRankDetail.TabIndex = 1;
             // 
             // btnSave
@@ -236,12 +257,14 @@
 
         private System.Windows.Forms.GroupBox grpHeader;
         private System.Windows.Forms.Label lblSchoolYear;
+        private System.Windows.Forms.Label lblGradeYear;
         private System.Windows.Forms.Label lblScoreType;
         private System.Windows.Forms.Label lblScoreItem;
         private System.Windows.Forms.Label lblCreateType;
         private System.Windows.Forms.Label lblCreateTime;
         private System.Windows.Forms.Label lblBatchName;
         private System.Windows.Forms.Label lblSchoolYearValue;
+        private System.Windows.Forms.Label lblGradeYearValue;
         private System.Windows.Forms.Label lblScoreTypeValue;
         private System.Windows.Forms.Label lblScoreItemValue;
         private System.Windows.Forms.Label lblCreateTypeValue;

@@ -174,6 +174,16 @@ HAVING COUNT(*) > 1;",
             string scoreType = NullToEmpty(context.ScoreType);
             string scoreItem = NullToEmpty(context.ScoreItem);
 
+            string gradeYearCondition;
+            if (context.GradeYear.HasValue)
+            {
+                gradeYearCondition = "AND ro.grade_year = " + context.GradeYear.Value;
+            }
+            else
+            {
+                gradeYearCondition = "AND ro.grade_year IS NULL";
+            }
+
             string sql = string.Format(@"
 SELECT
     ro.id,
@@ -183,6 +193,7 @@ SELECT
     ro.rank_type,
     ro.matrix_count,
     ro.school_year,
+    ro.grade_year,
     ext->>'成績類型' AS score_type,
     ext->>'成績項目' AS score_item,
     ext->>'create_time' AS create_time,
@@ -200,6 +211,7 @@ WHERE ro.ref_student_id = {0}
   AND ext->>'extension_name' = '排名資料'
   AND COALESCE(ext->>'成績類型', '') = '{4}'
   AND COALESCE(ext->>'成績項目', '') = '{5}'
+  {6}
 ORDER BY
     ro.rank_type,
     ro.rank_name,
@@ -209,7 +221,8 @@ ORDER BY
                 RankOverrideConstants.SchoolYearSemester,
                 SqlLiteralHelper.Escape(RankOverrideConstants.ItemType),
                 SqlLiteralHelper.Escape(scoreType),
-                SqlLiteralHelper.Escape(scoreItem));
+                SqlLiteralHelper.Escape(scoreItem),
+                gradeYearCondition);
 
             try
             {
@@ -242,6 +255,7 @@ ORDER BY
             StudentRankDetailContext context)
         {
             data.SchoolYear = ToNullableInt(row["school_year"]) ?? context.SchoolYear;
+            data.GradeYear = ToNullableInt(row["grade_year"]) ?? context.GradeYear;
             data.ScoreType = FirstNonEmpty(
                 NullToEmpty(row["score_type"]),
                 context.ScoreType);
@@ -266,6 +280,7 @@ ORDER BY
                 return;
 
             data.SchoolYear = context.SchoolYear;
+            data.GradeYear = context.GradeYear;
             data.ScoreType = context.ScoreType ?? string.Empty;
             data.ScoreItem = context.ScoreItem ?? string.Empty;
             data.CreateType = context.CreateMethod ?? string.Empty;

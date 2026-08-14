@@ -5,6 +5,7 @@ namespace SHImportExportScoreRank.DAO
     public class StudentRankDetailData
     {
         public int? SchoolYear { get; set; }
+        public int? GradeYear { get; set; }
         public string ScoreType { get; set; }
         public string ScoreItem { get; set; }
         public string CreateType { get; set; }

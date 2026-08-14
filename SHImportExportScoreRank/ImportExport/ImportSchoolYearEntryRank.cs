@@ -142,7 +142,7 @@ namespace SHImportExportScoreRank.ImportExport
 
             try
             {
-                FISCA.Features.Invoke("SchoolYearEntryRankDetailContent");
+                FISCA.Features.Invoke("RankDetailContent");
             }
             catch
             {

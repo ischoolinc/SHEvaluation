@@ -688,8 +688,34 @@ namespace SmartSchool.Evaluation.ImportExport
                                                 }
                                             }
                                             #endregion
+                                            decimal passScore = _StudentPassScore[studentRec][gy];
+                                            decimal coursePassScore;
+                                            if (decimal.TryParse(score.Detail.GetAttribute("修課及格標準"), out coursePassScore))
+                                            {
+                                                passScore = coursePassScore;
+                                            }
                                             #endregion
-                                            score.Detail.SetAttribute("是否取得學分", ((score.Detail.GetAttribute("不需評分") == "是") || maxScore >= _StudentPassScore[studentRec][gy]) ? "是" : "否");
+                                            //FISCA.LogAgent.ApplicationLog.Log(
+                                            //    "匯入學期科目成績",
+                                            //    "Debug",
+                                            //    "學生：" + studentRec.StudentName +
+                                            //    "，科目：" + data["科目"] +
+                                            //    "，原始成績：" + score.Detail.GetAttribute("原始成績") +
+                                            //    "，補考成績：" + score.Detail.GetAttribute("補考成績") +
+                                            //    "，重修成績：" + score.Detail.GetAttribute("重修成績") +
+                                            //    "，學年調整成績：" + score.Detail.GetAttribute("學年調整成績") +
+                                            //    "，擇優採計成績：" + score.Detail.GetAttribute("擇優採計成績") +
+                                            //    "，修課及格標準：" + score.Detail.GetAttribute("修課及格標準") +
+                                            //    "，學生原本及格標準：" + _StudentPassScore[studentRec][gy] +
+                                            //    "，實際使用及格標準：" + passScore +
+                                            //    "，最高成績：" + maxScore +
+                                            //    "，不需評分：" + score.Detail.GetAttribute("不需評分") +
+                                            //    "，判斷取得學分：" +
+                                            //    (((score.Detail.GetAttribute("不需評分") == "是")
+                                            //        || maxScore >= passScore) ? "是" : "否")
+                                            //);
+
+                                            score.Detail.SetAttribute("是否取得學分", ((score.Detail.GetAttribute("不需評分") == "是") || maxScore >= passScore) ? "是" : "否");
                                         }
                                         if (hasChanged)
                                             scoreDetailLogStringBuilder.AppendLine(logLine);
@@ -875,8 +901,14 @@ namespace SmartSchool.Evaluation.ImportExport
                                             }
                                         }
                                         #endregion
+                                        decimal passScore = _StudentPassScore[studentRec][gy];
+                                        decimal coursePassScore;
+                                        if (decimal.TryParse(newScore.GetAttribute("修課及格標準"), out coursePassScore))
+                                        {
+                                            passScore = coursePassScore;
+                                        }
                                         #endregion
-                                        newScore.SetAttribute("是否取得學分", ((newScore.GetAttribute("不需評分") == "是") || maxScore >= _StudentPassScore[studentRec][gy]) ? "是" : "否");
+                                        newScore.SetAttribute("是否取得學分", ((newScore.GetAttribute("不需評分") == "是") || maxScore >= passScore) ? "是" : "否");
                                     }
                                     #endregion
                                     subjectScoreInfo.AppendChild(newScore);
@@ -1023,8 +1055,14 @@ namespace SmartSchool.Evaluation.ImportExport
                                         }
                                     }
                                     #endregion
+                                    decimal passScore = _StudentPassScore[studentRec][gy];
+                                    decimal coursePassScore;
+                                    if (decimal.TryParse(newScore.GetAttribute("修課及格標準"), out coursePassScore))
+                                    {
+                                        passScore = coursePassScore;
+                                    }
                                     #endregion
-                                    newScore.SetAttribute("是否取得學分", ((newScore.GetAttribute("不需評分") == "是") || maxScore >= _StudentPassScore[studentRec][gy]) ? "是" : "否");
+                                    newScore.SetAttribute("是否取得學分", ((newScore.GetAttribute("不需評分") == "是") || maxScore >= passScore) ? "是" : "否");
                                 }
                                 #endregion
                                 subjectScoreInfo.AppendChild(newScore);

@@ -33,6 +33,30 @@ namespace SmartSchool.Evaluation.ImportExport
             Dictionary<string, StudentRecord> _StudentCollection = new Dictionary<string, StudentRecord>();
             Dictionary<StudentRecord, Dictionary<int, decimal>> _StudentPassScore = new Dictionary<StudentRecord, Dictionary<int, decimal>>();
             AccessHelper _AccessHelper;
+            string[] requiredImportFields = new string[]
+            {
+                "科目",
+                "科目級別",
+                "學年度",
+                "學期",
+                "成績年級",
+                "是否補修成績",
+                "補修學年度",
+                "補修學期",
+                "重修學年度",
+                "重修學期",
+                "學分數",
+                "分項類別",
+                "必選修",
+                "校部訂",
+                "原始成績",
+                "重修成績",
+                "取得學分"
+            };
+            // 同一輪驗證只檢查一次欄位結構。缺欄位時每一筆都要帶上這個錯誤，
+            // 不可只記在 HashSet 後讓後續資料列變成沒有錯誤訊息。
+            bool requiredFieldPresenceChecked = false;
+            string missingRequiredFieldsMessage = null;
 
             VirtualRadioButton autoCheckPass = new VirtualRadioButton("自動判斷取得學分", true);
             VirtualRadioButton manulCheckPass = new VirtualRadioButton("手動判斷取得學分", false);
@@ -40,8 +64,7 @@ namespace SmartSchool.Evaluation.ImportExport
             {
                 if (autoCheckPass.Checked)
                 {
-                    // 成績年級本來就在 RequiredFields.AddRange 中設定為必填
-                    // 為了保險，仍然檢查一次，若被移除則補回
+                    // 「成績年級」與「取得學分」無論自動或手動都必填，若被移除則補回
                     if (!wizard.RequiredFields.Contains("成績年級"))
                         wizard.RequiredFields.Add("成績年級");
 
@@ -53,23 +76,24 @@ namespace SmartSchool.Evaluation.ImportExport
             {
                 if (manulCheckPass.Checked)
                 {
-                    // 「成績年級」現在設計為無論自動或手動都必填，因此不可移除
-                    // if (wizard.RequiredFields.Contains("成績年級"))
-                    //     wizard.RequiredFields.Remove("成績年級");
+                    // 「成績年級」與「取得學分」無論自動或手動都必填，因此不可移除
+                    if (!wizard.RequiredFields.Contains("成績年級"))
+                        wizard.RequiredFields.Add("成績年級");
 
-                    // 手動判斷時，只移除「取得學分」的必填限制
-                    if (wizard.RequiredFields.Contains("取得學分"))
-                        wizard.RequiredFields.Remove("取得學分");
+                    if (!wizard.RequiredFields.Contains("取得學分"))
+                        wizard.RequiredFields.Add("取得學分");
                 }
             };
             wizard.Options.AddRange(autoCheckPass, manulCheckPass);
             wizard.PackageLimit = 3000;
             wizard.ImportableFields.AddRange("領域", "科目", "科目級別", "學年度", "學期", "英文名稱", "學分數", "分項類別", "成績年級", "必選修", "校部訂", "原始成績", "補考成績", "重修成績", "手動調整成績", "學年調整成績", "取得學分", "不計學分", "不需評分", "註記", "是否補修成績", "補修學年度", "補修學期", "重修學年度", "重修學期", "修課及格標準", "修課補考標準", "修課備註", "修課直接指定總成績", "免修", "抵免", "指定學年科目名稱", "課程代碼", "報部科目名稱", "是否重讀");
 
-            wizard.RequiredFields.AddRange("科目", "科目級別", "學年度", "學期", "成績年級", "是否補修成績", "補修學年度", "補修學期", "重修學年度", "重修學期");
+            wizard.RequiredFields.AddRange(requiredImportFields);
             wizard.ValidateStart += delegate (object sender, SmartSchool.API.PlugIn.Import.ValidateStartEventArgs e)
             {
                 #region ValidateStart
+                requiredFieldPresenceChecked = false;
+                missingRequiredFieldsMessage = null;
                 _ID_SchoolYear_Semester_GradeYear.Clear();
                 _ID_SchoolYear_Semester_Subject.Clear();
                 _StudentCollection.Clear();
@@ -95,6 +119,30 @@ namespace SmartSchool.Evaluation.ImportExport
             wizard.ValidateRow += delegate (object sender, SmartSchool.API.PlugIn.Import.ValidateRowEventArgs e)
             {
                 #region ValidateRow
+                if (!requiredFieldPresenceChecked)
+                {
+                    requiredFieldPresenceChecked = true;
+                    HashSet<string> selectedFieldSet = new HashSet<string>(e.SelectFields);
+                    StringBuilder missingFieldsMessage = new StringBuilder();
+                    foreach (string requiredField in requiredImportFields)
+                    {
+                        if (selectedFieldSet.Contains(requiredField))
+                            continue;
+
+                        if (missingFieldsMessage.Length > 0)
+                            missingFieldsMessage.Append('\n');
+                        missingFieldsMessage.Append("缺少必填欄位：").Append(requiredField);
+                    }
+                    missingRequiredFieldsMessage = missingFieldsMessage.Length > 0
+                        ? missingFieldsMessage.ToString()
+                        : null;
+                }
+                if (missingRequiredFieldsMessage != null)
+                {
+                    e.ErrorMessage = missingRequiredFieldsMessage;
+                    return;
+                }
+
                 int t;
                 decimal k;
                 decimal d;
@@ -134,8 +182,19 @@ namespace SmartSchool.Evaluation.ImportExport
                             }
                             break;
                         case "學年度":
-                        case "學分數":
                             if (value == "" || !decimal.TryParse(value, out k))
+                            {
+                                inputFormatPass &= false;
+                                e.ErrorFields.Add(field, "必須填入數字或小數");
+                            }
+                            break;
+                        case "學分數":
+                            if (string.IsNullOrWhiteSpace(value))
+                            {
+                                inputFormatPass &= false;
+                                e.ErrorFields.Add(field, "必須填寫");
+                            }
+                            else if (!decimal.TryParse(value, out k))
                             {
                                 inputFormatPass &= false;
                                 e.ErrorFields.Add(field, "必須填入數字或小數");
@@ -155,9 +214,7 @@ namespace SmartSchool.Evaluation.ImportExport
                                 e.ErrorFields.Add(field, "必須填入1或2");
                             }
                             break;
-                        case "原始成績":
                         case "補考成績":
-                        case "重修成績":
                         case "手動調整成績":
                         case "學年調整成績":
                         case "修課及格標準":
@@ -170,8 +227,21 @@ namespace SmartSchool.Evaluation.ImportExport
                                 e.ErrorFields.Add(field, "必須填入空白或數值");
                             }
                             break;
+                        case "原始成績":
+                        case "重修成績":
+                            if (value != "" && !decimal.TryParse(value, out d))
+                            {
+                                inputFormatPass = false;
+                                e.ErrorFields.Add(field, "必須填入空白或數值");
+                            }
+                            break;
                         case "取得學分":
-                            if (value != "是" && value != "否" && manulCheckPass.Checked)
+                            if (string.IsNullOrWhiteSpace(value))
+                            {
+                                inputFormatPass &= false;
+                                e.ErrorFields.Add(field, "必須填寫");
+                            }
+                            else if (manulCheckPass.Checked && value != "是" && value != "否")
                             {
                                 inputFormatPass &= false;
                                 e.ErrorFields.Add(field, "必須填入是或否");
@@ -194,21 +264,36 @@ namespace SmartSchool.Evaluation.ImportExport
                             }
                             break;
                         case "必選修":
-                            if (value != "必修" && value != "選修")
+                            if (string.IsNullOrWhiteSpace(value))
+                            {
+                                inputFormatPass &= false;
+                                e.ErrorFields.Add(field, "必須填寫");
+                            }
+                            else if (value != "必修" && value != "選修")
                             {
                                 inputFormatPass &= false;
                                 e.ErrorFields.Add(field, "必須填入必修或選修");
                             }
                             break;
                         case "校部訂":
-                            if (value != "校訂" && value != "部訂" && value != "部定")
+                            if (string.IsNullOrWhiteSpace(value))
+                            {
+                                inputFormatPass &= false;
+                                e.ErrorFields.Add(field, "必須填寫");
+                            }
+                            else if (value != "校訂" && value != "部訂" && value != "部定")
                             {
                                 inputFormatPass &= false;
                                 e.ErrorFields.Add(field, "必須填入校訂或部定");
                             }
                             break;
                         case "分項類別":
-                            if (value != "學業" && value != "實習科目" && value != "專業科目")
+                            if (string.IsNullOrWhiteSpace(value))
+                            {
+                                inputFormatPass &= false;
+                                e.ErrorFields.Add(field, "必須填寫");
+                            }
+                            else if (value != "學業" && value != "實習科目" && value != "專業科目")
                             {
                                 inputFormatPass &= false;
                                 e.ErrorFields.Add(field, "必須填入 學業、專業科目或實習科目");

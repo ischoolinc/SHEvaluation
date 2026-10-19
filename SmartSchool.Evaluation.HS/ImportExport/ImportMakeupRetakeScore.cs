@@ -70,6 +70,9 @@ namespace SmartSchool.Evaluation.ImportExport
 
                     if (!wizard.RequiredFields.Contains("取得學分"))
                         wizard.RequiredFields.Add("取得學分");
+
+                    if (!wizard.RequiredFields.Contains("修課及格標準"))
+                        wizard.RequiredFields.Add("修課及格標準");
                 }
             };
             manulCheckPass.CheckedChanged += delegate
@@ -82,6 +85,9 @@ namespace SmartSchool.Evaluation.ImportExport
 
                     if (!wizard.RequiredFields.Contains("取得學分"))
                         wizard.RequiredFields.Add("取得學分");
+
+                    if (wizard.RequiredFields.Contains("修課及格標準"))
+                        wizard.RequiredFields.Remove("修課及格標準");
                 }
             };
             wizard.Options.AddRange(autoCheckPass, manulCheckPass);
@@ -89,6 +95,9 @@ namespace SmartSchool.Evaluation.ImportExport
             wizard.ImportableFields.AddRange("領域", "科目", "科目級別", "學年度", "學期", "英文名稱", "學分數", "分項類別", "成績年級", "必選修", "校部訂", "原始成績", "補考成績", "重修成績", "手動調整成績", "學年調整成績", "取得學分", "不計學分", "不需評分", "註記", "是否補修成績", "補修學年度", "補修學期", "重修學年度", "重修學期", "修課及格標準", "修課補考標準", "修課備註", "修課直接指定總成績", "免修", "抵免", "指定學年科目名稱", "課程代碼", "報部科目名稱", "是否重讀");
 
             wizard.RequiredFields.AddRange(requiredImportFields);
+            // 預設是自動判斷。修課及格標準只在自動模式列入必要欄位，手動模式改由第 2 頁勾選。
+            if (autoCheckPass.Checked && !wizard.RequiredFields.Contains("修課及格標準"))
+                wizard.RequiredFields.Add("修課及格標準");
             wizard.ValidateStart += delegate (object sender, SmartSchool.API.PlugIn.Import.ValidateStartEventArgs e)
             {
                 #region ValidateStart
@@ -124,7 +133,10 @@ namespace SmartSchool.Evaluation.ImportExport
                     requiredFieldPresenceChecked = true;
                     HashSet<string> selectedFieldSet = new HashSet<string>(e.SelectFields);
                     StringBuilder missingFieldsMessage = new StringBuilder();
-                    foreach (string requiredField in requiredImportFields)
+                    List<string> fieldsRequiredNow = new List<string>(requiredImportFields);
+                    if (autoCheckPass.Checked)
+                        fieldsRequiredNow.Add("修課及格標準");
+                    foreach (string requiredField in fieldsRequiredNow)
                     {
                         if (selectedFieldSet.Contains(requiredField))
                             continue;
@@ -214,10 +226,21 @@ namespace SmartSchool.Evaluation.ImportExport
                                 e.ErrorFields.Add(field, "必須填入1或2");
                             }
                             break;
+                        case "補修學期":
+                        case "重修學期":
+                            if (!string.IsNullOrWhiteSpace(value))
+                            {
+                                int semesterNo;
+                                if (!int.TryParse(value, out semesterNo) || semesterNo < 1 || semesterNo > 2)
+                                {
+                                    inputFormatPass = false;
+                                    e.ErrorFields.Add(field, "必須填入1或2");
+                                }
+                            }
+                            break;
                         case "補考成績":
                         case "手動調整成績":
                         case "學年調整成績":
-                        case "修課及格標準":
                         case "修課補考標準":
                         case "修課直接指定總成績":
                             //case "應修學期":
@@ -227,7 +250,27 @@ namespace SmartSchool.Evaluation.ImportExport
                                 e.ErrorFields.Add(field, "必須填入空白或數值");
                             }
                             break;
-                        case "原始成績":
+                        case "修課及格標準":
+                            if (string.IsNullOrWhiteSpace(value))
+                            {
+                                // 手動模式允許空白，空白時不覆蓋系統既有值。自動模式每筆都要填。
+                                if (autoCheckPass.Checked)
+                                {
+                                    inputFormatPass &= false;
+                                    e.ErrorFields.Add(field, "必須填寫");
+                                }
+                            }
+                            else if (!decimal.TryParse(value, out d))
+                            {
+                                inputFormatPass &= false;
+                                e.ErrorFields.Add(field, "必須填入數字或小數");
+                            }
+                            else if (d < 0 || d > 100)
+                            {
+                                inputFormatPass &= false;
+                                e.ErrorFields.Add(field, "必須介於0到100");
+                            }
+                            break;
                         case "重修成績":
                             if (value != "" && !decimal.TryParse(value, out d))
                             {
@@ -314,6 +357,22 @@ namespace SmartSchool.Evaluation.ImportExport
                     }
                 }
                 #endregion
+                // 「是否補修成績」空白已在上面的 switch 視為「否」。只有「是」才檢查原始成績。
+                if (e.SelectFields.Contains("是否補修成績") && e.SelectFields.Contains("原始成績")
+                    && e.Data["是否補修成績"] == "是")
+                {
+                    string originalScore = e.Data["原始成績"];
+                    if (string.IsNullOrWhiteSpace(originalScore))
+                    {
+                        inputFormatPass = false;
+                        e.ErrorFields.Add("原始成績", "必須填寫");
+                    }
+                    else if (!decimal.TryParse(originalScore, out d))
+                    {
+                        inputFormatPass = false;
+                        e.ErrorFields.Add("原始成績", "必須填入數字或小數");
+                    }
+                }
                 //輸入格式正確才會針對情節做檢驗
                 if (inputFormatPass)
                 {
@@ -338,12 +397,37 @@ namespace SmartSchool.Evaluation.ImportExport
                         #region 驗證新增科目成績
                         bool isNewSubjectInfo = true;
                         string message = "";
+                        decimal importedPassStandard = 0;
+                        string importedPassText = "";
+                        bool comparePassStandard = false;
+                        if (e.SelectFields.Contains("修課及格標準"))
+                        {
+                            importedPassText = e.Data["修課及格標準"];
+                            comparePassStandard = !string.IsNullOrWhiteSpace(importedPassText)
+                                && decimal.TryParse(importedPassText, out importedPassStandard)
+                                && importedPassStandard >= 0
+                                && importedPassStandard <= 100;
+                        }
                         foreach (SemesterSubjectScoreInfo info in student.SemesterSubjectScoreList)
                         {
                             if (info.SchoolYear == sy && info.Semester == se)
                             {
                                 if (info.Subject == subject && info.Level == level)
+                                {
                                     isNewSubjectInfo = false;
+                                    if (comparePassStandard && !e.WarningFields.ContainsKey("修課及格標準"))
+                                    {
+                                        string systemPassText = info.Detail.GetAttribute("修課及格標準") ?? "";
+                                        decimal systemPassStandard;
+                                        bool samePassStandard = decimal.TryParse(systemPassText, out systemPassStandard)
+                                            && systemPassStandard == importedPassStandard;
+                                        if (!samePassStandard)
+                                        {
+                                            e.WarningFields.Add("修課及格標準",
+                                                "系統原有修課及格標準為「" + systemPassText + "」，本次匯入為「" + importedPassText + "」，匯入後將更新，請確認。");
+                                        }
+                                    }
+                                }
                             }
                         }
                         if (isNewSubjectInfo)
@@ -481,44 +565,40 @@ namespace SmartSchool.Evaluation.ImportExport
                             }
                         }
 
-                        // 檢查重修學年度、重修學期
+                        // 檢查重修學年度、重修學期。學期 1 或 2 已在格式 switch 檢查，這裡不再對學期報「必須是數值」。
                         if (e.SelectFields.Contains("重修成績") && e.SelectFields.Contains("重修學年度") && e.SelectFields.Contains("重修學期"))
                         {
                             if (!string.IsNullOrWhiteSpace(e.Data["重修成績"]))
                             {
                                 string retakeSchoolYear = e.Data["重修學年度"];
                                 string retakeSemester = e.Data["重修學期"];
-                                bool validRetakeSchoolYear = int.TryParse(retakeSchoolYear, out _);
-                                bool validRetakeSemester = int.TryParse(retakeSemester, out _);
 
                                 if (string.IsNullOrWhiteSpace(retakeSchoolYear) || string.IsNullOrWhiteSpace(retakeSemester))
                                 {
                                     errorMessage += (errorMessage == "" ? "" : "\n") + "重修學年度、重修學期 必填!";
                                 }
-                                else if (!validRetakeSchoolYear || !validRetakeSemester)
+                                else if (!int.TryParse(retakeSchoolYear, out _))
                                 {
-                                    errorMessage += (errorMessage == "" ? "" : "\n") + "重修學年度、重修學期 必須是數值!";
+                                    e.ErrorFields.Add("重修學年度", "必須是數值");
                                 }
                             }
                         }
 
-                        // 檢查補修，當是否補休成績=是，補修學年度、補修學期
+                        // 檢查補修，當是否補休成績=是，補修學年度、補修學期。學期 1 或 2 已在格式 switch 檢查。
                         if (e.SelectFields.Contains("是否補修成績") && e.SelectFields.Contains("補修學年度") && e.SelectFields.Contains("補修學期"))
                         {
                             if (e.Data["是否補修成績"] == "是")
                             {
                                 string makeUpSchoolYear = e.Data["補修學年度"];
                                 string makeUpSemester = e.Data["補修學期"];
-                                bool validMakeUpSchoolYear = int.TryParse(makeUpSchoolYear, out _);
-                                bool validMakeUpSemester = int.TryParse(makeUpSemester, out _);
 
                                 if (string.IsNullOrWhiteSpace(makeUpSchoolYear) || string.IsNullOrWhiteSpace(makeUpSemester))
                                 {
                                     errorMessage += (errorMessage == "" ? "" : "\n") + "補修學年度、補修學期 必填!";
                                 }
-                                else if (!validMakeUpSchoolYear || !validMakeUpSemester)
+                                else if (!int.TryParse(makeUpSchoolYear, out _))
                                 {
-                                    errorMessage += (errorMessage == "" ? "" : "\n") + "補修學年度、補修學期 必須是數值!";
+                                    e.ErrorFields.Add("補修學年度", "必須是數值");
                                 }
                             }
                         }
@@ -647,18 +727,10 @@ namespace SmartSchool.Evaluation.ImportExport
 
                             // 補修成績及格判斷：根據原始成績與及格標準比較
                             decimal retakeScoreValue;
-                            decimal passingStandardForScoreP = 60;
+                            string existingPassTextForScoreP = "";
                             if (semesterScoreDictionary[sy][se].ContainsKey(key))
-                            {
-                                SemesterSubjectScoreInfo score = semesterScoreDictionary[sy][se][key];
-                                string passStr = score.Detail.GetAttribute("修課及格標準");
-                                if (!decimal.TryParse(passStr, out passingStandardForScoreP) || passingStandardForScoreP <= 0)
-                                    passingStandardForScoreP = 60;
-                            }
-                            else
-                            {
-                                passingStandardForScoreP = 60; // 如果沒有現有成績資料，使用預設值
-                            }
+                                existingPassTextForScoreP = semesterScoreDictionary[sy][se][key].Detail.GetAttribute("修課及格標準");
+                            decimal passingStandardForScoreP = ResolveCoursePassStandard(row, existingPassTextForScoreP);
 
                             if (decimal.TryParse(GetRowDataCellValue(row, "原始成績"), out retakeScoreValue))
                             {
@@ -679,30 +751,14 @@ namespace SmartSchool.Evaluation.ImportExport
                             if (row.ContainsKey("補考成績"))
                                 if (decimal.TryParse(row["補考成績"].ToString(), out decimal reScoreValue2))
                                 {
+                                    string existingPassText = "";
                                     if (semesterScoreDictionary[sy][se].ContainsKey(key))
-                                    {
-                                        SemesterSubjectScoreInfo score = semesterScoreDictionary[sy][se][key];
-                                        string passStr = score.Detail.GetAttribute("修課及格標準");
-                                        if (decimal.TryParse(passStr, out decimal passingStandard))
-                                        {
-                                            if (reScoreValue2 >= 0 && reScoreValue2 <= passingStandard)
-                                                reScore = reScoreValue2.ToString();
-                                            else
-                                                reScore = "-1";
-                                        }
-                                        else
-                                        {
-                                            reScore = "-1"; // 如果無法轉數字，預設為 -1
-                                        }
-                                    }
+                                        existingPassText = semesterScoreDictionary[sy][se][key].Detail.GetAttribute("修課及格標準");
+                                    decimal passingStandard = ResolveCoursePassStandard(row, existingPassText);
+                                    if (reScoreValue2 >= 0 && reScoreValue2 <= passingStandard)
+                                        reScore = reScoreValue2.ToString();
                                     else
-                                    {
-                                        decimal passingStandard = 60; // 如果沒有現有成績資料，使用預設值
-                                        if (reScoreValue2 >= 0 && reScoreValue2 <= passingStandard)
-                                            reScore = reScoreValue2.ToString();
-                                        else
-                                            reScore = "-1";
-                                    }
+                                        reScore = "-1";
                                 }
 
 
@@ -711,19 +767,10 @@ namespace SmartSchool.Evaluation.ImportExport
                             string reScoreP = "-1";
 
                             // 取得修課及格標準（預設 60）                            
-                            string passScoreStr = "";
-                            decimal passScore = 60;
+                            string existingPassTextForReScore = "";
                             if (semesterScoreDictionary[sy][se].ContainsKey(key))
-                            {
-                                SemesterSubjectScoreInfo score = semesterScoreDictionary[sy][se][key];
-                                passScoreStr = score.Detail.GetAttribute("修課及格標準");
-                                if (!decimal.TryParse(passScoreStr, out passScore) || passScore <= 0)
-                                    passScore = 60;
-                            }
-                            else
-                            {
-                                passScore = 60; // 如果沒有現有成績資料，使用預設值
-                            }
+                                existingPassTextForReScore = semesterScoreDictionary[sy][se][key].Detail.GetAttribute("修課及格標準");
+                            decimal passScore = ResolveCoursePassStandard(row, existingPassTextForReScore);
 
                             if (reScore == "-1")
                             {
@@ -890,18 +937,10 @@ namespace SmartSchool.Evaluation.ImportExport
 
                             // 重修成績及格判斷：根據重修成績與及格標準比較
                             decimal retakeScoreValue;
-                            decimal passingStandardForScoreP = 60;
+                            string existingPassTextForScoreP = "";
                             if (semesterScoreDictionary[sy][se].ContainsKey(key))
-                            {
-                                SemesterSubjectScoreInfo score = semesterScoreDictionary[sy][se][key];
-                                string passStr = score.Detail.GetAttribute("修課及格標準");
-                                if (!decimal.TryParse(passStr, out passingStandardForScoreP) || passingStandardForScoreP <= 0)
-                                    passingStandardForScoreP = 60;
-                            }
-                            else
-                            {
-                                passingStandardForScoreP = 60; // 如果沒有現有成績資料，使用預設值
-                            }
+                                existingPassTextForScoreP = semesterScoreDictionary[sy][se][key].Detail.GetAttribute("修課及格標準");
+                            decimal passingStandardForScoreP = ResolveCoursePassStandard(row, existingPassTextForScoreP);
 
                             if (decimal.TryParse(GetRowDataCellValue(row, "重修成績"), out retakeScoreValue))
                             {
@@ -922,20 +961,10 @@ namespace SmartSchool.Evaluation.ImportExport
                             decimal passingStandard;
                             if (decimal.TryParse(GetRowDataCellValue(row, "重修成績"), out decimal reScoreValue2))
                             {
+                                string existingPassText = "";
                                 if (semesterScoreDictionary[sy][se].ContainsKey(key))
-                                {
-                                    SemesterSubjectScoreInfo score = semesterScoreDictionary[sy][se][key];
-                                    string passStr = score.Detail.GetAttribute("修課及格標準");
-                                    if (!decimal.TryParse(passStr, out passingStandard) || passingStandard <= 0)
-                                        passingStandard = 60;
-                                }
-                                else
-                                {
-                                    passingStandard = 60; // 如果沒有現有成績資料，使用預設值
-                                }
-
-                                if (passingStandard == 0)
-                                    passingStandard = 60; // 預設修課及格標準為 60
+                                    existingPassText = semesterScoreDictionary[sy][se][key].Detail.GetAttribute("修課及格標準");
+                                passingStandard = ResolveCoursePassStandard(row, existingPassText);
 
                                 if (reScoreValue2 >= 0)
                                 {
@@ -956,19 +985,10 @@ namespace SmartSchool.Evaluation.ImportExport
                             string ReAScoreP = "-1";
 
                             // 取得修課及格標準（預設 60）
-                            string passScoreStr = "";
-                            decimal passScore = 60;
+                            string existingPassTextForReScoreP = "";
                             if (semesterScoreDictionary[sy][se].ContainsKey(key))
-                            {
-                                SemesterSubjectScoreInfo score = semesterScoreDictionary[sy][se][key];
-                                passScoreStr = score.Detail.GetAttribute("修課及格標準");
-                                if (!decimal.TryParse(passScoreStr, out passScore) || passScore <= 0)
-                                    passScore = 60;
-                            }
-                            else
-                            {
-                                passScore = 60; // 如果沒有現有成績資料，使用預設值
-                            }
+                                existingPassTextForReScoreP = semesterScoreDictionary[sy][se][key].Detail.GetAttribute("修課及格標準");
+                            decimal passScore = ResolveCoursePassStandard(row, existingPassTextForReScoreP);
 
                             if (ReAScore == "-1")
                             {
@@ -1193,6 +1213,17 @@ namespace SmartSchool.Evaluation.ImportExport
                                                     }
                                                     break;
                                                 case "原始成績":
+                                                    // 只有補修才寫回。空白視為否。非補修不改既有值，也不動 hasChanged。
+                                                    string isMakeupScoreForOriginal = data.ContainsKey("是否補修成績") ? data["是否補修成績"] : "";
+                                                    if (string.IsNullOrWhiteSpace(isMakeupScoreForOriginal))
+                                                        isMakeupScoreForOriginal = "否";
+                                                    if (isMakeupScoreForOriginal == "是" && score.Detail.GetAttribute("原始成績") != value)
+                                                    {
+                                                        logLine += "、" + field + "由「" + score.Detail.GetAttribute("原始成績") + "」變更為「" + value + "」";
+                                                        score.Detail.SetAttribute("原始成績", value);
+                                                        hasChanged = true;
+                                                    }
+                                                    break;
                                                 case "補考成績":
                                                 case "學年調整成績":
                                                     if (score.Detail.GetAttribute(field) != value)
@@ -1210,11 +1241,8 @@ namespace SmartSchool.Evaluation.ImportExport
                                                     bool hasOldScore = decimal.TryParse(oldRetakeScoreStr, out oldRetakeScore);
                                                     bool hasNewScore = decimal.TryParse(newRetakeScoreStr, out newRetakeScore);
 
-                                                    // 取得修課及格標準
-                                                    decimal passingStandard = 60;
-                                                    string passStr = score.Detail.GetAttribute("修課及格標準");
-                                                    if (!decimal.TryParse(passStr, out passingStandard) || passingStandard <= 0)
-                                                        passingStandard = 60;
+                                                    // 取得修課及格標準。先用本次匯入值，與欄位處理順序無關。
+                                                    decimal passingStandard = ResolveCoursePassStandard(data, score.Detail.GetAttribute("修課及格標準"));
 
                                                     // 擇優邏輯
                                                     decimal? finalScore = null;
@@ -1254,19 +1282,10 @@ namespace SmartSchool.Evaluation.ImportExport
                                                 case "是否補修成績":
                                                     if (value == "是")
                                                     {
-                                                        // 僅當「是否補修成績」為"是"才更新
+                                                        // 原始成績只由 case「原始成績」在補修為「是」時寫入，避免寫兩次。
+                                                        // 這裡不可把 hasChanged 設回 false，否則同一列先前的變更會被略過。
                                                         if (data.ContainsKey("是否補修成績") && data["是否補修成績"] == "是")
                                                         {
-                                                            hasChanged = false;
-
-                                                            // 只更新原始成績
-                                                            string originalScore = data.ContainsKey("原始成績") ? data["原始成績"] : "";
-                                                            if (score.Detail.GetAttribute("原始成績") != originalScore)
-                                                            {
-                                                                score.Detail.SetAttribute("原始成績", originalScore);
-                                                                hasChanged = true;
-                                                            }
-
                                                             // 更新補修學年度
                                                             string makeUpSchoolYear = data.ContainsKey("補修學年度") ? data["補修學年度"] : "";
                                                             if (score.Detail.GetAttribute("補修學年度") != makeUpSchoolYear)
@@ -1317,6 +1336,16 @@ namespace SmartSchool.Evaluation.ImportExport
                                                 //}
                                                 //break;
                                                 case "修課及格標準":
+                                                    // 空白不覆蓋系統既有值。自動模式已在驗證擋下空白。
+                                                    if (string.IsNullOrWhiteSpace(value))
+                                                        break;
+                                                    if (score.Detail.GetAttribute(field) != value)
+                                                    {
+                                                        logLine += "、" + field + "由「" + score.Detail.GetAttribute(field) + "」變更為「" + value + "」";
+                                                        score.Detail.SetAttribute(field, value);
+                                                        hasChanged = true;
+                                                    }
+                                                    break;
                                                 case "修課補考標準":
                                                 case "修課直接指定總成績":
                                                 case "修課備註":
@@ -1365,12 +1394,8 @@ namespace SmartSchool.Evaluation.ImportExport
                                             #endregion
                                             #endregion
                                             string oldPassValue = score.Detail.GetAttribute("是否取得學分");
-                                            // 使用系統內學期科目成績的修課及格標準判斷取得學分
-                                            decimal coursePassStandard = 60; // 預設值
-                                            if (decimal.TryParse(score.Detail.GetAttribute("修課及格標準"), out decimal tempPassStandard))
-                                            {
-                                                coursePassStandard = tempPassStandard;
-                                            }
+                                            // 自動判斷使用本次匯入的修課及格標準，不依欄位寫入順序。
+                                            decimal coursePassStandard = ResolveCoursePassStandard(data, score.Detail.GetAttribute("修課及格標準"));
                                             string newPassValue = ((score.Detail.GetAttribute("不需評分") == "是") || maxScore >= coursePassStandard) ? "是" : "否";
                                             score.Detail.SetAttribute("是否取得學分", newPassValue);
 
@@ -1591,22 +1616,19 @@ namespace SmartSchool.Evaluation.ImportExport
                                         #endregion
                                         #endregion
                                         string oldPassValue = newScore.GetAttribute("是否取得學分");
-                                        // 使用系統內學期科目成績的修課及格標準判斷取得學分
-                                        decimal coursePassStandard = 60; // 預設值
+                                        string existingPassText = "";
                                         if (semesterScoreDictionary.ContainsKey(sy) && semesterScoreDictionary[sy].ContainsKey(se))
                                         {
                                             foreach (SemesterSubjectScoreInfo existingScore in semesterScoreDictionary[sy][se].Values)
                                             {
                                                 if (existingScore.Subject == subjectName)
                                                 {
-                                                    if (decimal.TryParse(existingScore.Detail.GetAttribute("修課及格標準"), out decimal tempPassStandard))
-                                                    {
-                                                        coursePassStandard = tempPassStandard;
-                                                        break;
-                                                    }
+                                                    existingPassText = existingScore.Detail.GetAttribute("修課及格標準");
+                                                    break;
                                                 }
                                             }
                                         }
+                                        decimal coursePassStandard = ResolveCoursePassStandard(row, existingPassText);
                                         string newPassValue = ((newScore.GetAttribute("不需評分") == "是") || maxScore >= coursePassStandard) ? "是" : "否";
                                         newScore.SetAttribute("是否取得學分", newPassValue);
 
@@ -1731,6 +1753,27 @@ namespace SmartSchool.Evaluation.ImportExport
         private string GetRowDataCellValue(RowData rowData, string name)
         {
             return rowData.ContainsKey(name) ? rowData[name].ToString() : "";
+        }
+
+        // 同次匯入有 0～100 的修課及格標準時優先使用，含 0。
+        // 否則用系統既有值；既有值無法解析或小於等於 0 時才用 60。
+        private decimal ResolveCoursePassStandard(RowData rowData, string existingPassText)
+        {
+            decimal importedPassStandard;
+            string importedPassText = GetRowDataCellValue(rowData, "修課及格標準");
+            if (!string.IsNullOrWhiteSpace(importedPassText)
+                && decimal.TryParse(importedPassText, out importedPassStandard)
+                && importedPassStandard >= 0
+                && importedPassStandard <= 100)
+                return importedPassStandard;
+
+            decimal existingPassStandard;
+            if (!string.IsNullOrWhiteSpace(existingPassText)
+                && decimal.TryParse(existingPassText, out existingPassStandard)
+                && existingPassStandard > 0)
+                return existingPassStandard;
+
+            return 60;
         }
 
 

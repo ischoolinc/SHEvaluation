@@ -376,7 +376,7 @@ namespace SmartSchool.Evaluation.Reports
                 //else
                 //    aInfo.Add("及格標準", "");
 
-                aInfo.Add("及格標準", info.Detail.HasAttribute("修課及格標準") ? info.Detail.GetAttribute("修課及格標準") : "");
+                aInfo.Add("修課及格標準", info.Detail.HasAttribute("修課及格標準") ? info.Detail.GetAttribute("修課及格標準") : "");
 
                 aInfo.Add("重修成績", info.Detail.HasAttribute("重修成績") ? info.Detail.GetAttribute("重修成績") : "");
                 aInfo.Add("取得學分", "");

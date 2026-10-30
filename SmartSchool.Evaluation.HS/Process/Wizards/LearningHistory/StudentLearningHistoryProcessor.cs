@@ -373,6 +373,7 @@ namespace SmartSchool.Evaluation.Process.Wizards.LearningHistory
             if (dataValue53.Count > 0)
             {
                 semsScore53 = GetStudentScoreDataAsDictionary(dataValue53.Keys.ToList());
+                ApplyDesignateFinalScore53(dataValue53, GetDesignateFinalScoreFor53(dataValue53.Keys.ToList()), _SchoolYear, _Semester);
             }
 
             // 比對並填入補考成績資料
@@ -2977,6 +2978,128 @@ ORDER BY courseName,className, seatNo ASC", _SchoolYear, _Semester, string.Join(
             }
 
             return result;
+        }
+
+        private class DesignateFinalScore53
+        {
+            public string StudentID { get; set; }
+            public string SchoolYear { get; set; }
+            public string Semester { get; set; }
+            public string SubjectName { get; set; }
+            public string SubjectLevel { get; set; }
+            public string DesignateScore { get; set; }
+            public string PassStandard { get; set; }
+        }
+
+        /// <summary>
+        /// 讀取既有 5.3 學生在本次學年度學期的修課直接指定總成績。不要求補考成績存在。
+        /// </summary>
+        private Dictionary<string, List<DesignateFinalScore53>> GetDesignateFinalScoreFor53(List<string> studentIDList)
+        {
+            Dictionary<string, List<DesignateFinalScore53>> result = new Dictionary<string, List<DesignateFinalScore53>>();
+            if (studentIDList == null || studentIDList.Count == 0)
+                return result;
+
+            try
+            {
+                QueryHelper qh = new QueryHelper();
+                string query = string.Format(@"
+                SELECT
+                    sems_subj_score_ext.ref_student_id,
+                    sems_subj_score_ext.semester,
+                    sems_subj_score_ext.school_year,
+                    array_to_string(xpath('//Subject/@科目', subj_score_ele), '')::text AS 科目,
+                    array_to_string(xpath('//Subject/@科目級別', subj_score_ele), '')::text AS 科目級別,
+                    array_to_string(xpath('//Subject/@修課直接指定總成績', subj_score_ele), '')::text AS 修課直接指定總成績,
+                    array_to_string(xpath('//Subject/@修課及格標準', subj_score_ele), '')::text AS 修課及格標準
+                FROM (
+                    SELECT
+                        sems_subj_score.*,
+                        unnest(xpath('//SemesterSubjectScoreInfo/Subject', xmlparse(content score_info))) as subj_score_ele
+                    FROM
+                        sems_subj_score
+                    WHERE ref_student_id IN ({0})
+                        AND school_year = {1}
+                        AND semester = {2}
+                ) as sems_subj_score_ext
+                ORDER BY grade_year desc, semester desc, school_year desc",
+                    string.Join(",", studentIDList), _SchoolYear, _Semester);
+
+                DataTable dt = qh.Select(query);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string studentID = dr["ref_student_id"] + "";
+                    if (!result.ContainsKey(studentID))
+                        result[studentID] = new List<DesignateFinalScore53>();
+
+                    result[studentID].Add(new DesignateFinalScore53
+                    {
+                        StudentID = studentID,
+                        SchoolYear = dr["school_year"] + "",
+                        Semester = dr["semester"] + "",
+                        SubjectName = dr["科目"] + "",
+                        SubjectLevel = dr["科目級別"] + "",
+                        DesignateScore = dr["修課直接指定總成績"] + "",
+                        PassStandard = dr["修課及格標準"] + ""
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 有效的修課直接指定總成績寫入既有 5.3 的再次修習成績，並重算再次修習成績及格。
+        /// 不新增 5.3，也不改重讀成績。
+        /// </summary>
+        private static void ApplyDesignateFinalScore53(
+            Dictionary<string, List<SubjectScoreRec108>> dataValue53,
+            Dictionary<string, List<DesignateFinalScore53>> designateScores,
+            int schoolYear,
+            int semester)
+        {
+            if (dataValue53 == null || designateScores == null)
+                return;
+
+            string schoolYearText = schoolYear.ToString();
+            string semesterText = semester.ToString();
+
+            foreach (var studentData in dataValue53)
+            {
+                if (studentData.Value == null || !designateScores.ContainsKey(studentData.Key))
+                    continue;
+
+                List<DesignateFinalScore53> designateList = designateScores[studentData.Key];
+                foreach (var dataValueRecord in studentData.Value)
+                {
+                    DesignateFinalScore53 match = designateList.FirstOrDefault(s =>
+                        s.StudentID == dataValueRecord.StudentID &&
+                        s.SubjectName == dataValueRecord.SubjectName &&
+                        s.SubjectLevel == dataValueRecord.SubjectLevel &&
+                        s.SchoolYear == schoolYearText &&
+                        s.Semester == semesterText);
+
+                    if (match == null)
+                        continue;
+
+                    string designateText = (match.DesignateScore ?? "").Trim();
+                    if (!decimal.TryParse(designateText, out decimal designateScore))
+                        continue;
+
+                    dataValueRecord.Score = designateText;
+
+                    decimal passStandard = 60;
+                    string passText = (match.PassStandard ?? "").Trim();
+                    if (decimal.TryParse(passText, out decimal parsedPass))
+                        passStandard = parsedPass;
+
+                    dataValueRecord.ScoreP = designateScore >= passStandard ? "1" : "0";
+                }
+            }
         }
 
         /// <summary>

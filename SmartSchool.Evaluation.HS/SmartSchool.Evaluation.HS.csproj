@@ -760,6 +760,7 @@
     <Compile Include="SubjectTable.cs" />
     <Compile Include="UpdateHelper.cs" />
     <Compile Include="Utility.cs" />
+    <Compile Include="RepeatSubjectOriginalScore.cs" />
     <Compile Include="WearyDogComputer.cs" />
     <Compile Include="WearyDogComputerHelper\GraduateEvaluator.cs" />
     <Compile Include="WearyDogComputerHelper\GraduateRule.cs" />

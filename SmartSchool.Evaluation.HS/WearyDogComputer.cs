@@ -68,6 +68,49 @@ namespace SmartSchool.Evaluation
         }
 
         /// <summary>
+        /// 5.3.7、5.3.8：有效指定總成績優先，否則維持課程最終成績的既有判斷。
+        /// </summary>
+        private static void ResolveRetake53Score(
+            Dictionary<string, Dictionary<string, DataRow>> studentFinalScoreDict,
+            string studentId,
+            string subject,
+            string subjectLevel,
+            string passStandardText,
+            bool hasFinalScore,
+            decimal finalScore,
+            int decimals,
+            RoundMode mode,
+            out string score,
+            out string scoreP)
+        {
+            decimal passStandard = 60;
+            if (decimal.TryParse((passStandardText ?? "").Trim(), out decimal parsedPass))
+                passStandard = parsedPass;
+
+            score = GetRoundScore(finalScore, decimals, mode).ToString();
+            scoreP = hasFinalScore && finalScore >= passStandard ? "1" : "0";
+
+            string scoreKey = subject + "_" + subjectLevel;
+            if (studentFinalScoreDict == null ||
+                string.IsNullOrEmpty(studentId) ||
+                !studentFinalScoreDict.ContainsKey(studentId) ||
+                !studentFinalScoreDict[studentId].ContainsKey(scoreKey))
+                return;
+
+            DataRow dr = studentFinalScoreDict[studentId][scoreKey];
+            string designateText = "";
+            if (dr["designate_final_score"] != null)
+                designateText = dr["designate_final_score"].ToString().Trim();
+
+            if (!decimal.TryParse(designateText, out decimal designateScore))
+                return;
+
+            decimal roundedDesignate = GetRoundScore(designateScore, decimals, mode);
+            score = roundedDesignate.ToString();
+            scoreP = roundedDesignate >= passStandard ? "1" : "0";
+        }
+
+        /// <summary>
         /// 取得有效及格標準：sc_attend.passing_standard 優先，否則 applyLimit[gradeYear]，否則 60。
         /// </summary>
         private decimal GetEffectivePassingStandard(
@@ -173,6 +216,68 @@ namespace SmartSchool.Evaluation
 
             SetPassingStandardAttribute(scoreElement, effectivePassscore, decimals, mode);
             SetMakeupStandardAttribute(scoreElement, effectiveMakeupscore, decimals, mode);
+        }
+
+        /// <summary>
+        /// 再次修習：本次有效成績與歷史成績擇優後寫入原始成績。
+        /// </summary>
+        private static void SetRepeatOriginalScore(
+            XmlElement scoreElement,
+            string designateText,
+            bool hasFinalScore,
+            decimal finalScore,
+            decimal? historyScore,
+            int decimals,
+            RoundMode mode)
+        {
+            decimal? effectiveScore = RepeatSubjectOriginalScore.ResolveEffectiveScore(
+                designateText,
+                hasFinalScore,
+                finalScore,
+                score => GetRoundScore(score, decimals, mode));
+            decimal? originalScore = RepeatSubjectOriginalScore.ChooseOriginalScore(
+                RepeatSubjectOriginalScore.HasValidDesignate(designateText),
+                effectiveScore,
+                historyScore);
+            if (originalScore.HasValue)
+                scoreElement.SetAttribute("原始成績", "" + originalScore.Value);
+            else
+                scoreElement.SetAttribute("原始成績", "");
+        }
+
+        /// <summary>
+        /// 5.3 重讀成績取本次有效成績與歷史成績的較高分，不讀原始成績屬性。
+        /// </summary>
+        private static void ResolveRepeatRosterScore(
+            string designateText,
+            bool hasFinalScore,
+            decimal finalScore,
+            decimal? historyScore,
+            string passStandardText,
+            int decimals,
+            RoundMode mode,
+            out string repeatScore,
+            out string repeatScoreP)
+        {
+            decimal? effectiveScore = RepeatSubjectOriginalScore.ResolveEffectiveScore(
+                designateText,
+                hasFinalScore,
+                finalScore,
+                score => GetRoundScore(score, decimals, mode));
+            decimal? repeat = RepeatSubjectOriginalScore.ChooseRepeatScore(effectiveScore, historyScore);
+            if (!repeat.HasValue)
+            {
+                repeatScore = "";
+                repeatScoreP = "0";
+                return;
+            }
+
+            repeatScore = "" + repeat.Value;
+            decimal passStandard = 60;
+            decimal parsedPass;
+            if (decimal.TryParse((passStandardText ?? "").Trim(), out parsedPass))
+                passStandard = parsedPass;
+            repeatScoreP = RepeatSubjectOriginalScore.PassFlag(repeat, passStandard);
         }
 
         /// <summary>
@@ -1069,6 +1174,8 @@ namespace SmartSchool.Evaluation
                                         mode);
 
                                     decimal? sfinalScore = null;
+                                    decimal? historyScore = null;
+                                    string designateText = null;
 
                                     bool fromPrevSemester = false;
                                     bool fromArchive = false;
@@ -1085,6 +1192,7 @@ namespace SmartSchool.Evaluation
                                     {
                                         // 來自之前學期成績
                                         fromPrevSemester = true;
+                                        historyScore = dataCompareDict[sfKey];
 
                                         if (sfinalScore.HasValue)
                                             if (dataCompareDict[sfKey] > sfinalScore.Value)
@@ -1103,6 +1211,7 @@ namespace SmartSchool.Evaluation
 
                                                 // 因為來自封存成績，同時也需要寫入重讀工作表，所以 true
                                                 fromPrevSemester = true;
+                                                historyScore = dataCompareDict1[sacRecord.StudentID][sfKey];
 
                                                 if (sfinalScore.HasValue)
                                                     if (dataCompareDict1[sacRecord.StudentID][sfKey] > sfinalScore.Value)
@@ -1111,13 +1220,6 @@ namespace SmartSchool.Evaluation
                                                     }
                                             }
                                         }
-
-                                    // 沒有修課成績填空，一定會有修課，擇優成績來自之前學期成績或封存成績，只能擇一。
-                                    if (sfinalScore.HasValue)
-                                        updateScoreElement.SetAttribute("原始成績", ("" + sfinalScore.Value));
-                                    else
-                                        updateScoreElement.SetAttribute("原始成績", "");
-
 
                                     // 當有直接指定總成績覆蓋
                                     if (studentFinalScoreDict.ContainsKey(sacRecord.StudentID))
@@ -1145,7 +1247,10 @@ namespace SmartSchool.Evaluation
                                                 subject_code = dr["subject_code"].ToString();
 
                                             if (dr["designate_final_score"] != null)
+                                            {
                                                 designate_final_score = dr["designate_final_score"].ToString();
+                                                designateText = designate_final_score;
+                                            }
 
                                             // 修課及格標準/修課補考標準已於課程資料後統一寫入，此處不再重複設定
 
@@ -1173,51 +1278,6 @@ namespace SmartSchool.Evaluation
                                             {
                                                 var dScore = GetRoundScore(designate_final_score_score, decimals, mode);
                                                 updateScoreElement.SetAttribute("修課直接指定總成績", dScore.ToString());
-
-                                                // ★ 方案2：指定 0 分 => 原始成績改回前學期/封存成績
-                                                if (dScore >= 0)
-                                                {
-                                                    bool hasPrev = false;
-                                                    decimal prevScore = dScore;
-
-                                                    // 優先：前學期學期科目成績
-                                                    if (dataCompareDict.ContainsKey(sfKey))
-                                                    {
-                                                        hasPrev = true;
-                                                        prevScore = dataCompareDict[sfKey];
-                                                        fromPrevSemester = true;
-                                                        fromArchive = false;
-                                                    }
-                                                    // 次要：封存成績
-                                                    else if (dataCompareDict1.ContainsKey(sacRecord.StudentID) &&
-                                                             dataCompareDict1[sacRecord.StudentID].ContainsKey(sfKey))
-                                                    {
-                                                        hasPrev = true;
-                                                        prevScore = dataCompareDict1[sacRecord.StudentID][sfKey];
-                                                        fromPrevSemester = true;  // 你原本用這個控制名冊/工作表
-                                                        fromArchive = true;
-                                                    }
-
-                                                    if (hasPrev)
-                                                    {
-                                                        var prevRounded = GetRoundScore(prevScore, decimals, mode);
-                                                        updateScoreElement.SetAttribute("原始成績", prevRounded.ToString());
-                                                    }
-                                                    else
-                                                    {
-                                                        // 沒有前次成績可回退：建議保留原本算出的 sfinalScore(通常是本次修課成績擇優後)
-                                                        // 你若想強制空白或 0，可以在這裡改
-                                                        // updateScoreElement.SetAttribute("原始成績", "");
-                                                    }
-
-                                                    updateScoreElement.SetAttribute("註記", "修課成績：" + GetRoundScore(sacRecord.FinalScore, decimals, mode));
-                                                }
-                                                else
-                                                {
-                                                    // 指定非 0：維持你目前行為（覆蓋原始成績）
-                                                    updateScoreElement.SetAttribute("原始成績", dScore.ToString());
-                                                    updateScoreElement.SetAttribute("註記", "修課成績：" + GetRoundScore(sacRecord.FinalScore, decimals, mode));
-                                                }
                                             }
                                             else
                                             {
@@ -1229,6 +1289,15 @@ namespace SmartSchool.Evaluation
                                             updateScoreElement.SetAttribute("修課科目代碼", subject_code);
                                         }
                                     }
+
+                                    SetRepeatOriginalScore(
+                                        updateScoreElement,
+                                        designateText,
+                                        sacRecord.HasFinalScore,
+                                        sacRecord.FinalScore,
+                                        historyScore,
+                                        decimals,
+                                        mode);
 
                                     //做取得學分判斷
                                     #region 做取得學分判斷及填入擇優採計成績
@@ -1457,20 +1526,33 @@ namespace SmartSchool.Evaluation
                                             reScoreP = "0";
                                         }
 
-                                        // 判斷重讀成績及格
-                                        string repeatScoreP2 = "0";
-                                        if (decimal.TryParse(updateScoreElement.GetAttribute("原始成績"), out decimal originalScore2))
-                                        {
-                                            decimal passScoreForRepeat2 = 60; // 預設及格標準
-                                            if (decimal.TryParse(updateScoreElement.GetAttribute("修課及格標準"), out decimal passingStandardForRepeat2))
-                                            {
-                                                passScoreForRepeat2 = passingStandardForRepeat2;
-                                            }
-                                            if (originalScore2 >= passScoreForRepeat2)
-                                                repeatScoreP2 = "1";
-                                            else
-                                                repeatScoreP2 = "0";
-                                        }
+                                        string repeatScore2;
+                                        string repeatScoreP2;
+                                        ResolveRepeatRosterScore(
+                                            designateText,
+                                            sacRecord.HasFinalScore,
+                                            sacRecord.FinalScore,
+                                            historyScore,
+                                            updateScoreElement.GetAttribute("修課及格標準"),
+                                            decimals,
+                                            mode,
+                                            out repeatScore2,
+                                            out repeatScoreP2);
+
+                                        string retakeScore53;
+                                        string retakeScoreP53;
+                                        ResolveRetake53Score(
+                                            studentFinalScoreDict,
+                                            sacRecord.StudentID,
+                                            sacRecord.Subject,
+                                            sacRecord.SubjectLevel,
+                                            updateScoreElement.GetAttribute("修課及格標準"),
+                                            sacRecord.HasFinalScore,
+                                            sacRecord.FinalScore,
+                                            decimals,
+                                            mode,
+                                            out retakeScore53,
+                                            out retakeScoreP53);
 
                                         var repeatRec = new SubjectScoreRec108
                                         {
@@ -1484,8 +1566,8 @@ namespace SmartSchool.Evaluation
                                             SubjectLevel = sacRecord.SubjectLevel,
                                             GradeYear = gradeYear.HasValue ? gradeYear.Value.ToString() : "",
                                             Credit = sacRecord.CreditDec().ToString(),
-                                            Score = GetRoundScore(sacRecord.FinalScore, decimals, mode).ToString(),
-                                            ScoreP = ScoreP,
+                                            Score = retakeScore53,
+                                            ScoreP = retakeScoreP53,
                                             useCredit = useCredit,
                                             Name = var.StudentName,
                                             HisClassName = HisClassName,
@@ -1499,7 +1581,7 @@ namespace SmartSchool.Evaluation
                                             CodePass = codePass,
                                             RepeatMemo = "2",
                                             RepeatScoreP = repeatScoreP2,
-                                            RepeatScore = updateScoreElement.GetAttribute("原始成績"),
+                                            RepeatScore = repeatScore2,
                                             ReScore = reScore,
                                             ReScoreP = reScoreP
                                         };
@@ -1543,6 +1625,8 @@ namespace SmartSchool.Evaluation
                                     newScoreInfo.SetAttribute("開課學分數", "" + sacRecord.CreditDec());
 
                                     decimal? sfinalScore = null;
+                                    decimal? historyScore = null;
+                                    string designateText = null;
                                     bool fromPrevSemester = false;
                                     bool fromArchive = false;
 
@@ -1557,6 +1641,7 @@ namespace SmartSchool.Evaluation
                                     {
                                         // 來自之前學期成績
                                         fromPrevSemester = true;
+                                        historyScore = dataCompareDict[sfKey];
 
                                         if (sfinalScore.HasValue)
                                             if (dataCompareDict[sfKey] > sfinalScore.Value)
@@ -1574,6 +1659,7 @@ namespace SmartSchool.Evaluation
                                             {
                                                 fromArchive = true; // 來源封存成績
                                                 fromPrevSemester = true;
+                                                historyScore = dataCompareDict1[sacRecord.StudentID][sfKey];
                                                 if (sfinalScore.HasValue)
                                                     if (dataCompareDict1[sacRecord.StudentID][sfKey] > sfinalScore.Value)
                                                     {
@@ -1582,14 +1668,6 @@ namespace SmartSchool.Evaluation
                                                     }
                                             }
                                         }
-
-
-
-                                    // 沒有修課成績填空
-                                    if (sfinalScore.HasValue)
-                                        newScoreInfo.SetAttribute("原始成績", ("" + sfinalScore.Value));
-                                    else
-                                        newScoreInfo.SetAttribute("原始成績", "");
 
 
                                     if (specifySubjectNameDict.ContainsKey(sacRecord.StudentID))
@@ -1640,20 +1718,16 @@ namespace SmartSchool.Evaluation
                                                 subject_code = dr["subject_code"].ToString();
 
                                             if (dr["designate_final_score"] != null)
+                                            {
                                                 designate_final_score = dr["designate_final_score"].ToString();
+                                                designateText = designate_final_score;
+                                            }
 
                                             // 修課及格標準/修課補考標準已於上方統一寫入，此處不再重複設定
 
                                             if (decimal.TryParse(designate_final_score, out designate_final_score_score))
                                             {
                                                 newScoreInfo.SetAttribute("修課直接指定總成績", ("" + GetRoundScore(designate_final_score_score, decimals, mode)));
-
-                                                // 註解是因經過2024/4/26討論，修課直接指定總成績不應該覆蓋原始成績，需要保留原始成績。
-
-                                                newScoreInfo.SetAttribute("原始成績", ("" + GetRoundScore(designate_final_score_score, decimals, mode)));
-
-
-                                                newScoreInfo.SetAttribute("註記", "修課成績：" + ("" + GetRoundScore(sacRecord.FinalScore, decimals, mode)));
                                             }
                                             else
                                             {
@@ -1665,6 +1739,15 @@ namespace SmartSchool.Evaluation
                                             CourseCode = subject_code;
                                         }
                                     }
+
+                                    SetRepeatOriginalScore(
+                                        newScoreInfo,
+                                        designateText,
+                                        sacRecord.HasFinalScore,
+                                        sacRecord.FinalScore,
+                                        historyScore,
+                                        decimals,
+                                        mode);
 
                                     newScoreInfo.SetAttribute("重修成績", "");
                                     newScoreInfo.SetAttribute("學年調整成績", "");
@@ -1899,20 +1982,33 @@ namespace SmartSchool.Evaluation
                                             reScoreP = "0";
                                         }
 
-                                        // 判斷重讀成績及格
-                                        string repeatScoreP4 = "0";
-                                        if (decimal.TryParse(newScoreInfo.GetAttribute("原始成績"), out decimal originalScore4))
-                                        {
-                                            decimal passScoreForRepeat4 = 60; // 預設及格標準
-                                            if (decimal.TryParse(newScoreInfo.GetAttribute("修課及格標準"), out decimal passingStandardForRepeat4))
-                                            {
-                                                passScoreForRepeat4 = passingStandardForRepeat4;
-                                            }
-                                            if (originalScore4 >= passScoreForRepeat4)
-                                                repeatScoreP4 = "1";
-                                            else
-                                                repeatScoreP4 = "0";
-                                        }
+                                        string repeatScore4;
+                                        string repeatScoreP4;
+                                        ResolveRepeatRosterScore(
+                                            designateText,
+                                            sacRecord.HasFinalScore,
+                                            sacRecord.FinalScore,
+                                            historyScore,
+                                            newScoreInfo.GetAttribute("修課及格標準"),
+                                            decimals,
+                                            mode,
+                                            out repeatScore4,
+                                            out repeatScoreP4);
+
+                                        string retakeScore53;
+                                        string retakeScoreP53;
+                                        ResolveRetake53Score(
+                                            studentFinalScoreDict,
+                                            sacRecord.StudentID,
+                                            sacRecord.Subject,
+                                            sacRecord.SubjectLevel,
+                                            newScoreInfo.GetAttribute("修課及格標準"),
+                                            sacRecord.HasFinalScore,
+                                            sacRecord.FinalScore,
+                                            decimals,
+                                            mode,
+                                            out retakeScore53,
+                                            out retakeScoreP53);
 
                                         var repeatRec = new SubjectScoreRec108
                                         {
@@ -1926,8 +2022,8 @@ namespace SmartSchool.Evaluation
                                             SubjectLevel = sacRecord.SubjectLevel,
                                             GradeYear = gradeYear.HasValue ? gradeYear.Value.ToString() : "",
                                             Credit = sacRecord.CreditDec().ToString(),
-                                            Score = GetRoundScore(sacRecord.FinalScore, decimals, mode).ToString(),
-                                            ScoreP = ScoreP,
+                                            Score = retakeScore53,
+                                            ScoreP = retakeScoreP53,
                                             useCredit = useCredit,
                                             Name = var.StudentName,
                                             HisClassName = HisClassName,
@@ -1941,7 +2037,7 @@ namespace SmartSchool.Evaluation
                                             CodePass = codePass,
                                             RepeatMemo = "2",
                                             RepeatScoreP = repeatScoreP4,
-                                            RepeatScore = newScoreInfo.GetAttribute("原始成績"),
+                                            RepeatScore = repeatScore4,
                                             ReScore = reScore,
                                             ReScoreP = reScoreP
                                         };

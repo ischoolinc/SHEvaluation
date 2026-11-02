@@ -1,4 +1,4 @@
-using Aspose.Words;
+﻿using Aspose.Words;
 using FISCA.Data;
 using FISCA.DSAUtil;
 using SmartSchool.Customization.Data;
@@ -559,14 +559,14 @@ namespace SmartSchool.Evaluation
                                 ORDER BY last_update DESC
                             ) AS rn
                         FROM $semester_subject_score_archive
-                        WHERE ref_student_id IN ({0})
+                        WHERE ref_student_id IN ({0}) AND (school_year < {1} OR (school_year = {1} AND semester < {2}))
                     ) t
                     WHERE t.rn = 1
                 )
             ) ext
             ORDER BY ext.ref_student_id, ext.school_year DESC, ext.semester DESC, ext.grade_year DESC
 
-            ", sid);
+            ", sid, schoolyear, semester);
 
             try
             {
@@ -617,6 +617,8 @@ namespace SmartSchool.Evaluation
                     {
                         dataCompareDict1[studentID].Add(key, maxScore);
                     }
+                    else if (maxScore > dataCompareDict1[studentID][key])
+                        dataCompareDict1[studentID][key] = maxScore;
 
                 }
             }
@@ -1201,8 +1203,8 @@ namespace SmartSchool.Evaluation
 
 
 
-                                    // 當沒有來自之前學期科目成績才比對來自封存成績，科目名稱+級別相同
-                                    if (fromPrevSemester == false)
+                                    // 比對同科目級別的封存成績
+                                    // 既有學期與封存成績共同擇優
                                         if (dataCompareDict1.ContainsKey(sacRecord.StudentID))
                                         {
                                             if (dataCompareDict1[sacRecord.StudentID].ContainsKey(sfKey))
@@ -1211,7 +1213,7 @@ namespace SmartSchool.Evaluation
 
                                                 // 因為來自封存成績，同時也需要寫入重讀工作表，所以 true
                                                 fromPrevSemester = true;
-                                                historyScore = dataCompareDict1[sacRecord.StudentID][sfKey];
+                                                historyScore = RepeatSubjectOriginalScore.ChooseRepeatScore(historyScore, dataCompareDict1[sacRecord.StudentID][sfKey]);
 
                                                 if (sfinalScore.HasValue)
                                                     if (dataCompareDict1[sacRecord.StudentID][sfKey] > sfinalScore.Value)
@@ -1651,15 +1653,15 @@ namespace SmartSchool.Evaluation
 
 
 
-                                    // 當沒有之前學期成績，才使用自封存成績來比對，科目名稱+級別相同
-                                    if (fromPrevSemester == false)
+                                    // 比對同科目級別的封存成績
+                                    // 既有學期與封存成績共同擇優
                                         if (dataCompareDict1.ContainsKey(sacRecord.StudentID))
                                         {
                                             if (dataCompareDict1[sacRecord.StudentID].ContainsKey(sfKey))
                                             {
                                                 fromArchive = true; // 來源封存成績
                                                 fromPrevSemester = true;
-                                                historyScore = dataCompareDict1[sacRecord.StudentID][sfKey];
+                                                historyScore = RepeatSubjectOriginalScore.ChooseRepeatScore(historyScore, dataCompareDict1[sacRecord.StudentID][sfKey]);
                                                 if (sfinalScore.HasValue)
                                                     if (dataCompareDict1[sacRecord.StudentID][sfKey] > sfinalScore.Value)
                                                     {

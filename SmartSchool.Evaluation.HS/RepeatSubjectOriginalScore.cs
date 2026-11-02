@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace SmartSchool.Evaluation
 {
@@ -37,12 +37,6 @@ namespace SmartSchool.Evaluation
             decimal? effectiveScore,
             decimal? historyScore)
         {
-            if (hasDesignate)
-                return effectiveScore;
-
-            if (!effectiveScore.HasValue)
-                return null;
-
             return Higher(effectiveScore, historyScore);
         }
 
